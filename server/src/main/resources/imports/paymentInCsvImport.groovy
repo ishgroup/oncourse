@@ -20,7 +20,7 @@ reader.eachLine { line  ->
     String rawInvoiceValues = line.'payment.invoice'
     List<Long> invoiceNumbers = rawInvoiceValues.contains(',') ? rawInvoiceValues.split(',')*.toLong() : [rawInvoiceValues?.toLong()]
     LocalDate dateBanked = line.'payment.dateBanked' ? LocalDate.parse(line.'payment.dateBanked', DateTimeFormatter.ofPattern('d/M/yy')) : null
-    Money amount = line.'payment.amount' ? new Money(line.'payment.amount'.replace(',', '').trim()) : null
+    Money amount = line.'payment.amount' ? Money.of(line.'payment.amount'.replace(',', '').trim()) : null
     String paymentMethodName = line.'paymentIn.paymentMethod.name'
     String chequeBank = line.'payment.chequeBank'
     String chequeBranch = line.'payment.chequeBranch'

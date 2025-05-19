@@ -144,7 +144,8 @@ public class AngelModule extends ConfigModule {
                         CommandDecorator.builder()
                                 .beforeRun(AngelCommand.class)
                                 .alsoRun(DataPopulationCommand.class)
-                                .alsoRun(SanityCheckCommand.class).build());
+                                .alsoRun(SanityCheckCommand.class)
+                                .build());
 
         CayenneModule.extend(binder)
                 .addModule(AngelCayenneModule.class)

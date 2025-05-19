@@ -15,6 +15,7 @@ import square from '../../../../../../../images/square.svg';
 import squareLight from '../../../../../../../images/squareLight.svg';
 import { showMessage } from '../../../../../../common/actions';
 import InstantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import { useAppSelector } from '../../../../../../common/utils/hooks';
 import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
@@ -59,6 +60,8 @@ const SquarePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const [card, setCard] = useState<any>(null);
   const [payments, setPayments] = useState<any>(null);
   const { classes, theme } = useStyles();
+
+  const currencyCode = useAppSelector(state => state.location.currency.currencySymbol);
   
   const init = async () => {
     try {
@@ -88,11 +91,6 @@ const SquarePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     checkoutUpdateSummaryPrices();
   };
 
-  const handleError = error => {
-    setLoading(false);
-    dispatch(showMessage({ message: error?.message }));
-  };
-
   useEffect(() => {
     if (!process.status && summary.payNowTotal > 0) {
       proceedPayment();
@@ -111,7 +109,7 @@ const SquarePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
       billingContact: {
         email: summary.list.find(l => l.payer)?.contact?.email,
       },
-      currencyCode: 'AUD',
+      currencyCode,
       intent: 'CHARGE',
     };
 

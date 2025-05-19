@@ -3,13 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { FundingSource } from "@api/model";
-import Grid from "@mui/material/Grid";
-import { idsToString, ShowConfirmCaller } from "ish-ui";
-import isEqual from "lodash.isequal";
-import * as React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
+import { FundingSource } from '@api/model';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import { idsToString, ShowConfirmCaller } from 'ish-ui';
+import isEqual from 'lodash.isequal';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import {
   arrayInsert,
   arrayRemove,
@@ -19,16 +20,16 @@ import {
   initialize,
   reduxForm,
   SubmissionError
-} from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
-import { ApiMethods } from "../../../../../model/common/apiHandlers";
-import { Fetch } from "../../../../../model/common/Fetch";
-import { State } from "../../../../../reducers/state";
-import FundingContractItem from "./FundingContractItem";
+} from 'redux-form';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import getTimestamps from '../../../../../common/utils/timestamps/getTimestamps';
+import { ApiMethods } from '../../../../../model/common/apiHandlers';
+import { Fetch } from '../../../../../model/common/Fetch';
+import { State } from '../../../../../reducers/state';
+import FundingContractItem from './FundingContractItem';
 
 const manualUrl = getManualLink("setting-your-general-preferences#funding-contracts");
 
@@ -194,7 +195,7 @@ class FundingContractsForm extends React.Component<Props, any> {
           getAuditsUrl={() => `audit?search=~"FundingSource" and entityId in (${idsToString(values.fundingContracts)})`}
           disabled={!dirty}
           invalid={invalid}
-          title="Funding Contracts"
+          title={$t('funding_contracts')}
           disableInteraction
           createdOn={() => timestamps && timestamps[0]}
           modifiedOn={() => timestamps && timestamps[1]}
@@ -223,7 +224,6 @@ const mapStateToProps = (state: State) => ({
   timestamps: state.preferences.fundingContracts && getTimestamps(state.preferences.fundingContracts),
   fetch: state.fetch,
 });
-
 
 export default reduxForm({
   onSubmitFail,

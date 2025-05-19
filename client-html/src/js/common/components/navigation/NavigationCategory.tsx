@@ -10,6 +10,7 @@ import Close from '@mui/icons-material/Close';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Grid, IconButton, Typography } from '@mui/material';
+import $t from '@t';
 import { BooleanArgFunction, makeAppStyles, NumberArgFunction, openInternalLink } from 'ish-ui';
 import React, { useMemo } from 'react';
 import StructureGraph from '../../../containers/dashboard/StructureGraph';
@@ -89,7 +90,7 @@ const NavigationCategory = (
   const { classes } = useStyles();
 
   const scripts = useAppSelector(state => state.dashboard.scripts);
-  
+
   const category = useMemo(() => navigation.categories.find(c => c.key === selected), [selected]);
   
   const features = useMemo(() => (category 
@@ -121,7 +122,7 @@ const NavigationCategory = (
       </Grid>
 
       <div className="heading mb-2">
-        Features
+        {$t('features')}
       </div>
       {features.map(f => (
         <NavigationItem
@@ -138,7 +139,7 @@ const NavigationCategory = (
       {category?.key === "automation" && (
         <div>
           <div className="heading mb-2 mt-4">
-            Automations
+            {$t('automations')}
           </div>
           {scripts.map(s => (
             <NavigationItem

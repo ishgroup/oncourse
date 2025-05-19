@@ -108,6 +108,8 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
 
   const [stripePromise, setStripePromise] = useState<Promise<Stripe | null>>(null);
   const { classes } = useStyles();
+
+  const currencyCode = useAppSelector(state => state.location.currency.currencySymbol);
   
   useEffect(() => {
     CheckoutService.getClientPreferences()
@@ -152,7 +154,7 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
           stripe={stripePromise}
           options={{
             mode: 'payment',
-            currency: 'aud',
+            currency: currencyCode.toLowerCase(),
             paymentMethodCreation: 'manual',
             payment_method_types: [
               'card'

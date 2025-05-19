@@ -14,6 +14,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { ColorPicker, stopEventPropagation, useHoverShowStyles } from 'ish-ui';
 import React, { useCallback } from 'react';
@@ -147,14 +148,14 @@ const TagItem = React.memo<FormTagProps>(({
 
       <Collapse in={isEditing} mountOnEnter unmountOnExit>
         <div className="pl-3 pr-3" onClick={stopEventPropagation}>
-          <FormEditorField  name={getFieldName(item.parent, "shortWebDescription")} placeholder="Short description" />
+          <FormEditorField  name={getFieldName(item.parent, "shortWebDescription")} placeholder={$t('short_description')} />
           <Typography variant="caption" fontSize="13px" >
             <FormEditorField
               name={getFieldName(item.parent, "content")}
               fieldClasses={{
                 text: "fw300 fsInherit"
               }}
-              placeholder="Description"
+              placeholder={$t('description')}
               className="mb-1"
             />
           </Typography>

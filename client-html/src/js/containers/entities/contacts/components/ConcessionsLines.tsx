@@ -3,11 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import React from "react";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import React from 'react';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import { validateSingleMandatoryField } from '../../../../common/utils/validation';
 
 const ConcessionsHeaderBase: React.FunctionComponent<any> = (props: any) => {
   const { row } = props;
@@ -31,7 +32,7 @@ export const ConcessionsContent = React.memo<any>(({ item, row, concessionTypes 
         name={`${item}.type`}
         selectValueMark="id"
         selectLabelMark="name"
-        label="Concession type"
+        label={$t('concession_type')}
         returnType="object"
         items={concessionTypes || []}
         validate={validateSingleMandatoryField}
@@ -41,7 +42,7 @@ export const ConcessionsContent = React.memo<any>(({ item, row, concessionTypes 
       <FormField
         type="text"
         name={`${item}.number`}
-        label="Number"
+        label={$t('number')}
         validate={row.type && row.type.requireNumber ? validateSingleMandatoryField : undefined}
       />
     </Grid>
@@ -49,7 +50,7 @@ export const ConcessionsContent = React.memo<any>(({ item, row, concessionTypes 
       <FormField
         type="date"
         name={`${item}.expiresOn`}
-        label="Expiry"
+        label={$t('expiry')}
         validate={row.type && row.type.requireExpary ? validateSingleMandatoryField : undefined}
       />
     </Grid>

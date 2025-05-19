@@ -6,6 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { formatCurrency } from 'ish-ui';
 import React from 'react';
@@ -88,11 +89,11 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
             <div className={classes.fieldCardRoot}>
               <div className={classes.contentRoot}>
                 <h1>
-                  Details
+                  {$t('details')}
                 </h1>
                 <div className={clsx("centeredFlex", classes.cardLabelPadding)}>
                   <span className={classes.legend}>
-                    Amount:
+                    {$t('amount2')}
                   </span>
                   <Typography variant="body2" component="span" className="money fontWeight600">
                     {formatCurrency(summary.payNowTotal, currencySymbol)}
@@ -100,7 +101,7 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
                 </div>
                 <div className={clsx("centeredFlex", classes.cardLabelPadding)}>
                   <span className={classes.legend}>
-                    Payer:
+                    {$t('payer2')}
                   </span>
                   <b>{payerName}</b>
                 </div>
@@ -129,7 +130,7 @@ const mapStateToProps = (state: State) => ({
   payment: state.checkout.payment,
   paymentInvoice: state.checkout.payment.invoice,
   paymentId: state.checkout.payment.paymentId,
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol,
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol,
   iframeUrl: state.checkout.payment.ccFormUrl,
   xPaymentSessionId: state.checkout.payment.paymentId,
   merchantReference: state.checkout.payment.merchantReference,

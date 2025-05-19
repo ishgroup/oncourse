@@ -10,6 +10,7 @@ import { Collapse, FormControlLabel, Grid } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { normalizeNumber, openInternalLink, TimetableButton } from 'ish-ui';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -57,7 +58,7 @@ const SitesRoomFields = ({ item, isParenSiteVirtual }) => (
       <FormField
         type="text"
         name={`${item}.name`}
-        label="Name"
+        label={$t('name')}
         className="mr-2"
         debounced={false}
         validate={validateRoomUniqueName}
@@ -68,7 +69,7 @@ const SitesRoomFields = ({ item, isParenSiteVirtual }) => (
       <FormField
         type="number"
         name={`${item}.seatedCapacity`}
-        label="Seated Capacity"
+        label={$t('seated_capacity')}
         normalize={normalizeNumber}
         debounced={false}
         required
@@ -77,7 +78,7 @@ const SitesRoomFields = ({ item, isParenSiteVirtual }) => (
 
     {isParenSiteVirtual && <Grid item xs={12}><FormField
       type="text"
-      label="Virtual room URL"
+      label={$t('virtual_room_url')}
       name={`${item}.virtualRoomUrl`}
       validate={validateURL}
     /></Grid>}
@@ -179,7 +180,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                 <FormField
                   type="text"
                   name="name"
-                  label="Name"
+                  label={$t('name')}
                   required
                 />
               </Grid>
@@ -210,7 +211,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                 <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
                   <ScreenShare />
                 </IconButton>
-                <Typography variant="caption">Kiosk</Typography>
+                <Typography variant="caption">{$t('kiosk')}</Typography>
               </div>
             </div>
           </Grid>
@@ -225,19 +226,19 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             <FormControlLabel
               className="checkbox pr-3"
               control={<FormField type="checkbox" name="isAdministrationCentre" color="secondary" />}
-              label="Administration center"
+              label={$t('administration_center')}
             />
 
             <FormControlLabel
               className="checkbox pr-3"
               control={<FormField type="checkbox" name="isVirtual" color="secondary" />}
-              label="Virtual site"
+              label={$t('virtual_site')}
             />
 
             <FormControlLabel
               className="checkbox"
               control={<FormField type="checkbox" name="isShownOnWeb" color="secondary" />}
-              label="Show this site on the website"
+              label={$t('show_this_site_on_the_website')}
             />
           </div>
         </Grid>
@@ -247,10 +248,10 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             <FormField
               type="select"
               name="timezone"
-              label="Default timezone"
+              label={$t('default_timezone')}
               items={timezones}
               labelAdornment={(
-                <Tooltip title="Timetables will be adjusted to user's timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
+                <Tooltip title={$t('timetables_will_be_adjusted_to_users_timezone_wher')}>
                   <IconButton classes={{ root: "inputAdornmentButton" }}>
                     <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
                   </IconButton>
@@ -268,19 +269,19 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                 <FormField
                   type="text"
                   name="street"
-                  label="Street"
+                  label={$t('street')}
                   validate={greaterThanNullValidation}
                   onBlur={this.updateLatLong}
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormField type="text" name="suburb" label="Suburb" onBlur={this.updateLatLong} />
+                <FormField type="text" name="suburb" label={$t('suburb')} onBlur={this.updateLatLong} />
               </Grid>
               <Grid item xs={12}>
-                <FormField type="text" name="state" label="State" />
+                <FormField type="text" name="state" label={$t('state')} />
               </Grid>
               <Grid item xs={12}>
-                <FormField type="text" name="postcode" label="Postcode" />
+                <FormField type="text" name="postcode" label={$t('postcode')} />
               </Grid>
               <Grid item xs={12}>
                 {Boolean(countries?.length) && (
@@ -289,7 +290,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                     selectValueMark="id"
                     selectLabelMark="name"
                     name="country"
-                    label="Country"
+                    label={$t('country')}
                     returnType="object"
                     onBlur={this.updateLatLong}
                     required={!values.isVirtual}

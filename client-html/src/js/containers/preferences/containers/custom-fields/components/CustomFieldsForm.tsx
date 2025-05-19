@@ -1,5 +1,6 @@
 import { CustomFieldType } from '@api/model';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import { idsToString } from 'ish-ui';
 import isEqual from 'lodash.isequal';
 import * as React from 'react';
@@ -82,7 +83,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     const fistNewItemIndex = items.findIndex(item => item.id === null);
 
     return fistNewItemIndex === -1 ? items.filter((item, index) => !isEqual(item, this.props.customFields[index])) :
-    [...items.slice(0, fistNewItemIndex).filter((item, index) => item.id != this.props.customFields[index].id) ,
+    [...items.slice(0, fistNewItemIndex).filter((item, index) => item.id != this.props.customFields[index].id),
       ...items.slice(fistNewItemIndex, items.length)];
   };
 
@@ -186,7 +187,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
             getAuditsUrl={() => `audit?search=~"CustomFieldType" and entityId in (${idsToString(data.types)})`}
             disabled={!dirty}
             invalid={invalid}
-            title="Custom Fields"
+            title={$t('custom_fields')}
             disableInteraction
             createdOn={() => created}
             modifiedOn={() => modified}

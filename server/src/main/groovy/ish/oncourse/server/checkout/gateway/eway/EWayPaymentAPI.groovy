@@ -37,8 +37,6 @@ class EWayPaymentAPI {
 
     private static final String  TRX_PURCHASE_TYPE = "Purchase"
     private static final String  TRX_RECURRING_TYPE = "Recurring"
-    private static final String  CURRENCY_CODE_AUD = "AUD"
-    private static final String  COUNTRY_CODE_AU = "AU"
     private static final String  METHOD_PROCESS_PAYMENT = "ProcessPayment"
     private static final String  METHOD_TOKEN_PAYMENT = "TokenPayment"
 
@@ -94,8 +92,7 @@ class EWayPaymentAPI {
                                         payment            : [
                                                                 // totalAmount*100 (Docs: [1] For AUD, NZD, USD etc. These currencies have a decimal part: a $27.00 AUD transaction would have a TotalAmount = '2700')
                                                                 totalAmount: amount.multiply(100).toInteger(),
-                                                                // 'currencyCode' must be taken from 'preferenceController.country.currencySymbol()', but all colleges are from Australia that is why currency code will be 'AUD'
-                                                                currencyCode: CURRENCY_CODE_AUD,
+                                                                currencyCode: amount.currencyContext.currencyCode,
                                                                 invoiceReference: merchantReference
                                         ],
                                         language           : "en",
@@ -105,7 +102,7 @@ class EWayPaymentAPI {
                                         Customer           : [
                                                                 firstName: contact.firstName,
                                                                 lastName: contact.lastName,
-                                                                country: COUNTRY_CODE_AU,
+                                                                country: amount.getCurrencyContext().locale.country,
                                                                 email: contact.email,
                                                                 phone: contact.mobilePhone
                                         ],
@@ -299,7 +296,7 @@ class EWayPaymentAPI {
                                      // totalAmount*100 (Docs: [1] For AUD, NZD, USD etc. These currencies have a decimal part: a $27.00 AUD transaction would have a TotalAmount = '2700')
                                      totalAmount: amount.multiply(100).toInteger(),
                                      // 'currencyCode' must be taken from 'preferenceController.country.currencySymbol()', but all colleges are from Australia that is why currency code will be 'AUD'
-                                     currencyCode: CURRENCY_CODE_AUD,
+                                     currencyCode: amount.currencyContext.currencyCode,
                                      invoiceReference: merchantReference
                              ]
                      ]
@@ -370,8 +367,7 @@ class EWayPaymentAPI {
                                             payment            : [
                                                                     // totalAmount*100 (Docs: [1] For AUD, NZD, USD etc. These currencies have a decimal part: a $27.00 AUD transaction would have a TotalAmount = '2700')
                                                                     totalAmount: amount.multiply(100).toInteger(),
-                                                                    // 'currencyCode' must be taken from 'preferenceController.country.currencySymbol()', but all colleges are from Australia that is why currency code will be 'AUD'
-                                                                    currencyCode: CURRENCY_CODE_AUD,
+                                                                    currencyCode: amount.currencyContext.currencyCode,
                                                                     invoiceReference: merchantReference
                                             ],
                                             language           : "en",
@@ -415,8 +411,7 @@ class EWayPaymentAPI {
                                                         // totalAmount*100 (Docs: [1] For AUD, NZD, USD etc. These currencies have a decimal part: a $27.00 AUD transaction would have a TotalAmount = '2700')
                                                         amount              : amount.multiply(100).toInteger(),
                                                         invoiceReference    : merchantReference,
-                                                        // 'currencyCode' must be taken from 'preferenceController.country.currencySymbol()', but all colleges are from Australia that is why currency code will be 'AUD'
-                                                        currencyCode        : CURRENCY_CODE_AUD,
+                                                        currencyCode        : amount.currencyContext.currencyCode,
                                                      ],
                                         ]
                     ])

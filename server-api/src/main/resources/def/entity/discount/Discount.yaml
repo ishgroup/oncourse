@@ -49,6 +49,8 @@ properties:
     type: integer
   studentPostcode:
     type: string
+  studentEmail:
+    type: string
   discountConcessionTypes:
     type: array
     items:

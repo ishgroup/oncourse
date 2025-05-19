@@ -1,0 +1,20 @@
+type: object
+properties:
+  customLogoBlack:
+    type: string
+    required: false
+  customLogoBlackSmall:
+    type: string
+    required: false
+  customLogoWhite:
+    type: string
+    required: false
+  customLogoWhiteSmall:
+    type: string
+    required: false
+  customLogoColour:
+    type: string
+    required: false
+  customLogoColourSmall:
+    type: string
+    required: false

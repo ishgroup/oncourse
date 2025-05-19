@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import $t from '@t';
 import { createStringEnum } from "@api/model";
 
 export const CHECKOUT_CONTACT_COLUMNS = "firstName,lastName,middleName,email,birthDate,isCompany,invoiceTerms,message";
@@ -62,14 +63,14 @@ export const CheckoutPage = createStringEnum([
 export type CheckoutPageType = keyof typeof CheckoutPage;
 
 export const titles = {
-  [CheckoutPage.default]: "Type in student name or code in order to search",
-  [CheckoutPage.contacts]: "Search for a contact by email, phone or name.",
-  [CheckoutPage.items]: "Search for a course, product, membership or voucher by name or code.",
-  [CheckoutPage.promocodes]: "Search for a promotional discount by code",
-  [CheckoutPage.summary]: "Summary",
+  [CheckoutPage.default]: $t('type_in_student_name'),
+  [CheckoutPage.contacts]: $t('search_for_a_contact'),
+  [CheckoutPage.items]: $t('search_for_a_course'),
+  [CheckoutPage.promocodes]: $t('search_for_a_promotional'),
+  [CheckoutPage.summary]: $t('summary'),
   [CheckoutPage.payments]: "",
-  [CheckoutPage.previousCredit]: "Previous credit notes",
-  [CheckoutPage.previousOwing]: "Previous owing invoices",
-  [CheckoutPage.fundingInvoiceCompanies]: "Search for a company by name",
-  [CheckoutPage.fundingInvoiceSummary]: "Funding invoice"
+  [CheckoutPage.previousCredit]: $t('previous_credit_notes'),
+  [CheckoutPage.previousOwing]: $t('previous_owing_invoices'),
+  [CheckoutPage.fundingInvoiceCompanies]: $t('search_for_a_company'),
+  [CheckoutPage.fundingInvoiceSummary]: $t('funding_invoice')
 };

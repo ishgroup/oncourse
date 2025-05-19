@@ -9,6 +9,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { AppTheme, StyledCheckbox, Switch } from 'ish-ui';
 import React, { Dispatch, useEffect, useMemo, useState } from 'react';
@@ -131,25 +132,25 @@ const MergeContacts = React.memo<Props>(
           case score <= 50:
             return (
               <Typography className={classes.score} color="error">
-                Poor match
+                {$t('poor_match')}
               </Typography>
             );
           case score > 50 && score <= 70:
             return (
               <Typography className={classes.score} color="error">
-                Unlikely match
+                {$t('unlikely_match')}
               </Typography>
             );
           case score > 70 && score <= 85:
             return (
               <Typography className={clsx(classes.score, "primaryColor")}>
-                Probable match
+                {$t('probable_match')}
               </Typography>
             );
           case score > 85:
             return (
               <Typography className={clsx(classes.score, "successColor")}>
-                Likely match
+                {$t('likely_match')}
               </Typography>
             );
         }
@@ -187,8 +188,8 @@ const MergeContacts = React.memo<Props>(
       <>
         <Dialog open={successDialogOpen} maxWidth="md" scroll="body">
           <div style={{ padding: "30px 20px 40px" }}>
-            <DialogTitle>Merge successful</DialogTitle>
-            <DialogContent className="overflow-hidden">Contacts were merged successfully! Close the window.</DialogContent>
+            <DialogTitle>{$t('merge_successful')}</DialogTitle>
+            <DialogContent className="overflow-hidden">{$t('contacts_were_merged_successfully_close_the_window')}</DialogContent>
           </div>
         </Dialog>
 
@@ -205,7 +206,7 @@ const MergeContacts = React.memo<Props>(
             <Grid container wrap="nowrap">
               <Grid item xs={12} md={6} className={clsx("d-grid align-content-start", classes.contactsFields)}>
                 <Typography variant="body2" className={clsx("d-grid align-items-center justify-content-start", classes.switcherGroup)}>
-                  Only show differences
+                  {$t('only_show_differences')}
                   <Switch checked={showDifference} onChange={() => setShowDifference(prevValue => !prevValue)} />
                 </Typography>
 
@@ -228,7 +229,7 @@ const MergeContacts = React.memo<Props>(
                   contactNames={contactNames}
                 />
                 <Typography variant="body2">
-                  Merging two contacts cannot be undone. Choose which values to retain; the other data will be discarded.
+                  {$t('merging_two_contacts_cannot_be_undone_choose_which')}
                 </Typography>
 
                 {matchScoreLabel}
@@ -236,7 +237,7 @@ const MergeContacts = React.memo<Props>(
                 {score <= 70 && (
                   <div className="mt1">
                     <Typography variant="body2">
-                      These records are not a likely match
+                      {$t('these_records_are_not_a_likely_match')}
                     </Typography>
                     <FormControlLabel
                       classes={{
@@ -249,7 +250,7 @@ const MergeContacts = React.memo<Props>(
                           onChange={(e, v) => setAgreeWithLowScore(v)}
                         />
                       )}
-                      label="I am sure I want to merge these records"
+                      label={$t('i_am_sure_i_want_to_merge_these_records')}
                     />
                   </div>
                 )}

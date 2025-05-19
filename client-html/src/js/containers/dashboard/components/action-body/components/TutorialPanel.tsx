@@ -10,6 +10,7 @@ import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
 import { Button, Divider, Grid, Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { alpha } from '@mui/material/styles';
+import $t from '@t';
 import clsx from 'clsx';
 import { makeAppStyles, openInternalLink } from 'ish-ui';
 import React from 'react';
@@ -82,7 +83,7 @@ const TutorialPanel = ({ tutorial, customLink }: Props) => {
           className={clsx("cursor-pointer fontWeight600", classes.manualLink)}
           onClick={() => openInternalLink(`https://www.ish.com.au/onCourse/doc${tutorial.documentation}`)}
         >
-          Read documentation
+          {$t('read_documentation')}
         </Typography>
       </div>
       <div className={clsx("d-flex", classes.content)}>
@@ -93,7 +94,7 @@ const TutorialPanel = ({ tutorial, customLink }: Props) => {
                 width="100%"
                 allow="fullscreen"
                 src={`https://www.youtube.com/embed/${tutorial.video}`}
-                title="video"
+                title={$t('video')}
                 className="mw-100 mt-2 mb-2 mr-4"
               />
             </Grid>
@@ -106,7 +107,7 @@ const TutorialPanel = ({ tutorial, customLink }: Props) => {
       <Divider className="mt-3 mb-3" />
       <Stack spacing={2} direction="row">
         {tutorial.canSkip && (
-          <Button variant="text" className={classes.skipButton} onClick={onSkip}>Skip</Button>
+          <Button variant="text" className={classes.skipButton} onClick={onSkip}>{$t('skip')}</Button>
         )}
         <div className="flex-fill" />
         <Button 
@@ -119,7 +120,7 @@ const TutorialPanel = ({ tutorial, customLink }: Props) => {
             />
           )}
         >
-          Let’s do it
+          {$t('lets_do_it')}
         </Button>
       </Stack>
     </div>

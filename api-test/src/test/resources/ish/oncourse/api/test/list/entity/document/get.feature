@@ -34,7 +34,7 @@ Feature: Main feature for all GET requests with path 'list/entity/document'
             "fileName":"defaultPrivateDocument.txt",
             "mimeType":"text/plain",
             "size":"22 b",
-            "url":null,
+            "url":"#string",
             "thumbnail":null,
             "content":null,
             "current":true
@@ -68,7 +68,7 @@ Feature: Main feature for all GET requests with path 'list/entity/document'
             "fileName":"defaultPublicDocument.txt",
             "mimeType":"text/plain",
             "size":"21 b",
-            "url":null,
+            "url":"#string",
             "thumbnail":null,
             "content":null,
             "current":true

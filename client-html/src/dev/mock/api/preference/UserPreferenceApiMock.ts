@@ -12,5 +12,5 @@ export function UserPreferenceApiMock() {
 
   this.api.onPut("/v1/user/preference").reply(config => promiseResolve(config, {}));
 
-  this.api.onGet("/v1/preference/currency").reply(config => promiseResolve(config, this.db.currency));
+  this.api.onGet("/v1/preference/location").reply(config => promiseResolve(config, this.db.location));
 }

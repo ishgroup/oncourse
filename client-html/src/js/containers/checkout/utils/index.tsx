@@ -191,7 +191,8 @@ export const getCheckoutModelMembershipsValidTo = async (model: CheckoutModel) =
 };
 
 export const getCheckoutModel = (
-  appState: State
+  appState: State,
+  pricesOnly?: boolean
 ): CheckoutModel => {
   const { summary, payment } = appState.checkout;
 
@@ -228,7 +229,7 @@ export const getCheckoutModel = (
     payForThisInvoice = summary.finalTotal;
   }
 
-  if (payForThisInvoice < 0 || paymentPlansTotal >= summary.finalTotal) {
+  if (pricesOnly || payForThisInvoice < 0 || paymentPlansTotal >= summary.finalTotal) {
     payForThisInvoice = 0;
   }
 
@@ -242,7 +243,7 @@ export const getCheckoutModel = (
     ? absCredit
     : decimalMinus(absCredit, decimalMinus(absCredit, totalIncOwingExVouchers));
 
-  const previousInvoices = [...summary.previousOwing.invoices, ...summary.previousCredit.invoices]
+  const previousInvoices = pricesOnly ? {} : [...summary.previousOwing.invoices, ...summary.previousCredit.invoices]
     .filter(i => i.checked)
     .reduce((p, c) => {
       const amount = c.amountOwing;
@@ -276,7 +277,7 @@ export const getCheckoutModel = (
 
   const paymentType = payment.availablePaymentTypes.find(t => t.name === payment.selectedPaymentType);
 
-  const redeemedVouchers = summary.vouchers.reduce((p, v) => {
+  const redeemedVouchers = pricesOnly ? {} : summary.vouchers.reduce((p, v) => {
     p[v.id] = v.appliedValue;
     return p;
   }, {});
@@ -284,11 +285,11 @@ export const getCheckoutModel = (
   return {
     payerId: payerItem ? payerItem.contact.id : null,
 
-    paymentMethodId: paymentType
+    paymentMethodId: paymentType && !pricesOnly
       ? paymentType.id
       : null,
 
-    payNow: summary.payNowTotal,
+    payNow: pricesOnly ? 0 : summary.payNowTotal,
 
     paymentDate: summary.paymentDate,
 
@@ -335,7 +336,7 @@ export const getCheckoutModel = (
 
     allowAutoPay: summary.allowAutoPay,
 
-    payWithSavedCard: payment.selectedPaymentType === "Saved credit card",
+    payWithSavedCard: pricesOnly ? false : payment.selectedPaymentType === "Saved credit card",
 
     payForThisInvoice,
 
@@ -406,7 +407,7 @@ const getInvoiceLinePrices = (item: CheckoutItem, lines: AbstractInvoiceLine[], 
   };
 
   const validTo = item.type === "membership" ? {
-    validTo: lines[0]?.membership?.validTo
+    validTo: targetLine?.membership?.validTo
   } : {};
 
   return {

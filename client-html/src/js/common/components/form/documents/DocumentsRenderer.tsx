@@ -8,6 +8,7 @@ import Launch from '@mui/icons-material/Launch';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { AddButton, AppTheme, openInternalLink, ShowConfirmCaller } from 'ish-ui';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -329,7 +330,7 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
           </IconButton>
           <AddButton size="small" onClick={e => this.toggleAdd(e, true)} className={classes.addButton}/>
           <Typography variant="caption" className={`relative ${classes.dropInfo}`}>
-            Drag and drop file or click to browse.
+            {$t('drag_and_drop_file_or_click_to_browse')}
           </Typography>
         </div>
       </Grid>

@@ -3,30 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Cart, ConcessionType, Contact, ContactRelationType, PaymentMethod, StudentConcession, Tax } from "@api/model";
-import Lock from "@mui/icons-material/Lock";
-import LockOpen from "@mui/icons-material/LockOpen";
-import { Alert, Divider, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { openInternalLink } from "ish-ui";
-import React, { useCallback, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { arrayInsert, arrayRemove, change, FieldArray } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { AccessState } from "../../../../common/reducers/accessReducer";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { State } from "../../../../reducers/state";
-import { ContactsState } from "../reducers";
-import { getContactFullName } from "../utils";
-import { ConcessionsContent, ConcessionsHeader } from "./ConcessionsLines";
-import { MembershipContent, MembershipHeader } from "./MembershipLines";
-import { RelationsContent, RelationsHeader } from "./RelationsLines";
+import { Cart, ConcessionType, Contact, ContactRelationType, PaymentMethod, StudentConcession, Tax } from '@api/model';
+import Lock from '@mui/icons-material/Lock';
+import LockOpen from '@mui/icons-material/LockOpen';
+import { Alert, Button, Divider, Grid, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import $t from '@t';
+import { openInternalLink } from 'ish-ui';
+import React, { useCallback, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { arrayInsert, arrayRemove, change, FieldArray } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import MinifiedEntitiesList from '../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList';
+import ExpandableContainer from '../../../../common/components/layout/expandable/ExpandableContainer';
+import NestedTable from '../../../../common/components/list-view/components/list/ReactTableNestedList';
+import { AccessState } from '../../../../common/reducers/accessReducer';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { NestedTableColumn } from '../../../../model/common/NestedTable';
+import { State } from '../../../../reducers/state';
+import { ContactsState } from '../reducers';
+import { getContactFullName } from '../utils';
+import { ConcessionsContent, ConcessionsHeader } from './ConcessionsLines';
+import { MembershipContent, MembershipHeader } from './MembershipLines';
+import { RelationsContent, RelationsHeader } from './RelationsLines';
 
 interface ContactsFinancialProps extends EditViewProps<Contact> {
   taxTypes?: Tax[];
@@ -280,7 +279,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
             <FormField
               type="number"
               name="invoiceTerms"
-              label="Invoice terms (days)"
+              label={$t('invoice_terms_days')}
               defaultValue={defaultTerms}
               disabled={lockedTerms}
               labelAdornment={(
@@ -297,9 +296,9 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
             <FormField
               type="select"
               name="taxId"
-              label="Tax type"
+              label={$t('tax_type')}
               items={getFormattedTaxes(taxTypes) || []}
-              placeholder="Not set"
+              placeholder={$t('not_set')}
             />
           </Grid>
           {paymentInPermissions && storedCard && !values.removeCChistory
@@ -308,11 +307,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               <Alert severity="info">
                 <Typography variant="body2">
                   <div>
-                    A credit card was collected on
-                    {' '}
-                    {storedCard.created}
-                    {' '}
-                    and is securely stored for this user.
+                    {$t('a_credit_card_was_collected_on_and_is_securely_sto',[storedCard.created])}
                   </div>
                   <div className="centeredFlex">
                     {storedCard.creditCardType}
@@ -324,7 +319,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
                       variant="text"
                       className="errorColor ml-2"
                     >
-                      delete
+                      {$t('delete')}
                     </Button>
                   </div>
                 </Typography>
