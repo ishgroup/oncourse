@@ -1843,3 +1843,23 @@
   category: 
   sortOn: ""
   isVisible: true
+
+- name: "Enrolments Summary"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.Enrolment.enrolmentSummary"
+  report: "Enrolment/EnrolmentSummaryReport.jrxml"
+  short:
+  description: "Print enrolment summary report with statistic for months."
+  category:
+  sortOn: ""
+  isVisible: false
+
+- name: "Enrolments Summary Subreport"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.Enrolment.summary.subreport"
+  report: "Enrolment/subreports/EnrolmentSummarySubreport.jrxml"
+  short:
+  description: ""
+  category:
+  sortOn: ""
+  isVisible: false

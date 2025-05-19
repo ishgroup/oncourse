@@ -35,7 +35,7 @@ Feature: Re-usable feature to get Document with access rights
             "fileName":"defaultPrivateDocument.txt",
             "mimeType":"text/plain",
             "size":"22 b",
-            "url":null,
+            "url":"#string",
             "thumbnail":null,
             "content":null,
             "current":true
@@ -45,4 +45,3 @@ Feature: Re-usable feature to get Document with access rights
         "shared":true
         }
         """
-

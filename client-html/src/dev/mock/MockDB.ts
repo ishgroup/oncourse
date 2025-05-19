@@ -13,7 +13,6 @@ import {
   PaymentType,
   Tax,
   UserPreference,
-  Currency,
   ColumnWidth,
   WaitingList,
   Country,
@@ -22,8 +21,8 @@ import {
   ImportModel,
   EntityRelationType,
   Language,
-  GradingType
-} from "@api/model";
+  GradingType, Location
+} from '@api/model';
 import { mockPreferences } from "./data/preferences";
 import { mockIntegrations } from "./data/integrations";
 import { mockDataCollectionForms } from "./data/dataCollectionForms";
@@ -51,7 +50,7 @@ import { mockSites } from "./data/entities/sites";
 import { mockRooms } from "./data/entities/rooms";
 import { mockCourseClasses } from "./data/entities/courseClasses";
 import { mockTimetable } from "./data/timetable";
-import { mockCurrency } from "./data/currency";
+import { mockLocation } from "./data/location";
 import { mockColumnsSettings } from "./data/columns";
 import { mockTimezones } from "./data/timezones";
 import { mockCountries } from "./data/countries";
@@ -152,8 +151,6 @@ export class MockDB {
 
   dashboard: any;
 
-  currency: Currency;
-
   columnsSettings: ColumnWidth;
 
   timezones: string[];
@@ -225,6 +222,8 @@ export class MockDB {
   accessApi: PermissionResponse;
 
   notes: any;
+
+  location: Location;
 
   languages: Language[];
 
@@ -299,8 +298,8 @@ export class MockDB {
     this.tags = mockTags.call(this);
     this.accessApi = mockAccessApi.call(this);
 
-    // Currency
-    this.currency = mockCurrency.call(this);
+    // Location
+    this.location = mockLocation.call(this);
 
     // Dashboard
     this.dashboard = mockDashboard.call(this);

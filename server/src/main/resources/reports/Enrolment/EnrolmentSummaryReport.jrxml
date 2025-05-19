@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright ish group pty ltd 2025.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+  ~
+  ~  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+  -->
+
+<jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://jasperreports.sourceforge.net/jasperreports" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ApplicationListReport" language="groovy" pageWidth="842" pageHeight="540" columnWidth="780" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="b653b9be-4702-4dc2-89f2-d7fd1c8ed5cd">
+  <property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
+  <style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
+    <paragraph spacingAfter="8"/>
+  </style>
+  <style name="header 1" style="default" forecolor="#4F0018" vTextAlign="Middle" fontName="Open Sans Light" fontSize="18" pdfFontName="Open Sans Light"/>
+  <style name="header 2" style="header 1" fontSize="12"/>
+  <style name="header 3" style="default" vTextAlign="Middle" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+  <style name="header 3 (right)" style="header 3" hTextAlign="Right"/>
+  <style name="Label" style="default" forecolor="#6A7E99"/>
+  <style name="Label right" style="Label" hTextAlign="Right"/>
+  <style name="data field" style="default"/>
+  <style name="data field (money)" style="data field" hTextAlign="Right" pattern="¤#,###,##0.00;¤(-#,###,##0.00)"/>
+  <style name="data field (numeric)" style="data field" hTextAlign="Right"/>
+  <style name="data field (datetime)" style="data field" pattern="d MMM yyyy h:mma"/>
+  <style name="data field (day)" style="data field" pattern="E d MMM h:mma"/>
+  <style name="data field (date)" style="data field" pattern="d MMM yyyy"/>
+  <style name="Footer" style="default" forecolor="#737373" fontSize="8"/>
+  <style name="Footer strong" style="Footer" fontName="Open Sans Semibold" pdfFontName="Open Sans Semibold"/>
+  <style name="subHead box" style="default" backcolor="#E6E7F0"/>
+  <parameter name="ReportName" class="java.lang.String"/>
+  <field name="image.poweredby" class="java.io.InputStream"/>
+  <field name="datasource.entitiesToPrint" class="net.sf.jasperreports.engine.JRDataSource"/>
+  <field name="subreport.ish.onCourse.Enrolment.summary.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
+
+
+  <background>
+    <band splitType="Stretch"/>
+  </background>
+  <title>
+    <band height="82" splitType="Stretch">
+      <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+      <textField isBlankWhenNull="true" bookmarkLevel="1">
+        <reportElement key="textField" style="header 1" x="0" y="55" width="538" height="26" uuid="ba49086b-266b-457e-a4ef-8fac1e0193a7"/>
+        <textFieldExpression><![CDATA[$P{ReportName}]]></textFieldExpression>
+        <anchorNameExpression><![CDATA["Title"]]></anchorNameExpression>
+      </textField>
+    </band>
+  </title>
+
+  <columnHeader>
+    <band splitType="Stretch"/>
+  </columnHeader>
+  <detail>
+    <band height="23" splitType="Stretch">
+      <subreport isUsingCache="true">
+        <reportElement key="subreport-2" style="Footer" mode="Transparent" x="1" y="2" width="785" height="16" isRemoveLineWhenBlank="true" uuid="61b3970f-132d-420c-a3e5-10b18e648f6e">
+        </reportElement>
+        <dataSourceExpression><![CDATA[$F{datasource.entitiesToPrint}]]></dataSourceExpression>
+        <subreportExpression><![CDATA[$F{subreport.ish.onCourse.Enrolment.summary.subreport}]]></subreportExpression>
+      </subreport>
+    </band>
+  </detail>
+
+  <columnFooter>
+    <band splitType="Stretch"/>
+  </columnFooter>
+  <pageFooter>
+    <band height="25" splitType="Stretch">
+      <textField evaluationTime="Page" isBlankWhenNull="false">
+        <reportElement key="pageNumberFooter" style="Footer strong" x="0" y="0" width="300" height="15" uuid="1106d334-b156-4af7-a64d-a75ba7206e2c"/>
+        <textFieldExpression><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+      </textField>
+      <textField evaluationTime="Report" isBlankWhenNull="false">
+        <reportElement key="totalPageCountFooter" style="Footer" x="0" y="11" width="300" height="13" uuid="d3e402c5-a433-4f08-90db-5c66216e08f3"/>
+        <textFieldExpression><![CDATA[$V{REPORT_COUNT} + " record" + ($V{REPORT_COUNT}>1 ? "s" : "") + " on " + $V{PAGE_NUMBER} + " page" + ($V{PAGE_NUMBER}>1 ? "s" : "") + " (printed " + new Date().format("E d MMM yyyy h:mma") + ")"]]></textFieldExpression>
+      </textField>
+      <image scaleImage="RetainShape" hAlign="Right" isUsingCache="true" onErrorType="Blank">
+        <reportElement key="oncourseLogo" style="Footer" x="472" y="17" width="67" height="7" uuid="2863530e-11e5-4c1e-8296-ae64db1a9926"/>
+        <imageExpression><![CDATA[$F{image.poweredby}]]></imageExpression>
+      </image>
+    </band>
+  </pageFooter>
+</jasperReport>

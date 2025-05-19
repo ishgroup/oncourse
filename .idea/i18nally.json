@@ -7,7 +7,7 @@
     "sink" : {
       "id" : "8600a6ed-3257-49db-b23c-2547e5a124eb",
       "type" : "singleFile",
-      "pathToFile" : "$PROJECT_DIR$/client-html/translate/translation.json",
+      "pathToFile" : "$PROJECT_DIR$/client-html/translate/translation_AU.json",
       "fileType" : "json",
       "nestingType" : "DISABLED",
       "placeholderFormatterName" : "I18NEXT"
@@ -36,7 +36,7 @@
     } ]
   } ],
   "ignores" : {
-    "valuesInProject" : [ "use strict" ],
+    "valuesInProject" : [ "use strict", "Discount" ],
     "valuesInFile" : { },
     "filesInProject" : [ ],
     "unignoredFunctionNames" : [ ],
