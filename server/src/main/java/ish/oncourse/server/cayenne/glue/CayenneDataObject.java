@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne.glue;
 
+import ish.math.Money;
 import ish.oncourse.GoogleGuiceInjector;
 import ish.oncourse.cayenne.PersistentObjectI;
 import ish.util.MapsUtil;
@@ -558,5 +559,15 @@ public abstract class CayenneDataObject extends org.apache.cayenne.CayenneDataOb
 			return readProperty("name").toString();
 		else
 			return ID + ' ' + getPrimaryKeyValue();
+	}
+
+
+	@Override
+	public Object readProperty(String propertyName) {
+		var object = super.readProperty(propertyName);
+		if(object instanceof Money)
+			return Money.of(((Money)object).toBigDecimal());
+
+		return object;
 	}
 }
