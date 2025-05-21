@@ -17,6 +17,7 @@ import {
   appendTimezone,
   D_MMM,
   decimalMinus,
+  decimalMul,
   decimalPlus,
   formatCurrency,
   makeAppStyles,
@@ -32,13 +33,14 @@ import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
 import EntityService from '../../../../common/services/EntityService';
 import { getCustomColumnsMap } from '../../../../common/utils/common';
-import { getCurrentTax, useAppSelector } from '../../../../common/utils/hooks';
+import { useAppSelector } from '../../../../common/utils/hooks';
 import { getLabelWithCount } from '../../../../common/utils/strings';
 import history from '../../../../constants/History';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from '../../../../model/entities/CourseClass';
 import { State } from '../../../../reducers/state';
 import { getRoundingByType } from '../../discounts/utils';
+import { getCurrentTax } from '../../taxes/utils';
 import { setCourseClassBudgetModalOpened, setCourseClassLatestSession } from '../actions';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../constants';
 import { getClassCostTypes } from '../utils';
@@ -202,7 +204,7 @@ const useBudgetAdornmentStyles = makeAppStyles()(theme => ({
 }));
 
 const getDiscountedFee = (discount, currentTax, classFee) => {
-  const taxOnDiscount = new Decimal(discount.courseClassDiscount.discountOverride || discount.perUnitAmountExTax || 0).mul(currentTax.rate);
+  const taxOnDiscount = decimalMul(discount.courseClassDiscount.discountOverride || discount.perUnitAmountExTax || 0, currentTax.rate);
 
   let decimal = new Decimal(classFee).minus(discount.perUnitAmountExTax || 0).minus(taxOnDiscount);
   

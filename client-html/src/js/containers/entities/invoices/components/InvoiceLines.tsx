@@ -34,7 +34,7 @@ import { calculateInvoiceLineTotal } from '../utils';
 const calculateInvoiceLineTaxEach = (priceEachExTax: number, discountEachExTax: number, taxRate: number) => new Decimal(priceEachExTax || 0)
     .minus(discountEachExTax || 0)
     .mul(taxRate)
-    .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
+    .toDecimalPlaces(2)
     .toNumber();
 
 const calculateInvoiceLineTaxAndPrice = (
@@ -47,7 +47,7 @@ const calculateInvoiceLineTaxAndPrice = (
     new Decimal(total || 0)
       .div(quantity || 1)
       .div(new Decimal(taxRate).plus(1))
-      .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
+      .toDecimalPlaces(2)
   );
 
   return [
@@ -56,7 +56,7 @@ const calculateInvoiceLineTaxAndPrice = (
       .div(quantity || 1)
       .plus(discountEachExTax || 0)
       .minus(taxEach)
-      .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
+      .toDecimalPlaces(2)
       .toNumber()
   ];
 };
@@ -188,7 +188,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
   ), [row.id, row.priceEachExTax, row.discountEachExTax, row.taxEach, row.quantity, currency.shortCurrencySymbol]);
 
   const taxDisplayedAmount = useMemo(
-    () => new Decimal(row.taxEach).mul(row.quantity || 1).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN).toNumber(),
+    () => new Decimal(row.taxEach).mul(row.quantity || 1).toDecimalPlaces(2).toNumber(),
     [row.taxEach, row.quantity]
   );
 
