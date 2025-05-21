@@ -81,7 +81,7 @@
     "d3": "v3",
     "decimal.js-light": "2.*",
     "eslint-import-resolver-webpack": "0.*",
-    "ish-ui": "^1.2.5",
+    "ish-ui": "^1.1.4",
     "lodash.debounce": "4.*",
     "lodash.isempty": "4.*",
     "lodash.isequal": "4.*",

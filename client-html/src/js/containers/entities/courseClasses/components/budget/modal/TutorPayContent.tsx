@@ -12,6 +12,7 @@ import $t from '@t';
 import { Decimal } from 'decimal.js-light';
 import {
   decimalMinus,
+  decimalMul,
   formatCurrency,
   formatFieldPercent,
   normalizeNumberToZero,
@@ -24,7 +25,6 @@ import { change } from 'redux-form';
 import { ContactLinkAdornment } from '../../../../../../common/components/form/formFields/FieldAdornments';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
-import { getTotalByFeeExTax } from '../../../../../../common/utils/financial';
 import { greaterThanNullValidation, validateSingleMandatoryField } from '../../../../../../common/utils/validation';
 import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
 import { DefinedTutorRoleExtended } from '../../../../../../model/preferences/TutorRole';
@@ -91,7 +91,7 @@ const TutorPayContent: React.FC<Props> = ({
   const budgetedCostLabel = useMemo(() => formatCurrency(budgetedCost, currencySymbol), [budgetedCost, currencySymbol]);
 
   const budgetedIncOnCost = useMemo(
-    () => getTotalByFeeExTax(values.onCostRate === 0 ? 0 : values.onCostRate || defaultOnCostRate, budgetedCost),
+    () => decimalMul(budgetedCost, new Decimal(values.onCostRate === 0 ? 0 : values.onCostRate || defaultOnCostRate || 0).plus(1).toNumber()),
     [budgetedCost, values.onCostRate, defaultOnCostRate]
   );
 
