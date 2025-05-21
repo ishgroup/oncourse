@@ -121,6 +121,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
         || values.courseIdMustEnrol
         || values.minEnrolmentsForAnyCourses
         || values.studentPostcode
+        || values.studentEmail
         || values.limitPreviousEnrolment
         || values.studentEnrolledWithinDays
         || (values.discountMemberships && values.discountMemberships.length > 0)
