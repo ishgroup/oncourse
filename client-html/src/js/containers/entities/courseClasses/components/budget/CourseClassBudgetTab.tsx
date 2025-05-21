@@ -467,7 +467,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                 const isPersent = d.value.courseClassDiscount.discount.discountType === "Percent";
                 const isFeeOverride = d.value.courseClassDiscount.discount.discountType === "Fee override";
 
-                const taxMul = new Decimal(1).mul(currentTax.rate === 0 ? 1 : currentTax.rate);
+                const taxMul = new Decimal(1).mul(currentTax.rate);
 
                 if ((isPersent || isFeeOverride) && d.value.courseClassDiscount.discountOverride === null) {
                   const discountValue = new Decimal(feeWithTax)
