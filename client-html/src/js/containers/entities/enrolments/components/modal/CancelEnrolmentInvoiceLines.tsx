@@ -17,13 +17,13 @@ import { accountLabelCondition } from '../../../accounts/utils';
 const FORM: string = "CANCEL_ENROLMENT_FORM";
 const CANCEL_FEE_AMOUNT_WARNING_MESSAGE = "The cancellation fee is greater than the fee paid";
 
-const roundCancellationFeeExTax = val => val && new Decimal(val || 0).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN).toNumber();
+const roundCancellationFeeExTax = val => val && new Decimal(val || 0).toDecimalPlaces(2).toNumber();
 
 const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => {
   const cancellationFee = new Decimal(cancellationFeeExTax || 0);
   return cancellationFee
     .mul(taxRate)
-    .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
+    .toDecimalPlaces(2)
     .plus(cancellationFee)
     .toNumber();
 };
