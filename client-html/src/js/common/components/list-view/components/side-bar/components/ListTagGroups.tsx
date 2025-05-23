@@ -1,5 +1,5 @@
 import { DataResponse, TableModel } from '@api/model';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd-next';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -64,19 +64,16 @@ const ListTagGroups = ({
     setTagsForRender(filteredSortedTags.concat(filteredTags));
   }, [records, tags]);
   
-  const updateActive = useCallback(
-    (updated: FormMenuTag) => {
-      const updatedTags = tags.map(t => {
-        if (t.tagBody.id === updated.tagBody.id && t.prefix === updated.prefix) {
-          return updated;
-        }
+  const updateActive = (updated: FormMenuTag) => {
+    const updatedTags = tags.map(t => {
+      if (t.tagBody.id === updated.tagBody.id && t.prefix === updated.prefix) {
+        return updated;
+      }
 
-        return t;
-      });
-      onChangeTagGroups(updatedTags, "tags");
-    },
-    [tags]
-  );
+      return t;
+    });
+    onChangeTagGroups(updatedTags, "tags");
+  };
 
   const onDragEnd = result => {
     if (!result.destination || result.destination.index === result.source.index) {
