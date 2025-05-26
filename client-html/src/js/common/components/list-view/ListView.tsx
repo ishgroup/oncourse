@@ -195,6 +195,7 @@ interface Props {
 interface ComponentState {
   showExportDrawer: boolean;
   showBulkEditDrawer: boolean;
+  filtersSynchronized: boolean;
   querySearch: boolean;
   deleteEnabled: boolean;
   threeColumn: boolean;
@@ -286,7 +287,8 @@ function ListView(props: ListCompProps) {
     clearListState,
     findRelatedByFilter,
     scriptsFilterColumn,
-    customTableModel
+    customTableModel,
+    userAQLSearch
   } = props;
 
   const containerNode = useRef(null);
@@ -295,8 +297,6 @@ function ListView(props: ListCompProps) {
 
   const ignoreCheckDirtyOnSelection = useRef<boolean>(true);
 
-  const filtersSynchronized = useRef<boolean>(false);
-
   const getMainContentWidth = (mainContentWidth, sidebarWidth) =>
     (mainContentWidth ? Number(mainContentWidth) : window.screen.width - sidebarWidth - 368);
 
@@ -304,6 +304,7 @@ function ListView(props: ListCompProps) {
     {
       showExportDrawer: false,
       showBulkEditDrawer: false,
+      filtersSynchronized: false,
       querySearch: false,
       deleteEnabled: !props.defaultDeleteDisabled,
       threeColumn: false,
@@ -321,7 +322,6 @@ function ListView(props: ListCompProps) {
   };
 
   const updateHistory = (pathname, search) => {
-    debugger;
     const newUrl = window.location.origin + pathname + search;
 
     if (newUrl !== window.location.href) {
@@ -351,7 +351,6 @@ function ListView(props: ListCompProps) {
   };
 
   const onSelection = newSelection => {
-    console.log('!!!!!', newSelection, selection);
     if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
       return;
     }
@@ -447,12 +446,6 @@ function ListView(props: ListCompProps) {
     getListViewPreferences();
 
     if (location.search) {
-      filterGroupsInitial.forEach(g => {
-        g.filters.forEach(f => {
-          f.active = false;
-        });
-      });
-
       const searchParams = new URLSearchParams(location.search);
       const openShare = searchParams.has("openShare");
 
@@ -492,7 +485,7 @@ function ListView(props: ListCompProps) {
     return searchParam.getAll("search")[0];
   };
 
-  const onChangeFilters = (filters: FilterGroup[] | FormMenuTag[], type: string) => {
+  const onChangeFilters = (filters: FilterGroup[] | FormMenuTag[], type: 'filters' | 'tags' | 'checkedChecklists' | 'uncheckedChecklists') => {
     const searchParams = new URLSearchParams(location.search);
 
     if (type === "filters") {
@@ -524,15 +517,20 @@ function ListView(props: ListCompProps) {
   };
 
   const synchronizeAllFilters = () => {
+    const searchParams = new URLSearchParams(location.search);
     const targetFilters = filterGroups.length ? [...filterGroupsInitial, ...filterGroups] : filterGroupsInitial || [];
 
-    if (search) {
-      const searchParams = new URLSearchParams(search);
-
-      const urlSearch = getUrlSearch(searchParams);
+    if (searchParams.size) {
+      const listSearchString = getUrlSearch(searchParams);
       const tagsSearch = searchParams.get("tags");
+      const filtersSearch = searchParams.get("filter");
       const checkedChecklistsUrlString = searchParams.get("checkedChecklists");
       const uncheckedChecklistsUrlString = searchParams.get("uncheckedChecklists");
+
+      onChangeFilters(
+        setActiveFiltersBySearch(filtersSearch, targetFilters),
+        "filters"
+      );
 
       // Sync tags by search
       if (tagsSearch && menuTags) {
@@ -554,24 +552,23 @@ function ListView(props: ListCompProps) {
       if (uncheckedChecklistsUrlString && uncheckedChecklists) {
         const ids = uncheckedChecklistsUrlString
           .split(",")
-          .map(f => Number(f));
+          .map(f =>   Number(f));
         onChangeFilters(getTagsUpdatedByIds(uncheckedChecklists, ids), "uncheckedChecklists");
       }
 
-      if (urlSearch) {
-        setListUserAQLSearch(`${urlSearch} `);
-        onSearch(urlSearch);
-      } else {
-        onSearch("");
+      if (listSearchString) {
+        setListUserAQLSearch(`${listSearchString} `);
       }
-    } else {
-      if (targetFilters) {
-        onChangeFilters(targetFilters, "filters");
-      }
-      onSearch("");
+    } else if (targetFilters) {
+      onChangeFilters(
+        targetFilters,
+        "filters"
+      );
     }
 
-    filtersSynchronized.current = true;
+    setState({
+      filtersSynchronized: true
+    });
   };
 
   const onGetEditRecord = id => {
@@ -622,13 +619,22 @@ function ListView(props: ListCompProps) {
   };
 
   useEffect(() => {
-    if (!filtersSynchronized.current && filterGroupsLoaded && (noListTags || menuTagsLoaded)) {
+    if (state.filtersSynchronized) {
+      onSearch(userAQLSearch);
+    }
+  }, [
+    state.filtersSynchronized
+  ]);
+
+  useEffect(() => {
+    if (!state.filtersSynchronized && filterGroupsLoaded && (noListTags || menuTagsLoaded)) {
       synchronizeAllFilters();
     }
   }, [
     filterGroupsLoaded,
     menuTagsLoaded,
-    noListTags
+    noListTags,
+    state.filtersSynchronized
   ]);
 
   useEffect(() => {
@@ -731,21 +737,22 @@ function ListView(props: ListCompProps) {
   const prevSearch = usePrevious(search);
 
   useEffect(() => {
-    const currentUrlSearch = new URLSearchParams(location.search);
-    if (search) {
-      currentUrlSearch.set("search", encodeURIComponent(search));
-    } else {
-      currentUrlSearch.delete("search");
-    }
-    const resultErlSearchString = decodeURIComponent(currentUrlSearch.toString());
-    updateHistory(url, resultErlSearchString ? "?" + resultErlSearchString : "" );
-
-
-    if (prevSearch !== search) {
+    if (state.filtersSynchronized && prevSearch !== search) {
+      const currentUrlSearch = new URLSearchParams(location.search);
       const prevUrlSearch = new URLSearchParams(prevSearch);
       const filtersUrlString = currentUrlSearch.get("filter");
       const tagsUrlString = currentUrlSearch.get("tags");
 
+      // Update AQL search by url
+      if (search) {
+        currentUrlSearch.set("search", encodeURIComponent(search));
+      } else {
+        currentUrlSearch.delete("search");
+      }
+      const resultUrlSearchString = decodeURIComponent(currentUrlSearch.toString());
+      updateHistory(url, resultUrlSearchString ? "?" + resultUrlSearchString : "" );
+
+      // Update filters by url
       if (prevUrlSearch.get("filter") !== filtersUrlString) {
         const filtersString = getFiltersNameString(filterGroups);
         if (filtersString !== filtersUrlString) {
@@ -770,7 +777,7 @@ function ListView(props: ListCompProps) {
   const prevFilterGroups = usePrevious(filterGroups);
 
   useEffect(() => {
-    if (!fetch.pending && ((prevMenuTags.length && prevMenuTags !== menuTags)
+    if (state.filtersSynchronized && !fetch.pending && ((prevMenuTags.length && prevMenuTags !== menuTags)
       || (prevFilterGroups.length && prevFilterGroups !== filterGroups)
     )) {
       onQuerySearchChange(records.search);
@@ -779,7 +786,8 @@ function ListView(props: ListCompProps) {
     menuTags,
     filterGroups,
     fetch.pending,
-    records.search
+    records.search,
+    state.filtersSynchronized
   ]);
 
   useEffect(() => {
