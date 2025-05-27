@@ -18,9 +18,10 @@ import {
   NoArgFunction,
   ResizableWrapper,
   ShowConfirmCaller,
-  StringArgFunction
+  StringArgFunction,
+  usePrevious
 } from 'ish-ui';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -109,9 +110,6 @@ interface OwnProps {
   onDelete?: (id: number) => void;
   getEditRecord?: (id: number) => void;
   onSave?: (item: any) => void;
-  location?: any;
-  history?: any;
-  match?: any;
   classes?: any;
   isDirty?: boolean;
   isInvalid?: boolean;
@@ -152,6 +150,9 @@ interface OwnProps {
 }
 
 interface Props {
+  history: any;
+  location: any;
+  match: any;
   listProps: TableListProps;
   rootEntity: EntityName;
   onBeforeSave?: any;
@@ -184,7 +185,7 @@ interface Props {
   searchMenuItemsRenderer?: ListAqlMenuItemsRenderer;
   customOnCreate?: any;
   customUpdateAction?: any;
-  preformatBeforeSubmit?: AnyArgFunction;
+  preformatBeforeSubmit?: AnyArgFunction<any>;
   deleteDisabledCondition?: (props) => boolean;
   noListTags?: boolean;
   deleteWithoutConfirmation?: boolean;
@@ -194,6 +195,7 @@ interface Props {
 interface ComponentState {
   showExportDrawer: boolean;
   showBulkEditDrawer: boolean;
+  filtersSynchronized: boolean;
   querySearch: boolean;
   deleteEnabled: boolean;
   threeColumn: boolean;
@@ -202,46 +204,238 @@ interface ComponentState {
   newSelection: string[] | null;
 }
 
-class ListView extends React.PureComponent<Props & OwnProps & State["list"] & State["share"], ComponentState> {
-  private containerNode;
+type ListCompProps = Props & OwnProps & State["list"] & State["share"];
 
-  private searchComponentNode: React.RefObject<any>;
+function ListView(props: ListCompProps) {
+  const {
+    onInit,
+    getScripts,
+    getCustomFieldTypes,
+    history,
+    sendGAEvent,
+    rootEntity,
+    setEntity,
+    deleteFilter,
+    match: { url, params },
+    search,
+    location,
+    filterGroupsInitial = [],
+    selection,
+    getListViewPreferences,
+    isDirty,
+    updateSelection,
+    creatingNew,
+    editRecord,
+    setListCreatingNew,
+    resetEditView,
+    updateLayout,
+    closeConfirm,
+    openConfirm,
+    isInvalid,
+    fullScreenEditView,
+    submitForm,
+    alwaysFullScreenCreateView,
+    setListFullScreenEditView,
+    updateTableModel,
+    records,
+    fetch,
+    defaultDeleteDisabled,
+    filterGroups,
+    menuTags,
+    editRecordFetching,
+    setListEditRecordFetching,
+    setListUserAQLSearch,
+    deleteDisabledCondition,
+    menuTagsLoaded,
+    filterGroupsLoaded,
+    noListTags,
+    preferences,
+    checkedChecklists,
+    uncheckedChecklists,
+    customTabTitle,
+    setListviewMainContentWidth,
+    onSearch,
+    setFilterGroups,
+    setListMenuTags,
+    getEditRecord,
+    onBeforeSave,
+    preformatBeforeSubmit,
+    onCreate,
+    deleteWithoutConfirmation,
+    classes,
+    EditViewContent,
+    fetching,
+    findRelated,
+    editViewProps = {},
+    CogwheelAdornment,
+    savingFilter,
+    CustomFindRelatedMenu,
+    ShareContainerAlertComponent,
+    pdfReports,
+    exportTemplates,
+    searchMenuItemsRenderer,
+    createButtonDisabled,
+    searchQuery,
+    getCustomBulkEditFields,
+    filterEntity,
+    emailTemplatesWithKeyCode,
+    scripts,
+    listProps,
+    onLoadMore,
+    currency,
+    dispatch,
+    clearListState,
+    findRelatedByFilter,
+    scriptsFilterColumn,
+    customTableModel,
+    userAQLSearch
+  } = props;
 
-  private ignoreCheckDirtyOnSelection: boolean;
+  const containerNode = useRef(null);
 
-  private filtersSynchronized: boolean = false;
+  const searchComponentNode = useRef(null);
 
-  constructor(props) {
-    super(props);
+  const ignoreCheckDirtyOnSelection = useRef<boolean>(true);
 
-    this.searchComponentNode = React.createRef();
+  const getMainContentWidth = (mainContentWidth, sidebarWidth) =>
+    (mainContentWidth ? Number(mainContentWidth) : window.screen.width - sidebarWidth - 368);
 
-    this.state = {
+  const [state, changeState] = React.useState<ComponentState>(
+    {
       showExportDrawer: false,
       showBulkEditDrawer: false,
+      filtersSynchronized: false,
       querySearch: false,
       deleteEnabled: !props.defaultDeleteDisabled,
       threeColumn: false,
       sidebarWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
-      mainContentWidth: this.getMainContentWidth(LIST_MAIN_CONTENT_DEFAULT_WIDTH, LIST_SIDE_BAR_DEFAULT_WIDTH),
+      mainContentWidth: getMainContentWidth(LIST_MAIN_CONTENT_DEFAULT_WIDTH, LIST_SIDE_BAR_DEFAULT_WIDTH),
       newSelection: null
+    }
+  );
+
+  const setState = (newState: Partial<ComponentState>) => {
+    changeState(prev => ({
+      ...prev,
+      ...newState,
+    }));
+  };
+
+  const updateHistory = (pathname, search) => {
+    const newUrl = window.location.origin + pathname + search;
+
+    if (newUrl !== window.location.href) {
+      history.push({
+        pathname,
+        search
+      });
+    }
+  };
+
+  const toggleFullWidthView = () => {
+    if (alwaysFullScreenCreateView && creatingNew) {
+      resetEditView();
+      updateSelection([]);
+    }
+
+    const fullScreenState = creatingNew ? false : !fullScreenEditView;
+
+    if ((!state.threeColumn || (alwaysFullScreenCreateView && creatingNew)) && !fullScreenState && params.id) {
+      updateHistory(url.replace(`/${params.id}`, ""), location.search);
+      resetEditView();
+    }
+
+    setListFullScreenEditView(fullScreenState);
+
+    setListCreatingNew(false);
+  };
+
+  const onSelection = newSelection => {
+    if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
+      return;
+    }
+
+    if ((isDirty || (creatingNew && selection[0] === "new")) && !ignoreCheckDirtyOnSelection.current) {
+      setState({ newSelection });
+      showConfirm(
+        {
+          onConfirm: () => {
+            ignoreCheckDirtyOnSelection.current = true;
+            onSelection(newSelection);
+            if (isDirty) {
+              resetEditView();
+            }
+          }
+        },
+      );
+      return;
+    }
+
+    if (creatingNew) {
+      setListCreatingNew(false);
+    }
+
+    if (newSelection && !newSelection.length) {
+      updateHistory(params.id ? url.replace(`/${params.id}`, "") : url + "", location.search );
+      resetEditView();
+    }
+
+    if (
+      state.threeColumn
+      && newSelection && newSelection.length
+      && (!editRecord || !editRecord.id || editRecord.id.toString() !== newSelection[0])
+    ) {
+      updateHistory(params.id ? url.replace(`/${params.id}`, `/${newSelection[0]}`) : url + `/${newSelection[0]}`, location.search);
+    }
+
+    if (ignoreCheckDirtyOnSelection.current) {
+      ignoreCheckDirtyOnSelection.current = false;
+    }
+
+    if (newSelection) updateSelection(newSelection);
+  };
+
+  const showConfirm = (props: ConfirmProps) => {
+
+    const afterSubmitButtonHandler = () => {
+      fullScreenEditView ? toggleFullWidthView() : onSelection(state.newSelection);
     };
-  }
 
-  componentDidMount() {
-    const {
-      getScripts,
-      getCustomFieldTypes,
-      history,
-      sendGAEvent,
-      rootEntity,
-      setEntity,
-      match: { url, params },
-      filterGroupsInitial = [],
-      selection,
-      getListViewPreferences
-    } = this.props;
+    const confirmButton = (
+      <Button
+        classes={{
+          root: "saveButtonEditView",
+          disabled: "saveButtonEditViewDisabled"
+        }}
+        disabled={isInvalid}
+        startIcon={isInvalid && <ErrorOutline color="error" />}
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          submitForm();
+          ignoreCheckDirtyOnSelection.current = true;
+          setTimeout(afterSubmitButtonHandler, 1000);
+          closeConfirm();
+        }}
+      >
+        {$t('save')}
+      </Button>
+    );
 
+    if (!props.confirmMessage && !props.cancelButtonText) {
+      openConfirm(
+        {
+          cancelButtonText: "DISCARD CHANGES",
+          confirmCustomComponent: confirmButton,
+          onCancelCustom: props.onConfirm
+        },
+      );
+    } else {
+      openConfirm(props);
+    }
+  };
+
+  useEffect(() => {
     setEntity(rootEntity);
     getCustomFieldTypes(rootEntity);
 
@@ -251,19 +445,13 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
     getScripts();
     getListViewPreferences();
 
-    if (this.props.location.search) {
-      filterGroupsInitial.forEach(g => {
-        g.filters.forEach(f => {
-          f.active = false;
-        });
-      });
-
-      const searchParams = new URLSearchParams(this.props.location.search);
+    if (location.search) {
+      const searchParams = new URLSearchParams(location.search);
       const openShare = searchParams.has("openShare");
 
       if (openShare) {
         setTimeout(() => {
-          this.setState({
+          setState({
             showExportDrawer: true
           });
         }, 1000);
@@ -276,369 +464,29 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
       });
     }
 
-    if (params.id && !selection.includes(params.id)) {
-      this.ignoreCheckDirtyOnSelection = true;
-      this.onSelection([params.id]);
-    }
-  }
+    return () => clearListState();
+  }, []);
 
-  componentDidUpdate(prevProps) {
-    const {
-      records,
-      selection,
-      fetch,
-      sendGAEvent,
-      rootEntity,
-      defaultDeleteDisabled,
-      filterGroups,
-      menuTags,
-      match: { params, url },
-      location,
-      search,
-      fullScreenEditView,
-      editRecord,
-      editRecordFetching,
-      setListEditRecordFetching,
-      creatingNew,
-      resetEditView,
-      setListUserAQLSearch,
-      setListCreatingNew,
-      deleteDisabledCondition,
-      menuTagsLoaded,
-      filterGroupsLoaded,
-      noListTags,
-      preferences,
-      checkedChecklists,
-      uncheckedChecklists,
-      customTabTitle
-    } = this.props;
+  const getUrlSearch = searchParam => {
+    if (searchParam.getAll("customSearch").length) {
+      let customSearch = searchParam.getAll("customSearch")[0];
 
-    const { threeColumn } = this.state;
-
-    if (!this.filtersSynchronized && filterGroupsLoaded && (noListTags || menuTagsLoaded)) {
-      this.synchronizeAllFilters();
-    }
-
-    if (prevProps.selection.length && !selection.length && params.id) {
-      this.updateHistory(url.replace(`/${params.id}`, ""), location.search);
-    }
-
-    if (prevProps.defaultDeleteDisabled !== defaultDeleteDisabled) {
-      this.updateDeleteCondition(!defaultDeleteDisabled);
-    }
-
-    if (records.layout && !prevProps.records.layout) {
-      this.setState({
-        threeColumn: records.layout === "Three column"
-      });
-
-      this.setState({
-        sidebarWidth: records.filterColumnWidth
-      });
-
-      this.setState({
-        mainContentWidth: this.getMainContentWidth(preferences[LISTVIEW_MAIN_CONTENT_WIDTH], records.filterColumnWidth)
-      });
-    }
-
-    if (window.performance.getEntriesByName("ListViewStart").length && prevProps.fetch.pending && !fetch.pending) {
-      window.performance.mark("ListViewEnd");
-      window.performance.measure("ListView", "ListViewStart", "ListViewEnd");
-      sendGAEvent("timing", `${rootEntity}ListView`, window.performance.getEntriesByName("ListView")[0].duration);
-      window.performance.clearMarks("ListViewStart");
-      window.performance.clearMarks("ListViewEnd");
-      window.performance.clearMeasures("ListView");
-    }
-
-    if (!fullScreenEditView && rootEntity) {
-      document.title = `${customTabTitle || getEntityDisplayName(rootEntity)} (${records.filteredCount || 0} found)`;
-      if (records.filteredCount === null) {
-        document.title = `${customTabTitle || getEntityDisplayName(rootEntity)}`;
-      }
-    }
-
-    if (params.id && creatingNew && params.id !== "new") {
-      setListCreatingNew(false);
-    }
-
-    // saving entity id in browser history
-    if (params.id
-      && !editRecordFetching
-      && !creatingNew
-      && (!editRecord
-        || !editRecord.id
-        || editRecord.id.toString() !== params.id)
-        ) {
-      const isNew = params.id === "new";
-
-      if (!isNew) {
-        setListEditRecordFetching();
-        this.onGetEditRecord(params.id);
-
-        if (!threeColumn) {
-          this.toggleFullWidthView();
-        }
-      } else {
-        this.onCreateRecord();
-      }
-    }
-
-    if (prevProps.match.params.id && !params.id) {
-      resetEditView();
-      if (!threeColumn && (fullScreenEditView || creatingNew)) {
-        this.toggleFullWidthView();
-      }
-      if (threeColumn) {
-        this.ignoreCheckDirtyOnSelection = true;
-        this.onSelection([]);
-      }
-    }
-
-    if (prevProps.search !== search) {
-      const currentUrlSearch = new URLSearchParams(location.search);
-      if (search) {
-        currentUrlSearch.set("search", encodeURIComponent(search));
-      } else {
-        currentUrlSearch.delete("search");
-      }
-      const resultErlSearchString = decodeURIComponent(currentUrlSearch.toString());
-      this.updateHistory(url, resultErlSearchString ? "?" + resultErlSearchString : "" );
-    }
-
-    if (prevProps.location.search !== location.search) {
-      const prevUrlSearch = new URLSearchParams(prevProps.location.search);
-      const currentUrlSearch = new URLSearchParams(location.search);
-
-      const filtersUrlString = currentUrlSearch.get("filter");
-      const tagsUrlString = currentUrlSearch.get("tags");
-      const checkedChecklistsUrlString = currentUrlSearch.get("checkedChecklists");
-      const uncheckedChecklistsUrlString = currentUrlSearch.get("uncheckedChecklists");
-      const searchString = currentUrlSearch.get("search");
-
-      if (prevUrlSearch.get("filter") !== filtersUrlString) {
-        const filtersString = getFiltersNameString(filterGroups);
-        if (filtersString !== filtersUrlString) {
-          this.onChangeFilters(setActiveFiltersBySearch(filtersUrlString, filterGroups), "filters");
-        }
-      }
-
-      // Update tags by url
-      if (prevUrlSearch.get("tags") !== tagsUrlString) {
-        const activeString = getActiveTags(menuTags).map(t => t.tagBody.id).toString();
-        if (activeString !== tagsUrlString) {
-          const tagIds = tagsUrlString ? tagsUrlString
-            .split(",")
-            .map(f => Number(f)) : [];
-          this.onChangeFilters(getTagsUpdatedByIds(menuTags, tagIds), "tags");
-        }
-      }
-
-      // Update checked tags by url
-      if (prevUrlSearch.get("checkedChecklists") !== checkedChecklistsUrlString) {
-        const activeString = getActiveTags(checkedChecklists).map(t => t.tagBody.id).toString();
-        if (activeString !== checkedChecklistsUrlString) {
-          const ids = checkedChecklistsUrlString ? checkedChecklistsUrlString
-            .split(",")
-            .map(f => Number(f)) : [];
-          this.onChangeFilters(getTagsUpdatedByIds(checkedChecklists, ids), "checkedChecklists");
-        }
-      }
-
-      // Update tags by url
-      if (prevUrlSearch.get("uncheckedChecklists") !== uncheckedChecklistsUrlString) {
-        const activeString = getActiveTags(uncheckedChecklists).map(t => t.tagBody.id).toString();
-        if (activeString !== uncheckedChecklistsUrlString) {
-          const ids = uncheckedChecklistsUrlString ? uncheckedChecklistsUrlString
-            .split(",")
-            .map(f => Number(f)) : [];
-          this.onChangeFilters(getTagsUpdatedByIds(uncheckedChecklists, ids), "uncheckedChecklists");
-        }
-      }
-
-      // Update filters by url
-      if (prevUrlSearch.get("search") !== searchString) {
-        setListUserAQLSearch(searchString);
-      }
-    }
-
-    if (!fetch.pending && ((prevProps.menuTags.length && prevProps.menuTags !== menuTags)
-      || (prevProps.filterGroups.length && prevProps.filterGroups !== filterGroups)
-    )) {
-      this.onQuerySearchChange(records.search);
-    }
-
-    if (selection.length && selection[0] !== "new" && typeof deleteDisabledCondition === "function") {
-      this.updateDeleteCondition(!deleteDisabledCondition(this.props));
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.clearListState();
-  }
-
-  synchronizeAllFilters = () => {
-    const {
-      setListUserAQLSearch,
-      filterGroupsInitial = [],
-      filterGroups,
-      menuTags,
-      checkedChecklists,
-      uncheckedChecklists,
-      onSearch
-    } = this.props;
-
-    const targetFilters = filterGroups.length ? [...filterGroupsInitial, ...filterGroups] : filterGroupsInitial || [];
-
-    if (this.props.location.search) {
-      const searchParams = new URLSearchParams(this.props.location.search);
-
-      const search = this.getUrlSearch(searchParams);
-      const filtersSearch = searchParams.get("filter");
-      const tagsSearch = searchParams.get("tags");
-      const checkedChecklistsUrlString = searchParams.get("checkedChecklists");
-      const uncheckedChecklistsUrlString = searchParams.get("uncheckedChecklists");
-
-      this.onChangeFilters(filtersSearch ? setActiveFiltersBySearch(filtersSearch, targetFilters) : targetFilters, "filters");
-
-      // Sync tags by search
-      if (tagsSearch && menuTags) {
-        const tagIds = tagsSearch
-          .split(",")
-          .map(f => Number(f));
-        this.onChangeFilters(getTagsUpdatedByIds(menuTags, tagIds), "tags");
-      }
-
-      // Sync checked checklists by search
-      if (checkedChecklistsUrlString && checkedChecklists) {
-        const ids = checkedChecklistsUrlString
-          .split(",")
-          .map(f => Number(f));
-        this.onChangeFilters(getTagsUpdatedByIds(checkedChecklists, ids), "checkedChecklists");
-      }
-
-      // Sync unchecked checklists by search
-      if (uncheckedChecklistsUrlString && uncheckedChecklists) {
-        const ids = uncheckedChecklistsUrlString
-          .split(",")
-          .map(f => Number(f));
-        this.onChangeFilters(getTagsUpdatedByIds(uncheckedChecklists, ids), "uncheckedChecklists");
-      }
-
-      if (search) {
-        setListUserAQLSearch(`${search} `);
-        onSearch(search);
-      } else {
-        onSearch("");
-      }
-    } else {
-      if (targetFilters) {
-        this.onChangeFilters(targetFilters, "filters");
-      }
-      onSearch("");
-    }
-
-    this.filtersSynchronized = true;
-  };
-
-  onGetEditRecord = id => {
-    const { sendGAEvent, getEditRecord, rootEntity } = this.props;
-
-    sendGAEvent("screenview", `${rootEntity}EditView`);
-    window.performance.mark("EditViewStart");
-
-    getEditRecord(id);
-  };
-
-  onQuerySearchChange = searchValue => {
-    const { match: { params, url }, location: { search } } = this.props;
-
-    // reset scroll on records filtering
-    if (this.containerNode) {
-      this.containerNode.scrollTop = 0;
-    }
-
-    const {
-     onSearch, resetEditView
-    } = this.props;
-
-    if (params.id) {
-      this.updateHistory( url.replace(`/${params.id}`, "" ), search);
-    }
-
-    this.onSelection([]);
-
-    onSearch(searchValue);
-
-    resetEditView();
-
-    this.ignoreCheckDirtyOnSelection = true;
-  };
-
-  onSelection = newSelection => {
-    const {
-      isDirty,
-      updateSelection,
-      selection,
-      creatingNew,
-      editRecord,
-      setListCreatingNew,
-      resetEditView,
-      match: { url, params },
-      location: { search }
-    } = this.props;
-
-    if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
-      return;
-    }
-
-    const { threeColumn } = this.state;
-
-    if ((isDirty || (creatingNew && selection[0] === "new")) && !this.ignoreCheckDirtyOnSelection) {
-      this.setState({ newSelection });
-      this.showConfirm(
-        {
-          onConfirm: () => {
-            this.ignoreCheckDirtyOnSelection = true;
-            this.onSelection(newSelection);
-            if (isDirty) {
-              resetEditView();
-            }
+      const entityState = JSON.parse(LSGetItem(ENTITY_AQL_STORAGE_NAME)) as FindEntityState;
+      if (entityState) {
+        for (let i = 0; i < entityState.data.length; i++) {
+          if (entityState.data[i].id === customSearch) {
+            saveCategoryAQLLink({ AQL: "", id: customSearch, action: "remove" });
+            customSearch = entityState.data[i].AQL;
           }
-        },
-        );
-      return;
+        }
+      }
+      return customSearch;
     }
-
-    if (creatingNew) {
-      setListCreatingNew(false);
-    }
-
-    if (newSelection && !newSelection.length) {
-      this.updateHistory(params.id ? url.replace(`/${params.id}`, "") : url + "", search );
-      resetEditView();
-    }
-
-    if (
-      threeColumn
-      && newSelection && newSelection.length
-      && (!editRecord || !editRecord.id || editRecord.id.toString() !== newSelection[0])
-    ) {
-      this.updateHistory(params.id ? url.replace(`/${params.id}`, `/${newSelection[0]}`) : url + `/${newSelection[0]}`, search);
-    }
-
-    if (this.ignoreCheckDirtyOnSelection) {
-      this.ignoreCheckDirtyOnSelection = false;
-    }
-
-    if (newSelection) updateSelection(newSelection);
+    return searchParam.getAll("search")[0];
   };
 
-  onChangeFilters = (filters: FilterGroup[] | FormMenuTag[], type: string) => {
-    const {
-     setFilterGroups, setListMenuTags, location: { search }, match: { url }, menuTags, checkedChecklists, uncheckedChecklists
-    } = this.props;
-
-    const searchParams = new URLSearchParams(search);
+  const onChangeFilters = (filters: FilterGroup[] | FormMenuTag[], type: 'filters' | 'tags' | 'checkedChecklists' | 'uncheckedChecklists') => {
+    const searchParams = new URLSearchParams(location.search);
 
     if (type === "filters") {
       setFilterGroups(filters as FilterGroup[]);
@@ -653,7 +501,7 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
     if (["tags", "checkedChecklists", "uncheckedChecklists"].includes(type)) {
       setListMenuTags({
         tags: menuTags,
-        checkedChecklists, 
+        checkedChecklists,
         uncheckedChecklists,
         ...{ [type]: filters as FormMenuTag[] }
       });
@@ -664,15 +512,309 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
         searchParams.delete(type);
       }
     }
-    const resultErlSearchString = decodeURIComponent(searchParams.toString());
-    this.updateHistory(url, resultErlSearchString ? "?" + resultErlSearchString : "" );
+    const resultUrlSearchString = decodeURIComponent(searchParams.toString());
+    updateHistory(url, resultUrlSearchString ? "?" + resultUrlSearchString : "" );
   };
 
-  onSave = (val, dispatch, formProps) => {
-    const {
-      onCreate, onSave, selection, onBeforeSave, preformatBeforeSubmit, creatingNew, fetch: { pending }
-    } = this.props;
+  const synchronizeAllFilters = () => {
+    const searchParams = new URLSearchParams(location.search);
+    const targetFilters = filterGroups.length ? [...filterGroupsInitial, ...filterGroups] : filterGroupsInitial || [];
 
+    if (searchParams.size) {
+      const listSearchString = getUrlSearch(searchParams);
+      const tagsSearch = searchParams.get("tags");
+      const filtersSearch = searchParams.get("filter");
+      const checkedChecklistsUrlString = searchParams.get("checkedChecklists");
+      const uncheckedChecklistsUrlString = searchParams.get("uncheckedChecklists");
+
+      onChangeFilters(
+        setActiveFiltersBySearch(filtersSearch, targetFilters),
+        "filters"
+      );
+
+      // Sync tags by search
+      if (tagsSearch && menuTags) {
+        const tagIds = tagsSearch
+          .split(",")
+          .map(f => Number(f));
+        onChangeFilters(getTagsUpdatedByIds(menuTags, tagIds), "tags");
+      }
+
+      // Sync checked checklists by search
+      if (checkedChecklistsUrlString && checkedChecklists) {
+        const ids = checkedChecklistsUrlString
+          .split(",")
+          .map(f => Number(f));
+        onChangeFilters(getTagsUpdatedByIds(checkedChecklists, ids), "checkedChecklists");
+      }
+
+      // Sync unchecked checklists by search
+      if (uncheckedChecklistsUrlString && uncheckedChecklists) {
+        const ids = uncheckedChecklistsUrlString
+          .split(",")
+          .map(f =>   Number(f));
+        onChangeFilters(getTagsUpdatedByIds(uncheckedChecklists, ids), "uncheckedChecklists");
+      }
+
+      if (listSearchString) {
+        setListUserAQLSearch(`${listSearchString} `);
+      }
+    } else if (targetFilters) {
+      onChangeFilters(
+        targetFilters,
+        "filters"
+      );
+    }
+
+    setState({
+      filtersSynchronized: true
+    });
+  };
+
+  const onGetEditRecord = id => {
+    sendGAEvent("screenview", `${rootEntity}EditView`);
+    window.performance.mark("EditViewStart");
+    getEditRecord(id);
+  };
+
+  const onCreateRecord = () => {
+    const { onInit, customOnCreate } = props;
+
+    if (customOnCreate) {
+      if (typeof customOnCreate === "function") {
+        customOnCreate(setCreateNew);
+        return;
+      }
+
+      onInit();
+      return;
+    }
+
+    setCreateNew();
+  };
+
+  const onQuerySearchChange = searchValue => {
+    // reset scroll on records filtering
+    if (containerNode.current) {
+      containerNode.current.scrollTop = 0;
+    }
+
+    if (params.id) {
+      updateHistory( url.replace(`/${params.id}`, "" ), search);
+    }
+
+    onSelection([]);
+
+    onSearch(searchValue);
+
+    resetEditView();
+
+    ignoreCheckDirtyOnSelection.current = true;
+  };
+
+  const updateDeleteCondition = val => {
+    setState({
+      deleteEnabled: val
+    });
+  };
+
+  useEffect(() => {
+    if (state.filtersSynchronized) {
+      onSearch(userAQLSearch);
+    }
+  }, [
+    state.filtersSynchronized
+  ]);
+
+  useEffect(() => {
+    if (!state.filtersSynchronized && filterGroupsLoaded && (noListTags || menuTagsLoaded)) {
+      synchronizeAllFilters();
+    }
+  }, [
+    filterGroupsLoaded,
+    menuTagsLoaded,
+    noListTags,
+    state.filtersSynchronized
+  ]);
+
+  useEffect(() => {
+    setState({
+      threeColumn: records.layout === "Three column"
+    });
+  }, [
+    records.layout
+  ]);
+
+  useEffect(() => {
+    setState({
+      sidebarWidth: records.filterColumnWidth,
+      mainContentWidth: getMainContentWidth(preferences[LISTVIEW_MAIN_CONTENT_WIDTH], records.filterColumnWidth)
+    });
+  }, [
+    records.filterColumnWidth
+  ]);
+
+  useEffect(() => {
+    if (window.performance.getEntriesByName("ListViewStart").length && !fetch.pending) {
+      window.performance.mark("ListViewEnd");
+      window.performance.measure("ListView", "ListViewStart", "ListViewEnd");
+      sendGAEvent("timing", `${rootEntity}ListView`, window.performance.getEntriesByName("ListView")[0].duration);
+      window.performance.clearMarks("ListViewStart");
+      window.performance.clearMarks("ListViewEnd");
+      window.performance.clearMeasures("ListView");
+    }
+  }, [
+    fetch.pending
+  ]);
+
+  useEffect(() => {
+    if (!fullScreenEditView && rootEntity) {
+      document.title = `${customTabTitle || getEntityDisplayName(rootEntity)} (${records.filteredCount || 0} found)`;
+      if (records.filteredCount === null) {
+        document.title = `${customTabTitle || getEntityDisplayName(rootEntity)}`;
+      }
+    }
+  }, [
+    fullScreenEditView,
+    records.filteredCount
+  ]);
+
+  useEffect(() => {
+    if (params.id && creatingNew && params.id !== "new") {
+      setListCreatingNew(false);
+    }
+  }, [
+    params.id,
+    creatingNew
+  ]);
+
+  useEffect(() => {
+    if (params.id
+      && !editRecordFetching
+      && !creatingNew
+      && (!editRecord
+        || !editRecord.id
+        || editRecord.id.toString() !== params.id)
+    ) {
+      const isNew = params.id === "new";
+
+      if (!isNew) {
+        setListEditRecordFetching();
+        onGetEditRecord(params.id);
+
+        if (!state.threeColumn) {
+          toggleFullWidthView();
+        }
+      } else {
+        onCreateRecord();
+      }
+    }
+  }, [
+    params.id,
+    editRecord?.id,
+    editRecordFetching,
+    creatingNew,
+  ]);
+
+  useEffect(() => {
+    if (!params.id) {
+      resetEditView();
+      if (!state.threeColumn && (fullScreenEditView || creatingNew)) {
+        toggleFullWidthView();
+      }
+      if (state.threeColumn) {
+        ignoreCheckDirtyOnSelection.current = true;
+        onSelection([]);
+      }
+    }
+  }, [
+    params.id,
+    state.threeColumn,
+    fullScreenEditView,
+    creatingNew
+  ]);
+
+  const prevSearch = usePrevious(search);
+
+  useEffect(() => {
+    if (state.filtersSynchronized && prevSearch !== search) {
+      const currentUrlSearch = new URLSearchParams(location.search);
+      const prevUrlSearch = new URLSearchParams(prevSearch);
+      const filtersUrlString = currentUrlSearch.get("filter");
+      const tagsUrlString = currentUrlSearch.get("tags");
+
+      // Update AQL search by url
+      if (search) {
+        currentUrlSearch.set("search", encodeURIComponent(search));
+      } else {
+        currentUrlSearch.delete("search");
+      }
+      const resultUrlSearchString = decodeURIComponent(currentUrlSearch.toString());
+      updateHistory(url, resultUrlSearchString ? "?" + resultUrlSearchString : "" );
+
+      // Update filters by url
+      if (prevUrlSearch.get("filter") !== filtersUrlString) {
+        const filtersString = getFiltersNameString(filterGroups);
+        if (filtersString !== filtersUrlString) {
+          onChangeFilters(setActiveFiltersBySearch(filtersUrlString, filterGroups), "filters");
+        }
+      }
+
+      // Update tags by url
+      if (prevUrlSearch.get("tags") !== tagsUrlString) {
+        const activeString = getActiveTags(menuTags).map(t => t.tagBody.id).toString();
+        if (activeString !== tagsUrlString) {
+          const tagIds = tagsUrlString ? tagsUrlString
+            .split(",")
+            .map(f => Number(f)) : [];
+          onChangeFilters(getTagsUpdatedByIds(menuTags, tagIds), "tags");
+        }
+      }
+    }
+  }, [search, location.search]);
+
+  const prevMenuTags = usePrevious(menuTags);
+  const prevFilterGroups = usePrevious(filterGroups);
+
+  useEffect(() => {
+    if (state.filtersSynchronized && !fetch.pending && ((prevMenuTags.length && prevMenuTags !== menuTags)
+      || (prevFilterGroups.length && prevFilterGroups !== filterGroups)
+    )) {
+      onQuerySearchChange(records.search);
+    }
+  }, [
+    menuTags,
+    filterGroups,
+    fetch.pending,
+    records.search,
+    state.filtersSynchronized
+  ]);
+
+  useEffect(() => {
+    if (params.id && !selection.includes(params.id)) {
+      ignoreCheckDirtyOnSelection.current = true;
+      onSelection([params.id]);
+    } else if (!selection.length && params.id) {
+      updateHistory(url.replace(`/${params.id}`, ""), location.search);
+    }
+
+    if (selection.length && selection[0] !== "new" && typeof deleteDisabledCondition === "function") {
+      updateDeleteCondition(!deleteDisabledCondition(props));
+    }
+  }, [
+    params.id,
+    selection,
+    location.search,
+    deleteDisabledCondition
+  ]);
+
+  useEffect(() => {
+    setState({
+      deleteEnabled: !defaultDeleteDisabled
+    });
+  }, [defaultDeleteDisabled]);
+
+  const onSave = (val, dispatch, formProps) => {
     if (pending) {
       return;
     }
@@ -699,12 +841,10 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
       return;
     }
 
-    onSave(value);
+    props.onSave(value);
   };
 
-  onDelete = id => {
-    const { openConfirm, onDelete, deleteWithoutConfirmation } = this.props;
-
+  const onDelete = id => {
     if (!deleteWithoutConfirmation) {
       openConfirm(
         {
@@ -720,82 +860,65 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
     }
   };
 
-  onDeleteFilter = (id: number, entity: string, checked: boolean) => {
-    this.props.updateSelection([]);
-    this.props.deleteFilter(id, entity, checked);
+  const onDeleteFilter = (id: number, entity: string, checked: boolean) => {
+    updateSelection([]);
+    deleteFilter(id, entity, checked);
   };
 
-  setCreateNew = () => {
-    const {
-     onInit, setListCreatingNew, updateSelection, match: { params, url }, location: { search }
-    } = this.props;
-
-    this.updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", search);
-
+  const setCreateNew = () => {
+    updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", search);
     setListCreatingNew(true);
     updateSelection(["new"]);
     onInit();
   };
 
-  onCreateRecord = () => {
-    const { onInit, customOnCreate } = this.props;
-
-    if (customOnCreate) {
-      if (typeof customOnCreate === "function") {
-        customOnCreate(this.setCreateNew);
-        return;
-      }
-
-      onInit();
-      return;
-    }
-
-    this.setCreateNew();
-  };
-
-  changeQueryView = querySearch => {
-    this.setState({
+  const changeQueryView = querySearch => {
+    setState({
       querySearch
     });
   };
 
-  toggleExportDrawer = () => {
-    this.setState(prev => ({ showExportDrawer: !prev.showExportDrawer }));
+  const toggleExportDrawer = () => {
+    changeState(prevState => ({
+      ...prevState,
+      showExportDrawer: !prevState.showExportDrawer
+    }));
   };
 
-  toggleBulkEditDrawer = () => {
-    this.setState(prev => ({ showBulkEditDrawer: !prev.showBulkEditDrawer }));
+  const toggleBulkEditDrawer = () => {
+    changeState(prevState => ({
+      ...prevState,
+      showBulkEditDrawer: !prevState.showBulkEditDrawer
+    }));
   };
 
-  getContainerNode = node => {
-    this.containerNode = node;
+  const getContainerNode = node => {
+    containerNode.current = node;
   };
 
-  onChangeModel = (model: TableModel, listUpdate?: boolean) => {
-    if (this.props.records?.columns.length || model?.columns?.length) this.props.updateTableModel(model, listUpdate);
+  const onChangeModel = (model: TableModel, listUpdate?: boolean) => {
+    if (records?.columns.length || model?.columns?.length) updateTableModel(model, listUpdate);
   };
 
-  checkDirty = (handler, args, reset?: boolean) => {
-    const { isDirty, selection, creatingNew, fullScreenEditView, records } = this.props;
-
+  const checkDirty = (handler, args, reset?: boolean) => {
     if (isDirty && (records.layout === 'Two column' ? fullScreenEditView : true)) {
-      this.showConfirm({
+      showConfirm({
         onConfirm: () => {
           handler(...args);
           if (reset) {
-            this.props.resetEditView();
+            resetEditView();
           }
         }
       });
       return;
     }
     if (creatingNew && selection[0] === "new") {
-      this.showConfirm({
+      showConfirm({
         onConfirm: () => {
           handler(...args);
           if (reset) {
-            this.props.resetEditView();
-            setTimeout(this.onCreateRecord, 200);
+            resetEditView();
+            setTimeout(onCreateRecord, 200);
           }
         }
       });
@@ -804,109 +927,21 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
     handler(...args);
   };
 
-  showConfirm = (props: ConfirmProps) => {
-    const {
-     closeConfirm, openConfirm, isInvalid, fullScreenEditView, submitForm
-    } = this.props;
+  const onRowDoubleClick = id => {
+    updateHistory(params.id ? url.replace(`/${params.id}`, `/${id}`) : url + `/${id}`, location.search);
 
-    const afterSubmitButtonHandler = () => {
-      fullScreenEditView ? this.toggleFullWidthView() : this.onSelection(this.state.newSelection);
-    };
-
-    const confirmButton = (
-      <Button
-        classes={{
-          root: "saveButtonEditView",
-          disabled: "saveButtonEditViewDisabled"
-        }}
-        disabled={isInvalid}
-        startIcon={isInvalid && <ErrorOutline color="error" />}
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          submitForm();
-          this.ignoreCheckDirtyOnSelection = true;
-          setTimeout(afterSubmitButtonHandler, 1000);
-          closeConfirm();
-        }}
-      >
-        {$t('save')}
-      </Button>
-    );
-
-    if (!props.confirmMessage && !props.cancelButtonText) {
-      openConfirm(
-        {
-          cancelButtonText: "DISCARD CHANGES",
-          confirmCustomComponent: confirmButton,
-          onCancelCustom: props.onConfirm
-        },
-      );
-    } else {
-      openConfirm(props);
+    if (state.threeColumn) {
+      toggleFullWidthView();
     }
   };
 
-  toggleFullWidthView = () => {
-    const {
-      alwaysFullScreenCreateView,
-      updateSelection,
-      resetEditView,
-      creatingNew,
-      setListCreatingNew,
-      fullScreenEditView,
-      setListFullScreenEditView,
-      match: { params, url },
-      location: { search }
-    } = this.props;
-
-    const { threeColumn } = this.state;
-
-    if (alwaysFullScreenCreateView && creatingNew) {
-      resetEditView();
-      updateSelection([]);
-    }
-
-    const fullScreenState = creatingNew ? false : !fullScreenEditView;
-
-    if ((!threeColumn || (alwaysFullScreenCreateView && creatingNew)) && !fullScreenState && params.id) {
-      this.updateHistory(url.replace(`/${params.id}`, ""), search);
-      resetEditView();
-    }
-
-    setListFullScreenEditView(fullScreenState);
-
-    setListCreatingNew(false);
-  };
-
-  onRowDoubleClick = id => {
-    const { match: { params, url }, location: { search } } = this.props;
-    const { threeColumn } = this.state;
-
-    this.updateHistory(params.id ? url.replace(`/${params.id}`, `/${id}`) : url + `/${id}`, search);
-
-    if (threeColumn) {
-      this.toggleFullWidthView();
-    }
-  };
-
-  switchLayout = () => {
-    const {
-      updateLayout,
-      updateTableModel,
-      updateSelection,
-      resetEditView,
-      setListCreatingNew,
-      creatingNew,
-      match: { params, url },
-      location: { search }
-    } = this.props;
+  const switchLayout = () => {
     // eslint-disable-next-line react/no-access-state-in-setstate
-    const updatedLayout = !this.state.threeColumn;
+    const updatedLayout = !state.threeColumn;
     const layout = updatedLayout ? "Three column" : "Two column";
 
     if (params.id) {
-      this.updateHistory(url.replace(`/${params.id}`, ""), search);
+      updateHistory(url.replace(`/${params.id}`, ""), location.search);
     }
 
     updateLayout(layout);
@@ -914,10 +949,10 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
     resetEditView();
 
     setTimeout(() => {
-      if (this.props.records?.columns.length) updateTableModel({ layout });
+      if (records?.columns.length) updateTableModel({ layout });
     }, 500);
 
-    this.setState({
+    setState({
       threeColumn: updatedLayout
     });
 
@@ -926,294 +961,214 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
     }
   };
 
-  updateHistory = (pathname, search) => {
-    const { history } = this.props;
-    const newUrl = window.location.origin + pathname + search;
+  const handleResizeCallBack = (...resizeProps) => {
+    const sidebarWidth = resizeProps[2].getClientRects()[0].width;
 
-    if (newUrl !== window.location.href) {
-      history.push({
-        pathname,
-        search
-      });
-    }
-  };
-
-  updateDeleteCondition = val => {
-    this.setState({
-      deleteEnabled: val
-    });
-  };
-
-  handleResizeCallBack = (...props) => {
-    const sidebarWidth = props[2].getClientRects()[0].width;
-
-    this.setState({
+    setState({
       sidebarWidth
     });
 
     setTimeout(() => {
-      if (this.props.records?.columns.length) this.props.updateTableModel({ filterColumnWidth: sidebarWidth });
+      if (records?.columns.length) updateTableModel({ filterColumnWidth: sidebarWidth });
     }, 500);
   };
 
-  handleResizeMainContentCallBack = (...props) => {
-    const mainContentWidth = props[2].getClientRects()[0].width;
+  const handleResizeMainContentCallBack = (...resizeProps) => {
+    const mainContentWidth = resizeProps[2].getClientRects()[0].width;
 
-    this.setState({
+    setState({
       mainContentWidth
     });
 
     setTimeout(() => {
-      this.props.setListviewMainContentWidth(String(mainContentWidth));
+      setListviewMainContentWidth(String(mainContentWidth));
     }, 500);
   };
 
-  getMainContentWidth = (mainContentWidth, sidebarWidth) =>
-    (mainContentWidth ? Number(mainContentWidth) : window.screen.width - sidebarWidth - 368);
-
-  onCreateRecordWithDirtyCheck = this.props.onCreate
-    ? (...args) => this.checkDirty(this.onCreateRecord, args, true)
+  const onCreateRecordWithDirtyCheck = onCreate
+    ? (...args) => checkDirty(onCreateRecord, args, true)
     : undefined;
 
-  switchLayoutWithDirtyCheck = (...args) => this.checkDirty(this.switchLayout, args, true);
+  const switchLayoutWithDirtyCheck = (...args) => checkDirty(switchLayout, args, true);
 
-  querySearchChangeWithDirtyCheck = (...args) => this.checkDirty(this.onQuerySearchChange, args, true);
+  const querySearchChangeWithDirtyCheck = (...args) => checkDirty(onQuerySearchChange, args, true);
 
-  onDeleteFilterWithDirtyCheck = (...args) => {
-    const { openConfirm } = this.props;
-
+  const onDeleteFilterWithDirtyCheck = (...args) => {
     const confirmMessage = args.length >= 4 && args[3]
       ? "The filter will be permanently deleted. This action cannot be undone"
       : "This filter is currently being shared with other users. The filter will be permanently deleted. This action cannot be undone";
 
     openConfirm(
       {
-        onConfirm: () => this.checkDirty(this.onDeleteFilter, args, true),
+        onConfirm: () => checkDirty(onDeleteFilter, args, true),
         confirmMessage,
         confirmButtonText: 'DELETE'
       }
     );
   };
 
-  onChangeFiltersWithDirtyCheck = (...args) => this.checkDirty(this.onChangeFilters, args, true);
+  const onChangeFiltersWithDirtyCheck = (...args) => checkDirty(onChangeFilters, args, true);
 
-  getUrlSearch = searchParam => {
-    if (searchParam.getAll("customSearch").length) {
-      let customSearch = searchParam.getAll("customSearch")[0];
+  const {
+    querySearch, threeColumn, deleteEnabled, sidebarWidth, mainContentWidth, showExportDrawer, showBulkEditDrawer
+  } = state;
 
-      const entityState = JSON.parse(LSGetItem(ENTITY_AQL_STORAGE_NAME)) as FindEntityState;
-      if (entityState) {
-        for (let i = 0; i < entityState.data.length; i++) {
-          if (entityState.data[i].id === customSearch) {
-            saveCategoryAQLLink({ AQL: "", id: customSearch, action: "remove" });
-            customSearch = entityState.data[i].AQL;
-          }
-        }
-      }
-      return customSearch;
-    }
-    return searchParam.getAll("search")[0];
-  };
+  const hasFilters = Boolean(filterGroups.length || menuTags.length || savingFilter);
 
-  render() {
-    const {
-      classes,
-      rootEntity,
-      fetch,
-      EditViewContent,
-      filterGroups,
-      records,
-      fetching,
-      selection,
-      findRelated,
-      editViewProps = {},
-      CogwheelAdornment,
-      savingFilter,
-      CustomFindRelatedMenu,
-      alwaysFullScreenCreateView,
-      ShareContainerAlertComponent,
-      pdfReports,
-      exportTemplates,
-      searchMenuItemsRenderer,
-      menuTags,
-      createButtonDisabled,
-      creatingNew,
-      fullScreenEditView,
-      searchQuery,
-      getCustomBulkEditFields,
-      filterEntity,
-      emailTemplatesWithKeyCode,
-      scripts,
-      listProps,
-      onLoadMore,
-      currency,
-      dispatch,
-      getScripts,
-      findRelatedByFilter,
-      scriptsFilterColumn,
-      customTableModel
-    } = this.props;
+  const table = <ReactTableList
+    {...listProps}
+    mainContentWidth={mainContentWidth}
+    onLoadMore={onLoadMore}
+    selection={selection}
+    records={records}
+    threeColumn={threeColumn}
+    shortCurrencySymbol={currency.shortCurrencySymbol}
+    onRowDoubleClick={onRowDoubleClick}
+    onSelectionChange={onSelection}
+    onChangeModel={onChangeModel}
+    getContainerNode={getContainerNode}
+    sidebarWidth={sidebarWidth}
+  />;
 
-    const {
-      querySearch, threeColumn, deleteEnabled, sidebarWidth, mainContentWidth, showExportDrawer, showBulkEditDrawer
-    } = this.state;
+  return (
+    <div className={classes.root}>
+      <LoadingIndicator transparentBackdrop allowInteractions />
 
-    const hasFilters = Boolean(filterGroups.length || menuTags.length || savingFilter);
+      <FullScreenEditView
+        {...editViewProps}
+        customTableModel={customTableModel}
+        shouldAsyncValidate={shouldAsyncValidate}
+        rootEntity={rootEntity}
+        form={LIST_EDIT_VIEW_FORM_NAME}
+        fullScreenEditView={fullScreenEditView}
+        toogleFullScreenEditView={toggleFullWidthView}
+        EditViewContent={EditViewContent}
+        onSubmit={onSave}
+        onSubmitFail={onSubmitFail}
+        hasSelected={Boolean(selection.length)}
+        creatingNew={creatingNew}
+        updateDeleteCondition={updateDeleteCondition}
+        showConfirm={showConfirm}
+        alwaysFullScreenCreateView={alwaysFullScreenCreateView}
+        threeColumn={threeColumn}
+      />
 
-    const table = <ReactTableList
-      {...listProps}
-      mainContentWidth={mainContentWidth}
-      onLoadMore={onLoadMore}
-      selection={selection}
-      records={records}
-      threeColumn={threeColumn}
-      shortCurrencySymbol={currency.shortCurrencySymbol}
-      onRowDoubleClick={this.onRowDoubleClick}
-      onSelectionChange={this.onSelection}
-      onChangeModel={this.onChangeModel}
-      getContainerNode={this.getContainerNode}
-      sidebarWidth={sidebarWidth}
-    />;
+      <ShareContainer
+        showExportDrawer={showExportDrawer}
+        toggleExportDrawer={toggleExportDrawer}
+        count={records.filteredCount}
+        selection={selection}
+        rootEntity={rootEntity}
+        sidebarWidth={hasFilters ? sidebarWidth : 0}
+        AlertComponent={ShareContainerAlertComponent}
+      />
 
-    return (
-      <div className={classes.root}>
-        <LoadingIndicator transparentBackdrop allowInteractions />
+      <BulkEditContainer
+        showBulkEditDrawer={showBulkEditDrawer}
+        toggleBulkEditDrawer={toggleBulkEditDrawer}
+        count={records.filteredCount}
+        selection={selection}
+        rootEntity={rootEntity}
+        sidebarWidth={hasFilters ? sidebarWidth : 0}
+        manualLink={editViewProps.manualLink}
+        getCustomBulkEditFields={getCustomBulkEditFields}
+      />
 
-        <FullScreenEditView
-          {...editViewProps}
-          customTableModel={customTableModel}
-          shouldAsyncValidate={shouldAsyncValidate}
-          rootEntity={rootEntity}
-          form={LIST_EDIT_VIEW_FORM_NAME}
-          fullScreenEditView={fullScreenEditView}
-          toogleFullScreenEditView={this.toggleFullWidthView}
-          EditViewContent={EditViewContent}
-          onSubmit={this.onSave}
-          onSubmitFail={onSubmitFail}
-          hasSelected={Boolean(selection.length)}
-          creatingNew={creatingNew}
-          updateDeleteCondition={this.updateDeleteCondition}
-          showConfirm={this.showConfirm}
-          alwaysFullScreenCreateView={alwaysFullScreenCreateView}
-          threeColumn={threeColumn}
-        />
+      {hasFilters && (
+        <ResizableWrapper
+          ignoreScreenWidth
+          onResizeStop={handleResizeCallBack}
+          sidebarWidth={sidebarWidth}
+          maxWidth="65%"
+        >
+          <ThemeProvider theme={sideBarTheme}>
+            <SideBar
+              fetching={fetching}
+              savingFilter={savingFilter}
+              onChangeFilters={onChangeFiltersWithDirtyCheck}
+              filterGroups={filterGroups}
+              rootEntity={rootEntity}
+              filterEntity={filterEntity}
+              deleteFilter={onDeleteFilterWithDirtyCheck}
+            />
+          </ThemeProvider>
+        </ResizableWrapper>
+      )}
 
-        <ShareContainer
-          showExportDrawer={showExportDrawer}
-          toggleExportDrawer={this.toggleExportDrawer}
-          count={records.filteredCount}
-          selection={selection}
-          rootEntity={rootEntity}
-          sidebarWidth={hasFilters ? sidebarWidth : 0}
-          AlertComponent={ShareContainerAlertComponent}
-        />
+      <div className="flex-fill d-flex flex-column overflow-hidden user-select-none">
+        <div className="flex-fill d-flex relative">
+          {threeColumn ? (
+            <ResizableWrapper
+              onResizeStop={handleResizeMainContentCallBack}
+              sidebarWidth={mainContentWidth}
+              ignoreScreenWidth
+              minWidth="30%"
+              maxWidth="65%"
+              classes={{ sideBarWrapper: classes.resizableItemList }}
+            >
+              {table}
+            </ResizableWrapper>
+          ) : table }
 
-        <BulkEditContainer
-          showBulkEditDrawer={showBulkEditDrawer}
-          toggleBulkEditDrawer={this.toggleBulkEditDrawer}
-          count={records.filteredCount}
-          selection={selection}
-          rootEntity={rootEntity}
-          sidebarWidth={hasFilters ? sidebarWidth : 0}
-          manualLink={editViewProps.manualLink}
-          getCustomBulkEditFields={getCustomBulkEditFields}
-        />
-
-        {hasFilters && (
-          <ResizableWrapper
-            ignoreScreenWidth
-            onResizeStop={this.handleResizeCallBack}
-            sidebarWidth={sidebarWidth}
-            maxWidth="65%"
-          >
-            <ThemeProvider theme={sideBarTheme}>
-              <SideBar
-                fetching={fetching}
-                savingFilter={savingFilter}
-                onChangeFilters={this.onChangeFiltersWithDirtyCheck}
-                filterGroups={filterGroups}
+          {threeColumn && !fullScreenEditView && (
+            <div className="d-flex flex-fill overflow-hidden">
+              <EditView
+                {...editViewProps}
+                customTableModel={customTableModel}
+                shouldAsyncValidate={shouldAsyncValidate}
+                form={LIST_EDIT_VIEW_FORM_NAME}
                 rootEntity={rootEntity}
-                filterEntity={filterEntity}
-                deleteFilter={this.onDeleteFilterWithDirtyCheck}
+                EditViewContent={EditViewContent}
+                onSubmitFail={onSubmitFail}
+                onSubmit={onSave}
+                hasSelected={Boolean(selection.length)}
+                creatingNew={creatingNew}
+                updateDeleteCondition={updateDeleteCondition}
+                showConfirm={showConfirm}
+                toogleFullScreenEditView={toggleFullWidthView}
               />
-            </ThemeProvider>
-          </ResizableWrapper>
-        )}
-
-        <div className="flex-fill d-flex flex-column overflow-hidden user-select-none">
-          <div className="flex-fill d-flex relative">
-            {threeColumn ? (
-              <ResizableWrapper
-                onResizeStop={this.handleResizeMainContentCallBack}
-                sidebarWidth={mainContentWidth}
-                ignoreScreenWidth
-                minWidth="30%"
-                maxWidth="65%"
-                classes={{ sideBarWrapper: classes.resizableItemList }}
-              >
-                {table}
-              </ResizableWrapper>
-            ) : table }
-
-            {threeColumn && !fullScreenEditView && (
-              <div className="d-flex flex-fill overflow-hidden">
-                <EditView
-                  {...editViewProps}
-                  customTableModel={customTableModel}
-                  shouldAsyncValidate={shouldAsyncValidate}
-                  form={LIST_EDIT_VIEW_FORM_NAME}
-                  rootEntity={rootEntity}
-                  EditViewContent={EditViewContent}
-                  onSubmitFail={onSubmitFail}
-                  onSubmit={this.onSave}
-                  hasSelected={Boolean(selection.length)}
-                  creatingNew={creatingNew}
-                  updateDeleteCondition={this.updateDeleteCondition}
-                  showConfirm={this.showConfirm}
-                  toogleFullScreenEditView={this.toggleFullWidthView}
-                />
-              </div>
-            )}
-          </div>
-          <BottomAppBar
-            dispatch={dispatch}
-            findRelatedByFilter={findRelatedByFilter}
-            getScripts={getScripts}
-            scripts={scripts}
-            emailTemplatesWithKeyCode={emailTemplatesWithKeyCode}
-            createButtonDisabled={createButtonDisabled}
-            searchMenuItemsRenderer={searchMenuItemsRenderer}
-            querySearch={querySearch}
-            threeColumn={threeColumn}
-            deleteEnabled={deleteEnabled}
-            showExportDrawer={showExportDrawer}
-            toggleExportDrawer={this.toggleExportDrawer}
-            showBulkEditDrawer={showBulkEditDrawer}
-            toggleBulkEditDrawer={this.toggleBulkEditDrawer}
-            filteredCount={records.filteredCount}
-            rootEntity={rootEntity}
-            fetch={fetch}
-            selection={selection}
-            hasShareTypes={pdfReports.length || exportTemplates.length}
-            onDelete={this.onDelete}
-            onQuerySearch={this.querySearchChangeWithDirtyCheck}
-            changeQueryView={this.changeQueryView}
-            switchLayout={this.switchLayoutWithDirtyCheck}
-            onCreate={this.onCreateRecordWithDirtyCheck}
-            findRelated={findRelated}
-            CogwheelAdornment={CogwheelAdornment}
-            showConfirm={this.showConfirm}
-            CustomFindRelatedMenu={CustomFindRelatedMenu}
-            records={records}
-            searchComponentNode={this.searchComponentNode}
-            searchQuery={searchQuery}
-            scriptsFilterColumn={scriptsFilterColumn}
-          />
+            </div>
+          )}
         </div>
+        <BottomAppBar
+          dispatch={dispatch}
+          findRelatedByFilter={findRelatedByFilter}
+          getScripts={getScripts}
+          scripts={scripts}
+          emailTemplatesWithKeyCode={emailTemplatesWithKeyCode}
+          createButtonDisabled={createButtonDisabled}
+          searchMenuItemsRenderer={searchMenuItemsRenderer}
+          querySearch={querySearch}
+          threeColumn={threeColumn}
+          deleteEnabled={deleteEnabled}
+          showExportDrawer={showExportDrawer}
+          toggleExportDrawer={toggleExportDrawer}
+          showBulkEditDrawer={showBulkEditDrawer}
+          toggleBulkEditDrawer={toggleBulkEditDrawer}
+          filteredCount={records.filteredCount}
+          rootEntity={rootEntity}
+          fetch={fetch}
+          selection={selection}
+          hasShareTypes={pdfReports.length || exportTemplates.length}
+          onDelete={onDelete}
+          onQuerySearch={querySearchChangeWithDirtyCheck}
+          changeQueryView={changeQueryView}
+          switchLayout={switchLayoutWithDirtyCheck}
+          onCreate={onCreateRecordWithDirtyCheck}
+          findRelated={findRelated}
+          CogwheelAdornment={CogwheelAdornment}
+          showConfirm={showConfirm}
+          CustomFindRelatedMenu={CustomFindRelatedMenu}
+          records={records}
+          searchComponentNode={searchComponentNode}
+          searchQuery={searchQuery}
+          scriptsFilterColumn={scriptsFilterColumn}
+        />
       </div>
-    );
-  }
+    </div>
+  );
 }
+
 const mapStateToProps = (state: State) => ({
   fetch: state.fetch,
   currency: state.location.currency,
@@ -1278,8 +1233,9 @@ const mergeProps = (stateToProps, dispatchToProps, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-  mergeProps)
-(withStyles(withRouter(ListView), {
+  mergeProps)(
+    withStyles(
+      withRouter<ListCompProps, typeof ListView>(ListView), {
   root: {
     position: "relative",
     display: "flex",

@@ -122,9 +122,19 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
 
 let pendingSessionActionArgs = null;
 
-const validateStartDate = (value, allValues: CourseClassExtended) => validateMinMaxDate(value, '', allValues?.sessions[0]?.start, '', 'Start date cannot be after the first session');
+const validateStartDate = (value, allValues: CourseClassExtended) => {
+  if (allValues.type === 'Distant Learning') {
+    return (allValues.endDateTime && !value && $t("start_date_is_required_is_end_date_is_set")) || validateMinMaxDate(value, '', allValues.endDateTime, '', $t("start_date_cannot_be_set_after_the_end_date"));
+  }
+  return validateMinMaxDate(value, '', allValues?.sessions && allValues.sessions[0]?.start, '', 'Start date cannot be after the first session');
+};
 
-const validateEndDate = (value, allValues: CourseClassExtended) => validateMinMaxDate(value, allValues?.sessions[allValues?.sessions?.length - 1]?.start, '', 'End date cannot be before the last session');
+const validateEndDate = (value, allValues: CourseClassExtended) => {
+  if (allValues.type === 'Distant Learning') {
+    return (allValues.startDateTime && !value && $t("end_date_is_required_is_start_date_is_set")) || validateMinMaxDate(value, allValues.startDateTime, '', $t("end_date_cannot_be_set_before_the_start_date"));
+  }
+  return validateMinMaxDate(value, allValues?.sessions && allValues.sessions[allValues.sessions.length - 1]?.start, '', 'End date cannot be before the last session');
+};
 
 const validateSessionUpdate = (id: number, sessions: TimetableSession[], dispatch, form) => {
   const updatedForValidate = sessions.map(({ index, ...rest }) => ({ ...rest }));
@@ -831,40 +841,37 @@ const CourseClassTimetableTab = ({
           >
           {["Distant Learning", "Hybrid"].includes(values.type) && (
             <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
-              {isHybrid && <>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="dateTime"
-                    label={$t('hybrid_class_start_date')}
+                    label={$t('class_start_date')}
                     name="startDateTime"
                     validate={validateStartDate}
                     timezone={values.sessions[0]?.siteTimezone}
-                    required
+                    required={isHybrid}
                   />
                 </Grid>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="dateTime"
-                    label={$t('hybrid_class_end_date')}
+                    label={$t('class_end_date')}
                     name="endDateTime"
                     validate={validateEndDate}
                     timezone={values.sessions[values.sessions?.length - 1]?.siteTimezone}
-                    required
+                    required={isHybrid}
                   />
                 </Grid>
-                <Grid item xs={twoColumn ? 3 : 12}>
-                  <FormField
-                    type="number"
-                    label={$t('minimum_sessions_to_complete')}
-                    name="minimumSessionsToComplete"
-                    step="1"
-                    normalize={normalizeNumberToPositive}
-                    debounced={false}
-                    required
-                  />
-                </Grid>
-              </>}
-              {!isHybrid && <>
+              {isHybrid ? <Grid item xs={twoColumn ? 3 : 12}>
+                <FormField
+                  type="number"
+                  label={$t('minimum_sessions_to_complete')}
+                  name="minimumSessionsToComplete"
+                  step="1"
+                  normalize={normalizeNumberToPositive}
+                  debounced={false}
+                  required
+                />
+              </Grid> : <>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="number"

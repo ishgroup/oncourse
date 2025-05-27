@@ -4,10 +4,10 @@
  */
 
 import { ConcessionType, Discount, DiscountMembership } from '@api/model';
-import { Collapse, FormControlLabel, Grid } from '@mui/material';
+import { Collapse, Divider, FormControlLabel, Grid, Typography } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
-import { CheckboxField, LinkAdornment, normalizeNumber } from 'ish-ui';
+import { CheckboxField, LinkAdornment, normalizeNumber, Switch } from 'ish-ui';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -24,7 +24,11 @@ import NestedList, {
   NestedListPanelItem
 } from '../../../../common/components/form/nestedList/NestedList';
 import Subtitle from '../../../../common/components/layout/Subtitle';
-import { greaterThanZeroIncludeValidation, validateSingleMandatoryField } from '../../../../common/utils/validation';
+import {
+  greaterThanZeroIncludeValidation,
+  validateEmail,
+  validateSingleMandatoryField
+} from '../../../../common/utils/validation';
 import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../constants/Config';
 import { State } from '../../../../reducers/state';
 import CourseItemRenderer from '../../courses/components/CourseItemRenderer';
@@ -117,6 +121,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
         || values.courseIdMustEnrol
         || values.minEnrolmentsForAnyCourses
         || values.studentPostcode
+        || values.studentEmail
         || values.limitPreviousEnrolment
         || values.studentEnrolledWithinDays
         || (values.discountMemberships && values.discountMemberships.length > 0)
@@ -318,10 +323,10 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               />
             </Grid>
             <Grid item xs={twoColumn ? 6 : 12}>
-              <FormControlLabel
-                className="checkbox"
-                control={<FormField type="checkbox" name="limitPreviousEnrolment" color="secondary" />}
-                label={$t('limit_to_students_previously_enrolled_in_same_cour')}
+              <FormField
+                type="text"
+                name="studentEmail"
+                label={$t("email")}
               />
             </Grid>
             <Grid item xs={twoColumn ? 6 : 12}>
@@ -359,12 +364,19 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 debounced={false}
               />
             </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                className="checkbox"
+                control={<FormField type="checkbox" name="limitPreviousEnrolment" color="secondary" />}
+                label={$t('limit_to_students_previously_enrolled_in_same_cour')}
+              />
+            </Grid>
           </Grid>
           <div className={clsx("mb-2 mt-2", twoColumn && "mw-400")}>
             <NestedList
               formId={values.id}
               title={$t('limit_to_students_with_concession')}
-              titleCaption="This discount will only be available with the following concession types"
+              titleCaption={$t("this_discount_will_only_be_available_with_the_following_concession_types")}
               searchPlaceholder="Find concession types"
               values={concessionTypes}
               searchValues={concessionsToNestedListItems(foundConcessionTypes)}
@@ -402,7 +414,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               resetSearch={submitSucceeded}
               inlineSecondaryText
               panelItems={contactRelationTypes}
-              panelCaption="Also apply to"
+              panelCaption={$t("also_apply_to")}
               searchType="withToggle"
               aqlEntities={["Product"]}
               usePaper

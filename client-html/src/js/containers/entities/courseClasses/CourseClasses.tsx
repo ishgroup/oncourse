@@ -214,7 +214,7 @@ const filterGroups: FilterGroup[] = [
       },
       {
         name: "Self-paced classes",
-        expression: "type is DISTANT_LEARNING and isCancelled is false",
+        expression: "type is DISTANT_LEARNING and isCancelled is false and (endDateTime is null or endDateTime >= today)",
         active: true
       },
       {

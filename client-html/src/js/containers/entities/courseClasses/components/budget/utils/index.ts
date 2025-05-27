@@ -3,14 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ClassCost, CourseClassPaymentPlan, Tax } from '@api/model';
-import { differenceInMinutes, format, subMinutes } from 'date-fns';
-import { decimalDivide, decimalMul, decimalPlus } from 'ish-ui';
-import { getCurrentTax, getFeeExTaxByFeeIncTax, getTotalByFeeExTax } from '../../../../../../common/utils/hooks';
-import { ClassCostExtended } from '../../../../../../model/entities/CourseClass';
-import { TimetableSession } from '../../../../../../model/timetable';
+import { ClassCost, CourseClassPaymentPlan, Tax } from "@api/model";
+import { differenceInMinutes, format, subMinutes } from "date-fns";
+import { decimalDivide, decimalMul, decimalPlus } from "ish-ui";
+import { ClassCostExtended } from "../../../../../../model/entities/CourseClass";
+import { TimetableSession } from "../../../../../../model/timetable";
+import { getCurrentTax } from "../../../../taxes/utils";
 
 export const discountsSort = (a, b) => (a.description > b.description ? 1 : -1);
+
+export const getFeeWithTaxAmount = (exTaxFee: number, currentTax: Tax) => decimalMul(exTaxFee, decimalPlus(currentTax.rate, 1));
 
 export const getPaymentPlansTotal = (paymentPlans: CourseClassPaymentPlan[]) =>
   paymentPlans.reduce((p: number, c) => (c.dayOffset === null ? p : decimalPlus(p, c.amount)), 0);
@@ -20,7 +22,7 @@ export const excludeOnEnrolPaymentPlan = (item: ClassCostExtended, currentTax: T
 
   if (result.flowType === "Income" && result.invoiceToStudent && result.paymentPlan?.length) {
     result.perUnitAmountIncTax = result.paymentPlan.find(p => p.dayOffset === null).amount;
-    result.perUnitAmountExTax = getFeeExTaxByFeeIncTax(currentTax.rate, result.perUnitAmountIncTax);
+    result.perUnitAmountExTax = decimalDivide(result.perUnitAmountIncTax, decimalPlus(currentTax.rate, 1));
     result.paymentPlan = result.paymentPlan.filter(p => p.dayOffset !== null);
   }
   
@@ -40,8 +42,10 @@ export const includeOnEnrolPaymentPlan = (item: ClassCostExtended, taxes: Tax[])
 
       result.perUnitAmountIncTax = result.paymentPlan.reduce((p: number, c) => decimalPlus(p, c.amount), 0);
     }
-    result.perUnitAmountExTax = getFeeExTaxByFeeIncTax(currentTax.rate, result.perUnitAmountIncTax);
+
+    result.perUnitAmountExTax = decimalDivide(result.perUnitAmountIncTax, decimalPlus(currentTax.rate, 1));
   }
+
   return result;
 };
 
@@ -161,7 +165,7 @@ export const getClassCostFee = (
 
 export const getClassFeeTotal = (costs: ClassCost[], taxes: Tax[]) => {
   const studentFee = costs.find(c => c.invoiceToStudent);
-  return studentFee ? getTotalByFeeExTax(getCurrentTax(taxes, studentFee.taxId)?.rate, studentFee.perUnitAmountExTax) : 0;
+  return studentFee ? getFeeWithTaxAmount(studentFee.perUnitAmountExTax, getCurrentTax(taxes, studentFee.taxId)) : 0;
 };
 
 export const dateForCompare = (date: string, customFormat: string) => new Date(format(new Date(date), customFormat));

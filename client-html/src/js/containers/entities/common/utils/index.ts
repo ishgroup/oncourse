@@ -3,31 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  Account,
-  ArticleProduct,
-  Course,
-  EntityRelationType,
-  MembershipProduct,
-  Module,
-  Qualification,
-  Sale,
-  SaleType,
-  Tax
-} from '@api/model';
-import { format } from 'date-fns';
-import { EEE_D_MMM_YYYY } from 'ish-ui';
-import { change, initialize } from 'redux-form';
-import { clearActionsQueue, executeActionsQueue, FETCH_SUCCESS } from '../../../../common/actions';
-import { getNoteItems } from '../../../../common/components/form/notes/actions';
-import { getRecords, SET_LIST_EDIT_RECORD, setListSelection } from '../../../../common/components/list-view/actions';
-import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
-import { getFeeExTaxByFeeIncTax, getTotalByFeeExTax } from '../../../../common/utils/financial';
-import { NOTE_ENTITIES } from '../../../../constants/Config';
-import { EntityName, ListActionEntity } from '../../../../model/entities/common';
-import { EntityRelationTypeRendered } from '../../../../model/entities/EntityRelations';
-import { State } from '../../../../reducers/state';
-import { getEntityRecord } from '../actions';
+import { Account, Course, EntityRelationType, Module, Qualification, Sale, SaleType } from "@api/model";
+import { format } from "date-fns";
+import { EEE_D_MMM_YYYY } from "ish-ui";
+import { initialize } from "redux-form";
+import { clearActionsQueue, executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
+import { getNoteItems } from "../../../../common/components/form/notes/actions";
+import { getRecords, SET_LIST_EDIT_RECORD, setListSelection } from "../../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { NOTE_ENTITIES } from "../../../../constants/Config";
+import { EntityName, ListActionEntity } from "../../../../model/entities/common";
+import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
+import { State } from "../../../../reducers/state";
+import { getEntityRecord } from "../actions";
 
 export const mapEntityDisplayName = (entity: ListActionEntity) => {
   switch (entity) {
@@ -268,28 +256,3 @@ export const getListRecordAfterCreateActions = (entity: EntityName) => [
   setListSelection([]),
   initialize(LIST_EDIT_VIEW_FORM_NAME, null)
 ];
-
-// Products financial fields handlers
-export const handleChangeProductFeeExTax = (taxRate, dispatch, form) => value => {
-  dispatch(change(form, "totalFee", getTotalByFeeExTax(taxRate, value)));
-};
-
-export const handleChangeProductFeeIncTax = (taxRate, dispatch, form) => value => {
-  dispatch(change(form, "feeExTax", getFeeExTaxByFeeIncTax(taxRate, value)));
-};
-
-export const handleChangeProductTax = (taxes: Tax[], dispatch, form, feeExTax) => value => {
-  const tax = taxes.find(item => item.id === value);
-  const taxRate = tax ? tax.rate : 0;
-  dispatch(change(form, "totalFee", getTotalByFeeExTax(taxRate, feeExTax)));
-};
-
-export const handleChangeProductAccount = (values: ArticleProduct | MembershipProduct, taxes: Tax[], accounts: Account[], dispatch, form) => value => {
-  const account = accounts.find(item => item.id === value);
-  const tax = taxes.find(item => item.id === Number(account["tax.id"]));
-  if (tax.id !== values.taxId) {
-    const taxRate = tax ? tax.rate : 0;
-    dispatch(change(form, "taxId", tax.id));
-    dispatch(change(form, "totalFee", getTotalByFeeExTax(taxRate, values.feeExTax)));
-  }
-};
