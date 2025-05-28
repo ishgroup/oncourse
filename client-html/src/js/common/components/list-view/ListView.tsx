@@ -371,10 +371,6 @@ function ListView(props: ListCompProps) {
       return;
     }
 
-    if (creatingNew) {
-      setListCreatingNew(false);
-    }
-
     if (newSelection && !newSelection.length) {
       updateHistory(params.id ? url.replace(`/${params.id}`, "") : url + "", location.search );
       resetEditView();
@@ -696,9 +692,8 @@ function ListView(props: ListCompProps) {
         || !editRecord.id
         || editRecord.id.toString() !== params.id)
     ) {
-      const isNew = params.id === "new";
 
-      if (!isNew) {
+      if (params.id !== "new") {
         setListEditRecordFetching();
         onGetEditRecord(params.id);
 
@@ -794,7 +789,8 @@ function ListView(props: ListCompProps) {
     if (params.id && !selection.includes(params.id)) {
       ignoreCheckDirtyOnSelection.current = true;
       onSelection([params.id]);
-    } else if (!selection.length && params.id) {
+    }
+    if (!selection.length && params.id) {
       updateHistory(url.replace(`/${params.id}`, ""), location.search);
     }
 
@@ -849,14 +845,14 @@ function ListView(props: ListCompProps) {
       openConfirm(
         {
           onConfirm: () => {
-            onDelete(id);
+            props.onDelete(id);
           },
           confirmMessage: "Record will be permanently deleted. This action can not be undone",
           confirmButtonText: "DELETE"
         }
       );
     } else {
-      onDelete(id);
+      props.onDelete(id);
     }
   };
 
