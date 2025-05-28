@@ -7,7 +7,6 @@
  */
 
 import { Contact } from '@api/model';
-import { Typography } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { isBefore } from 'date-fns';
 import React, { Dispatch, useEffect, useState } from 'react';

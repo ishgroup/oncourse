@@ -6,9 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { PaymentOut } from '@api/model';
 import { ExitToApp } from '@mui/icons-material';
-import { Popover } from '@mui/material';
 import Link from '@mui/material/Link';
 import Popover from '@mui/material/Popover';
 import zIndex from '@mui/material/styles/zIndex';
