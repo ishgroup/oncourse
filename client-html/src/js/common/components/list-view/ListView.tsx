@@ -61,7 +61,6 @@ import { pushGTMEvent } from '../google-tag-manager/actions';
 import { GAEventTypes } from '../google-tag-manager/services/GoogleAnalyticsService';
 import LoadingIndicator from '../progress/LoadingIndicator';
 import {
-  clearListState,
   deleteCustomFilter,
   findRelatedByFilter,
   getRecords,
@@ -140,7 +139,6 @@ interface OwnProps {
   getScripts?: NoArgFunction;
   openConfirm?: ShowConfirmCaller;
   resetEditView?: NoArgFunction;
-  clearListState?: NoArgFunction;
   setListCreatingNew?: BooleanArgFunction;
   setListFullScreenEditView?: BooleanArgFunction;
   sendGAEvent?: (event: GAEventTypes, screen: string, time?: number) => void;
@@ -284,7 +282,6 @@ function ListView(props: ListCompProps) {
     onLoadMore,
     currency,
     dispatch,
-    clearListState,
     findRelatedByFilter,
     scriptsFilterColumn,
     customTableModel,
@@ -459,8 +456,6 @@ function ListView(props: ListCompProps) {
         pathname: url
       });
     }
-
-    return () => clearListState();
   }, []);
 
   const getUrlSearch = searchParam => {
@@ -707,6 +702,7 @@ function ListView(props: ListCompProps) {
   }, [
     params.id,
     editRecord?.id,
+    state.threeColumn,
     editRecordFetching,
     creatingNew,
   ]);
@@ -1182,7 +1178,6 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>, ownProps) => ({
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, null));
     dispatch(setListEditRecord(null));
   },
-  clearListState: () => dispatch(clearListState()),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   updateLayout: (layout: LayoutType) => dispatch(setListLayout(layout)),
   deleteFilter: (id: number, entity: string, checked: boolean) => dispatch(deleteCustomFilter(id, entity, checked)),
