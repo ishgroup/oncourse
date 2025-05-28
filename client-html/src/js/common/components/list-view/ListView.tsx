@@ -815,7 +815,7 @@ function ListView(props: ListCompProps) {
   }, [defaultDeleteDisabled]);
 
   const onSave = (val, dispatch, formProps) => {
-    if (pending) {
+    if (fetch.pending) {
       return;
     }
 
