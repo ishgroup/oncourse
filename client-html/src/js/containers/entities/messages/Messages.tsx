@@ -3,19 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Message } from "@api/model";
-import React, { Dispatch, useEffect } from "react";
-import { connect } from "react-redux";
-import { clearListState, getFilters, } from "../../../common/components/list-view/actions";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import MessageEditView from "./components/MessageEditView";
-import QuedMessagesBulkDelete from "./components/QuedMessagesBulkDelete";
+import React, { Dispatch, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getFilters, } from '../../../common/components/list-view/actions';
+import ListView from '../../../common/components/list-view/ListView';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import MessageEditView from './components/MessageEditView';
+import QuedMessagesBulkDelete from './components/QuedMessagesBulkDelete';
 
 interface MessagesProps {
   onInit?: () => void;
   getFilters?: () => void;
-  clearListState?: () => void;
   onDelete?: (id: string) => void;
 }
 
@@ -46,15 +44,11 @@ const primaryColumnCondition = row => row["recipientsString"] || "No recipients"
 
 const Messages: React.FC<MessagesProps> = props => {
   const {
-    getFilters,
-    clearListState
+    getFilters
   } = props;
 
   useEffect(() => {
     getFilters();
-    return () => {
-      clearListState();
-    };
   }, []);
 
   return (
@@ -79,8 +73,7 @@ const Messages: React.FC<MessagesProps> = props => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getFilters: () => dispatch(getFilters("Message")),
-  clearListState: () => dispatch(clearListState())
+  getFilters: () => dispatch(getFilters("Message"))
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Messages);

@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { format } from "date-fns";
-import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { clearListState, getFilters, getRecords, } from "../../common/components/list-view/actions";
-import ListView from "../../common/components/list-view/ListView";
-import { getManualLink } from "../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../model/common/ListView";
-import AuditFindRelatedMenu from "./components/AuditFindRelatedMenu";
-import AuditsEditView from "./components/AuditsEditView";
+import { format } from 'date-fns';
+import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getFilters, getRecords, } from '../../common/components/list-view/actions';
+import ListView from '../../common/components/list-view/ListView';
+import { getManualLink } from '../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../model/common/ListView';
+import AuditFindRelatedMenu from './components/AuditFindRelatedMenu';
+import AuditsEditView from './components/AuditsEditView';
 
 const filterGroups: FilterGroup[] = [
   {
@@ -88,10 +88,6 @@ class AuditsApp extends React.Component<any, any> {
     this.props.getRecords();
   }
 
-  componentWillUnmount() {
-    this.props.clearListState();
-  }
-
   render() {
     return (
       <ListView
@@ -123,8 +119,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => {
     dispatch(getFilters("Audit"));
-  },
-  clearListState: () => dispatch(clearListState())
+  }
 });
 
 export default connect<any, any, any>(

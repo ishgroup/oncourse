@@ -3,11 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Banking } from '@api/model';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { clearListState, getFilters, setListEditRecord, } from '../../../common/components/list-view/actions';
+import { getFilters, setListEditRecord, } from '../../../common/components/list-view/actions';
 import ListView from '../../../common/components/list-view/ListView';
 import { getManualLink } from '../../../common/utils/getManualLink';
 import { FilterGroup } from '../../../model/common/ListView';
@@ -43,10 +42,6 @@ class BankingListView extends React.Component<any, null> {
     this.props.getCurrency();
     this.props.getLockedDate();
     this.props.getAdministrationSites();
-  }
-
-  componentWillUnmount() {
-    this.props.clearListState();
   }
 
   render() {
@@ -90,8 +85,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => {
     dispatch(getFilters("Banking"));
   },
-  getLockedDate: () => dispatch(getAccountTransactionLockedDate()),
-  clearListState: () => dispatch(clearListState())
+  getLockedDate: () => dispatch(getAccountTransactionLockedDate())
 });
 
 export default connect<any, any, any>(

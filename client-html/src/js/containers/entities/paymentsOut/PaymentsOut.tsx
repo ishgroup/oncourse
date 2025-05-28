@@ -8,6 +8,7 @@
 
 import { PaymentOut } from '@api/model';
 import { ExitToApp } from '@mui/icons-material';
+import { Popover } from '@mui/material';
 import Link from '@mui/material/Link';
 import Popover from '@mui/material/Popover';
 import zIndex from '@mui/material/styles/zIndex';
@@ -16,12 +17,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { withStyles } from 'tss-react/mui';
-import {
-  clearListState,
-  getFilters,
-  setListCreatingNew,
-  setListSelection,
-} from '../../../common/components/list-view/actions';
+import { getFilters, setListCreatingNew, setListSelection, } from '../../../common/components/list-view/actions';
 import ListView from '../../../common/components/list-view/ListView';
 import { getManualLink } from '../../../common/utils/getManualLink';
 import { FilterGroup } from '../../../model/common/ListView';
@@ -90,7 +86,6 @@ class PaymentsOut extends React.Component<any, any> {
   }
 
   componentWillUnmount() {
-    this.props.clearListState();
     this.props.clearContraInvoices();
   }
 
@@ -203,7 +198,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getAdministrationSites: () => dispatch(getAdministrationSites()),
   getAccounts: () => getPlainAccounts(dispatch),
-  clearListState: () => dispatch(clearListState()),
   getActivePaymentOutMethods: () => dispatch(getActivePaymentOutMethods()),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),

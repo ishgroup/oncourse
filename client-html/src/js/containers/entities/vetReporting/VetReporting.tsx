@@ -7,6 +7,7 @@
  */
 
 import { Contact } from '@api/model';
+import { Typography } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { isBefore } from 'date-fns';
 import React, { Dispatch, useEffect, useState } from 'react';
@@ -19,12 +20,7 @@ import student from '../../../../images/student.png';
 import tutor from '../../../../images/tutor.png';
 import { checkPermissions } from '../../../common/actions';
 import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
-import {
-  clearListState,
-  getFilters,
-  setListCustomTableModel,
-  setListEditRecord
-} from '../../../common/components/list-view/actions';
+import { getFilters, setListCustomTableModel, setListEditRecord } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
 import ListView from '../../../common/components/list-view/ListView';
 import { getManualLink } from '../../../common/utils/getManualLink';
@@ -203,7 +199,6 @@ interface VetReportingProps {
   getRecords?: () => void;
   getFilters?: () => void;
   setCustomTableModel?: () => void;
-  clearListState?: () => void;
   getTags?: () => void;
   getCountries?: () => void;
   getLanguages?: () => void;
@@ -223,7 +218,6 @@ interface VetReportingProps {
 
 const VetReporting: React.FC<VetReportingProps> = props => {
   const {
-    clearListState,
     onInit,
     onMount,
     getPermissions,
@@ -278,9 +272,6 @@ const VetReporting: React.FC<VetReportingProps> = props => {
   useEffect(() => {
     onMount();
     getPermissions();
-    return () => {
-      clearListState();
-    };
   }, []);
 
   const getContactFullNameWithTitle = ({ student }: VetReport) => student &&
@@ -337,7 +328,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getContactRelationTypes());
     dispatch(getActiveFundingContracts(true));
   },
-  clearListState: () => dispatch(clearListState()),
   getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Enrolment", method: "GET" }));

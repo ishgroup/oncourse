@@ -6,28 +6,28 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Account, MembershipProduct, Tax } from "@api/model";
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize } from "redux-form";
-import { checkPermissions, getUserPreferences } from "../../../common/actions";
-import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { plainContactRelationTypePath, plainCorporatePassPath } from "../../../constants/Api";
-import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { State } from "../../../reducers/state";
-import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
-import { getListTags } from "../../tags/actions";
-import { getPlainAccounts } from "../accounts/actions";
-import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
-import { getPlainTaxes } from "../taxes/actions";
-import MembershipProductEditView from "./components/MembershipProductEditView";
+import { Account, MembershipProduct, Tax } from '@api/model';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import { checkPermissions, getUserPreferences } from '../../../common/actions';
+import { getCommonPlainRecords } from '../../../common/actions/CommonPlainRecordsActions';
+import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
+import { getFilters, setListEditRecord, } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { plainContactRelationTypePath, plainCorporatePassPath } from '../../../constants/Api';
+import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID, PLAIN_LIST_MAX_PAGE_SIZE } from '../../../constants/Config';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
+import { getDataCollectionRules, getEntityRelationTypes } from '../../preferences/actions';
+import { getListTags } from '../../tags/actions';
+import { getPlainAccounts } from '../accounts/actions';
+import BulkEditCogwheelOption from '../common/components/BulkEditCogwheelOption';
+import { getPlainTaxes } from '../taxes/actions';
+import MembershipProductEditView from './components/MembershipProductEditView';
 
 interface MembershipProductsProps {
   onInit?: (initial: MembershipProduct) => void;
@@ -37,7 +37,6 @@ interface MembershipProductsProps {
   getRelationTypes?: () => void;
   getAccounts?: () => void;
   getTaxes?: () => void;
-  clearListState?: () => void;
   getDataCollectionRules?: () => void;
   getDefaultIncomeAccount?: () => void;
   accounts?: Account[];
@@ -125,7 +124,6 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
   const {
     onInit,
     getFilters,
-    clearListState,
     getAccounts,
     getTaxes,
     getDefaultIncomeAccount,
@@ -164,9 +162,6 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
     checkPermissions();
     getRelationTypes();
     getDataCollectionRules();
-    return () => {
-      clearListState();
-    };
   }, []);
 
   return (
@@ -214,7 +209,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getAccounts: () => getPlainAccounts(dispatch, "income"),
   getTags: () => dispatch(getListTags("MembershipProduct")),
   getFilters: () => dispatch(getFilters("MembershipProduct")),
-  clearListState: () => dispatch(clearListState()),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
   getRelationTypes: () => dispatch(getEntityRelationTypes()),
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),
