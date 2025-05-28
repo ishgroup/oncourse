@@ -18,7 +18,6 @@ import { initialize } from 'redux-form';
 import { checkPermissions, getUserPreferences } from '../../../common/actions';
 import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
 import {
-  clearListState,
   getFilters,
   setListCreatingNew,
   setListEditRecord,
@@ -137,7 +136,6 @@ const manualLink = getManualLink("about-invoices");
 const secondaryColumnCondition = row => (row.invoiceNumber ? "Invoice #" + row.invoiceNumber : "Quote #" + row.quoteNumber);
 
 const Invoices = React.memo<any>(({
-  clearListState,
   setListCreatingNew,
   selection,
   history,
@@ -150,7 +148,6 @@ const Invoices = React.memo<any>(({
   }) => {
   useEffect(() => {
     onMount();
-    return clearListState;
   }, []);
 
   const [createMenuOpened, setCreateMenuOpened] = useState(false);
@@ -295,7 +292,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getListTags("AbstractInvoice"));
     dispatch(getUserPreferences([ACCOUNT_DEFAULT_INVOICELINE_ID]));
   },
-  clearListState: () => dispatch(clearListState()),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
 });

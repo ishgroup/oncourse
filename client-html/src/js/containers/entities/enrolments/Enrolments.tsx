@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
@@ -24,7 +25,7 @@ import { getFormInitialValues, getFormValues, initialize } from 'redux-form';
 import { checkPermissions } from '../../../common/actions';
 import { IAction } from '../../../common/actions/IshAction';
 import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
-import { clearListState, getFilters, setListEditRecord, } from '../../../common/components/list-view/actions';
+import { getFilters, setListEditRecord, } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
 import ListView from '../../../common/components/list-view/ListView';
 import { getWindowHeight, getWindowWidth } from '../../../common/utils/common';
@@ -49,7 +50,6 @@ interface EnrolmentsProps {
   onInit?: (initial: Enrolment) => void;
   onSave?: (id: number, enrolment: Enrolment) => void;
   getFilters?: () => void;
-  clearListState?: () => void;
   getTags?: () => void;
   getGradingTypes?: () => void;
   getPermissions?: () => void;
@@ -161,7 +161,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
     onSave,
     getFilters,
     getPermissions,
-    clearListState,
     getTags,
     getFundingContracts,
     getGradingTypes,
@@ -185,8 +184,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
     getFundingContracts();
     getPermissions();
     getGradingTypes();
-
-    return clearListState;
   }, []);
 
   useEffect(() => {
@@ -369,7 +366,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getGradingTypes: () => dispatch(getGradingTypes()),
   getFilters: () => dispatch(getFilters("Enrolment")),
   getFundingContracts: () => dispatch(getActiveFundingContracts(true)),
-  clearListState: () => dispatch(clearListState()),
   onSave: (id: number, enrolment: Enrolment) => dispatch(updateEntityRecord(id, "Enrolment", enrolment)),
   getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));

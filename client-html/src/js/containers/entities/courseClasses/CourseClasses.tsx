@@ -18,6 +18,7 @@ import {
   TableModel
 } from '@api/model';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from '@mui/material';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import $t from '@t';
 import { format } from 'date-fns';
 import {
@@ -39,7 +40,6 @@ import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/
 import { postNoteItem, putNoteItem } from '../../../common/components/form/notes/actions';
 import { validateNoteCreate, validateNoteUpdate } from '../../../common/components/form/notes/utils';
 import {
-  clearListState,
   getFilters,
   setListCreatingNew,
   setListEditRecord,
@@ -87,7 +87,6 @@ interface CourseClassesProps {
   onFirstRender?: NoArgFunction;
   onInit?: NoArgFunction;
   onUpdate?: (id: number, courseClass: CourseClass) => void;
-  clearListState?: NoArgFunction;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   dispatch?: Dispatch<IAction>;
   values?: CourseClass;
@@ -786,7 +785,6 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
     dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone,isVirtual", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
   },
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
-  clearListState: () => dispatch(clearListState()),
   setListCreatingNew: creatingNew => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: selection => dispatch(setListSelection(selection)),
 });

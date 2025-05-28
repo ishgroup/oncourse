@@ -3,26 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Outcome } from "@api/model";
-import React, { Dispatch, useEffect } from "react";
-import { connect } from "react-redux";
-import { initialize } from "redux-form";
-import { checkPermissions } from "../../../common/actions";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { fundingUploadsPath } from "../../../constants/Api";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
-import { getOutcomeTags } from "./actions";
-import OutcomeEditView from "./components/OutcomeEditView";
+import { Outcome } from '@api/model';
+import React, { Dispatch, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { initialize } from 'redux-form';
+import { checkPermissions } from '../../../common/actions';
+import { getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { fundingUploadsPath } from '../../../constants/Api';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import BulkEditCogwheelOption from '../common/components/BulkEditCogwheelOption';
+import { getOutcomeTags } from './actions';
+import OutcomeEditView from './components/OutcomeEditView';
 
 interface OutcomesProps {
   onInit?: () => void;
   getFilters?: () => void;
   getTags?: () => void;
-  clearListState?: () => void;
   checkPermissions?: () => void;
 }
 
@@ -122,7 +121,6 @@ const Outcomes: React.FC<OutcomesProps> = props => {
     onInit,
     getFilters,
     getTags,
-    clearListState,
     checkPermissions
   } = props;
 
@@ -130,9 +128,6 @@ const Outcomes: React.FC<OutcomesProps> = props => {
     getFilters();
     getTags();
     checkPermissions();
-    return () => {
-      clearListState();
-    };
   }, []);
 
   return (
@@ -167,7 +162,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getOutcomeTags());
   },
   getFilters: () => dispatch(getFilters("Outcome")),
-  clearListState: () => dispatch(clearListState()),
   checkPermissions: () => dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
 });
 

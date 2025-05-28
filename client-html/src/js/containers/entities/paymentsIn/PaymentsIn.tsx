@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { checkPermissions } from '../../../common/actions';
-import { clearListState, getFilters, } from '../../../common/components/list-view/actions';
+import { getFilters, } from '../../../common/components/list-view/actions';
 import ListView from '../../../common/components/list-view/ListView';
 import { getWindowHeight, getWindowWidth } from '../../../common/utils/common';
 import { getManualLink } from '../../../common/utils/getManualLink';
@@ -80,7 +80,6 @@ const PaymentsIn = ({
     getLockedDate,
     getAdministrationSites,
     getQePermissions,
-    clearListState,
     hasQePermissions
   }) => {
   const [createMenuOpen, setCreateCreateMenuOpen] = useState(false);
@@ -90,8 +89,6 @@ const PaymentsIn = ({
     getLockedDate();
     getAdministrationSites();
     getQePermissions();
-
-    return clearListState;
   }, []);
 
     return (
@@ -174,7 +171,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("PaymentIn"));
   },
   getAdministrationSites: () => dispatch(getAdministrationSites()),
-  clearListState: () => dispatch(clearListState()),
   getQePermissions: () => dispatch(checkPermissions({ keyCode: "PAYMENT_IN_CREATE" }))
 });
 

@@ -6,14 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from "@api/model";
-import { AnyArgFunction } from "ish-ui";
-import { GetRecordsArgs, SavingFilterState } from "../../../../model/common/ListView";
-import { MessageData } from "../../../../model/common/Message";
-import { CustomTableModelName, EntityName } from "../../../../model/entities/common";
-import { FormMenuTag } from "../../../../model/tags";
-import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
-import { IAction } from "../../../actions/IshAction";
+import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from '@api/model';
+import { AnyArgFunction } from 'ish-ui';
+import { GetRecordsArgs, SavingFilterState } from '../../../../model/common/ListView';
+import { MessageData } from '../../../../model/common/Message';
+import { CustomTableModelName, EntityName } from '../../../../model/entities/common';
+import { FormMenuTag } from '../../../../model/tags';
+import { _toRequestType, FULFILLED } from '../../../actions/ActionUtils';
+import { IAction } from '../../../actions/IshAction';
 
 // Common list actions
 export const GET_RECORDS_REQUEST = _toRequestType("get/records");
@@ -41,8 +41,6 @@ export const UPDATE_TABLE_MODEL_REQUEST = _toRequestType("update/table/model");
 export const BULK_CHANGE_RECORDS = _toRequestType("post/listView/bulkChange");
 
 export const FIND_RELATED_BY_FILTER = "find/related/byFilter";
-
-export const CLEAR_LIST_STATE = "clear/listView";
 
 export const SET_LIST_CORE_FILTERS = "set/listView/coreFilters";
 
@@ -135,10 +133,6 @@ export const setRecipientsMessageData = (recepients: MessageData) => ({
 
 export const clearRecipientsMessageData = () => ({
   type: CLEAR_RECIPIENTS_MESSAGE_DATA
-});
-
-export const clearListState = () => ({
-  type: CLEAR_LIST_STATE
 });
 
 export const setListEditRecordFetching = () => ({
