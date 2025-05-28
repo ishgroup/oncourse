@@ -18,7 +18,6 @@ import {
   TableModel
 } from '@api/model';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from '@mui/material';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import $t from '@t';
 import { format } from 'date-fns';
 import {
