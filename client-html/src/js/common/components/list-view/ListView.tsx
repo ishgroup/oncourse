@@ -719,7 +719,6 @@ function ListView(props: ListCompProps) {
       }
       if (state.threeColumn) {
         ignoreCheckDirtyOnSelection.current = true;
-        onSelection([]);
       }
     }
   }, [
@@ -786,22 +785,21 @@ function ListView(props: ListCompProps) {
   ]);
 
   useEffect(() => {
-    if (params.id && !selection.includes(params.id)) {
-      ignoreCheckDirtyOnSelection.current = true;
-      onSelection([params.id]);
-    }
-    if (!selection.length && params.id) {
-      updateHistory(url.replace(`/${params.id}`, ""), location.search);
-    }
-
     if (selection.length && selection[0] !== "new" && typeof deleteDisabledCondition === "function") {
       updateDeleteCondition(!deleteDisabledCondition(props));
     }
+    if (!selection.length && params.id === "new") {
+      updateHistory(url.replace(`/${params.id}`, ""), location.search);
+    }
   }, [
-    params.id,
     selection,
-    location.search,
     deleteDisabledCondition
+  ]);
+
+  useEffect(() => {
+    onSelection(params.id ? [params.id] : []);
+  }, [
+    params.id
   ]);
 
   useEffect(() => {
