@@ -65,8 +65,6 @@ export const EpicUpdateClassesDiscounts: Epic<any, State> = (action$: Observable
       const actions = [];
       const items = [];
 
-      console.log('!!!!!!', { enrolments, forcePricesUpdate, items });
-
       await Promise.all(
         enrolments.map(e =>
           CheckoutService
