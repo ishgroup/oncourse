@@ -124,7 +124,7 @@ const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  fundingInvoices: (getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state) as any).fundingInvoices,
+  fundingInvoices: (getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state) as any)?.fundingInvoices,
   syncErrors: getFormSyncErrors(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state),
   contracts: state.export.contracts,
 });

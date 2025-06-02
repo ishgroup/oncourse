@@ -151,6 +151,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
               " https://secure.ewaypayments.com" +
               " https://*.s3.ap-southeast-2.amazonaws.com" +
               " https://*.ish.com.au" +
+              " https://notify.bugsnag.com/" +
               " 'unsafe-inline';" +
               " img-src * 'self' data: https:;" +
               " frame-src 'self' data: https:;"
