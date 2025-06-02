@@ -58,7 +58,7 @@ const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
     activeField,
     titles,
     contracts,
-    fundingInvoices
+    fundingInvoices = []
   } = props;
 
   const selectedItemIndex = fundingInvoices?.findIndex(i => i.active);
@@ -107,7 +107,7 @@ const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
             </div>
               )}
           </div>
-          <Collapse in={fundingInvoices[selectedItemIndex].trackAmountOwing} mountOnEnter unmountOnExit>
+          <Collapse in={fundingInvoices[selectedItemIndex]?.trackAmountOwing} mountOnEnter unmountOnExit>
             <CheckoutFundingInvoiceSummaryList
               dispatch={dispatch}
               syncErrors={syncErrors}
