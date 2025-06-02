@@ -61,7 +61,7 @@ const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
     fundingInvoices
   } = props;
 
-  const selectedItemIndex = fundingInvoices.findIndex(i => i.active);
+  const selectedItemIndex = fundingInvoices?.findIndex(i => i.active);
   
   return (
     <AppBarContainer
