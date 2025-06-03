@@ -276,7 +276,7 @@ class Invoice extends _Invoice implements InvoiceInterface, ExpandableTrait {
         if (dateDue.isAfter(currentDate)) {
             createDueDate(currentPaymentInWithVoucherAmount, currentPaymentInDate)
             Money nextPaymentDueAmount = totalIncTax.subtract(currentPaymentInWithVoucherAmount)
-            if (nextPaymentDueAmount > 0) {
+            if (nextPaymentDueAmount > Money.ZERO) {
                 createDueDate(nextPaymentDueAmount, dateDue)
             }
         } else {
