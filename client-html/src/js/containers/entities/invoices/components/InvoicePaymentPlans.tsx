@@ -135,7 +135,8 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
               <StepButton onClick={() => handleStep(index)} component="div" classes={{ root: classes.stepButton }}>
                 <StepLabel
                   classes={{
-                    root: "w-100"
+                    root: "w-100 textSecondaryColor",
+                    completed: 'primaryColor'
                   }}
                   error={!field.successful && !isPaymentDue}
                 >
