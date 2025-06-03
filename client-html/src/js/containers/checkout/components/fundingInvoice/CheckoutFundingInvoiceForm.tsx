@@ -3,12 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Currency } from '@api/model';
 import { Collapse } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import clsx from 'clsx';
 import React from 'react';
 import { connect } from 'react-redux';
-import { DecoratedFormProps, getFormSyncErrors, getFormValues, reduxForm } from 'redux-form';
+import { DecoratedFormProps, getFormValues, reduxForm } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import FormField from '../../../../common/components/form/formFields/FormField';
 import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
@@ -33,6 +34,7 @@ interface Props extends DecoratedFormProps {
   activeField?: string;
   titles?: any;
   contracts?: any;
+  currency?: Currency;
   fundingInvoices?: CheckoutFundingInvoice[];
 }
 
@@ -52,12 +54,12 @@ const validateFundingInvoices = (fundingInvoices: CheckoutFundingInvoice[]) => {
 const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
   const {
     classes,
-    syncErrors,
     dispatch,
     form,
     activeField,
     titles,
     contracts,
+    currency,
     fundingInvoices = []
   } = props;
 
@@ -110,9 +112,9 @@ const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
           <Collapse in={fundingInvoices[selectedItemIndex]?.trackAmountOwing} mountOnEnter unmountOnExit>
             <CheckoutFundingInvoiceSummaryList
               dispatch={dispatch}
-              syncErrors={syncErrors}
               fundingInvoice={fundingInvoices[selectedItemIndex]}
               selectedItemIndex={selectedItemIndex}
+              currency={currency}
               form={form}
             />
           </Collapse>
@@ -125,16 +127,16 @@ const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
 
 const mapStateToProps = (state: State) => ({
   fundingInvoices: (getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state) as any)?.fundingInvoices,
-  syncErrors: getFormSyncErrors(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state),
   contracts: state.export.contracts,
+  currency: state.location.currency
 });
 
-export default reduxForm<{ fundingInvoices?: CheckoutFundingInvoice[] }, any>({
+export default connect<any, any, any>(mapStateToProps, null)( reduxForm<{ fundingInvoices?: CheckoutFundingInvoice[] }, any>({
   form: CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM,
   initialValues: {
     fundingInvoices: []
   }
 })(withStyles(
-  connect<any, any, any>(mapStateToProps, null)(CheckoutFundingInvoiceFormBase),
+  CheckoutFundingInvoiceFormBase,
   styles
-));
+)));
