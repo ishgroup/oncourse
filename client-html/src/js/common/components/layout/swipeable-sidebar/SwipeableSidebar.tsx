@@ -107,7 +107,7 @@ const styles = (theme: AppTheme) =>
       transform: "translateX(-100%)"
     },
     categoryVisible: {
-      transform: "translateX(1px)"
+      transform: "translateX(1px) !important"
     },
     paperBorder: {
       borderRight: `1px solid ${theme.palette.divider}`
