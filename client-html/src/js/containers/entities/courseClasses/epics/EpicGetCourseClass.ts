@@ -11,6 +11,7 @@ import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/Fetc
 import { getNoteItems } from '../../../../common/components/form/notes/actions';
 import { SET_LIST_EDIT_RECORD } from '../../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
+import { processError } from '../../../../common/epics/EpicUtils';
 import * as EpicUtils from '../../../../common/epics/EpicUtils';
 import AccessService from '../../../../common/services/AccessService';
 import { courseClassBudgetPath, plainEnrolmentPath } from '../../../../constants/Api';
@@ -29,11 +30,17 @@ const enrolmentAccessRequest: PermissionRequest = { path: plainEnrolmentPath, me
 const request: EpicUtils.Request<{  courseClass: CourseClass, budgetAccess: boolean, enrolmentAccess: boolean }, number> = {
   type: GET_COURSE_CLASS,
   hideLoadIndicator: true,
-  getData: async id => {
+  getData: async (id, state) => {
     const courseClass = await getEntityItemById("CourseClass", id);
-    const budgetAccess = await AccessService.checkPermissions(budgetAccessRequest);
-    const enrolmentAccess = await AccessService.checkPermissions(enrolmentAccessRequest);
-    
+
+    const budgetAccess = state.access[courseClassBudgetPath]
+      ? state.access[courseClassBudgetPath]['GET']
+      : await AccessService.checkPermissions(budgetAccessRequest);
+
+    const enrolmentAccess = state.access[plainEnrolmentPath]
+      ? state.access[plainEnrolmentPath]['GET']
+      : await AccessService.checkPermissions(enrolmentAccessRequest);
+
     return { courseClass, budgetAccess: budgetAccess.hasAccess, enrolmentAccess: enrolmentAccess.hasAccess };
   },
   processData: ({ courseClass, budgetAccess, enrolmentAccess }, s, id) => {
