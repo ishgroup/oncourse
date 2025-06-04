@@ -3,17 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { initialize } from "redux-form";
-import { Epic } from "redux-observable";
-import { clearActionsQueue, getUserPreferences } from "../../../../common/actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { getNoteItems } from "../../../../common/components/form/notes/actions";
-import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { AVETMIS_ID_KEY, REPLICATION_ENABLED_KEY } from "../../../../constants/Config";
-import { VetReport } from "../../../../model/entities/VetReporting";
-import { getEntityItemById } from "../../common/entityItemsService";
+import { PermissionRequest } from '@api/model';
+import { initialize } from 'redux-form';
+import { Epic } from 'redux-observable';
+import { clearActionsQueue, getUserPreferences } from '../../../../common/actions';
+import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import { getNoteItems } from '../../../../common/components/form/notes/actions';
+import { SET_LIST_EDIT_RECORD } from '../../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
+import * as EpicUtils from '../../../../common/epics/EpicUtils';
+import AccessService from '../../../../common/services/AccessService';
+import {
+  plainCertificatePath,
+  plainEnrolmentPath,
+  plainOutcomePath,
+  plainPaymentInPath,
+  plainPriorLearningPath
+} from '../../../../constants/Api';
+import { AVETMIS_ID_KEY, REPLICATION_ENABLED_KEY } from '../../../../constants/Config';
+import { VetReport } from '../../../../model/entities/VetReporting';
+import { getEntityItemById } from '../../common/entityItemsService';
 import {
   GET_CONTACT,
   getContactCertificates,
@@ -21,7 +30,7 @@ import {
   getContactOutcomes,
   getContactPriorLearnings,
   getContactsStoredCc
-} from "../actions";
+} from '../actions';
 
 export const formatContactRelationIds = relations => relations.map(r => {
     if (r.contactFromId) {
@@ -36,15 +45,54 @@ export const formatContactRelationIds = relations => relations.map(r => {
     };
   });
 
+const enrolmentAccessRequest: PermissionRequest = { path: plainEnrolmentPath, method: "GET" };
+const priorLearningtAccessRequest: PermissionRequest = { path: plainPriorLearningPath, method: "GET" };
+const outcomesAccessRequest: PermissionRequest = { path: plainOutcomePath, method: "GET" };
+const certificatesAccessRequest: PermissionRequest = { path: plainCertificatePath, method: "GET" };
+const paymentInAccessRequest: PermissionRequest = { path: plainPaymentInPath, method: "GET" };
+
 const request: EpicUtils.Request = {
   type: GET_CONTACT,
-  getData: (id: number) => getEntityItemById("Contact", id),
-  processData: (contact: any, s, id) => {
-    const enrolmentsPermissions = s.access["/a/v1/list/plain?entity=Enrolment"] && s.access["/a/v1/list/plain?entity=Enrolment"]["GET"];
-    const priorLearningsPermissions = s.access["/a/v1/list/plain?entity=PriorLearning"] && s.access["/a/v1/list/plain?entity=PriorLearning"]["GET"];
-    const outcomesPermissions = s.access["/a/v1/list/plain?entity=Outcome"] && s.access["/a/v1/list/plain?entity=Outcome"]["GET"];
-    const certificatesPermissions = s.access["/a/v1/list/plain?entity=Certificate"] && s.access["/a/v1/list/plain?entity=Certificate"]["GET"];
-    const paymentInPermissions = s.access["/a/v1/list/plain?entity=PaymentIn"] && s.access["/a/v1/list/plain?entity=PaymentIn"]["GET"];
+  getData: async (id: number, state) => {
+    const contact = await getEntityItemById("Contact", id);
+    
+    const enrolmentsPermissions = state.access[plainEnrolmentPath]
+      ? state.access[plainEnrolmentPath]['GET']
+      : await AccessService.checkPermissions(enrolmentAccessRequest);
+
+    const priorLearningsPermissions = state.access[plainPriorLearningPath]
+      ? state.access[plainPriorLearningPath]['GET']
+      : await AccessService.checkPermissions(priorLearningtAccessRequest);
+
+    const outcomesPermissions = state.access[plainOutcomePath]
+      ? state.access[plainOutcomePath]['GET']
+      : await AccessService.checkPermissions(outcomesAccessRequest);
+
+    const certificatesPermissions = state.access[plainCertificatePath]
+      ? state.access[plainCertificatePath]['GET']
+      : await AccessService.checkPermissions(certificatesAccessRequest);
+
+    const paymentInPermissions = state.access[plainPaymentInPath]
+      ? state.access[plainPaymentInPath]['GET']
+      : await AccessService.checkPermissions(paymentInAccessRequest);
+    
+    return {
+      contact,
+      enrolmentsPermissions,
+      priorLearningsPermissions,
+      outcomesPermissions,
+      certificatesPermissions,
+      paymentInPermissions
+    };
+  },
+  processData: ({
+    contact,
+    enrolmentsPermissions,
+    priorLearningsPermissions,
+    outcomesPermissions,
+    certificatesPermissions,
+    paymentInPermissions
+  }: any, s, id) => {
 
     const studentActions = [];
 
