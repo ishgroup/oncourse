@@ -53,7 +53,7 @@ const TutorPayContent: React.FC<Props> = ({
   const onLockClick = () => {
     setOnCostLocked(prev => {
       if (!prev) {
-        dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", defaultOnCostRate));
+        dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", prev ? defaultOnCostRate : null));
       }
       return !prev;
     });
