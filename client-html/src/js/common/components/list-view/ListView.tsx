@@ -348,7 +348,7 @@ function ListView(props: ListCompProps) {
   };
 
   const onSelection = newSelection => {
-    if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
+    if (newSelection?.length === 1 && selection?.length === 1 && newSelection[0] === selection[0]) {
       return;
     }
 

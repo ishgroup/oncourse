@@ -22,11 +22,13 @@ const ModulesEditView = (props: any) => {
     isNew, values, updateDeleteCondition, twoColumn, syncErrors
   } = props;
 
-  const isCustom = values && values.isCustom === true;
+  const isCustom = values?.isCustom === true;
 
-  if (updateDeleteCondition) {
-    updateDeleteCondition(isCustom);
-  }
+  React.useEffect(() => {
+    if (updateDeleteCondition) {
+      updateDeleteCondition(values?.isCustom);
+    }
+  }, [values?.isCustom, updateDeleteCondition]);
 
   const isDisabled = isNew ? false : !isCustom;
 
