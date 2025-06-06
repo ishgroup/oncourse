@@ -161,7 +161,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
     }
 
     @Override
-    LoginResponseDTO loginSso(String ssoType, String authorizationCode) {
+    LoginResponseDTO loginSso(String ssoType, String authorizationCode, Boolean kickOut) {
         def sso = getSsoByType(ssoType)
 
         def configuration = ObjectSelect.query(IntegrationConfiguration)
@@ -190,7 +190,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         }
 
         checkUser(user)
-        checkAnotherSession(user)
+        checkAnotherSession(user, kickOut)
         sessionManager.createUserSession(user, prefController.timeoutSec, request)
 
         LocalDateTime lastLoginOn = LocalDateUtils.dateToTimeValue(user.lastLoginOn != null ? user.lastLoginOn : user.createdOn)

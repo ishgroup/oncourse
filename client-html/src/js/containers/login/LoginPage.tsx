@@ -38,6 +38,7 @@ import {
   getEmailByToken,
   getSsoIntegrations,
   postLoginRequest,
+  postSsoAuthenticationRequest,
   updatePasswordRequest
 } from './actions';
 import AuthCodeFieldRenderer from './components/AuthCodeFieldRenderer';
@@ -196,10 +197,10 @@ interface Props extends LoginState {
   handleSubmit: any;
   anyTouched: boolean;
   invalid: boolean;
-  asyncValidating: boolean;
   complexPass: any;
   totpUrl: string;
   postLoginRequest: (body: LoginRequest, host?: string, port?: number) => void;
+  postSsoAuthenticationRequest: (ssoType: string, code: string, kickOut?: boolean) => void;
   updatePasswordRequest: (value: string) => void;
   setLoginState: (value: LoginState) => void;
   isComplexPassRequired: () => void;
@@ -319,14 +320,22 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
       isUpdatePassword,
       isNewPassword,
       isKickOut,
+      submittingSSOType,
       totpUrl,
       isOptionalTOTP,
       createPasswordRequest,
+      postSsoAuthenticationRequest
     } = this.props;
 
     const {
       eulaAccess
     } = this.state;
+
+    if (submittingSSOType && isKickOut) {
+      const params = new URLSearchParams(window.location.search);
+      postSsoAuthenticationRequest(submittingSSOType, params.get("code"), true);
+      return;
+    }
 
     if (this.isInviteForm) {
       createPasswordRequest(this.token, values.newPassword);
@@ -694,7 +703,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                           <Button
                             ref={this.submitRef}
                             type="submit"
-                            disabled={!anyTouched || invalid || asyncValidating || (this.isInviteForm && !email)}
+                            disabled={(!isKickOut && !anyTouched) || invalid || asyncValidating || (this.isInviteForm && !email)}
                             classes={{
                               root: classes.loginButton,
                               disabled: classes.loginButtonDisabled
@@ -781,6 +790,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   postLoginRequest: (body: LoginRequest, host?: string, port?: number) =>
     dispatch(postLoginRequest(body, host, port)),
   getSSO: () => dispatch(getSsoIntegrations()),
+  postSsoAuthenticationRequest: (ssoType: string, code: string, kickOut?: boolean) => dispatch(postSsoAuthenticationRequest(
+    ssoType,
+  code,
+  kickOut)),
   updatePasswordRequest: (value: string) => dispatch(updatePasswordRequest(value)),
   setLoginState: (value: LoginState) => dispatch(setLoginState(value)),
   isComplexPassRequired: () => dispatch(isComplexPassRequired()),
