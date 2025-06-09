@@ -64,13 +64,13 @@ public final class MoneyUtil {
 			return price;
 		}
 
-		Money result = price.multiply(taxRate.add(BigDecimal.ONE));
+		Money result = Money.of(price.multiply(taxRate.add(BigDecimal.ONE)).toBigDecimal());
 
 		if (taxAdjustment == null) {
 			return result;
 		}
 
-		return result.add(taxAdjustment).round(MoneyRounding.ROUNDING_EVEN);
+		return result.add(taxAdjustment);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public final class MoneyUtil {
 			return Money.ZERO;
 		}
 
-		return priceInc.subtract(priceEx.multiply(taxRate.add(BigDecimal.ONE)));
+		return priceInc.subtract(priceEx.multiply(taxRate.add(BigDecimal.ONE)).toBigDecimal());
 	}
 
 }
