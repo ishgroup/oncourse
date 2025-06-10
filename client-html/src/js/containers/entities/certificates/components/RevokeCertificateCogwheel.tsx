@@ -122,7 +122,7 @@ const RevokeCertificateCogwheel: React.FunctionComponent<any> = React.memo(props
         className={menuItemClass}
         onClick={() => setOpenDialog(true)}
       >
-        {$t('revoke_certificate', selection.length)}
+        {$t('revoke_certificate', [selection.length])}
         {selection.length > 1 && "s"}
       </MenuItem>
     </>
