@@ -793,6 +793,7 @@ function ListView(props: ListCompProps) {
   ]);
 
   useEffect(() => {
+    if (!params.id && !state.threeColumn) return;
     onSelection(params.id ? [params.id] : []);
   }, [
     params.id
