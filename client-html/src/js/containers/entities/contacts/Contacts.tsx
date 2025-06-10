@@ -382,7 +382,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
   getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  getPermissions: () => {
+    getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Enrolment", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PriorLearning", method: "GET" }));

@@ -177,15 +177,21 @@ function MainBase(
   ]);
   
   useEffect(() => {
-    window.addEventListener("storage", updateStateFromStorage);
     window.addEventListener("beforeunload", onWindowClose, true);
+
+    return () => {
+      window.removeEventListener("beforeunload", onWindowClose);
+    };
+  }, [isAnyFormDirty]);
+
+  useEffect(() => {
+    window.addEventListener("storage", updateStateFromStorage);
 
     return () => {
       LSRemoveItem(APPLICATION_THEME_STORAGE_NAME);
       window.removeEventListener("storage", updateStateFromStorage);
-      window.removeEventListener("beforeunload", onWindowClose);
     };
-  }, [isAnyFormDirty]);
+  }, []);
 
   useEffect(() => {
     if (isLogged) {

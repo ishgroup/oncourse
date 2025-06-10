@@ -29,8 +29,8 @@ const useStyles = makeAppStyles()(theme => ({
 }));
 
 const TagDotRenderer = ({
-                          colors, className = null
-                        }) => {
+  colors = [], className = null
+}) => {
   const { classes } = useStyles();
 
   return (
