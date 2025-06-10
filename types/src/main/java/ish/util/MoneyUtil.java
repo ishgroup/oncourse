@@ -55,6 +55,10 @@ public final class MoneyUtil {
 	 * @return calculated Money value
 	 */
 	public static Money getPriceIncTax(Money price, BigDecimal taxRate, Money taxAdjustment) {
+		return getPriceIncTaxRounded(price, taxRate, taxAdjustment, false);
+	}
+
+	public static Money getPriceIncTaxRounded(Money price, BigDecimal taxRate, Money taxAdjustment, boolean roundRequired) {
 
 		if (price == null) {
 			return Money.ZERO;
@@ -64,7 +68,10 @@ public final class MoneyUtil {
 			return price;
 		}
 
-		Money result = Money.of(price.multiply(taxRate.add(BigDecimal.ONE)).toBigDecimal());
+		Money result = price.multiply(taxRate.add(BigDecimal.ONE));
+
+		if(roundRequired)
+			result = Money.of(result.toBigDecimal());
 
 		if (taxAdjustment == null) {
 			return result;
