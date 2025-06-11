@@ -95,7 +95,7 @@ const isDatePayedLocked = (lockedDate: any, datePayed: any, settlementDate: any)
   );
 };
 
-const getPaymentNameById = (paymentMethods: PaymentMethod[], id: number) => paymentMethods.find(payment => payment.id === id).name;
+const getPaymentNameById = (paymentMethods: PaymentMethod[], id: number) => paymentMethods.find(payment => payment.id === id)?.name;
 
 const validateSettlementDatePayed = (settlementDate, allValues) => {
   if (!settlementDate) {
