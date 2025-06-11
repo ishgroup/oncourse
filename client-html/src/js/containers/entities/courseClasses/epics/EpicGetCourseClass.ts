@@ -41,7 +41,7 @@ const request: EpicUtils.Request<{  courseClass: CourseClass, budgetAccess: bool
       ? state.access[plainEnrolmentPath]['GET']
       : await AccessService.checkPermissions(enrolmentAccessRequest);
 
-    return { courseClass, budgetAccess: budgetAccess.hasAccess, enrolmentAccess: enrolmentAccess.hasAccess };
+    return { courseClass, budgetAccess: budgetAccess?.hasAccess, enrolmentAccess: enrolmentAccess?.hasAccess };
   },
   processData: ({ courseClass, budgetAccess, enrolmentAccess }, s, id) => {
     const courseClassEx: CourseClassExtended = { ...courseClass };
