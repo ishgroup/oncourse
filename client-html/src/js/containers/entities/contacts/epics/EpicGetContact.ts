@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PermissionRequest } from '@api/model';
+import { Contact } from '@api/model';
 import { initialize } from 'redux-form';
 import { Epic } from 'redux-observable';
 import { clearActionsQueue, getUserPreferences } from '../../../../common/actions';
@@ -12,7 +12,6 @@ import { getNoteItems } from '../../../../common/components/form/notes/actions';
 import { SET_LIST_EDIT_RECORD } from '../../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
 import * as EpicUtils from '../../../../common/epics/EpicUtils';
-import AccessService from '../../../../common/services/AccessService';
 import {
   plainCertificatePath,
   plainEnrolmentPath,
@@ -21,8 +20,10 @@ import {
   plainPriorLearningPath
 } from '../../../../constants/Api';
 import { AVETMIS_ID_KEY, REPLICATION_ENABLED_KEY } from '../../../../constants/Config';
+import { AccessByPath } from '../../../../model/entities/common';
 import { VetReport } from '../../../../model/entities/VetReporting';
 import { getEntityItemById } from '../../common/entityItemsService';
+import { getAccessesByPath } from '../../common/utils';
 import {
   GET_CONTACT,
   getContactCertificates,
@@ -45,37 +46,34 @@ export const formatContactRelationIds = relations => relations.map(r => {
     };
   });
 
-const enrolmentAccessRequest: PermissionRequest = { path: plainEnrolmentPath, method: "GET" };
-const priorLearningtAccessRequest: PermissionRequest = { path: plainPriorLearningPath, method: "GET" };
-const outcomesAccessRequest: PermissionRequest = { path: plainOutcomePath, method: "GET" };
-const certificatesAccessRequest: PermissionRequest = { path: plainCertificatePath, method: "GET" };
-const paymentInAccessRequest: PermissionRequest = { path: plainPaymentInPath, method: "GET" };
-
-const request: EpicUtils.Request = {
+const request: EpicUtils.Request<{
+  contact: Contact
+  enrolmentsPermissions: AccessByPath,
+  priorLearningsPermissions: AccessByPath,
+  outcomesPermissions: AccessByPath,
+  certificatesPermissions: AccessByPath,
+  paymentInPermissions: AccessByPath
+}> = {
   type: GET_CONTACT,
   getData: async (id: number, state) => {
     const contact = await getEntityItemById("Contact", id);
-    
-    const enrolmentsPermissions = state.access[plainEnrolmentPath]
-      ? state.access[plainEnrolmentPath]['GET']
-      : await AccessService.checkPermissions(enrolmentAccessRequest);
+    const [
+      enrolmentsPermissions,
+      priorLearningsPermissions,
+      outcomesPermissions,
+      certificatesPermissions,
+      paymentInPermissions,
+    ] = await getAccessesByPath(
+      [
+        plainEnrolmentPath,
+        plainPriorLearningPath,
+        plainOutcomePath,
+        plainCertificatePath,
+        plainPaymentInPath
+      ],
+      state
+    );
 
-    const priorLearningsPermissions = state.access[plainPriorLearningPath]
-      ? state.access[plainPriorLearningPath]['GET']
-      : await AccessService.checkPermissions(priorLearningtAccessRequest);
-
-    const outcomesPermissions = state.access[plainOutcomePath]
-      ? state.access[plainOutcomePath]['GET']
-      : await AccessService.checkPermissions(outcomesAccessRequest);
-
-    const certificatesPermissions = state.access[plainCertificatePath]
-      ? state.access[plainCertificatePath]['GET']
-      : await AccessService.checkPermissions(certificatesAccessRequest);
-
-    const paymentInPermissions = state.access[plainPaymentInPath]
-      ? state.access[plainPaymentInPath]['GET']
-      : await AccessService.checkPermissions(paymentInAccessRequest);
-    
     return {
       contact,
       enrolmentsPermissions,
@@ -92,21 +90,21 @@ const request: EpicUtils.Request = {
     outcomesPermissions,
     certificatesPermissions,
     paymentInPermissions
-  }: any, s, id) => {
+  }, s, id) => {
 
     const studentActions = [];
 
     if (contact.student) {
-      if (enrolmentsPermissions) {
+      if (enrolmentsPermissions.hasAccess) {
         studentActions.push(getContactEnrolments(contact.id));
       }
-      if (priorLearningsPermissions) {
+      if (priorLearningsPermissions.hasAccess) {
         studentActions.push(getContactPriorLearnings(contact.id));
       }
-      if (outcomesPermissions) {
+      if (outcomesPermissions.hasAccess) {
         studentActions.push(getContactOutcomes(contact.id));
       }
-      if (certificatesPermissions) {
+      if (certificatesPermissions.hasAccess) {
         studentActions.push(getContactCertificates(contact.id));
       }
     }
@@ -150,6 +148,13 @@ const request: EpicUtils.Request = {
       getUserPreferences([REPLICATION_ENABLED_KEY, AVETMIS_ID_KEY]),
       getNoteItems("Contact", id, LIST_EDIT_VIEW_FORM_NAME),
       initialize(LIST_EDIT_VIEW_FORM_NAME, editRecord),
+      ...[
+        enrolmentsPermissions,
+        priorLearningsPermissions,
+        outcomesPermissions,
+        certificatesPermissions,
+        paymentInPermissions
+      ].filter(p => p.action).map(p => p.action),
       ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
       ...paymentInPermissions ? [getContactsStoredCc(id)] : [],
       ...studentActions
