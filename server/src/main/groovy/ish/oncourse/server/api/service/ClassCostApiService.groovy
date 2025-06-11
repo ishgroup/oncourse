@@ -103,7 +103,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
         ccDto.maximumCost = cayenneModel.maximumCost?.toBigDecimal()
         ccDto.minimumCost = cayenneModel.minimumCost?.toBigDecimal()
         ccDto.actualAmount = cayenneModel.calcActualCost?.toBigDecimal()
-        ccDto.onCostRate = cayenneModel.onCostRate ?: cayenneModel.tutorRole?.definedTutorRole?.currentPayrate?.oncostRate
+        ccDto.onCostRate = cayenneModel.onCostRate != null ? cayenneModel.onCostRate : cayenneModel.tutorRole?.definedTutorRole?.currentPayrate?.oncostRate
         ccDto.unitCount = cayenneModel.unitCount
         ccDto.courseClassTutorId = cayenneModel.tutorRole?.id
         ccDto.tutorRole = cayenneModel.tutorRole?.definedTutorRole?.name
