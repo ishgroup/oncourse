@@ -3,19 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, Course, EntityRelationType, Module, Qualification, Sale, SaleType } from "@api/model";
-import { format } from "date-fns";
-import { EEE_D_MMM_YYYY } from "ish-ui";
-import { initialize } from "redux-form";
-import { clearActionsQueue, executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
-import { getNoteItems } from "../../../../common/components/form/notes/actions";
-import { getRecords, SET_LIST_EDIT_RECORD, setListSelection } from "../../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { NOTE_ENTITIES } from "../../../../constants/Config";
-import { EntityName, ListActionEntity } from "../../../../model/entities/common";
-import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
-import { State } from "../../../../reducers/state";
-import { getEntityRecord } from "../actions";
+import { Account, Course, EntityRelationType, Module, Qualification, Sale, SaleType } from '@api/model';
+import { format } from 'date-fns';
+import { EEE_D_MMM_YYYY } from 'ish-ui';
+import { initialize } from 'redux-form';
+import {
+  checkPermissionsRequestFulfilled,
+  clearActionsQueue,
+  executeActionsQueue,
+  FETCH_SUCCESS
+} from '../../../../common/actions';
+import { getNoteItems } from '../../../../common/components/form/notes/actions';
+import { getRecords, SET_LIST_EDIT_RECORD, setListSelection } from '../../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
+import AccessService from '../../../../common/services/AccessService';
+import { NOTE_ENTITIES } from '../../../../constants/Config';
+import { AccessByPath, EntityName, ListActionEntity } from '../../../../model/entities/common';
+import { EntityRelationTypeRendered } from '../../../../model/entities/EntityRelations';
+import { State } from '../../../../reducers/state';
+import { getEntityRecord } from '../actions';
 
 export const mapEntityDisplayName = (entity: ListActionEntity) => {
   switch (entity) {
@@ -256,3 +262,28 @@ export const getListRecordAfterCreateActions = (entity: EntityName) => [
   setListSelection([]),
   initialize(LIST_EDIT_VIEW_FORM_NAME, null)
 ];
+
+export const getAccessesByPath = async (pathes: string[], state: State, method = 'GET'): Promise<AccessByPath[]> => {
+  const accesses = [];
+  
+  for (const path of pathes) {
+    const accessValue = state.access[path];
+    
+    if (accessValue) {
+      accesses.push( { hasAccess: accessValue[method] });
+    } else {
+      const request = { path, method };
+      const { hasAccess } = await AccessService.checkPermissions(request);
+      accesses.push({
+          hasAccess,
+          action: checkPermissionsRequestFulfilled({
+            ...request,
+            hasAccess
+          }),
+        }
+      );
+    }
+  }
+  
+  return accesses;
+};

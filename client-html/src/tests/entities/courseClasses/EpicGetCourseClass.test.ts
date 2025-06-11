@@ -15,6 +15,7 @@ import {
 import { GET_COURSE_CLASS_COSTS } from '../../../js/containers/entities/courseClasses/components/budget/actions';
 import { GET_COURSE_CLASS_SESSIONS } from '../../../js/containers/entities/courseClasses/components/timetable/actions';
 import { GET_COURSE_CLASS_TUTORS } from '../../../js/containers/entities/courseClasses/components/tutors/actions';
+import { AccessByPath } from '../../../js/model/entities/common';
 import { CourseClassExtended } from '../../../js/model/entities/CourseClass';
 import { DefaultEpic } from '../../common/Default.Epic';
 import { EpicGetCourseClass } from '../../../js/containers/entities/courseClasses/epics/EpicGetCourseClass';
@@ -38,6 +39,21 @@ describe("Get course class epic tests", () => {
       courseClassEx.budget = [];
       courseClassEx.notes = [];
 
+      const budgetAccess: AccessByPath  = {
+        hasAccess: true,
+        action: checkPermissionsRequestFulfilled({
+          ...budgetAccessRequest,
+          hasAccess: true
+        }),
+      }
+      const enrolmentAccess: AccessByPath = {
+        hasAccess: true,
+        action: checkPermissionsRequestFulfilled({
+          ...enrolmentAccessRequest,
+          hasAccess: true
+        }),
+      }
+
       const relatedActions = [
         {
           type: GET_COURSE_CLASS_TUTORS,
@@ -55,6 +71,10 @@ describe("Get course class epic tests", () => {
           type: GET_COURSE_CLASS_ATTENDANCE,
           payload: id
         },
+        ...[
+          budgetAccess,
+          enrolmentAccess
+        ].filter(p => p.action).map(p => p.action)
       ];
 
       relatedActions.push({
@@ -68,14 +88,6 @@ describe("Get course class epic tests", () => {
       });
 
       return [
-        checkPermissionsRequestFulfilled({
-          ...budgetAccessRequest,
-          hasAccess: true
-        }),
-        checkPermissionsRequestFulfilled({
-          ...enrolmentAccessRequest,
-          hasAccess: true
-        }),
         {
           type: SET_LIST_EDIT_RECORD,
           payload: {
