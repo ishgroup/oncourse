@@ -6,17 +6,17 @@
 import { CourseClass, PermissionRequest } from '@api/model';
 import { initialize } from 'redux-form';
 import { Epic } from 'redux-observable';
-import { checkPermissionsRequestFulfilled, clearActionsQueue } from '../../../../common/actions';
+import { clearActionsQueue } from '../../../../common/actions';
 import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
 import { getNoteItems } from '../../../../common/components/form/notes/actions';
 import { SET_LIST_EDIT_RECORD } from '../../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
-import { processError } from '../../../../common/epics/EpicUtils';
 import * as EpicUtils from '../../../../common/epics/EpicUtils';
-import AccessService from '../../../../common/services/AccessService';
 import { courseClassBudgetPath, plainEnrolmentPath } from '../../../../constants/Api';
+import { AccessByPath } from '../../../../model/entities/common';
 import { CourseClassExtended } from '../../../../model/entities/CourseClass';
 import { getEntityItemById } from '../../common/entityItemsService';
+import { getAccessesByPath } from '../../common/utils';
 import { GET_COURSE_CLASS, GET_COURSE_CLASS_ENROLMENTS } from '../actions';
 import { GET_COURSE_CLASS_ASSESSMENTS } from '../components/assessments/actions';
 import { GET_COURSE_CLASS_ATTENDANCE } from '../components/attendance/actions';
@@ -24,24 +24,24 @@ import { GET_COURSE_CLASS_COSTS } from '../components/budget/actions';
 import { GET_COURSE_CLASS_SESSIONS } from '../components/timetable/actions';
 import { GET_COURSE_CLASS_TUTORS } from '../components/tutors/actions';
 
-const budgetAccessRequest: PermissionRequest = { path: courseClassBudgetPath, method: "GET" };
-const enrolmentAccessRequest: PermissionRequest = { path: plainEnrolmentPath, method: "GET" };
-
-const request: EpicUtils.Request<{  courseClass: CourseClass, budgetAccess: boolean, enrolmentAccess: boolean }, number> = {
+const request: EpicUtils.Request<{  courseClass: CourseClass, budgetAccess: AccessByPath, enrolmentAccess: AccessByPath }, number> = {
   type: GET_COURSE_CLASS,
   hideLoadIndicator: true,
   getData: async (id, state) => {
     const courseClass = await getEntityItemById("CourseClass", id);
 
-    const budgetAccess = state.access[courseClassBudgetPath]
-      ? state.access[courseClassBudgetPath]['GET']
-      : await AccessService.checkPermissions(budgetAccessRequest);
+    const [
+      budgetAccess,
+      enrolmentAccess,
+    ] = await getAccessesByPath(
+      [
+        courseClassBudgetPath,
+        plainEnrolmentPath
+      ],
+      state
+    );
 
-    const enrolmentAccess = state.access[plainEnrolmentPath]
-      ? state.access[plainEnrolmentPath]['GET']
-      : await AccessService.checkPermissions(enrolmentAccessRequest);
-
-    return { courseClass, budgetAccess: budgetAccess?.hasAccess, enrolmentAccess: enrolmentAccess?.hasAccess };
+    return { courseClass, budgetAccess, enrolmentAccess };
   },
   processData: ({ courseClass, budgetAccess, enrolmentAccess }, s, id) => {
     const courseClassEx: CourseClassExtended = { ...courseClass };
@@ -70,16 +70,20 @@ const request: EpicUtils.Request<{  courseClass: CourseClass, budgetAccess: bool
         type: GET_COURSE_CLASS_ATTENDANCE,
         payload: id
       },
+      ...[
+        budgetAccess,
+        enrolmentAccess
+      ].filter(p => p.action).map(p => p.action)
     ];
 
-    if (budgetAccess) {
+    if (budgetAccess.hasAccess) {
       relatedActions.push({
         type: GET_COURSE_CLASS_COSTS,
         payload: id
       });
     }
 
-    if (enrolmentAccess) {
+    if (enrolmentAccess.hasAccess) {
       relatedActions.push({
         type: GET_COURSE_CLASS_ENROLMENTS,
         payload: id
@@ -87,14 +91,6 @@ const request: EpicUtils.Request<{  courseClass: CourseClass, budgetAccess: bool
     }
 
     return [
-      checkPermissionsRequestFulfilled({
-        ...budgetAccessRequest,
-        hasAccess: budgetAccess
-      }),
-      checkPermissionsRequestFulfilled({
-        ...enrolmentAccessRequest,
-        hasAccess: enrolmentAccess
-      }),
       {
         type: SET_LIST_EDIT_RECORD,
         payload: {
