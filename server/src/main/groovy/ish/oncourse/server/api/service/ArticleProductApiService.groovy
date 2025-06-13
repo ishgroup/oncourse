@@ -27,6 +27,7 @@ import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.ArticleProductAttachmentRelation
 import ish.oncourse.server.document.DocumentService
+import ish.util.MoneyUtil
 
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
@@ -88,7 +89,7 @@ class ArticleProductApiService extends TaggableApiService<ArticleProductDTO, Art
             articleProductDTO.code = articleProduct.sku
             articleProductDTO.description = articleProduct.description
             articleProductDTO.feeExTax = articleProduct.priceExTax?.toBigDecimal()
-            articleProductDTO.totalFee = getPriceIncTax(articleProduct.priceExTax, articleProduct.tax?.rate, articleProduct.taxAdjustment)?.toBigDecimal()
+            articleProductDTO.totalFee = MoneyUtil.getPriceIncTaxRounded(articleProduct.priceExTax, articleProduct.tax?.rate, articleProduct.taxAdjustment, true)?.toBigDecimal()
             articleProductDTO.taxId = articleProduct.tax?.id
             articleProductDTO.incomeAccountId = articleProduct.incomeAccount?.id
             articleProductDTO.status = articleProduct.isOnSale ? articleProduct.isWebVisible ? CAN_BE_PURCHASED_IN_OFFICE_ONLINE : CAN_BE_PURCHASED_IN_OFFICE : DISABLED
