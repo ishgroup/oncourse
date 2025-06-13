@@ -784,9 +784,9 @@ function ListView(props: ListCompProps) {
     if (selection.length && selection[0] !== "new" && typeof deleteDisabledCondition === "function") {
       updateDeleteCondition(!deleteDisabledCondition(props));
     }
-    if (!selection.length && params.id === "new") {
-      updateHistory(url.replace(`/${params.id}`, ""), location.search);
-    }
+    // if (!selection.length && params.id === "new") {
+    //   updateHistory(url.replace(`/${params.id}`, ""), location.search);
+    // }
   }, [
     selection,
     deleteDisabledCondition
