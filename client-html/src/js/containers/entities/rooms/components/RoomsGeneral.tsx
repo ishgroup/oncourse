@@ -67,7 +67,9 @@ function RoomsGeneral({
   const resetIsVirtualParent = useCallback(debounce(id => {
     EntityService.getPlainRecords('Site', 'isVirtual', `id is ${id}`)
       .then(res => {
-          setIsParenSiteVirtual(JSON.parse(res.rows[0].values[0]));
+          if (res.rows[0]?.values[0]) {
+            setIsParenSiteVirtual(JSON.parse(res.rows[0].values[0]));
+          }
         }
       )
       .catch(err => InstantFetchErrorHandler(dispatch, err));
