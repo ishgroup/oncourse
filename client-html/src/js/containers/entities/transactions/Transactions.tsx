@@ -8,7 +8,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { initialize } from 'redux-form';
-import { clearListState, getFilters, setListEditRecord, } from '../../../common/components/list-view/actions';
+import { getFilters, setListEditRecord, } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
 import ListView from '../../../common/components/list-view/ListView';
 import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
@@ -62,10 +62,6 @@ class Transactions extends React.Component<any, any> {
   componentDidMount() {
     this.props.getAccounts();
     this.props.getFilters();
-  }
-
-  componentWillUnmount() {
-    this.props.clearListState();
   }
 
   shouldComponentUpdate() {
@@ -127,7 +123,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("AccountTransaction"));
   },
   getAccounts: () => getPlainAccounts(dispatch),
-  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(

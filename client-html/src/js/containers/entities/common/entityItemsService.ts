@@ -218,7 +218,7 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
         delete itemToSave.student.education;
       }
 
-      itemToSave.relations = [...formatRelationsBeforeSave(itemToSave.relations)];
+      itemToSave.relations = [...formatRelationsBeforeSave(itemToSave?.relations || [])];
 
       if (itemToSave.isCompany) delete item.firstName;
 

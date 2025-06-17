@@ -162,10 +162,10 @@ const DashboardHeader = (
                   <MenuItem
                     id="dark"
                     onClick={() => {
-                          themeMenuClose();
-                          themeHandler("dark");
-                          setPreferencesTheme("dark");
-                        }}
+                      themeMenuClose();
+                      themeHandler("dark");
+                      setPreferencesTheme("dark");
+                    }}
                     selected={themeName === "dark"}
                   >
                     {$t('dark_theme')}

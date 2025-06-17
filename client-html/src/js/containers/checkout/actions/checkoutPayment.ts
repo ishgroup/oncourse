@@ -22,7 +22,7 @@ export const CHECKOUT_SET_PAYMENT_SET_STATUS = "checkout/set/payment/set/status"
 export const CHECKOUT_GET_PAYMENT_STATUS_DETAILS = _toRequestType("checkout/get/payment/status/details");
 export const CHECKOUT_GET_PAYMENT_DETAILS_BY_REFERENCE = _toRequestType("checkout/get/payment/details");
 export const CHECKOUT_SET_PAYMENT_DETAILS_FETCHING = "checkout/set/payment/status/details/fetching";
-export const CHECKOUT_SET_PAYMENT_STATUS = "checkout/get/payment/status";
+export const CHECKOUT_SET_PAYMENT_STATUS = "checkout/set/payment/status";
 export const CHECKOUT_SET_PAYMENT_STATUS_DETAILS = "checkout/set/payment/status/details";
 export const CHECKOUT_CLEAR_PAYMENT_STATUS = _toRequestType("checkout/clear/payment/status");
 
@@ -136,9 +136,9 @@ export const checkoutPaymentSetCustomStatus = (status: string) => ({
   payload: { status }
 });
 
-export const checkoutGetPaymentStatusDetails = (sessionId: string) => ({
+export const checkoutGetPaymentStatusDetails = (sessionId: string, withTimeout?: boolean) => ({
   type: CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
-  payload: { sessionId }
+  payload: { sessionId, withTimeout }
 });
 
 export const checkoutClearPaymentStatus = () => ({

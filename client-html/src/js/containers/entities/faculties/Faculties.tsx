@@ -11,7 +11,7 @@ import React, { useEffect } from 'react';
 import { initialize } from 'redux-form';
 import { checkPermissions } from '../../../common/actions';
 import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
-import { clearListState, getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
 import ListView from '../../../common/components/list-view/ListView';
 import { useAppDispatch } from '../../../common/utils/hooks';
@@ -95,9 +95,6 @@ function Faculties() {
     dispatch(checkPermissions({ keyCode: "VET_COURSE" }));
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(getEntityRelationTypes());
-    return () => {
-      dispatch(clearListState());
-    };
   }, []);
 
   return (
