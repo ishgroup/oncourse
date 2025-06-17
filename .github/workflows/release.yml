@@ -14,7 +14,7 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -88,4 +88,4 @@ jobs:
        method: 'POST'
        username: ${{ secrets.JIRA_USERNAME }}
        password: ${{ secrets.JIRA_PASSWORD }}
-       data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}''
+       data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}'

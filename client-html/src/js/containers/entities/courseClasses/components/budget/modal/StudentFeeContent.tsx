@@ -10,14 +10,23 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import { addDays, format } from 'date-fns';
-import { AddButton, D_MMM_YYYY, decimalMinus, decimalPlus, formatCurrency, normalizeNumber } from 'ish-ui';
+import {
+  AddButton,
+  D_MMM_YYYY,
+  decimalDivide,
+  decimalMinus,
+  decimalMul,
+  decimalPlus,
+  formatCurrency,
+  normalizeNumber
+} from 'ish-ui';
 import React, { useCallback, useMemo } from 'react';
 import { arrayInsert, arrayRemove, change } from 'redux-form';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
-import { getCurrentTax, getFeeExTaxByFeeIncTax, getTotalByFeeExTax } from '../../../../../../common/utils/financial';
 import { IS_JEST } from '../../../../../../constants/EnvironmentConstants';
 import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
 import { accountLabelCondition } from '../../../../accounts/utils';
+import { getCurrentTax } from '../../../../taxes/utils';
 import { getPaymentPlansTotal } from '../utils';
 
 const StudentFeePaymentPlan: React.FC<any> = ({
@@ -82,8 +91,6 @@ const StudentFeeContent: React.FC<Props> = ({
   }) => {
   const totalLabel = useMemo(() => `Total class fee (${currentTax.gst ? "inc " : "no "} GST)`, [currentTax]);
 
-  const currentTaxRate = useMemo(() => getCurrentTax(taxes, values.taxId).rate, [values.taxId, taxes]);
-
   const classTotalFeeLabel = useMemo(() => formatCurrency(decimalPlus(values.perUnitAmountIncTax, getPaymentPlansTotal(values.paymentPlan)), currencySymbol), [
     values.perUnitAmountIncTax,
     values.paymentPlan,
@@ -91,12 +98,17 @@ const StudentFeeContent: React.FC<Props> = ({
   ]);
 
   const onPerUnitChange = (e, v) => {
-    dispatch(change(form, namePrefix + "perUnitAmountExTax", getFeeExTaxByFeeIncTax(currentTaxRate, decimalPlus(v, getPaymentPlansTotal(values.paymentPlan)))));
+    const taxMul = decimalPlus(getCurrentTax(taxes, values.taxId).rate, 1);
+
+    dispatch(change(form, namePrefix + "perUnitAmountExTax", decimalDivide(decimalPlus(v, getPaymentPlansTotal(values.paymentPlan)), taxMul)));
   };
 
   const updateFormFeeByTax = newTaxId => {
+    const taxMul = decimalPlus(getCurrentTax(taxes, newTaxId).rate, 1);
+
     const paymentPlansTotal = getPaymentPlansTotal(values.paymentPlan);
-    dispatch(change(form, namePrefix + "perUnitAmountIncTax", decimalMinus(getTotalByFeeExTax(getCurrentTax(taxes, newTaxId).rate, decimalPlus(values.perUnitAmountExTax, paymentPlansTotal)), paymentPlansTotal)));
+
+    dispatch(change(form, namePrefix + "perUnitAmountIncTax", decimalMinus(decimalMul(decimalPlus(values.perUnitAmountExTax, paymentPlansTotal), taxMul), paymentPlansTotal)));
   };
 
   const addPaymentPlan = () => {
@@ -110,6 +122,7 @@ const StudentFeeContent: React.FC<Props> = ({
 
   const onAccountIdChange = id => {
     const selectedAccountTaxId = Number(accounts.find(a => a.id === id)["tax.id"]);
+
     if (values.taxId !== selectedAccountTaxId) {
       dispatch(change(form, namePrefix + "taxId", selectedAccountTaxId));
       updateFormFeeByTax(selectedAccountTaxId);
@@ -123,7 +136,9 @@ const StudentFeeContent: React.FC<Props> = ({
   const onPaymentPlanBlur = () => {
     setTimeout(() => {
       const updated = [...values.paymentPlan];
+
       updated.sort((a, b) => (a.dayOffset > b.dayOffset ? 1 : -1));
+
       dispatch(change(form, namePrefix + "paymentPlan", updated));
     }, 1000);
   };

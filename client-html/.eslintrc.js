@@ -25,7 +25,6 @@ module.exports = {
         "import/prefer-default-export": "off",
         "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/indent": "off",
-        "@typescript-eslint/no-shadow": "off",
         "@typescript-eslint/comma-dangle": "off",
         "@typescript-eslint/member-delimiter-style": [
             "off",

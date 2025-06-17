@@ -684,14 +684,14 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     (...props) => {
       setSidebarWidth(props[2].getClientRects()[0].width);
     },
-    [sidebarWidth]
+    []
   );
 
   const handleResizeStopCallback = useCallback(
     (...props) => {
       updateColumnsWidth(props[2].getClientRects()[0].width);
     },
-    [sidebarWidth]
+    []
   );
 
   const onClearContactsSearch = useCallback(() => {
@@ -1020,6 +1020,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
   return (
     <div className={clsx("root", classes.root)}>
       <ResizableWrapper
+        maxWidth="60%"
         onResizeStop={handleResizeStopCallback}
         onResize={handleResizeCallback}
         sidebarWidth={sidebarWidth || SIDEBAR_DEFAULT_WIDTH}
@@ -1104,7 +1105,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                     />
                   </CheckoutSectionExpandableRenderer>
 
-                  {!hideAUSReporting && Boolean(fundingInvoiceValues.fundingInvoices.length && selectedItems.filter(i => i.checked).length > 0) && (
+                  {!hideAUSReporting && selectedContacts?.length === 1 && Boolean(fundingInvoiceValues?.fundingInvoices?.length && selectedItems.filter(i => i.type === 'course' && i.checked).length === 1) && (
                     <CheckoutSectionExpandableRenderer
                       title={$t('funding_invoices')}
                       expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice)}

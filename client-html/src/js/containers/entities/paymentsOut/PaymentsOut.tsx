@@ -6,7 +6,6 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { PaymentOut } from '@api/model';
 import { ExitToApp } from '@mui/icons-material';
 import Link from '@mui/material/Link';
 import Popover from '@mui/material/Popover';
@@ -16,12 +15,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { withStyles } from 'tss-react/mui';
-import {
-  clearListState,
-  getFilters,
-  setListCreatingNew,
-  setListSelection,
-} from '../../../common/components/list-view/actions';
+import { getFilters, setListCreatingNew, setListSelection, } from '../../../common/components/list-view/actions';
 import ListView from '../../../common/components/list-view/ListView';
 import { getManualLink } from '../../../common/utils/getManualLink';
 import { FilterGroup } from '../../../model/common/ListView';
@@ -90,7 +84,6 @@ class PaymentsOut extends React.Component<any, any> {
   }
 
   componentWillUnmount() {
-    this.props.clearListState();
     this.props.clearContraInvoices();
   }
 
@@ -203,7 +196,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getAdministrationSites: () => dispatch(getAdministrationSites()),
   getAccounts: () => getPlainAccounts(dispatch),
-  clearListState: () => dispatch(clearListState()),
   getActivePaymentOutMethods: () => dispatch(getActivePaymentOutMethods()),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),

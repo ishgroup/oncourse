@@ -3,23 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Certificate } from "@api/model";
-import React, { Dispatch, useEffect } from "react";
-import { connect } from "react-redux";
-import { initialize } from "redux-form";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import CertificateEditView from "./components/CertificateEditView";
-import RevokeCertificateCogwheel from "./components/RevokeCertificateCogwheel";
-import USIAlert from "./components/USIAlert";
+import { Certificate } from '@api/model';
+import React, { Dispatch, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { initialize } from 'redux-form';
+import { getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import CertificateEditView from './components/CertificateEditView';
+import RevokeCertificateCogwheel from './components/RevokeCertificateCogwheel';
+import USIAlert from './components/USIAlert';
 
 interface CertificatesProps {
   onInit?: () => void;
   getFilters?: () => void;
-  clearListState?: () => void;
 }
 
 const Initial: Certificate = {
@@ -89,9 +88,6 @@ const Certificates: React.FC<CertificatesProps> = props => {
 
   useEffect(() => {
     getFilters();
-    return () => {
-      clearListState();
-    };
   }, []);
 
   return (
@@ -125,8 +121,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => {
     dispatch(getFilters("Certificate"));
-  },
-  clearListState: () => dispatch(clearListState())
+  }
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Certificates);
