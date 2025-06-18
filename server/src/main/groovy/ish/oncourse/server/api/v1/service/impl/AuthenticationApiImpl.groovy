@@ -370,7 +370,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
     }
 
     @Override
-    String getSsoLink(String ssoType) {
+    String getSsoLink(String ssoType, Boolean kickOut) {
         def sso = getSsoByType(ssoType)
 
         def configuration = ObjectSelect.query(IntegrationConfiguration)
@@ -378,7 +378,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
                 .selectFirst(cayenneService.newReadonlyContext)
 
         def ssoProvider = sso.getSsoProvider(configuration: configuration, cayenneService: cayenneService)
-        return ssoProvider.getAuthorizationPageLink()
+        return ssoProvider.getAuthorizationPageLink(kickOut)
     }
 
     @Override
