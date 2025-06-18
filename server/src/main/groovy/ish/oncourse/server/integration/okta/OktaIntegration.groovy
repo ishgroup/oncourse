@@ -92,13 +92,16 @@ class OktaIntegration implements SsoIntegrationTrait {
 	}
 
 	@Override
-	String getAuthorizationPageLink() {
+	String getAuthorizationPageLink(Boolean kickOut) {
+		def webRedirectUrl = webRedirect
+		if(Boolean.TRUE == kickOut)
+			webRedirectUrl += "?isKickOut=true"
 		return """${applicationUrl}/oauth2/default/v1/authorize?client_id=${clientId}
 				&response_type=code
 				&prompt=consent
 				&scope=openid email
 				&nonce=nonce_value
-				&redirect_uri=${webRedirect}
+				&redirect_uri=${webRedirectUrl}
 				&state=OktaSSO"""
 	}
 

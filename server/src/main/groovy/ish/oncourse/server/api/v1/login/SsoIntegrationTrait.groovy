@@ -17,5 +17,5 @@ trait SsoIntegrationTrait extends PluginTrait {
 
     abstract String getUserEmailByCode(String accessCode) throws ClientErrorException
 
-    abstract String getAuthorizationPageLink()
+    abstract String getAuthorizationPageLink(Boolean kickOut)
 }
