@@ -17,6 +17,7 @@ export const GET_EMAIL_BY_TOKEN_FULFILLED = FULFILLED(GET_EMAIL_BY_TOKEN_REQUEST
 
 export const POST_AUTHENTICATION_REQUEST = _toRequestType("post/authentication");
 export const POST_SSO_AUTHENTICATION_REQUEST = _toRequestType("post/sso/authentication");
+export const POST_KICK_OUT_SSO_AUTHENTICATION_REQUEST = _toRequestType("post/sso/kickOut/authentication");
 export const POST_AUTHENTICATION_FULFILLED = FULFILLED(POST_AUTHENTICATION_REQUEST);
 
 export const POST_UPDATE_PASSWORD_REQUEST = _toRequestType("post/user/updatePassword");
@@ -61,6 +62,11 @@ export const postLoginRequest = (body: LoginRequest, host, port) => ({
 export const postSsoAuthenticationRequest = (ssoType: string, code: string, kickOut: boolean = false) => ({
   type: POST_SSO_AUTHENTICATION_REQUEST,
   payload: { ssoType, code, kickOut }
+});
+
+export const postKickOutSsoAuthenticationRequest = (type: string) => ({
+  type: POST_KICK_OUT_SSO_AUTHENTICATION_REQUEST,
+  payload: type
 });
 
 export const getSystemUserData = () => ({
