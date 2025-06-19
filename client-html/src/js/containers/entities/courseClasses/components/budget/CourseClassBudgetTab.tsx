@@ -51,7 +51,6 @@ import {
   mapPlainDiscounts,
   transformDiscountForNestedList
 } from '../../../discounts/utils';
-import { getCurrentTax } from '../../../taxes/utils';
 import { setCourseClassBudgetModalOpened } from '../../actions';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../constants';
 import { classCostInitial } from '../../CourseClasses';
