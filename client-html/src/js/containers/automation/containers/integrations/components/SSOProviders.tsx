@@ -7,7 +7,7 @@
  */
 
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import $t from '@t';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -26,7 +26,7 @@ export const OktaButton = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
-    
+
     if (code) {
       dispatch(postSsoAuthenticationRequest("okta", code));
       params.delete('code');
@@ -54,7 +54,7 @@ export const OktaButton = () => {
     color="inherit"
     onClick={openOktaConcent}
   >
-    <img src={okta} width={80} alt={$t('okta')}/>
+    <img src={okta} width={80} alt={$t('okta')} className={loading ? 'invisible' : undefined}/>
   </LoadingButton>;
 };
 
