@@ -56,8 +56,8 @@ class LoginService {
     return this.createCustomAPI("login").getSsoLink(type);
   }
 
-  public loginSso(ssoType: string, code: string): Promise<LoginResponse> {
-    return this.createCustomAPI("login").loginSso(ssoType, code);
+  public loginSso(ssoType: string, code: string, kickOut: boolean): Promise<LoginResponse> {
+    return this.createCustomAPI("login").loginSso(ssoType, code, kickOut);
   }
 }
 

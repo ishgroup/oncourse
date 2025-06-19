@@ -12,6 +12,7 @@
 import { LoginRequest } from '@api/model';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Button, darken, Grid, Typography } from '@mui/material';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -23,12 +24,25 @@ import QRCode from 'qrcode.react';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Action, Dispatch } from 'redux';
-import { change, Field, FieldArray, Form, initialize, reduxForm, touch } from 'redux-form';
-import { DecoratedFormProps } from 'redux-form/lib/reduxForm';
+import {
+  change,
+  Field,
+  FieldArray,
+  Form,
+  DecoratedFormProps,
+  initialize,
+  reduxForm,
+  clearFields,
+  touch,
+  untouch
+} from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import { setLoginState } from '../../common/actions';
 import Logo from '../../common/components/layout/Logo';
 import { validateSingleMandatoryField } from '../../common/utils/validation';
+import { PASSWORD_PASS_SCORE } from '../../constants/Config';
+import { IntegrationTypesEnum } from '../../model/automation/integrations/IntegrationSchema';
+import { Fetch } from '../../model/common/Fetch';
 import { State } from '../../reducers/state';
 import { SSOProviders } from '../automation/containers/integrations/components/SSOProviders';
 import { isComplexPassRequired } from '../preferences/actions';
@@ -38,7 +52,6 @@ import {
   getEmailByToken,
   getSsoIntegrations,
   postLoginRequest,
-  postSsoAuthenticationRequest,
   updatePasswordRequest
 } from './actions';
 import AuthCodeFieldRenderer from './components/AuthCodeFieldRenderer';
@@ -46,6 +59,7 @@ import Credits from './components/Credits';
 import EulaDialog from './components/EulaDialog';
 import NewPasswordField from './components/NewPasswordField';
 import { LoginState } from './reducers/state';
+import LoginService from './services/LoginService';
 
 const FORM_NAME = "LoginForm";
 
@@ -200,21 +214,27 @@ interface Props extends LoginState {
   complexPass: any;
   totpUrl: string;
   postLoginRequest: (body: LoginRequest, host?: string, port?: number) => void;
-  postSsoAuthenticationRequest: (ssoType: string, code: string, kickOut?: boolean) => void;
   updatePasswordRequest: (value: string) => void;
   setLoginState: (value: LoginState) => void;
   isComplexPassRequired: () => void;
   submit: () => void;
   getSSO: () => void;
+  resetLoginForm: () => void;
   dispatch: (action: Action) => void;
   getEmailByToken: (value: string) => void;
   createPasswordRequest: (token: string, password: string) => void;
   email?: string;
   eulaUrl?: string;
   ssoTypes?: number[];
+  fetch?: Fetch;
 }
 
-export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProps, any> {
+interface LoginCompState {
+  openCredits: boolean;
+  eulaAccess:  boolean;
+}
+
+export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProps, LoginCompState> {
   private savedTFAState;
 
   private isInviteForm: boolean = false;
@@ -224,8 +244,6 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
   private submitRef = React.createRef<any>();
 
   state = {
-    passwordScore: 0,
-    passwordFeedback: "",
     openCredits: false,
     eulaAccess: false
   };
@@ -277,31 +295,14 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
     }
   }
 
-  componentDidUpdate() {
-    if (this.props.passwordComplexity && this.props.asyncValidating) {
+  componentDidUpdate(prevProps) {
+    if (this.props.passwordComplexity !== prevProps.passwordComplexity && this.props.asyncValidating) {
       const {
         passwordComplexity: { score, feedback }
       } = this.props;
-      const { passwordScore, passwordFeedback } = this.state;
 
-      if (passwordScore !== score) {
-        this.setState({
-          passwordScore: score
-        });
-      }
-
-      if (passwordFeedback !== feedback) {
-        this.setState({
-          passwordFeedback: feedback
-        });
-      }
-
-      if (score >= 2) {
-        this.setState({
-          passwordFeedback: ""
-        });
-        resolveAsyncValidate();
-
+      if (score >= PASSWORD_PASS_SCORE) {
+        resolveAsyncValidate("");
         return;
       }
 
@@ -311,6 +312,14 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
 
   componentWillUnmount() {
     this.props.setLoginState({ isBasic: true });
+  }
+
+  async kickOutWithSSO(submittingSSOType: string) {
+    switch (IntegrationTypesEnum[submittingSSOType]) {
+      case IntegrationTypesEnum.Okta:
+        const link = await LoginService.getSsoLink("okta");
+        window.open(link, "_self");
+    }
   }
 
   onSubmit = values => {
@@ -323,8 +332,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
       submittingSSOType,
       totpUrl,
       isOptionalTOTP,
-      createPasswordRequest,
-      postSsoAuthenticationRequest
+      createPasswordRequest
     } = this.props;
 
     const {
@@ -332,8 +340,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
     } = this.state;
 
     if (submittingSSOType && isKickOut) {
-      const params = new URLSearchParams(window.location.search);
-      postSsoAuthenticationRequest(submittingSSOType, params.get("code"), true);
+      this.kickOutWithSSO(submittingSSOType);
       return;
     }
 
@@ -394,6 +401,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
 
   render() {
     const {
+      fetch,
       classes,
       handleSubmit,
       isTOTP,
@@ -416,10 +424,12 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
       dispatch,
       email,
       eulaUrl,
-      ssoTypes
+      ssoTypes,
+      resetLoginForm,
+      passwordComplexity
     } = this.props;
 
-    const { passwordScore, passwordFeedback, openCredits } = this.state;
+    const { openCredits } = this.state;
 
     return (
       <Form onSubmit={handleSubmit(this.onSubmit)}>
@@ -545,9 +555,8 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                                   autoComplete="new-password"
                                   placeholder={$t('new_password')}
                                   component={NewPasswordField}
-                                  passwordScore={passwordScore}
-                                  helperText={passwordFeedback}
-                                                                  />
+                                  passwordScore={passwordComplexity?.score}
+                                />
                               ) : (
                                 <Field
                                   name="newPassword"
@@ -589,9 +598,9 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                                   autoComplete="new-password"
                                   placeholder={$t('new_password')}
                                   component={NewPasswordField}
-                                  passwordScore={passwordScore}
-                                  helperText={passwordFeedback}
-                                                                  />
+                                  passwordScore={passwordComplexity.score}
+                                  helperText={passwordComplexity.feedback}
+                                />
                               ) : (
                                 <Field
                                   name="newPassword"
@@ -669,38 +678,29 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                         <div className="flex-fill" />
 
                         <div className={classes.buttonsContainer}>
-                          {!this.isInviteForm && (
-                            <>
-                              <a href="login" className={classes.link} draggable={false} tabIndex={-1}>
-                                <Button
-                                  type={isOptionalTOTP ? "submit" : "button"}
-                                  classes={{
-                                    root: classes.declineButton
-                                  }}
-                                  onClick={
-                                    isTOTP && isNewTOTP
-                                      ? e => {
-                                        e.preventDefault();
-                                        dispatch(change(FORM_NAME, "authCodeDigits", Array.of("", "", "", "", "", "")));
-                                        setLoginState(this.savedTFAState);
-                                      }
-                                      : undefined
+                          {!this.isInviteForm && (isKickOut || isEnableTOTP || isTOTP || isNewPassword || isNewTOTP || isOptionalTOTP || isUpdatePassword) && (
+                            <Button
+                              disabled={fetch.pending}
+                              type={isOptionalTOTP ? "submit" : "button"}
+                              classes={{
+                                root: classes.declineButton
+                              }}
+                              onClick={
+                                isTOTP && isNewTOTP
+                                  ? e => {
+                                    e.preventDefault();
+                                    dispatch(change(FORM_NAME, "authCodeDigits", Array.of("", "", "", "", "", "")));
+                                    setLoginState(this.savedTFAState);
                                   }
-                                >
-                                  {(isBasic
-                                    || (isNewPassword && !isUpdatePassword)
-                                    || isKickOut
-                                    || isEnableTOTP
-                                    || (isTOTP && !isNewTOTP))
-                                  && "Quit"}
-                                  {((isTOTP && isNewTOTP) || (isNewPassword && isUpdatePassword)) && "Cancel"}
-                                  {isOptionalTOTP && "Maybe Later"}
-                                </Button>
-                              </a>
-                            </>
+                                  : isOptionalTOTP ? undefined : resetLoginForm
+                              }
+                            >
+                              {isOptionalTOTP ? "Maybe Later" : "Cancel"}
+                            </Button>
                           )}
 
-                          <Button
+                          <LoadingButton
+                            loading={fetch.pending}
                             ref={this.submitRef}
                             type="submit"
                             disabled={(!isKickOut && !anyTouched) || invalid || asyncValidating || (this.isInviteForm && !email)}
@@ -723,7 +723,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                             {isNewPassword && "Confirm"}
                             {isKickOut && "Kick out"}
                             {this.isInviteForm && "Create password"}
-                          </Button>
+                          </LoadingButton>
                           {eulaUrl && (
                           <EulaDialog
                             eulaUrl={eulaUrl}
@@ -782,6 +782,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
 
 const mapStateToProps = (state: State) => ({
   ...state.login,
+  fetch: state.fetch,
   complexPass: state.preferences && state.preferences.complexPass,
   ssoTypes: state.automation.integration.ssoTypes
 });
@@ -790,15 +791,19 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   postLoginRequest: (body: LoginRequest, host?: string, port?: number) =>
     dispatch(postLoginRequest(body, host, port)),
   getSSO: () => dispatch(getSsoIntegrations()),
-  postSsoAuthenticationRequest: (ssoType: string, code: string, kickOut?: boolean) => dispatch(postSsoAuthenticationRequest(
-    ssoType,
-  code,
-  kickOut)),
   updatePasswordRequest: (value: string) => dispatch(updatePasswordRequest(value)),
   setLoginState: (value: LoginState) => dispatch(setLoginState(value)),
   isComplexPassRequired: () => dispatch(isComplexPassRequired()),
   getEmailByToken: (token: string) => dispatch(getEmailByToken(token)),
   createPasswordRequest: (token: string, password: string) => dispatch(createPasswordRequest(token, password)),
+  resetLoginForm: () => {
+    dispatch(setLoginState({
+      isBasic: true,
+      passwordComplexity: null
+    }));
+    dispatch(clearFields(FORM_NAME, false, false, 'newPasswordAsync',  'newPasswordConfirm'));
+    dispatch(touch(FORM_NAME, 'user'));
+  }
 });
 
 const shouldAsyncValidate = params => {
