@@ -14,9 +14,9 @@ import LoginService from '../services/LoginService';
 import LoginServiceErrorsHandler from '../services/LoginServiceErrorsHandler';
 import { processLoginActions } from './processLoginActions';
 
-const request: EpicUtils.Request<LoginResponse, { ssoType: string, code: string }> = {
+const request: EpicUtils.Request<LoginResponse, { ssoType: string, code: string, kickOut: boolean }> = {
   type: POST_SSO_AUTHENTICATION_REQUEST,
-  getData: ({ ssoType, code }) => LoginService.loginSso(ssoType, code),
+  getData: ({ ssoType, code, kickOut }) => LoginService.loginSso(ssoType, code, kickOut),
   processData: processLoginActions,
   processError: (response, { ssoType }) => LoginServiceErrorsHandler(response, undefined, ssoType)
 };

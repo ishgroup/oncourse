@@ -58,7 +58,7 @@ export const postLoginRequest = (body: LoginRequest, host, port) => ({
   payload: { body, host, port }
 });
 
-export const postSsoAuthenticationRequest = (ssoType: string, code: string, kickOut?: boolean) => ({
+export const postSsoAuthenticationRequest = (ssoType: string, code: string, kickOut: boolean = false) => ({
   type: POST_SSO_AUTHENTICATION_REQUEST,
   payload: { ssoType, code, kickOut }
 });
