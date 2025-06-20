@@ -176,7 +176,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
         String userEmail = null
         try {
-            userEmail = ssoProvider.getUserEmailByCode(authorizationCode)
+            userEmail = ssoProvider.getUserEmailByCode(authorizationCode, kickOut)
         } catch(ClientErrorException e){
             throwUnauthorizedException(createAuthenticationContent(INVALID_CREDENTIALS, e.getMessage()))
         }
