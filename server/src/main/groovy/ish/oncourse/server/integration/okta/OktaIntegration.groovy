@@ -51,7 +51,7 @@ class OktaIntegration implements SsoIntegrationTrait {
 	}
 
 
-	String getUserEmailByCode(String activationCode) throws ClientErrorException{
+	String getUserEmailByCode(String activationCode, Boolean kickOut) throws ClientErrorException{
 		Closure failureHandler = { resp, result ->
 			logger.error(resp)
 			logger.error(result)
@@ -59,6 +59,7 @@ class OktaIntegration implements SsoIntegrationTrait {
 		}
 
 		def userToken = null
+		def redirectUrl = getRedirectUrl(kickOut)
 
 		RESTClient client = new RESTClient(applicationUrl)
 		client.headers.put("accept", "application/json")
@@ -68,7 +69,7 @@ class OktaIntegration implements SsoIntegrationTrait {
 			uri.query = [grant_type    	: "authorization_code",
 						 client_id		: clientId,
 						 client_secret	: clientSecret,
-						 redirect_uri 	: webRedirect,
+						 redirect_uri 	: redirectUrl,
 						 code         	: activationCode]
 
 			response.success = { resp, result ->
@@ -91,11 +92,16 @@ class OktaIntegration implements SsoIntegrationTrait {
 		}
 	}
 
-	@Override
-	String getAuthorizationPageLink(Boolean kickOut) {
+	private String getRedirectUrl(Boolean kickOut) {
 		def webRedirectUrl = webRedirect
 		if(Boolean.TRUE == kickOut)
 			webRedirectUrl += "?isKickOut=true"
+		return webRedirectUrl
+	}
+
+	@Override
+	String getAuthorizationPageLink(Boolean kickOut) {
+		def webRedirectUrl = getRedirectUrl(kickOut)
 		return """${applicationUrl}/oauth2/default/v1/authorize?client_id=${clientId}
 				&response_type=code
 				&prompt=consent
