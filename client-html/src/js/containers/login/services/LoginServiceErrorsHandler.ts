@@ -1,8 +1,8 @@
-import { LoginResponse, ValidationError } from "@api/model";
-import { change, untouch } from "redux-form";
-import { FETCH_FAIL, SET_LOGIN_STATE } from "../../../common/actions";
-import { IAction } from "../../../common/actions/IshAction";
-import { LoginState } from "../reducers/state";
+import { LoginResponse, ValidationError } from '@api/model';
+import { change, untouch } from 'redux-form';
+import { FETCH_FAIL, SET_LOGIN_STATE } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
+import { LoginState } from '../reducers/state';
 
 interface loginResponse {
   data: LoginResponse;
@@ -11,7 +11,7 @@ interface loginResponse {
 
 let tokenRequiredFirst = true;
 
-const LoginServiceErrorsHandler = (response: loginResponse, customMessage?: string): IAction<any>[] => {
+const LoginServiceErrorsHandler = (response: loginResponse, customMessage?: string, ssoType?: string): IAction<any>[] => {
   if (!response || !response.data || !response.status) {
     return [
       {
@@ -71,6 +71,7 @@ const LoginServiceErrorsHandler = (response: loginResponse, customMessage?: stri
         case "Concurrent sessions found": {
           hideError = true;
           loginState.isKickOut = true;
+          loginState.submittingSSOType = ssoType;
           break;
         }
         case "Password outdated":

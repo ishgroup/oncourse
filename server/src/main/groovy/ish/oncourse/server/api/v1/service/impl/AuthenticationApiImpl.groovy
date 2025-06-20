@@ -161,7 +161,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
     }
 
     @Override
-    LoginResponseDTO loginSso(String ssoType, String authorizationCode) {
+    LoginResponseDTO loginSso(String ssoType, String authorizationCode, Boolean kickOut) {
         def sso = getSsoByType(ssoType)
 
         def configuration = ObjectSelect.query(IntegrationConfiguration)
@@ -176,7 +176,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
         String userEmail = null
         try {
-            userEmail = ssoProvider.getUserEmailByCode(authorizationCode)
+            userEmail = ssoProvider.getUserEmailByCode(authorizationCode, kickOut)
         } catch(ClientErrorException e){
             throwUnauthorizedException(createAuthenticationContent(INVALID_CREDENTIALS, e.getMessage()))
         }
@@ -190,7 +190,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         }
 
         checkUser(user)
-        checkAnotherSession(user)
+        checkAnotherSession(user, kickOut)
         sessionManager.createUserSession(user, prefController.timeoutSec, request)
 
         LocalDateTime lastLoginOn = LocalDateUtils.dateToTimeValue(user.lastLoginOn != null ? user.lastLoginOn : user.createdOn)
@@ -370,7 +370,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
     }
 
     @Override
-    String getSsoLink(String ssoType) {
+    String getSsoLink(String ssoType, Boolean kickOut) {
         def sso = getSsoByType(ssoType)
 
         def configuration = ObjectSelect.query(IntegrationConfiguration)
@@ -378,7 +378,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
                 .selectFirst(cayenneService.newReadonlyContext)
 
         def ssoProvider = sso.getSsoProvider(configuration: configuration, cayenneService: cayenneService)
-        return ssoProvider.getAuthorizationPageLink()
+        return ssoProvider.getAuthorizationPageLink(kickOut)
     }
 
     @Override

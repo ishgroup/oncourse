@@ -52,12 +52,12 @@ class LoginService {
     return this.createCustomAPI("login").getUser();
   }
 
-  public getSsoLink(type: string): Promise<string> {
-    return this.createCustomAPI("login").getSsoLink(type);
+  public getSsoLink(type: string,  kickOut?: boolean): Promise<string> {
+    return this.createCustomAPI("login").getSsoLink(type, kickOut);
   }
 
-  public loginSso(ssoType: string, code: string): Promise<LoginResponse> {
-    return this.createCustomAPI("login").loginSso(ssoType, code);
+  public loginSso(ssoType: string, code: string, kickOut: boolean): Promise<LoginResponse> {
+    return this.createCustomAPI("login").loginSso(ssoType, code, kickOut);
   }
 }
 
