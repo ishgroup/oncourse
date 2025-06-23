@@ -26,9 +26,10 @@ export const OktaButton = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
+    const isKickOut = params.get("isKickOut");
 
     if (code) {
-      dispatch(postSsoAuthenticationRequest("okta", code));
+      dispatch(postSsoAuthenticationRequest("okta", code, isKickOut && JSON.parse(isKickOut)));
       params.delete('code');
       history.push({
         pathname: location.pathname,

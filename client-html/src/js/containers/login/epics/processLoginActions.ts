@@ -15,10 +15,7 @@ import { State } from "../../../reducers/state";
 import { POST_AUTHENTICATION_FULFILLED } from "../actions";
 
 export const processLoginActions = (data: LoginResponse, state: State ): IAction[] => {
-
-  if (state.lastLocation) {
-    history.push(state.lastLocation);
-  }
+  history.push(state.lastLocation || '/');
 
   if (data.lastLoginOn) localStorage.setItem("lastLoginOn", data.lastLoginOn);
 
