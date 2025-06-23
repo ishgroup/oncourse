@@ -11,6 +11,7 @@ import ErrorOutline from '@mui/icons-material/ErrorOutline';
 import { Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import $t from '@t';
+import { History, Location } from 'history';
 import {
   AnyArgFunction,
   BooleanArgFunction,
@@ -148,8 +149,8 @@ interface OwnProps {
 }
 
 interface Props {
-  history: any;
-  location: any;
+  history: History;
+  location: Location;
   match: any;
   listProps: TableListProps;
   rootEntity: EntityName;
@@ -784,9 +785,9 @@ function ListView(props: ListCompProps) {
     if (selection.length && selection[0] !== "new" && typeof deleteDisabledCondition === "function") {
       updateDeleteCondition(!deleteDisabledCondition(props));
     }
-    if (!selection.length && params.id === "new") {
-      updateHistory(url.replace(`/${params.id}`, ""), location.search);
-    }
+    // if (!selection.length && params.id === "new") {
+    //   updateHistory(url.replace(`/${params.id}`, ""), location.search);
+    // }
   }, [
     selection,
     deleteDisabledCondition
@@ -857,7 +858,6 @@ function ListView(props: ListCompProps) {
   };
 
   const setCreateNew = () => {
-    updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", search);
     setListCreatingNew(true);
     updateSelection(["new"]);
     onInit();
