@@ -265,10 +265,10 @@ export const getListRecordAfterCreateActions = (entity: EntityName) => [
 
 export const getAccessesByPath = async (pathes: string[], state: State, method = 'GET'): Promise<AccessByPath[]> => {
   const accesses = [];
-  
+
   for (const path of pathes) {
     const accessValue = state.access[path];
-    
+
     if (accessValue) {
       accesses.push( { hasAccess: accessValue[method] });
     } else {
@@ -284,6 +284,6 @@ export const getAccessesByPath = async (pathes: string[], state: State, method =
       );
     }
   }
-  
+
   return accesses;
 };
