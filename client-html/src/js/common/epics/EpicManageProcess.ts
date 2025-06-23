@@ -3,13 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ProcessResult } from "@api/model";
-import { Epic } from "redux-observable";
-import { CLEAR_ACTION_ON_FAIL, CLEAR_PROCESS, FETCH_FAIL, START_PROCESS, UPDATE_PROCESS } from "../actions";
-import { IAction } from "../actions/IshAction";
-import ProcessService from "../services/ProcessService";
+import { ProcessResult } from '@api/model';
+import { Epic } from 'redux-observable';
+import { CLEAR_ACTION_ON_FAIL, CLEAR_PROCESS, FETCH_FAIL, START_PROCESS, UPDATE_PROCESS } from '../actions';
+import { IAction } from '../actions/IshAction';
+import FetchErrorHandler from '../api/fetch-errors-handlers/FetchErrorHandler';
+import ProcessService from '../services/ProcessService';
 
-import * as EpicUtils from "./EpicUtils";
+import * as EpicUtils from './EpicUtils';
 
 const switchByStatus = (
   process: ProcessResult = {},
@@ -74,10 +75,11 @@ const request: EpicUtils.DelayedRequest = {
   delay: 1000,
   hideLoadIndicator: true,
   getData: payload => ProcessService.getProcessStatus(payload.processId),
-  processData: (process: ProcessResult, state, payload) =>
+  processData: (process: ProcessResult, s, payload) =>
     switchByStatus(process, payload.processId, payload.actions, payload.actionsOnFail),
-  processError: (res, payload) =>
-    switchByStatus(res.data, res.data.processId, res.data.actions, res.data.actionsOnFail)
+  processError: (res) =>
+    res?.data ? switchByStatus(res.data, res.data.processId, res.data.actions, res.data.actionsOnFail)
+        : FetchErrorHandler(res)
 };
 
 export const EpicManageProcess: Epic<any, any> = EpicUtils.CreateWithTimeout(request);
