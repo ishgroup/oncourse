@@ -1,15 +1,13 @@
-import { User } from "@api/model";
-import {
-  SET_LOGIN_STATE,
-  SET_SYSTEM_USER_DATA,
-} from "../../../common/actions";
-import { IAction } from "../../../common/actions/IshAction";
-import { CHECK_PASSWORD_FULFILLED, GET_EMAIL_BY_TOKEN_FULFILLED, POST_UPDATE_PASSWORD_FULFILLED } from "../actions";
-import { LoginState } from "./state";
+import { User } from '@api/model';
+import { SET_LOGIN_STATE, SET_SYSTEM_USER_DATA, } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
+import { CHECK_PASSWORD_FULFILLED, GET_EMAIL_BY_TOKEN_FULFILLED, POST_UPDATE_PASSWORD_FULFILLED } from '../actions';
+import { LoginState } from './state';
 
 const clearState: LoginState = {
   isTOTP: false,
   isNewTOTP: false,
+  submittingSSOType: null,
   isBasic: false,
   isNewPassword: false,
   strongPasswordValidation: false,
