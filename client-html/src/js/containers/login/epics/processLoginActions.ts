@@ -15,12 +15,7 @@ import { State } from "../../../reducers/state";
 import { POST_AUTHENTICATION_FULFILLED } from "../actions";
 
 export const processLoginActions = (data: LoginResponse, state: State ): IAction[] => {
-  if (state.lastLocation && !state.lastLocation.includes("Quit")) {
-    // Navigate back
-    history.push(state.lastLocation);
-  } else {
-    history.push("/");
-  }
+  history.push(state.lastLocation || '/');
 
   if (data.lastLoginOn) localStorage.setItem("lastLoginOn", data.lastLoginOn);
 

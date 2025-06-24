@@ -211,7 +211,7 @@ const Table = ({
 
     if (e.shiftKey && currentSelectionKeys.length) {
       const rowsById = table.getRowModel().rowsById;
-      const selectionIndicies = currentSelectionKeys.map(id => rowsById[id].index);
+      const selectionIndicies = currentSelectionKeys.filter(id => rowsById[id]).map(id => rowsById[id].index);
       const firstSelectedIndex = Math.min(...selectionIndicies);
       const lastSelectedIndex = Math.max(...selectionIndicies);
 

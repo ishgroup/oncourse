@@ -6,19 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { LoginResponse } from "@api/model";
-import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { POST_SSO_AUTHENTICATION_REQUEST } from "../actions";
-import LoginService from "../services/LoginService";
-import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
-import { processLoginActions } from "./processLoginActions";
+import { LoginResponse } from '@api/model';
+import { Epic } from 'redux-observable';
+import * as EpicUtils from '../../../common/epics/EpicUtils';
+import { POST_SSO_AUTHENTICATION_REQUEST } from '../actions';
+import LoginService from '../services/LoginService';
+import LoginServiceErrorsHandler from '../services/LoginServiceErrorsHandler';
+import { processLoginActions } from './processLoginActions';
 
-const request: EpicUtils.Request<LoginResponse, { ssoType: string, code: string }> = {
+const request: EpicUtils.Request<LoginResponse, { ssoType: string, code: string, kickOut: boolean }> = {
   type: POST_SSO_AUTHENTICATION_REQUEST,
-  getData: ({ ssoType, code }) => LoginService.loginSso(ssoType, code),
+  getData: ({ ssoType, code, kickOut }) => LoginService.loginSso(ssoType, code, kickOut),
   processData: processLoginActions,
-  processError: response => LoginServiceErrorsHandler(response)
+  processError: (response, { ssoType }) => LoginServiceErrorsHandler(response, undefined, ssoType)
 };
 
 export const EpicPostSSOAuthentication: Epic<any, any> = EpicUtils.Create(request);

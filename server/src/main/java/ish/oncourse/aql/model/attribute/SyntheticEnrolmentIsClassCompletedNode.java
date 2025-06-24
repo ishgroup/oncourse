@@ -99,7 +99,7 @@ class SyntheticEnrolmentIsClassCompletedNode extends LazyExpressionNode {
 
     //!(courseclass.type = distant_learning && courseclass.maximumDays != null)
     private Node notSelfPacedWithMaximumDaysCheck(String prefix) {
-        var notSelfPacedWithMaximumDaysCheck = new ASTFalse();
+        var notSelfPacedWithMaximumDaysCheck = new ASTNot();
         var notSelfPacedWithMaximumDays = new ASTAnd();
 
         var selfPacedTypeCheck = new ASTEqual();
