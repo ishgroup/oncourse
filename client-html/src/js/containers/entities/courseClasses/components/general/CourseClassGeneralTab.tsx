@@ -65,7 +65,7 @@ const CourseClassGeneralTab = React.memo<Props>(
 
     const openBudget = useCallback(() => {
       if (!twoColumn) {
-        toogleFullScreenEditView();
+        toogleFullScreenEditView(true);
       }
 
       const search = new URLSearchParams(window.location.search);
