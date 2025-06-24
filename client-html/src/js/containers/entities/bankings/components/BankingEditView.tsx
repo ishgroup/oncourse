@@ -264,7 +264,7 @@ class BankingEditView extends React.PureComponent<any, any> {
         <FieldArray
           name="payments"
           className="saveButtonTableOffset"
-          goToLink="/paymentIn"
+          goToLink={`/paymentIn?search=banking.id=${values.id}`}
           title={this.paymentsTitle()}
           component={NestedTable}
           removeEnabled={!this.isDateLocked(lockedDate, editRecord)}
