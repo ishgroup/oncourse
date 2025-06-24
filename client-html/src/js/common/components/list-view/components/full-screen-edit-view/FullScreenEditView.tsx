@@ -120,12 +120,12 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       showConfirm({
         onConfirm: () => {
           reset();
-          toogleFullScreenEditView();
+          toogleFullScreenEditView(false);
           this.resetScroll();
         }
       });
     } else {
-      toogleFullScreenEditView();
+      toogleFullScreenEditView(false);
       this.resetScroll();
     }
   };
@@ -154,7 +154,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       creatingNew,
       values,
       updateDeleteCondition,
-      hasSelected,
       dispatch,
       rootEntity,
       isNested,
@@ -186,7 +185,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       <Dialog
         fullScreen
         open={Boolean(
-          hasSelected && (fullScreenEditView || ((!threeColumn || alwaysFullScreenCreateView) && creatingNew))
+         fullScreenEditView || ((!threeColumn || alwaysFullScreenCreateView) && creatingNew)
         )}
         TransitionComponent={Transition}
         classes={{
