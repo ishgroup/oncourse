@@ -492,7 +492,7 @@ public final class InvoiceUtil {
 		// calculate final total value ex tax
 		Money finalPriceEachEx = priceEachEx.subtract(discountEachEx);
 		// calculate final total value inc tax
-		Money priceEachInc = MoneyUtil.getPriceIncTax(priceEachEx, taxRate, taxAdjustment);
+		Money priceEachInc = Money.of(MoneyUtil.getPriceIncTax(priceEachEx, taxRate, taxAdjustment).toBigDecimal());
 		Money discountEachInc = MoneyUtil.getPriceIncTax(discountEachEx, taxRate, Money.ZERO);
 		Money finalPriceEachInc = priceEachInc.subtract(discountEachInc);
 		// and finally taxEach
