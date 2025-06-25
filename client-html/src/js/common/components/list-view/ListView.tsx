@@ -208,6 +208,7 @@ type ListCompProps = Props & OwnProps & State["list"] & State["share"];
 function ListView(props: ListCompProps) {
   const {
     onInit,
+    customOnCreate,
     getScripts,
     getCustomFieldTypes,
     history,
@@ -465,6 +466,10 @@ function ListView(props: ListCompProps) {
         pathname: url
       });
     }
+
+    if (params.id === 'new') {
+      setListCreatingNew(true);
+    }
   }, []);
 
   const getUrlSearch = searchParam => {
@@ -578,8 +583,6 @@ function ListView(props: ListCompProps) {
   };
 
   const onCreateRecord = () => {
-    const { onInit, customOnCreate } = props;
-
     if (customOnCreate) {
       if (typeof customOnCreate === "function") {
         customOnCreate(setCreateNew);
@@ -676,32 +679,28 @@ function ListView(props: ListCompProps) {
   ]);
 
   useEffect(() => {
-    if (params.id && creatingNew && params.id !== "new") {
-      setListCreatingNew(false);
-    }
-  }, [
-    params.id,
-    creatingNew
-  ]);
-
-  useEffect(() => {
-    if (params.id
-      && !editRecordFetching
+    if (params.id) {
+      if (!editRecordFetching
       && !creatingNew
       && (!editRecord
         || !editRecord.id
         || editRecord.id.toString() !== params.id)
-    ) {
-
-      if (params.id !== "new") {
+      && params.id !== "new"
+      ) {
         setListEditRecordFetching();
         onGetEditRecord(params.id);
 
         if (!state.threeColumn && !fullScreenEditView) {
           toggleFullWidthView(true);
         }
-      } else {
+      }
+
+      if (creatingNew && params.id !== "new") {
+        setListCreatingNew(false);
+      } else if (creatingNew && params.id === "new") {
         onCreateRecord();
+      } else if (!creatingNew && params.id === "new") {
+        updateHistoryPathname(url.replace(`/${params.id}`, ""));
       }
     }
   }, [
@@ -712,22 +711,6 @@ function ListView(props: ListCompProps) {
     creatingNew,
     fullScreenEditView
   ]);
-
-  // useEffect(() => {
-  //   if (!params.id) {
-  //     if (!state.threeColumn && (fullScreenEditView || creatingNew)) {
-  //       toggleFullWidthView(false);
-  //     }
-  //     if (state.threeColumn) {
-  //       ignoreCheckDirtyOnSelection.current = true;
-  //     }
-  //   }
-  // }, [
-  //   params.id,
-  //   state.threeColumn,
-  //   fullScreenEditView,
-  //   creatingNew
-  // ]);
 
   const prevSearch = usePrevious(search);
 
@@ -768,7 +751,6 @@ function ListView(props: ListCompProps) {
     }
   }, [search, location.search]);
 
-
   useEffect(() => {
     if (state.filtersSynchronized && !fetch.pending) {
       onQuerySearchChange(records.search);
@@ -782,9 +764,6 @@ function ListView(props: ListCompProps) {
     if (selection.length && selection[0] !== "new" && typeof deleteDisabledCondition === "function") {
       updateDeleteCondition(!deleteDisabledCondition(props));
     }
-    // if (!selection.length && params.id === "new") {
-    //   updateHistory(url.replace(`/${params.id}`, ""), location.search);
-    // }
   }, [
     selection,
     deleteDisabledCondition
