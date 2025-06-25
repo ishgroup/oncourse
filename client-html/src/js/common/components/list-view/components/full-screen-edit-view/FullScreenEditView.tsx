@@ -267,6 +267,8 @@ const mapStateToProps = (state: State, props) => ({
   pending: state.fetch.pending
 });
 
-export default reduxForm<any, EditViewContainerProps>({})(
+export default reduxForm<any, EditViewContainerProps>({
+  destroyOnUnmount: false
+})(
   connect(mapStateToProps, null)(withStyles(withRouter(FullScreenEditViewBase as any), styles))
 );
