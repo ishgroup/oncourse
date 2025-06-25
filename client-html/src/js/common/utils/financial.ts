@@ -13,4 +13,6 @@ export const getTotalByFeeExTax = (taxRate: number, feeExTax: number): number =>
 
 export const getFeeExTaxByFeeIncTax = (taxRate: number, feeIncTax: number): number => new Decimal(feeIncTax || 0).div(new Decimal(1).plus(taxRate || 0)).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN).toNumber();
 
+export const getTaxAmountByFeeExTax = (taxRate: number, feeExTax: number): number => new Decimal(feeExTax || 0).mul(new Decimal(taxRate || 1)).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN).toNumber();
+
 export const getCurrentTax = (taxes: Tax[], id: number): Tax => taxes.find(t => t.id === id);

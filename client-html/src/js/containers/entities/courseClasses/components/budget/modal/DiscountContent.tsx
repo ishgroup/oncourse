@@ -13,7 +13,6 @@ import { addDays, format } from 'date-fns';
 import Decimal from 'decimal.js-light';
 import {
   D_MMM_YYYY,
-  decimalMul,
   formatCurrency,
   formatFieldPercent,
   formatPercent,
@@ -28,6 +27,7 @@ import { change } from 'redux-form';
 import { IAction } from '../../../../../../common/actions/IshAction';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
+import { getTaxAmountByFeeExTax } from '../../../../../../common/utils/financial';
 import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
 import { getDiscountAmountExTax, getRoundingByType } from '../../../../discounts/utils';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
@@ -176,7 +176,7 @@ const DiscountContent: React.FC<Props> = ({
     currencySymbol
   ]);
 
-  const taxOnDiscount = useMemo(() => decimalMul(values.courseClassDiscount.discountOverride || values.perUnitAmountExTax || 0, currentTax.rate), [classFee, currentTax, values.courseClassDiscount.discountOverride]);
+  const taxOnDiscount = useMemo(() => getTaxAmountByFeeExTax( currentTax.rate, values.courseClassDiscount.discountOverride || values.perUnitAmountExTax || 0), [classFee, currentTax, values.courseClassDiscount.discountOverride]);
 
   const discountTotalFee = useMemo(() => {
     const decimal = new Decimal(classFee).minus(values.perUnitAmountExTax || 0).minus(taxOnDiscount);

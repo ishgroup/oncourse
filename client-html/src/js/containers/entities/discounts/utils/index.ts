@@ -12,7 +12,7 @@ export const getRoundingByType = (type: MoneyRounding, value: Decimal): number =
   switch (type) {
     default:
     case "No Rounding":
-      return parseFloat(value.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]);
+      return value.toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN).toNumber();
     case "Nearest 10 cents":
       return value.toDecimalPlaces(1, Decimal.ROUND_UP).toNumber();
     case "Nearest 50 cents": {
@@ -98,7 +98,6 @@ export const mapPlainDiscounts = d => ({
   discountValue: d.discountDollar ? Number(d.discountDollar) : d.discountDollar,
   discountPercent: d.discountPercent ? Number(d.discountPercent) : d.discountPercent
 });
-
 
 export const mapPlainDiscountClasses = c => ({
   id: Number(c.id),
