@@ -120,12 +120,12 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       showConfirm({
         onConfirm: () => {
           reset();
-          toogleFullScreenEditView();
+          toogleFullScreenEditView(false);
           this.resetScroll();
         }
       });
     } else {
-      toogleFullScreenEditView();
+      toogleFullScreenEditView(false);
       this.resetScroll();
     }
   };
@@ -154,7 +154,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       creatingNew,
       values,
       updateDeleteCondition,
-      hasSelected,
       dispatch,
       rootEntity,
       isNested,
@@ -186,7 +185,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       <Dialog
         fullScreen
         open={Boolean(
-          hasSelected && (fullScreenEditView || ((!threeColumn || alwaysFullScreenCreateView) && creatingNew))
+         fullScreenEditView || ((!threeColumn || alwaysFullScreenCreateView) && creatingNew)
         )}
         TransitionComponent={Transition}
         classes={{
@@ -268,6 +267,8 @@ const mapStateToProps = (state: State, props) => ({
   pending: state.fetch.pending
 });
 
-export default reduxForm<any, EditViewContainerProps>({})(
+export default reduxForm<any, EditViewContainerProps>({
+  destroyOnUnmount: false
+})(
   connect(mapStateToProps, null)(withStyles(withRouter(FullScreenEditViewBase as any), styles))
 );

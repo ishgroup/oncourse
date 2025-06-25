@@ -353,7 +353,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
             search: decodeURIComponent(search.toString())
           });
 
-          toogleFullScreenEditView();
+          toogleFullScreenEditView(true);
         }
       },
       [twoColumn, expanded, tabIndex]

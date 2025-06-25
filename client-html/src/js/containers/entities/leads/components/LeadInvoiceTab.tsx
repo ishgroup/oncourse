@@ -46,7 +46,7 @@ const LeadInvoiceTab = props => {
     <div className="pl-3 pr-3">
       <FieldArray
         name="invoices"
-        goToLink="/invoice"
+        goToLink={`/invoice?search=lead.id=${values.id}`}
         title={(values && values.invoices && values.invoices.length) === 1 ? "Quote/Invoice" : "Quotes/Invoices"}
         component={NestedTable}
         onAdd={isNew ? null : quoteAddLink}

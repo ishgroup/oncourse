@@ -7,7 +7,7 @@
  */
 
 import { DataResponse, EmailTemplate, Filter, Script, SearchQuery } from "@api/model";
-import { AnyArgFunction, NoArgFunction, ShowConfirmCaller } from "ish-ui";
+import { AnyArgFunction, BooleanArgFunction, NoArgFunction, ShowConfirmCaller } from 'ish-ui';
 import React, { ReactElement } from "react";
 import { Dispatch } from "redux";
 import { FormErrors, InjectedFormProps } from "redux-form";
@@ -91,7 +91,7 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   values?: E;
   updateDeleteCondition?: any;
   fullScreenEditView?: any;
-  toogleFullScreenEditView: any;
+  toogleFullScreenEditView: BooleanArgFunction;
   dispatch?: Dispatch<any>;
   rootEntity: EntityName;
   showConfirm: ShowConfirmCaller;
@@ -123,7 +123,7 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   tabIndex?: number;
   expanded?: number[];
   setExpanded?: (arg: number[] | ((arg: number[]) => void)) => void;
-  toogleFullScreenEditView?: any;
+  toogleFullScreenEditView?: BooleanArgFunction;
 }
 
 export type ListAqlMenuItemsRenderer = (content: React.ReactNode, rowData: any, searchValue: string) => void;

@@ -216,24 +216,24 @@ export interface NestedListProps {
 }
 
 const ListRoot = React.memo<NestedListProps>(({
-                                                columns,
-                                                removeEnabled,
-                                                sortable,
-                                                sortBy,
-                                                fields,
-                                                title,
-                                                className,
-                                                hideHeader,
-                                                onAdd,
-                                                onRowDelete,
-                                                onRowDoubleClick,
-                                                onCheckboxChange,
-                                                meta: { invalid, error },
-                                                total,
-                                                goToLink,
-                                                calculateHeight,
-                                                primaryHeader
-                                              }) => {
+  columns,
+  removeEnabled,
+  sortable,
+  sortBy,
+  fields,
+  title,
+  className,
+  hideHeader,
+  onAdd,
+  onRowDelete,
+  onRowDoubleClick,
+  onCheckboxChange,
+  meta: { invalid, error },
+  total,
+  goToLink,
+  calculateHeight,
+  primaryHeader
+}) => {
   const [selection, setSelection] = useState([]);
 
   const removeRow = () => {

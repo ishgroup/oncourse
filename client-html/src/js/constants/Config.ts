@@ -32,6 +32,8 @@ export const LIST_PAGE_SIZE = 50;
 
 export const PLAIN_LIST_MAX_PAGE_SIZE = 65000;
 
+export const PASSWORD_PASS_SCORE = 2;
+
 export const LIST_TWO_COLUMN_ROW_HEIGHT = 27;
 
 export const LIST_SIDE_BAR_DEFAULT_WIDTH = 265;

@@ -11,6 +11,7 @@ import ErrorOutline from '@mui/icons-material/ErrorOutline';
 import { Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import $t from '@t';
+import { History, Location } from 'history';
 import {
   AnyArgFunction,
   BooleanArgFunction,
@@ -148,8 +149,8 @@ interface OwnProps {
 }
 
 interface Props {
-  history: any;
-  location: any;
+  history: History;
+  location: Location;
   match: any;
   listProps: TableListProps;
   rootEntity: EntityName;
@@ -207,6 +208,7 @@ type ListCompProps = Props & OwnProps & State["list"] & State["share"];
 function ListView(props: ListCompProps) {
   const {
     onInit,
+    customOnCreate,
     getScripts,
     getCustomFieldTypes,
     history,
@@ -318,33 +320,41 @@ function ListView(props: ListCompProps) {
     }));
   };
 
-  const updateHistory = (pathname, search) => {
-    const newUrl = window.location.origin + pathname + search;
+  const updateHistoryPathname = (pathname: string) => {
+    const newUrl = window.location.origin + pathname + window.location.search;
 
     if (newUrl !== window.location.href) {
       history.push({
         pathname,
-        search
+        search:  window.location.search
       });
     }
   };
 
-  const toggleFullWidthView = () => {
+  const updateHistorySearch = (search: string) => {
+    const newUrl = window.location.origin + window.location.pathname + search;
+
+    if (newUrl !== window.location.href) {
+      history.push({
+        search,
+        pathname: window.location.pathname
+      });
+    }
+  };
+
+  const toggleFullWidthView = (fullScreenState: boolean) => {
     if (alwaysFullScreenCreateView && creatingNew) {
       resetEditView();
       updateSelection([]);
     }
 
-    const fullScreenState = creatingNew ? false : !fullScreenEditView;
-
     if ((!state.threeColumn || (alwaysFullScreenCreateView && creatingNew)) && !fullScreenState && params.id) {
-      updateHistory(url.replace(`/${params.id}`, ""), location.search);
+      updateHistoryPathname(url.replace(`/${params.id}`, ""));
+      setListCreatingNew(false);
       resetEditView();
     }
 
     setListFullScreenEditView(fullScreenState);
-
-    setListCreatingNew(false);
   };
 
   const onSelection = newSelection => {
@@ -369,7 +379,7 @@ function ListView(props: ListCompProps) {
     }
 
     if (newSelection && !newSelection.length) {
-      updateHistory(params.id ? url.replace(`/${params.id}`, "") : url + "", location.search );
+      updateHistoryPathname(params.id ? url.replace(`/${params.id}`, "") : url + "");
       resetEditView();
     }
 
@@ -378,7 +388,7 @@ function ListView(props: ListCompProps) {
       && newSelection && newSelection.length
       && (!editRecord || !editRecord.id || editRecord.id.toString() !== newSelection[0])
     ) {
-      updateHistory(params.id ? url.replace(`/${params.id}`, `/${newSelection[0]}`) : url + `/${newSelection[0]}`, location.search);
+      updateHistoryPathname(params.id ? url.replace(`/${params.id}`, `/${newSelection[0]}`) : url + `/${newSelection[0]}`);
     }
 
     if (ignoreCheckDirtyOnSelection.current) {
@@ -391,7 +401,7 @@ function ListView(props: ListCompProps) {
   const showConfirm = (props: ConfirmProps) => {
 
     const afterSubmitButtonHandler = () => {
-      fullScreenEditView ? toggleFullWidthView() : onSelection(state.newSelection);
+      fullScreenEditView ? toggleFullWidthView(false) : onSelection(state.newSelection);
     };
 
     const confirmButton = (
@@ -456,6 +466,10 @@ function ListView(props: ListCompProps) {
         pathname: url
       });
     }
+
+    if (params.id === 'new') {
+      setListCreatingNew(true);
+    }
   }, []);
 
   const getUrlSearch = searchParam => {
@@ -504,7 +518,7 @@ function ListView(props: ListCompProps) {
       }
     }
     const resultUrlSearchString = decodeURIComponent(searchParams.toString());
-    updateHistory(url, resultUrlSearchString ? "?" + resultUrlSearchString : "" );
+    updateHistorySearch(resultUrlSearchString ? "?" + resultUrlSearchString : "" );
   };
 
   const synchronizeAllFilters = () => {
@@ -569,8 +583,6 @@ function ListView(props: ListCompProps) {
   };
 
   const onCreateRecord = () => {
-    const { onInit, customOnCreate } = props;
-
     if (customOnCreate) {
       if (typeof customOnCreate === "function") {
         customOnCreate(setCreateNew);
@@ -590,15 +602,11 @@ function ListView(props: ListCompProps) {
       containerNode.current.scrollTop = 0;
     }
 
-    if (params.id) {
-      updateHistory( url.replace(`/${params.id}`, "" ), search);
-    }
-
-    onSelection([]);
-
     onSearch(searchValue);
 
     resetEditView();
+
+    onSelection([]);
 
     ignoreCheckDirtyOnSelection.current = true;
   };
@@ -671,32 +679,28 @@ function ListView(props: ListCompProps) {
   ]);
 
   useEffect(() => {
-    if (params.id && creatingNew && params.id !== "new") {
-      setListCreatingNew(false);
-    }
-  }, [
-    params.id,
-    creatingNew
-  ]);
-
-  useEffect(() => {
-    if (params.id
-      && !editRecordFetching
+    if (params.id) {
+      if (!editRecordFetching
       && !creatingNew
       && (!editRecord
         || !editRecord.id
         || editRecord.id.toString() !== params.id)
-    ) {
-
-      if (params.id !== "new") {
+      && params.id !== "new"
+      ) {
         setListEditRecordFetching();
         onGetEditRecord(params.id);
 
-        if (!state.threeColumn) {
-          toggleFullWidthView();
+        if (!state.threeColumn && !fullScreenEditView) {
+          toggleFullWidthView(true);
         }
-      } else {
+      }
+
+      if (creatingNew && params.id !== "new") {
+        setListCreatingNew(false);
+      } else if (creatingNew && params.id === "new") {
         onCreateRecord();
+      } else if (!creatingNew && params.id === "new") {
+        updateHistoryPathname(url.replace(`/${params.id}`, ""));
       }
     }
   }, [
@@ -705,23 +709,7 @@ function ListView(props: ListCompProps) {
     state.threeColumn,
     editRecordFetching,
     creatingNew,
-  ]);
-
-  useEffect(() => {
-    if (!params.id) {
-      resetEditView();
-      if (!state.threeColumn && (fullScreenEditView || creatingNew)) {
-        toggleFullWidthView();
-      }
-      if (state.threeColumn) {
-        ignoreCheckDirtyOnSelection.current = true;
-      }
-    }
-  }, [
-    params.id,
-    state.threeColumn,
-    fullScreenEditView,
-    creatingNew
+    fullScreenEditView
   ]);
 
   const prevSearch = usePrevious(search);
@@ -740,7 +728,7 @@ function ListView(props: ListCompProps) {
         currentUrlSearch.delete("search");
       }
       const resultUrlSearchString = decodeURIComponent(currentUrlSearch.toString());
-      updateHistory(url, resultUrlSearchString ? "?" + resultUrlSearchString : "" );
+      updateHistorySearch(resultUrlSearchString ? "?" + resultUrlSearchString : "" );
 
       // Update filters by url
       if (prevUrlSearch.get("filter") !== filtersUrlString) {
@@ -763,29 +751,18 @@ function ListView(props: ListCompProps) {
     }
   }, [search, location.search]);
 
-  const prevMenuTags = usePrevious(menuTags);
-  const prevFilterGroups = usePrevious(filterGroups);
-
   useEffect(() => {
-    if (state.filtersSynchronized && !fetch.pending && ((prevMenuTags.length && prevMenuTags !== menuTags)
-      || (prevFilterGroups.length && prevFilterGroups !== filterGroups)
-    )) {
+    if (state.filtersSynchronized && !fetch.pending) {
       onQuerySearchChange(records.search);
     }
   }, [
     menuTags,
-    filterGroups,
-    fetch.pending,
-    records.search,
-    state.filtersSynchronized
+    filterGroups
   ]);
 
   useEffect(() => {
     if (selection.length && selection[0] !== "new" && typeof deleteDisabledCondition === "function") {
       updateDeleteCondition(!deleteDisabledCondition(props));
-    }
-    if (!selection.length && params.id === "new") {
-      updateHistory(url.replace(`/${params.id}`, ""), location.search);
     }
   }, [
     selection,
@@ -857,7 +834,7 @@ function ListView(props: ListCompProps) {
   };
 
   const setCreateNew = () => {
-    updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", search);
+    updateHistoryPathname(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new");
     setListCreatingNew(true);
     updateSelection(["new"]);
     onInit();
@@ -919,10 +896,10 @@ function ListView(props: ListCompProps) {
   };
 
   const onRowDoubleClick = id => {
-    updateHistory(params.id ? url.replace(`/${params.id}`, `/${id}`) : url + `/${id}`, location.search);
+    updateHistoryPathname(params.id ? url.replace(`/${params.id}`, `/${id}`) : url + `/${id}`);
 
     if (state.threeColumn) {
-      toggleFullWidthView();
+      toggleFullWidthView(true);
     }
   };
 
@@ -932,7 +909,7 @@ function ListView(props: ListCompProps) {
     const layout = updatedLayout ? "Three column" : "Two column";
 
     if (params.id) {
-      updateHistory(url.replace(`/${params.id}`, ""), location.search);
+      updateHistoryPathname(url.replace(`/${params.id}`, ""));
     }
 
     updateLayout(layout);

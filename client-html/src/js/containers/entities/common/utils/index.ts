@@ -24,7 +24,12 @@ import {
   FETCH_SUCCESS
 } from '../../../../common/actions';
 import { getNoteItems } from '../../../../common/components/form/notes/actions';
-import { getRecords, SET_LIST_EDIT_RECORD, setListSelection } from '../../../../common/components/list-view/actions';
+import {
+  getRecords,
+  SET_LIST_EDIT_RECORD,
+  setListCreatingNew,
+  setListSelection
+} from '../../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
 import AccessService from '../../../../common/services/AccessService';
 import { getFeeExTaxByFeeIncTax, getTotalByFeeExTax } from '../../../../common/utils/financial';
@@ -271,7 +276,8 @@ export const getListRecordAfterCreateActions = (entity: EntityName) => [
   },
   getRecords({ entity, listUpdate: true }),
   setListSelection([]),
-  initialize(LIST_EDIT_VIEW_FORM_NAME, null)
+  initialize(LIST_EDIT_VIEW_FORM_NAME, null),
+  setListCreatingNew(false)
 ];
 
 export const getAccessesByPath = async (pathes: string[], state: State, method = 'GET'): Promise<AccessByPath[]> => {

@@ -326,7 +326,7 @@ const CourseClassBudgetTab = React.memo<Props>(
             pathname: history.location.pathname,
             search: decodeURIComponent(search.toString())
           });
-          toogleFullScreenEditView();
+          toogleFullScreenEditView(true);
         }
       },
       [twoColumn, tabIndex]
