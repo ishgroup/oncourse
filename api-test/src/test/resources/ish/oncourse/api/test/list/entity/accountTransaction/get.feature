@@ -14,9 +14,9 @@ Feature: Main feature for all GET requests with path 'list/entity/accountTransac
     Scenario: (+) Get list of all account transactions by admin
 
         Given path ishPathList
-        And param pageSize = 1000
         And param entity = 'AccountTransaction'
-        When method GET
+        And request {pageSize: 1000}
+        When method pOST
         Then status 200
         And match $.rows[*].id contains ["104","103","102","101","28","27","26","25","24","23","22","21","20","19","18","17","16","15","14","13","12","11","10","9","8","7","6","5","4","3","2","1","118","117","116","115","114","113","112","111","110","109","108","107","106","105","208","207","206","205"]
 
@@ -27,9 +27,9 @@ Feature: Main feature for all GET requests with path 'list/entity/accountTransac
         * configure headers = { Authorization: 'UserWithRightsView' }
 
         Given path ishPathList
-        And param pageSize = 1000
         And param entity = 'AccountTransaction'
-        When method GET
+        And request {pageSize: 1000}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["104","103","102","101","28","27","26","25","24","23","22","21","20","19","18","17","16","15","14","13","12","11","10","9","8","7","6","5","4","3","2","1","118","117","116","115","114","113","112","111","110","109","108","107","106","105","208","207","206","205"]
 
@@ -61,7 +61,8 @@ Feature: Main feature for all GET requests with path 'list/entity/accountTransac
 
         Given path ishPathList
         And param entity = 'AccountTransaction'
-        When method GET
+        And request {}
+        When method POST
         Then status 403
         And match $.errorMessage == "Sorry, you have no permissions to view this entity. Please contact your administrator"
 
