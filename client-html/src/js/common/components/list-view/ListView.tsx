@@ -195,6 +195,7 @@ interface ComponentState {
   showExportDrawer: boolean;
   showBulkEditDrawer: boolean;
   filtersSynchronized: boolean;
+  mounted: boolean;
   querySearch: boolean;
   deleteEnabled: boolean;
   threeColumn: boolean;
@@ -305,6 +306,7 @@ function ListView(props: ListCompProps) {
       showBulkEditDrawer: false,
       filtersSynchronized: false,
       querySearch: false,
+      mounted: false,
       deleteEnabled: !props.defaultDeleteDisabled,
       threeColumn: false,
       sidebarWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
@@ -470,6 +472,8 @@ function ListView(props: ListCompProps) {
     if (params.id === 'new') {
       setListCreatingNew(true);
     }
+
+    setState({ mounted: true });
   }, []);
 
   const getUrlSearch = searchParam => {
@@ -679,7 +683,7 @@ function ListView(props: ListCompProps) {
   ]);
 
   useEffect(() => {
-    if (params.id) {
+    if (state.mounted && params.id) {
       if (!editRecordFetching
       && !creatingNew
       && (!editRecord
@@ -706,6 +710,7 @@ function ListView(props: ListCompProps) {
   }, [
     params.id,
     editRecord?.id,
+    state.mounted,
     state.threeColumn,
     editRecordFetching,
     creatingNew,
