@@ -170,10 +170,10 @@ const Table = ({
     getRowId
   });
 
-  const onSelectionChangeHangler = useCallback<any>(debounce(() => {
-    onSelectionChange(Object.keys(table.getState().rowSelection).map(k => k));
-  }, 500), [selection]);
-
+  const onSelectionChangeHangler = (newSelection: RowSelectionState) => {
+    onSelectionChange(Object.keys(newSelection).map(k => k));
+  };
+  
   const onHiddenChange = useCallback<any>(debounce(() => {
     const updated = {};
     columns.forEach(c => {
@@ -202,7 +202,7 @@ const Table = ({
       updated[id] = true;
     }
     onRowSelectionChange(updated);
-    onSelectionChangeHangler();
+    onSelectionChangeHangler(updated);
   };
 
   const onRowSelect = (e, row) => {
@@ -223,7 +223,7 @@ const Table = ({
         }, {});
 
       onRowSelectionChange(selectionData);
-      onSelectionChangeHangler();
+      onSelectionChangeHangler(selectionData);
       return;
     }
     if (e.ctrlKey || e.metaKey) {
@@ -231,7 +231,7 @@ const Table = ({
       return;
     }
     onRowSelectionChange({ [row.id]: true });
-    onSelectionChangeHangler();
+    onSelectionChangeHangler({ [row.id]: true });
   };
 
   const onRowCheckboxSelect = (e, id) => {
