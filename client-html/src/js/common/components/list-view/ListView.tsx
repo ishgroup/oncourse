@@ -291,8 +291,6 @@ function ListView(props: ListCompProps) {
 
   const searchComponentNode = useRef(null);
 
-  const ignoreCheckDirtyOnSelection = useRef<boolean>(true);
-
   const getMainContentWidth = (mainContentWidth, sidebarWidth) =>
     (mainContentWidth ? Number(mainContentWidth) : window.screen.width - sidebarWidth - 368);
 
@@ -341,7 +339,7 @@ function ListView(props: ListCompProps) {
       });
     }
   };
-  
+
   useEffect(() => {
     if (!fullScreenEditView && params.id && (!state.threeColumn || alwaysFullScreenCreateView)) {
       setListFullScreenEditView(true);
@@ -357,7 +355,7 @@ function ListView(props: ListCompProps) {
       updateSelection([]);
     }
 
-    if ((!state.threeColumn || (alwaysFullScreenCreateView && creatingNew)) && !fullScreenState && params.id) {
+    if (!fullScreenState && params.id) {
       updateHistoryPathname(url.replace(`/${params.id}`, ""));
       resetEditView();
     }
@@ -368,12 +366,11 @@ function ListView(props: ListCompProps) {
       return;
     }
 
-    if ((isDirty || (creatingNew && selection[0] === "new")) && !ignoreCheckDirtyOnSelection.current) {
+    if (isDirty) {
       setState({ newSelection });
       showConfirm(
         {
           onConfirm: () => {
-            ignoreCheckDirtyOnSelection.current = true;
             onSelection(newSelection);
             if (isDirty) {
               resetEditView();
@@ -397,10 +394,6 @@ function ListView(props: ListCompProps) {
       updateHistoryPathname(params.id ? url.replace(`/${params.id}`, `/${newSelection[0]}`) : url + `/${newSelection[0]}`);
     }
 
-    if (ignoreCheckDirtyOnSelection.current) {
-      ignoreCheckDirtyOnSelection.current = false;
-    }
-
     if (newSelection) updateSelection(newSelection);
   };
 
@@ -422,7 +415,6 @@ function ListView(props: ListCompProps) {
         color="primary"
         onClick={() => {
           submitForm();
-          ignoreCheckDirtyOnSelection.current = true;
           setTimeout(afterSubmitButtonHandler, 1000);
           closeConfirm();
         }}
@@ -620,8 +612,6 @@ function ListView(props: ListCompProps) {
     resetEditView();
 
     onSelection([]);
-
-    ignoreCheckDirtyOnSelection.current = true;
   };
 
   const updateDeleteCondition = val => {
@@ -777,7 +767,9 @@ function ListView(props: ListCompProps) {
 
   useEffect(() => {
     if (!params.id && !state.threeColumn) return;
-    onSelection(params.id ? [params.id] : []);
+    if (!selection || selection[0] !== params.id) {
+      onSelection(params.id ? [params.id] : []);
+    }
   }, [
     params.id
   ]);
@@ -907,13 +899,13 @@ function ListView(props: ListCompProps) {
     const updatedLayout = !state.threeColumn;
     const layout = updatedLayout ? "Three column" : "Two column";
 
-    if (params.id) {
-      updateHistoryPathname(url.replace(`/${params.id}`, ""));
-    }
-
     updateLayout(layout);
     updateSelection([]);
     resetEditView();
+
+    if (params.id) {
+      updateHistoryPathname(url.replace(`/${params.id}`, ""));
+    }
 
     setTimeout(() => {
       if (records?.columns.length) updateTableModel({ layout });
@@ -1147,7 +1139,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>, ownProps) => ({
   sendGAEvent: (event: GAEventTypes, screen: string, time?: number) => dispatch(pushGTMEvent(event, screen, time)),
   setEntity: entity => dispatch(setListEntity(entity)),
   resetEditView: () => {
-    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, null));
+    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, null, false));
     dispatch(setListEditRecord(null));
   },
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
