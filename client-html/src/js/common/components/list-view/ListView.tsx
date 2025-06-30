@@ -341,7 +341,7 @@ function ListView(props: ListCompProps) {
   };
 
   useEffect(() => {
-    if (!fullScreenEditView && params.id && (!state.threeColumn || alwaysFullScreenCreateView)) {
+    if (!fullScreenEditView && params.id && (!state.threeColumn || (params.id === 'new' && alwaysFullScreenCreateView))) {
       setListFullScreenEditView(true);
     }
     if (fullScreenEditView && !params.id) {
