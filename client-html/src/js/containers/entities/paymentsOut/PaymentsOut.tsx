@@ -15,7 +15,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { withStyles } from 'tss-react/mui';
-import { getFilters, setListCreatingNew, setListSelection, } from '../../../common/components/list-view/actions';
+import { getFilters, setListSelection, } from '../../../common/components/list-view/actions';
 import ListView from '../../../common/components/list-view/ListView';
 import { getManualLink } from '../../../common/utils/getManualLink';
 import { FilterGroup } from '../../../model/common/ListView';
@@ -89,14 +89,13 @@ class PaymentsOut extends React.Component<any, any> {
 
   onCreateNew() {
     const {
-      location, onInit, setListCreatingNew, updateSelection
+      location, onInit, updateSelection
     } = this.props;
 
     this.closeCreateNewDialog();
 
     const urlParams = new URLSearchParams(location.search);
 
-    setListCreatingNew(true);
     updateSelection(["new"]);
     onInit(urlParams.get("invoiceId"));
   }
@@ -197,7 +196,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getAdministrationSites: () => dispatch(getAdministrationSites()),
   getAccounts: () => getPlainAccounts(dispatch),
   getActivePaymentOutMethods: () => dispatch(getActivePaymentOutMethods()),
-  setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   clearContraInvoices: () => dispatch(setContraInvoices(null)),
 });

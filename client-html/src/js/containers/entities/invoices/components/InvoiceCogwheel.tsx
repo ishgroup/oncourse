@@ -15,7 +15,7 @@ import { withRouter } from 'react-router';
 import { Dispatch } from 'redux';
 import { change, isDirty, reset } from 'redux-form';
 import { IAction } from '../../../../common/actions/IshAction';
-import { setListCreatingNew, setListSelection, } from '../../../../common/components/list-view/actions';
+import { setListSelection } from '../../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
 import history from '../../../../constants/History';
 import { CogwhelAdornmentProps } from '../../../../model/common/ListView';
@@ -39,7 +39,6 @@ interface Props extends CogwhelAdornmentProps {
   duplicateQuote: any;
   history: any;
   match: any;
-  setListCreatingNew: any;
   updateSelection: any;
   location?: any;
 }
@@ -61,7 +60,6 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
     hasQePermissions,
     listRecords,
     duplicateQuote,
-    setListCreatingNew,
     updateSelection,
     match,
     location,
@@ -93,7 +91,6 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
 
     updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", window.location.search);
 
-    setListCreatingNew(true);
     updateSelection(["new"]);
   };
 
@@ -239,7 +236,6 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   clearContraInvoices: () => dispatch(setContraInvoices(null)),
   duplicateAndReverseInvoice: (id: number) => dispatch(duplicateAndReverseInvoice(id)),
   duplicateQuote: (id: number) => dispatch(duplicateQuote(id)),
-  setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
 });
 

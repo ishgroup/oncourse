@@ -19,7 +19,6 @@ import { checkPermissions, getUserPreferences } from '../../../common/actions';
 import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
 import {
   getFilters,
-  setListCreatingNew,
   setListEditRecord,
   setListSelection,
 } from '../../../common/components/list-view/actions';
@@ -136,7 +135,6 @@ const manualLink = getManualLink("about-invoices");
 const secondaryColumnCondition = row => (row.invoiceNumber ? "Invoice #" + row.invoiceNumber : "Quote #" + row.quoteNumber);
 
 const Invoices = React.memo<any>(({
-  setListCreatingNew,
   selection,
   history,
   updateSelection,
@@ -175,7 +173,6 @@ const Invoices = React.memo<any>(({
     closeCreateMenu();
     updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", location.search);
 
-    setListCreatingNew(true);
     updateSelection(["new"]);
 
     if (lead) {
@@ -292,7 +289,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getListTags("AbstractInvoice"));
     dispatch(getUserPreferences([ACCOUNT_DEFAULT_INVOICELINE_ID]));
   },
-  setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
 });
 

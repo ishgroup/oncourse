@@ -54,8 +54,8 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     const { tagsGrouped, subjectsField, specialTypesDisabled } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
 
     const onCalendarClick = useCallback(() => {
-      openInternalLink(`/timetable?search=courseClass.course.id=${values.id}`);
-    }, [values.id]);
+      openInternalLink(`/timetable?search=courseClass.course.id=${values?.id}`);
+    }, [values?.id]);
 
     const onIsTraineeshipChange = useCallback(
       (e, value) => {
@@ -69,13 +69,13 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     const waitingListTypes = useMemo(
       () => [
         {
-          name: `${values.studentWaitingListCount ? `S` : "No s"}tudents on waiting list`,
-          count: values.studentWaitingListCount,
+          name: `${values?.studentWaitingListCount ? `S` : "No s"}tudents on waiting list`,
+          count: values?.studentWaitingListCount,
           disabled: !values.studentWaitingListCount,
-          link: `/waitingList?search=course.id is ${values.id}`
+          link: `/waitingList?search=course.id is ${values?.id}`
         }
       ],
-      [values.studentWaitingListCount, values.id]
+      [values?.studentWaitingListCount, values?.id]
     );
 
     return (

@@ -162,8 +162,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       manualLink,
       submitSucceeded,
       syncErrors,
-      threeColumn,
-      alwaysFullScreenCreateView,
       toogleFullScreenEditView,
       form,
       asyncValidating,
@@ -184,9 +182,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     return (
       <Dialog
         fullScreen
-        open={Boolean(
-         fullScreenEditView || ((!threeColumn || alwaysFullScreenCreateView) && creatingNew)
-        )}
+        open={fullScreenEditView}
         TransitionComponent={Transition}
         classes={{
           paper: classes.fullEditViewBackground

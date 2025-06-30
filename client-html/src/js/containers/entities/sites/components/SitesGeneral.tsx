@@ -105,7 +105,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
 
   onCalendarClick = () => {
     const { values } = this.props;
-    openInternalLink(`/timetable?search=room.site.id=${values.id}&title=Timetable for ${values.name}`);
+    openInternalLink(`/timetable?search=room.site.id=${values?.id}&title=Timetable for ${values?.name}`);
   };
 
   addRoom = () => {

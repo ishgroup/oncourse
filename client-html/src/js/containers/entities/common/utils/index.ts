@@ -17,7 +17,6 @@ import { getNoteItems } from '../../../../common/components/form/notes/actions';
 import {
   getRecords,
   SET_LIST_EDIT_RECORD,
-  setListCreatingNew,
   setListSelection
 } from '../../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
@@ -266,7 +265,6 @@ export const getListRecordAfterCreateActions = (entity: EntityName) => [
   getRecords({ entity, listUpdate: true }),
   setListSelection([]),
   initialize(LIST_EDIT_VIEW_FORM_NAME, null),
-  setListCreatingNew(false)
 ];
 
 export const getAccessesByPath = async (pathes: string[], state: State, method = 'GET'): Promise<AccessByPath[]> => {
