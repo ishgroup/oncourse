@@ -76,7 +76,6 @@ export interface ListState {
   scripts?: Script[];
   emailTemplates?: EmailTemplate[];
   emailTemplatesWithKeyCode?: EmailTemplate[];
-  creatingNew?: boolean;
   fullScreenEditView?: boolean;
   recepients?: MessageData;
 }
@@ -101,7 +100,6 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   nameCondition?: AnyArgFunction;
   updateCaption?: (arg: string) => React.Component;
   threeColumn?: boolean;
-  alwaysFullScreenCreateView?: boolean;
   syncErrors?: any;
   disabledSubmitCondition?: boolean;
   hideTitle?: boolean;

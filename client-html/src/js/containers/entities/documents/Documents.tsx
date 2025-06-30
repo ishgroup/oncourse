@@ -19,7 +19,6 @@ import DocumentAddDialog from '../../../common/components/form/documents/compone
 import {
   getFilters,
   setFilterGroups,
-  setListCreatingNew,
   setListEditRecord,
   setListSelection
 } from '../../../common/components/list-view/actions';
@@ -58,7 +57,6 @@ interface DocumentProps {
   getFilters?: () => void;
   getTags?: () => void;
   classes?: any;
-  setListCreatingNew?: BooleanArgFunction;
   updateSelection?: (selection: string[]) => void;
   history?: any;
   match?: any;
@@ -152,7 +150,6 @@ const Documents: React.FC<DocumentProps> = props => {
     editRecord,
     getTags,
     classes,
-    setListCreatingNew,
     updateSelection,
     history,
     searchExistingDocument,
@@ -195,7 +192,6 @@ const Documents: React.FC<DocumentProps> = props => {
     updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", window.location.search);
 
     const processCreate = () => {
-      setListCreatingNew(true);
       updateSelection(["new"]);
       onInit(initial);
       closeAddDialog();
@@ -295,7 +291,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
-  setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   searchExistingDocument: (inputDocument: File, editingFormName: string) =>
     dispatch(searchDocumentByHash(inputDocument, editingFormName)),
   clearEditingDocument: () => dispatch(clearEditingDocument())

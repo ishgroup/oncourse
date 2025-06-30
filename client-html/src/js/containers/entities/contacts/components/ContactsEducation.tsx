@@ -224,16 +224,16 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
   );
 
   const onAddEnrolment = useCallback(() => {
-    openInternalLink(`/checkout?contactId=${values.id}`);
-  }, [values.id]);
+    openInternalLink(`/checkout?contactId=${values?.id}`);
+  }, [values?.id]);
 
   const onAddPriorLearning = useCallback(() => {
-    openInternalLink(`/priorLearning/new?contactId=${values.id}`);
-  }, [values.id]);
+    openInternalLink(`/priorLearning/new?contactId=${values?.id}`);
+  }, [values?.id]);
 
   const onAddCertificates = useCallback(() => {
-    openInternalLink(`/certificate/new?contactId=${values.id}`);
-  }, [values.id]);
+    openInternalLink(`/certificate/new?contactId=${values?.id}`);
+  }, [values?.id]);
 
   const enrolmentsPermissions = access["/a/v1/list/plain?entity=Enrolment"] && access["/a/v1/list/plain?entity=Enrolment"]["GET"];
   const priorLearningsPermissions = access["/a/v1/list/plain?entity=PriorLearning"] && access["/a/v1/list/plain?entity=PriorLearning"]["GET"];
@@ -251,7 +251,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
           >
             <FieldArray
               name="student.education.enrolments"
-              goToLink={`/enrolment?search=student.contact.id=${values.id}`}
+              goToLink={`/enrolment?search=student.contact.id=${values?.id}`}
               title={enrolmentsCount === 1 ? "enrolment" : "enrolments"}
               component={NestedTable}
               columns={enrolmentColumns}
@@ -274,7 +274,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
             >
               <FieldArray
                 name="student.education.priorLearnings"
-                goToLink={`/priorLearning?search=student.contact.id=${values.id}`}
+                goToLink={`/priorLearning?search=student.contact.id=${values?.id}`}
                 title={priorLearningsCount === 1 ? "prior learning" : "prior learnings"}
                 component={NestedTable}
                 columns={priorLearningsColumns}
@@ -296,7 +296,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
             >
               <FieldArray
                 name="student.education.outcomes"
-                goToLink={`/outcome?search=contact.id=${values.id}`}
+                goToLink={`/outcome?search=contact.id=${values?.id}`}
                 title={outcomesCount === 1 ? "outcome" : "outcomes"}
                 component={NestedTable}
                 columns={outcomesColumns}
@@ -318,7 +318,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
             >
               <FieldArray
                 name="student.education.certificates"
-                goToLink={`/certificate?search=student.contact.id=${values.id}`}
+                goToLink={`/certificate?search=student.contact.id=${values?.id}`}
                 title={certificatesCount === 1 ? "certificate" : "certificates"}
                 component={NestedTable}
                 columns={certificatesColumns}

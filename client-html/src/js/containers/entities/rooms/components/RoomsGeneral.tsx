@@ -50,9 +50,9 @@ function RoomsGeneral({
   const sites = useAppSelector(state => state.plainSearchRecords["Site"].items);
   
   const onCalendarClick = () => {
-    const site = sites.find(el => el.value === values.siteId);
+    const site = sites.find(el => el.value === values?.siteId);
     openInternalLink(
-      `/timetable?search=room.id=${values.id}&title=Timetable for ${values.name}, ${
+      `/timetable?search=room.id=${values?.id}&title=Timetable for ${values?.name}, ${
         site ? site.label : ""
       }`
     );

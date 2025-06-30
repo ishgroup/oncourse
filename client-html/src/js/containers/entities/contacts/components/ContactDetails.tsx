@@ -354,7 +354,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                         {`Student is on waiting list for: ${values.student.waitingLists.map(v => `"${v}"`).join(", ")}`}
                         <IconButton
                           size="small"
-                          onClick={() => openInternalLink(`/waitingList?search=student.contact.id = ${values.id}`)}
+                          onClick={() => openInternalLink(`/waitingList?search=student.contact.id = ${values?.id}`)}
                         >
                           <OpenInNew color="primary" fontSize="inherit" />
                         </IconButton>
