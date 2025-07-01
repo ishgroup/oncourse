@@ -581,7 +581,7 @@ function ListView(props: ListCompProps) {
       }
 
       if (listSearchString) {
-        setListUserAQLSearch(`${listSearchString} `);
+        setListUserAQLSearch(listSearchString);
       }
     } else if (targetFilters) {
       onChangeFilters(
@@ -719,7 +719,7 @@ function ListView(props: ListCompProps) {
 
       // Update AQL search by url
       if (search) {
-        currentUrlSearch.set("search", encodeURIComponent(search));
+        currentUrlSearch.set("search", search);
       } else {
         currentUrlSearch.delete("search");
       }
