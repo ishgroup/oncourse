@@ -6,19 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { DataResponse } from "@api/model";
-import { format } from "date-fns";
-import { III_DD_MMM_YYYY } from "ish-ui";
-import { initialize } from "redux-form";
-import { Epic } from "redux-observable";
-import { setListEditRecord } from "../../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import EntityService from "../../../../common/services/EntityService";
-import history from "../../../../constants/History";
-import { GET_ADD_PAYMENT_OUT_VALUES, getActivePaymentOutMethods } from "../actions";
-import { PaymentOutModel } from "../reducers/state";
-import { getAmountToAllocate } from "../utils";
+import { DataResponse } from '@api/model';
+import { format } from 'date-fns';
+import { III_DD_MMM_YYYY } from 'ish-ui';
+import { initialize } from 'redux-form';
+import { Epic } from 'redux-observable';
+import { setListEditRecord } from '../../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
+import * as EpicUtils from '../../../../common/epics/EpicUtils';
+import EntityService from '../../../../common/services/EntityService';
+import { GET_ADD_PAYMENT_OUT_VALUES, getActivePaymentOutMethods } from '../actions';
+import { PaymentOutModel } from '../reducers/state';
+import { getAmountToAllocate } from '../utils';
 
 const request: EpicUtils.Request<{ dataResponse: DataResponse, formData: PaymentOutModel  }> = {
   type: GET_ADD_PAYMENT_OUT_VALUES,
@@ -61,14 +60,6 @@ const request: EpicUtils.Request<{ dataResponse: DataResponse, formData: Payment
 
     formData.datePayed = format(Date.now(), III_DD_MMM_YYYY);
     formData.dateBanked = "";
-
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.delete("invoiceId");
-
-    history.replace({
-      pathname: history.location.pathname,
-      search: decodeURIComponent(urlParams.toString())
-    });
 
     return [
       getActivePaymentOutMethods(),

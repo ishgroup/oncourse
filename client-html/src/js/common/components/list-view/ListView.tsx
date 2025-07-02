@@ -341,7 +341,7 @@ function ListView(props: ListCompProps) {
   };
 
   useEffect(() => {
-    if (!fullScreenEditView && params.id && (!state.threeColumn || (params.id === 'new' && alwaysFullScreenCreateView))) {
+    if (!fullScreenEditView && params.id && ((!state.threeColumn && !customOnCreate) || (params.id === 'new' && alwaysFullScreenCreateView))) {
       setListFullScreenEditView(true);
     }
     if (fullScreenEditView && !params.id) {
@@ -749,7 +749,7 @@ function ListView(props: ListCompProps) {
 
   useEffect(() => {
     if (state.filtersSynchronized && !fetch.pending) {
-      onQuerySearchChange(records.search);
+      fullScreenEditView ? onSearch(records.search) : onQuerySearchChange(records.search);
     }
   }, [
     menuTags,
