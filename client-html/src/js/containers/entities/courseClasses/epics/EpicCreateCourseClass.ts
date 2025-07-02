@@ -3,18 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseClass } from "@api/model";
-import { Epic } from "redux-observable";
-import { FETCH_SUCCESS } from "../../../../common/actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
-import { Create, Request } from "../../../../common/epics/EpicUtils";
-import history from "../../../../constants/History";
-import { QueuedAction } from "../../../../model/common/ActionsQueue";
-import { processCustomFields } from "../../customFieldTypes/utils";
-import { CREATE_COURSE_CLASS } from "../actions";
-import CourseClassService from "../services/CourseClassService";
-import { processCourseClassApiActions } from "../utils";
+import { CourseClass } from '@api/model';
+import { reset } from 'redux-form';
+import { Epic } from 'redux-observable';
+import { showMessage } from '../../../../common/actions';
+import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import { getRecords } from '../../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
+import { Create, Request } from '../../../../common/epics/EpicUtils';
+import history from '../../../../constants/History';
+import { QueuedAction } from '../../../../model/common/ActionsQueue';
+import { processCustomFields } from '../../customFieldTypes/utils';
+import { CREATE_COURSE_CLASS } from '../actions';
+import CourseClassService from '../services/CourseClassService';
+import { processCourseClassApiActions } from '../utils';
 
 const request: Request<{ actions: QueuedAction[], createdClassId: number }, { courseClass: CourseClass }> = {
   type: CREATE_COURSE_CLASS,
@@ -37,14 +39,9 @@ const request: Request<{ actions: QueuedAction[], createdClassId: number }, { co
 
     return [
       ...actions.map(a => a.actionBody),
-      {
-        type: GET_RECORDS_REQUEST,
-        payload: { entity: "CourseClass" }
-      },
-      {
-        type: FETCH_SUCCESS,
-        payload: { message: "Class created" }
-      },
+      reset(LIST_EDIT_VIEW_FORM_NAME),
+      getRecords({ entity: 'CourseClass', listUpdate: true }),
+      showMessage({ success: true, message: "Class created" })
     ];
   },
   processError: response => FetchErrorHandler(response, "Class was not created")
