@@ -11,7 +11,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import $t from '@t';
 import { formatToDateOnly } from 'ish-ui';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { initialize } from 'redux-form';
@@ -19,12 +19,12 @@ import { checkPermissions, getUserPreferences } from '../../../common/actions';
 import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
 import {
   getFilters,
-  setListEditRecord, setListFullScreenEditView,
-  setListSelection,
+  setListEditRecord,
+  setListFullScreenEditView,
 } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
 import ListView from '../../../common/components/list-view/ListView';
-import { getWindowHeight, getWindowWidth } from '../../../common/utils/common';
+import { getWindowHeight, getWindowWidth, updateHistory } from '../../../common/utils/common';
 import { getManualLink } from '../../../common/utils/getManualLink';
 import { ACCOUNT_DEFAULT_INVOICELINE_ID } from '../../../constants/Config';
 import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
@@ -137,7 +137,6 @@ const secondaryColumnCondition = row => (row.invoiceNumber ? "Invoice #" + row.i
 const Invoices = React.memo<any>(({
   setListFullScreenEditView,
   selection,
-  updateSelection,
   location,
   listRecords,
   match: { params, url },
@@ -158,9 +157,10 @@ const Invoices = React.memo<any>(({
     setCreateMenuOpened(true);
   };
 
-  const onCreateNew = useCallback((type, lead?) => {
+  const onCreateNew = (type, lead?) => {
     closeCreateMenu();
-    updateSelection(["new"]);
+    updateHistory(location.search, params.id ? url.replace(`/${params.id}`, "/new") : url + "/new");
+    setListFullScreenEditView(true);
 
     if (lead) {
       Initial.leadId = lead.id;
@@ -171,8 +171,7 @@ const Invoices = React.memo<any>(({
 
     Initial.type = type;
     onInit();
-    setListFullScreenEditView(true);
-  }, [params, location, url, listRecords]);
+  };
 
   const customOnCreate = async () => {
     if (params.id === "new" && window.location.search?.includes("lead.id")) {
@@ -277,7 +276,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getListTags("AbstractInvoice"));
     dispatch(getUserPreferences([ACCOUNT_DEFAULT_INVOICELINE_ID]));
   },
-  updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
 });
 
