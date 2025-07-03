@@ -9,16 +9,14 @@ import { FormErrors } from 'redux-form';
 import history from '../../../constants/History';
 
 export const updateHistory = (params, url) => {
-  const paramsString = decodeURIComponent(params.toString());
-
-  const updatedSearch = paramsString ? "?" + paramsString : "";
-
-  const newUrl = window.location.origin + url + updatedSearch;
+  const urlParams = new URLSearchParams(params);
+  const search = decodeURIComponent(urlParams.toString());
+  const newUrl = window.location.origin + url + search;
 
   if (newUrl !== window.location.href) {
     history.push({
       pathname: url,
-      search: updatedSearch
+      search
     });
   }
 };
