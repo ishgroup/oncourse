@@ -19,7 +19,7 @@ import { checkPermissions, getUserPreferences } from '../../../common/actions';
 import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
 import {
   getFilters,
-  setListEditRecord,
+  setListEditRecord, setListFullScreenEditView,
   setListSelection,
 } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
@@ -135,8 +135,8 @@ const manualLink = getManualLink("about-invoices");
 const secondaryColumnCondition = row => (row.invoiceNumber ? "Invoice #" + row.invoiceNumber : "Quote #" + row.quoteNumber);
 
 const Invoices = React.memo<any>(({
+  setListFullScreenEditView,
   selection,
-  history,
   updateSelection,
   location,
   listRecords,
@@ -158,21 +158,8 @@ const Invoices = React.memo<any>(({
     setCreateMenuOpened(true);
   };
 
-  const updateHistory = (pathname, search) => {
-    const newUrl = window.location.origin + pathname + search;
-
-    if (newUrl !== window.location.href) {
-      history.push({
-        pathname,
-        search
-      });
-    }
-  };
-
   const onCreateNew = useCallback((type, lead?) => {
     closeCreateMenu();
-    updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", location.search);
-
     updateSelection(["new"]);
 
     if (lead) {
@@ -184,6 +171,7 @@ const Invoices = React.memo<any>(({
 
     Initial.type = type;
     onInit();
+    setListFullScreenEditView(true);
   }, [params, location, url, listRecords]);
 
   const customOnCreate = async () => {
@@ -290,6 +278,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getUserPreferences([ACCOUNT_DEFAULT_INVOICELINE_ID]));
   },
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
+  setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Invoices);
