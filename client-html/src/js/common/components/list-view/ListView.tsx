@@ -26,7 +26,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
-import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from 'redux-form';
+import { getFormSyncErrors, initialize, isDirty, isInvalid, reset, submit } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import {
   ENTITY_AQL_STORAGE_NAME,
@@ -341,7 +341,13 @@ function ListView(props: ListCompProps) {
   };
 
   useEffect(() => {
-    if (!fullScreenEditView && params.id && ((!state.threeColumn && !customOnCreate) || (params.id === 'new' && alwaysFullScreenCreateView))) {
+    if (
+      !fullScreenEditView
+      && params.id
+      && (state.threeColumn
+        ? (params.id === 'new' && alwaysFullScreenCreateView && !customOnCreate)
+        : (params.id !== 'new' || !customOnCreate)
+      )) {
       setListFullScreenEditView(true);
     }
     if (fullScreenEditView && !params.id) {
@@ -645,6 +651,15 @@ function ListView(props: ListCompProps) {
     });
   }, [
     records.layout
+  ]);
+
+  useEffect(() => {
+    if (!fullScreenEditView && isDirty && !state.threeColumn) {
+      dispatch(reset(LIST_EDIT_VIEW_FORM_NAME));
+    }
+  }, [
+    isDirty,
+    fullScreenEditView
   ]);
 
   useEffect(() => {

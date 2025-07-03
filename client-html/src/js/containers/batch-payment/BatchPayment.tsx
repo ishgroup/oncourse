@@ -303,7 +303,7 @@ const ContactRenderer = ({
   );
 };
 
-interface Props {
+interface Props extends Partial<InjectedFormProps> {
   dispatch?: Dispatch<IAction>;
   currencySymbol?: string;
   values?: {
@@ -400,7 +400,7 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
     .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to get batch payment contacts"));
 };
 
-const BatchPayment: React.FC<Props & InjectedFormProps> = ({
+const BatchPayment: React.FC<Props> = ({
   handleSubmit,
   dispatch,
   currencySymbol,
@@ -576,4 +576,4 @@ export default reduxForm<any, Props>({
   initialValues: {
     contacts: [],
   },
-})(connect<any, any, any>(mapStateToProps)(BatchPayment));
+})(connect(mapStateToProps)((props: Props) => props.values ? <BatchPayment {...props} /> : null));
