@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Invoice, InvoicePaymentPlan } from "@api/model";
-import { min } from "date-fns";
-import { Decimal } from "decimal.js-light";
-import { decimalMinus, decimalPlus } from "ish-ui";
-import { InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
+import { Invoice, InvoicePaymentPlan } from '@api/model';
+import { min } from 'date-fns';
+import { Decimal } from 'decimal.js-light';
+import { decimalMinus, decimalPlus } from 'ish-ui';
+import { InvoiceWithTotalLine } from '../../../../model/entities/Invoice';
 
 export const calculateInvoiceLineTotal = (
   priceEachExTax: number,
@@ -18,7 +18,7 @@ export const calculateInvoiceLineTotal = (
   .minus(discountEachExTax || 0)
   .plus(taxEach || 0)
   .mul(quantity || 1)
-  .toDecimalPlaces(2)
+  .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
   .toNumber();
 
 export const preformatInvoice = (value: InvoiceWithTotalLine): Invoice => {
