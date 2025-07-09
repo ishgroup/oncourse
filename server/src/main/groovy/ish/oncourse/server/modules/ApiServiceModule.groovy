@@ -48,6 +48,7 @@ import ish.oncourse.server.api.service.OutcomeApiService
 import ish.oncourse.server.api.service.PayslipApiService
 import ish.oncourse.server.api.service.PortalWebsiteService
 import ish.oncourse.server.api.service.PriorLearningApiService
+import ish.oncourse.server.api.service.ProductItemApiService
 import ish.oncourse.server.api.service.QualificationApiService
 import ish.oncourse.server.api.service.ReportApiService
 import ish.oncourse.server.api.service.RoomApiService
@@ -115,6 +116,7 @@ class ApiServiceModule implements Module {
         entityServicesBinder.addBinding().to(ModuleApiService).in(Scopes.SINGLETON)
         entityServicesBinder.addBinding().to(NoteApiService).in(Scopes.SINGLETON)
         entityServicesBinder.addBinding().to(OutcomeApiService).in(Scopes.SINGLETON)
+        entityServicesBinder.addBinding().to(ProductItemApiService).in(Scopes.SINGLETON)
         entityServicesBinder.addBinding().to(PayslipApiService).in(Scopes.NO_SCOPE)
         entityServicesBinder.addBinding().to(RoomApiService).in(Scopes.NO_SCOPE)
         entityServicesBinder.addBinding().to(SiteApiService).in(Scopes.NO_SCOPE)
