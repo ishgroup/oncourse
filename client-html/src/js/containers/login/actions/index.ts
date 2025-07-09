@@ -8,6 +8,7 @@
 
 import { LoginRequest } from '@api/model';
 import { _toRequestType, FULFILLED } from '../../../common/actions/ActionUtils';
+import { LoginState } from '../reducers/state';
 
 export const POST_CREATE_PASSWORD_REQUEST = _toRequestType("post/user/createPassword");
 export const POST_CREATE_PASSWORD_FULFILLED = FULFILLED(POST_CREATE_PASSWORD_REQUEST);
@@ -38,6 +39,11 @@ export const getSsoIntegrations = () => ({
 export const getEmailByToken = (value: string) => ({
   type: GET_EMAIL_BY_TOKEN_REQUEST,
   payload: { value }
+});
+
+export const getEmailByTokenFulfilled = ({ email, strongPasswordValidation }: Partial<LoginState>) => ({
+  type: GET_EMAIL_BY_TOKEN_FULFILLED,
+  payload: { email, strongPasswordValidation }
 });
 
 export const checkPassword = (value: string, host?: string, port?: number) => ({
