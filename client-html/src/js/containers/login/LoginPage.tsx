@@ -18,7 +18,7 @@ import IconButton from '@mui/material/IconButton';
 import Slide from '@mui/material/Slide';
 import { alpha } from '@mui/material/styles';
 import $t from '@t';
-import { FormTextField, NoArgFunction } from 'ish-ui';
+import { FormTextField } from 'ish-ui';
 import QRCode from 'qrcode.react';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -42,10 +42,9 @@ import Logo from '../../common/components/layout/Logo';
 import { validateSingleMandatoryField } from '../../common/utils/validation';
 import { PASSWORD_PASS_SCORE } from '../../constants/Config';
 import { Fetch } from '../../model/common/Fetch';
-import { Categories, SecurityPasswordComplexity } from '../../model/preferences';
 import { State } from '../../reducers/state';
 import { SSOProviders } from '../automation/containers/integrations/components/SSOProviders';
-import { getPreferencesByKeys, isComplexPassRequired } from '../preferences/actions';
+import { isComplexPassRequired } from '../preferences/actions';
 import {
   checkPassword,
   createPasswordRequest,
@@ -239,13 +238,11 @@ interface Props extends LoginState {
   eulaUrl?: string;
   ssoTypes?: number[];
   fetch?: Fetch;
-  getPreferences?: NoArgFunction;
 }
 
 
 export function LoginPageBase(
   {
-    getPreferences,
     postLoginRequest,
     updatePasswordRequest,
     isUpdatePassword,
@@ -291,7 +288,6 @@ export function LoginPageBase(
   const [isInviteForm, setSsInviteForm] = useState(false);
   
   useEffect(() => {
-    getPreferences();
     getSSO();
     const params: any = new URLSearchParams(location.search);
     const prefilled: any = {};
@@ -750,7 +746,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   postLoginRequest: (body: LoginRequest, host?: string, port?: number) =>
     dispatch(postLoginRequest(body, host, port)),
   getSSO: () => dispatch(getSsoIntegrations()),
-  getPreferences: () => dispatch(getPreferencesByKeys([SecurityPasswordComplexity.uniqueKey], Categories.security)),
   updatePasswordRequest: (value: string) => dispatch(updatePasswordRequest(value)),
   setLoginState: (value: LoginState) => dispatch(setLoginState(value)),
   isComplexPassRequired: () => dispatch(isComplexPassRequired()),
