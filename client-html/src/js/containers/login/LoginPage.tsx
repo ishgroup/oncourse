@@ -18,11 +18,12 @@ import IconButton from '@mui/material/IconButton';
 import Slide from '@mui/material/Slide';
 import { alpha } from '@mui/material/styles';
 import $t from '@t';
-import { FormTextField } from 'ish-ui';
+import { FormTextField, NoArgFunction } from 'ish-ui';
 import QRCode from 'qrcode.react';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 import { Action, Dispatch } from 'redux';
 import {
   change,
@@ -41,9 +42,10 @@ import Logo from '../../common/components/layout/Logo';
 import { validateSingleMandatoryField } from '../../common/utils/validation';
 import { PASSWORD_PASS_SCORE } from '../../constants/Config';
 import { Fetch } from '../../model/common/Fetch';
+import { Categories, SecurityPasswordComplexity } from '../../model/preferences';
 import { State } from '../../reducers/state';
 import { SSOProviders } from '../automation/containers/integrations/components/SSOProviders';
-import { isComplexPassRequired } from '../preferences/actions';
+import { getPreferencesByKeys, isComplexPassRequired } from '../preferences/actions';
 import {
   checkPassword,
   createPasswordRequest,
@@ -237,15 +239,13 @@ interface Props extends LoginState {
   eulaUrl?: string;
   ssoTypes?: number[];
   fetch?: Fetch;
+  getPreferences?: NoArgFunction;
 }
 
-interface LoginCompState {
-  openCredits: boolean;
-  eulaAccess:  boolean;
-}
 
 export function LoginPageBase(
   {
+    getPreferences,
     postLoginRequest,
     updatePasswordRequest,
     isUpdatePassword,
@@ -278,7 +278,10 @@ export function LoginPageBase(
     eulaUrl,
     ssoTypes,
     resetLoginForm,
-  }: Props & DecoratedFormProps) {
+    match,
+    location
+  }: Props & DecoratedFormProps & RouteComponentProps<{ token: string }>) {
+
   const savedTFAState = useRef(null);
   const token = useRef('');
   const submitRef = useRef(null);
@@ -288,24 +291,22 @@ export function LoginPageBase(
   const [isInviteForm, setSsInviteForm] = useState(false);
   
   useEffect(() => {
+    getPreferences();
     getSSO();
-    
+    const params: any = new URLSearchParams(location.search);
     const prefilled: any = {};
-    if (window.location.search) {
-      const params: any = new URLSearchParams(window.location.search);
-      prefilled.user = params.get("user");
-      prefilled.password = params.get("password");
-      prefilled.host = params.get("host");
-      prefilled.port = params.get("port");
+    prefilled.user = params.get("user");
+    prefilled.password = params.get("password");
+    prefilled.host = params.get("host");
+    prefilled.port = params.get("port");
 
-      // temporary, until web implementation is not full
-      if (params.get("updatePassword") === "true") {
-        isComplexPassRequired();
-        setLoginState({
-          isNewPassword: true,
-          isUpdatePassword: true
-        });
-      }
+    // temporary, until web implementation is not full
+    if (params.get("updatePassword") === "true") {
+      isComplexPassRequired();
+      setLoginState({
+        isNewPassword: true,
+        isUpdatePassword: true
+      });
     }
 
     dispatch(
@@ -319,13 +320,13 @@ export function LoginPageBase(
       dispatch(touch(FORM_NAME, "user"));
     }
     
-    const isInvite = window.location.pathname.includes('invite');
+    const isInvite = match?.path === "/invite/:token";
 
     setSsInviteForm(isInvite);
 
     if (isInvite) {
-      token.current = window.location.pathname.match(/(\w+)$/g)[0];
-      if (token.current) getEmailByToken(token.current);
+      token.current = match.params.token;
+      if (token.current) dispatch(getEmailByToken(token.current));
     }
     
     return () => {
@@ -749,6 +750,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   postLoginRequest: (body: LoginRequest, host?: string, port?: number) =>
     dispatch(postLoginRequest(body, host, port)),
   getSSO: () => dispatch(getSsoIntegrations()),
+  getPreferences: () => dispatch(getPreferencesByKeys([SecurityPasswordComplexity.uniqueKey], Categories.security)),
   updatePasswordRequest: (value: string) => dispatch(updatePasswordRequest(value)),
   setLoginState: (value: LoginState) => dispatch(setLoginState(value)),
   isComplexPassRequired: () => dispatch(isComplexPassRequired()),
