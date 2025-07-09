@@ -352,12 +352,12 @@ export function LoginPageBase(
     }
 
     if (isInviteForm) {
-      createPasswordRequest(token.current, values.newPassword);
+      createPasswordRequest(token.current, strongPasswordValidation ? values.newPasswordAsync : values.newPassword);
       return;
     }
 
     if (isUpdatePassword && isNewPassword) {
-      updatePasswordRequest(values.newPassword || values.newPasswordAsync);
+      updatePasswordRequest(strongPasswordValidation ? values.newPasswordAsync : values.newPassword);
       return;
     }
 
