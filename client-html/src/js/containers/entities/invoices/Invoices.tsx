@@ -136,6 +136,7 @@ const secondaryColumnCondition = row => (row.invoiceNumber ? "Invoice #" + row.i
 
 const Invoices = React.memo<any>(({
   setListFullScreenEditView,
+  fullScreenEditView,
   selection,
   location,
   listRecords,
@@ -150,6 +151,9 @@ const Invoices = React.memo<any>(({
   const [createMenuOpened, setCreateMenuOpened] = useState(false);
 
   const closeCreateMenu = () => {
+    if (!fullScreenEditView && selection[0] === 'new') {
+      updateHistory(location.search, url.replace("/new", ''));
+    }
     setCreateMenuOpened(false);
   };
 
@@ -255,6 +259,7 @@ const Invoices = React.memo<any>(({
 const mapStateToProps = (state: State) => ({
   listRecords: state.list.records,
   selection: state.list.selection,
+  fullScreenEditView: state.list.fullScreenEditView
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -266,8 +271,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
   onMount: () => {
-    dispatch(getFilters("Invoice"));
     getPlainAccounts(dispatch);
+    dispatch(getFilters("Invoice"));
     dispatch(getPlainTaxes());
     dispatch(getDefaultInvoiceTerms());
     dispatch(getAccountTransactionLockedDate());
@@ -279,4 +284,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Invoices);
+export default connect(mapStateToProps, mapDispatchToProps)(Invoices);
