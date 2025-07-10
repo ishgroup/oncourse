@@ -30,7 +30,7 @@ Feature: Main feature for all POST requests with path 'user'
         Given path ishPathInvite + "/abracadabra"
         When method GET
         Then status 200
-        And match response == "invited@gmail.com"
+        And match response == {"requireComplexPass":false,"email":"invited@gmail.com"}
 
 
     Scenario: (-) Search user by not exist invitation
