@@ -75,7 +75,7 @@ dependencies {
 	implementation "com.nulab-inc:zxcvbn:1.4.1"
 
 	implementation ("org.apache.maven:maven-artifact:3.3.9")
-	api ("org.liquibase:liquibase-core:4.32.0") {
+	api ("org.liquibase:liquibase-core:4.22.0") {
 		exclude group: "ch.qos.logback"
 	}
 	implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
