@@ -1,11 +1,12 @@
-import { initialize } from "redux-form";
-import { DefaultEpic } from "../../common/Default.Epic";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../js/common/components/list-view/constants";
-import { duplicateAndReverseInvoice } from "../../../js/containers/entities/invoices/actions";
+import { formatToDateOnly } from 'ish-ui';
+import { initialize } from 'redux-form';
+import { setListFullScreenEditView } from '../../../js/common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../js/common/components/list-view/constants';
+import { duplicateAndReverseInvoice } from '../../../js/containers/entities/invoices/actions';
 import {
   EpicDuplicateAndReverseInvoice
-} from "../../../js/containers/entities/invoices/epics/EpicDuplicateAndReverseInvoice";
-import { formatToDateOnly } from "ish-ui";
+} from '../../../js/containers/entities/invoices/epics/EpicDuplicateAndReverseInvoice';
+import { DefaultEpic } from '../../common/Default.Epic';
 
 describe("Duplicate and reverse invoice epic tests", () => {
   it("EpicDuplicateAndReverseInvoice should returns correct values", () => DefaultEpic({
@@ -33,7 +34,10 @@ describe("Duplicate and reverse invoice epic tests", () => {
       data.id = null;
       data.invoiceNumber = null;
 
-      return [initialize(LIST_EDIT_VIEW_FORM_NAME, data)];
+      return [
+        setListFullScreenEditView(true),
+        initialize(LIST_EDIT_VIEW_FORM_NAME, data)
+      ];
     }
   }));
 });
