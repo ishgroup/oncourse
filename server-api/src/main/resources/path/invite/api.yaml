@@ -13,7 +13,7 @@ get:
     '200':
       description: Success response.
       schema:
-        type: string
+        $ref: './def/entity/InvitationResponse.yaml'
     '400':
       description: Bad request error.
       schema:
