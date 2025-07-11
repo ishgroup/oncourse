@@ -5,30 +5,30 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-
-import { DefaultEpic } from "../../common/Default.Epic";
-import { FETCH_SUCCESS } from "../../../js/common/actions";
-import { createCourseClass } from "../../../js/containers/entities/courseClasses/actions";
-import { EpicCreateCourseClass } from "../../../js/containers/entities/courseClasses/epics/EpicCreateCourseClass";
-import { GET_RECORDS_REQUEST } from "../../../js/common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../js/common/components/list-view/constants";
+import { reset } from 'redux-form';
+import { showMessage } from '../../../js/common/actions';
+import { getRecords } from '../../../js/common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../js/common/components/list-view/constants';
+import { createCourseClass } from '../../../js/containers/entities/courseClasses/actions';
+import { DefaultEpic } from '../../common/Default.Epic';
 
 describe("Create course class epic tests", () => {
-  it("EpicCreateCourseClass should returns correct values", () => DefaultEpic({
-    action: mockedApi => createCourseClass(mockedApi.db.getCourseClass(1)),
-    epic: EpicCreateCourseClass,
-    store: () => ({
-      form: { [LIST_EDIT_VIEW_FORM_NAME]: { values: { tutors: [] } } }
-    }),
-    processData: () => [
-      {
-        type: GET_RECORDS_REQUEST,
-        payload: { entity: "CourseClass" }
-      },
-      {
-        type: FETCH_SUCCESS,
-        payload: { message: "Class created" }
-      },
-    ]
-  }));
+  it("EpicCreateCourseClass should returns correct values", async () => {
+
+    const { EpicCreateCourseClass } = await import('../../../js/containers/entities/courseClasses/epics/EpicCreateCourseClass')
+
+    return DefaultEpic({
+      action: mockedApi => createCourseClass(mockedApi.db.getCourseClass(1)),
+      epic: EpicCreateCourseClass,
+      store: () => ({
+        form: { [LIST_EDIT_VIEW_FORM_NAME]: { values: { tutors: [] } } }
+      }),
+      processData: ({ actions }) => [
+        ...actions?.map(a => a.actionBody) || [],
+        reset(LIST_EDIT_VIEW_FORM_NAME),
+        getRecords({ entity: 'CourseClass', listUpdate: true }),
+        showMessage({ success: true, message: "Class created" })
+      ]
+    })
+  });
 });

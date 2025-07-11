@@ -19,12 +19,12 @@ import DocumentAddDialog from '../../../common/components/form/documents/compone
 import {
   getFilters,
   setFilterGroups,
-  setListCreatingNew,
   setListEditRecord,
-  setListSelection
+  setListFullScreenEditView
 } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
 import ListView from '../../../common/components/list-view/ListView';
+import { updateHistory } from '../../../common/utils/common';
 import { getManualLink } from '../../../common/utils/getManualLink';
 import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
 import { State } from '../../../reducers/state';
@@ -58,7 +58,6 @@ interface DocumentProps {
   getFilters?: () => void;
   getTags?: () => void;
   classes?: any;
-  setListCreatingNew?: BooleanArgFunction;
   updateSelection?: (selection: string[]) => void;
   history?: any;
   match?: any;
@@ -66,7 +65,7 @@ interface DocumentProps {
   editingDocument?: Document;
   editRecord?: any;
   clearEditingDocument?: NoArgFunction;
-  threeColumn?: boolean;
+  setListFullScreenEditView?: BooleanArgFunction;
 }
 
 const isRemoved = (value: string) => "isRemoved is " + value;
@@ -152,28 +151,14 @@ const Documents: React.FC<DocumentProps> = props => {
     editRecord,
     getTags,
     classes,
-    setListCreatingNew,
-    updateSelection,
-    history,
+    setListFullScreenEditView,
     searchExistingDocument,
     clearEditingDocument,
     match: { params, url },
     editingDocument,
-    threeColumn
   } = props;
 
   const [openFileModal, setOpenFileModal] = React.useState<boolean>(false);
-
-  const updateHistory = (pathname, search) => {
-    const newUrl = window.location.origin + pathname + search;
-
-    if (newUrl !== window.location.href) {
-      history.push({
-        pathname,
-        search
-      });
-    }
-  };
 
   const closeAddDialog = useCallback(() => {
     clearEditingDocument();
@@ -192,12 +177,11 @@ const Documents: React.FC<DocumentProps> = props => {
   }, []);
 
   const setCreateNew = (initial: Document) => {
-    updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", window.location.search);
+    updateHistory(window.location.search, params.id ? url.replace(`/${params.id}`, "/new") : url + "/new");
 
     const processCreate = () => {
-      setListCreatingNew(true);
-      updateSelection(["new"]);
       onInit(initial);
+      setListFullScreenEditView(true);
       closeAddDialog();
     };
 
@@ -279,8 +263,7 @@ const Documents: React.FC<DocumentProps> = props => {
 
 const mapStateToProps = (state: State) => ({
   editingDocument: state.documents.editingDocument,
-  editRecord: state.list.editRecord,
-  threeColumn: state.list.records.layout === "Three column"
+  editRecord: state.list.editRecord
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -294,8 +277,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getListTags("Document"));
   },
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
-  updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
-  setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
+  setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   searchExistingDocument: (inputDocument: File, editingFormName: string) =>
     dispatch(searchDocumentByHash(inputDocument, editingFormName)),
   clearEditingDocument: () => dispatch(clearEditingDocument())

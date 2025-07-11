@@ -7,7 +7,8 @@
  */
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Elements, PaymentElement, useElements, useStripe, } from '@stripe/react-stripe-js';
-import { loadStripe, Stripe } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js/pure';
+import { Stripe } from '@stripe/stripe-js';
 import clsx from 'clsx';
 import { decimalMul, makeAppStyles } from 'ish-ui';
 import React, { useEffect, useState } from 'react';
