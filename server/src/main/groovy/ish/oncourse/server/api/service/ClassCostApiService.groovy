@@ -92,7 +92,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
         }
 
         if (cayenneModel.flowType in [ClassCostFlowType.INCOME , ClassCostFlowType.EXPENSE ]) {
-            ccDto.perUnitAmountIncTax = MoneyUtil.getPriceIncTax(cayenneModel.perUnitAmountExTax, cayenneModel.tax.rate, cayenneModel.taxAdjustment).toBigDecimal()
+            ccDto.perUnitAmountIncTax = MoneyUtil.getPriceIncTaxRounded(cayenneModel.perUnitAmountExTax, cayenneModel.tax.rate, cayenneModel.taxAdjustment, true).toBigDecimal()
         }
 
         ccDto.payableOnEnrolment = cayenneModel.payableOnEnrolment
