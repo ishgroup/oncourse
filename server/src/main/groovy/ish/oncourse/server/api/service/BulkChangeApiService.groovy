@@ -106,13 +106,13 @@ class BulkChangeApiService {
 
         if(clzz.equals(Outcome)) {
             if(entities.find {(it as Outcome).status != OutcomeStatus.STATUS_NOT_SET})
-                validator.throwClientErrorException("diff", "Request returned outcomes with status, not equals to 'not set'. Bulk remove of these outcomes is not allowed")
+                validator.throwClientErrorException("diff", "Request returned outcomes with status not equal to 'Not set'. Bulk removing these outcomes is not allowed")
 
             if(entities.collect{(it as Outcome).contact}.findAll{it}.unique().size() > 1)
-                validator.throwClientErrorException("diff", "Request returned outcomes, related to different students. Bulk remove of these outcomes is not allowed")
+                validator.throwClientErrorException("diff", "Request returned outcomes related to different students. Bulk removing these outcomes is not allowed")
 
             if(entities.find {!(it as Outcome).fundingUploadOutcomes.isEmpty()})
-                validator.throwClientErrorException("diff", "Request returned outcome, that has funding upload. Bulk remove of these outcomes is not allowed")
+                validator.throwClientErrorException("diff", "Request returned outcomes included in funding upload. Bulk removing these outcomes is not allowed")
         }
 
         try {
