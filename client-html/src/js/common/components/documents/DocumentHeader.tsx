@@ -235,7 +235,7 @@ class DocumentHeader extends React.PureComponent<Props, any> {
           >
             <Alert severity="info">
               <AlertTitle>{$t('who_can_view_this_document')}</AlertTitle>
-              {getDocumentShareSummary(item.access, item.attachmentRelations)}
+              {getDocumentShareSummary(item.displayAccess, item.attachmentRelations)}
             </Alert>
           </Popover>
 

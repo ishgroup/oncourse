@@ -59,6 +59,7 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
 
             document.description = dbDocument.description
             document.access = DocumentVisibilityDTO.values()[0].fromDbType(dbDocument.webVisibility)
+            document.displayAccess = dbDocument.displayWebVisibility
             document.shared = dbDocument.isShared
             document.removed = dbDocument.isRemoved
             document.createdOn = LocalDateUtils.dateToTimeValue(dbDocument.createdOn)
