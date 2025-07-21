@@ -4,7 +4,7 @@
  */
 
 import { Outcome } from '@api/model';
-import React, { Dispatch, useEffect } from 'react';
+import React, { Dispatch, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { initialize } from 'redux-form';
 import { checkPermissions } from '../../../common/actions';
@@ -14,6 +14,7 @@ import ListView from '../../../common/components/list-view/ListView';
 import { getManualLink } from '../../../common/utils/getManualLink';
 import { fundingUploadsPath } from '../../../constants/Api';
 import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import BulkDeleteCogwheelOption from '../common/components/BulkDeleteCogwheelOption';
 import BulkEditCogwheelOption from '../common/components/BulkEditCogwheelOption';
 import { getOutcomeTags } from './actions';
 import OutcomeEditView from './components/OutcomeEditView';
@@ -130,6 +131,11 @@ const Outcomes: React.FC<OutcomesProps> = props => {
     checkPermissions();
   }, []);
 
+  const cogwheel = useCallback(props => <>
+    <BulkEditCogwheelOption {...props} />
+    <BulkDeleteCogwheelOption {...props} />
+  </>, []);
+
   return (
     <ListView
       listProps={{
@@ -148,7 +154,7 @@ const Outcomes: React.FC<OutcomesProps> = props => {
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}
       createButtonDisabled
-      CogwheelAdornment={BulkEditCogwheelOption}
+      CogwheelAdornment={cogwheel}
     />
   );
 };
@@ -165,4 +171,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   checkPermissions: () => dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
 });
 
-export default connect<any, any, any>(null, mapDispatchToProps)(Outcomes);
+export default connect(null, mapDispatchToProps)(Outcomes);

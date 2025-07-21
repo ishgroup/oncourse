@@ -12,12 +12,14 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
 import ish.common.types.MessageStatus
+import ish.common.types.OutcomeStatus
 import ish.oncourse.aql.AqlService
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.Message
+import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.cayenne.WaitingList
 import ish.oncourse.server.cayenne.Survey
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
@@ -30,7 +32,7 @@ import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 @CompileDynamic
 class BulkChangeApiService {
 
-    private static final List<Class<? extends CayenneDataObject>> ALLOWED_BULK_DELETE_ENTITIES = List.of(WaitingList, Message, Survey)
+    private static final List<Class<? extends CayenneDataObject>> ALLOWED_BULK_DELETE_ENTITIES = List.of(WaitingList, Message, Outcome, Survey)
     private static final String MESSAGE_BULK_DELETE_AQL = "status is QUEUED"
 
     @Inject
@@ -100,6 +102,17 @@ class BulkChangeApiService {
         if(clzz.equals(Message)){
             if(entities.find {(it as Message).status != MessageStatus.QUEUED})
                 validator.throwClientErrorException("diff", "Request returned messages with disallowed status. Bulk remove of messages that are not queued is not allowed")
+        }
+
+        if(clzz.equals(Outcome)) {
+            if(entities.find {(it as Outcome).status != OutcomeStatus.STATUS_NOT_SET})
+                validator.throwClientErrorException("diff", "Request returned outcomes with status not equal to 'Not set'. Bulk removing these outcomes is not allowed")
+
+            if(entities.collect{(it as Outcome).contact}.findAll{it}.unique().size() > 1)
+                validator.throwClientErrorException("diff", "Request returned outcomes related to different students. Bulk removing these outcomes is not allowed")
+
+            if(entities.find {!(it as Outcome).fundingUploadOutcomes.isEmpty()})
+                validator.throwClientErrorException("diff", "Request returned outcomes included in funding upload. Bulk removing these outcomes is not allowed")
         }
 
         try {
