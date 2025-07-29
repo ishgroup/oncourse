@@ -172,21 +172,23 @@ export const processChekoutCartIds = async (cartId, onChangeStep, setActiveField
 
         enrolment.contactId = contact.id;
         
-        const classResponse = await EntityService.getPlainRecords(
-          "CourseClass",
-          CHECKOUT_COURSE_CLASS_COLUMNS,
-          `course.id is ${plainCourse.courseId} 
-          and isCancelled is false 
-          and isActive is true 
-          and ( (startDateTime < tomorrow and endDateTime >= today) 
-          or (startDateTime >= tomorrow and endDateTime >= tomorrow) 
-          or (type is DISTANT_LEARNING) )`,
-          null,
-          0,
-          "startDateTime",
-          true
-        );
-        if (classResponse.rows.length) {
+        const classResponse = plainCourse
+          ? await EntityService.getPlainRecords(
+            "CourseClass",
+            CHECKOUT_COURSE_CLASS_COLUMNS,
+            `course.id is ${plainCourse.courseId} 
+            and isCancelled is false 
+            and isActive is true 
+            and ( (startDateTime < tomorrow and endDateTime >= today) 
+            or (startDateTime >= tomorrow and endDateTime >= tomorrow) 
+            or (type is DISTANT_LEARNING) )`,
+            null,
+            0,
+            "startDateTime",
+            true
+          )
+          : null;
+        if (classResponse?.rows?.length) {
           const courseClass = [classResponse.rows[0]].map(checkoutCourseClassMap)[0];
           enrolment.courseClass = {
             ...plainCourse,
