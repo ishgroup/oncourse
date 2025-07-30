@@ -22,11 +22,11 @@ import {
   StringArgFunction,
   usePrevious
 } from 'ish-ui';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
-import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from 'redux-form';
+import { getFormSyncErrors, initialize, isDirty, isInvalid, reset, submit } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import {
   ENTITY_AQL_STORAGE_NAME,
@@ -66,7 +66,6 @@ import {
   findRelatedByFilter,
   getRecords,
   setFilterGroups,
-  setListCreatingNew,
   setListEditRecord,
   setListEditRecordFetching,
   setListEntity,
@@ -140,7 +139,6 @@ interface OwnProps {
   getScripts?: NoArgFunction;
   openConfirm?: ShowConfirmCaller;
   resetEditView?: NoArgFunction;
-  setListCreatingNew?: BooleanArgFunction;
   setListFullScreenEditView?: BooleanArgFunction;
   sendGAEvent?: (event: GAEventTypes, screen: string, time?: number) => void;
   currency?: Currency;
@@ -195,6 +193,7 @@ interface ComponentState {
   showExportDrawer: boolean;
   showBulkEditDrawer: boolean;
   filtersSynchronized: boolean;
+  mounted: boolean;
   querySearch: boolean;
   deleteEnabled: boolean;
   threeColumn: boolean;
@@ -224,9 +223,7 @@ function ListView(props: ListCompProps) {
     getListViewPreferences,
     isDirty,
     updateSelection,
-    creatingNew,
     editRecord,
-    setListCreatingNew,
     resetEditView,
     updateLayout,
     closeConfirm,
@@ -294,10 +291,10 @@ function ListView(props: ListCompProps) {
 
   const searchComponentNode = useRef(null);
 
-  const ignoreCheckDirtyOnSelection = useRef<boolean>(true);
-
   const getMainContentWidth = (mainContentWidth, sidebarWidth) =>
     (mainContentWidth ? Number(mainContentWidth) : window.screen.width - sidebarWidth - 368);
+
+  const creatingNew = useMemo(() => params.id === 'new', [params.id]);
 
   const [state, changeState] = React.useState<ComponentState>(
     {
@@ -305,6 +302,7 @@ function ListView(props: ListCompProps) {
       showBulkEditDrawer: false,
       filtersSynchronized: false,
       querySearch: false,
+      mounted: false,
       deleteEnabled: !props.defaultDeleteDisabled,
       threeColumn: false,
       sidebarWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
@@ -342,19 +340,31 @@ function ListView(props: ListCompProps) {
     }
   };
 
+  useEffect(() => {
+    if (
+      !fullScreenEditView
+      && params.id
+      && (state.threeColumn
+        ? (params.id === 'new' && alwaysFullScreenCreateView && !customOnCreate)
+        : (params.id !== 'new' || !customOnCreate)
+      )) {
+      setListFullScreenEditView(true);
+    }
+    if (fullScreenEditView && !params.id) {
+      setListFullScreenEditView(false);
+    }
+  }, [params.id, state.threeColumn, alwaysFullScreenCreateView, fullScreenEditView]);
+
   const toggleFullWidthView = (fullScreenState: boolean) => {
     if (alwaysFullScreenCreateView && creatingNew) {
       resetEditView();
       updateSelection([]);
     }
 
-    if ((!state.threeColumn || (alwaysFullScreenCreateView && creatingNew)) && !fullScreenState && params.id) {
+    if (!fullScreenState && params.id) {
       updateHistoryPathname(url.replace(`/${params.id}`, ""));
-      setListCreatingNew(false);
       resetEditView();
     }
-
-    setListFullScreenEditView(fullScreenState);
   };
 
   const onSelection = newSelection => {
@@ -362,12 +372,11 @@ function ListView(props: ListCompProps) {
       return;
     }
 
-    if ((isDirty || (creatingNew && selection[0] === "new")) && !ignoreCheckDirtyOnSelection.current) {
+    if (isDirty) {
       setState({ newSelection });
       showConfirm(
         {
           onConfirm: () => {
-            ignoreCheckDirtyOnSelection.current = true;
             onSelection(newSelection);
             if (isDirty) {
               resetEditView();
@@ -391,10 +400,6 @@ function ListView(props: ListCompProps) {
       updateHistoryPathname(params.id ? url.replace(`/${params.id}`, `/${newSelection[0]}`) : url + `/${newSelection[0]}`);
     }
 
-    if (ignoreCheckDirtyOnSelection.current) {
-      ignoreCheckDirtyOnSelection.current = false;
-    }
-
     if (newSelection) updateSelection(newSelection);
   };
 
@@ -416,7 +421,6 @@ function ListView(props: ListCompProps) {
         color="primary"
         onClick={() => {
           submitForm();
-          ignoreCheckDirtyOnSelection.current = true;
           setTimeout(afterSubmitButtonHandler, 1000);
           closeConfirm();
         }}
@@ -436,6 +440,26 @@ function ListView(props: ListCompProps) {
     } else {
       openConfirm(props);
     }
+  };
+
+  const setCreateNew = () => {
+    updateHistoryPathname(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new");
+    updateSelection(["new"]);
+    onInit();
+  };
+
+  const onCreateRecord = () => {
+    if (customOnCreate) {
+      if (typeof customOnCreate === "function") {
+        customOnCreate(setCreateNew);
+        return;
+      }
+
+      onInit();
+      return;
+    }
+
+    setCreateNew();
   };
 
   useEffect(() => {
@@ -468,8 +492,9 @@ function ListView(props: ListCompProps) {
     }
 
     if (params.id === 'new') {
-      setListCreatingNew(true);
+      onCreateRecord();
     }
+    setState({ mounted: true });
   }, []);
 
   const getUrlSearch = searchParam => {
@@ -562,7 +587,7 @@ function ListView(props: ListCompProps) {
       }
 
       if (listSearchString) {
-        setListUserAQLSearch(`${listSearchString} `);
+        setListUserAQLSearch(listSearchString);
       }
     } else if (targetFilters) {
       onChangeFilters(
@@ -582,20 +607,6 @@ function ListView(props: ListCompProps) {
     getEditRecord(id);
   };
 
-  const onCreateRecord = () => {
-    if (customOnCreate) {
-      if (typeof customOnCreate === "function") {
-        customOnCreate(setCreateNew);
-        return;
-      }
-
-      onInit();
-      return;
-    }
-
-    setCreateNew();
-  };
-
   const onQuerySearchChange = searchValue => {
     // reset scroll on records filtering
     if (containerNode.current) {
@@ -607,8 +618,6 @@ function ListView(props: ListCompProps) {
     resetEditView();
 
     onSelection([]);
-
-    ignoreCheckDirtyOnSelection.current = true;
   };
 
   const updateDeleteCondition = val => {
@@ -642,6 +651,15 @@ function ListView(props: ListCompProps) {
     });
   }, [
     records.layout
+  ]);
+
+  useEffect(() => {
+    if (!fullScreenEditView && isDirty && !state.threeColumn) {
+      dispatch(reset(LIST_EDIT_VIEW_FORM_NAME));
+    }
+  }, [
+    isDirty,
+    fullScreenEditView
   ]);
 
   useEffect(() => {
@@ -679,7 +697,7 @@ function ListView(props: ListCompProps) {
   ]);
 
   useEffect(() => {
-    if (params.id) {
+    if (state.mounted && params.id) {
       if (!editRecordFetching
       && !creatingNew
       && (!editRecord
@@ -694,18 +712,11 @@ function ListView(props: ListCompProps) {
           toggleFullWidthView(true);
         }
       }
-
-      if (creatingNew && params.id !== "new") {
-        setListCreatingNew(false);
-      } else if (creatingNew && params.id === "new") {
-        onCreateRecord();
-      } else if (!creatingNew && params.id === "new") {
-        updateHistoryPathname(url.replace(`/${params.id}`, ""));
-      }
     }
   }, [
     params.id,
     editRecord?.id,
+    state.mounted,
     state.threeColumn,
     editRecordFetching,
     creatingNew,
@@ -723,7 +734,7 @@ function ListView(props: ListCompProps) {
 
       // Update AQL search by url
       if (search) {
-        currentUrlSearch.set("search", encodeURIComponent(search));
+        currentUrlSearch.set("search", search);
       } else {
         currentUrlSearch.delete("search");
       }
@@ -753,7 +764,7 @@ function ListView(props: ListCompProps) {
 
   useEffect(() => {
     if (state.filtersSynchronized && !fetch.pending) {
-      onQuerySearchChange(records.search);
+      fullScreenEditView ? onSearch(records.search) : onQuerySearchChange(records.search);
     }
   }, [
     menuTags,
@@ -771,7 +782,9 @@ function ListView(props: ListCompProps) {
 
   useEffect(() => {
     if (!params.id && !state.threeColumn) return;
-    onSelection(params.id ? [params.id] : []);
+    if (!selection || selection[0] !== params.id) {
+      onSelection(params.id ? [params.id] : []);
+    }
   }, [
     params.id
   ]);
@@ -831,13 +844,6 @@ function ListView(props: ListCompProps) {
   const onDeleteFilter = (id: number, entity: string, checked: boolean) => {
     updateSelection([]);
     deleteFilter(id, entity, checked);
-  };
-
-  const setCreateNew = () => {
-    updateHistoryPathname(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new");
-    setListCreatingNew(true);
-    updateSelection(["new"]);
-    onInit();
   };
 
   const changeQueryView = querySearch => {
@@ -908,13 +914,13 @@ function ListView(props: ListCompProps) {
     const updatedLayout = !state.threeColumn;
     const layout = updatedLayout ? "Three column" : "Two column";
 
-    if (params.id) {
-      updateHistoryPathname(url.replace(`/${params.id}`, ""));
-    }
-
     updateLayout(layout);
     updateSelection([]);
     resetEditView();
+
+    if (params.id) {
+      updateHistoryPathname(url.replace(`/${params.id}`, ""));
+    }
 
     setTimeout(() => {
       if (records?.columns.length) updateTableModel({ layout });
@@ -923,10 +929,6 @@ function ListView(props: ListCompProps) {
     setState({
       threeColumn: updatedLayout
     });
-
-    if (creatingNew) {
-      setListCreatingNew(false);
-    }
   };
 
   const handleResizeCallBack = (...resizeProps) => {
@@ -1017,7 +1019,6 @@ function ListView(props: ListCompProps) {
         creatingNew={creatingNew}
         updateDeleteCondition={updateDeleteCondition}
         showConfirm={showConfirm}
-        alwaysFullScreenCreateView={alwaysFullScreenCreateView}
         threeColumn={threeColumn}
       />
 
@@ -1153,7 +1154,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>, ownProps) => ({
   sendGAEvent: (event: GAEventTypes, screen: string, time?: number) => dispatch(pushGTMEvent(event, screen, time)),
   setEntity: entity => dispatch(setListEntity(entity)),
   resetEditView: () => {
-    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, null));
+    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, null, false));
     dispatch(setListEditRecord(null));
   },
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
@@ -1165,7 +1166,6 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>, ownProps) => ({
   getScripts: () => dispatch(getScripts(ownProps.rootEntity)),
   getCustomFieldTypes: (entity: EntityName) => dispatch(getCustomFieldTypes(entity)),
   openConfirm: props => dispatch(showConfirm(props)),
-  setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
   onLoadMore: (stopIndex: number, resolve: any) => dispatch(getRecords(

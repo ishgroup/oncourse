@@ -89,7 +89,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
 
     if (!this.paymentsAreSet && accounts && accounts.length && values.administrationCenterId) {
       this.paymentsAreSet = true;
-      dispatch(getDepositPayments(accounts[0].id, values.administrationCenterId));
+      dispatch(getDepositPayments(accounts[0]?.id, values.administrationCenterId));
     }
 
     if (!values.administrationCenterId && !values.adminSite && adminCenterName && adminSites && adminSites.length) {

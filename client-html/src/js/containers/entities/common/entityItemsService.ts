@@ -10,8 +10,10 @@ import { formatToDateOnly } from "ish-ui";
 import { initialize } from "redux-form";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
+import { setListEditRecord } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import EntityService from "../../../common/services/EntityService";
+import history from '../../../constants/History';
 import { EntityName } from "../../../model/entities/common";
 import { EnrolmentExtended } from "../../../model/entities/Enrolment";
 import { PayLineWithDefer } from "../../../model/entities/Payslip";
@@ -43,6 +45,7 @@ import MessageService from "../messages/services/MessageService";
 import ModuleService from "../modules/services/ModuleService";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import PaymentInService from "../paymentsIn/services/PaymentInService";
+import { getActivePaymentOutMethods } from '../paymentsOut/actions';
 import PaymentOutService from "../paymentsOut/services/PaymentOutService";
 import { getPaymentOutFromModel } from "../paymentsOut/utils";
 import PayslipService from "../payslips/services/PayslipService";
@@ -364,8 +367,17 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
       return WaitingListService.createWaitingList(item);
     case "Course":
       return CourseService.create(item);
-    case "PaymentOut":
+    case "PaymentOut": {
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.delete("invoiceId");
+
+      history.replace({
+        pathname: history.location.pathname,
+        search: decodeURIComponent(urlParams.toString())
+      });
+
       return PaymentOutService.postPaymentOut(getPaymentOutFromModel(item));
+    }
 
     case "Document": {
       const {

@@ -66,8 +66,6 @@ export const SET_LIST_EDIT_RECORD = "set/listView/editRecord";
 
 export const UPDATE_TAGS_ORDER = "set/listView/tagsOrder";
 
-export const SET_LIST_CREATING_NEW = "set/listView/creatingNew";
-
 export const SET_LIST_FULL_SCREEN_EDIT_VIEW = "set/listView/fullScreenEditView";
 
 export const SET_LIST_EDIT_RECORD_FETCHING = "set/listView/editRecordFetching";
@@ -172,11 +170,6 @@ export const setListSearchError = (searchError: boolean) => ({
 export const setListEditRecord = (editRecord: any) => ({
   type: SET_LIST_EDIT_RECORD,
   payload: {editRecord}
-});
-
-export const setListCreatingNew = (creatingNew: boolean) => ({
-  type: SET_LIST_CREATING_NEW,
-  payload: creatingNew
 });
 
 export const bulkChangeRecords = (entity: EntityName, diff: Diff) => ({

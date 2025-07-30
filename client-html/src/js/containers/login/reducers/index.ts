@@ -49,6 +49,9 @@ export const loginReducer = (state: LoginState = {}, action: IAction<any>): Logi
       return {
         ...state,
         ...action.payload,
+        passwordComplexity: {
+          score: 0
+        }
       };
     }
 

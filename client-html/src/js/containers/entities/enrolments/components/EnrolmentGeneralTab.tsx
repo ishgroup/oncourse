@@ -81,11 +81,11 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           {
             name: "Invoices",
             count: values.invoicesCount,
-            link: `/invoice?search=invoiceLines.enrolment.id=${values.id}`
+            link: `/invoice?search=invoiceLines.enrolment.id=${values?.id}`
           }
         ]
       : []),
-    [values.invoicesCount, values.id]
+    [values.invoicesCount, values?.id]
   );
 
   const outcomeTypes = useMemo(
@@ -94,14 +94,14 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           {
             name: "Outcomes",
             count: values.outcomesCount,
-            link: `/outcome?search=enrolment.id=${values.id}`
+            link: `/outcome?search=enrolment.id=${values?.id}`
           }
         ]
       : []),
-    [values.outcomesCount, values.id]
+    [values.outcomesCount, values?.id]
   );
 
-  const outcomesAddLink = useMemo(() => `/outcome/new?search=enrolment.id=${values.id}`, [values.id]);
+  const outcomesAddLink = useMemo(() => `/outcome/new?search=enrolment.id=${values?.id}`, [values?.id]);
 
   const hideAUSReporting = useAppSelector(state => state.location.countryCode !== 'AU');
 
