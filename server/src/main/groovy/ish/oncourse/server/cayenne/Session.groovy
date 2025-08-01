@@ -64,7 +64,7 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	 */
 	@API
 	BigDecimal getPayableDurationInHours() {
-		return sessionTutors.sum {it.actualPayableDurationHours} as BigDecimal
+		return sessionTutors.sum {it.actualPayableDurationHours} as BigDecimal ?: BigDecimal.ZERO
 	}
 
 	/**
