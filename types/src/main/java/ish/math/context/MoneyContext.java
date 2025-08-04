@@ -28,7 +28,7 @@ public interface MoneyContext {
     /**
      * The default rounding mode applied to monetary calculations.
      */
-    RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
+    RoundingMode DEFAULT_ROUND = RoundingMode.HALF_EVEN;
 
     /**
      * Retrieves the locale associated with this money context.

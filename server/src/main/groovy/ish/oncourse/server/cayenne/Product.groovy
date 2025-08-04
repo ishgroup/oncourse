@@ -79,7 +79,7 @@ class Product extends _Product implements Queueable, Taggable{
 
 	Money getPriceIncTax() {
 		if (getTax() != null) {
-			return MoneyUtil.getPriceIncTax(getPriceExTax(), getTax().getRate(), getTaxAdjustment())
+			return MoneyUtil.getPriceIncTaxRounded(getPriceExTax(), getTax().getRate(), getTaxAdjustment(), true)
 		}
 		return MoneyUtil.getPriceIncTax(getPriceExTax(), null, getTaxAdjustment())
 	}

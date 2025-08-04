@@ -42,7 +42,16 @@ public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 			setDiscountEachExTax(Money.ZERO);
 			return Money.ZERO;
 		}
-		return getDiscountEachExTax().add(getDiscountedTaxOnPriceEach().subtract(getTaxEach()));
+		Money priceEachExTax = getPriceEachExTax();
+		if(priceEachExTax == null)
+			priceEachExTax = Money.ZERO;
+
+		Money discountEachExTax = getDiscountEachExTax();
+		Money taxEach = getTaxEach();
+
+		Money priceEachIncTax = getPriceEachIncTax();
+		Money discounted = priceEachExTax.subtract(discountEachExTax).add(taxEach);
+		return priceEachIncTax.subtract(discounted);
 	}
 
 	public Money getDiscountTotalIncTax() {
@@ -78,6 +87,7 @@ public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 	}
 
 	public Money getDiscountedPriceTotalIncTax() {
+		// == (getPriceEachExTax() ?:0)*quantity  - (getDiscountEachExTax() ?:0)*quantity + getTaxEach() * quantity
 		return getDiscountedPriceTotalExTax().add(getTotalTax());
 	}
 
@@ -88,7 +98,7 @@ public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 			return getTaxEach();
 		}
 		return Money.of(getPriceEachExTax().toBigDecimal()
-				.divide(getPriceEachExTax().subtract(getDiscountEachExTax()).toBigDecimal(), 10, RoundingMode.HALF_UP).multiply(getTaxEach().toBigDecimal()));
+				.divide(getPriceEachExTax().subtract(getDiscountEachExTax()).toBigDecimal(), 10, RoundingMode.HALF_EVEN).multiply(getTaxEach().toBigDecimal()));
 	}
 
 	public Money getDiscountedPriceTotalExTax() {
