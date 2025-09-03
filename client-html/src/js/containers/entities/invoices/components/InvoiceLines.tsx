@@ -296,6 +296,8 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
 
   const onDiscountIdChange = discount => {
+    let apiDiscount;
+    
     if (!discount) {
       dispatch(change(form, `${item}.discountName`, null));
       dispatch(change(
@@ -303,13 +305,13 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
         `${item}.discountEachExTax`,
         0
       ));
-      return;
+    } else {
+      apiDiscount = plainDiscountToAPIModel(discount);
+      setCurrentDiscount(apiDiscount);
     }
 
-    const apiDiscount = plainDiscountToAPIModel(discount);
-    setCurrentDiscount(apiDiscount);
-    dispatch(change(form, `${item}.discountName`, apiDiscount.name));
-    recalculate(row.total, row.priceEachExTax, row.quantity, taxRate, apiDiscount);
+    dispatch(change(form, `${item}.discountName`, (apiDiscount || currentDiscount).name));
+    recalculate(row.total, row.priceEachExTax, row.quantity, taxRate, (apiDiscount || currentDiscount));
   };
 
   return (
