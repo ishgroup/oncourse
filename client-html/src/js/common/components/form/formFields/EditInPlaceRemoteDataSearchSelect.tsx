@@ -84,7 +84,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
         ownProps.entity,
         offset,
         ownProps.aqlColumns || getDefaultRemoteColumns(ownProps.entity),
-        true
+        true,
+        null,
+        null,
+        ownProps.customColumnsMap
       )
     ),
     onSearchChange: (search: string) => dispatch(setCommonPlainSearch(ownProps.entity, getSearch(search))),

@@ -7,19 +7,8 @@ import { Invoice, InvoicePaymentPlan } from '@api/model';
 import { min } from 'date-fns';
 import { Decimal } from 'decimal.js-light';
 import { decimalMinus, decimalPlus } from 'ish-ui';
+import { bankRounding } from '../../../../common/utils/financial';
 import { InvoiceWithTotalLine } from '../../../../model/entities/Invoice';
-
-export const calculateInvoiceLineTotal = (
-  priceEachExTax: number,
-  discountEachExTax: number,
-  taxEach: number,
-  quantity: number
-) => new Decimal(priceEachExTax || 0)
-  .minus(discountEachExTax || 0)
-  .plus(taxEach || 0)
-  .mul(quantity || 1)
-  .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
-  .toNumber();
 
 export const preformatInvoice = (value: InvoiceWithTotalLine): Invoice => {
   if (value && value.invoiceLines) {
@@ -33,7 +22,7 @@ export const preformatInvoice = (value: InvoiceWithTotalLine): Invoice => {
 export const setInvoiceLinesTotal = (value: InvoiceWithTotalLine): Invoice => {
   if (value && value.invoiceLines) {
     value.invoiceLines.forEach(l => {
-      l.total = calculateInvoiceLineTotal(l.priceEachExTax, l.discountEachExTax, l.taxEach, l.quantity);
+      l.total = bankRounding( new Decimal(l.priceEachExTax).mul(l.quantity).minus(l.discountEachExTax).plus(l.taxEach));
     });
   }
   return value;
