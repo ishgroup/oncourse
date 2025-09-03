@@ -32,6 +32,7 @@ import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import { validateSingleMandatoryField } from '../../../../common/utils/validation';
 import { ACCOUNT_DEFAULT_INVOICELINE_ID } from '../../../../constants/Config';
 import { EditViewProps } from '../../../../model/common/ListView';
+import { AccountTypes } from '../../../../model/entities/Account';
 import { InvoiceLineWithTotal, InvoiceWithTotalLine } from '../../../../model/entities/Invoice';
 import { State } from '../../../../reducers/state';
 import { EntityChecklists } from '../../../tags/components/EntityChecklists';
@@ -104,11 +105,11 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
   const validateInvoiceLines = (value, allValues) => (allValues.invoiceLines && allValues.invoiceLines.length ? undefined : "Please enter some invoice lines");
 
   const LineHeader = useCallback(
-    props => <HeaderContent currency={currency} {...props} />,
-    [currency]
+    props => <HeaderContent shortCurrencySymbol={currency.shortCurrencySymbol} {...props} />,
+    [currency, taxes]
   );
 
-  const accountTypes = useMemo(() => {
+  const accountTypes = useMemo<AccountTypes>(() => {
     const income = accounts.filter(a => a.type === "income");
     income.sort(sortAccounts);
     const cos = accounts.filter(a => a.type === "COS");
@@ -121,7 +122,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     props => (
       <InvoiceLines
         {...props}
-        currency={currency}
         isNew={isNew}
         twoColumn={twoColumn}
         dispatch={dispatch}
@@ -131,7 +131,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         type={values.type}
       />
       ),
-    [currency, isNew, twoColumn, form]
+    [isNew, twoColumn, form]
   );
 
   const addInvoiceLine = isNew || values.type === "Quote"

@@ -72,7 +72,7 @@ const onBeforeLockSet = (
     dispatch(change(
       COURSE_CLASS_COST_DIALOG_FORM,
       "perUnitAmountExTax",
-      getDiscountAmountExTax(discount, currentTax, classFee)
+      getDiscountAmountExTax(discount, currentTax.rate, classFee)
     ));
   }
 };
