@@ -62,9 +62,9 @@ export const getTotalAndDeductionsByPrice = (
   const base = new Decimal(priceEachExTax);
   const taxRateDec = new Decimal(taxRate || 0);
 
-  const discountAmount = typeof discount === 'number'
+  const discountAmount = (typeof discount === 'number'
     ? discount
-    : discount && getDiscountAmountExTax(discount, taxRate, priceEachExTax);
+    : discount && getDiscountAmountExTax(discount, taxRate, priceEachExTax)) || 0;
       
   const afterDiscount = base.sub(discountAmount);
   const tax = afterDiscount.mul(taxRateDec);
