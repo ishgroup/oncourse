@@ -125,7 +125,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
 
   const [useAllAccounts, setUseAllAccounts] = useState(false);
   const [courseClassEnrolments, setCourseClassEnrolments] = useState([]);
-  const [currentDiscount, setCurrentDiscount] = useState(null);
+  const [currentDiscount, setCurrentDiscount] = useState<Discount>(null);
   const [loading, setLoading] = useState(false);
 
   const accountRef = useRef<any>(undefined);
@@ -243,6 +243,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
 
   const recalculateByPrice = (priceEachExTax: number, taxRate: number, discount: Discount | number, qantity) => {
     const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice( priceEachExTax, taxRate, discount);
+
     dispatch(change(form, `${item}.taxEach`, taxEach));
     dispatch(change(form, `${item}.discountEachExTax`, discountEach));
     dispatch(change(form, `${item}.total`, decimalMul(total, qantity)));
@@ -296,7 +297,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
 
   const onDiscountIdChange = discount => {
-    let apiDiscount;
+    let apiDiscount: Discount = null;
     
     if (!discount) {
       dispatch(change(form, `${item}.discountName`, null));
@@ -307,12 +308,17 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
       ));
     } else {
       apiDiscount = plainDiscountToAPIModel(discount);
-      setCurrentDiscount(apiDiscount);
     }
+    setCurrentDiscount(apiDiscount);
+    dispatch(change(form, `${item}.discountName`, apiDiscount?.name || null));
 
-    dispatch(change(form, `${item}.discountName`, (apiDiscount || currentDiscount).name));
-    recalculate(row.total, row.priceEachExTax, row.quantity, taxRate, (apiDiscount || currentDiscount));
+    apiDiscount?.discountType === 'Fee override' || row.priceEachExTax
+      ? recalculateByPrice(row.priceEachExTax, taxRate, apiDiscount || 0, row.quantity)
+      : recalculateByTotal(row.total, taxRate, apiDiscount || 0, row.quantity);
   };
+
+  const disableFinanceFileds = type !== "Quote" && !isNew;
+  const hasFeeOverride = currentDiscount?.discountType === 'Fee override';
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="relative">
@@ -322,7 +328,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
           type="text"
           name={`${item}.title`}
           label={$t('title')}
-          disabled={type !== "Quote" && !isNew}
+          disabled={disableFinanceFileds}
           required
         />
       </Grid>
@@ -333,13 +339,13 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
           label={$t('quantity')}
           normalize={normalizeNumberToPositive}
           onBlur={onQuantityBlur}
-          disabled={type !== "Quote" && !isNew}
+          disabled={disableFinanceFileds}
           required
         />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 6}>
-        <FormField type="text" name={`${item}.unit`} label={$t('unit_egkg')} disabled={type !== "Quote" && !isNew} />
+        <FormField type="text" name={`${item}.unit`} label={$t('unit_egkg')} disabled={disableFinanceFileds} />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -347,7 +353,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
           type="select"
           name={`${item}.incomeAccountId`}
           label={$t('income_account')}
-          disabled={type !== "Quote" && !isNew}
+          disabled={disableFinanceFileds}
           items={useAllAccounts ? accountTypes.all : incomeAccountOptions}
           defaultValue={row.incomeAccountName}
           selectValueMark="id"
@@ -363,7 +369,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
           type="multilineText"
           name={`${item}.description`}
           label={$t('description')}
-          disabled={type !== "Quote" && !isNew}
+          disabled={disableFinanceFileds}
         />
       </Grid>
 
@@ -387,7 +393,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
                 <LinkAdornment link={row.courseId} linkHandler={courseLinkHandler} disabled={!row.courseId} />
               }
               onInnerValueChange={onCourseNameChange}
-              disabled={type !== "Quote" && !isNew}
+              disabled={disableFinanceFileds}
               itemRenderer={CourseItemRenderer}
               rowHeight={55}
               allowEmpty
@@ -406,7 +412,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
               name={`${item}.discountId`}
               defaultValue={row.discountName}
               onInnerValueChange={onDiscountIdChange}
-              disabled={type !== "Quote" && !isNew}
+              disabled={disableFinanceFileds}
               labelAdornment={
                 <LinkAdornment
                   link={row.discountId}
@@ -426,7 +432,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
               defaultValue={row.classCode}
               selectValueMark="id"
               selectLabelMark="code"
-              disabled={(type !== "Quote" && !isNew) || !row.courseId}
+              disabled={disableFinanceFileds || !row.courseId}
               onChange={onClassCodeChange}
               items={courseClasses}
               allowEmpty
@@ -440,7 +446,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
               label={$t('enrolled_student')}
               selectValueMark="id"
               defaultValue={row.enrolledStudent}
-              disabled={(type !== "Quote" && !isNew) || !row.courseClassId}
+              disabled={disableFinanceFileds || !row.courseClassId}
               onChange={onEnrolmentIdChange}
               items={courseClassEnrolments}
               allowEmpty
@@ -460,7 +466,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             name={`${item}.priceEachExTax`}
             label={$t('price_each_extax')}
             onBlur={onPriceEachExTaxBlur}
-            disabled={type !== "Quote" && !isNew}
+            disabled={disableFinanceFileds}
           />
         </Grid>
 
@@ -470,7 +476,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             name={`${item}.discountEachExTax`}
             label={$t('discount_each_extax')}
             onBlur={onDiscountEachExTaxBlur}
-            disabled={type !== "Quote" && !isNew}
+            disabled={disableFinanceFileds || hasFeeOverride}
           />
         </Grid>
 
@@ -482,7 +488,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             selectValueMark="id"
             selectLabelMark="code"
             onChange={onTaxIdChange}
-            disabled={type !== "Quote" && !isNew}
+            disabled={disableFinanceFileds}
             items={taxes || []}
             required={isNew}
           />
@@ -506,7 +512,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             <FormField
               type="money"
               name={`${item}.total`}
-              disabled={type !== "Quote" && !isNew}
+              disabled={disableFinanceFileds || hasFeeOverride}
               defaultValue={row.total}
               onBlur={onTotalBlur}
               inline
