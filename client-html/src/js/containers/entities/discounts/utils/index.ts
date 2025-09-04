@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Discount, DiscountType, MoneyRounding, Tax } from '@api/model';
+import { Discount, DiscountType, MoneyRounding } from '@api/model';
 import Decimal from 'decimal.js-light';
 import { openInternalLink } from 'ish-ui';
 import { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
@@ -84,15 +84,14 @@ export const getDiscountAmountByFeeIncTaxAndDiscount = (discount: Discount, feeI
 };
 
 export const getDiscountAmountExTax = (discount: Discount, taxRate: number, fee: number = 0) => {
-  const taxMul = new Decimal(1).plus(taxRate);
-  let amountNumber = getDiscountedFee(discount, taxMul, fee).toNumber();
+  let amountNumber = getDiscountedFee(discount,  new Decimal(1).plus(taxRate), fee).toNumber();
   amountNumber = (typeof discount.discountMin  === 'number' && amountNumber < discount.discountMin)
     ? discount.discountMin
     : (typeof discount.discountMax  === 'number' && amountNumber > discount.discountMax)
       ? discount.discountMax
       : amountNumber;
 
-  return bankRounding(new Decimal(amountNumber).div(taxMul));
+  return bankRounding(new Decimal(amountNumber));
 };
 
 const secondaryDiscountText = (discountType: DiscountType, discountValue: number, discountPercent: number) => {

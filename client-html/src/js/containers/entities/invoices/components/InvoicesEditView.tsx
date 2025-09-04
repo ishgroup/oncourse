@@ -136,13 +136,16 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
   const addInvoiceLine = isNew || values.type === "Quote"
     ? () => {
+      const incomeAccountId =  defaultInvoiceLineAccount ? Number(defaultInvoiceLineAccount) : null;
       const newLine: InvoiceLineWithTotal = {
         quantity: 1,
-        incomeAccountId: defaultInvoiceLineAccount ? Number(defaultInvoiceLineAccount) : null,
+        incomeAccountId,
         taxId:
           selectedContact && selectedContact["taxOverride.id"]
             ? Number(selectedContact["taxOverride.id"])
-            : taxes.length ? taxes[0].id : null,
+            : incomeAccountId
+              ? parseInt(accounts.find(a => a.id === incomeAccountId)['tax.id'])
+              : taxes.length ? taxes[0].id : null,
         taxEach: 0,
         discountEachExTax: 0,
         priceEachExTax: 0,
