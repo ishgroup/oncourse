@@ -574,7 +574,7 @@ const CourseClassBudgetTab = React.memo<Props>(
               ...classCostInitial,
               courseClassid: values.id,
               description: discount.name,
-              perUnitAmountExTax: getDiscountAmountExTax(discount, currentTax.rate, classFee),
+              perUnitAmountExTax: bankRounding(getDiscountAmountExTax(discount, currentTax.rate, classFee)),
               taxId: values.taxId,
               flowType: "Discount",
               repetitionType: "Discount",

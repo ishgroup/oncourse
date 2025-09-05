@@ -10,15 +10,7 @@ import { Course, Currency, Discount, InvoiceType, Tax } from '@api/model';
 import { Grid, Typography } from '@mui/material';
 import $t from '@t';
 import { Decimal } from 'decimal.js-light';
-import {
-  decimalDivide,
-  decimalMul,
-  decimalPlus,
-  LinkAdornment,
-  NoArgFunction,
-  NumberArgFunction,
-  usePrevious
-} from 'ish-ui';
+import { decimalMul, LinkAdornment, NoArgFunction, NumberArgFunction, usePrevious } from 'ish-ui';
 import { normalizeNumberToPositive } from 'ish-ui/dist/utils/numbers/numbersNormalizing';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
@@ -122,7 +114,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
 
   const [useAllAccounts, setUseAllAccounts] = useState(false);
   const [courseClassEnrolments, setCourseClassEnrolments] = useState([]);
-  const [currentDiscount, setCurrentDiscount] = useState<Discount>(null);
+  const [currentDiscount, setCurrentDiscount] = useState<Discount | number>(null);
   const [loading, setLoading] = useState(false);
 
   const accountRef = useRef<any>(undefined);
@@ -138,7 +130,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   }, [selectedLineEnrolments]);
 
   useEffect(() => {
-    if (row.discountId && currentDiscount?.id !== row.discountId) {
+    if (row.discountId && typeof currentDiscount !== 'number' && currentDiscount?.id !== row.discountId) {
       setLoading(true);
 
       EntityService.getPlainRecords(
@@ -182,11 +174,11 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
 
   useEffect(() => {
     if (isNew) {
-      const averageTotal = rows.reduce((pr, cur) => decimalPlus(pr, cur.total), 0);
+      const averageTotal = rows.reduce((pr, cur) => new Decimal(pr).plus(cur.total), new Decimal(0)).toNumber();
 
       if (!isNaN(averageTotal)) {
-        dispatch(change(form, "total", averageTotal));
-        dispatch(change(form, "paymentPlans[0].amount", averageTotal));
+        dispatch(change(form, "total", bankRounding(averageTotal)));
+        dispatch(change(form, "paymentPlans[0].amount", bankRounding(averageTotal)));
       }
     }
   }, [form, item, rows, isNew, row.total]);
@@ -231,7 +223,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     };
   
   const recalculateByTotal = (total: number, taxRate: number, discount: Discount | number, qantity) => {
-    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(decimalDivide(total, qantity), taxRate, discount);
+    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(new Decimal(total).div(qantity).toNumber(), taxRate, discount);
 
     dispatch(change(form, `${item}.taxEach`, taxEach));
     dispatch(change(form, `${item}.discountEachExTax`, discountAmount));
@@ -294,28 +286,23 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
 
   const onDiscountIdChange = discount => {
-    let apiDiscount: Discount = null;
-    
-    if (!discount) {
-      dispatch(change(form, `${item}.discountName`, null));
-      dispatch(change(
-        form,
-        `${item}.discountEachExTax`,
-        0
-      ));
-    } else {
-      apiDiscount = plainDiscountToAPIModel(discount);
-    }
+    const apiDiscount: Discount | number =  discount ? plainDiscountToAPIModel(discount) : 0;
     setCurrentDiscount(apiDiscount);
-    dispatch(change(form, `${item}.discountName`, apiDiscount?.name || null));
+    dispatch(change(form, `${item}.discountName`, typeof apiDiscount !== 'number' && apiDiscount?.name || null));
 
-    apiDiscount?.discountType === 'Fee override' || row.priceEachExTax
-      ? recalculateByPrice(row.priceEachExTax, taxRate, apiDiscount || 0, row.quantity)
-      : recalculateByTotal(row.total, taxRate, apiDiscount || 0, row.quantity);
+    if (
+      (typeof apiDiscount !== 'number' && apiDiscount?.discountType === 'Fee override') ||
+      (!discount && typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override')
+    ) {
+      recalculateByPrice(row.priceEachExTax || 0, taxRate, apiDiscount, row.quantity);
+      return;
+    }
+
+    recalculate(row.total, row.priceEachExTax, row.quantity, taxRate, apiDiscount);
   };
 
   const disableFinanceFileds = type !== "Quote" && !isNew;
-  const hasFeeOverride = currentDiscount?.discountType === 'Fee override';
+  const hasFeeOverride = typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override';
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="relative">
