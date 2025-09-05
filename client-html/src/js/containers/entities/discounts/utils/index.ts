@@ -73,7 +73,7 @@ export const getDiscountedFee = (discount: Discount, taxMul: Decimal, fee: numbe
 export const getDiscountAmountByFeeIncTaxAndDiscount = (discount: Discount, feeIncDiscountExTax: Decimal): Decimal => {
   switch (discount.discountType) {
     case 'Percent':
-      return feeIncDiscountExTax.div(feeIncDiscountExTax).mul(discount.discountPercent);
+      return new Decimal(feeIncDiscountExTax).div(new Decimal(1).sub(discount.discountPercent)).mul(discount.discountPercent);
     case 'Dollar':
       return new Decimal(discount.discountValue);
     case 'Fee override':
@@ -83,7 +83,7 @@ export const getDiscountAmountByFeeIncTaxAndDiscount = (discount: Discount, feeI
   }
 };
 
-export const getDiscountAmountExTax = (discount: Discount, taxRate: number, fee: number = 0) => {
+export const getDiscountAmountExTax = (discount: Discount, taxRate: number, fee: number = 0): Decimal => {
   let amountNumber = getDiscountedFee(discount,  new Decimal(1).plus(taxRate), fee).toNumber();
   amountNumber = (typeof discount.discountMin  === 'number' && amountNumber < discount.discountMin)
     ? discount.discountMin
@@ -91,7 +91,7 @@ export const getDiscountAmountExTax = (discount: Discount, taxRate: number, fee:
       ? discount.discountMax
       : amountNumber;
 
-  return bankRounding(new Decimal(amountNumber));
+  return new Decimal(amountNumber);
 };
 
 const secondaryDiscountText = (discountType: DiscountType, discountValue: number, discountPercent: number) => {

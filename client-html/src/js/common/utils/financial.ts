@@ -45,7 +45,7 @@ export const getPriceAndDeductionsByTotal = (
     taxEach: bankRounding(afterDiscount.mul(taxRateDec)),
     discountAmount: bankRounding(discountAmount),
     priceEachExTax: bankRounding(discountAmount
-      ? afterDiscount.sub(discountAmount)
+      ? afterDiscount.plus(discountAmount)
       : afterDiscount)
   };
 };
