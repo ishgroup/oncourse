@@ -5,10 +5,13 @@
 
 import { Invoice, InvoicePaymentPlan } from '@api/model';
 import { min } from 'date-fns';
-import { Decimal } from 'decimal.js-light';
 import { decimalMinus, decimalPlus } from 'ish-ui';
-import { bankRounding } from '../../../../common/utils/financial';
+import EntityService from '../../../../common/services/EntityService';
+import { getCustomColumnsMap } from '../../../../common/utils/common';
+import { getTotalAndDeductionsByPrice } from '../../../../common/utils/financial';
 import { InvoiceWithTotalLine } from '../../../../model/entities/Invoice';
+import { plainDiscountToAPIModel } from '../../discounts/utils';
+import { INVOICE_LINE_DISCOUNT_AQL, INVOICE_LINE_DISCOUNT_COLUMNS } from '../constants';
 
 export const preformatInvoice = (value: InvoiceWithTotalLine): Invoice => {
   if (value && value.invoiceLines) {
@@ -19,11 +22,29 @@ export const preformatInvoice = (value: InvoiceWithTotalLine): Invoice => {
   return value;
 };
 
-export const setInvoiceLinesTotal = (value: InvoiceWithTotalLine): Invoice => {
+export const setInvoiceLinesTotal = async (value: InvoiceWithTotalLine): Promise<Invoice> => {
   if (value && value.invoiceLines) {
-    value.invoiceLines.forEach(l => {
-      l.total = bankRounding( new Decimal(l.priceEachExTax).mul(l.quantity).minus(l.discountEachExTax).plus(l.taxEach));
-    });
+    for (const line of value.invoiceLines) {
+      const discount = line.discountId && await EntityService.getPlainRecords(
+        'Discount',
+        INVOICE_LINE_DISCOUNT_COLUMNS,
+        `id is ${line.discountId} and ${INVOICE_LINE_DISCOUNT_AQL}`,
+        1,
+        0,
+      ).then(({ rows }) => plainDiscountToAPIModel(rows.map(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS))[0]));
+
+     const taxRate = await EntityService.getPlainRecords(
+       'Tax',
+       'rate',
+       `id is ${line.taxId}`,
+       1,
+       0,
+     ).then(({ rows }) => parseFloat(rows.map(r => r.values[0])[0]));
+
+     const { total } = getTotalAndDeductionsByPrice(line.priceEachExTax, taxRate, discount);
+
+      line.total = total;
+    }
   }
   return value;
 };

@@ -51,6 +51,7 @@ import {
   setInvoiceLineCourse,
   setInvoiceLineEnrolments
 } from '../actions';
+import { INVOICE_LINE_DISCOUNT_AQL, INVOICE_LINE_DISCOUNT_COLUMNS } from '../constants';
 import { InvoicesState } from '../reducers/state';
 
 interface HeaderProps {
@@ -97,10 +98,6 @@ interface InvoiceLineBaseProps {
   selectedContact: InvoicesState['selectedContact'];
   type: InvoiceType;
 }
-
-const INVOICE_LINE_DISCOUNT_COLUMNS = 'name,discountType,discountDollar,discountPercent,rounding';
-
-const INVOICE_LINE_DISCOUNT_AQL = '((validTo >= today) or (validTo == null)) and ((validFrom <= today) or (validFrom == null)) ';
 
 const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   row,
