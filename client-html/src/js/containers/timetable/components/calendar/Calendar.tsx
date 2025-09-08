@@ -123,7 +123,7 @@ const scrollToCalendarDay = debounce((dayNode, list, index, dayNodesObserver) =>
     animateListScroll(
       list,
       dayNode.parentElement.offsetTop + list._instanceProps.itemMetadataMap[index].offset - 32,
-      list._outerRef.scrollTop,
+      list._outerRef?.scrollTop || 0,
       performance.now(),
       dayNodesObserver
     );
