@@ -108,6 +108,8 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	public static Money ZERO = Money.of(BigDecimal.ZERO);
 	public static Money ONE = Money.of(BigDecimal.ONE);
 
+	public static final int DEFAULT_PRECISE_VALUE_SCALE = 6;
+
 	/**
 	 * Constructs a new {@code Money} instance. If {@code null} is passed as value,
 	 * a {@code Money.ZERO} amount will be created.
