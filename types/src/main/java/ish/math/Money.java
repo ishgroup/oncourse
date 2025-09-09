@@ -874,6 +874,23 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	}
 
 	/**
+	 * Returns the monetary value as a precise {@link BigDecimal}.
+	 */
+	@API
+	public BigDecimal toPreciseBigDecimal() {
+		return number;
+	}
+
+	/**
+	 * Returns the monetary value as a precise {@link BigDecimal}.
+	 */
+	@API
+	public BigDecimal toPreciseBigDecimal(int scale) {
+		RoundingMode mode = RoundingMode.HALF_EVEN;
+		return number.setScale(scale, mode);
+	}
+
+	/**
 	 * Returns the monetary value as a {@link Double}.
 	 *
 	 * @deprecated use {@link #toDouble()}
