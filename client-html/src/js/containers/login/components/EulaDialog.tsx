@@ -9,11 +9,12 @@
  *  Public License for more details.
  */
 
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
-import React from "react";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import $t from '@t';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = () => createStyles({
+const styles = () => ({
 
   dialogContent: {
     overflow: "hidden",
@@ -76,7 +77,7 @@ const EulaDialog = props => {
         maxWidth="md"
         fullWidth={true}
       >
-        <DialogTitle id="eula-dialog-title">EULA Agreement</DialogTitle>
+        <DialogTitle id="eula-dialog-title">{$t('eula_agreement')}</DialogTitle>
         <DialogContent
           id="EulaContent"
           className={props.classes.dialogContent}
@@ -86,7 +87,7 @@ const EulaDialog = props => {
             id="license_eula"
             className={props.classes.iframe}
             src={props.eulaUrl}
-            title="EULA Agreement"
+            title={$t('eula_agreement')}
             onLoad={getScrollToBottomMessage}
           />
         </DialogContent>
@@ -100,7 +101,7 @@ const EulaDialog = props => {
                 }}
                 onClick={handleClose}
               >
-                Cancel
+                {$t('cancel')}
               </Button>
               <Button
                 type="submit"
@@ -114,7 +115,7 @@ const EulaDialog = props => {
                 }}
                 onClick={handleEulaAccept}
               >
-                I accept these conditions
+                {$t('i_accept_these_conditions')}
               </Button>
             </div>
           </form>
@@ -124,4 +125,4 @@ const EulaDialog = props => {
   );
 };
 
-export default withStyles(styles)(EulaDialog);
+export default withStyles(EulaDialog, styles);

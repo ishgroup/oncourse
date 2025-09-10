@@ -359,6 +359,7 @@
   description: An export in CSV format that can be supplied to ASQA for purposes of satisfying their audit process. This export looks specifically at student enrolments, detailing the course enrolled in, when they enrolled and some contact details.
   short: Export enrolment details in CSV format for ASQA auditing
   category: accreditation
+  locale: aus
 
 - keyCode: ish.onCourse.extendedOutcomes.csv
   entityClass: CourseClass
@@ -485,6 +486,7 @@
   description: Export contacts in CSV format, focusing on data to be provided for Liquor & Gaming NSW.
   short: Open a list of contacts in a spreadsheet for Liquor & Gaming NSW
   category: accreditation
+  locale: aus
 
 - keyCode: ish.onCourse.outcome.csv
   entityClass: Outcome
@@ -611,6 +613,7 @@
   description: This export produces results in accordance with ASQA's Delivery Data Summary - Table A spreadsheet. The last three columns are expected to be empty as these must be filled out manually.
   short: Export qualification records to CSV for ASQA audit
   category: accreditation
+  locale: aus
 
 
 - keyCode: ish.onCourse.quote.csv
@@ -702,6 +705,7 @@
   description: Exports in CSV format Application data for the purpose of bulk upload to NSW Smart & Skilled
   short: An export of Applications to CSV for uploading to S&S
   category: accreditation
+  locale: aus
 
 - keyCode: ish.onCourse.survey.csv
   entityClass: Survey
@@ -729,6 +733,7 @@
   description: Export records to CSV format, suitable for spreadsheets or other applications that require a flat file. Choose a different format for long text or structured data.
   short: Open a list of Training Packages in a spreadsheet
   category: accreditation
+  locale: aus
 
 - keyCode: ish.onCourse.unitsOfCompetencyASQAExport.csv
   entityClass: Module
@@ -739,6 +744,7 @@
   short: Export Modules in CSV format for use in ASQA's auditing process
   category: accreditation
   minVersion: 9.13
+  locale: aus
 
 - keyCode: ish.onCourse.voucher.csv
   entityClass: Voucher

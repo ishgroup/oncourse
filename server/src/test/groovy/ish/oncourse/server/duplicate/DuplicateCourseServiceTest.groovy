@@ -47,6 +47,8 @@ class DuplicateCourseServiceTest extends TestWithDatabase {
         Product product = createProduct(cayenneContext)
 
         Module module = cayenneContext.newObject(Module.class)
+        module.setIsCreditPointsOffered(false)
+        module.setIsCreditPointsShownOnWeb(true)
         module.setType(ModuleType.MODULE)
         module.setNationalCode("test")
         course.addToModules(module)
@@ -178,7 +180,7 @@ class DuplicateCourseServiceTest extends TestWithDatabase {
         Product product = context.newObject(Product.class)
         product.setTax(tax)
         product.setIsWebVisible(false)
-        product.setTaxAdjustment(new Money(100, 0))
+        product.setTaxAdjustment(Money.of(100, 0))
         product.setIsOnSale(false)
         product.setSku("sku")
         product.setType(1)

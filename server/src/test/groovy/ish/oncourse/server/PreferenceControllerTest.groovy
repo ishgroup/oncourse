@@ -1,10 +1,10 @@
 package ish.oncourse.server
 
-
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.integration.PluginsPrefsService
 import ish.oncourse.server.license.LicenseService
+import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.services.ISystemUserService
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.Select
@@ -36,7 +36,7 @@ class PreferenceControllerTest {
         Assertions.assertEquals("testValue", preference.getValueString())
     }
 
-    
+
     private PreferenceController initPreferenceController(Preference preference) {
         ICayenneService iCayenneService = Mockito.mock(ICayenneService.class)
 
@@ -49,7 +49,8 @@ class PreferenceControllerTest {
         ISystemUserService systemUserService = Mockito.mock(ISystemUserService.class)
         LicenseService licenseService = Mockito.mock(LicenseService.class)
         PluginsPrefsService pluginsService = Mockito.mock(PluginsPrefsService.class)
+        ISchedulerService schedulerService = Mockito.mock(ISchedulerService.class)
 
-        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService)
+        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService,  schedulerService)
     }
 }

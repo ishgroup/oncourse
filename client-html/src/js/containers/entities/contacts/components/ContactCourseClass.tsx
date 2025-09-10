@@ -2,13 +2,14 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import Grid from "@mui/material/Grid";
-import { EntityType } from "ish-ui";
-import React, { useEffect, useState } from "react";
-import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
-import { getNestedTutorClassItem } from "../utils";
 
-const ContactCourseClass = React.memo<any>(props => {
+import Grid from '@mui/material/Grid';
+import { EntityType } from 'ish-ui';
+import React, { useEffect, useState } from 'react';
+import NestedEntity from '../../../../common/components/form/nestedEntity/NestedEntity';
+import { getNestedTutorClassItem } from '../utils';
+
+const ContactCourseClass = React.memo<{ showConfirm?, twoColumn?, values?, isNew?, dirty? }>(props => {
   const {
  showConfirm, twoColumn, values, isNew, dirty 
 } = props;
@@ -28,7 +29,7 @@ const ContactCourseClass = React.memo<any>(props => {
       }
 
       if (tutor.selfPacedclassesCount) {
-        types.push(getNestedTutorClassItem("Self Paced", tutor.selfPacedclassesCount, tutor.id));
+        types.push(getNestedTutorClassItem("Self-Paced", tutor.selfPacedclassesCount, tutor.id));
       }
 
       if (tutor.unscheduledClasseCount) {
@@ -41,6 +42,10 @@ const ContactCourseClass = React.memo<any>(props => {
 
       if (tutor.cancelledClassesCount) {
         types.push(getNestedTutorClassItem("Cancelled", tutor.cancelledClassesCount, tutor.id));
+      }
+
+      if (tutor.cancelledClassesCount) {
+        types.push(getNestedTutorClassItem("Hybrid", tutor.hybridClassesCount, tutor.id));
       }
     }
 

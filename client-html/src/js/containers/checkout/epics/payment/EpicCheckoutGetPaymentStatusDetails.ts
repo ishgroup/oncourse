@@ -3,23 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { SessionStatus } from '@api/model';
+import { Epic } from 'redux-observable';
+import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import * as EpicUtils from '../../../../common/epics/EpicUtils';
 import {
   CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
+  checkoutGetPaymentStatusDetails,
   checkoutPaymentSetCustomStatus,
-  checkoutProcessPayment,
   checkoutSetPaymentDetailsFetching,
   checkoutSetPaymentStatusDetails,
   checkoutSetPaymentSuccess
-} from "../../actions/checkoutPayment";
-import CheckoutService from "../../services/CheckoutService";
+} from '../../actions/checkoutPayment';
+import CheckoutService from '../../services/CheckoutService';
 
-const request: EpicUtils.Request<any, { status: any; sessionId: string }> = {
+const request: EpicUtils.DelayedRequest<SessionStatus, { sessionId: string, withTimeout?: boolean }> = {
   type: CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
+  delay: ({ withTimeout }) => withTimeout ? 1000 : 0,
   getData: ({ sessionId }) => CheckoutService.getSessionStatus(sessionId),
-  processData: (data, { checkout: { payment: { merchantReference } } }, { sessionId }) => {
+  processData: (data, s, { sessionId }) => {
 
     const actions: any = [
       checkoutSetPaymentStatusDetails(data),
@@ -31,9 +33,8 @@ const request: EpicUtils.Request<any, { status: any; sessionId: string }> = {
         checkoutSetPaymentSuccess(true),
         checkoutPaymentSetCustomStatus("success")
       );
-      if (merchantReference !== "") {
-        actions.push(checkoutProcessPayment(false, sessionId, window.location.origin));
-      }
+    } else if (data.authorised) {
+      return [checkoutGetPaymentStatusDetails(sessionId, true)];
     } else {
       actions.push(
         checkoutSetPaymentSuccess(false),
@@ -49,4 +50,4 @@ const request: EpicUtils.Request<any, { status: any; sessionId: string }> = {
   ]
 };
 
-export const EpicCheckoutGetPaymentStatusDetails: Epic<any, any> = EpicUtils.Create(request);
+export const EpicCheckoutGetPaymentStatusDetails: Epic<any, any> = EpicUtils.CreateWithTimeout(request);

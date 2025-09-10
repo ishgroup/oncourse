@@ -18,50 +18,26 @@ import ish.common.types.OutcomeStatus
 import ish.duplicate.ClassDuplicationRequest
 import ish.duplicate.DuplicationResult
 import ish.oncourse.entity.services.CourseClassService
-import ish.oncourse.server.api.dao.AssessmentClassDao
-import ish.oncourse.server.api.dao.ClassCostDao
-import ish.oncourse.server.api.dao.CourseClassDao
-import ish.oncourse.server.api.dao.CourseDao
-import ish.oncourse.server.api.dao.FundingSourceDao
-import ish.oncourse.server.api.dao.ModuleDao
-import ish.oncourse.server.api.dao.SessionModuleDao
-import ish.oncourse.server.api.dao.SiteDao
-import ish.oncourse.server.api.v1.model.CourseClassTypeDTO
-import ish.oncourse.server.document.DocumentService
-
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.function.DocumentFunctions
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
-import ish.oncourse.server.api.v1.model.CancelCourseClassDTO
-import ish.oncourse.server.api.v1.model.ClassFundingSourceDTO
-import ish.oncourse.server.api.v1.model.CourseClassAttendanceTypeDTO
-import ish.oncourse.server.api.v1.model.CourseClassDTO
-import ish.oncourse.server.api.v1.model.CourseClassDuplicateDTO
-import ish.oncourse.server.api.v1.model.DeliveryModeDTO
-import ish.oncourse.server.api.v1.model.TrainingPlanDTO
-import static ish.oncourse.server.api.validation.EntityValidator.validateLength
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cancel.CancelClassHelper
 import ish.oncourse.server.cancel.CancelEnrolmentService
-import ish.oncourse.server.cayenne.AssessmentClass
-import ish.oncourse.server.cayenne.AssessmentClassModule
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassAttachmentRelation
-import ish.oncourse.server.cayenne.CourseClassCustomField
-import ish.oncourse.server.cayenne.CourseClassTagRelation
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Outcome
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.SessionModule
+import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.duplicate.DuplicateClassService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.trimToEmpty
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static ish.oncourse.server.api.validation.EntityValidator.validateLength
+import static org.apache.commons.lang3.StringUtils.trimToEmpty
 
 class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseClass, CourseClassDao> {
 
@@ -97,7 +73,13 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
     private FundingSourceDao fundingSourceDao
 
     @Inject
-    private SiteDao siteDao
+    private RoomDao roomDao
+
+    @Inject
+    private SiteApiService siteApiService
+
+    @Inject
+    private RoomApiService roomApiService
 
     @Inject
     private DuplicateClassService duplicateClassService
@@ -171,6 +153,8 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.virtualSiteId = (cc.room?.site?.isVirtual ? cc.room.site.id : null) as Long
         dto.startDateTime = LocalDateUtils.dateToTimeValue(cc.startDateTime)
         dto.endDateTime =  LocalDateUtils.dateToTimeValue(cc.endDateTime)
+        dto.portalDocAccessStart = LocalDateUtils.dateToTimeValue(cc.portalDocAccessStart)
+        dto.portalDocAccessEnd = LocalDateUtils.dateToTimeValue(cc.portalDocAccessEnd)
         dto.suppressAvetmissExport = cc.suppressAvetmissExport
         dto.vetCourseSiteID = cc.vetCourseSiteID
         dto.vetFundingSourceStateID = cc.vetFundingSourceStateID
@@ -205,6 +189,9 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.withdrawnOutcomesCount = outcomes.findAll { it.status == OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN }.size()
         dto.otherOutcomesCount = dto.allOutcomesCount  - dto.passOutcomesCount - dto.failedOutcomesCount - dto.inProgressOutcomesCount - dto.withdrawnOutcomesCount
         dto.tags = cc.allTags.collect { it.id }
+
+        def hiddenTags = cc.hiddenTags
+        dto.specialTagId = hiddenTags.empty ? null as Long : hiddenTags.first().id
         return dto
     }
 
@@ -222,18 +209,23 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         courseClass.type = dto.type.dbType
         if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING || dto.type == CourseClassTypeDTO.HYBRID) {
             courseClass.expectedHours = dto.expectedHours
-            if (dto.virtualSiteId != null) {
-                courseClass.room = siteDao.getById(courseClass.context, dto.virtualSiteId).rooms[0]
+            if (dto.virtualSiteId != null && dto.roomId != null) {
+                courseClass.room = roomDao.getById(courseClass.context, dto.roomId)
             }
             if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING) {
                 courseClass.maximumDays = dto.maximumDays
             }
+
+            courseClass.startDateTime = LocalDateUtils.timeValueToDate(dto.startDateTime)
+            courseClass.endDateTime = LocalDateUtils.timeValueToDate(dto.endDateTime)
+
             if (dto.type == CourseClassTypeDTO.HYBRID) {
                 courseClass.minimumSessionsToComplete = dto.minimumSessionsToComplete
-                courseClass.startDateTime = LocalDateUtils.timeValueToDate(dto.startDateTime)
-                courseClass.endDateTime = LocalDateUtils.timeValueToDate(dto.endDateTime)
             }
         }
+
+        courseClass.portalDocAccessStart = LocalDateUtils.timeValueToDate(dto.portalDocAccessStart)
+        courseClass.portalDocAccessEnd = LocalDateUtils.timeValueToDate(dto.portalDocAccessEnd)
         courseClass.isActive = dto.isActive
         courseClass.isShownOnWeb = dto.isShownOnWeb
         courseClass.message = dto.message
@@ -260,7 +252,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         courseClass.initialDETexport = dto.initialDetExport
         courseClass.midwayDETexport = dto.midwayDetExport
         courseClass.finalDETexport = dto.finalDetExport
-        updateTags(courseClass, courseClass.taggingRelations, dto.tags, CourseClassTagRelation, courseClass.context)
+        updateTags(courseClass, courseClass.taggingRelations, dto.tags + dto.specialTagId, CourseClassTagRelation, courseClass.context)
         DocumentFunctions.updateDocuments(courseClass, courseClass.attachmentRelations, dto.documents, CourseClassAttachmentRelation, context)
         updateCustomFields(courseClass.context, courseClass, dto.customFields, CourseClassCustomField)
         courseClass
@@ -343,6 +335,33 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         }
         if (dto.type == CourseClassTypeDTO.HYBRID && dto.endDateTime == null) {
             validator.throwClientErrorException(id, "endDateTime", "End date field is required for hybrid class")
+        }
+
+        if (dto.type == CourseClassTypeDTO.HYBRID && (dto.portalDocAccessStart || dto.portalDocAccessEnd)) {
+            validator.throwClientErrorException(id, "portalDocAccess", "Hybrid class cannot have doc control fields")
+        }
+
+        if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING && dto.startDateTime && !dto.endDateTime) {
+            validator.throwClientErrorException(id, "endDateTime", "Self paced class if has start date must have end date")
+        }
+
+        if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING && dto.endDateTime && !dto.startDateTime) {
+            validator.throwClientErrorException(id, "startDateTime", "Self paced class if has end date must have start date")
+        }
+
+        if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING && dto.startDateTime
+                && (dto.endDateTime.isBefore(dto.startDateTime) || dto.endDateTime.equals(dto.startDateTime))) {
+            validator.throwClientErrorException(id, "startDateTime", "Self paced class end date must be after start date")
+        }
+
+        if (dto.virtualSiteId != null) {
+            Site virtualSite = siteApiService.getEntityAndValidateExistence(context, dto.virtualSiteId)
+            if (dto.roomId != null) {
+                Room siteRoom = roomApiService.getEntityAndValidateExistence(context, dto.roomId)
+                if (!virtualSite.rooms.id.contains(siteRoom.id)) {
+                    validator.throwClientErrorException(id, "roomId", "Selected room doesn't belong to site")
+                }
+            }
         }
     }
 

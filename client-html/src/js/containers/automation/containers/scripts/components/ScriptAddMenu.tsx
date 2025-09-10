@@ -1,13 +1,13 @@
-import AddIcon from "@mui/icons-material/Add";
-import { Menu, MenuItem } from "@mui/material";
-import Fab from "@mui/material/Fab";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import * as React from "react";
-import { change } from "redux-form";
+import AddIcon from '@mui/icons-material/Add';
+import { Menu, MenuItem, Typography } from '@mui/material';
+import Fab from '@mui/material/Fab';
+import $t from '@t';
+import * as React from 'react';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 
 const styles = theme =>
-  createStyles({
+  ({
     menuWrapper: {
       marginTop: theme.spacing(2)
     },
@@ -74,7 +74,7 @@ class ScriptAddMenu extends React.Component<any, any> {
           <div className="outline-none mt-1">
             <div className="d-flex">
               <div className="flex-fill">
-                <Typography className="heading pl-2 mb-1">Action</Typography>
+                <Typography className="heading pl-2 mb-1">{$t('action')}</Typography>
                 <MenuItem
                   disabled={hasImports || !hasUpdateAccess}
                   className={classes.listItemPadding}
@@ -82,7 +82,7 @@ class ScriptAddMenu extends React.Component<any, any> {
                   onClick={this.addImport}
                 >
                   <Typography variant="subtitle1" color="textSecondary">
-                    Import
+                    {$t('import')}
                   </Typography>
                 </MenuItem>
 
@@ -92,7 +92,7 @@ class ScriptAddMenu extends React.Component<any, any> {
                   onClick={this.addComponent}
                 >
                   <Typography variant="subtitle1" color="textSecondary">
-                    Query
+                    {$t('query')}
                   </Typography>
                 </MenuItem>
 
@@ -103,7 +103,7 @@ class ScriptAddMenu extends React.Component<any, any> {
                   onClick={this.addComponent}
                 >
                   <Typography variant="subtitle1" color="textSecondary">
-                    Script
+                    {$t('script')}
                   </Typography>
                 </MenuItem>
 
@@ -113,7 +113,7 @@ class ScriptAddMenu extends React.Component<any, any> {
                   onClick={this.addComponent}
                 >
                   <Typography variant="subtitle1" color="textSecondary">
-                    Message
+                    {$t('message')}
                   </Typography>
                 </MenuItem>
 
@@ -123,7 +123,7 @@ class ScriptAddMenu extends React.Component<any, any> {
                   onClick={this.addComponent}
                 >
                   <Typography variant="subtitle1" color="textSecondary">
-                    Report
+                    {$t('report')}
                   </Typography>
                 </MenuItem>
               </div>
@@ -149,4 +149,4 @@ class ScriptAddMenu extends React.Component<any, any> {
   }
 }
 
-export default withStyles(styles)(ScriptAddMenu);
+export default withStyles(ScriptAddMenu, styles);

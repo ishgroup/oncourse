@@ -17,11 +17,13 @@ class SessionAttributes {
     String sessionId
     String ccFormUrl
     Boolean authorised
+    Boolean secure3dRequired
     Boolean complete
     String type
     String responceJson
     String errorMessage
     String reCo
+    String clientSecret
 
     String transactionId
     String statusText

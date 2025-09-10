@@ -3,27 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Discount, DiscountType, MoneyRounding } from "@api/model";
-import { Collapse, Divider, FormControlLabel, Grid, Typography } from "@mui/material";
-import Decimal from "decimal.js-light";
-import { Switch } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { change } from "redux-form";
-import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Subtitle from "../../../../common/components/layout/Subtitle";
+import { Discount, DiscountType, MoneyRounding } from '@api/model';
+import { Collapse, Divider, FormControlLabel, Grid, Typography } from '@mui/material';
+import $t from '@t';
+import Decimal from 'decimal.js-light';
+import { mapSelectItems, Switch } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { change } from 'redux-form';
+import CustomSelector, { CustomSelectorOption } from '../../../../common/components/custom-selector/CustomSelector';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Subtitle from '../../../../common/components/layout/Subtitle';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { mapSelectItems } from "../../../../common/utils/common";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
 import {
   validateNonNegative,
   validateRangeInclusive,
   validateSingleMandatoryField
-} from "../../../../common/utils/validation";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { DiscountAvailabilityTypes } from "../constatnts";
+} from '../../../../common/utils/validation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { DiscountAvailabilityTypes } from '../constatnts';
 
 interface DiscountGeneralProps extends EditViewProps<Discount> {
   cosAccounts?: { id: number; description: string }[];
@@ -307,7 +307,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                   <FormField
                     type="text"
                     name="name"
-                    label="Name"
+                    label={$t('name')}
                     required
                   />
                 </Grid>
@@ -318,7 +318,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             <FormField
               type="select"
               name="discountType"
-              label="Value type"
+              label={$t('value_type')}
               items={discountTypes}
               onChange={this.cleanValueFields}
             />
@@ -328,7 +328,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               <FormField
                 type="number"
                 name="discountPercent"
-                label="Value"
+                label={$t('value')}
                 validate={[validateSingleMandatoryField, validateRangeDiscountPercent]}
                 format={this.formatDiscountPercent}
                 parse={this.parseDiscountPercent}
@@ -338,13 +338,13 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               <FormField
                 type="money"
                 name="discountValue"
-                label="Value"
+                label={$t('value')}
                 validate={[validateSingleMandatoryField, validateZero]}
               />
             )}
           </Grid>
           <Grid item xs={gridXS}>
-            <FormField type="select" name="rounding" label="Rounding" items={roundingModeTypes} />
+            <FormField type="select" name="rounding" label={$t('rounding')} items={roundingModeTypes} />
           </Grid>
 
           <Grid item xs={12}>
@@ -354,7 +354,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                   <FormField
                     type="money"
                     name="discountMin"
-                    label="Min"
+                    label={$t('min')}
                     validate={validateNonNegative}
                   />
                 </Grid>
@@ -362,7 +362,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                   <FormField
                     type="money"
                     name="discountMax"
-                    label="Max"
+                    label={$t('max')}
                     validate={validateNonNegative}
                   />
                 </Grid>
@@ -371,13 +371,13 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
           </Grid>
 
           <Grid item xs={12} className="mt-2">
-            <Subtitle label="ACCOUNTING" />
+            <Subtitle label={$t('accounting')} />
           </Grid>
           <Grid item xs={gridXS}>
             <FormField
               type="select"
               name="cosAccount"
-              label="Post discount to COS Account"
+              label={$t('post_discount_to_cos_account')}
               items={cosAccounts || []}
               selectLabelMark="description"
               selectValueMark="id"
@@ -388,7 +388,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             <FormField
               type="number"
               name="predictedStudentsPercentage"
-              label="Default forecast take-up"
+              label={$t('default_forecast_takeup')}
               validate={[validateSingleMandatoryField, validateRangePredictedStudentsPercentage]}
               format={this.formatPercent}
               parse={this.parsePercent}
@@ -400,14 +400,14 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             <Divider className="mt-2 mb-2" />
             <div className="mb-2">
               <div className="centeredFlex">
-                <Typography className="heading">Require promotional code</Typography>
+                <Typography className="heading">{$t('require_promotional_code')}</Typography>
                 <Switch onChange={this.onCodeSwitchToggle} checked={this.state.codeOn} />
               </div>
               <Collapse in={this.state.codeOn} mountOnEnter unmountOnExit>
                 <FormField
                   type="text"
                   name="code"
-                  placeholder="Code"
+                  placeholder={$t('code')}
                   normalize={trimValue}
                   debounced={false}
                   required
@@ -437,25 +437,25 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             <Divider  />
           </Grid>
           <Grid item xs={12}>
-            <Subtitle label="WEB" />
+            <Subtitle label={$t('web')} />
           </Grid>
           <Grid item xs={12}>
             <FormControlLabel
               className="checkbox pr-3"
               control={<FormField type="checkbox" name="hideOnWeb" color="secondary"  />}
-              label="Hide discounted price on web"
+              label={$t('hide_discounted_price_on_web')}
             />
           </Grid>
           <Grid item xs={gridXS} >
             <FormField
               type="select"
               name="availableFor"
-              label="Available for online enrolment"
+              label={$t('available_for_online_enrolment')}
               items={DiscountAvailabilityTypes || []}
             />
           </Grid>
           <Grid item xs={12}>
-            <FormField type="multilineText" name="description" label="Public description"  />
+            <FormField type="multilineText" name="description" label={$t('public_description')}  />
           </Grid>
         </Grid>
     );

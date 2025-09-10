@@ -3,13 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ConcessionType } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import * as React from "react";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField, validateUniqueNamesInArray } from "../../../../../common/utils/validation";
+import { ConcessionType } from '@api/model';
+import { Button, Card, FormControlLabel, Grid } from '@mui/material';
+import $t from '@t';
+import * as React from 'react';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateSingleMandatoryField, validateUniqueNamesInArray } from '../../../../../common/utils/validation';
 
 const renderConcessionTypes = props => {
   const { fields, classes, onDelete } = props;
@@ -28,7 +27,7 @@ const renderConcessionTypes = props => {
                     <FormField
                       type="text"
                       name={`${item}.name`}
-                      label="Concession Type Name"
+                      label={$t('concession_type_name')}
                                             className={classes.field}
                       validate={[validateSingleMandatoryField, validateUniqueNamesInArray]}
                     />
@@ -45,7 +44,7 @@ const renderConcessionTypes = props => {
                             color="primary"
                           />
                         )}
-                        label="Allow students to self-select on website"
+                        label={$t('allow_students_to_selfselect_on_website')}
                       />
                       <div className="flex-fill" />
                       <div>
@@ -55,7 +54,7 @@ const renderConcessionTypes = props => {
                           className={classes.deleteButton}
                           onClick={() => onDelete(field, index)}
                         >
-                          Delete
+                          {$t('delete2')}
                         </Button>
                       </div>
                     </div>
@@ -71,7 +70,7 @@ const renderConcessionTypes = props => {
                           color="primary"
                         />
                       )}
-                      label="Require expiry date"
+                      label={$t('require_expiry_date')}
                     />
                   </Grid>
 
@@ -85,7 +84,7 @@ const renderConcessionTypes = props => {
                           color="primary"
                         />
                       )}
-                      label="Require concession type number"
+                      label={$t('require_concession_type_number')}
                     />
                   </Grid>
                 </Grid>

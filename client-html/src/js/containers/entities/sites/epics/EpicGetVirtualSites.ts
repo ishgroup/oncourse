@@ -4,21 +4,24 @@
  */
 
 import { DataResponse } from "@api/model";
+import { SelectItemDefault, sortDefaultSelectItems } from "ish-ui";
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
-import { sortDefaultSelectItems } from "../../../../common/utils/common";
-import { SelectItemDefault } from "../../../../model/entities/common";
 import { GET_VIRTUAL_SITES, GET_VIRTUAL_SITES_FULFILLED } from "../actions";
 
-const request: EpicUtils.Request<any, any> = {
+const request: EpicUtils.Request = {
   type: GET_VIRTUAL_SITES,
-  getData: () => EntityService.getPlainRecords("Site", "name", "isVirtual == true"),
+  getData: () => EntityService.getPlainRecords("Site", "name,rooms.id,rooms.name", "isVirtual == true"),
   processData: (response: DataResponse) => {
-    const virualSites: SelectItemDefault[] = response.rows.map(({ id, values }) => ({
-      value: Number(id),
-      label: values[0]
-    }));
+    const virualSites: SelectItemDefault[] = response.rows.map(({ id, values }) => {
+      const roomNames = values[2].replace(/[\[\]]/g, '')?.split(',');
+      return {
+        value: Number(id),
+        label: values[0],
+        rooms: JSON.parse(values[1])?.map((id, index) => ({ id, name: roomNames[index]?.trim() }))
+      };
+    });
 
     virualSites.sort(sortDefaultSelectItems);
 

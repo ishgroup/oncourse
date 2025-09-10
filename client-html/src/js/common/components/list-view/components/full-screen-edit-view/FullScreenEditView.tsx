@@ -6,29 +6,30 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import AppBar from "@mui/material/AppBar";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { AppBarHelpMenu } from "ish-ui";
-import React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
-import { APPLICATION_THEME_STORAGE_NAME, TAB_LIST_SCROLL_TARGET_ID } from "../../../../../constants/Config";
-import { EditViewContainerProps } from "../../../../../model/common/ListView";
-import { State } from "../../../../../reducers/state";
-import { getSingleEntityDisplayName } from "../../../../utils/getEntityDisplayName";
-import { LSGetItem } from "../../../../utils/storage";
-import FormSubmitButton from "../../../form/FormSubmitButton";
-import { pushGTMEvent } from "../../../google-tag-manager/actions";
-import LoadingIndicator from "../../../progress/LoadingIndicator";
-import FullScreenStickyHeader from "./FullScreenStickyHeader";
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
+import $t from '@t';
+import clsx from 'clsx';
+import { AppBarHelpMenu } from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { getFormSyncErrors, getFormValues, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { APPLICATION_THEME_STORAGE_NAME, TAB_LIST_SCROLL_TARGET_ID } from '../../../../../constants/Config';
+import { EditViewContainerProps } from '../../../../../model/common/ListView';
+import { State } from '../../../../../reducers/state';
+import { getSingleEntityDisplayName } from '../../../../utils/getEntityDisplayName';
+import { LSGetItem } from '../../../../utils/storage';
+import FormSubmitButton from '../../../form/FormSubmitButton';
+import { pushGTMEvent } from '../../../google-tag-manager/actions';
+import LoadingIndicator from '../../../progress/LoadingIndicator';
+import FullScreenStickyHeader from './FullScreenStickyHeader';
 
-const styles = theme => createStyles({
+const styles = (theme, p, classes) => ({
   header: {
     height: "64px",
     display: "flex",
@@ -38,12 +39,12 @@ const styles = theme => createStyles({
     padding: theme.spacing(0, 3),
     background: theme.appBar.header.background,
     color: theme.appBar.header.color,
-    "& $submitButtonAlternate": {
+    [`& .${classes.submitButtonAlternate}`]: {
       background: `${theme.appBar.headerAlternate.color}`,
       color: `${theme.appBar.headerAlternate.background}`,
     },
-    "& $closeButtonAlternate": {
-      color: `${theme.appBar.headerAlternate.color}`,
+    [`& .${classes.closeButtonAlternate}`]: {
+      color: `${theme.appBar.headerAlternate.color}`
     }
   },
   root: {
@@ -57,7 +58,7 @@ const styles = theme => createStyles({
   headerAlternate: {
     background: `${theme.appBar.headerAlternate.background}`,
     color: `${theme.appBar.headerAlternate.color}`,
-    "& $actionsWrapper svg": {
+    [`& .${classes.actionsWrapper} svg`]: {
       color: `${theme.appBar.headerAlternate.color}`,
     }
   },
@@ -119,12 +120,12 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       showConfirm({
         onConfirm: () => {
           reset();
-          toogleFullScreenEditView();
+          toogleFullScreenEditView(false);
           this.resetScroll();
         }
       });
     } else {
-      toogleFullScreenEditView();
+      toogleFullScreenEditView(false);
       this.resetScroll();
     }
   };
@@ -153,18 +154,14 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       creatingNew,
       values,
       updateDeleteCondition,
-      hasSelected,
       dispatch,
       rootEntity,
       isNested,
-      nestedIndex,
       nameCondition,
       showConfirm,
       manualLink,
       submitSucceeded,
       syncErrors,
-      threeColumn,
-      alwaysFullScreenCreateView,
       toogleFullScreenEditView,
       form,
       asyncValidating,
@@ -185,9 +182,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     return (
       <Dialog
         fullScreen
-        open={Boolean(
-          hasSelected && (fullScreenEditView || ((!threeColumn || alwaysFullScreenCreateView) && creatingNew))
-        )}
+        open={fullScreenEditView}
         TransitionComponent={Transition}
         classes={{
           paper: classes.fullEditViewBackground
@@ -221,7 +216,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 onClick={this.onCloseClick}
                 className={clsx("closeAppBarButton", hasScrolling && classes.closeButtonAlternate)}
               >
-                Close
+                {$t('close')}
               </Button>
               <FormSubmitButton
                 disabled={Boolean(asyncValidating) || (!creatingNew && !dirty) || disabledSubmitCondition}
@@ -246,7 +241,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               manualLink={manualLink}
               rootEntity={rootEntity}
               isNested={isNested}
-              nestedIndex={nestedIndex}
               form={form}
               isNew={creatingNew}
               values={values}
@@ -269,6 +263,8 @@ const mapStateToProps = (state: State, props) => ({
   pending: state.fetch.pending
 });
 
-export default reduxForm<any, EditViewContainerProps>({})(
-  connect(mapStateToProps, null)(withStyles(styles)(withRouter(FullScreenEditViewBase as any)))
+export default reduxForm<any, EditViewContainerProps>({
+  destroyOnUnmount: false
+})(
+  connect(mapStateToProps, null)(withStyles(withRouter(FullScreenEditViewBase as any), styles))
 );

@@ -33,8 +33,12 @@ trait OutcomeTrait {
 
     abstract LocalDate getEndDate()
 
+    Contact getContact() {
+        return (enrolment) ? enrolment?.student?.contact : priorLearning?.student?.contact
+    }
+
     String getStudentName() {
-        Contact contact = (enrolment) ? enrolment?.student?.contact : priorLearning?.student?.contact
+        Contact contact = getContact()
         if (contact) {
             return contact.getFullName()
         } else {

@@ -3,23 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ClassCostRepetitionType } from "@api/model";
-import { Divider, FormControlLabel, Grid } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
-import { decimalDivide, decimalMul, decimalPlus, normalizeNumberToZero } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { change } from "redux-form";
-import { ContactLinkAdornment } from "../../../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { greaterThanNullValidation } from "../../../../../../common/utils/validation";
-import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import ContactSelectItemRenderer from "../../../../contacts/components/ContactSelectItemRenderer";
-import { getContactFullName } from "../../../../contacts/utils";
-import { getCurrentTax } from "../../../../taxes/utils";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
-import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
-
-const getFeeIncTax = (exTax, taxes, taxId) => decimalMul(exTax, decimalPlus(1, getCurrentTax(taxes, taxId)?.rate));
+import { ClassCostRepetitionType } from '@api/model';
+import { Divider, FormControlLabel, Grid } from '@mui/material';
+import Collapse from '@mui/material/Collapse';
+import $t from '@t';
+import { normalizeNumberToZero } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { change } from 'redux-form';
+import { ContactLinkAdornment } from '../../../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { getCurrentTax, getFeeExTaxByFeeIncTax, getTotalByFeeExTax } from '../../../../../../common/utils/hooks';
+import { greaterThanNullValidation } from '../../../../../../common/utils/validation';
+import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
+import ContactSelectItemRenderer from '../../../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../../../contacts/utils';
+import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
+import { PayRateTypes, validatePayRateTypes } from './BudgetCostModal';
 
 const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
   taxes,
@@ -40,7 +39,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           change(
             COURSE_CLASS_COST_DIALOG_FORM,
             "perUnitAmountExTax",
-            decimalDivide(value, decimalPlus(1, currentTax?.rate))
+            getFeeExTaxByFeeIncTax( currentTax?.rate, value)
           )
         );
       }
@@ -55,7 +54,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           change(
             COURSE_CLASS_COST_DIALOG_FORM,
             "perUnitAmountIncTax",
-            decimalMul(value, decimalPlus(1, currentTax?.rate))
+            getTotalByFeeExTax(currentTax?.rate, value)
           )
         );
       }
@@ -66,7 +65,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
   const onTaxIdChange = useCallback(
     id => {
       dispatch(
-        change(COURSE_CLASS_COST_DIALOG_FORM, "perUnitAmountIncTax", getFeeIncTax(values.perUnitAmountExTax, taxes, id))
+        change(COURSE_CLASS_COST_DIALOG_FORM, "perUnitAmountIncTax", getTotalByFeeExTax(getCurrentTax(taxes, id)?.rate, values.perUnitAmountExTax))
       );
     },
     [values.perUnitAmountExTax, taxes]
@@ -87,7 +86,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
         <FormField
           type="multilineText"
           name="description"
-          label="Description"
+          label={$t('description')}
           required
         />
       </Grid>
@@ -96,7 +95,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           type="remoteDataSelect"
           entity="Contact"
           name="contactId"
-          label="Contact"
+          label={$t('Contact')}
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
           defaultValue={values.contactName}
@@ -113,7 +112,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           <FormField
             type="select"
             name="repetitionType"
-            label="Type"
+            label={$t('type')}
             items={PayRateTypes}
             onChange={onRepetitionChange}
             debounced={false}
@@ -125,7 +124,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             <FormField
               type="number"
               name="unitCount"
-              label="Count"
+              label={$t('count')}
               validate={greaterThanNullValidation}
             />
           </Grid>
@@ -143,7 +142,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           <FormField
             type="select"
             name="taxId"
-            label="Tax"
+            label={$t('tax')}
             selectValueMark="id"
             selectLabelMark="code"
             onChange={onTaxIdChange}
@@ -155,7 +154,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           <FormField
             type="money"
             name="perUnitAmountIncTax"
-            label="Amount inc tax"
+            label={$t('amount_inc_tax')}
             normalize={normalizeNumberToZero}
             onChange={onFeeIncTaxChange}
             debounced={false}
@@ -168,7 +167,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           <FormControlLabel
             className="checkbox"
             control={<FormField type="checkbox" name="isSunk" color="secondary" />}
-            label="Sunk cost (not recoverable if class cancelled)"
+            label={$t('sunk_cost_not_recoverable_if_class_cancelled')}
           />
         </Grid>
       )}
@@ -180,13 +179,13 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
               <Divider />
             </Grid>
             <Grid item xs={12}>
-              <div className="heading pt-2 pb-2">Total amount for this class</div>
+              <div className="heading pt-2 pb-2">{$t('total_amount_for_this_class')}</div>
             </Grid>
             <Grid item xs={3}>
-              <FormField type="money" name="minimumCost" label="At least" />
+              <FormField type="money" name="minimumCost" label={$t('at_least')} />
             </Grid>
             <Grid item xs={3}>
-              <FormField type="money" name="maximumCost" label="Limited to" />
+              <FormField type="money" name="maximumCost" label={$t('limited_to')} />
             </Grid>
           </Grid>
         </Collapse>

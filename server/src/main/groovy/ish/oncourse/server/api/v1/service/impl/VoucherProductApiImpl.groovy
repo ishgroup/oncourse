@@ -29,10 +29,6 @@ class VoucherProductApiImpl implements VoucherProductApi {
     @Inject
     private VoucherProductApiService service
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 
     @Override
     void create(VoucherProductDTO voucherProductDTO) {

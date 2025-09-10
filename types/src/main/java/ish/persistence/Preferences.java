@@ -56,6 +56,9 @@ public interface Preferences {
 	@API
 	String COLLEGE_URL = "web.url";
 
+
+	String COLLEGE_ACTIVE = "college.active";
+
 	/**
 	 * Invoice remittance instructions. This additional text will be added to every invoice.
 	 *
@@ -73,6 +76,46 @@ public interface Preferences {
 	 * Unique API key issued by the eWay payment system for a particular college
 	 */
 	String PAYMENT_GATEWAY_PASS_EWAY = "payment.gateway.eway.api.key";
+
+	/**
+	 * Unique API key issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_PASS_STRIPE = "payment.gateway.stripe.api.key";
+
+	/**
+	 * Unique API key issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_PASS_SQUARE = "payment.gateway.square.api.key";
+
+	/**
+	 * Unique Client api key issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_CLIENT_PASS_SQUARE = "payment.gateway.square.client.key";
+
+	/**
+	 * Unique location id issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_LOCATION_ID_SQUARE = "payment.gateway.square.location.id";
+
+	/**
+	 * Unique client key issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_CLIENT_PASS_STRIPE = "payment.gateway.stripe.client.key";
+
+	/**
+	 * Unique client key issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_CLIENT_PASS_EWAY = "payment.gateway.eway.client.key";
+
+	/**
+	 * Unique test API key issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_TEST_PASS_STRIPE = "payment.gateway.stripe.test.api.key";
+
+	/**
+	 * Unique test client key issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_CLIENT_TEST_PASS_STRIPE = "payment.gateway.stripe.test.client.key";
 
 	/**
 	 * Type of payment system used in the checkout
@@ -217,13 +260,6 @@ public interface Preferences {
 	// **************************************
 	// For account defaults see AccountDefaults class.
 
-	/**
-	 * Default currency
-	 *
-	 * @param prefKey default.currency
-	 */
-	@API
-	String ACCOUNT_CURRENCY = "default.currency";
 	String ACCOUNT_TAXPK = "tax.default.pk";
 
 	String PAY_PERIOD_DAYS = "pay_period_type";
@@ -484,4 +520,37 @@ public interface Preferences {
 	String BACKGROUND_QUALITY_SCALE = "background.quality.scale";
 
 	String DEFAULT_INVOICE_LINE_ACCOUNT = "account.default.invoiceline.id";
+
+
+	// **************************************
+	// DISPLAY
+	// **************************************
+
+	String EXTENDED_SEARCH_TYPES = "ish.display.extendedSearchTypes";
+	String AUS_REPORTING = "ish.display.AUSReporting";
+
+
+	// **************************************
+	// CHARGEBEE
+	// **************************************
+
+	String CHARGEBEE_ALLOWED_ADDONS = "ish.chargebee.allowed.addons";
+	String CHARGEBEE_SUBSCRIPTION_ID = "ish.chargebee.subscription.id";
+
+	/**
+	 * Specifies the default region in which the OnCourse system operates.
+	 * This setting determines the system’s currency, locale, and language.
+	 */
+	@API
+	String ACCOUNT_COUNTRY = "account.default.country";
+	@Deprecated
+	String ACCOUNT_CURRENCY = "default.currency";
+
+	String CUSTOM_LOGO_BLACK = "custom.logo.black";
+	String CUSTOM_LOGO_BLACK_SMALL = "custom.logo.black.small";
+	String CUSTOM_LOGO_WHITE = "custom.logo.white";
+	String CUSTOM_LOGO_WHITE_SMALL = "custom.logo.white.small";
+	String CUSTOM_LOGO_COLOUR = "custom.logo.colour";
+	String CUSTOM_LOGO_COLOUR_SMALL = "custom.logo.colour.small";
+
 }

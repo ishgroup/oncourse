@@ -15,7 +15,7 @@ import javax.ws.rs.ClientErrorException
 
 trait SsoIntegrationTrait extends PluginTrait {
 
-    abstract String getUserEmailByCode(String accessCode) throws ClientErrorException
+    abstract String getUserEmailByCode(String accessCode, Boolean kickOut) throws ClientErrorException
 
-    abstract String getAuthorizationPageLink()
+    abstract String getAuthorizationPageLink(Boolean kickOut)
 }

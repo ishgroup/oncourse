@@ -27,7 +27,7 @@ o-------------------o
 Total (inc Tax) ${invoice.totalIncTax}
 Total Tax ${invoice.totalTax}
 Total Paid ${invoice.totalIncTax.subtract(invoice.amountOwing)}
-Total ${invoice.amountOwing >= 0 ? "Owing" : "Credit"} ${invoice.amountOwing}
+Total ${invoice.amountOwing.toBigDecimal() >= 0 ? "Owing" : "Credit"} ${invoice.amountOwing}
 o-------------------o
 
 <% if (invoice.invoiceDueDates.size() > 0) { %>
@@ -38,6 +38,6 @@ Payment due date
 <% } %>
 
 <%
-if (invoice.amountOwing > 0 && Preferences.get("college.paymentInfo") != null) { %>
+if (invoice.amountOwing.toBigDecimal() > 0 && Preferences.get("college.paymentInfo") != null) { %>
 	${Preferences.get("college.paymentInfo")}
 <% } %>

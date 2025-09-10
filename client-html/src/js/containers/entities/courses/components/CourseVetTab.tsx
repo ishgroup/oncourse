@@ -3,28 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Module, Qualification } from "@api/model";
-import { Collapse, FormControlLabel, Grid, Tooltip } from "@mui/material";
-import { AnyArgFunction, BooleanArgFunction, LinkAdornment, normalizeNumberToZero, StringArgFunction } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
+import { Module, Qualification } from '@api/model';
+import { Collapse, FormControlLabel, Grid, Tooltip } from '@mui/material';
+import $t from '@t';
+import { AnyArgFunction, BooleanArgFunction, LinkAdornment, normalizeNumberToZero, StringArgFunction } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
-} from "../../../../common/actions/CommonPlainRecordsActions";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { CourseExtended } from "../../../../model/entities/Course";
-import { State } from "../../../../reducers/state";
-import QualificationListItemRenderer from "../../qualifications/components/QualificationListItemRenderer";
-import { openQualificationLink } from "../../qualifications/utils";
+} from '../../../../common/actions/CommonPlainRecordsActions';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import NestedList, { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
+import { validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../constants/Config';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { CourseExtended } from '../../../../model/entities/Course';
+import { State } from '../../../../reducers/state';
+import QualificationListItemRenderer from '../../qualifications/components/QualificationListItemRenderer';
+import { openQualificationLink } from '../../qualifications/utils';
 
 const getQualificationLabel = (qal: Qualification) => `${qal.title}, ${qal.nationalCode}`;
 
@@ -127,6 +128,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
 
     return result;
   }, [values.modules]);
+
   const moduleSearchItemsTransformed = useMemo(() => {
     const result = moduleItems.map(transformModule);
 
@@ -138,7 +140,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3 mt-1">
       <Grid item xs={12}>
-        <div className="heading">Vet</div>
+        <div className="heading">{$t('vet')}</div>
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
@@ -146,7 +148,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
           type="remoteDataSelect"
           entity="Qualification"
           name="qualificationId"
-          label="Qualification"
+          label={$t('qualification')}
           selectValueMark="id"
           defaultValue={values.qualTitle}
           labelAdornment={<LinkAdornment link={values.qualificationId} linkHandler={openQualificationLink} />}
@@ -160,38 +162,20 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
-        <Uneditable value={values.qualNationalCode} label="National code" />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <Uneditable value={values.qualLevel} label="Level" />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <FormControlLabel
-          className="checkbox"
-          control={<FormField type="checkbox" name="isSufficientForQualification" />}
-          label="Satisfies complete qualification or skill set"
-          disabled={!values.qualificationId || values.isTraineeship}
-        />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <FormControlLabel
-          className="checkbox"
-          control={<FormField type="checkbox" name="isVET" />}
-          label="VET course"
-          disabled={Boolean(values.qualificationId) || values.isTraineeship}
-        />
+        <Uneditable value={values.qualNationalCode} label={$t('national_code')} />
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
           type="text"
           name="fieldOfEducation"
-          label="Field of education"
+          label={$t('field_of_education')}
           disabled={Boolean(values.qualificationId || values.isTraineeship)}
         />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <Uneditable value={values.qualLevel} label={$t('level')} />
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
@@ -201,34 +185,58 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
           name="reportableHours"
           label={(
             <Tooltip title={tooltipText} placement="top">
-              <div>Default reportable hours</div>
+              <div>{$t('default_reportable_hours')}</div>
             </Tooltip>
           )}
           debounced={false}
         />
       </Grid>
 
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField
+          type="text"
+          name="attainmentText"
+          label={$t('attainment_web_label')}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormControlLabel
+          control={<FormField type="checkbox" name="isSufficientForQualification" />}
+          label={$t('satisfies_complete_qualification_or_skill_set')}
+          disabled={!values.qualificationId || values.isTraineeship}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormControlLabel
+          control={<FormField type="checkbox" name="isVET" />}
+          label={$t('vet_course')}
+          disabled={Boolean(values.qualificationId) || values.isTraineeship}
+        />
+      </Grid>
+
       <Grid item xs={12}>
-        <div className="heading">Vet student loans</div>
+        <div className="heading mt-2">{$t('vet_student_loans')}</div>
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="feeHelpClass" />}
-          label="This is a VET Student Loan eligible course"
+          label={$t('this_is_a_vet_student_loan_eligible_course')}
         />
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
         <Collapse in={values.feeHelpClass}>
-          <FormField type="text" name="fullTimeLoad" label="Equivalent full-time student load" />
+          <FormField type="text" name="fullTimeLoad" label={$t('equivalent_fulltime_student_load')} />
         </Collapse>
       </Grid>
 
       <Grid item xs={twoColumn ? 8 : 12}>
         <NestedList
           formId={values.id}
-          title="Modules / Units of competency"
+          title={$t('modules_units_of_competency')}
           titleCaption={
             values.hasEnrolments
               ? "There are enrolments in this course. Modifying the modules is not allowed."

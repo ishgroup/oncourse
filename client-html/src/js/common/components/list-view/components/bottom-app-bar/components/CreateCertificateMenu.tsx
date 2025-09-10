@@ -3,26 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CertificateCreateForEnrolmentsRequest, Enrolment } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import { openInternalLink, StyledCheckbox } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import CertificateService from "../../../../../../containers/entities/certificates/services/CertificateService";
-import instantFetchErrorHandler from "../../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
-import EntityService from "../../../../../services/EntityService";
+import { CertificateCreateForEnrolmentsRequest, Enrolment } from '@api/model';
+import { FormControlLabel, Grid } from '@mui/material';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { openInternalLink, StyledCheckbox } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import CertificateService from '../../../../../../containers/entities/certificates/services/CertificateService';
+import { IAction } from '../../../../../actions/IshAction';
+import instantFetchErrorHandler from '../../../../../api/fetch-errors-handlers/InstantFetchErrorHandler';
+import EntityService from '../../../../../services/EntityService';
 
 interface CreateCertificateMenuProps {
   entity: "CourseClass" | "Enrolment";
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   selection: string[];
   closeMenu?: any;
   disableMenu?: boolean;
@@ -165,12 +167,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
         <li>
           <Typography variant="body2" className="pb-2">
             {enrolments.withCertificate.length}
-            {' '}
-            enrolment
-            {enrolments.withCertificate.length !== 1 ? "s" : ""}
-            {' '}
-            already
-            have certificates linked to their outcomes and certificates will not be created
+            {$t('enrolment_already_have_certificates_linked_to_thei', [enrolments.withCertificate.length !== 1 ? "s" : ""])}
           </Typography>
         </li>
       ) : null),
@@ -191,11 +188,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
         <li>
           <Typography variant="body2" className="pb-2">
             {createdCertificatesCount}
-            {' '}
-            new certificate
-            {createdCertificatesCount > 1 ? "s" : ""}
-            {' '}
-            will be created
+            {$t('new_certificate_will_be_created', [createdCertificatesCount > 1 ? "s" : ""])}
           </Typography>
         </li>
       ) : null),
@@ -211,7 +204,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
         onClick={onClick}
         disabled={disableMenu}
       >
-        Create certificates
+        {$t('create_certificates')}
       </MenuItem>
       <Dialog open={dialogOpened} onClose={onClose} fullWidth>
         <DialogTitle>{!loading && headerLabel}</DialogTitle>
@@ -224,9 +217,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
                     <li>
                       <Typography variant="body2">
                         {enrolments.nonSufficient.length}
-                        {' '}
-                        enrolments do not have sufficient successful outcomes for a
-                        qualification
+                        {$t('enrolments_do_not_have_sufficient_successful_outco')}
                       </Typography>
                       <FormControlLabel
                         className="checkbox mb-2"
@@ -237,7 +228,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
                             onChange={onStatementOfAtteimentChange}
                           />
                         )}
-                        label="Create a Statement of Attainment instead"
+                        label={$t('create_a_statement_of_attainment_instead')}
                       />
                     </li>
                   )}
@@ -254,7 +245,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
         </DialogContent>
         <DialogActions className="p-2">
           <Button color="primary" onClick={onClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
           {Boolean(enrolments.vet.length) && Boolean(enrolments.noCertificate.length) && (
             <Button
@@ -263,7 +254,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
               onClick={onCreate}
               disabled={loading || !createdCertificatesCount}
             >
-              Create certificates
+              {$t('create_certificates')}
             </Button>
           )}
         </DialogActions>

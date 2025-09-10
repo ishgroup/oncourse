@@ -1,10 +1,7 @@
 import { StringValueType } from "ish-ui";
+import { IAction } from '../../common/actions/IshAction';
 import { stringLiterals } from "../../common/utils/stringLiteral";
 
-export interface SelectItemDefault {
-  value?: any;
-  label?: string;
-}
 
 export interface FindEntityAql {
   AQL: string;
@@ -67,8 +64,10 @@ export const ENTITIES = stringLiterals(
   "Survey",
   "SystemUser",
   "TrainingPackage",
+  "Tag",
   "Tutor",
   "TutorAttendance",
+  "Faculty",
   "Voucher",
   "VoucherProduct",
   "WaitingList"
@@ -86,3 +85,7 @@ export type CustomTableModelName = StringValueType<typeof CUSTOM_TABLE_MODELS>;
 
 export type ListActionEntity = EntityName | CustomTableModelName;
 
+export type AccessByPath = {
+  hasAccess: boolean,
+  action?: IAction
+}

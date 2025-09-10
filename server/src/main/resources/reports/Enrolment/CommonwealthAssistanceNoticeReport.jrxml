@@ -218,27 +218,27 @@
                 <textField isBlankWhenNull="true">
                     <reportElement style="header 3 (right)" x="480" y="0" width="60" height="20"/>
                     <textElement verticalAlignment="Middle"/>
-                    <textFieldExpression><![CDATA[new Money($V{tuitionFee})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{tuitionFee})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement style="header 3 (right)" x="540" y="0" width="60" height="20"/>
                     <textElement verticalAlignment="Middle"/>
-                    <textFieldExpression><![CDATA[new Money($V{upfrontPayment})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{upfrontPayment})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement style="header 3 (right)" x="600" y="0" width="60" height="20"/>
                     <textElement verticalAlignment="Middle"/>
-                    <textFieldExpression><![CDATA[new Money($V{vsl})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{vsl})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement style="header 3 (right)" x="660" y="0" width="60" height="20"/>
                     <textElement verticalAlignment="Middle"/>
-                    <textFieldExpression><![CDATA[new Money($V{loanFee})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{loanFee})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement style="header 3 (right)" x="720" y="0" width="60" height="20"/>
                     <textElement verticalAlignment="Middle"/>
-                    <textFieldExpression><![CDATA[new Money($V{vslLoanFee})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{vslLoanFee})]]></textFieldExpression>
                 </textField>
             </band>
         </groupFooter>

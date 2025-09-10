@@ -6,35 +6,35 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Contact } from "@api/model";
-import Typography from "@mui/material/Typography";
-import { isBefore } from "date-fns";
-import React, { useCallback, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize } from "redux-form";
-import company from "../../../../images/company.png";
-import person from "../../../../images/person.png";
-import tutorStudent from "../../../../images/student-tutor.png";
-import student from "../../../../images/student.png";
-import tutor from "../../../../images/tutor.png";
-import { checkPermissions } from "../../../common/actions";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import EntityService from "../../../common/services/EntityService";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { State } from "../../../reducers/state";
-import { getContactRelationTypes, getCountries, getLanguages, getPaymentTypes } from "../../preferences/actions";
-import { PreferencesState } from "../../preferences/reducers/state";
-import { getDefaultInvoiceTerms } from "../invoices/actions";
-import { getContactsConcessionTypes, getContactsRelationTypes, getContactsTaxTypes, getContactTags } from "./actions";
-import ContactCogWheel from "./components/ContactCogWheel";
-import ContactEditView from "./components/ContactEditView";
-import { getContactFullName } from "./utils";
+import { Contact } from '@api/model';
+import Typography from '@mui/material/Typography';
+import { isBefore } from 'date-fns';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import company from '../../../../images/company.png';
+import person from '../../../../images/person.png';
+import tutorStudent from '../../../../images/student-tutor.png';
+import student from '../../../../images/student.png';
+import tutor from '../../../../images/tutor.png';
+import { checkPermissions } from '../../../common/actions';
+import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
+import { getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import EntityService from '../../../common/services/EntityService';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
+import { getContactRelationTypes, getCountries, getLanguages, getPaymentTypes } from '../../preferences/actions';
+import { PreferencesState } from '../../preferences/reducers/state';
+import { getDefaultInvoiceTerms } from '../invoices/actions';
+import { getContactsConcessionTypes, getContactsRelationTypes, getContactsTaxTypes, getContactTags } from './actions';
+import ContactCogWheel from './components/ContactCogWheel';
+import ContactEditView from './components/ContactEditView';
+import { getContactFullName } from './utils';
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
 
@@ -44,7 +44,6 @@ export interface ContactsProps {
   getRecords?: () => void;
   getFilters?: () => void;
   setCustomTableModel?: () => void;
-  clearListState?: () => void;
   getTags?: () => void;
   getCountries?: () => void;
   getLanguages?: () => void;
@@ -121,7 +120,7 @@ const filterGroups: FilterGroup[] = [
       {
         name: "Students currently enrolled",
         expression:
-        // eslint-disable-next-line max-len
+        
           "(studentCourseClass.endDateTime >= yesterday or studentCourseClass.endDateTime == null) and studentCourseClass.isCancelled == false and studentEnrolments.status == SUCCESS",
         active: false
       },
@@ -170,7 +169,7 @@ const findRelatedGroup: FindRelatedItem[] = [
 
 const secondaryColumnCondition = row => row.birthDate || "Birthday not specified";
 
-const manualLink = getManualLink("contacts");
+const manualLink = getManualLink("creating-and-modifying-contacts");
 
 const getContactTypeImage = (type: ContactType) => {
   switch (type) {
@@ -200,7 +199,7 @@ export const getDisabledSubmitCondition = (isVerifyingUSI, usiVerificationResult
   isVerifyingUSI || (usiVerificationResult && usiVerificationResult.verifyStatus === "Invalid format")
 );
 
-const SearchMenuItem = React.memo<any>(({ content, data }) => (
+const SearchMenuItem = React.memo<{ content, data }>(({ content, data }) => (
   <div className="d-flex align-items-baseline">
     {content}
     <Typography className="ml-0-5" variant="caption" color="textSecondary">
@@ -211,8 +210,8 @@ const SearchMenuItem = React.memo<any>(({ content, data }) => (
   </div>
 ));
 
-const searchMenuItemsRenderer = (content, data, search) => (
-  data.prefix ? <SearchMenuItem content={content} data={data} search={search} /> : content
+const searchMenuItemsRenderer = (content, data) => (
+  data.prefix ? <SearchMenuItem content={content} data={data} /> : content
 );
 
 const today = new Date();
@@ -232,7 +231,6 @@ const Contacts: React.FC<ContactsProps> = props => {
   const {
     dispatch,
     getFilters,
-    clearListState,
     onInit,
     getTags,
     getCountries,
@@ -264,7 +262,7 @@ const Contacts: React.FC<ContactsProps> = props => {
           relationTypesItem.items.push({
             title: t.relationName,
             list: "contact",
-            // eslint-disable-next-line max-len
+            
             customExpression: ids => `(fromRelationType.id = "${t.id}" and fromRelatedContacts.id in (${ids})) or (toRelationType.id = "${t.id}" and toRelatedContacts.id in (${ids}))`
           });
 
@@ -304,10 +302,6 @@ const Contacts: React.FC<ContactsProps> = props => {
     getDefaultTerms();
     getPermissions();
     getContactRelationTypes();
-
-    return () => {
-      clearListState();
-    };
   }, []);
 
   const getContactFullNameWithTitle = (values: Contact) =>
@@ -388,8 +382,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
   getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  clearListState: () => dispatch(clearListState()),
-  getPermissions: () => {
+    getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Enrolment", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PriorLearning", method: "GET" }));
@@ -409,4 +402,4 @@ const mapStateToProps = (state: State) => ({
   usiVerificationResult: state.contacts.usiVerificationResult
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Contacts);
+export default connect(mapStateToProps, mapDispatchToProps)(Contacts);

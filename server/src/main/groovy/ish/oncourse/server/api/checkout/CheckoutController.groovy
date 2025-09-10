@@ -12,94 +12,39 @@
 package ish.oncourse.server.api.checkout
 
 import groovy.transform.CompileStatic
-import ish.common.types.ApplicationStatus
-import ish.common.types.EntityRelationCartAction
-import ish.common.types.OutcomeStatus
-import ish.oncourse.server.api.dao.EntityRelationDao
-import ish.oncourse.server.api.dao.ModuleDao
-import ish.oncourse.server.cayenne.Application
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.EntityRelation
-import ish.oncourse.server.cayenne.FundingSource
-import ish.oncourse.server.cayenne.Module
-import ish.oncourse.server.cayenne.Outcome
-import org.apache.cayenne.PersistenceState
-import org.apache.cayenne.exp.Expression
-import org.apache.cayenne.exp.ExpressionFactory
-import org.apache.cayenne.query.Ordering
-import org.apache.cayenne.query.SelectQuery
-
-import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
-import static ish.common.types.ConfirmationStatus.NOT_SENT
-import ish.common.types.EnrolmentStatus
-import ish.common.types.ExpiryType
-import static ish.common.types.PaymentSource.SOURCE_ONCOURSE
-import ish.common.types.PaymentStatus
-import static ish.common.types.PaymentType.CREDIT_CARD
-import ish.common.types.ProductStatus
-import static ish.common.types.ProductStatus.ACTIVE
-import ish.common.types.StudyReason
-import ish.common.types.VoucherPaymentStatus
+import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.server.CayenneService
+import ish.oncourse.server.api.checkout.Checkout
+import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.FundingSourceDao
+import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.function.CayenneFunctions
-import ish.oncourse.server.api.service.ArticleProductApiService
-import ish.oncourse.server.api.service.ContactApiService
-import ish.oncourse.server.api.service.CourseClassApiService
-import ish.oncourse.server.api.service.InvoiceApiService
-import ish.oncourse.server.api.service.MembershipProductApiService
-import ish.oncourse.server.api.service.VoucherProductApiService
-import static ish.oncourse.server.api.v1.function.TaxFunctions.nonSupplyTax
-import ish.oncourse.server.api.v1.model.CheckoutArticleDTO
-import ish.oncourse.server.api.v1.model.CheckoutEnrolmentDTO
-import ish.oncourse.server.api.v1.model.CheckoutMembershipDTO
-import ish.oncourse.server.api.v1.model.CheckoutModelDTO
-import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
-import ish.oncourse.server.api.v1.model.CheckoutVoucherDTO
-import ish.oncourse.server.api.v1.model.InvoiceDTO
-import ish.oncourse.server.api.v1.model.SaleTypeDTO
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.ArticleProduct
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassPaymentPlanLine
-import ish.oncourse.server.cayenne.Discount
-import ish.oncourse.server.cayenne.DiscountCourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceDueDate
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.InvoiceLineDiscount
-import ish.oncourse.server.cayenne.Membership
-import ish.oncourse.server.cayenne.MembershipProduct
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tax
-import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.cayenne.VoucherPaymentIn
-import ish.oncourse.server.cayenne.VoucherProduct
+import ish.oncourse.server.api.service.*
+import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.lifecycle.UpdateAttendancesAndOutcomes
 import ish.oncourse.server.users.SystemUserService
-import ish.util.AccountUtil
-import ish.util.DiscountUtils
-import ish.util.LocalDateUtils
-import ish.util.PaymentMethodUtil
-import ish.util.ProductUtil
-import ish.util.SecurityUtil
-import static java.math.BigDecimal.ONE
-import static java.math.BigDecimal.ZERO
+import ish.util.*
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.PersistenceState
+import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.Ordering
 import org.apache.cayenne.query.SelectById
+import org.apache.cayenne.query.SelectQuery
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
 
+import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
+import static ish.common.types.ConfirmationStatus.NOT_SENT
+import static ish.common.types.PaymentSource.SOURCE_ONCOURSE
+import static ish.common.types.PaymentType.CREDIT_CARD
+import static ish.common.types.ProductStatus.ACTIVE
+import static ish.oncourse.server.api.v1.function.TaxFunctions.nonSupplyTax
+import static java.math.BigDecimal.ONE
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
 @CompileStatic
@@ -131,6 +76,7 @@ class CheckoutController {
 
     private Invoice invoice
     private PaymentIn paymentIn
+
 
     CheckoutController(CayenneService cayenneService,
                        SystemUserService systemUserService,
@@ -207,19 +153,19 @@ class CheckoutController {
         }
 
         if (courseClass.isCancelled) {
-            result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS, error: "Class is cancelled")
+            result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS, error: "Class $courseClass.uniqueCode is cancelled")
         }
 
         if (!courseClass.isActive) {
-            result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS, error: "Class is disabled")
+            result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS, error: "Class $courseClass.uniqueCode is disabled")
         }
 
         if (courseClass.course.isTraineeship) {
             if ((courseClass.enrolments.size() != 1)) {
-                result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS, error: "No more than one enrolment available to traineeship.")
+                result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS, error: "No more than one enrolment available to $courseClass.uniqueCode traineeship.")
             }
             if (currentEnrolments[dto.classId]) {
-                result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS, error: "Only one person can be enrolled to traineeship.")
+                result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS, error: "Only one person can be enrolled to $courseClass.uniqueCode traineeship.")
             }
         }
 
@@ -227,19 +173,19 @@ class CheckoutController {
             Integer studentAge = contact.age
 
             if (studentAge == null) {
-                result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: dto.classId, itemType: SaleTypeDTO.CLASS, error: "Age restrictions apply to enrolments in this class. $contact.fullName requires a date of birth")
+                result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: dto.classId, itemType: SaleTypeDTO.CLASS, error: "Age restrictions apply to enrolments in $courseClass.uniqueCode class. $contact.fullName requires a date of birth")
             } else {
                 Integer minAge = courseClass.minStudentAge
                 Integer maxAge = courseClass.maxStudentAge
 
                 if ((minAge != null && studentAge < minAge) || (maxAge != null && studentAge > maxAge)) {
-                    result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: dto.classId, itemType: SaleTypeDTO.CLASS, error: "$contact.fullName is unable to enrol in this class. They do not meet the age requirements")
+                    result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: dto.classId, itemType: SaleTypeDTO.CLASS, error: "$contact.fullName is unable to enrol in $courseClass.uniqueCode class. They do not meet the age requirements")
                 }
             }
         }
 
         if (enrolment.student.isEnrolled(courseClass)) {
-            result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS, error: "$contact.fullName is already enrolled")
+            result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS, error: "$contact.fullName is already enrolled in $courseClass.uniqueCode class")
         } else if (courseClass.placesLeft < 0) {
             result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS, error: "No places available for class $courseClass.uniqueCode")
         } else {
@@ -350,7 +296,7 @@ class CheckoutController {
             voucher.redemptionValue = product.value ?: product.priceExTax
         } else {
             //else set the initial value as $0
-            voucher.redemptionValue = new Money(dto.value)
+            voucher.redemptionValue = Money.of(dto.value)
         }
         voucher.valueOnPurchase = voucher.redemptionValue
         voucher.redeemedCourseCount = 0
@@ -402,11 +348,11 @@ class CheckoutController {
 
         if (!checkout.paymentPlans.empty) {
             if (checkout.payForThisInvoice && checkout.payForThisInvoice > 0) {
-                createDueDate(new Money(checkout.payForThisInvoice),LocalDate.now())
+                createDueDate(Money.of(checkout.payForThisInvoice),LocalDate.now())
             }
 
             checkout.paymentPlans.each {
-                createDueDate(new Money(it.amount),  it.date)
+                createDueDate(Money.of(it.amount),  it.date)
             }
         } else if (checkout.invoiceDueDate)  {
             invoice.dateDue = checkout.invoiceDueDate
@@ -415,7 +361,7 @@ class CheckoutController {
 
     private void initPayment() {
         if (checkout.paymentMethodId == null && !checkout.payWithSavedCard &&
-                (checkout.previousInvoices.isEmpty() || !checkout.previousInvoices.any { id, amount -> Money.valueOf(amount) != Money.ZERO })) {
+                (checkout.previousInvoices.isEmpty() || !checkout.previousInvoices.any { id, amount -> !Money.of(amount).isZero() })) {
             return
         }
 
@@ -426,13 +372,13 @@ class CheckoutController {
         paymentIn.administrationCentre = paymentIn.createdBy.defaultAdministrationCentre
         paymentIn.paymentDate = LocalDate.now()
 
-        paymentIn.amount = new Money(checkout.payNow)
+        paymentIn.amount = Money.of(checkout.payNow)
 
         PaymentMethod method
 
-        if (paymentIn.amount > ZERO) {
+        if (paymentIn.amount > Money.ZERO) {
             if (checkout.paymentMethodId != null) {
-                method =  SelectById.query(PaymentMethod, checkout.paymentMethodId).selectOne(context)
+                method = SelectById.query(PaymentMethod, checkout.paymentMethodId).selectOne(context)
             } else if (checkout.payWithSavedCard) {
                 method = PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(context, PaymentMethod)
             } else {
@@ -448,17 +394,6 @@ class CheckoutController {
         if (CREDIT_CARD != paymentIn.paymentMethod.type) {
             paymentIn.paymentDate = checkout.paymentDate?:LocalDate.now()
         }
-        paymentIn.account = paymentIn.paymentMethod.account
-        paymentIn.undepositedFundsAccount = paymentIn.paymentMethod.undepositedFundsAccount
-
-
-        if (invoice) {
-            PaymentInLine line = context.newObject(PaymentInLine)
-            line.payment = paymentIn
-            line.invoice = invoice
-            line.amount =  Money.ZERO
-        }
-
 
         if (CREDIT_CARD == paymentIn.paymentMethod.type) {
             paymentIn.status =PaymentStatus.IN_TRANSACTION
@@ -467,6 +402,16 @@ class CheckoutController {
         } else {
             paymentIn.status = PaymentStatus.SUCCESS
             paymentIn.confirmationStatus = checkout.sendInvoice ? NOT_SENT : DO_NOT_SEND
+        }
+
+        paymentIn.account = paymentIn.paymentMethod.account
+        paymentIn.undepositedFundsAccount = paymentIn.paymentMethod.undepositedFundsAccount
+
+        if (invoice) {
+            PaymentInLine line = context.newObject(PaymentInLine)
+            line.payment = paymentIn
+            line.invoice = invoice
+            line.amount =  Money.ZERO
         }
     }
 
@@ -477,7 +422,7 @@ class CheckoutController {
         }
 
         if (invoice) {
-            Money payForThisInvoice = new Money(checkout.payForThisInvoice)
+            Money payForThisInvoice = Money.of(checkout.payForThisInvoice)
             Money payByVouchers = getAmountPaidByVouchers(invoice)
             Money finalPayAmount = payForThisInvoice.subtract(payByVouchers)
             if (finalPayAmount.isGreaterThan(invoice.amountOwing)) {
@@ -491,7 +436,7 @@ class CheckoutController {
         }
 
         checkout.previousInvoices.each { id, amount ->
-            Money payAmount = new Money(amount)
+            Money payAmount = Money.of(amount)
             if (payAmount != Money.ZERO) {
                 Invoice previousInvoice = invoiceApiService.getEntityAndValidateExistence(context, Long.valueOf(id)) as Invoice
                 previousInvoice.updateAmountOwing()
@@ -506,8 +451,11 @@ class CheckoutController {
                     line.invoice = previousInvoice
                     line.amount = payAmount.subtract(payByVouchers)
                     line.invoice.updateAmountOwing()
-                    Money dueDatesAmountSum = line.invoice.invoiceDueDates.sum { it.amount } as Money
-                    if (!dueDatesAmountSum || dueDatesAmountSum == 0) {
+
+                    def dueDatesAmountSum = Money.ZERO
+                    line.invoice.invoiceDueDates.each {dueDatesAmountSum.add(it.amount)}
+
+                    if (!dueDatesAmountSum || dueDatesAmountSum == Money.ZERO) {
                         line.invoice.createPaymentDues(payAmount, paymentIn.paymentDate)
                     }
                     line.invoice.updateDateDue()
@@ -519,7 +467,7 @@ class CheckoutController {
         paymentIn.amount = paymentIn.paymentInLines
                 .collect { it.amount }.inject(Money.ZERO) { a, b -> a.add(b) } as Money
 
-        if (paymentIn.amount != new Money(checkout.payNow)) {
+        if (paymentIn.amount != Money.of(checkout.payNow)) {
             result << new CheckoutValidationErrorDTO(propertyName: "payNow",  error:  "Payment amount doesn't match invoice allocated total amount")
         }
     }
@@ -553,7 +501,7 @@ class CheckoutController {
                 invoiceLine.courseClass = enrolment.courseClass
                 invoiceLine.quantity = ONE
                 invoiceLine.tax = nonSupplyTax(context)
-                invoiceLine.priceEachExTax = new Money(dtoLine.finalPriceToPayIncTax)
+                invoiceLine.priceEachExTax = Money.of(dtoLine.finalPriceToPayIncTax)
                 invoiceLine.sortOrder = 0
                 invoiceLine.account = enrolment.courseClass.incomeAccount
                 invoiceLine.prepaidFeesAccount = prepaidFeesAccount
@@ -644,7 +592,7 @@ class CheckoutController {
 
         if (totalOverride != null) {
 
-            Money total = Money.valueOf(totalOverride)
+            Money total = Money.of(totalOverride)
             BigDecimal taxRate = (taxOverride?:courseClass.tax).rate
 
             invoiceLine.discountEachExTax = invoiceLine.priceEachExTax.subtract(total.divide(Money.ONE.add(taxRate)))
@@ -669,7 +617,7 @@ class CheckoutController {
 
     private void processRedeemedVouchers() {
         checkout.redeemedVouchers.each { id, amount ->
-            Money payAmount = new Money(amount)
+            Money payAmount = Money.of(amount)
             if (payAmount != Money.ZERO) {
                 Voucher voucher = getRedeemedVoucherAndValidate(id)
 
@@ -748,7 +696,7 @@ class CheckoutController {
         createVoucherPaymentIn(voucher, vPaymentIn)
 
         checkout.previousInvoices.each { id, amount ->
-            Money payNow = Money.valueOf(amount)
+            Money payNow = Money.of(amount)
             if (payNow > Money.ZERO) {
                 Invoice prevInvoice = invoiceApiService.getEntityAndValidateExistence(context, Long.valueOf(id)) as Invoice
 

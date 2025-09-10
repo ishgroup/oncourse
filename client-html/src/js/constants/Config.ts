@@ -3,8 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PreferenceEnum } from "@api/model";
-import { EntityName } from "../model/entities/common";
+import { PreferenceEnum } from '@api/model';
+import { CHECKOUT_SELECTION_FORM_NAME } from '../containers/checkout/components/CheckoutSelection';
+import {
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
+} from '../containers/checkout/components/fundingInvoice/CheckoutFundingInvoiceSummaryList';
+import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from '../containers/checkout/components/items/components/CkecoutItemViewForm';
+import { EntityName } from '../model/entities/common';
+import { SEND_MESSAGE_FORM_NAME } from './Forms';
 
 export const SIMPLE_SEARCH_REGEX = /(^[^~\s."#]+$)/;
 
@@ -25,6 +31,8 @@ export const APP_BAR_HEIGHT = 64;
 export const LIST_PAGE_SIZE = 50;
 
 export const PLAIN_LIST_MAX_PAGE_SIZE = 65000;
+
+export const PASSWORD_PASS_SCORE = 2;
 
 export const LIST_TWO_COLUMN_ROW_HEIGHT = 27;
 
@@ -108,6 +116,8 @@ export const LISTVIEW_MAIN_CONTENT_WIDTH: PreferenceEnum = "listview.main.conten
 
 export const SERVER_TIMEZONE: PreferenceEnum = "oncourse.server.timezone.default";
 
+export const SPECIAL_TYPES_DISPLAY_KEY: PreferenceEnum = "ish.display.extendedSearchTypes";
+
 export const ADMIN_EMAIL_KEY = 'email.admin';
 
 export const TAB_LIST_SCROLL_TARGET_ID = "TabsListScrollTarget";
@@ -129,5 +139,13 @@ export const NOTE_ENTITIES: EntityName[] = [
   "MembershipProduct",
   "VoucherProduct",
   "Room",
-  "Site"
+  "Site",
+  "Faculty"
+];
+
+export const FORM_NAMES_ALLOWED_FOR_REFRESH = [
+  CHECKOUT_SELECTION_FORM_NAME,
+  CHECKOUT_ITEM_EDIT_VIEW_FORM,
+  SEND_MESSAGE_FORM_NAME,
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
 ];

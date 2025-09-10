@@ -6,8 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
+import React, { useMemo } from 'react';
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
+import { useAppSelector } from '../../../../common/utils/hooks';
 import EnrolmentAttachmentsTab from "./EnrolmentAttachmentsTab";
 import EnrolmentGeneralTab from "./EnrolmentGeneralTab";
 import EnrolmentVetStudentLoans from "./EnrolmentVetStudentLoans";
@@ -31,7 +32,6 @@ const EnrolmentEditView = props => {
   const {
     isNew,
     isNested,
-    nestedIndex,
     values,
     classes,
     dispatch,
@@ -51,34 +51,40 @@ const EnrolmentEditView = props => {
     onScroll
   } = props;
 
+  const hideAUSReporting = useAppSelector(state => state.location.countryCode !== 'AU');
+
+  const activeItems = useMemo(() => {
+    if (hideAUSReporting) {
+      return items.filter(i => i.label !== "VET Student Loans");
+    }
+    return items;
+  }, [hideAUSReporting]);
+
   return (
-    <>
-      <TabsList
-        onParentScroll={onScroll}
-        items={values ? items : []}
-        itemProps={{
-          isNew,
-          isNested,
-          values,
-          classes,
-          dispatch,
-          dirty,
-          invalid,
-          form,
-          nestedIndex,
-          rootEntity,
-          twoColumn,
-          submitSucceeded,
-          manualLink,
-          showConfirm,
-          syncErrors,
-          onCloseClick,
-          toogleFullScreenEditView,
-          onEditViewScroll,
-          isScrollingRoot,
-        }}
-      />
-    </>
+    <TabsList
+      onParentScroll={onScroll}
+      items={values ? activeItems : []}
+      itemProps={{
+        isNew,
+        isNested,
+        values,
+        classes,
+        dispatch,
+        dirty,
+        invalid,
+        form,
+        rootEntity,
+        twoColumn,
+        submitSucceeded,
+        manualLink,
+        showConfirm,
+        syncErrors,
+        onCloseClick,
+        toogleFullScreenEditView,
+        onEditViewScroll,
+        isScrollingRoot,
+      }}
+    />
   );
 };
 

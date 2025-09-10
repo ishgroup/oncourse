@@ -12,9 +12,13 @@ import {
   Holiday,
   PaymentMethod,
   Tax
-} from "@api/model";
-import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
-import { Categories } from "../../../model/preferences";
+} from '@api/model';
+import { ArgumentTypes } from 'ish-ui';
+import { _toRequestType, FULFILLED } from '../../../common/actions/ActionUtils';
+import { IAction } from '../../../common/actions/IshAction';
+import { EntityName } from '../../../model/entities/common';
+import { Categories } from '../../../model/preferences';
+import TagsService from '../../tags/services/TagsService';
 
 export const GET_DATA_COLLECTION_FORM_FIELD_TYPES_REQUEST = _toRequestType("get/datacollection/formFieldTypes");
 export const GET_DATA_COLLECTION_FORM_FIELD_TYPES_FULFILLED = FULFILLED(GET_DATA_COLLECTION_FORM_FIELD_TYPES_REQUEST);
@@ -138,8 +142,8 @@ export const GET_COLUMNS_WIDTH_REQUEST_FULFILLED = FULFILLED(GET_COLUMNS_WIDTH_R
 export const UPDATE_COLUMNS_WIDTH_REQUEST = _toRequestType("post/preference/settings");
 export const UPDATE_COLUMNS_WIDTH_REQUEST_FULFILLED = FULFILLED(UPDATE_COLUMNS_WIDTH_REQUEST);
 
-export const GET_CURRENCY = _toRequestType("get/currency");
-export const GET_CURRENCY_FULFILLED = FULFILLED(GET_CURRENCY);
+export const GET_LOCATION = _toRequestType("get/currency");
+export const GET_LOCATION_FULFILLED = FULFILLED(GET_LOCATION);
 
 export const GET_USI_SORTWARE_ID = _toRequestType("get/USISoftwareId");
 export const GET_USI_SORTWARE_ID_FULFILLED = FULFILLED(GET_USI_SORTWARE_ID);
@@ -165,9 +169,23 @@ export const DELETE_TUTOR_ROLE_FULFILLED = FULFILLED(DELETE_TUTOR_ROLE_REQUEST);
 export const GET_GRADING_TYPES_REQUEST = _toRequestType("get/grading/type");
 export const GET_GRADING_TYPES_FULFILLED = FULFILLED(GET_GRADING_TYPES_REQUEST);
 
+export const GET_SPECIAL_TAG_TYPES = _toRequestType("get/tag/special");
+
+export const POST_SPECIAL_TAG_TYPES = _toRequestType("post/tag/special");
+
 export const DELETE_GRADING_TYPE_REQUEST = _toRequestType("delete/grading/type");
 
 export const UPDATE_GRADING_TYPES_REQUEST = _toRequestType("post/grading/type");
+
+export const getSpecialTagTypes = (entity: EntityName): IAction<EntityName> => ({
+  type: GET_SPECIAL_TAG_TYPES,
+  payload: entity
+});
+
+export const postSpecialTagTypes = (...args: ArgumentTypes<typeof TagsService.updateSpecial>) => ({
+  type: POST_SPECIAL_TAG_TYPES,
+  payload: args
+});
 
 export const getGradingTypes = () => ({
   type: GET_GRADING_TYPES_REQUEST
@@ -183,8 +201,8 @@ export const deleteGradingType = (id: number) => ({
   payload: id
 });
 
-export const getCurrency = () => ({
-  type: GET_CURRENCY
+export const getLocation = () => ({
+  type: GET_LOCATION
 });
 
 export const getUSISoftwareId = () => ({

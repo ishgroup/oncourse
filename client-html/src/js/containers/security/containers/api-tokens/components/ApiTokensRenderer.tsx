@@ -6,22 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ApiToken, User } from "@api/model";
-import { Card, Grid, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import { LinkAdornment, NumberArgFunction, openInternalLink } from "ish-ui";
-import React, { useRef } from "react";
-import { Dispatch } from "redux";
-import { WrappedFieldArrayProps } from "redux-form";
-import { showMessage } from "../../../../../common/actions";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { getContactFullName } from "../../../../entities/contacts/utils";
-import UserSelectItemRenderer from "../../users/components/UserSelectItemRenderer";
+import { ApiToken, User } from '@api/model';
+import { Button, Card, Grid, Typography } from '@mui/material';
+import $t from '@t';
+import { LinkAdornment, NumberArgFunction, openInternalLink } from 'ish-ui';
+import React, { useRef } from 'react';
+import { Dispatch } from 'redux';
+import { WrappedFieldArrayProps } from 'redux-form';
+import { showMessage } from '../../../../../common/actions';
+import { IAction } from '../../../../../common/actions/IshAction';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { getContactFullName } from '../../../../entities/contacts/utils';
+import UserSelectItemRenderer from '../../users/components/UserSelectItemRenderer';
 
 interface RendererProps {
   users: User[];
   onDelete: NumberArgFunction;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
 }
 
 interface ItemsProps extends RendererProps {
@@ -44,7 +45,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
 ) => {
   const isNew = typeof field.id !== "number";
 
-  const linkInput = useRef<HTMLInputElement>();
+  const linkInput = useRef<HTMLInputElement>(undefined);
 
   const onCopy = () => {
     linkInput.current.select();
@@ -61,7 +62,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
       <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={6}>
           <FormField
-            label="Act as user"
+            label={$t('act_as_user')}
             type="select"
             selectValueMark="id"
             selectLabelCondition={getContactFullName}
@@ -83,13 +84,12 @@ const ApiTokenItem: React.FC<ItemsProps> = (
 
           {isNew && (
             <Typography variant="caption" color="textSecondary">
-              This API token will behave as if this user were logged in.
-              You should try to restrict that user`s access rights as much as possible to safeguard your data.
+              {$t('this_api_token_will_behave_as_if_this_user_were_lo')}
             </Typography>
           )}
         </Grid>
         <Grid item xs={6} display="flex" justifyContent="space-between" alignItems="flex-start">
-          <FormField type="text" name={`${item}.name`} label="Token name" disabled={!isNew} required />
+          <FormField type="text" name={`${item}.name`} label={$t('token_name')} disabled={!isNew} required />
           <Button
             size="small"
             classes={{
@@ -107,17 +107,17 @@ const ApiTokenItem: React.FC<ItemsProps> = (
                 <input readOnly className="codeArea" type="text" ref={linkInput} value={field.secret} />
               </Typography>
               <Button color="primary" className="text-nowrap" onClick={onCopy}>
-                Copy Secret
+                {$t('copy_secret')}
               </Button>
             </div>
             <Typography variant="caption" color="textSecondary">
-              Secret (this will not be shown again after you close this window)
+              {$t('secret_this_will_not_be_shown_again_after_you_clos')}
             </Typography>
           </Grid>
       )
       : (
         <Grid item xs={12}>
-          <FormField type="dateTime" name={`${item}.lastAccess`} label="Last access" disabled />
+          <FormField type="dateTime" name={`${item}.lastAccess`} label={$t('last_access')} disabled />
         </Grid>
       )}
       </Grid>

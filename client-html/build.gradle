@@ -44,7 +44,9 @@ task jest(type: NpmTask, dependsOn: 'queryGrammar') {
     npmCommand = ['run']
     args = ['test']
 }
-test.dependsOn(jest)
+
+if("true" != System.getProperty('ish.devMode'))
+    test.dependsOn(jest)
 
 sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources/swagger-js', 'build/generated-sources/aql-model', 'build/generated-sources/aql-parser'

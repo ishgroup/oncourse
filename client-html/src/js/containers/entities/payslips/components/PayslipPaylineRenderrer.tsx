@@ -1,12 +1,13 @@
-import { createStyles, Grid } from "@mui/material";
-import withStyles from "@mui/styles/withStyles";
-import { formatCurrency } from "ish-ui";
-import * as React from "react";
-import { PayLineWithDefer } from "../../../../model/entities/Payslip";
-import PayslipPaylineItem from "./PayslipPaylineItem";
+import { Grid } from '@mui/material';
+import $t from '@t';
+import { formatCurrency } from 'ish-ui';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { PayLineWithDefer } from '../../../../model/entities/Payslip';
+import PayslipPaylineItem from './PayslipPaylineItem';
 
 const styles = theme =>
-  createStyles({
+  ({
     deferSwitch: {
       display: "flex",
       alignSelf: "flex-end",
@@ -23,7 +24,7 @@ const styles = theme =>
     infoContainer: {
       background: theme.palette.background.default,
       borderRadius: "4px",
-      padding: theme.spacing(1,2)
+      padding: theme.spacing(1, 2)
     },
     threeColumnCard: {
       marginBottom: "20px",
@@ -113,9 +114,7 @@ class PayslipPaylineRenderrer extends React.PureComponent<any, any> {
           {customLines.length ? (
             <>
               <div className="heading mb-1 money">
-                Custom Lines (
-                {formatCurrency(classGroupsTotal["Custom Lines"], shortCurrencySymbol)}
-                )
+                {$t('custom_lines', [formatCurrency(classGroupsTotal["Custom Lines"], shortCurrencySymbol)])}
               </div>
               {customLines}
             </>
@@ -126,4 +125,4 @@ class PayslipPaylineRenderrer extends React.PureComponent<any, any> {
   }
 }
 
-export default withStyles(styles)(PayslipPaylineRenderrer) as any;
+export default withStyles(PayslipPaylineRenderrer, styles) as any;

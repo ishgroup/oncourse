@@ -6,34 +6,35 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ExportTemplate, OutputType } from "@api/model";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import FileCopy from "@mui/icons-material/FileCopy";
-import Grid from "@mui/material/Grid";
-import Grow from "@mui/material/Grow";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import { InfoPill, NumberArgFunction, usePrevious } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { mapSelectItems } from "../../../../../common/utils/common";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { CatalogItemType } from "../../../../../model/common/Catalog";
-import { EntityItems, EntityName } from "../../../../../model/entities/common";
-import AvailableFrom, { mapAvailableFrom } from "../../../components/AvailableFrom";
-import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import getConfigActions from "../../../components/ImportExportConfig";
-import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { validateKeycode, validateNameForQuotes } from "../../../utils";
-import ScriptCard from "../../scripts/components/cards/CardBase";
+import { ExportTemplate, OutputType } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import FileCopy from '@mui/icons-material/FileCopy';
+import Grid from '@mui/material/Grid';
+import Grow from '@mui/material/Grow';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { InfoPill, mapSelectItems, NumberArgFunction, usePrevious } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import { FieldArray, Form, initialize, InjectedFormProps } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { CatalogItemType } from '../../../../../model/common/Catalog';
+import { EntityItems, EntityName } from '../../../../../model/entities/common';
+import AvailableFrom, { mapAvailableFrom } from '../../../components/AvailableFrom';
+import Bindings, { BindingsRenderer } from '../../../components/Bindings';
+import getConfigActions from '../../../components/ImportExportConfig';
+import SaveAsNewAutomationModal from '../../../components/SaveAsNewAutomationModal';
+import { validateKeycode, validateNameForQuotes } from '../../../utils';
+import ScriptCard from '../../scripts/components/cards/CardBase';
 
-const manualUrl = getManualLink("advancedSetup_Export");
+const manualUrl = getManualLink("export-templates");
 const getAuditsUrl = (id: number) => `audit?search=~"ExportTemplate" and entityId == ${id}`;
 
 const outputTypes = Object.keys(OutputType).map(mapSelectItems);
@@ -41,7 +42,7 @@ const outputTypes = Object.keys(OutputType).map(mapSelectItems);
 interface Props extends InjectedFormProps {
   isNew: boolean;
   values: ExportTemplate;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onCreate: (template: ExportTemplate) => void;
   onUpdateInternal: (template: ExportTemplate) => void;
   onUpdate: (template: ExportTemplate) => void;
@@ -153,7 +154,6 @@ const ExportTemplatesForm = React.memo<Props>(
           validateNameField={validateTemplateCopyName}
         />
 
-
         <Form onSubmit={handleSubmit(handleSave)}>
           {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew}/>}
 
@@ -178,7 +178,7 @@ const ExportTemplatesForm = React.memo<Props>(
                 <FormField
                   type="text"
                   name="name"
-                  label="Name"
+                  label={$t('name')}
                   validate={validateTemplateName}
                   disabled={isInternal}
                   required
@@ -204,7 +204,7 @@ const ExportTemplatesForm = React.memo<Props>(
 
                 {isInternal && (
                   <Grow in={isInternal}>
-                    <Tooltip title="Save as new export template">
+                    <Tooltip title={$t('save_as_new_export_template')}>
                       <IconButton onClick={onInternalSaveClick} color="inherit">
                         <FileCopy color="primary" />
                       </IconButton>
@@ -221,7 +221,7 @@ const ExportTemplatesForm = React.memo<Props>(
                   name="shortDescription"
                   disabled={isInternal}
                   className="overflow-hidden mb-1"
-                  placeholder="Short description"
+                  placeholder={$t('short_description')}
                 />
                 <Typography variant="caption" fontSize="13px">
                   <FormField
@@ -229,7 +229,7 @@ const ExportTemplatesForm = React.memo<Props>(
                     name="description"
                     disabled={isInternal}
                     className="overflow-hidden mb-1"
-                    placeholder="Description"
+                    placeholder={$t('description')}
                     fieldClasses={{
                       text: "fw300 fsInherit"
                     }}
@@ -239,7 +239,7 @@ const ExportTemplatesForm = React.memo<Props>(
               <Grid item xs={9} className="pr-3">
                 <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={6}>
-                    <div className="heading">Type</div>
+                    <div className="heading">{$t('type')}</div>
                     <FormField
                       type="select"
                       name="entity"
@@ -251,7 +251,7 @@ const ExportTemplatesForm = React.memo<Props>(
                   <Grid item xs={6}>
                     <FormField
                       type="select"
-                      label="Output"
+                      label={$t('output')}
                       name="outputType"
                       items={outputTypes}
                       disabled={isInternal}
@@ -285,7 +285,7 @@ const ExportTemplatesForm = React.memo<Props>(
 
                 <FormField
                   type="text"
-                  label="Key code"
+                  label={$t('key_code2')}
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}
@@ -296,7 +296,7 @@ const ExportTemplatesForm = React.memo<Props>(
               <Grid item xs={3}>
                 <div>
                   <FormField
-                    label="Enabled"
+                    label={$t('enabled')}
                     type="switch"
                     name="status"
                     color="primary"
@@ -311,7 +311,7 @@ const ExportTemplatesForm = React.memo<Props>(
                     dispatch={dispatch}
                     form={form}
                     name="variables"
-                    label="Variables"
+                    label={$t('variables')}
                     itemsType="label"
                     disabled={isInternal}
                   />
@@ -322,7 +322,7 @@ const ExportTemplatesForm = React.memo<Props>(
                     form={form}
                     itemsType="component"
                     name="options"
-                    label="Options"
+                    label={$t('options')}
                     disabled={isInternal}
                   />
                 </div>

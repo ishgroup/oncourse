@@ -1,35 +1,35 @@
-import { CheckoutSaleRelation } from "@api/model";
-import { closestIndexTo } from "date-fns";
-import { Epic, ofType } from "redux-observable";
-import { concat, from, Observable } from "rxjs";
-import { catchError, flatMap, mergeMap } from "rxjs/operators";
-import { FETCH_FINISH, FETCH_START, SHOW_MESSAGE } from "../../../../common/actions";
-import { processError } from "../../../../common/epics/EpicUtils";
-import EntityService from "../../../../common/services/EntityService";
-import { getCustomColumnsMap } from "../../../../common/utils/common";
-import uniqid from "../../../../common/utils/uniqid";
-import { State } from "../../../../reducers/state";
+import { CheckoutSaleRelation } from '@api/model';
+import { closestIndexTo } from 'date-fns';
+import { Epic, ofType } from 'redux-observable';
+import { concat, from, Observable } from 'rxjs';
+import { catchError, flatMap, mergeMap } from 'rxjs/operators';
+import { FETCH_FINISH, FETCH_START, SHOW_MESSAGE } from '../../../../common/actions';
+import { processError } from '../../../../common/epics/EpicUtils';
+import EntityService from '../../../../common/services/EntityService';
+import { getCustomColumnsMap } from '../../../../common/utils/common';
+import uniqid from '../../../../common/utils/uniqid';
+import { State } from '../../../../reducers/state';
 import {
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_ADD_ITEM,
   CHECKOUT_REMOVE_CONTACT,
   CHECKOUT_UPDATE_RELATED_ITEMS
-} from "../../actions";
-import { checkoutUpdateSummaryClassesDiscounts } from "../../actions/checkoutSummary";
+} from '../../actions';
+import { checkoutUpdateSummaryClassesDiscounts } from '../../actions/checkoutSummary';
 import {
   CHECKOUT_COURSE_CLASS_COLUMNS,
   CHECKOUT_MEMBERSHIP_COLUMNS,
   CHECKOUT_PRODUCT_COLUMNS,
   CHECKOUT_VOUCHER_COLUMNS
-} from "../../constants";
-import CheckoutService from "../../services/CheckoutService";
+} from '../../constants';
+import CheckoutService from '../../services/CheckoutService';
 import {
   checkoutCourseClassMap,
   checkoutCourseMap,
   checkoutProductMap,
   checkoutVoucherMap,
   processCheckoutSale
-} from "../../utils";
+} from '../../utils';
 
 const assignTypeProps = r => {
   r.toItem.cartItem.cartAction = r.cartAction;
@@ -109,8 +109,8 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: Observable<
               relations.push(...newItems);
             }, Promise.resolve());
 
-          await relations
-            .map(r => () => {
+          await Promise.all(relations
+            .map(r => {
               switch (r.toItem.type) {
                 case "Course": {
                   let plainCourse;
@@ -180,11 +180,7 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: Observable<
                 default:
                   return Promise.resolve();
               }
-            })
-            .reduce(async (a, b) => {
-              await a;
-              await b();
-            }, Promise.resolve());
+            }));
 
           relations.forEach(r => {
             switch (r.cartAction) {
@@ -203,11 +199,12 @@ export const EpicGetItemRelations: Epic<any, any, State> = (action$: Observable<
           flatMap(data => {
             if (data) {
               const { cartItems, suggestItems, errorActions } = data;
+
               return [{
                 type: CHECKOUT_UPDATE_RELATED_ITEMS,
                 payload: { cartItems, suggestItems }
               },
-                checkoutUpdateSummaryClassesDiscounts(),
+                ...cartItems.length ? [checkoutUpdateSummaryClassesDiscounts()] : [],
                 ...errorActions
               ];
             }

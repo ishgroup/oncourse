@@ -3,20 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import createStyles from "@mui/styles/createStyles";
-
-export const listStyles = theme =>
-  createStyles({
+export const listStyles = (theme,p,classes) =>
+  ({
     root: {
       listStyle: "none",
       margin: 0,
-      padding: theme.spacing(1, 0),
+      paddingTop: theme.spacing(1),
       marginBottom: theme.spacing(1)
     },
-    root__height: {
+    'root__height': {
       maxHeight: theme.spacing(50)
     },
-    root__item: {
+    'root__item': {
       display: "grid",
       gridTemplateColumns: "1fr auto",
       alignItems: "center",
@@ -25,7 +23,7 @@ export const listStyles = theme =>
         borderRadius: `${theme.shape.borderRadius}px`,
         background: theme.palette.action.hover
       },
-      "&:hover $deleteButton": {
+      [`&:hover .${classes.deleteButton}`]: {
         opacity: 1
       }
     },

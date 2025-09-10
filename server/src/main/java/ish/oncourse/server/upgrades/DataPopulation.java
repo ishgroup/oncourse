@@ -17,6 +17,7 @@ import ish.oncourse.common.ResourceType;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.AngelModule;
 import ish.oncourse.server.ICayenneService;
+import ish.oncourse.server.display.DisplayService;
 import ish.oncourse.server.integration.PluginService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,11 +38,14 @@ public class DataPopulation implements Runnable {
 
 	private final String angelVersion;
 	private final ICayenneService cayenneService;
+	private final DisplayService displayService;
 
 	@Inject
-	public DataPopulation(@Named(AngelModule.ANGEL_VERSION) String angelVersion, ICayenneService cayenneService) {
+	public DataPopulation(@Named(AngelModule.ANGEL_VERSION) String angelVersion, ICayenneService cayenneService,
+						  DisplayService displayService) {
 		this.angelVersion = angelVersion;
 		this.cayenneService = cayenneService;
+		this.displayService = displayService;
 	}
 
 	public static String getPropertyFromXml(final StringBuffer xmlData, final String property) {
@@ -83,6 +87,7 @@ public class DataPopulation implements Runnable {
 		var reports = getResourcesList(ResourceType.REPORT);
 		reports.forEach( props -> {
 			try {
+				props.put(ResourceProperty.AUS_REPORTING.getDisplayName(), displayService.getAusReporting());
 				DataPopulationUtils.updateReport(context, props);
 			} catch (Exception e) {
 				logger.error("{} {} was not imported", ResourceType.REPORT.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
@@ -95,6 +100,7 @@ public class DataPopulation implements Runnable {
 		var scripts = getResourcesList(ResourceType.SCRIPT);
 		scripts.forEach( props -> {
 			try {
+				props.put(ResourceProperty.AUS_REPORTING.getDisplayName(), displayService.getAusReporting());
 				DataPopulationUtils.updateScript(context, props);
 			} catch (Exception e) {
 				logger.error("{} {} was not imported", ResourceType.SCRIPT.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
@@ -106,6 +112,7 @@ public class DataPopulation implements Runnable {
 		var imports = getResourcesList(ResourceType.IMPORT);
 		imports.forEach( props -> {
 			try {
+				props.put(ResourceProperty.AUS_REPORTING.getDisplayName(), displayService.getAusReporting());
 				DataPopulationUtils.updateImport(context, props);
 			} catch (Exception e) {
 				logger.error("{} {} was not imported", ResourceType.IMPORT.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
@@ -117,6 +124,7 @@ public class DataPopulation implements Runnable {
 		var emailYamls = getResourcesList(ResourceType.MESSAGING);
 		emailYamls.forEach( props -> {
 			try {
+				props.put(ResourceProperty.AUS_REPORTING.getDisplayName(), displayService.getAusReporting());
 				DataPopulationUtils.updateMessage(context, props);
 			} catch (Exception e) {
 				logger.error("{} {} was not imported", ResourceType.MESSAGING.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
@@ -128,6 +136,7 @@ public class DataPopulation implements Runnable {
 		var exports = getResourcesList(ResourceType.EXPORT);
 		exports.forEach(props -> {
 			try {
+				props.put(ResourceProperty.AUS_REPORTING.getDisplayName(), displayService.getAusReporting());
 				DataPopulationUtils.updateExport(context, props);
 			} catch (Exception e) {
 				logger.error("{} {} was not imported", ResourceType.EXPORT.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);

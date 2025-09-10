@@ -3,18 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AvetmissExportFlavour, FundingSource } from "@api/model";
-import Button from "@mui/material/Button";
-import { red } from "@mui/material/colors";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import * as React from "react";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
+import { AvetmissExportFlavour, FundingSource } from '@api/model';
+import { Button, Grid } from '@mui/material';
+import { red } from '@mui/material/colors';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Paper from '@mui/material/Paper';
+import $t from '@t';
+import clsx from 'clsx';
+import { mapSelectItems, sortDefaultSelectItems } from 'ish-ui';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
 
 const Flavours = Object.keys(AvetmissExportFlavour)
   .filter(val => isNaN(Number(val)))
@@ -23,7 +22,7 @@ const Flavours = Object.keys(AvetmissExportFlavour)
 Flavours.sort(sortDefaultSelectItems);
 
 const styles = () =>
-  createStyles({
+  ({
     deleteButton: {
       color: red[500]
     },
@@ -50,7 +49,7 @@ const FundingContractItem = props => {
                   <FormField
                     type="text"
                     name={`${item}.name`}
-                    label="Name"
+                    label={$t('name')}
                     className={classes.inputWidth}
                                         required
                   />
@@ -60,7 +59,7 @@ const FundingContractItem = props => {
                     className={clsx("errorColor", classes.deleteButton)}
                     onClick={() => onDelete(field, index)}
                   >
-                    Delete
+                    {$t('delete2')}
                   </Button>
                 </Grid>
               </Grid>
@@ -68,7 +67,7 @@ const FundingContractItem = props => {
                 <FormField
                   type="select"
                   name={`${item}.flavour`}
-                  label="Flavour"
+                  label={$t('flavour')}
                   items={Flavours}
                   className="pr-3"
                                     required
@@ -77,7 +76,7 @@ const FundingContractItem = props => {
               <Grid item xs={5}>
                 <FormControlLabel
                   control={<FormField type="checkbox" name={`${item}.active`} color="primary" />}
-                  label="Active"
+                  label={$t('active')}
                 />
               </Grid>
             </Grid>
@@ -88,4 +87,4 @@ const FundingContractItem = props => {
   );
 };
 
-export default withStyles(styles)(FundingContractItem) as any;
+export default withStyles(FundingContractItem, styles) as any;

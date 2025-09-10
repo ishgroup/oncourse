@@ -7,7 +7,7 @@
  */
 
 import { DataResponse, EmailTemplate, Filter, Script, SearchQuery } from "@api/model";
-import { AnyArgFunction, NoArgFunction, ShowConfirmCaller } from "ish-ui";
+import { AnyArgFunction, BooleanArgFunction, NoArgFunction, ShowConfirmCaller } from 'ish-ui';
 import React, { ReactElement } from "react";
 import { Dispatch } from "redux";
 import { FormErrors, InjectedFormProps } from "redux-form";
@@ -76,7 +76,6 @@ export interface ListState {
   scripts?: Script[];
   emailTemplates?: EmailTemplate[];
   emailTemplatesWithKeyCode?: EmailTemplate[];
-  creatingNew?: boolean;
   fullScreenEditView?: boolean;
   recepients?: MessageData;
 }
@@ -91,18 +90,16 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   values?: E;
   updateDeleteCondition?: any;
   fullScreenEditView?: any;
-  toogleFullScreenEditView: any;
+  toogleFullScreenEditView: BooleanArgFunction;
   dispatch?: Dispatch<any>;
   rootEntity: EntityName;
   showConfirm: ShowConfirmCaller;
   manualLink?: any;
   isNested?: boolean;
   match?: any;
-  nestedIndex?: number;
   nameCondition?: AnyArgFunction;
   updateCaption?: (arg: string) => React.Component;
   threeColumn?: boolean;
-  alwaysFullScreenCreateView?: boolean;
   syncErrors?: any;
   disabledSubmitCondition?: boolean;
   hideTitle?: boolean;
@@ -119,13 +116,12 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   onScroll?: AnyArgFunction;
   twoColumn?: boolean;
   isNested?: boolean;
-  nestedIndex?: number;
   onCloseClick?: AnyArgFunction;
   syncErrors?: FormErrors<V>;
   tabIndex?: number;
   expanded?: number[];
   setExpanded?: (arg: number[] | ((arg: number[]) => void)) => void;
-  toogleFullScreenEditView?: any;
+  toogleFullScreenEditView?: BooleanArgFunction;
 }
 
 export type ListAqlMenuItemsRenderer = (content: React.ReactNode, rowData: any, searchValue: string) => void;

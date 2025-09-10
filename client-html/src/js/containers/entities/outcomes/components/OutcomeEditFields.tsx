@@ -6,40 +6,45 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus } from "@api/model";
+import { DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus } from '@api/model';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Card, Chip, Grid, Tooltip, Typography } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import { makeStyles } from "@mui/styles";
-import clsx from "clsx";
-import { AppTheme, LinkAdornment, normalizeNumberToZero, StringKeyObject, validateMinMaxDate } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { change } from "redux-form";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { HeaderContactTitle } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import FundingUploadComponent from "../../../../common/components/form/FundingUploadComponent";
+import { Card, Chip, Grid, IconButton, Tooltip, Typography } from '@mui/material';
+import $t from '@t';
+import {
+  AppTheme,
+  LinkAdornment,
+  mapSelectItems,
+  normalizeNumberToZero,
+  StringKeyObject,
+  validateMinMaxDate
+} from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { change } from 'redux-form';
+import { makeStyles } from 'tss-react/mui';
+import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import { HeaderContactTitle } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import FundingUploadComponent from '../../../../common/components/form/FundingUploadComponent';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { AccessState } from "../../../../common/reducers/accessReducer";
-import EntityService from "../../../../common/services/EntityService";
-import { mapSelectItems } from "../../../../common/utils/common";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { AccessState } from '../../../../common/reducers/accessReducer';
+import EntityService from '../../../../common/services/EntityService';
 import {
   validateFundingSourse,
   validatePurchasingContractScheduleIdentifier,
   validateSingleMandatoryField,
   validateSpecificProgramIdentifier,
   validateVetPurchasingContractIdentifier
-} from "../../../../common/utils/validation";
-import { fundingUploadsPath } from "../../../../constants/Api";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import FundingUploadService from "../../../avetmiss-export/services/FundingUploadService";
-import { fundingSourceValues } from "../../courseClasses/constants";
-import { openModuleLink } from "../../modules/utils";
-import { AssessmentChart, AttendanceChart } from "./OutcomeProgressionChart";
+} from '../../../../common/utils/validation';
+import { fundingUploadsPath } from '../../../../constants/Api';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import FundingUploadService from '../../../avetmiss-export/services/FundingUploadService';
+import { fundingSourceValues } from '../../courseClasses/constants';
+import { openModuleLink } from '../../modules/utils';
+import { AssessmentChart, AttendanceChart } from './OutcomeProgressionChart';
 
 interface OutcomeEditFieldsProps extends EditViewProps<Outcome> {
   modules?: any[];
@@ -87,7 +92,7 @@ const validateEndtDate = (value, allValues) => {
   return result || ((isPriorLearning || allValues.endDateOverridden) && validateMinDate(value, allValues));
 };
 
-const useStyles = makeStyles((theme: AppTheme) => ({
+const useStyles = makeStyles()((theme: AppTheme) => ({
   card: {
     margin: "14px 0 14px 0",
     width: "100%",
@@ -145,7 +150,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
     noHeader
   } = props;
 
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const [fundingUploads, setFundingUploads] = useState<FundingUpload[]>([]);
   const [warnings, setWarnings] = useState<StringKeyObject>({});
@@ -157,7 +162,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   useEffect(() => {
     if (values.id && fundingUploadAccess) {
       FundingUploadService
-        .getFundingUploads(`fundingUploadOutcomes.outcome.id is ${values.id}`)
+        .getFundingUploads(`fundingUploadOutcomes.outcome.id is ${values?.id}`)
         .then(res => {
           setFundingUploads(res);
         })
@@ -166,7 +171,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           instantFetchErrorHandler(dispatch, er);
         });
     }
-  }, [values.id, access]);
+  }, [values?.id, access]);
 
   const setModuleWarnings = async () => {
     try {
@@ -243,7 +248,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   const today = new Date();
 
   return (
-    <Grid container columnSpacing={3} rowSpacing={2} className={className}>
+    (<Grid container columnSpacing={3} rowSpacing={2} className={className}>
       {!noHeader && <Grid item xs={12}>
         <FullScreenStickyHeader
           disableInteraction
@@ -253,13 +258,12 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           )}
         />
       </Grid>}
-      
       <Grid container rowSpacing={2} item xs={twoColumn ? 4 : 12}>
         <Grid item xs={12}>
           <FormField
             type="remoteDataSelect"
             name={getFieldName("moduleCode")}
-            label="Module code"
+            label={$t('module_code')}
             entity="Module"
             selectValueMark="nationalCode"
             selectLabelMark="nationalCode"
@@ -281,7 +285,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             type="remoteDataSelect"
             entity="Module"
             name={getFieldName("moduleName")}
-            label="Module name"
+            label={$t('module_name')}
             selectValueMark="title"
             selectLabelMark="title"
             defaultValue={values && values.moduleName}
@@ -302,7 +306,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           <FormField
             type="select"
             name={getFieldName("deliveryMode")}
-            label="Delivery mode"
+            label={$t('delivery_mode')}
             items={deliveryModeValues}
                       />
         </Grid>
@@ -310,7 +314,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           <FormField
             type="number"
             name={getFieldName("reportableHours")}
-            label="Reportable hours"
+            label={$t('reportable_hours')}
             normalize={normalizeNumberToZero}
             debounced={false}
           />
@@ -319,17 +323,16 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           <FormField
             type="select"
             name={getFieldName("fundingSource")}
-            label="Funding source"
+            label={$t('funding_source')}
             items={fundingSourceValues}
           />
         </Grid>
       </Grid>
-
       <Grid item xs={twoColumn ? 8 : 12}>
         <Card className={classes.card}>
           <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={12}>
-              <div className="heading">OUTCOME PROGRESSION</div>
+              <div className="heading">{$t('outcome_progression')}</div>
             </Grid>
             <Grid item xs={twoColumn ? 6 : 12} className="d-flex justify-content-center">
               <AttendanceChart data={values.progression} />
@@ -340,7 +343,6 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           </Grid>
         </Card>
       </Grid>
-
       {priorLearningEditView ? (
         <Grid item xs={12}>
           <Grid container columnSpacing={3} rowSpacing={2} item xs={12}>
@@ -348,18 +350,18 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               <FormField
                 type="date"
                 name={getFieldName("startDate")}
-                label="Start date"
+                label={$t('start_date')}
                 validate={validateStartDate}
-                placeholder="Leave empty to calculate date from class"
+                placeholder={$t('leave_empty_to_calculate_date_from_class')}
               />
             </Grid>
             <Grid item xs={twoColumn ? 4 : 12}>
               <FormField
                 type="date"
                 name={getFieldName("endDate")}
-                label="End date"
+                label={$t('end_date')}
                 validate={validateEndtDate}
-                placeholder="Leave empty to calculate date from class"
+                placeholder={$t('leave_empty_to_calculate_date_from_class')}
               />
             </Grid>
           </Grid>
@@ -369,56 +371,56 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           <Card className={classes.card}>
             <Grid container columnSpacing={3} rowSpacing={2} className="p-3 pb-0">
               <Grid item xs={twoColumn ? 3 : 12}>
-                <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</div>
+                <div className={cx(classes.header, classes.width240, "secondaryHeading")}>{$t('training_plan2')}</div>
                 <Tooltip
                   placement="top-start"
-                  title="First session related to this outcome"
+                  title={$t('first_session_related_to_this_outcome')}
                 >
                   <div className="pb-2">
                     <FormField
                       type="date"
                       name={getFieldName("trainingPlanStartDate")}
-                      label="Start date"
+                      label={$t('start_date')}
                       disabled
                     />
                   </div>
                 </Tooltip>
-                <Tooltip placement="top-start" title="Last session or assessment due date related to this outcome">
+                <Tooltip placement="top-start" title={$t('last_session_or_assessment_due_date_related_to_thi')}>
                   <div className="pb-2">
                     <FormField
                       type="date"
                       name={getFieldName("trainingPlanEndDate")}
-                      label="End date"
+                      label={$t('end_date')}
                       disabled
                     />
                   </div>
                 </Tooltip>
               </Grid>
               <Grid item xs={twoColumn ? 3 : 12}>
-                <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</div>
-                <Tooltip placement="top-start" title="First session related to this outcome where student was not marked as absent">
+                <div className={cx(classes.header, classes.width240, "secondaryHeading")}>{$t('actual')}</div>
+                <Tooltip placement="top-start" title={$t('first_session_related_to_this_outcome_where_studen')}>
                   <div className="pb-2">
                     {values.actualStartDate && new Date(values.actualStartDate) > today
-                      ? <Uneditable label="Start date" value="Not yet started" />
+                      ? <Uneditable label={$t('start_date')} value="Not yet started" />
                       : (
                         <FormField
                           type="date"
                           name={getFieldName("actualStartDate")}
-                          label="Start date"
+                          label={$t('start_date')}
                           disabled
                         />
                       )}
                   </div>
                 </Tooltip>
-                <Tooltip placement="top-start" title="Last session or assessment due date related to this outcome">
+                <Tooltip placement="top-start" title={$t('last_session_or_assessment_due_date_related_to_thi')}>
                   <div className="pb-2">
                     {values.actualEndDate && new Date(values.actualEndDate) > today
-                      ? <Uneditable label="End date" value="Not yet finished" />
+                      ? <Uneditable label={$t('end_date')} value="Not yet finished" />
                       : (
                         <FormField
                           type="date"
                           name={getFieldName("actualEndDate")}
-                          label="End date"
+                          label={$t('end_date')}
                           disabled
                         />
                       )}
@@ -426,8 +428,8 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                 </Tooltip>
               </Grid>
               <Grid item xs={twoColumn ? 3 : 12}>
-                <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</div>
-                <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
+                <div className={cx(classes.header, classes.width240, "secondaryHeading")}>{$t('override')}</div>
+                <Grid item className={cx(classes.width240, classes.dateWrapper)}>
                   <div className="pb-2">
                     {values.startDateOverridden ? (
                       <div className="centeredFlex">
@@ -438,7 +440,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                           disabled={!isPriorLearningBinded && !values.startDateOverridden}
                           placeholder={(!isPriorLearningBinded && !values.startDateOverridden)
                             ? null : "Leave empty to calculate date from class"}
-                          label="Start date"
+                          label={$t('start_date')}
                         />
                         <IconButton size="small" onClick={onLockStartDate}>
                           <DeleteIcon fontSize="inherit" color="disabled" />
@@ -447,16 +449,16 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                     ) : (
                       <>
                         <p className={classes.label}>
-                          Start date
+                          {$t('start_date')}
                         </p>
                         <div className={classes.buttonWrapper}>
-                          <Chip label="Override start date" onClick={onLockStartDate} className={classes.chip} />
+                          <Chip label={$t('override_start_date')} onClick={onLockStartDate} className={classes.chip} />
                         </div>
                       </>
                     )}
                   </div>
                 </Grid>
-                <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
+                <Grid item className={cx(classes.width240, classes.dateWrapper)}>
                   <div className="pb-2">
                     {values.endDateOverridden ? (
                       <div className="centeredFlex">
@@ -467,7 +469,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                           disabled={!isPriorLearningBinded && !values.endDateOverridden}
                           placeholder={(!isPriorLearningBinded && !values.endDateOverridden)
                             ? null : "Leave empty to calculate date from class"}
-                          label="End date"
+                          label={$t('end_date')}
                         />
                         <IconButton size="small" onClick={onLockEndDate}>
                           <DeleteIcon fontSize="inherit" color="disabled" />
@@ -476,10 +478,10 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                     ) : (
                       <>
                         <p className={classes.label}>
-                          End date
+                          {$t('end_date')}
                         </p>
                         <div className={classes.buttonWrapper}>
-                          <Chip label="Override end date" onClick={onLockEndDate} className={classes.chip} />
+                          <Chip label={$t('override_end_date')} onClick={onLockEndDate} className={classes.chip} />
                         </div>
                       </>
                     )}
@@ -496,7 +498,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             <FormField
               type="select"
               name={getFieldName("status")}
-              label="Status"
+              label={$t('status')}
               items={outcomeStatusValues}
               disabled={values && values.printed}
                           />
@@ -506,7 +508,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               type="number"
               name={getFieldName("hoursAttended")}
               parse={parseIntValue}
-              label="Hours attended"
+              label={$t('hours_attended')}
               debounced={false}
                           />
           </Grid>
@@ -514,7 +516,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             <FormField
               type="text"
               name={getFieldName("vetFundingSourceStateID")}
-              label="Funding source state"
+              label={$t('funding_source_state')}
               validate={validateFundingSourse}
                           />
           </Grid>
@@ -526,7 +528,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             <FormField
               type="text"
               name={getFieldName("vetPurchasingContractID")}
-              label="Purchasing contract identifier"
+              label={$t('purchasing_contract_identifier')}
               validate={validateVetPurchasingContractIdentifier}
                           />
           </Grid>
@@ -534,7 +536,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             <FormField
               type="text"
               name={getFieldName("vetPurchasingContractScheduleID")}
-              label="Purchasing contract schedule identifier"
+              label={$t('purchasing_contract_schedule_identifier')}
               validate={validatePurchasingContractScheduleIdentifier}
                           />
           </Grid>
@@ -543,7 +545,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             <FormField
               type="text"
               name={getFieldName("specificProgramIdentifier")}
-              label="Specific program identifier"
+              label={$t('specific_program_identifier')}
                             validate={validateSpecificProgramIdentifier}
             />
           </Grid>
@@ -551,7 +553,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           {fundingUploadAccess && values.id
             && (
             <Grid item xs={12} className="saveButtonTableOffset mt-1">
-              <div className="heading mb-1">Funding Uploads</div>
+              <div className="heading mb-1">{$t('funding_uploads')}</div>
               {fundingUploads.length
                 ? (
                   <>
@@ -564,12 +566,12 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                     ))}
                   </>
                 )
-                : <Typography variant="caption" color="textSecondary" className="mt-1">No funding uploads were found</Typography>}
+                : <Typography variant="caption" color="textSecondary" className="mt-1">{$t('no_funding_uploads_were_found')}</Typography>}
             </Grid>
           )}
         </Grid>
       </Grid>
-    </Grid>
+    </Grid>)
   );
 });
 

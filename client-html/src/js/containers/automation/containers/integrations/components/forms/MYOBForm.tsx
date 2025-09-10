@@ -3,15 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import LoadingButton from "@mui/lab/LoadingButton";
-import Typography from "@mui/material/Typography";
-import * as React from "react";
-import { connect } from "react-redux";
-import { change, getFormValues, initialize, reduxForm } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
-import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
-import { State } from "../../../../../../reducers/state";
+import LoadingButton from '@mui/lab/LoadingButton';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { change, getFormValues, initialize, reduxForm } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import { validateSingleMandatoryField } from '../../../../../../common/utils/validation';
+import { State } from '../../../../../../reducers/state';
 
 class MYOBBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -127,11 +128,11 @@ class MYOBBaseForm extends React.Component<any, any> {
     const state = encodeURI(`${window.location.href}${params}`);
 
     window.open(
-      // eslint-disable-next-line max-len
+      
       `https://secure.myob.com/oauth2/account/authorize?client_id=07545d14-9a95-4398-b907-75af3b3841ae&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/myob/auth.html&response_type=code&scope=CompanyFile&state=${state}`,
       "_self"
     );
-  }
+  };
 
   checkAndSet(map: Map<string, string>, name: string, value: string) {
     if (value !== "" && value !== undefined) {
@@ -145,7 +146,7 @@ class MYOBBaseForm extends React.Component<any, any> {
       hideConfig: true
     });
     dispatch(change("MYOBForm", "fields.active", "false"));
-  }
+  };
 
   render() {
     const {
@@ -156,22 +157,22 @@ class MYOBBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarContent>
-          <FormField name="fields.myobBaseUrl" label="Base URL" type="text" className="mb-2" required />
-          <FormField name="fields.myobFileName" label="File name" type="text" className="mb-2" required />
-          <FormField name="fields.myobUser" label="File owner" type="text" className="mb-2" required />
-          <FormField name="fields.myobPassword" type="password" label="File owner password" className="mb-2" />
+          <FormField name="fields.myobBaseUrl" label={$t('base_url')} type="text" className="mb-2" required />
+          <FormField name="fields.myobFileName" label={$t('file_name')} type="text" className="mb-2" required />
+          <FormField name="fields.myobUser" label={$t('file_owner')} type="text" className="mb-2" required />
+          <FormField name="fields.myobPassword" type="password" label={$t('file_owner_password')} className="mb-2" />
 
           {values?.fields?.active === "true" ? (
             <>
               <Typography variant="caption" component="div">
-                You are connected to Myob
+                {$t('you_are_connected_to_myob')}
               </Typography>
               <LoadingButton
                 variant="contained"
                 className="mt-1"
                 onClick={this.onDisconnect}
               >
-                Disconnect from Myob
+                {$t('disconnect_from_myob')}
               </LoadingButton>
             </>
           ) : (
@@ -200,7 +201,7 @@ class MYOBBaseForm extends React.Component<any, any> {
                   loading={loading}
                   onClick={this.showTokenField}
                 >
-                  Connect to Myob
+                  {$t('connect_to_myob')}
                 </LoadingButton>
               )}
             </>

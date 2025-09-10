@@ -133,15 +133,15 @@
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
 					<reportElement key="textField-22" style="header 3 (right)" x="434" y="6" width="95" height="16" uuid="f6e8b2ef-7331-4ec2-9c51-bd017ff0ec25"/>
-					<textFieldExpression><![CDATA[new Money($V{totalIA}) +"/" + new Money($V{totalIB})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[Money.of($V{totalIA}) +"/" + Money.of($V{totalIB})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
 					<reportElement key="textField-25" style="header 3 (right)" x="529" y="6" width="111" height="16" uuid="4f2f29d3-c808-44ca-bd18-4288d0c0ab4a"/>
-					<textFieldExpression><![CDATA[new Money($V{totalEA}).negate() + "/" + new Money($V{totalEB}).negate()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[Money.of($V{totalEA}).negate() + "/" + Money.of($V{totalEB}).negate()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
 					<reportElement key="textField-28" style="header 3 (right)" x="642" y="6" width="101" height="16" uuid="6656c3fc-3d77-418e-8410-046aaa23c585"/>
-					<textFieldExpression><![CDATA[new Money($V{totalPA}) + "/" + new Money($V{totalPB})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[Money.of($V{totalPA}) + "/" + Money.of($V{totalPB})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
 					<reportElement key="textField-31" style="header 3 (right)" x="745" y="6" width="36" height="16" uuid="a7525c32-fd95-4d6d-9e3b-a5b8cb03b5b0"/>
@@ -165,15 +165,15 @@
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
 					<reportElement key="textField-20" style="data field (money)" x="434" y="4" width="95" height="16" uuid="ae81d70c-efe6-4bb1-8abc-161bccf439ad"/>
-					<textFieldExpression><![CDATA[new Money($V{catIA}) + "/" + new Money($V{catIB})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[Money.of($V{catIA}) + "/" + Money.of($V{catIB})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
 					<reportElement key="textField-23" style="data field (money)" x="529" y="4" width="111" height="16" uuid="c478c3ec-da9d-4e12-9675-6e65481225ee"/>
-					<textFieldExpression><![CDATA[new Money($V{catEA}).negate() + "/" + new Money($V{catEB}).negate()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[Money.of($V{catEA}).negate() + "/" + Money.of($V{catEB}).negate()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
 					<reportElement key="textField-26" style="data field (money)" x="642" y="4" width="101" height="16" uuid="4e81080e-0986-48c6-bf87-e6c4ccc801c2"/>
-					<textFieldExpression><![CDATA[new Money($V{catPA}) + "/" + new Money($V{catPB})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[Money.of($V{catPA}) + "/" + Money.of($V{catPB})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
 					<reportElement key="textField-29" style="data field" x="745" y="4" width="36" height="16" uuid="0cb1bf0d-a8bd-4cb0-a9c2-cdf4afad7570"/>
@@ -263,11 +263,11 @@
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-9" style="data field (money)" x="434" y="1" width="95" height="14" uuid="950cac4d-c6b9-4c6b-b4dd-d2ee59886cad"/>
-				<textFieldExpression><![CDATA[new Money($V{incomeActual}) + "/" + new Money($V{incomeBudgeted})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{incomeActual}) + "/" + Money.of($V{incomeBudgeted})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-10" style="data field (money)" x="529" y="1" width="111" height="14" uuid="96be7d92-2025-457c-a83c-ba5943804b1b"/>
-				<textFieldExpression><![CDATA[new Money($V{expenseActual}).negate() + "/" + new Money($V{expenseBudgeted}).negate()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{expenseActual}).negate() + "/" + Money.of($V{expenseBudgeted}).negate()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-11" style="data field" x="745" y="1" width="36" height="14" uuid="56755fc7-a087-49fe-9f04-3083da4d55ad"/>

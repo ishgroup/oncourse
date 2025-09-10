@@ -3,28 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseClassAttendanceType, DeliveryMode, FundingSource } from "@api/model";
-import { Divider, FormControlLabel, Grid } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
-import { normalizeNumber, normalizeNumberToZero } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
-import { mapSelectItems } from "../../../../../common/utils/common";
+import { CourseClassAttendanceType, DeliveryMode, FundingSource } from '@api/model';
+import { Collapse, Divider, FormControlLabel, Grid } from '@mui/material';
+import $t from '@t';
+import { mapSelectItems, normalizeNumber, normalizeNumberToZero } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import ExpandableContainer from '../../../../../common/components/layout/expandable/ExpandableContainer';
 import {
   validateCourseSiteIdentifier,
   validateDefaultPurchasingContractIdentifier,
   validateDETBookingIdentifier,
   validatePurchasingContractScheduleIdentifier,
   validateVetFundingSourceState
-} from "../../../../../common/utils/validation";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
-import { State } from "../../../../../reducers/state";
-import { formatFundingSourceId } from "../../../common/utils";
-import { fundingSourceValues } from "../../constants";
-import CourseClassAttendanceTab from "../attendance/CourseClassAttendanceTab";
+} from '../../../../../common/utils/validation';
+import { EditViewProps } from '../../../../../model/common/ListView';
+import { CourseClassExtended } from '../../../../../model/entities/CourseClass';
+import { State } from '../../../../../reducers/state';
+import { formatFundingSourceId } from '../../../common/utils';
+import { fundingSourceValues } from '../../constants';
+import CourseClassAttendanceTab from '../attendance/CourseClassAttendanceTab';
 
 interface Props extends Partial<EditViewProps> {
   values?: CourseClassExtended;
@@ -46,13 +45,13 @@ const CourseClassVetTab = React.memo<Props>(props => {
             <FormControlLabel
               className="switchWrapper pb-2"
               control={<FormField type="switch" name="suppressAvetmissExport" />}
-              label="Do not report to AVETMISS"
+              label={$t('do_not_report_to_avetmiss')}
               labelPlacement="start"
             />
             <FormField
               type="select"
               name="deliveryMode"
-              label="Default delivery mode"
+              label={$t('default_delivery_mode')}
               items={deliveryModeValues}
             />
           </Grid>
@@ -66,7 +65,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
                 selectValueMark="id"
                 selectLabelMark="name"
                 name="relatedFundingSourceId"
-                label="Default funding contract"
+                label={$t('default_funding_contract')}
                 items={contracts}
                 format={formatFundingSourceId}
               />
@@ -77,7 +76,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             <FormField
               type="select"
               name="fundingSource"
-              label="Default funding source national"
+              label={$t('default_funding_source_national')}
               items={fundingSourceValues}
             />
           </Grid>
@@ -86,7 +85,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             <FormField
               type="text"
               name="vetFundingSourceStateID"
-              label="Default funding source state"
+              label={$t('default_funding_source_state')}
               validate={validateVetFundingSourceState}
             />
           </Grid>
@@ -95,7 +94,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             <FormField
               type="text"
               name="detBookingId"
-              label="DET Booking Identifier (NSW)/Contracted Program of Study (WA)"
+              label={$t('det_booking_identifier_nswcontracted_program_of_st')}
               validate={validateDETBookingIdentifier}
             />
           </Grid>
@@ -105,7 +104,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               type="text"
               normalize={normalizeNumber}
               name="vetCourseSiteID"
-              label="Course site identifier (NSW)"
+              label={$t('course_site_identifier_nsw')}
               validate={validateCourseSiteIdentifier}
               debounced={false}
             />
@@ -117,7 +116,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             <FormField
               type="text"
               name="vetPurchasingContractID"
-              label="Default purchasing contract identifier"
+              label={$t('default_purchasing_contract_identifier')}
               validate={validateDefaultPurchasingContractIdentifier}
             />
           </Grid>
@@ -126,7 +125,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             <FormField
               type="text"
               name="vetPurchasingContractScheduleID"
-              label="Default purchasing contract schedule identifier"
+              label={$t('default_purchasing_contract_schedule_identifier')}
               validate={validatePurchasingContractScheduleIdentifier}
             />
           </Grid>
@@ -140,7 +139,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               type="number"
               normalize={normalizeNumber}
               name="qualificationHours"
-              label="Qualification hours"
+              label={$t('qualification_hours')}
               debounced={false}
               disabled
             />
@@ -152,7 +151,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               normalize={normalizeNumber}
               disabled
               name="nominalHours"
-              label="Nominal hours"
+              label={$t('nominal_hours')}
               debounced={false}
             />
           </Grid>
@@ -163,7 +162,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               normalize={normalizeNumber}
               name="classroomHours"
               disabled
-              label="Classroom hours"
+              label={$t('classroom_hours')}
               debounced={false}
             />
           </Grid>
@@ -174,7 +173,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               normalize={normalizeNumber}
               name="studentContactHours"
               disabled
-              label="Student contact hours"
+              label={$t('student_contact_hours')}
               debounced={false}
             />
           </Grid>
@@ -184,7 +183,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               type="number"
               normalize={normalizeNumberToZero}
               name="reportableHours"
-              label="Reportable hours"
+              label={$t('reportable_hours')}
             />
           </Grid>
 
@@ -199,12 +198,12 @@ const CourseClassVetTab = React.memo<Props>(props => {
                   <FormField
                     type="select"
                     name="attendanceType"
-                    label="Type of attendance"
+                    label={$t('type_of_attendance')}
                     items={attendanceTypeValues}
                   />
                 </Grid>
                 <Grid item xs={twoColumn ? 3 : 12}>
-                  <FormField type="date" name="censusDate" label="Census date" />
+                  <FormField type="date" name="censusDate" label={$t('census_date')} />
                 </Grid>
               </Grid>
             </Collapse>

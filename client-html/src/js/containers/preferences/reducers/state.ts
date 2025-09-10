@@ -10,9 +10,11 @@ import {
   FieldType,
   FundingSource,
   GradingType,
+  Logo,
   PaymentMethod,
+  Tag,
   Tax
-} from "@api/model";
+} from '@api/model';
 
 export interface PreferencesState {
   contact?: any;
@@ -33,6 +35,8 @@ export interface PreferencesState {
   licences?: any;
   messaging?: any;
   classDefaults?: any;
+  classTypes?: Tag[];
+  courseTypes?: Tag[];
   ldap?: any;
   maintenance?: any;
   avetmiss?: any;
@@ -47,4 +51,5 @@ export interface PreferencesState {
   columnWidth?: ColumnWidth;
   product?: any;
   plugins?: string;
+  logo?: Logo;
 }

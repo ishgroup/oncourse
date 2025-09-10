@@ -3,32 +3,33 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { User, UserRole } from "@api/model";
-import IconPhoneLocked from "@mui/icons-material/ScreenLockPortrait";
-import { Button, Collapse, FormControlLabel, FormGroup, Grid, Paper, Typography } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format as formatDate } from "date-fns";
-import { III_DD_MMM_YYYY_HH_MM_SPECIAL, ShowConfirmCaller } from "ish-ui";
-import React, { ComponentClass } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { Dispatch } from "redux";
-import { change, Form, getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
-import { showConfirm } from "../../../../../common/actions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { SelectItemDefault } from "../../../../../model/entities/common";
-import { State } from "../../../../../reducers/state";
-import { disableUser2FA, resetUserPassword, updateUser } from "../../../actions";
+import { User, UserRole } from '@api/model';
+import IconPhoneLocked from '@mui/icons-material/ScreenLockPortrait';
+import { Button, Collapse, FormControlLabel, FormGroup, Grid, Paper, Typography } from '@mui/material';
+import $t from '@t';
+import clsx from 'clsx';
+import { format as formatDate } from 'date-fns';
+import { III_DD_MMM_YYYY_HH_MM_SPECIAL, SelectItemDefault, ShowConfirmCaller } from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Dispatch } from 'redux';
+import { change, Form, getFormSyncErrors, getFormValues, initialize, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { showConfirm } from '../../../../../common/actions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../reducers/state';
+import { disableUser2FA, resetUserPassword, updateUser } from '../../../actions';
 
 const manualUrl = getManualLink("users");
 
 const styles = theme => ({
+  root: {},
   paperPadding: {
     padding: "26px"
   },
@@ -234,7 +235,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               <FormField
                 type="text"
                 name="email"
-                label="Email"
+                label={$t('email2')}
                 validate={validateUniqueNames}
                 required
               />
@@ -244,7 +245,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
         >
           <FormControlLabel
             control={<FormField type="switch" name="active" color="primary" />}
-            label="Active"
+            label={$t('active')}
             labelPlacement="start"
             classes={{
               root: "switchWrapper mb-2"
@@ -256,14 +257,14 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               <FormField
                 type="text"
                 name="firstName"
-                label="First name"
+                label={$t('first_name')}
                 className="mb-2"
                 required
               />
               <FormField
                 type="text"
                 name="lastName"
-                label="Last name"
+                label={$t('last_name')}
                 className="mb-2"
                 required
               />
@@ -271,7 +272,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               <FormField
                 type="select"
                 name="administrationCentre"
-                label="Bank cash/cheques to site"
+                label={$t('bank_cashcheques_to_site')}
                 className="mb-2"
                 items={sites || []}
                 required
@@ -281,7 +282,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                 <Uneditable
                   value={lastLoggedIn}
                   format={v => formatDate(new Date(v), III_DD_MMM_YYYY_HH_MM_SPECIAL)}
-                  label="Last logged in"
+                  label={$t('last_logged_in')}
                   className="mb-2"
                 />
               )}
@@ -289,7 +290,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               {!isNew && !values.inviteAgain && (
                 <FormControlLabel
                   control={<FormField type="switch" name="passwordUpdateRequired" color="primary" />}
-                  label="Require password update"
+                  label={$t('require_password_update')}
                   labelPlacement="start"
                   className={classes.passwordUpdateSection}
                   classes={{
@@ -302,7 +303,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                 <div className={classes.resetSection}>
                   {!values.inviteAgain && (
                     <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onResetPassword}>
-                      Reset password
+                      {$t('reset_password')}
                     </Button>
                   )}
                 </div>
@@ -316,14 +317,13 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                     className="mb-1 centeredFlex"
                   >
                     <IconPhoneLocked className={classes.lockedIcon} />
-                    {' '}
-                    Two factor authentication is
+                    {$t('two_factor_authentication_is')}
                     {" "}
                     {tfaEnabled ? "enabled" : "disabled"}
                   </Typography>
                   {tfaEnabled && (
                     <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onDisable2FA}>
-                      Disable 2FA
+                      {$t('disable_2fa')}
                     </Button>
                   )}
                 </div>
@@ -351,7 +351,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                         debounced={false}
                       />
                     )}
-                    label="Admin"
+                    label={$t('admin')}
                     labelPlacement="start"
                   />
 
@@ -359,7 +359,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                     <FormField
                       type="select"
                       name="role"
-                      label="Role"
+                      label={$t('role')}
                       className={classes.inputField}
                       selectValueMark="id"
                       selectLabelMark="name"
@@ -376,7 +376,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                     control={
                       <FormField type="switch" name="accessEditor" color="primary" className={classes.cardSwitch} />
                     }
-                    label="Can access #editor"
+                    label={$t('can_access_editor')}
                     labelPlacement="start"
                   />
                 </FormGroup>
@@ -407,6 +407,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const UsersForm = reduxForm({
   form: "UsersForm",
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(UsersFormBase))));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(withRouter(UsersFormBase), styles)));
 
-export default UsersForm as ComponentClass<Props>;
+export default UsersForm;

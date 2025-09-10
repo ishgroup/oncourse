@@ -6,34 +6,35 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { EmailTemplate, MessageType } from "@api/model";
-import { FileCopy } from "@mui/icons-material";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import { Grid, Grow } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import { InfoPill, NumberArgFunction, usePrevious } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { mapSelectItems } from "../../../../../common/utils/common";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { CatalogItemType } from "../../../../../model/common/Catalog";
-import AvailableFrom, { mapMessageAvailableFrom } from "../../../components/AvailableFrom";
-import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import getConfigActions from "../../../components/ImportExportConfig";
-import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { MessageTemplateEntityItems, MessageTemplateEntityName } from "../../../constants";
-import { validateKeycode, validateNameForQuotes } from "../../../utils";
-import ScriptCard from "../../scripts/components/cards/CardBase";
+import { EmailTemplate, MessageType } from '@api/model';
+import { FileCopy } from '@mui/icons-material';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import { Grid, Grow } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { InfoPill, mapSelectItems, NumberArgFunction, usePrevious } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import { FieldArray, Form, initialize, InjectedFormProps } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { CatalogItemType } from '../../../../../model/common/Catalog';
+import AvailableFrom, { mapMessageAvailableFrom } from '../../../components/AvailableFrom';
+import Bindings, { BindingsRenderer } from '../../../components/Bindings';
+import getConfigActions from '../../../components/ImportExportConfig';
+import SaveAsNewAutomationModal from '../../../components/SaveAsNewAutomationModal';
+import { MessageTemplateEntityItems, MessageTemplateEntityName } from '../../../constants';
+import { validateKeycode, validateNameForQuotes } from '../../../utils';
+import ScriptCard from '../../scripts/components/cards/CardBase';
 
-const manualUrl = getManualLink("emailTemplates");
+const manualUrl = getManualLink("message-templates");
 const getAuditsUrl = (id: number) => `audit?search=~"EmailTemplate" and entityId == ${id}`;
 
 const messageTypes = Object.keys(MessageType).map(mapSelectItems).filter(t => t.value !== "Post");
@@ -41,7 +42,7 @@ const messageTypes = Object.keys(MessageType).map(mapSelectItems).filter(t => t.
 interface Props extends InjectedFormProps {
   isNew: boolean;
   values: EmailTemplate;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onCreate: (template: EmailTemplate) => void;
   onUpdateInternal: (template: EmailTemplate) => void;
   onUpdate: (template: EmailTemplate) => void;
@@ -164,7 +165,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     return validateNameForQuotes(name);
   }, [emailTemplates, values.id]);
 
-
   return (
     <>
       <SaveAsNewAutomationModal
@@ -198,7 +198,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
               <FormField
                 type="text"
                 name="name"
-                label="Name"
+                label={$t('name')}
                 validate={validateNewTemplateName}
                 disabled={isInternal}
                 required
@@ -224,7 +224,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
 
               {isInternal && (
                 <Grow in={isInternal}>
-                  <Tooltip title="Save as new email template">
+                  <Tooltip title={$t('save_as_new_email_template')}>
                     <IconButton onClick={onInternalSaveClick} color="inherit">
                       <FileCopy color="primary" />
                     </IconButton>
@@ -241,7 +241,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 name="shortDescription"
                 disabled={isInternal}
                 className="overflow-hidden mb-1"
-                placeholder="Short description"
+                placeholder={$t('short_description')}
               />
               <Typography variant="caption" fontSize="13px">
                 <FormField
@@ -249,7 +249,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                   name="description"
                   disabled={isInternal}
                   className="overflow-hidden mb-1"
-                  placeholder="Description"
+                  placeholder={$t('description')}
                   fieldClasses={{
                     text: "fw300 fsInherit"
                   }}
@@ -259,7 +259,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
             <Grid item xs={9} className="pr-3">
               <Grid container columnSpacing={3} rowSpacing={2} className="mb-3">
                 <Grid item xs={6}>
-                  <div className="heading">Type</div>
+                  <div className="heading">{$t('type')}</div>
                   <FormField
                     type="select"
                     name="entity"
@@ -271,7 +271,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 <Grid item xs={6}>
                   <FormField
                     type="select"
-                    label="Message type"
+                    label={$t('message_type')}
                     name="type"
                     items={messageTypes}
                     disabled={isInternal}
@@ -290,7 +290,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
               {values.type === 'Email' && (
                 <Grid container>
                   <Grid item xs={6}>
-                    <div className="heading">Subject</div>
+                    <div className="heading">{$t('subject')}</div>
                     <FormField
                       type="text"
                       name="subject"
@@ -337,7 +337,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
 
               <FormField
                 type="text"
-                label="Key Code"
+                label={$t('key_code')}
                 name="keyCode"
                 validate={isNew || !isInternal ? validateKeycode : undefined}
                 disabled={!isNew}
@@ -348,7 +348,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
             <Grid item xs={3}>
               <div>
                 <FormField
-                  label="Enabled"
+                  label={$t('enabled')}
                   type="switch"
                   name="status"
                   color="primary"
@@ -363,7 +363,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                   dispatch={dispatch}
                   form={form}
                   name="variables"
-                  label="Variables"
+                  label={$t('variables')}
                   itemsType="label"
                   disabled={isInternal}
                 />
@@ -374,7 +374,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                   form={form}
                   itemsType="component"
                   name="options"
-                  label="Options"
+                  label={$t('options')}
                   disabled={isInternal}
                 />
               </div>

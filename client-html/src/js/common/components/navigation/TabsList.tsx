@@ -6,18 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Grid, { GridSize } from "@mui/material/Grid";
-import clsx from "clsx";
-import { AnyArgFunction, makeAppStyles } from "ish-ui";
-import React, { useEffect, useRef, useState } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import { APP_BAR_HEIGHT, TAB_LIST_SCROLL_TARGET_ID } from "../../../constants/Config";
-import { EditViewProps } from "../../../model/common/ListView";
-import { LSGetItem, LSSetItem } from "../../utils/storage";
-import SideBarHeader from "../layout/side-bar-list/SideBarHeader";
-import NewsRender from "../news/NewsRender";
+import Grid, { GridSize } from '@mui/material/Grid';
+import clsx from 'clsx';
+import { AnyArgFunction, makeAppStyles } from 'ish-ui';
+import React, { useEffect, useRef, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { APP_BAR_HEIGHT, TAB_LIST_SCROLL_TARGET_ID } from '../../../constants/Config';
+import { EditViewProps } from '../../../model/common/ListView';
+import { LSGetItem, LSSetItem } from '../../utils/storage';
+import SideBarHeader from '../layout/side-bar-list/SideBarHeader';
+import NewsRender from '../news/NewsRender';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   listContainer: {
     flex: 1,
     overflowY: 'auto',
@@ -64,7 +64,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
     onParentScroll
   }
 ) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const scrolledPX = useRef<number>(0);
   const scrollNodes = useRef<HTMLElement[]>([]);
   const scrollContainer = useRef<HTMLDivElement>(null);
@@ -202,7 +202,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
           <div
             id={i.label}
             key={tabIndex}
-            ref={el => scrollNodes.current[tabIndex] = el}
+            ref={el => scrollNodes.current[tabIndex] = el as any}
             className={tabIndex === items.length - 1 ? "saveButtonTableOffset" : undefined}
           >
             {i.component({

@@ -6,13 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { connect } from "react-redux";
-import { getFormValues, initialize, reduxForm } from "redux-form";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../../../reducers/state";
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { getFormValues, initialize, reduxForm } from 'redux-form';
+import RouteChangeConfirm from '../../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../../reducers/state';
 
 class OktaBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -38,10 +39,10 @@ class OktaBaseForm extends React.Component<any, any> {
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <AppBarContent>
-          <FormField name="fields.clientId" label="Client id" type="text" className="mb-2" />
-          <FormField name="fields.clientSecret" label="Client secret" type="password" className="mb-2" />
-          <FormField name="fields.appUrl"  label="Okta app url in form https://*********.okta.com" type="text" className="mb-2" />
-          <FormField name="fields.webRedirect" disabled label="Sign-in redirect URI" type="text" className="mb-2" />
+          <FormField name="fields.clientId" label={$t('client_id')} type="text" className="mb-2" />
+          <FormField name="fields.clientSecret" label={$t('client_secret')} type="password" className="mb-2" />
+          <FormField name="fields.appUrl"  label={$t('okta_app_url_in_form_httpsoktacom')} type="text" className="mb-2" />
+          <FormField name="fields.webRedirect" disabled label={$t('signin_redirect_uri')} type="text" className="mb-2" />
         </AppBarContent>
       </form>
     );

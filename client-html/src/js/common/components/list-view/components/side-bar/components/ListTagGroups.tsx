@@ -1,17 +1,20 @@
-import { DataResponse, TableModel } from "@api/model";
-import { createStyles, withStyles } from "@mui/styles";
-import React, { useCallback, useEffect, useState } from "react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd-next";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { FormMenuTag } from "../../../../../../model/tags";
-import { State } from "../../../../../../reducers/state";
-import { updateTableModel } from "../../../actions";
-import { COLUMN_WITH_COLORS } from "../../list/constants";
-import ListTagGroup from "./ListTagGroup";
+import { DataResponse, TableModel } from '@api/model';
+import React, { useEffect, useMemo, useState } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd-next';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { SPECIAL_TYPES_DISPLAY_KEY } from '../../../../../../constants/Config';
+import { FormMenuTag } from '../../../../../../model/tags';
+import { State } from '../../../../../../reducers/state';
+import { IAction } from '../../../../../actions/IshAction';
+import { useAppSelector } from '../../../../../utils/hooks';
+import { updateTableModel } from '../../../actions';
+import { COLUMN_WITH_COLORS } from '../../list/constants';
+import ListTagGroup from './ListTagGroup';
 
 const styles = theme =>
-  createStyles({
+  ({
     container: {
       marginLeft: theme.spacing(-0.5)
     },
@@ -32,13 +35,17 @@ interface Props {
 const ListTagGroups = ({
  tags, classes, onChangeTagGroups, updateTableModel, records 
 }: Props) => {
+  const specialTypesEnabled = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true');
+
   const showColoredDots = records.columns.find(c => c.attribute === COLUMN_WITH_COLORS)?.visible;
   
   const [tagsForRender, setTagsForRender] = useState([]);
 
   useEffect(() => {
     const savedTagsOrder = records.tagsOrder;
-    const filteredTags = tags.filter((tag: FormMenuTag) => tag.children.length);
+    const filteredTags = tags.filter((tag: FormMenuTag) => tag.children.length && (specialTypesEnabled
+      ? !tag.tagBody.system && tag.tagBody.name !== 'Subjects'
+      : true));
 
     const filteredSortedTags = [];
 
@@ -57,19 +64,16 @@ const ListTagGroups = ({
     setTagsForRender(filteredSortedTags.concat(filteredTags));
   }, [records, tags]);
   
-  const updateActive = useCallback(
-    (updated: FormMenuTag) => {
-      const updatedTags = tags.map(t => {
-        if (t.tagBody.id === updated.tagBody.id && t.prefix === updated.prefix) {
-          return updated;
-        }
+  const updateActive = (updated: FormMenuTag) => {
+    const updatedTags = tags.map(t => {
+      if (t.tagBody.id === updated.tagBody.id && t.prefix === updated.prefix) {
+        return updated;
+      }
 
-        return t;
-      });
-      onChangeTagGroups(updatedTags, "tags");
-    },
-    [tags]
-  );
+      return t;
+    });
+    onChangeTagGroups(updatedTags, "tags");
+  };
 
   const onDragEnd = result => {
     if (!result.destination || result.destination.index === result.source.index) {
@@ -84,36 +88,55 @@ const ListTagGroups = ({
 
     if (records.columns.length) updateTableModel({ tagsOrder }, true);
   };
+  
+  const subjects = useMemo(() => {
+    if (specialTypesEnabled) {
+      return tags.filter(tag => tag.tagBody.system && tag.tagBody.name === 'Subjects')[0];
+    }
+    return null;
+  }, [tags, specialTypesEnabled]);
 
   return (
-    <DragDropContext
-      onDragEnd={args => onDragEnd(args)}
-    >
-      <Droppable droppableId="ROOT" style={{ transform: "none" }}>
-        {provided => (
-          <div
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {tagsForRender.map((t, index) => {
-              if (!t.children.length) {
-                return null;
-              }
-              return (
-                <ListTagGroup
-                  key={t.prefix + t.tagBody.id.toString()}
-                  dndKey={index}
-                  rootTag={t}
-                  classes={classes}
-                  updateActive={updateActive}
-                  showColoredDots={showColoredDots}
-                />
-              );
-            })}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <>
+      {specialTypesEnabled && subjects &&
+        <ListTagGroup
+          key={subjects.prefix + subjects.tagBody.id.toString()}
+          rootTag={subjects}
+          classes={classes}
+          updateActive={updateActive}
+          showColoredDots={false}
+          dndEnabled={false}
+        />
+      }
+      <DragDropContext
+        onDragEnd={args => onDragEnd(args)}
+      >
+        <Droppable droppableId="ROOT" style={{ transform: "none" }}>
+          {provided => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {tagsForRender.map((t, index) => {
+                if (!t.children.length) {
+                  return null;
+                }
+                return (
+                  <ListTagGroup
+                    key={t.prefix + t.tagBody.id.toString()}
+                    dndKey={index}
+                    rootTag={t}
+                    classes={classes}
+                    updateActive={updateActive}
+                    showColoredDots={showColoredDots}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
   );
 };
 
@@ -122,11 +145,11 @@ const mapStateToProps = (state: State) => ({
   records: state.list.records,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>, ownProps) => ({
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(ListTagGroups));
+)(withStyles(ListTagGroups, styles));

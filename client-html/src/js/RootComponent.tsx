@@ -8,20 +8,17 @@
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { StylesProviderCustom } from "ish-ui";
-import * as React from "react";
-import { Router } from "react-router-dom";
-import history from "./constants/History";
-import "./constants/Prototype";
+import * as React from 'react';
+import { Router } from 'react-router-dom';
+import history from './constants/History';
+import './constants/Prototype';
 
 const RootComponent = ({ children }) => (
-  <StylesProviderCustom>
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Router history={history}>
         {children}
       </Router>
     </LocalizationProvider>
-  </StylesProviderCustom>
 );
 
 export default RootComponent;

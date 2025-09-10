@@ -74,6 +74,9 @@ class GroovyScriptService {
     public static final String RECORD_PARAM_NAME = "record"
     public static final String RECORDS_PARAM_NAME = "records"
     public static final String SCRIPT_CONTEXT_PROPERTY = "script_context"
+    public static final String COLLEGE_KEY = "collegeKey"
+    public static final String SERVICES_HOST = "servicesHost"
+    public static final String SERVICES_KEY = "servicesKey"
 
     private static final String GROOVY_SCRIPT_ENGINE = "groovy"
 
@@ -205,6 +208,9 @@ class GroovyScriptService {
         bindings.put(ACCOUNT_TRANSACTION_SERVICE, accountTransactionService)
         bindings.put(RECORDS_PARAM_NAME, [])
         bindings.put(FILE_PARAM_NAME, null)
+        bindings.put(COLLEGE_KEY, licenseService.getCollege_key())
+        bindings.put(SERVICES_HOST, licenseService.getServices_host())
+        bindings.put(SERVICES_KEY, licenseService.getServices_key())
 
         bindings.put(RUN_QUERY, new MethodClosure(queryService, RUN_QUERY))
         bindings.put(SEND_EMAIL, new MethodClosure(emailService, SEND_EMAIL))

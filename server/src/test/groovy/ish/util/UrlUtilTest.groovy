@@ -8,27 +8,12 @@
 package ish.util
 
 import groovy.transform.CompileStatic
-import ish.DatabaseSetup
-import ish.TestWithDatabase
-import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.cayenne.Preference
-import ish.oncourse.server.integration.PluginsPrefsService
-import ish.oncourse.server.license.LicenseService
-import ish.oncourse.server.services.ISystemUserService
-import ish.persistence.CommonPreferenceController
-import org.apache.cayenne.access.DataContext
-import org.apache.cayenne.query.Select
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
 
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
-
-import static org.mockito.ArgumentMatchers.any
-import static org.mockito.Mockito.when
 
 @CompileStatic
 class UrlUtilTest {
@@ -45,7 +30,7 @@ class UrlUtilTest {
 
         Assertions.assertTrue(UrlUtil.validatePortalUsiLink(url, "saltstring", format.parse("01/01/2015")))
     }
-	
+
 	@Test
     void testValidatePortalUsiLink_Expired() throws Exception {
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy")
@@ -113,21 +98,5 @@ class UrlUtilTest {
 
         Assertions.assertFalse(UrlUtil.validateSignedPortalUrl("https://domain.skillsoncourse.com.au/portal/class/5034179?contactId=cvKcLp3qQabLXhf6&valid=20160303&key=CAnB0aQQpCLqN6nJB3fEQerjjm4",
 				"oJRJarnFPk9xoPVQ", new SimpleDateFormat("yyy-MM-dd").parse("2016-03-04")))
-    }
-
-    private PreferenceController initPreferenceController(Preference preference) {
-        ICayenneService iCayenneService = Mockito.mock(ICayenneService.class)
-
-        DataContext dataContext = Mockito.mock(DataContext.class)
-        when(iCayenneService.getNewContext()).thenReturn(dataContext)
-
-        when(dataContext.selectFirst(any(Select))).thenReturn(preference)
-        when(dataContext.localObject(any(Preference))).thenReturn(preference)
-
-        ISystemUserService systemUserService = Mockito.mock(ISystemUserService.class)
-        LicenseService licenseService = Mockito.mock(LicenseService.class)
-        PluginsPrefsService pluginsService = Mockito.mock(PluginsPrefsService.class)
-
-        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService)
     }
 }

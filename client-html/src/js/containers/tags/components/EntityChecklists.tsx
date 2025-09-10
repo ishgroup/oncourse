@@ -3,21 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Tag } from "@api/model";
+import { Tag } from '@api/model';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Card, CircularProgress, Collapse, Divider, IconButton, Link, Menu, MenuItem, Typography } from "@mui/material";
-import clsx from "clsx";
-import { BooleanArgFunction, ColoredCheckBox, openInternalLink } from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import { change } from "redux-form";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import StaticProgress from "../../../common/components/progress/StaticProgress";
-import { useAppDispatch } from "../../../common/utils/hooks";
-import { LSGetItem, LSSetItem } from "../../../common/utils/storage";
-import { ENTITY_TAGS_EXPAND_SETTINGS_KEY } from "../constants";
-import TagsService from "../services/TagsService";
+import { Card, CircularProgress, Collapse, Divider, IconButton, Link, Menu, MenuItem, Typography } from '@mui/material';
+import $t from '@t';
+import clsx from 'clsx';
+import { BooleanArgFunction, ColoredCheckBox, openInternalLink } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { change } from 'redux-form';
+import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import StaticProgress from '../../../common/components/progress/StaticProgress';
+import { useAppDispatch } from '../../../common/utils/hooks';
+import { LSGetItem, LSSetItem } from '../../../common/utils/storage';
+import { EntityName } from '../../../model/entities/common';
+import { ENTITY_TAGS_EXPAND_SETTINGS_KEY } from '../constants';
+import TagsService from '../services/TagsService';
 
 interface ChecklistItemProps {
   item: Tag;
@@ -69,12 +71,10 @@ const ChecklistItem = ({
         'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={onEditClick}>Edit checklist</MenuItem>
+        <MenuItem onClick={onEditClick}>{$t('edit_checklist')}</MenuItem>
         <MenuItem onClick={onShowCompleted}>{expandAll ? "Hide completed tasks" : "Show completed tasks"}</MenuItem>
         <MenuItem onClick={onMarkAllComplete}>
-          Mark all tasks
-          {allChecked ? " in" : " "}
-          complete
+          {$t('mark_all_tasks_complete', [allChecked ? " " + $t('in') : " "])}
         </MenuItem>
       </Menu>
     
@@ -119,7 +119,7 @@ const ChecklistItem = ({
 };
 
 interface EntityChecklistsProps {
-  entity: string;
+  entity: EntityName;
   form: string;
   entityId: number;
   checked: number[];
@@ -193,7 +193,7 @@ export const EntityChecklists = ({
       {!loading && !checklists.length && (
         <div className="centeredFlex">
           <Typography className="flex-fill" variant="caption">
-            <Link color="inherit" href={`/tags/checklist/new?entity=${entity}`} target="_blank">Create a checklist now</Link>
+            <Link color="inherit" href={`/tags/checklist/new?entity=${entity}`} target="_blank">{$t('create_a_checklist_now')}</Link>
           </Typography>
           <StaticProgress color={null} value={0} />
         </div>

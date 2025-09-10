@@ -1,16 +1,18 @@
-import { GradingType } from "@api/model";
-import Grid from "@mui/material/Grid";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { FieldArray, Form, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
-import { showConfirm } from "../../../../../common/actions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../../reducers/state";
-import { deleteGradingType, updateGradingTypes } from "../../../actions";
-import GradingsRenderer from "./GradingsRenderer";
+import { GradingType } from '@api/model';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { FieldArray, Form, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import { showConfirm } from '../../../../../common/actions';
+import { IAction } from '../../../../../common/actions/IshAction';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../reducers/state';
+import { deleteGradingType, updateGradingTypes } from '../../../actions';
+import GradingsRenderer from './GradingsRenderer';
 
 export interface GradingFormData {
   types: GradingType[];
@@ -24,7 +26,7 @@ export interface GradingProps {
 
 export const GRADING_FORM: string = "GradingForm";
 
-const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispatch }> = props => {
+const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Dispatch<IAction> }> = props => {
   const {
     values,
     handleSubmit,
@@ -86,7 +88,7 @@ const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Disp
         values={values}
         disabled={!dirty}
         invalid={invalid}
-        title="Grading types"
+        title={$t('grading_types')}
         disableInteraction
         hideHelpMenu
         onAddMenu={() => onAddNew()}

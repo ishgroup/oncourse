@@ -80,6 +80,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
     @Inject
     private ModuleApiService moduleApiService
 
+    @Inject
+    private FacultyApiService facultyApiService
+
     @Override
     Class<Course> getPersistentClass() {
         return Course
@@ -94,6 +97,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.name = course.name
             courseDTO.code = course.code
             courseDTO.tags = course.allTags.collect { it.id }
+
+            def hiddenTags = course.hiddenTags
+            courseDTO.specialTagId = hiddenTags.empty ? null as Long : hiddenTags.first().id
             courseDTO.enrolmentType = ENROLMENT_TYPE_MAP[course.enrolmentType]
             courseDTO.allowWaitingLists = course.allowWaitingLists
             courseDTO.dataCollectionRuleId = course.fieldConfigurationSchema.id
@@ -105,6 +111,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.futureClasseCount = course.futureClasseCount
             courseDTO.unscheduledClasseCount = course.unscheduledClassesCount
             courseDTO.passedClasseCount = course.passedClassesCount
+            courseDTO.hybridClassesCount = course.hybridClassesCount
             courseDTO.selfPacedclassesCount = course.selfPacedClassesCount
             courseDTO.cancelledClassesCount = course.cancelledClassesCount
             courseDTO.studentWaitingListCount = course.waitingLists.size()
@@ -129,6 +136,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
                     moduleDTO.title = module.title
                     moduleDTO.type = moduleApiService.bidiModuleType[module.type]
                     moduleDTO.isOffered = module.isOffered
+                    moduleDTO.creditPointsStatus = module.creditPointsStatus
                     moduleDTO.nominalHours = module.nominalHours
                     moduleDTO
                 }
@@ -137,6 +145,8 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.rules = course.unavailableRuleRelations.collect{ toRestHoliday(it.rule) }
             courseDTO.feeHelpClass = course.feeHelpClass
             courseDTO.fullTimeLoad = course.fullTimeLoad
+            courseDTO.facultyId = course.faculty?.id
+            courseDTO.attainmentText = course.attainmentText
             courseDTO
         }
     }
@@ -186,8 +196,16 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         }
         course.isSufficientForQualification = courseDTO.isSufficientForQualification
         course.isVET = courseDTO.isVET
+        course.attainmentText = courseDTO.attainmentText
 
-        updateTags(course, course.taggingRelations, courseDTO.tags, CourseTagRelation, course.context)
+        updateTags(course, course.taggingRelations, courseDTO.tags + courseDTO.specialTagId, CourseTagRelation, course.context)
+        if (courseDTO.facultyId != null) {
+            Faculty room = facultyApiService.getEntityAndValidateExistence(course.context, courseDTO.facultyId)
+            course.faculty = room
+        } else {
+            course.faculty = null
+        }
+
         updateDocuments(course, course.attachmentRelations, courseDTO.documents, CourseAttachmentRelation, course.context)
         updateModules(course, courseDTO.modules)
         course.reportableHours = courseDTO.reportableHours

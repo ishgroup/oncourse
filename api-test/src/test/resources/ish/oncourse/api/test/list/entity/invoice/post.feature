@@ -7,6 +7,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         * def ishPath = 'list/entity/invoice'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
+        * def futureYear = java.lang.String.valueOf(java.util.Calendar.getInstance().get(java.util.Calendar.YEAR) + 2)
+
 
 
 
@@ -660,8 +662,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         "customerReference":"invoice101",
         "billToAddress":"address str. Adelaide SA 5000",
         "shippingAddress":"some shipping address",
-        "invoiceDate":"2025-06-01",
-        "dateDue":"2025-06-01",
+        "invoiceDate":'#(futureYear+"-06-01")',
+        "dateDue":'#(futureYear+"-06-01")',
         "invoiceLines":
             [{
             "title":"invoiceLine2",
@@ -712,8 +714,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "invoiceNumber":"#number",
             "billToAddress":"address str. Adelaide SA 5000",
             "shippingAddress":"some shipping address",
-            "invoiceDate":"2025-06-01",
-            "dateDue":"2025-06-01",
+            "invoiceDate":'#(futureYear+"-06-01")',
+            "dateDue":'#(futureYear+"-06-01")',
             "overdue":0.00,
             "invoiceLines":
                 [{

@@ -3,21 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Delete } from "@mui/icons-material";
-import Launch from "@mui/icons-material/Launch";
-import { ButtonBase, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { DynamicSizeList, openInternalLink } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { NestedListItem } from "../NestedList";
-import { listStyles } from "./styles";
+import { Delete } from '@mui/icons-material';
+import Launch from '@mui/icons-material/Launch';
+import { ButtonBase, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import $t from '@t';
+import clsx from 'clsx';
+import { DynamicSizeList, openInternalLink } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { withStyles } from 'tss-react/mui';
+import { NestedListItem } from '../NestedList';
+import { listStyles } from './styles';
 
 interface Props {
-  classes: any;
+  classes?: any;
   type: "list" | "search";
   items: NestedListItem[];
   onDelete?: (item: NestedListItem, index: number) => void;
@@ -28,19 +29,31 @@ interface Props {
   CustomCell?: React.ReactNode;
 }
 
-const RowContent = React.memo<any>(({
-                                      style,
-                                      item,
-                                      index,
-                                      classes,
-                                      dataRowClass,
-                                      disabled,
-                                      onDelete,
-                                      onClick,
-                                      type,
-                                      forwardedRef,
-                                      CustomCell
-                                    }) => (
+const RowContent = React.memo<{
+  style?,
+  item?,
+  index?,
+  classes?,
+  dataRowClass?,
+  disabled?,
+  onDelete?,
+  onClick?,
+  type?,
+  forwardedRef?,
+  CustomCell?
+}>(({
+  style,
+  item,
+  index,
+  classes,
+  dataRowClass,
+  disabled,
+  onDelete,
+  onClick,
+  type,
+  forwardedRef,
+  CustomCell
+}) => (
   <li
     ref={forwardedRef}
     style={style}
@@ -92,7 +105,7 @@ const RowContent = React.memo<any>(({
           <>
             <span className="flex-fill"/>
             <Button className={classes.button} onClick={() => onClick(item, index)}>
-              Add
+              {$t('add')}
             </Button>
           </>
         )}
@@ -101,14 +114,14 @@ const RowContent = React.memo<any>(({
   </li>
 ));
 
-export const NestedListRow = withStyles(listStyles)(RowContent);
+export const NestedListRow = withStyles(RowContent, listStyles);
 
-const RowRenderer = React.forwardRef<any, any>(({data, index, style}, ref) => {
-  const {items, ...rest} = data;
+const RowRenderer = React.forwardRef<any, any>(({ data, index, style }, ref) => {
+  const { items, ...rest } = data;
   return <RowContent item={items[index]} style={style} forwardedRef={ref} index={index} {...rest} />;
 });
 
-const ListRenderer = React.memo(
+const ListRenderer = React.memo<Props>(
   ({
      classes, items, onDelete, onClick, fade, dataRowClass, disabled, type, CustomCell
    }: Props) => {
@@ -142,10 +155,10 @@ const ListRenderer = React.memo(
     }), [items, dataRowClass, type, classes, disabled, deleteHandler, clickHandler, CustomCell]);
 
     return (
-      <Paper className={clsx(classes.root, {[classes.fade]: fade, [classes.root__height]: isVirtual})}>
+      <Paper className={clsx(classes.root, { [classes.fade]: fade, [classes.root__height]: isVirtual })}>
         {isVirtual ? (
           <AutoSizer disableHeight>
-            {({width}) => (
+            {({ width }) => (
               <DynamicSizeList
                 height={384}
                 width={width}
@@ -178,4 +191,4 @@ const ListRenderer = React.memo(
   }
 );
 
-export default withStyles(listStyles)(ListRenderer);
+export default withStyles(ListRenderer, listStyles);

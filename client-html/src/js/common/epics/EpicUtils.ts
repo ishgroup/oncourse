@@ -3,8 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { AxiosResponse } from "axios";
 import { Epic, ofType, StateObservable } from "redux-observable";
-import { concat, from, Observable } from "rxjs";
+import { concat, from, Observable, tap } from 'rxjs';
 import { catchError, delay, mergeMap } from "rxjs/operators";
 import { EnvironmentConstants } from "../../constants/EnvironmentConstants";
 import { State } from "../../reducers/state";
@@ -17,13 +18,13 @@ export interface Request<V = any, P = any> {
   type: string;
   hideLoadIndicator?: boolean;
   getData: (payload: P, state: State) => Promise<V>;
-  retrieveData?: (payload: any, state: State) => Promise<V>;
+  retrieveData?: (payload: P, state: State) => Promise<V>;
   processData: (value: V, state: State, payload?: P) => IAction<any>[] | Observable<any>;
-  processError?: (data: any, payload?: P) => IAction<any>[] | Observable<any>;
+  processError?: (data: AxiosResponse, payload?: P) => IAction<any>[] | Observable<any>;
 }
 
 export interface DelayedRequest<V = any, P = any> extends Request<V, P> {
-  delay: number;
+  delay: number | ((payload: P, state: State) => number);
 }
 
 export const processError = (data: any, type: string, processError: any, payload: any): IAction<any>[] => [
@@ -40,7 +41,7 @@ export const processError = (data: any, type: string, processError: any, payload
 
 export const CreateWithTimeout = <V, P>(request: DelayedRequest<V, P>): Epic<any, any, any> => (action$: Observable<any>, state$: StateObservable<State>): Observable<any> => action$.pipe(
   ofType(request.type),
-  delay(request.delay),
+  tap(action => delay(typeof request.delay === 'number' ? request.delay : request.delay(action.payload, state$.value))),
   mergeMap(action =>
     concat(
       [

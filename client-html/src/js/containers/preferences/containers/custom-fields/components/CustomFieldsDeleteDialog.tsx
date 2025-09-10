@@ -3,25 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CustomFieldType } from "@api/model";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { NoArgFunction, stubFunction } from "ish-ui";
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { State } from "../../../../../reducers/state";
+import { CustomFieldType } from '@api/model';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { NoArgFunction, stubFunction } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { State } from '../../../../../reducers/state';
 
 interface CustomFieldsDeleteDialogProps {
   value?: string;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   item?: CustomFieldType;
   setFieldToDelete?: any;
   onConfirm?: NoArgFunction;
@@ -71,7 +73,7 @@ const CustomFieldsDeleteDialog = React.memo<CustomFieldsDeleteDialogProps & Inje
     <Dialog open={Boolean(item)} onClose={onClose} fullWidth maxWidth="xs">
       <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
-          <div className="heading pt-1">Delete custom field</div>
+          <div className="heading pt-1">{$t('delete_custom_field')}</div>
           <div className="centeredFlex pt-1">
             { item && (
               <Typography variant="body2">
@@ -91,10 +93,10 @@ const CustomFieldsDeleteDialog = React.memo<CustomFieldsDeleteDialogProps & Inje
         </DialogContent>
         <DialogActions className="p-3">
           <Button color="primary" onClick={onClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
           <Button color="primary" type="submit" disabled={invalid}>
-            Delete
+            {$t('delete2')}
           </Button>
         </DialogActions>
       </form>

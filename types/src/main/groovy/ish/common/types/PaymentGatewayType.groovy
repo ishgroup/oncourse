@@ -14,6 +14,14 @@ enum PaymentGatewayType {
 
     EWAY_TEST("EWAY_TEST"),
 
+    STRIPE("STRIPE"),
+
+    STRIPE_TEST("STRIPE_TEST"),
+
+    SQUARE("SQUARE"),
+
+    SQUARE_TEST("SQUARE_TEST"),
+
     WINDCAVE("WINDCAVE"),
 
     TEST_PAYMENT_SYSTEM("TEST"),
@@ -33,24 +41,8 @@ enum PaymentGatewayType {
     }
 
     static PaymentGatewayType getByValue(String value) {
-        if (EWAY.value.equalsIgnoreCase(value)) {
-            return EWAY
+        return values().find {
+            it.value.equalsIgnoreCase(value)
         }
-        if (EWAY_TEST.value.equalsIgnoreCase(value)) {
-            return EWAY_TEST
-        }
-        if (WINDCAVE.value.equalsIgnoreCase(value)) {
-            return WINDCAVE
-        }
-        if (TEST_PAYMENT_SYSTEM.value.equalsIgnoreCase(value)) {
-            return TEST_PAYMENT_SYSTEM
-        }
-        if (OFFLINE.value.equalsIgnoreCase(value)) {
-            return OFFLINE
-        }
-        if (DISABLED.value.equalsIgnoreCase(value)) {
-            return DISABLED
-        }
-        return null
     }
 }

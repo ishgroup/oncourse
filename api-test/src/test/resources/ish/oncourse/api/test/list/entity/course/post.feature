@@ -82,7 +82,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "studentWaitingListCount":0,
         "hasEnrolments":false,
         "webDescription":"some web description",
-        "documents":[{"attachedRecordsCount":"#ignore", "id":200,"name":"defaultPrivateDocument","added":"#ignore","tags":[],"thumbnail":null,"urlWithoutVersionId":null,"versions":[{"id":200,"added":"#ignore","createdBy":"onCourse Administrator","fileName":"defaultPrivateDocument.txt","mimeType":"text/plain","size":"22 b","url":null,"thumbnail":null,"content":null, current:true}],"description":"Private description","access":"Private","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
+        "documents":[{"attachedRecordsCount":"#ignore", "id":200,"name":"defaultPrivateDocument","added":"#ignore","tags":[],"thumbnail":null,"urlWithoutVersionId":"#string","versions":[{"id":200,"added":"#ignore","createdBy":"onCourse Administrator","fileName":"defaultPrivateDocument.txt","mimeType":"text/plain","size":"22 b","url":"#string","thumbnail":null,"content":null, current:true}],"description":"Private description","access":"Private","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
         "relatedSellables":"#ignore",
         "qualificationId":3,
         "qualNationalCode":"10218NAT",
@@ -92,7 +92,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "isVET":true,
         "fieldOfEducation":"0915",
         "reportableHours":20.0,
-        "modules":[{"creditPoints":null,"expiryDays":null,"fieldOfEducation":null,"id":3,"isCustom":null,"type":"UNIT OF COMPETENCY","isOffered":true,"nationalCode":"AUM1001A","nominalHours":"#number","specialization":null,"title":"Manage personal career goals","createdOn":"#ignore","modifiedOn":"#ignore"}],
+        "modules":[{"creditPoints":null,"expiryDays":null,"fieldOfEducation":null,"id":3,"isCustom":null,"type":"UNIT OF COMPETENCY","isOffered":true,"nationalCode":"AUM1001A","nominalHours":"#number","specialization":null,"title":"Manage personal career goals","createdOn":"#ignore","modifiedOn":"#ignore", "creditPointsStatus":"Active"}],
         "customFields":{},
         "rules":[{"id":"#ignore","description":"test","startDate":null,"endDate":null,"startDateTime":"2020-02-11T08:00:00.000Z","endDateTime":"2020-02-12T08:00:00.000Z","repeat":"day","repeatEnd":"after","repeatEndAfter":3,"repeatOn":null,"created":"#ignore","modified":"#ignore"}],
         "isTraineeship":false,
@@ -178,7 +178,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "studentWaitingListCount":0,
         "hasEnrolments":false,
         "webDescription":"some web description",
-        "documents":[{"attachedRecordsCount":"#ignore", "id":200,"name":"defaultPrivateDocument","added":"#ignore","tags":[],"thumbnail":null,"urlWithoutVersionId":null,"versions":[{"id":200,"added":"#ignore","createdBy":"onCourse Administrator","fileName":"defaultPrivateDocument.txt","mimeType":"text/plain","size":"22 b","url":null,"thumbnail":null,"content":null, current:true}],"description":"Private description","access":"Private","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
+        "documents":[{"attachedRecordsCount":"#ignore", "id":200,"name":"defaultPrivateDocument","added":"#ignore","tags":[],"thumbnail":null,"urlWithoutVersionId":"#string","versions":[{"id":200,"added":"#ignore","createdBy":"onCourse Administrator","fileName":"defaultPrivateDocument.txt","mimeType":"text/plain","size":"22 b","url":"#string","thumbnail":null,"content":null, current:true}],"description":"Private description","access":"Private","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
         "relatedSellables":"#ignore",
         "qualificationId":3,
         "qualNationalCode":"10218NAT",
@@ -188,7 +188,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "isVET":true,
         "fieldOfEducation":"0915",
         "reportableHours":20.0,
-        "modules":[{"creditPoints":null,"expiryDays":null,"fieldOfEducation":null,"id":3,"isCustom":null,"type":"UNIT OF COMPETENCY","isOffered":true,"nationalCode":"AUM1001A","nominalHours":"#number","specialization":null,"title":"Manage personal career goals","createdOn":"#ignore","modifiedOn":"#ignore"}],
+        "modules":[{"creditPoints":null,"expiryDays":null,"fieldOfEducation":null,"id":3,"isCustom":null,"type":"UNIT OF COMPETENCY","isOffered":true,"nationalCode":"AUM1001A","nominalHours":"#number","specialization":null,"title":"Manage personal career goals","createdOn":"#ignore","modifiedOn":"#ignore","creditPointsStatus":"Active"}],
         "customFields":{},
         "rules":[],
         "isTraineeship":true,
@@ -903,7 +903,7 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         "studentWaitingListCount":0,
         "hasEnrolments":false,
         "webDescription":"some web description",
-        "documents":[{"attachedRecordsCount":"#ignore", "id":200,"name":"defaultPrivateDocument","added":"#ignore","tags":[],"thumbnail":null,"urlWithoutVersionId":null,"versions":[{"id":200,"added":"#ignore","createdBy":"onCourse Administrator","fileName":"defaultPrivateDocument.txt","mimeType":"text/plain","size":"22 b","url":null,"thumbnail":null,"content":null, current:true}],"description":"Private description","access":"Private","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
+        "documents":[{"attachedRecordsCount":"#ignore", "id":200,"name":"defaultPrivateDocument","added":"#ignore","tags":[],"thumbnail":null,"urlWithoutVersionId":"#string","versions":[{"id":200,"added":"#ignore","createdBy":"onCourse Administrator","fileName":"defaultPrivateDocument.txt","mimeType":"text/plain","size":"22 b","url":"#string","thumbnail":null,"content":null, current:true}],"description":"Private description","access":"Private","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
         "relatedSellables":"#ignore",
         "qualificationId":3,
         "qualNationalCode":"10218NAT",
@@ -947,4 +947,3 @@ Feature: Main feature for all POST requests with path 'list/entity/course'
         When method POST
         Then status 403
         And match $.errorMessage == "Sorry, you have no permissions to create course. Please contact your administrator"
-

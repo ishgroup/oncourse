@@ -3,27 +3,34 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from "@api/model";
-import { Grid } from "@mui/material";
-import { Decimal } from "decimal.js-light";
-import { normalizeNumber } from "ish-ui";
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-import { change } from "redux-form";
-import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from '@api/model';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import { normalizeNumber } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { change } from 'redux-form';
+import CustomSelector, { CustomSelectorOption } from '../../../../common/components/custom-selector/CustomSelector';
+import { FormEditorField } from '../../../../common/components/form/formFields/FormEditor';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { normalizeString } from "../../../../common/utils/strings";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { PreferencesState } from "../../../preferences/reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { normalizeString } from '../../../../common/utils/strings';
+import { validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { PreferencesState } from '../../../preferences/reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import { useTagGroups } from '../../../tags/utils/useTagGroups';
+import {
+  handleChangeProductAccount,
+  handleChangeProductFeeExTax,
+  handleChangeProductFeeIncTax,
+  handleChangeProductTax
+} from '../../common/utils';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
 
-interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct>{
+interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct> {
   accounts?: Account[];
   taxes?: Tax[];
   tags?: Tag[];
@@ -96,41 +103,17 @@ const getInitialIndexExpiry = (product: MembershipProduct) => {
   return 3;
 };
 
-const handleChangeFeeExTax = (values: MembershipProduct, taxes: Tax[], dispatch, form) => value => {
-  const tax = taxes.find(item => item.id === values.taxId);
-  const taxRate = tax ? tax.rate : 0;
-  dispatch(change(form, "totalFee", new Decimal(value * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
-};
-
-const handleChangeFeeIncTax = (values: MembershipProduct, taxes: Tax[], dispatch, form) => value => {
-  const tax = taxes.find(item => item.id === values.taxId);
-  const taxRate = tax ? tax.rate : 0;
-  dispatch(change(form, "feeExTax", new Decimal(value / (1 + taxRate)).toDecimalPlaces(2).toNumber()));
-};
-
-const handleChangeTax = (values: MembershipProduct, taxes: Tax[], dispatch, form) => value => {
-  const tax = taxes.find(item => item.id === value);
-  const taxRate = tax ? tax.rate : 0;
-  dispatch(change(form, "totalFee", new Decimal(values.feeExTax * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
-};
-
-const handleChangeAccount = (values: MembershipProduct, taxes: Tax[], accounts: Account[], dispatch, form) => value => {
-  const account = accounts.find(item => item.id === value);
-  const tax = taxes.find(item => item.id === Number(account["tax.id"]));
-  if (tax.id !== values.taxId) {
-    const taxRate = tax ? tax.rate : 0;
-    dispatch(change(form, "taxId", tax.id));
-    dispatch(change(form, "totalFee", new Decimal(values.feeExTax * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
-  }
-};
-
 const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props => {
   const {
     twoColumn, accounts, taxes, values, dispatch, form, dataCollectionRules, isNew, syncErrors, tags
   } = props;
   const initialIndexExpiry = getInitialIndexExpiry(values);
 
-  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts])
+  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts]);
+
+  const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
+
+  const taxRate = useMemo(() => taxes.find(t => t.id === values.taxId)?.rate, [taxes, values.taxId]);
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
@@ -162,7 +145,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
                   type="text"
-                  label="SKU"
+                  label={$t('sku')}
                   name="code"
                   required
                 />
@@ -170,7 +153,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
                   type="text"
-                  label="Name"
+                  label={$t('name')}
                   name="name"
                   required
                 />
@@ -184,8 +167,11 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         <FormField
           type="tags"
           name="tags"
-          tags={tags}
+          tags={tagsGrouped.tags}
+          className="mb-2"
         />
+
+        {subjectsField}
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -201,9 +187,9 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         <FormField
           type="select"
           name="incomeAccountId"
-          label="Income account"
+          label={$t('income_account')}
           validate={validateIncomeAccount}
-          onChange={handleChangeAccount(values, taxes, accounts, dispatch, form)}
+          onChange={handleChangeProductAccount(values, taxes, accounts, dispatch, form)}
           debounced={false}
           items={accounts}
           selectValueMark="id"
@@ -212,7 +198,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
-        <FormEditorField name="description" label="Description" />
+        <FormEditorField name="description" label={$t('description')} />
       </Grid>
 
       <CustomFields
@@ -230,9 +216,9 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           type="money"
           name="feeExTax"
           validate={[validateSingleMandatoryField, validateNonNegative]}
-          onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
+          onChange={handleChangeProductFeeExTax(taxRate, dispatch, form)}
           debounced={false}
-          label="Fee ex tax"
+          label={$t('fee_ex_tax')}
         />
       </Grid>
       <Grid item xs={twoColumn ? 2 : 4}>
@@ -240,18 +226,18 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           type="money"
           name="totalFee"
           validate={validateNonNegative}
-          onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
+          onChange={handleChangeProductFeeIncTax(taxRate, dispatch, form)}
           debounced={false}
-          label="Total fee"
+          label={$t('total_fee')}
         />
       </Grid>
       <Grid item xs={twoColumn ? 2 : 4}>
         <FormField
           type="select"
           name="taxId"
-          onChange={handleChangeTax(values, taxes, dispatch, form)}
+          onChange={handleChangeProductTax(taxes, dispatch, form, values.feeExTax)}
           debounced={false}
-          label="Tax"
+          label={$t('tax')}
           items={taxes}
           selectValueMark="id"
           selectLabelCondition={tax => tax.code}
@@ -263,7 +249,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         <FormField
           type="select"
           name="status"
-          label="Status"
+          label={$t('status')}
           items={productStatusItems}
           selectLabelMark="value"
         />
@@ -272,7 +258,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         <FormField
           type="select"
           name="dataCollectionRuleId"
-          label="Data collection rule"
+          label={$t('data_collection_rule')}
           selectValueMark="id"
           selectLabelMark="name"
           items={dataCollectionRules || []}

@@ -269,24 +269,32 @@
   ],
   "education": [
     {
-      "name": "Courses",
+      "name": "Faculties",
       "children": [
         {
-          "name": "Classes",
+          "name": "Courses",
           "children": [
             {
-              "name": "Assessment tasks",
-              "children": [
-                {
-                  "name": "Assessment submissions"
-                }
-              ]
+              "name": "Subjects"
             },
             {
-              "name": "Enrolments",
+              "name": "Classes",
               "children": [
                 {
-                  "name": "Outcomes"
+                  "name": "Assessment tasks",
+                  "children": [
+                    {
+                      "name": "Assessment submissions"
+                    }
+                  ]
+                },
+                {
+                  "name": "Enrolments",
+                  "children": [
+                    {
+                      "name": "Outcomes"
+                    }
+                  ]
                 }
               ]
             }

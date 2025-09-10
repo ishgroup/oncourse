@@ -121,6 +121,7 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
     String email
     String firstName
     String lastName
+    String postcode
 	List<String> tags
 	Map mergeFields = [:]
 	LocalDate since
@@ -176,6 +177,19 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
 	}
 
 	/**
+	 * Set subscriber's postcode.
+	 *
+	 * @param postcode of the subscriber
+     */
+	@API
+	void postcode(String postcode) {
+		if (postcode) {
+			this.postcode = postcode
+			this.mergeFields['POSTCODE'] = postcode
+		}
+	}
+
+	/**
 	 * Specify contact to take subscriber's email, first and last name from.
 	 *
 	 * @param contact subscriber contact
@@ -185,6 +199,7 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
 		this.email = contact.email
 		firstName(contact.firstName)
 		lastName(contact.lastName)
+		postcode(contact.postcode)
 	}
 
 	/**
@@ -243,7 +258,7 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
 			case MailchimpScriptClosure.SUBSCRIBE:
 			case MailchimpScriptClosure.UNSUBSCRIBE:
 				if (!email) {
-					logger.error("Subscriber email is null, firstName: ${firstName}, lastName: ${lastName}. Abort script.")
+					logger.error("Subscriber email is null, firstName: ${firstName}, lastName: ${lastName}, postcode: ${postcode}. Abort script.")
 					break
 				}
 				String status = MailchimpScriptClosure.UNSUBSCRIBE == action ? 'unsubscribed' : optIn ? 'pending' : 'subscribed'
@@ -261,7 +276,7 @@ class MailchimpScriptClosure implements ScriptClosureTrait<MailchimpIntegration>
 				break
 			case MailchimpScriptClosure.DELETE_PERMANENTLY:
 				if (!email) {
-					logger.error("Subscriber email is null, firstName: ${firstName}, lastName: ${lastName}. Abort script.")
+					logger.error("Subscriber email is null, firstName: ${firstName}, lastName: ${lastName}, postcode: ${postcode}. Abort script.")
 					break
 				}
 				integration.deletePermanently(email)

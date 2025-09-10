@@ -75,7 +75,7 @@ dependencies {
 	implementation "com.nulab-inc:zxcvbn:1.4.1"
 
 	implementation ("org.apache.maven:maven-artifact:3.3.9")
-	api ("org.liquibase:liquibase-core:4.19.0") {
+	api ("org.liquibase:liquibase-core:4.22.0") {
 		exclude group: "ch.qos.logback"
 	}
 	implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
@@ -134,8 +134,15 @@ dependencies {
 	implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
 	implementation 'com.google.apis:google-api-services-classroom:v1-rev135-1.23.0'
 
+	implementation 'net.minidev:json-smart:2.3'
 	api 'com.nimbusds:nimbus-jose-jwt:8.9'
 	implementation 'com.bugsnag:bugsnag:3.6.2'
+
+	implementation 'com.chargebee:chargebee-java:3.19.0'
+
+	implementation "com.stripe:stripe-java:28.1.0"
+	implementation 'com.squareup:square:43.0.0.20250123'
+	implementation 'com.google.code.gson:gson:2.11.0'
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
@@ -151,6 +158,8 @@ project.ext {
 	appName = "onCourseServer"
 }
 
+def DEV_MODE_PROPERTY = "ish.devMode"
+
 application {
 	mainClass.set('ish.oncourse.server.AngelServer')
 	applicationDefaultJvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
@@ -164,6 +173,7 @@ jar {
 		attributes 'Main-Class': 'ish.oncourse.server.AngelServer'
 		attributes 'Class-Path': configurations.runtimeClasspath.collect { "./" + it.name }.join(' ')
 	}
+
 	archiveFileName = 'onCourseServer.jar'
 }
 
@@ -243,10 +253,18 @@ tasks.withType(CreateStartScripts).each { task ->
 	}
 }
 
-task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
-	from('../client-html/build/assets') {
-		include '**/*.*'
+task copyWebApp(type: Copy) {
+	if(!project.hasProperty(DEV_MODE_PROPERTY) || project.property(DEV_MODE_PROPERTY) != "true"){
+		dependsOn ':client-html:build'
+		from('../client-html/build/assets') {
+			include '**/*.*'
+		}
+	} else {
+		from('../client-html') {
+			include 'package.json'
+		}
 	}
+
 	into 'build/resources/main/static'
 }
 
@@ -258,10 +276,16 @@ task addVersion {
 	}
 }
 
-distZip.dependsOn(copyWebApp,addVersion)
+distZip.enabled = false;
 
-task createChecksums(dependsOn: distZip) {
-	inputs.files(distZip.outputs.files)
+distTar {
+	compression = Compression.GZIP
+}
+
+distTar.dependsOn(copyWebApp,addVersion)
+
+task createChecksums(dependsOn: distTar) {
+	inputs.files(distTar.outputs.files)
 	outputs.files(inputs.files.collect({ it.path + ".sha256"}))
 	doLast {
 		inputs.files.each { f ->
@@ -274,7 +298,7 @@ task createChecksums(dependsOn: distZip) {
 		}
 	}
 }
-distZip.finalizedBy(createChecksums)
+distTar.finalizedBy(createChecksums)
 
 distributions {
 	main {
@@ -323,7 +347,7 @@ publishing {
 			}
 		}
 		executables(MavenPublication) {
-			artifact(distZip) {
+			artifact(distTar) {
 				classifier "executable"
 				extension "zip"
 			}
@@ -356,9 +380,15 @@ cgen {
 
 compileJava {
 	dependsOn queryGrammar, cgen
+	if(project.hasProperty(DEV_MODE_PROPERTY) && project.property(DEV_MODE_PROPERTY) == "true"){
+		dependsOn copyWebApp
+	}
 }
 
 task runServer(dependsOn: [classes], type: JavaExec) {
+	if(project.hasProperty(DEV_MODE_PROPERTY)) {
+		systemProperty DEV_MODE_PROPERTY, project.property(DEV_MODE_PROPERTY)
+	}
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true', 'disableReplication=true']

@@ -54,7 +54,7 @@ class PaymentInTransactionsBuilderTest {
         when(paymentMethod.type).thenReturn(PaymentType.CASH)
         when(paymentMethod.bankedAutomatically).thenReturn(true)
 
-        amountPaid = new Money(300 as BigDecimal)
+        amountPaid = Money.of(300 as BigDecimal)
         Banking banking = mock(Banking)
         paymentIn = mock(PaymentIn)
         when(paymentIn.paymentDate).thenReturn(transactionDate)
@@ -64,7 +64,7 @@ class PaymentInTransactionsBuilderTest {
         when(paymentIn.accountIn).thenReturn(primaryAccountDeposit)
         when(paymentIn.amount).thenReturn(amountPaid)
 
-        amount = new Money(99 as BigDecimal)
+        amount = Money.of(99 as BigDecimal)
 
         Invoice invoice = mock(Invoice)
         when(invoice.debtorsAccount).thenReturn(secondaryAccount)
@@ -75,7 +75,7 @@ class PaymentInTransactionsBuilderTest {
         when(paymentInLine.invoice).thenReturn(invoice)
         when(paymentInLine.id).thenReturn(foreignRecordId)
 
-        amountOf2Tr = new Money(33 as BigDecimal)
+        amountOf2Tr = Money.of(33 as BigDecimal)
     }
 
 

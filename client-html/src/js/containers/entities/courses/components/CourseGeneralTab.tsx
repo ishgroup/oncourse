@@ -3,30 +3,35 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import { openInternalLink, TimetableButton } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { change } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
+import { CourseEnrolmentType, CourseStatus, Tag } from '@api/model';
+import { FormControlLabel, Grid } from '@mui/material';
+import $t from '@t';
+import { LinkAdornment, mapSelectItems, openInternalLink, TimetableButton } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { change } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import NestedEntity from '../../../../common/components/form/nestedEntity/NestedEntity';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { mapSelectItems } from "../../../../common/utils/common";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { CourseExtended } from "../../../../model/entities/Course";
-import { State } from "../../../../reducers/state";
-import { PreferencesState } from "../../../preferences/reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import CourseAvailableClassChart from "./CourseAvailableClassChart";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { CourseExtended } from '../../../../model/entities/Course';
+import { State } from '../../../../reducers/state';
+import { PreferencesState } from '../../../preferences/reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import { useTagGroups } from '../../../tags/utils/useTagGroups';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import { openFacultyLink } from '../../faculties/utils';
+import { courseFilterCondition } from '../utils';
+import CourseAvailableClassChart from './CourseAvailableClassChart';
+import CourseItemRenderer from './CourseItemRenderer';
 
 const CourseEnrolmentTypes = Object.keys(CourseEnrolmentType).map(mapSelectItems);
 const CourseStatusTypes = Object.keys(CourseStatus).map(mapSelectItems);
 
 interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
   tags: Tag[];
+  specialTags: Tag[];
   dataCollectionRules: PreferencesState["dataCollectionRules"];
   dispatch: any;
   form: string;
@@ -35,7 +40,8 @@ interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
 const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
   ({
     showConfirm,
-    tags,
+    tags = [],
+     specialTags = [],
     dataCollectionRules,
     twoColumn,
     values,
@@ -45,9 +51,11 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     dispatch,
     form
   }) => {
+    const { tagsGrouped, subjectsField, specialTypesDisabled } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
+
     const onCalendarClick = useCallback(() => {
-      openInternalLink(`/timetable?search=courseClass.course.id=${values.id}`);
-    }, [values.id]);
+      openInternalLink(`/timetable?search=courseClass.course.id=${values?.id}`);
+    }, [values?.id]);
 
     const onIsTraineeshipChange = useCallback(
       (e, value) => {
@@ -61,15 +69,15 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     const waitingListTypes = useMemo(
       () => [
         {
-          name: `${values.studentWaitingListCount ? `S` : "No s"}tudents on waiting list`,
-          count: values.studentWaitingListCount,
+          name: `${values?.studentWaitingListCount ? `S` : "No s"}tudents on waiting list`,
+          count: values?.studentWaitingListCount,
           disabled: !values.studentWaitingListCount,
-          link: `/waitingList?search=course.id is ${values.id}`
+          link: `/waitingList?search=course.id is ${values?.id}`
         }
       ],
-      [values.studentWaitingListCount, values.id]
+      [values?.studentWaitingListCount, values?.id]
     );
-    
+
     return (
       <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
         <Grid item xs={12}>
@@ -100,7 +108,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
                 <Grid item xs={twoColumn ? 2 : 12}>
                   <FormField
                     type="text"
-                    label="Code"
+                    label={$t('code')}
                     name="code"
                     placeholder={twoColumn ? "Code" : undefined}
                     required
@@ -109,7 +117,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
                 <Grid item xs={twoColumn ? 4 : 12}>
                   <FormField
                     type="text"
-                    label="Name"
+                    label={$t('name')}
                     name="name"
                     placeholder={twoColumn ? "Name" : undefined}
                     required
@@ -124,8 +132,47 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           <FormField
             type="tags"
             name="tags"
-            tags={tags}
+            tags={tagsGrouped.tags}
+            className="mb-2"
           />
+
+          <FormField
+            type="select"
+            items={specialTags}
+            disabled={specialTypesDisabled}
+            name="specialTagId"
+            label={$t('type')}
+            selectValueMark="id"
+            selectLabelMark="name"
+            allowEmpty
+          />
+
+          <FormField
+            selectFilterCondition={courseFilterCondition}
+            selectLabelCondition={courseFilterCondition}
+            labelAdornment={(
+              <LinkAdornment
+                linkHandler={openFacultyLink}
+                link={values?.facultyId}
+                disabled={!values?.facultyId}
+              />
+            )}
+            itemRenderer={CourseItemRenderer}
+            rowHeight={55}
+            name='facultyId'
+            type='remoteDataSelect'
+            preloadEmpty={true}
+            label={$t('faculty')}
+            entity='Faculty'
+            aqlColumns='name,code'
+            selectValueMark='id'
+            selectLabelMark='name'
+            className="mt-2"
+            disabled={values.isTraineeship || specialTypesDisabled}
+            allowEmpty
+          />
+
+          {subjectsField}
         </Grid>
 
         <Grid item xs={twoColumn ? 4 : 12}>
@@ -150,7 +197,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
               <FormField
                 type="select"
                 name="enrolmentType"
-                label="Enrolment type"
+                label={$t('enrolment_type')}
                 items={CourseEnrolmentTypes}
                 disabled={values.isTraineeship}
               />
@@ -159,7 +206,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
               <FormField
                 type="select"
                 name="status"
-                label="Status"
+                label={$t('status')}
                 items={CourseStatusTypes}
                 disabled={values.isTraineeship}
               />
@@ -171,7 +218,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             type="select"
             name="dataCollectionRuleId"
             defaultValue={values.dataCollectionRuleName}
-            label="Data collection rule"
+            label={$t('data_collection_rule')}
             selectValueMark="id"
             selectLabelMark="name"
             items={dataCollectionRules || []}
@@ -191,7 +238,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
                 onChange={onIsTraineeshipChange}
               />
             )}
-            label="Traineeship"
+            label={$t('traineeship')}
           />
         </Grid>
 
@@ -199,7 +246,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           <FormControlLabel
             className="checkbox"
             control={<FormField type="checkbox" name="allowWaitingLists" />}
-            label="Allows Waiting lists"
+            label={$t('allows_waiting_lists')}
           />
         </Grid>
 
@@ -208,7 +255,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             <FormControlLabel
               className="checkbox"
               control={<FormField type="checkbox" name="currentlyOffered"/>}
-              label="Currently offered"
+              label={$t('currently_offered')}
             />
           </Grid>
         )}
@@ -239,6 +286,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags.Course,
+  specialTags: state.tags.entitySpecialTags.Course,
   dataCollectionRules: state.preferences.dataCollectionRules
 });
 

@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { EntityRelationCartAction, EntityRelationType } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import * as React from "react";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import Subtitle from "../../../../../common/components/layout/Subtitle";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
-import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
+import { EntityRelationCartAction, EntityRelationType } from '@api/model';
+import { Button, FormControlLabel, Grid } from '@mui/material';
+import Card from '@mui/material/Card';
+import $t from '@t';
+import { mapSelectItems, sortDefaultSelectItems } from 'ish-ui';
+import * as React from 'react';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Subtitle from '../../../../../common/components/layout/Subtitle';
+import { validateUniqueNamesInArray } from '../../../../../common/utils/validation';
 
 const CartActions = Object.keys(EntityRelationCartAction)
   .filter(val => isNaN(Number(val)))
@@ -36,7 +36,7 @@ const renderEntityRelationTypes = props => {
                 <FormField
                   type="text"
                   name={`${item}.name`}
-                  label="Name of relationship"
+                  label={$t('name_of_relationship')}
                   disabled={field.systemType}
                   required
                   validate={validateUniqueNamesInArray}
@@ -47,7 +47,7 @@ const renderEntityRelationTypes = props => {
                 <FormField
                   type="text"
                   name={`${item}.description`}
-                  label="Description"
+                  label={$t('description')}
                   disabled={field.systemType}
                   className="flex-fill pr-3"
                 />
@@ -62,7 +62,7 @@ const renderEntityRelationTypes = props => {
                       className={classes.deleteButton}
                       onClick={() => onDelete(field, index)}
                     >
-                      Delete
+                      {$t('delete2')}
                     </Button>
                   )}
                 </div>
@@ -72,7 +72,7 @@ const renderEntityRelationTypes = props => {
                 <FormField
                   type="text"
                   name={`${item}.fromName`}
-                  label="From name"
+                  label={$t('from_name')}
                   disabled={field.systemType}
                   required
                 />
@@ -81,13 +81,13 @@ const renderEntityRelationTypes = props => {
               <Grid item xs={4} container>
                 <Grid item xs={12} container columnSpacing={3} rowSpacing={2} className={classes.shoppingCartActionBox}>
                   <Grid item xs={12}>
-                    <Subtitle label="Shopping cart action" />
+                    <Subtitle label={$t('shopping_cart_action')} />
                   </Grid>
                   <Grid item xs={12}>
                     <FormField
                       type="select"
                       name={`${item}.shoppingCart`}
-                      label="Cart action"
+                      label={$t('cart_action')}
                       items={CartActions}
                       required
                       hideLabel
@@ -97,7 +97,7 @@ const renderEntityRelationTypes = props => {
                     <FormField
                       type="select"
                       name={`${item}.discountId`}
-                      label="Apply discount to item on right"
+                      label={$t('apply_discount_to_item_on_right')}
                       items={discounts}
                       allowEmpty
                     />
@@ -112,7 +112,7 @@ const renderEntityRelationTypes = props => {
                           color="primary"
                         />
                       )}
-                      label="Consider history"
+                      label={$t('consider_history')}
                     />
                   </Grid>
                 </Grid>
@@ -122,7 +122,7 @@ const renderEntityRelationTypes = props => {
                 <FormField
                   type="text"
                   name={`${item}.toName`}
-                  label="To name"
+                  label={$t('to_name')}
                   disabled={field.systemType}
                   required
                   rightAligned
@@ -139,7 +139,7 @@ const renderEntityRelationTypes = props => {
                       color="primary"
                     />
                       )}
-                  label="Show on web"
+                  label={$t('show_on_web')}
                 />
               </Grid>
             </Grid>

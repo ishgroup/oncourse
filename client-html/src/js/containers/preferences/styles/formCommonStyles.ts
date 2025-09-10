@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { darken } from "@mui/material";
-import { createStyles } from "@mui/styles";
-import { AppTheme } from "ish-ui";
+import { darken } from '@mui/material';
+import { AppTheme } from 'ish-ui';
 
-export const formCommonStyles = (theme: AppTheme) => createStyles({
+export const formCommonStyles = (theme: AppTheme) => ({
+  root: {},
   marginTop: {
     marginTop: "20px"
   },
@@ -26,7 +26,8 @@ export const formCommonStyles = (theme: AppTheme) => createStyles({
   },
 });
 
-export const cardsFormStyles = (theme: AppTheme) => createStyles({
+export const cardsFormStyles = (theme: AppTheme) => ({
+  root: {},
   marginTop: {
     marginTop: "20px"
   },
@@ -36,7 +37,6 @@ export const cardsFormStyles = (theme: AppTheme) => createStyles({
   },
   deleteButton: {
     right: 0,
-    top: 0,
     color: theme.palette.error.main,
     position: "absolute"
   },

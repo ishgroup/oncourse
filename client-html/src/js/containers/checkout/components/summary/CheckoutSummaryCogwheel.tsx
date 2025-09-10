@@ -3,26 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Settings from "@mui/icons-material/Settings";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { StyledCheckbox } from "ish-ui";
-import React, { useRef, useState } from "react";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import { CheckoutSummary } from "../../../../model/checkout";
+import Settings from '@mui/icons-material/Settings';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import { StyledCheckbox } from 'ish-ui';
+import React, { useRef, useState } from 'react';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { IAction } from '../../../../common/actions/IshAction';
+import { CheckoutSummary } from '../../../../model/checkout';
 import {
   checkoutSetDisableDiscounts,
   checkoutUpdateSummaryClassesDiscounts,
   checkoutUpdateSummaryListItems
-} from "../../actions/checkoutSummary";
-import { CHECKOUT_SUMMARY_FORM as summmaryForm } from "./CheckoutSummaryList";
+} from '../../actions/checkoutSummary';
+import { CHECKOUT_SUMMARY_FORM as summmaryForm } from './CheckoutSummaryList';
 
 interface Props {
   summary: CheckoutSummary;
   disableDiscounts: boolean;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
 }
 
 export const CheckoutSummaryCogwheel: React.FC<Props> = ({
@@ -31,7 +33,7 @@ export const CheckoutSummaryCogwheel: React.FC<Props> = ({
     dispatch
   }) => {
   const [opened, setOpened] = useState(false);
-  const ancor = useRef();
+  const ancor = useRef(undefined);
 
   const sendEmaiChecked = summary.list.some(li => li.sendEmail);
 
@@ -66,13 +68,13 @@ export const CheckoutSummaryCogwheel: React.FC<Props> = ({
         <MenuItem className="centeredFlex" onClick={onNoDiscountClick}>
           <StyledCheckbox checked={disableDiscounts} className="m-0" />
           <span className="ml-1">
-            No discount
+            {$t('no_discount')}
           </span>
         </MenuItem>
         <MenuItem className="centeredFlex" onClick={onSendEmailClick}>
           <StyledCheckbox checked={sendEmaiChecked} className="m-0" />
           <span className="ml-1">
-            Send confirmation email
+            {$t('send_confirmation_email')}
           </span>
         </MenuItem>
       </Menu>

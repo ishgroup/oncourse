@@ -6,24 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Contact, ContactGender, StudentCitizenship } from "@api/model";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import { Alert, FormControlLabel, Grid, IconButton } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import { openInternalLink, SettingsAdornment } from "ish-ui";
-import React, { useCallback, useState } from "react";
-import { connect } from "react-redux";
-import { change } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import { mapSelectItems } from "../../../../common/utils/common";
-import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from "../../../../common/utils/validation";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { Contact, ContactGender, StudentCitizenship } from '@api/model';
+import OpenInNew from '@mui/icons-material/OpenInNew';
+import { Alert, FormControlLabel, Grid, IconButton, Typography } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import { mapSelectItems, openInternalLink, SettingsAdornment } from 'ish-ui';
+import React, { useCallback, useState } from 'react';
+import { connect } from 'react-redux';
+import { change } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import ExpandableContainer from '../../../../common/components/layout/expandable/ExpandableContainer';
+import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from '../../../../common/utils/validation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
 
 const NO_MARKETING_MSG = "(no marketing)";
 const UNDELIVERABLE_MSG = "(undeliverable)";
@@ -188,26 +187,26 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                   <FormControlLabel
                     className="checkbox pr-3"
                     control={<FormField type="checkbox" name="allowPost" color="secondary" />}
-                    label="Accept postal marketing material"
+                    label={$t('accept_postal_marketing_material')}
                   />
                 </MenuItem>
                 <MenuItem>
                   <FormControlLabel
                     className="checkbox pr-3"
                     control={<Checkbox checked={isUndeliverablePostal()} onClick={handleUndeliverablePostalCheck} />}
-                    label="Undeliverable"
+                    label={$t('undeliverable')}
                   />
                 </MenuItem>
               </Menu>
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="text" name="suburb" label="Suburb" />
+              <FormField type="text" name="suburb" label={$t('suburb')} />
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="text" name="state" label="State" />
+              <FormField type="text" name="state" label={$t('state')} />
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="text" name="postcode" label="Postcode" />
+              <FormField type="text" name="postcode" label={$t('postcode')} />
             </Grid>
             <Grid item {...gridItemProps}>
               {countries && (
@@ -216,7 +215,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                   selectValueMark="id"
                   selectLabelMark="name"
                   name="country"
-                  label="Country"
+                  label={$t('country')}
                   returnType="object"
                   items={countries}
                 />
@@ -241,14 +240,14 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                   <FormControlLabel
                     className="checkbox pr-3"
                     control={<FormField type="checkbox" name="allowSms" color="secondary" />}
-                    label="Accept sms marketing material"
+                    label={$t('accept_sms_marketing_material')}
                   />
                 </MenuItem>
                 <MenuItem>
                   <FormControlLabel
                     className="checkbox pr-3"
                     control={<Checkbox checked={isUndeliverableSms()} onClick={handleUndeliverableSmsCheck} />}
-                    label="Undeliverable"
+                    label={$t('undeliverable')}
                   />
                 </MenuItem>
               </Menu>
@@ -272,32 +271,32 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                   <FormControlLabel
                     className="checkbox pr-3"
                     control={<FormField type="checkbox" name="allowEmail" color="secondary" />}
-                    label="Accept email marketing material"
+                    label={$t('accept_email_marketing_material')}
                   />
                 </MenuItem>
                 <MenuItem>
                   <FormControlLabel
                     className="checkbox pr-3"
                     control={<Checkbox checked={isUndeliverableEmail()} onClick={handleUndeliverableEmailCheck} />}
-                    label="Undeliverable"
+                    label={$t('undeliverable')}
                   />
                 </MenuItem>
               </Menu>
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="multilineText" name="message" label="Message (alert for operator)" />
+              <FormField type="multilineText" name="message" label={$t('message_alert_for_operator')} />
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="phone" name="homePhone" label="Home phone" validate={validatePhoneNumber} />
+              <FormField type="phone" name="homePhone" label={$t('home_phone')} validate={validatePhoneNumber} />
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="phone" name="workPhone" label="Work phone" validate={validatePhoneNumber} />
+              <FormField type="phone" name="workPhone" label={$t('work_phone')} validate={validatePhoneNumber} />
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="phone" name="fax" label="Fax" />
+              <FormField type="phone" name="fax" label={$t('fax2')} />
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="text" name="abn" label="Business number (ABN)" validate={validateABN} />
+              <FormField type="text" name="abn" label={$t('business_number_abn')} validate={validateABN} />
             </Grid>
             {!isCompany ? (
               <>
@@ -305,7 +304,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                   <FormField
                     type="date"
                     name="birthDate"
-                    label="Date of birth"
+                    label={$t('date_of_birth')}
                     disabled={usiLocked}
                     validate={validateBirthDate}
                   />
@@ -314,14 +313,14 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                   <FormField
                     type="select"
                     name="gender"
-                    label="Gender"
+                    label={$t('gender')}
                     items={contactGenderItems}
-                    placeholder="Not stated"
+                    placeholder={$t('not_stated')}
                     allowEmpty
                   />
                 </Grid>
                 <Grid item {...gridItemProps}>
-                  <FormField type="text" name="honorific" label="Honorific" />
+                  <FormField type="text" name="honorific" label={$t('honorific')} />
                 </Grid>
               </>
             ) : null}
@@ -355,26 +354,26 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                         {`Student is on waiting list for: ${values.student.waitingLists.map(v => `"${v}"`).join(", ")}`}
                         <IconButton
                           size="small"
-                          onClick={() => openInternalLink(`/waitingList?search=student.contact.id = ${values.id}`)}
+                          onClick={() => openInternalLink(`/waitingList?search=student.contact.id = ${values?.id}`)}
                         >
                           <OpenInNew color="primary" fontSize="inherit" />
                         </IconButton>
                       </Typography>
                     ) : (
                       <Typography display="inline" variant="body1" className="pt-2">
-                        Student is not on any waiting list
+                        {$t('student_is_not_on_any_waiting_list')}
                       </Typography>
                     )}
                   </Alert>
                 </Grid>
                 <Grid item {...gridItemProps}>
-                  <FormField type="multilineText" name="student.specialNeeds" label="Special needs" />
+                  <FormField type="multilineText" name="student.specialNeeds" label={$t('special_needs')} />
                 </Grid>
                 <Grid item {...gridItemProps}>
                   <FormField
                     type="select"
                     name="student.citizenship"
-                    label="Citizenship status"
+                    label={$t('citizenship_status')}
                     items={studentCitizenships}
                   />
                 </Grid>

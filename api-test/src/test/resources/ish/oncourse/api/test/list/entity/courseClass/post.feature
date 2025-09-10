@@ -66,7 +66,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "minimumSessionsToComplete":null,
         "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -154,10 +155,13 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "minimumSessionsToComplete":null,
         "tags": [231],
         "documents": [
-        {"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":"#ignore","tags":[],"attachmentRelations":"#ignore","modifiedOn":"#ignore","removed":false,"attachedRecordsCount":"#ignore","versions":[{"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null,"content":null, current:true}],"name":"defaultPrivateDocument","id":200,"urlWithoutVersionId":null}
+        {"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":"#ignore","tags":[],"attachmentRelations":"#ignore","modifiedOn":"#ignore","removed":false,"attachedRecordsCount":"#ignore","versions":[{"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":"#string","content":null, current:true}],"name":"defaultPrivateDocument","id":200,"urlWithoutVersionId":"#string"}
         ],
         "isTraineeship": false,
-        "customFields": {}
+        "customFields": {},
+        "specialTagId":null,
+        "portalDocAccessStart":null,
+        "portalDocAccessEnd":null
         }
         """
 
@@ -194,7 +198,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "qualificationId":3,
         "isTraineeship":true,
         "currentlyOffered":false,
-        "feeHelpClass":false
+        "feeHelpClass":false,
+        "specialTagId":null
         }
         """
 
@@ -263,7 +268,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "successAndQueuedEnrolmentsCount":null,
         "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -343,7 +349,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "successAndQueuedEnrolmentsCount":null,
         "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -406,7 +413,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "successAndQueuedEnrolmentsCount":null,
         "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -471,7 +479,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "successAndQueuedEnrolmentsCount":null,
         "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -535,7 +544,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "successAndQueuedEnrolmentsCount":null,
         "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -599,7 +609,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "successAndQueuedEnrolmentsCount":null,
         "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -616,7 +627,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        
+
 #       <--->
 
         * def newClass =
@@ -670,7 +681,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "minimumSessionsToComplete":null,
         "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -759,7 +771,10 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "documents":"#ignore",
         "isTraineeship": false,
         "customFields": {},
-        "feeHelpClass":false
+        "feeHelpClass":false,
+        "specialTagId":null,
+        "portalDocAccessStart":null,
+        "portalDocAccessEnd":null
         }
         """
 

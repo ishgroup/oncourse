@@ -93,6 +93,13 @@ class ContactMergeService {
                 throw new Exception("The selected students are currently enrolled in the same class (${classSameForBothContacts.uniqueCode}), " +
                         "please cancel or refund the appropriate enrolment prior to merging of those contacts.")
             }
+
+            def contactBWaitingListsCourses = contactB.student.waitingLists.course
+            def sameWaitingListCourse = contactA.student.waitingLists.course.find {contactBWaitingListsCourses.find {it}}
+            if(sameWaitingListCourse) {
+                throw new Exception("The selected students have waiting lists for the same course (${sameWaitingListCourse.code}), " +
+                        "please remove appropriate waiting list prior to merging of those contacts.")
+            }
         }
     }
 
@@ -307,6 +314,15 @@ class ContactMergeService {
         Long studentNumber = b.student && 'B' == getStudentNumberAttributeChoice(mergeAttributes) ? b.student.studentNumber : null
 
         context.deleteObjects(b.customFields)
+
+        if(b.abandonedCarts && !b.abandonedCarts.empty) {
+            if (a.abandonedCarts.isEmpty() || a.abandonedCarts.first().createdOn.before(b.abandonedCarts.first().createdOn)) {
+                if(!a.abandonedCarts.empty)
+                    context.deleteObjects(a.abandonedCarts)
+
+                b.abandonedCarts.first().setPayer(a)
+            }
+        }
 
         if (b.student != null) {
             context.deleteObject(b.student)

@@ -78,12 +78,11 @@ export const SidebarWithSearch = (props: Props) => {
         onResizeStop={handleResizeStopCallback}
         onResize={handleResizeCallback}
         sidebarWidth={sidebarWidth}
-        minWidth="244px"
         maxWidth="50%"
       >
         <Drawer>
           <div className="pl-2">
-            <HamburgerMenu variant={VARIANTS.temporary}/>
+            <HamburgerMenu variant={VARIANTS.temporary} liteBackground />
           </div>
           {!noSearch && <SidebarSearch setParentSearch={setSearch} smallIcons/>}
           {Boolean(filters.length) && (

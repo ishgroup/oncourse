@@ -1,16 +1,17 @@
-import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from "@mui/icons-material";
-import Delete from "@mui/icons-material/Delete";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { AppTheme } from "ish-ui";
-import * as React from "react";
+import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from '@mui/icons-material';
+import Delete from '@mui/icons-material/Delete';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
+import clsx from 'clsx';
+import { AppTheme } from 'ish-ui';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = (theme: AppTheme) =>
-  createStyles({
+const styles = (theme: AppTheme, p, classes) =>
+  ({
     checkbox: {
       height: "1em",
       width: "1em",
@@ -21,7 +22,7 @@ const styles = (theme: AppTheme) =>
       fontSize: "18px"
     },
     labelRoot: {
-      "& $checkboxLabel": {
+      [`& .${classes.checkboxLabel}`]: {
         fontSize: "12px",
       }
     },
@@ -29,7 +30,7 @@ const styles = (theme: AppTheme) =>
     root: {
       display: "flex",
       alignItems: "center",
-      "&:hover $deleteButton": {
+      [`&:hover .${classes.deleteButton}`]: {
         visibility: "visible"
       },
       height: theme.spacing(3),
@@ -81,7 +82,7 @@ const FilterItem = props => {
       />
 
       {deletable && (
-        <Tooltip title="Delete Filter" placement="right">
+        <Tooltip title={$t('delete_filter')} placement="right">
           <IconButton className={classes.deleteButton} onClick={() => onDelete(id, rootEntity, checked, isPrivate)}>
             <Delete fontSize="inherit" color="secondary" />
           </IconButton>
@@ -91,4 +92,4 @@ const FilterItem = props => {
   );
 };
 
-export default withStyles(styles)(FilterItem);
+export default withStyles(FilterItem, styles);

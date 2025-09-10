@@ -10,8 +10,10 @@ import { formatToDateOnly } from "ish-ui";
 import { initialize } from "redux-form";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
+import { setListEditRecord } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import EntityService from "../../../common/services/EntityService";
+import history from '../../../constants/History';
 import { EntityName } from "../../../model/entities/common";
 import { EnrolmentExtended } from "../../../model/entities/Enrolment";
 import { PayLineWithDefer } from "../../../model/entities/Payslip";
@@ -33,6 +35,7 @@ import CourseService from "../courses/services/CourseService";
 import { processCustomFields } from "../customFieldTypes/utils";
 import DiscountService from "../discounts/services/DiscountService";
 import EnrolmentService from "../enrolments/services/EnrolmentService";
+import FacultyService from "../faculties/services/FacultyService";
 import InvoiceService from "../invoices/services/InvoiceService";
 import { preformatInvoice, processInvoicePaymentPlans, setInvoiceLinesTotal } from "../invoices/utils";
 import LeadService from "../leads/services/LeadService";
@@ -42,6 +45,7 @@ import MessageService from "../messages/services/MessageService";
 import ModuleService from "../modules/services/ModuleService";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import PaymentInService from "../paymentsIn/services/PaymentInService";
+import { getActivePaymentOutMethods } from '../paymentsOut/actions';
 import PaymentOutService from "../paymentsOut/services/PaymentOutService";
 import { getPaymentOutFromModel } from "../paymentsOut/utils";
 import PayslipService from "../payslips/services/PayslipService";
@@ -165,6 +169,9 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
       });
     }
 
+    case "Faculty":
+      return FacultyService.get(id);
+
     case "Discount": {
       return DiscountService.getDiscount(id).then(discount => {
         discount.discountMemberships.forEach(el => {
@@ -214,7 +221,7 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
         delete itemToSave.student.education;
       }
 
-      itemToSave.relations = [...formatRelationsBeforeSave(itemToSave.relations)];
+      itemToSave.relations = [...formatRelationsBeforeSave(itemToSave?.relations || [])];
 
       if (itemToSave.isCompany) delete item.firstName;
 
@@ -238,6 +245,9 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       
       return EnrolmentService.updateEnrolment(id, withAssessmenProcessed);
     }
+
+    case "Faculty":
+      return FacultyService.update(id, item);
       
     case "AbstractInvoice":
     case "Invoice":
@@ -357,8 +367,17 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
       return WaitingListService.createWaitingList(item);
     case "Course":
       return CourseService.create(item);
-    case "PaymentOut":
+    case "PaymentOut": {
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.delete("invoiceId");
+
+      history.replace({
+        pathname: history.location.pathname,
+        search: decodeURIComponent(urlParams.toString())
+      });
+
       return PaymentOutService.postPaymentOut(getPaymentOutFromModel(item));
+    }
 
     case "Document": {
       const {
@@ -462,6 +481,9 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
       }
       return BankingService.createBanking(newBanking);
     }
+
+    case "Faculty":
+      return FacultyService.create(item);
     
     default:
       return defaultUnknown();
@@ -509,6 +531,8 @@ export const deleteEntityItemById = (entity: EntityName, id: number): Promise<an
       return PayslipService.removePayslip(id);
     case "PriorLearning":
       return PriorLearningService.removePriorLearning(id);
+    case "Faculty":
+      return FacultyService.remove(id);
     case "Qualification":
       return QualificationService.removeQualification(id);
     case "Room":
