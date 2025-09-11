@@ -10,6 +10,8 @@
  */
 package ish.common.payable;
 
+import java.math.BigDecimal;
+
 /**
  * Common interface for Tax entity
  */
@@ -17,4 +19,6 @@ public interface TaxInterface {
 	public static final String DESCRIPTION_KEY = "description";
 
 	public String getDescription();
+
+	public BigDecimal getRate();
 }
