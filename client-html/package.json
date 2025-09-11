@@ -58,7 +58,7 @@
     "tsconfig-paths-webpack-plugin": "4.2.0",
     "typescript": "^5.7.2",
     "webpack-bugsnag-plugins": "1.*",
-    "webpack-dev-server": "^5.1.0",
+    "webpack-dev-server": "^5.2.1",
     "webpack-pwa-manifest": "4.*",
     "workbox-webpack-plugin": "^7.3.0",
     "zip-webpack-plugin": "4.*"
