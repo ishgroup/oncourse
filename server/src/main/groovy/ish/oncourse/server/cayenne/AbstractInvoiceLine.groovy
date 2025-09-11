@@ -337,7 +337,10 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
     @API
     @Override
     Money getTaxEach() {
-        return priceEachExTax * tax.getRate()
+        Discount discount = discounts.empty ? null : discounts.first()
+        BigDecimal taxRate = tax != null ? tax.getRate() : BigDecimal.ZERO
+        Money discountValue = discount == null ? Money.ZERO : DiscountUtils.discountValue(discount, priceEachExTax, taxRate)
+        return priceEachExTax.subtract(discountValue).multiply(taxRate)
     }
 
     /**
