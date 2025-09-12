@@ -174,7 +174,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
 
   useEffect(() => {
     if (isNew) {
-      const averageTotal = rows.reduce((pr, cur) => new Decimal(pr).plus(cur.total), new Decimal(0)).toNumber();
+      const averageTotal = rows.reduce((pr, cur) => new Decimal(pr).plus(cur.total || 0), new Decimal(0)).toNumber();
 
       if (!isNaN(averageTotal)) {
         dispatch(change(form, "total", bankRounding(averageTotal)));
@@ -286,7 +286,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
 
   const onDiscountIdChange = discount => {
-    const apiDiscount: Discount | number =  discount ? plainDiscountToAPIModel(discount) : 0;
+    const apiDiscount: Discount | number =  discount ? plainDiscountToAPIModel(discount) : null;
     setCurrentDiscount(apiDiscount);
     dispatch(change(form, `${item}.discountName`, typeof apiDiscount !== 'number' && apiDiscount?.name || null));
 

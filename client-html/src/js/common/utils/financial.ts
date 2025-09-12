@@ -23,7 +23,7 @@ export const getTaxAmountByFeeExTax = (taxRate: number, feeExTax: number): numbe
 
 export const getCurrentTax = (taxes: Tax[], id: number): Tax => taxes.find(t => t.id === id);
 
-export const getPriceAndDeductionsByTotal = (
+export function getPriceAndDeductionsByTotal(
   total: number,
   taxRate: number,
   discount?: Discount | number
@@ -31,7 +31,7 @@ export const getPriceAndDeductionsByTotal = (
   priceEachExTax: number,
   discountAmount: number,
   taxEach: number
-} => {
+} {
   const totalDec = new Decimal(total);
   const taxRateDec = new Decimal(taxRate || 0);
   const afterDiscount = totalDec.div(taxRateDec.add(1));
@@ -40,17 +40,26 @@ export const getPriceAndDeductionsByTotal = (
     : discount
       ? getDiscountAmountByFeeIncTaxAndDiscount(discount, afterDiscount)
       : 0;
+  const priceEachExTax = discountAmount
+    ? afterDiscount.plus(discountAmount)
+    : afterDiscount;
+  let taxEach = afterDiscount.mul(taxRateDec);
+  const discountRounded = bankRounding(discountAmount);
+
+  const { total: totalRecomposed } = getTotalAndDeductionsByPrice(bankRounding(priceEachExTax), taxRate, discount);
+  const diff = totalDec.sub(totalRecomposed);
+  if (!diff.isZero()) {
+    taxEach = taxEach.add(diff);
+  }
 
   return {
-    taxEach: bankRounding(afterDiscount.mul(taxRateDec)),
-    discountAmount: bankRounding(discountAmount),
-    priceEachExTax: bankRounding(discountAmount
-      ? afterDiscount.plus(discountAmount)
-      : afterDiscount)
+    taxEach: bankRounding(taxEach),
+    discountAmount: discountRounded,
+    priceEachExTax: bankRounding(priceEachExTax)
   };
-};
+}
 
-export const getTotalAndDeductionsByPrice = (
+export function getTotalAndDeductionsByPrice(
   priceEachExTax: number,
   taxRate: number,
   discount?: Discount | number
@@ -58,7 +67,7 @@ export const getTotalAndDeductionsByPrice = (
   total: number;
   discountEach: number;
   taxEach: number;
-} => {
+}  {
   const base = new Decimal(priceEachExTax);
   const taxRateDec = new Decimal(taxRate || 0);
 
@@ -77,4 +86,4 @@ export const getTotalAndDeductionsByPrice = (
     discountEach: bankRounding(discountAmount),
     taxEach: bankRounding(tax)
   };
-};
+}
