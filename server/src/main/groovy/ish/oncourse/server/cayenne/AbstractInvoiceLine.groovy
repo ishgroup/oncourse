@@ -15,7 +15,6 @@ import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._AbstractInvoiceLine
-import ish.oncourse.server.util.DiscountUtils
 import ish.util.AccountUtil
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -245,11 +244,7 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
     @API
     @Override
     Money getDiscountEachExTax() {
-        if(discounts.empty)
-            return Money.ZERO
-
-        def discount = discounts.first()
-        return DiscountUtils.discountValue(discount, priceEachExTax, tax.getRate())
+        return super.getDiscountEachExTax()
     }
 
 
@@ -337,7 +332,7 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
     @API
     @Override
     Money getTaxEach() {
-        return priceEachExTax * tax.getRate()
+        return super.getTaxEach()
     }
 
     /**
