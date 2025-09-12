@@ -24,11 +24,6 @@ class MockInvoiceLine implements IInvoiceLineInterface {
 				String getDescription() {
 					return "mock tax with rate " + taxRate + " (" + hashCode() + ")"
                 }
-
-				@Override
-				BigDecimal getRate() {
-					return BigDecimal.ZERO
-				}
 			}
         }
 

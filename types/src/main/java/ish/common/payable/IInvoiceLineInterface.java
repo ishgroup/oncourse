@@ -41,9 +41,6 @@ public interface IInvoiceLineInterface extends PayableLineInterface {
 	 */
 	Money getDiscountEachExTax();
 
-
-	TaxInterface getTax();
-
 	/**
 	 * this method is supposed to be overridden by cayenne-generated _InvoiceLine - writing of the discountEachExTax property
 	 */

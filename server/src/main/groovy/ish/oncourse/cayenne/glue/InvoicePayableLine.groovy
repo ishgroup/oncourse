@@ -36,11 +36,7 @@ class InvoicePayableLine extends PersistentObject implements IInvoiceLineInterfa
         return this.waPayableLine.getDiscountEachExTax()
     }
 
-    @Override
-    TaxInterface getTax() {
-        return waPayableLine.tax
-    }
-/**
+    /**
      * @see ish.common.payable.PayableLineInterface#getDiscountEachIncTax()
      */
     Money getDiscountEachIncTax() {
