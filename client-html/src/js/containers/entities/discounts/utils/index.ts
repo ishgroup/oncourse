@@ -7,7 +7,6 @@ import { Discount, DiscountType, MoneyRounding } from '@api/model';
 import Decimal from 'decimal.js-light';
 import { openInternalLink } from 'ish-ui';
 import { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
-import { bankRounding } from '../../../../common/utils/financial';
 
 export const plainDiscountToAPIModel = (plain: any):Discount => {
   const {
@@ -29,7 +28,7 @@ export const getRoundingByType = (type: MoneyRounding, value: Decimal): number =
   switch (type) {
     default:
     case "No Rounding":
-      return bankRounding(value);
+      return value.toNumber();
     case "Nearest 10 cents":
       return value.toDecimalPlaces(1, Decimal.ROUND_UP).toNumber();
     case "Nearest 50 cents": {
