@@ -249,7 +249,8 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
 
   const onDiscountEachExTaxBlur = (e, value) => {
-    recalculate(row.total, row.priceEachExTax, row.quantity, taxRate, value);
+    setCurrentDiscount(value || 0);
+    recalculateByPrice(row.priceEachExTax, taxRate, value || 0, row.quantity);
   };
 
   const onTaxIdChange = value => {
