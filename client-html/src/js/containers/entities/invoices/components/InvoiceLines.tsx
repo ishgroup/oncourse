@@ -222,26 +222,32 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
       dispatch(change(form, `${item}.enrolledStudent`, student ? student.label : null));
     };
   
-  const recalculateByTotal = (total: number, taxRate: number, discount: Discount | number, qantity) => {
-    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(new Decimal(total).div(qantity).toNumber(), taxRate, discount);
+  const recalculateByTotal = (total: number, taxRate: number, discount: Discount | number, quantity) => {
+    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(new Decimal(total).div(quantity).toNumber(), taxRate, discount);
 
     dispatch(change(form, `${item}.taxEach`, taxEach));
     dispatch(change(form, `${item}.discountEachExTax`, discountAmount));
     dispatch(change(form, `${item}.priceEachExTax`, priceEachExTax));
   };
 
-  const recalculateByPrice = (priceEachExTax: number, taxRate: number, discount: Discount | number, qantity) => {
+  const recalculateByPrice = (priceEachExTax: number, taxRate: number, discount: Discount | number, quantity) => {
     const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice( priceEachExTax, taxRate, discount);
 
     dispatch(change(form, `${item}.taxEach`, taxEach));
     dispatch(change(form, `${item}.discountEachExTax`, discountEach));
-    dispatch(change(form, `${item}.total`, decimalMul(total, qantity)));
+    dispatch(change(form, `${item}.total`, decimalMul(total, quantity)));
   }; 
   
   const recalculate = (total: number, priceEachExTax: number, qantity: number, taxRate: number, discount: Discount | number)=> {
+    if (total === 0 && priceEachExTax === 0) {
+      dispatch(change(form, `${item}.taxEach`, 0));
+      dispatch(change(form, `${item}.discountEachExTax`, 0));
+      return;
+    }
+
     total
       ? recalculateByTotal(total, taxRate, discount, qantity)
-      : priceEachExTax && recalculateByPrice(priceEachExTax, taxRate, discount, qantity);
+      : recalculateByPrice(priceEachExTax, taxRate, discount, qantity);
   }; 
 
   const onPriceEachExTaxBlur = (e, value) => {
@@ -292,10 +298,17 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     dispatch(change(form, `${item}.discountName`, typeof apiDiscount !== 'number' && apiDiscount?.name || null));
 
     if (
-      (typeof apiDiscount !== 'number' && apiDiscount?.discountType === 'Fee override') ||
+      (typeof apiDiscount !== 'number' && apiDiscount !== null && apiDiscount?.discountType === 'Fee override') ||
       (!discount && typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override')
     ) {
-      recalculateByPrice(row.priceEachExTax || 0, taxRate, apiDiscount, row.quantity);
+      const total = new Decimal(apiDiscount?.discountValue).mul(new Decimal(taxRate).plus(1)).toNumber();
+      recalculateByTotal(
+        total,
+        taxRate,
+        apiDiscount,
+        row.quantity
+      );
+      dispatch(change(form, `${item}.total`, decimalMul(total, row.quantity)));
       return;
     }
 
