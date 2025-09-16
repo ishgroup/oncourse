@@ -301,7 +301,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
       (typeof apiDiscount !== 'number' && apiDiscount !== null && apiDiscount?.discountType === 'Fee override') ||
       (!discount && typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override')
     ) {
-      const total = new Decimal(apiDiscount?.discountValue).mul(new Decimal(taxRate).plus(1)).toNumber();
+      const total = bankRounding(new Decimal(apiDiscount?.discountValue).mul(new Decimal(taxRate).plus(1)).toNumber());
       recalculateByTotal(
         total,
         taxRate,
