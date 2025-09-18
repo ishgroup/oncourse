@@ -61,7 +61,7 @@ export const getDiscountedFee = (discount: Discount, taxMul: Decimal, fee: numbe
     case "Percent":
       return dFee.minus(getRoundingByType(discount.rounding, dFee.mul(new Decimal(1).minus(discount.discountPercent))));
     case "Dollar":
-      return dFee.minus(getRoundingByType(discount.rounding, dFee.minus(new Decimal(discount.discountValue).mul(taxMul))));
+      return dFee.minus(getRoundingByType(discount.rounding, dFee.minus(new Decimal(discount.discountValue))));
     case "Fee override":
       return dFee.minus(getRoundingByType(discount.rounding, new Decimal(discount.discountValue).mul(taxMul)));
     default:

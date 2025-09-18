@@ -74,7 +74,7 @@ export function getTotalAndDeductionsByPrice(
   const discountAmount = (typeof discount === 'number'
     ? discount
     : discount && getDiscountAmountExTax(discount, taxRate, priceEachExTax)) || 0;
-  
+
   const afterDiscount = base.sub(discountAmount);
   const tax = afterDiscount.mul(taxRateDec);
   const total = typeof discount !== 'number' && discount?.discountType === 'Fee override' 

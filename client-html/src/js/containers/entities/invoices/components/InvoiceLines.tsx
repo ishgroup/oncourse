@@ -7,7 +7,10 @@
  */
 
 import { Course, Currency, Discount, InvoiceType, Tax } from '@api/model';
+import Lock from '@mui/icons-material/Lock';
+import LockOpen from '@mui/icons-material/LockOpen';
 import { Grid, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import $t from '@t';
 import { Decimal } from 'decimal.js-light';
 import { decimalMul, LinkAdornment, NoArgFunction, NumberArgFunction, usePrevious } from 'ish-ui';
@@ -116,6 +119,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   const [courseClassEnrolments, setCourseClassEnrolments] = useState([]);
   const [currentDiscount, setCurrentDiscount] = useState<Discount | number>(null);
   const [loading, setLoading] = useState(false);
+  const [discountEachExTaxLocked, setDiscountEachExTaxLocked] = useState(false);
 
   const accountRef = useRef<any>(undefined);
 
@@ -296,7 +300,11 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     const apiDiscount: Discount | number =  discount ? plainDiscountToAPIModel(discount) : null;
     setCurrentDiscount(apiDiscount);
     dispatch(change(form, `${item}.discountName`, typeof apiDiscount !== 'number' && apiDiscount?.name || null));
-
+    
+    if (['Fee override', 'Dollar'].includes(apiDiscount?.discountType)) {
+      setDiscountEachExTaxLocked(true);
+    }
+    
     if (
       (typeof apiDiscount !== 'number' && apiDiscount !== null && apiDiscount?.discountType === 'Fee override') ||
       (!discount && typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override')
@@ -311,12 +319,21 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
       dispatch(change(form, `${item}.total`, decimalMul(total, row.quantity)));
       return;
     }
+    
+    if (!discount && row.priceEachExTax) {
+      recalculateByPrice(row.priceEachExTax, taxRate, 0, row.quantity);
+      return;
+    }
 
     recalculate(row.total, row.priceEachExTax, row.quantity, taxRate, apiDiscount);
   };
+  
+  const onDiscountEachExTaxLock = () => {
+    setDiscountEachExTaxLocked(prev => !prev);
+  };
 
   const disableFinanceFileds = type !== "Quote" && !isNew;
-  const hasFeeOverride = typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override';
+  const hasFeeOverride =  typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override' && discountEachExTaxLocked;
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="relative">
@@ -474,7 +491,10 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             name={`${item}.discountEachExTax`}
             label={$t('discount_each_extax')}
             onBlur={onDiscountEachExTaxBlur}
-            disabled={disableFinanceFileds || hasFeeOverride}
+            labelAdornment={<IconButton className="inputAdornmentButton" onClick={onDiscountEachExTaxLock}>
+              {discountEachExTaxLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
+            </IconButton>}
+            disabled={disableFinanceFileds || discountEachExTaxLocked}
           />
         </Grid>
 
