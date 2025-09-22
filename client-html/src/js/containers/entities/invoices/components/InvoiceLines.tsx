@@ -122,6 +122,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   const [discountEachExTaxLocked, setDiscountEachExTaxLocked] = useState(false);
 
   const accountRef = useRef<any>(undefined);
+  const lastEditedField = useRef<'priceEachExTax' | 'total'>(undefined);
 
   const prevCourseClassId = usePrevious(row.courseClassId);
   
@@ -187,6 +188,12 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     }
   }, [form, item, rows, isNew, row.total]);
 
+  useEffect(() => {
+    if (currentDiscount && typeof currentDiscount !== 'number') {
+      setDiscountEachExTaxLocked(true);
+    }
+  }, [currentDiscount]);
+
   const taxRate = useMemo(() => {
     const tax = taxes.find(t => t.id === row.taxId);
 
@@ -225,7 +232,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
 
       dispatch(change(form, `${item}.enrolledStudent`, student ? student.label : null));
     };
-  
+
   const recalculateByTotal = (total: number, taxRate: number, discount: Discount | number, quantity) => {
     const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(new Decimal(total).div(quantity).toNumber(), taxRate, discount);
 
@@ -240,8 +247,8 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     dispatch(change(form, `${item}.taxEach`, taxEach));
     dispatch(change(form, `${item}.discountEachExTax`, discountEach));
     dispatch(change(form, `${item}.total`, decimalMul(total, quantity)));
-  }; 
-  
+  };
+
   const recalculate = (total: number, priceEachExTax: number, qantity: number, taxRate: number, discount: Discount | number)=> {
     if (total === 0 && priceEachExTax === 0) {
       dispatch(change(form, `${item}.taxEach`, 0));
@@ -249,10 +256,14 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
       return;
     }
 
-    total
-      ? recalculateByTotal(total, taxRate, discount, qantity)
-      : recalculateByPrice(priceEachExTax, taxRate, discount, qantity);
-  }; 
+    if (lastEditedField.current === 'total') {
+      recalculateByTotal(total, taxRate, discount, qantity);
+    }
+
+    if (lastEditedField.current === 'priceEachExTax') {
+      recalculateByPrice(priceEachExTax, taxRate, discount, qantity);
+    }
+  };
 
   const onPriceEachExTaxBlur = (e, value) => {
     recalculateByPrice(value, taxRate, currentDiscount, row.quantity);
@@ -285,7 +296,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
       return;
     }
 
-    dispatch(change(form, `${item}.incomeAccountName`, useAllAccounts 
+    dispatch(change(form, `${item}.incomeAccountName`, useAllAccounts
       ? accountLabelCondition(plainAccounts.find(a => a.id === v))
       : accountLabelCondition(incomeAccountOptions.find(a => a.id === v))));
 
@@ -297,19 +308,15 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
 
   const onDiscountIdChange = discount => {
-    const apiDiscount: Discount | number =  discount ? plainDiscountToAPIModel(discount) : null;
+    const apiDiscount: Discount | number =  typeof discount !== 'number' && discount ? plainDiscountToAPIModel(discount) : null;
     setCurrentDiscount(apiDiscount);
     dispatch(change(form, `${item}.discountName`, typeof apiDiscount !== 'number' && apiDiscount?.name || null));
-    
-    if (['Fee override', 'Dollar'].includes(apiDiscount?.discountType)) {
-      setDiscountEachExTaxLocked(true);
-    }
-    
+
     if (
       (typeof apiDiscount !== 'number' && apiDiscount !== null && apiDiscount?.discountType === 'Fee override') ||
-      (!discount && typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override')
+      (!discount && typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override' && lastEditedField.current !== 'priceEachExTax')
     ) {
-      const total = bankRounding(new Decimal(apiDiscount?.discountValue).mul(new Decimal(taxRate).plus(1)).toNumber());
+      const total = bankRounding(new Decimal((apiDiscount || (typeof currentDiscount !== 'number' && currentDiscount))?.discountValue).mul(new Decimal(taxRate).plus(1)).toNumber());
       recalculateByTotal(
         total,
         taxRate,
@@ -329,7 +336,12 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
   
   const onDiscountEachExTaxLock = () => {
-    setDiscountEachExTaxLocked(prev => !prev);
+    setDiscountEachExTaxLocked(prev => {
+      if (!prev && currentDiscount && typeof currentDiscount !== 'number') {
+       onDiscountIdChange(currentDiscount);
+      }
+      return !prev;
+    });
   };
 
   const disableFinanceFileds = type !== "Quote" && !isNew;
@@ -481,6 +493,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             name={`${item}.priceEachExTax`}
             label={$t('price_each_extax')}
             onBlur={onPriceEachExTaxBlur}
+            onFocus={() => lastEditedField.current = 'priceEachExTax'}
             disabled={disableFinanceFileds}
           />
         </Grid>
@@ -532,6 +545,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
               name={`${item}.total`}
               disabled={disableFinanceFileds || hasFeeOverride}
               defaultValue={row.total}
+              onFocus={() => lastEditedField.current = 'total'}
               onBlur={onTotalBlur}
               inline
             />
