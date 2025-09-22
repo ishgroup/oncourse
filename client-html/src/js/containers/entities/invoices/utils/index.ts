@@ -41,7 +41,7 @@ export const setInvoiceLinesTotal = async (value: InvoiceWithTotalLine): Promise
         0,
       ).then(({ rows }) => parseFloat(rows.map(r => r.values[0])[0]));
       
-      const { total } = getTotalAndDeductionsByPrice(line.priceEachExTax, taxRate, discount);
+      const { total } = getTotalAndDeductionsByPrice(line.priceEachExTax, taxRate, discount || line.discountEachExTax);
       
       line.total = decimalMul(total, line.quantity);
     }
