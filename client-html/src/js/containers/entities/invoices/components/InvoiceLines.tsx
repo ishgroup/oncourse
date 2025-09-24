@@ -200,7 +200,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     return tax ? tax.rate : 0;
   }, [taxes, row.taxId]);
 
-  const taxDisplayedAmount = useMemo(() => bankRounding(new Decimal(row.taxEach).mul(row.quantity)), [row.taxEach, row.quantity]);
+  const taxDisplayedAmount = useMemo(() => bankRounding(new Decimal(row.taxEach).mul(row.quantity || 1)), [row.taxEach, row.quantity]);
 
   const incomeAccountOptions = useMemo(() => accountTypes.income?.concat({
     id: USE_ALL_ACCOUNTS_FLAG as any,
@@ -233,7 +233,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
       dispatch(change(form, `${item}.enrolledStudent`, student ? student.label : null));
     };
 
-  const recalculateByTotal = (total: number, taxRate: number, discount: Discount | number, quantity) => {
+  const recalculateByTotal = (total: number, taxRate: number, discount: Discount | number, quantity = 1) => {
     const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(new Decimal(total).div(quantity).toNumber(), taxRate, discount);
 
     dispatch(change(form, `${item}.taxEach`, taxEach));
@@ -241,7 +241,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     dispatch(change(form, `${item}.priceEachExTax`, priceEachExTax));
   };
 
-  const recalculateByPrice = (priceEachExTax: number, taxRate: number, discount: Discount | number, quantity) => {
+  const recalculateByPrice = (priceEachExTax: number, taxRate: number, discount: Discount | number, quantity= 1) => {
     const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice( priceEachExTax, taxRate, discount);
 
     dispatch(change(form, `${item}.taxEach`, taxEach));
@@ -324,11 +324,6 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
         row.quantity
       );
       dispatch(change(form, `${item}.total`, decimalMul(total, row.quantity)));
-      return;
-    }
-    
-    if (!discount && row.priceEachExTax) {
-      recalculateByPrice(row.priceEachExTax, taxRate, 0, row.quantity);
       return;
     }
 
