@@ -149,6 +149,13 @@ export const attachScript = url => {
   document.head.appendChild(script);
 };
 
+export const attachScriptHTML = (html: string) => {
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.innerHTML = html;
+  document.head.appendChild(script);
+};
+
 export const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1920;
 
 export const getWindowHeight = () => window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 1080;
