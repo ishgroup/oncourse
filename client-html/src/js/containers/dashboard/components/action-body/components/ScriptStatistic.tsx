@@ -6,11 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { DataRow } from '@api/model';
 import { Check, Clear } from '@mui/icons-material';
 import { Grid, Link, List, ListItem, Tooltip, Typography } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
-import { differenceInHours, differenceInMinutes, format } from 'date-fns';
+import { differenceInMinutes, format } from 'date-fns';
 import { III_DD_MMM_YYYY_HH_MM, openInternalLink } from 'ish-ui';
 import React, { createRef, useEffect, useState } from 'react';
 import { withStyles } from 'tss-react/mui';
@@ -42,56 +43,77 @@ const styles = theme => ({
   }
 });
 
+const mapAuditRow = (row: DataRow) => ({
+  id: row.values[0],
+  date: row.values[1],
+  status: row.values[2],
+});
+
 const ScriptStatistic = ({ dispatch, classes }: { dispatch, classes? }) => {
   const [scripts, setScripts] = useState([]);
 
   const getScriptsData = async () => {
-    const today = new Date();
-    
     try {
       const scriptRes = await EntityService.getPlainRecords(
         "Script",
         "name",
         'automationStatus == ENABLED',
-        null,
-        null,
+        1000,
+        0,
         "name",
         true
       );
 
       if (!Array.isArray(scriptRes?.rows)) return;
 
-      const resultForRender = [];
+      const resultForRender = new Map;
 
-      for (const scriptRow of scriptRes.rows) {
-        const auditRes = await EntityService.getPlainRecords(
-          "Audit",
-          "entityId,created,action",
-          `entityIdentifier is "Script" and entityId is ${scriptRow.id}
-            and ( action is SCRIPT_FAILED or action is SCRIPT_EXECUTED) `,
-          7,
-          0,
-          'created',
-          false
-        );
+      const recentAuditRes = await EntityService.getPlainRecords(
+        "Audit",
+        "entityId,created,action",
+        `entityIdentifier is "Script" and entityId in (${scriptRes.rows.map(r => r.id).toString()})
+            and (action is SCRIPT_FAILED or action is SCRIPT_EXECUTED) and created >= yesterday`,
+        1000,
+        0,
+        'created',
+        false
+      );
 
-        if (auditRes.rows.length && auditRes.rows.some(r => differenceInHours(today, new Date(r.values[1])) <= 24)) {
-          const result = []; 
-          auditRes.rows.forEach(row => {
-            if (row.values[1]) {
-              result.push({
-                id: row.values[0],
-                date: row.values[1],
-                status: row.values[2],
-              });
-            }
-          });
-          resultForRender.push({ name: scriptRow.values[0], result });
+      for (const auiditRow of recentAuditRes.rows) {
+        const inResults = resultForRender.get(auiditRow.values[0]);
+        if (auiditRow.values[1]) {
+          if (!inResults) {
+            resultForRender.set(auiditRow.values[0], {
+              name: scriptRes.rows.find(r => r.id === auiditRow.values[0])?.values[0],
+              result: []
+            });
+          }
         }
       }
 
-      resultForRender.sort((a, b) => (new Date(a.result[0].date) < new Date(b.result[0].date) ? 1 : -1));
-      setScripts(resultForRender);
+      const historyAuditRes = await EntityService.getPlainRecords(
+        "Audit",
+        "entityId,created,action",
+        `entityIdentifier is "Script" and entityId in (${Array.from(resultForRender.keys()).toString()})
+            and (action is SCRIPT_FAILED or action is SCRIPT_EXECUTED)`,
+        resultForRender.size * 7,
+        0,
+        'created',
+        false
+      );
+
+      for (const auiditRow of historyAuditRes.rows) {
+        const inResults = resultForRender.get(auiditRow.values[0]);
+        resultForRender.set(auiditRow.values[0], {
+          name: inResults.name,
+          result: [
+            ...inResults.result,
+            mapAuditRow(auiditRow)
+          ]
+        });
+      }
+
+      setScripts(Array.from(resultForRender.values()));
     } catch (e) {
       instantFetchErrorHandler(dispatch, e, "Failed to get automation status");
     }
@@ -115,6 +137,8 @@ const ScriptStatistic = ({ dispatch, classes }: { dispatch, classes? }) => {
     }
     return Math.floor(minutes / 60) + 'h ago';
   };
+
+  console.log('!!!!!!', scripts);
 
   return (
     <List dense disablePadding>
