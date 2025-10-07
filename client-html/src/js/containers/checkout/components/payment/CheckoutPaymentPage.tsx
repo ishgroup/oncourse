@@ -50,9 +50,9 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
   const voucherItem = selectedDiscount ? summaryVouchers.find(v => v.id === selectedDiscount.id) : null;
 
   useEffect(() => {
-    attachScriptHTML('{config:{viceAccountId:\'93bcb219-23a6-4426-806c-d32eb914c411\',viceSiteId:\'baf2d5c8-68fa-49c7-9379-49f248dc8fb3\'}}')
-    attachScript('//vice-prod.sdiapi.com/vice_loader/93bcb219-23a6-4426-806c-d32eb914c411/baf2d5c8-68fa-49c7-9379-49f248dc8fb3')
-  }, [])
+    attachScriptHTML('vice={config:{viceAccountId:\'93bcb219-23a6-4426-806c-d32eb914c411\',viceSiteId:\'baf2d5c8-68fa-49c7-9379-49f248dc8fb3\'}}');
+    attachScript('//vice-prod.sdiapi.com/vice_loader/93bcb219-23a6-4426-806c-d32eb914c411/baf2d5c8-68fa-49c7-9379-49f248dc8fb3');
+  }, []);
 
   useEffect(() => {
     if (['EWAY', 'EWAY_TEST'].includes(gateway)) {
