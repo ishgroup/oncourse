@@ -54,6 +54,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
     attachScript('//vice-prod.sdiapi.com/vice_loader/93bcb219-23a6-4426-806c-d32eb914c411/baf2d5c8-68fa-49c7-9379-49f248dc8fb3');
   }, []);
 
+
   useEffect(() => {
     if (['EWAY', 'EWAY_TEST'].includes(gateway)) {
       [
