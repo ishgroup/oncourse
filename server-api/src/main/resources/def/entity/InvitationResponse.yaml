@@ -1,0 +1,10 @@
+type: object
+properties:
+  email:
+    type: string
+    required: true
+    description: email of invitation user
+  requireComplexPass:
+    type: boolean
+    required: true
+    description: value of passwordComplexity preference

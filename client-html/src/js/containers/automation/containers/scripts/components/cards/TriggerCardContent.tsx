@@ -3,21 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Script, TagRequirementType, TriggerType } from "@api/model";
-import * as Entities from "@aql/queryLanguageModel";
-import Help from "@mui/icons-material/Help";
-import IconButton from "@mui/material/IconButton";
-import { mapSelectItems, SelectItemDefault, TagInputList } from "ish-ui";
-import React, { useEffect, useState } from "react";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { useAppSelector } from "../../../../../../common/utils/hooks";
-import { CatalogItemType } from "../../../../../../model/common/Catalog";
-import { getEntityTags } from "../../../../../tags/actions";
-import TagsService from "../../../../../tags/services/TagsService";
-import { AQL_ENTITY_ITEMS } from "../../../../constants";
+import { Script, TagRequirementType, TriggerType } from '@api/model';
+import * as Entities from '@aql/queryLanguageModel';
+import Help from '@mui/icons-material/Help';
+import IconButton from '@mui/material/IconButton';
+import $t from '@t';
+import { mapSelectItems, SelectItemDefault, TagInputList } from 'ish-ui';
+import React, { useEffect, useState } from 'react';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { IAction } from '../../../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { useAppSelector } from '../../../../../../common/utils/hooks';
+import { CatalogItemType } from '../../../../../../model/common/Catalog';
+import { getEntityTags } from '../../../../../tags/actions';
+import TagsService from '../../../../../tags/services/TagsService';
+import { AQL_ENTITY_ITEMS } from '../../../../constants';
 
 // Filter AbstractInvoice and include Quote
 const AllEntities = [
@@ -35,7 +37,7 @@ interface Props {
   enableEntityNameField: boolean;
   values: Script;
   isInternal: boolean;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   form: string;
   timeZone: string;
   classes: any;
@@ -121,7 +123,7 @@ const TriggerCardContent = (props: Props) => {
       <FormField
         type="select"
         name="trigger.type"
-        label="Trigger type"
+        label={$t('trigger_type')}
         className="flex-fill"
         items={
           isScheduleOrOnDemand && isInternal
@@ -139,7 +141,7 @@ const TriggerCardContent = (props: Props) => {
           <FormField
             type="select"
             name="trigger.parameterId"
-            label="Checklist"
+            label={$t('checklist')}
             className="pl-2 flex-fill"
             disabled={isInternal}
             items={checklists}
@@ -158,7 +160,7 @@ const TriggerCardContent = (props: Props) => {
               value: values.trigger.parameterId ? [values.trigger.parameterId] : []
             }}
             meta={{}}
-            label="Tag"
+            label={$t('tag')}
             className="pl-2 flex-fill"
             tags={entityTags}
           />
@@ -169,7 +171,7 @@ const TriggerCardContent = (props: Props) => {
         <FormField
           type="select"
           name="trigger.entityName"
-          label="Entity name"
+          label={$t('entity_name')}
           required={!entityNotRequired}
           className="pl-2 flex-fill"
           disabled={isInternal}
@@ -184,7 +186,7 @@ const TriggerCardContent = (props: Props) => {
           <FormField
             type="select"
             name="trigger.entityAttribute"
-            label="Entity attribute"
+            label={$t('entity_attribute')}
             className="pl-2 flex-fill"
             disabled={isInternal}
             items={Object.keys(Entities[values.trigger.entityName]).map(mapSelectItems)}
@@ -207,7 +209,7 @@ const TriggerCardContent = (props: Props) => {
             <FormField
               type="text"
               name="trigger.cron.custom"
-              label="Cron Schedule"
+              label={$t('cron_schedule')}
               className="pl-2 flex-fill"
               labelAdornment={(
                 <span>

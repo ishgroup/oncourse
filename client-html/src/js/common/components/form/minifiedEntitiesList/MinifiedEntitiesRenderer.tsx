@@ -3,24 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Delete from "@mui/icons-material/Delete";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { AppTheme } from "ish-ui";
-import React, { useCallback, useEffect, useState } from "react";
-import { IS_JEST } from "../../../../constants/EnvironmentConstants";
-import { getDeepValue } from "../../../utils/common";
+import Delete from '@mui/icons-material/Delete';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionActions from '@mui/material/AccordionActions';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { AppTheme } from 'ish-ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { IS_JEST } from '../../../../constants/EnvironmentConstants';
+import { getDeepValue } from '../../../utils/common';
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     root: {
       width: "100%"
     },
@@ -60,7 +60,8 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
     onViewMore,
     accordion,
     twoColumn,
-    syncErrors
+    syncErrors,
+    fieldProps = {}
   } = props;
 
   const onDeleteHandler = (e, index, id) => {
@@ -75,9 +76,9 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
   const onChangeBase = useCallback(
     index => {
       if (accordion) {
-        setExpanded(prev => (prev[index] ? {} : {[index]: true}));
+        setExpanded(prev => (prev[index] ? {} : { [index]: true }));
       } else {
-        setExpanded(prev => ({...prev, [index]: !prev[index]}));
+        setExpanded(prev => ({ ...prev, [index]: !prev[index] }));
       }
     },
     [accordion]
@@ -115,7 +116,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
             expanded={Boolean(fieldsWithError[index]) || Boolean(expanded[index])}
             onChange={() => onChangeBase(index)}
             defaultExpanded={!field.id}
-            TransitionProps={{unmountOnExit: true}}
+            TransitionProps={{ unmountOnExit: true }}
           >
             <AccordionSummary
               classes={{
@@ -139,7 +140,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
               )}
             </AccordionSummary>
             <AccordionDetails className="pb-0">
-              <FieldsContent item={item} classes={classes} row={field} rows={rows} twoColumn={twoColumn}/>
+              <FieldsContent item={item} classes={classes} row={field} rows={rows} twoColumn={twoColumn} {...fieldProps}/>
             </AccordionDetails>
             {onViewMore && (
               <AccordionActions>
@@ -151,7 +152,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
                     }}
                     onClick={() => onViewMore(entity, field.id, field)}
                   >
-                    More options
+                    {$t('more_options2')}
                   </Button>
                 )}
               </AccordionActions>
@@ -163,4 +164,4 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
   );
 };
 
-export default withStyles(styles)(MinifiedEntitiesRenderer) as React.FC<any>;
+export default withStyles(MinifiedEntitiesRenderer, styles) as React.FC<any>;

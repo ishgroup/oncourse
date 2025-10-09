@@ -124,26 +124,3 @@ delete:
     mask: delete
     keyCode: ATTACHMENT_INFO
     errorMessage: Sorry, you have no permissions to delete document. Please contact your administrator
-
-patch:
-  operationId: bulkChange
-  tags:
-    - Document
-  parameters:
-    - name: diff
-      in: body
-      schema:
-        $ref: './def/entity/Diff.yaml'
-      required: true
-      description: documents for update
-  responses:
-    '200':
-      description: Success response
-    '400':
-      description: Bad request error
-    default:
-      description: Unexpected error
-  x-permission:
-    mask: edit
-    keyCode: ATTACHMENT_INFO
-    errorMessage: Sorry, you have no permissions to edit document. Please contact your administrator.

@@ -3,34 +3,34 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Integration, IntegrationProp } from "@api/model";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import Grid from "@mui/material/Grid";
-import { withStyles } from "@mui/styles";
-import createStyles from "@mui/styles/createStyles";
-import clsx from "clsx";
-import { ShowConfirmCaller } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Dispatch } from "redux";
-import { getFormSyncErrors, isDirty, isInvalid } from "redux-form";
-import { showConfirm } from "../../../../../common/actions";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { Integration, IntegrationProp } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import clsx from 'clsx';
+import { ShowConfirmCaller } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import { getFormSyncErrors, isDirty, isInvalid } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { showConfirm } from '../../../../../common/actions';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
 import {
   IntegrationSchema,
   IntegrationTypesEnum
-} from "../../../../../model/automation/integrations/IntegrationSchema";
-import { State } from "../../../../../reducers/state";
-import { createIntegration, deleteIntegrationItem, updateIntegration } from "../../../actions";
-import IntegrationTypes from "../IntegrationTypes";
-import IntegrationDescription from "./IntegrationDescription";
+} from '../../../../../model/automation/integrations/IntegrationSchema';
+import { State } from '../../../../../reducers/state';
+import { createIntegration, deleteIntegrationItem, updateIntegration } from '../../../actions';
+import IntegrationTypes from '../IntegrationTypes';
+import IntegrationDescription from './IntegrationDescription';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   root: {
     height: `calc(100% - ${theme.spacing(8)})`,
     marginTop: theme.spacing(8)
@@ -145,7 +145,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
     return (
       <AppBarContainer
         values={item}
-        manualUrl={getManualLink("externalintegrations")}
+        manualUrl={getManualLink("external-integrations")}
         getAuditsUrl={getAuditsUrl}
         disabled={!dirty}
         invalid={invalid}
@@ -159,7 +159,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
             <FormField
               type="text"
               name="name"
-              label="Name"
+              label={$t('name')}
               validate={this.validateNameField}
               disabled={disableName}
             />
@@ -268,4 +268,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default withRouter(connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(FormContainer)));
+)(withStyles(FormContainer, styles)));

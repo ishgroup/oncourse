@@ -12,6 +12,7 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -43,20 +44,20 @@ public class AmazonS3Service {
     private AWSCredentials credentials;
     private Regions region;
     private String bucketName;
+    private String endpoint;
 
-    AmazonS3Service(String accessKeyId, String secretKey, String bucketName, String region) {
+    AmazonS3Service(String accessKeyId, String secretKey, String bucketName, String region, String endpoint) {
         this.credentials = new BasicAWSCredentials(accessKeyId, secretKey);
         this.bucketName = bucketName;
         this.region = Regions.fromName(region);
-        this.s3Client = AmazonS3ClientBuilder
-                .standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(this.region)
-                .build();
+        this.endpoint = endpoint;
+        this.s3Client = buildClient(credentials, region, endpoint);
     }
 
     public AmazonS3Service(DocumentService documentService) {
-        this(documentService.getAccessKeyId(), documentService.getAccessSecretKey(), documentService.getBucketName(), documentService.getRegion());
+        this(documentService.getAccessKeyId(), documentService.getAccessSecretKey(),
+             documentService.getBucketName(), documentService.getRegion(),
+             documentService.getEndpoint());
     }
 
     /**
@@ -219,6 +220,19 @@ public class AmazonS3Service {
         s3Client.deleteVersion(request);
     }
 
+    private static AmazonS3 buildClient(AWSCredentials credentials, String region, String endpoint) {
+        AmazonS3ClientBuilder builder = AmazonS3ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials));
+
+        if (endpoint == null || endpoint.isEmpty()) {
+            builder.withRegion(region);
+        } else {
+            builder.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpoint, region));
+            builder.withPathStyleAccessEnabled(true);
+        }
+
+        return builder.build();
+    }
 
     public static class UploadResult {
 

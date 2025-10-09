@@ -6,11 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import React, { useCallback, useContext } from "react";
-import { TimetableContextState } from "../../../../../../model/timetable";
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import $t from '@t';
+import React, { useCallback, useContext } from 'react';
+import { TimetableContextState } from '../../../../../../model/timetable';
 
 const CalendarModesSwitcher = ({ className = null, TimetableContext }) => {
   const {
@@ -28,9 +29,9 @@ const CalendarModesSwitcher = ({ className = null, TimetableContext }) => {
   return (
     <FormControl className={className} variant="standard">
       <Select value={calendarMode} onChange={onChange}>
-        <MenuItem value="Compact">Compact</MenuItem>
-        <MenuItem value="Gap(Days)">Gap (Days)</MenuItem>
-        <MenuItem value="Gap(Hours)">Gap (Hours)</MenuItem>
+        <MenuItem value="Compact">{$t('compact')}</MenuItem>
+        <MenuItem value="Gap(Days)">{$t('gap_days')}</MenuItem>
+        <MenuItem value="Gap(Hours)">{$t('gap_hours')}</MenuItem>
       </Select>
     </FormControl>
   );

@@ -3,15 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseClassTutor } from "@api/model";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Button from "@mui/material/Button";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format } from "date-fns";
+import { CourseClassTutor } from '@api/model';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, FormControlLabel, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import $t from '@t';
+import clsx from 'clsx';
+import { format } from 'date-fns';
 import {
   AppTheme,
   DD_MM_YYYY_SLASHED,
@@ -20,16 +18,17 @@ import {
   normalizeNumber,
   openInternalLink,
   WarningMessage
-} from "ish-ui";
-import React from "react";
-import { ContactLinkAdornment } from "../../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
-import ContactSelectItemRenderer from "../../../contacts/components/ContactSelectItemRenderer";
-import { getContactFullName } from "../../../contacts/utils";
-import { CourseClassTutorsTabProps } from "./CourseClassTutorsTab";
+} from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { ContactLinkAdornment } from '../../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import ExpandableItem from '../../../../../common/components/layout/expandable/ExpandableItem';
+import ContactSelectItemRenderer from '../../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../../contacts/utils';
+import { CourseClassTutorsTabProps } from './CourseClassTutorsTab';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   tutorRoot: {
     gridTemplateRows: "auto auto"
   },
@@ -109,7 +108,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
               </Typography>
             ) : (
               <Typography color="error" noWrap>
-                Contact is required
+                {$t('contact_is_required')}
               </Typography>
             )}
             {tutor.roleName ? (
@@ -118,29 +117,29 @@ const CourseClassTutorItem: React.FC<Props> = ({
               </Typography>
             ) : (
               <Typography variant="caption" color="error" noWrap>
-                Tutor role is required
+                {$t('tutor_role_is_required')}
               </Typography>
             )}
           </div>
           <div className={clsx("d-grid gridAutoFlow-column align-items-baseline", classes.tutorColumn)}>
             {tutor.isInPublicity ? (
               <Typography variant="caption" noWrap>
-                Visible
+                {$t('visible')}
               </Typography>
             ) : (
               <Typography variant="caption" color="textSecondary" noWrap>
-                Not visible
+                {$t('not_visible')}
               </Typography>
             )}
             {tutor.confirmedOn ? (
               <Typography variant="caption" noWrap>
-                Confirmed
+                {$t('Confirmed')}
                 {' '}
                 {format(new Date(tutor.confirmedOn), EEE_D_MMM_YYYY)}
               </Typography>
             ) : (
               <Typography variant="caption" color="textSecondary" noWrap>
-                Not confirmed
+                {$t('not_confirmed')}
               </Typography>
             )}
           </div>
@@ -151,7 +150,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
           <FormField
             type="remoteDataSelect"
             name={`tutors[${index}].contactId`}
-            label="Contact"
+            label={$t('Contact')}
             entity="Contact"
             aqlFilter={`isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`}
             selectValueMark="id"
@@ -169,7 +168,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
           <FormField
             type="select"
             name={`tutors[${index}].roleId`}
-            label="Role"
+            label={$t('role')}
             selectValueMark="id"
             selectLabelMark="name"
             normalize={normalizeNumber}
@@ -199,14 +198,14 @@ const CourseClassTutorItem: React.FC<Props> = ({
           <FormField
             type="date"
             name={`tutors[${index}].confirmedOn`}
-            label="Confirmed On"
+            label={$t('confirmed_on')}
             className="mb-2"
           />
 
           <FormControlLabel
             className="checkbox"
             control={<FormField type="checkbox" name={`tutors[${index}].isInPublicity`} />}
-            label="Make tutor visible on web site"
+            label={$t('make_tutor_visible_on_web_site')}
           />
         </div>
       )}
@@ -214,4 +213,4 @@ const CourseClassTutorItem: React.FC<Props> = ({
   );
 };
 
-export default withStyles(styles)(CourseClassTutorItem);
+export default withStyles(CourseClassTutorItem, styles);

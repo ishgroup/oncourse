@@ -8,7 +8,7 @@ import { format, isValid } from "date-fns";
 import { DD_MM_YYYY_SLASHED } from "ish-ui";
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
-import { clearListState, getFilters, setFilterGroups, } from "../../../common/components/list-view/actions";
+import { getFilters, setFilterGroups, } from "../../../common/components/list-view/actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { useAppSelector } from "../../../common/utils/hooks";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
@@ -21,7 +21,6 @@ interface MessagesProps {
   onInit?: () => void;
   getFilters?: () => void;
   getPreferences?: () => void;
-  clearListState?: () => void;
   setFilterGroups?: (filterGroups: FilterGroup[]) => void;
   onDelete?: (id: string) => void;
 }
@@ -54,7 +53,6 @@ const primaryColumnCondition = row => row["recipientsString"] || "No recipients"
 const Messages: React.FC<MessagesProps> = props => {
   const {
     getFilters,
-    clearListState,
     getPreferences,
     setFilterGroups
   } = props;
@@ -82,9 +80,6 @@ const Messages: React.FC<MessagesProps> = props => {
   useEffect(() => {
     getFilters();
     getPreferences();
-    return () => {
-      clearListState();
-    };
   }, []);
 
   return (
@@ -110,7 +105,6 @@ const Messages: React.FC<MessagesProps> = props => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("Message")),
-  clearListState: () => dispatch(clearListState()),
   getPreferences: () => dispatch(getPreferencesByKeys([MessageDateArchived.uniqueKey], Categories.messaging)),
   setFilterGroups: filterGroups => dispatch(setFilterGroups(filterGroups))
 });

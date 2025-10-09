@@ -21,26 +21,24 @@ import {
 import { Directions, Language, Link, MoreVert } from '@mui/icons-material';
 import { AlertTitle } from '@mui/lab';
 import Alert from '@mui/lab/Alert';
-import { Grid, Popover } from '@mui/material';
+import { Grid, Popover, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import $t from '@t';
 import clsx from 'clsx';
-import { AppTheme, DocumentIconsChooser, formatRelativeDate, III_DD_MMM_YYYY_HH_MM_SPECIAL } from "ish-ui";
+import { AppTheme, DocumentIconsChooser, formatRelativeDate, III_DD_MMM_YYYY_HH_MM_SPECIAL } from 'ish-ui';
 import React, { MouseEvent } from 'react';
-import { getDocumentShareSummary, getLatestDocumentItem } from "../../utils/documents";
-
+import { withStyles } from 'tss-react/mui';
+import { getDocumentShareSummary, getLatestDocumentItem } from '../../utils/documents';
 
 library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile);
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     closeIcon: {
       fontSize: 20,
       width: '24px',
@@ -84,7 +82,7 @@ const styles = (theme: AppTheme) =>
   });
 
 const DocumentInfo = props => {
-  const {classes} = props;
+  const { classes } = props;
   return (
     <div className="flex-column flex-fill overflow-hidden pr-1">
       <Typography className={clsx('text-truncate word-break-all', classes.infoName)}>
@@ -103,7 +101,7 @@ interface Props {
   entity: string;
   index: number;
   unlink: any;
-  classes: any;
+  classes?: any;
   item: Document;
   editItem: () => void;
   viewItem: () => void;
@@ -113,11 +111,11 @@ class DocumentHeader extends React.PureComponent<Props, any> {
   state = {
     popoverAnchor: null,
     openMoreMenu: null
-  }
+  };
 
   unlinkItem = e => {
     e.stopPropagation();
-    const {index, unlink} = this.props;
+    const { index, unlink } = this.props;
     unlink(index);
     this.onCloseMoreMenu(e);
   };
@@ -131,7 +129,7 @@ class DocumentHeader extends React.PureComponent<Props, any> {
     this.setState({
       popoverAnchor: null
     });
-  }
+  };
 
   handlePopoverOpen = event => {
     this.setState({
@@ -154,14 +152,14 @@ class DocumentHeader extends React.PureComponent<Props, any> {
   };
 
   openDocumentView = e => {
-    const {viewItem} = this.props;
+    const { viewItem } = this.props;
     viewItem();
     this.onCloseMoreMenu(e);
   };
 
   render() {
-    const {classes, item, entity} = this.props;
-    const {popoverAnchor, openMoreMenu} = this.state;
+    const { classes, item, entity } = this.props;
+    const { popoverAnchor, openMoreMenu } = this.state;
 
     const latestItem = item && getLatestDocumentItem(item.versions);
     const validUrl = latestItem && latestItem.url;
@@ -169,7 +167,7 @@ class DocumentHeader extends React.PureComponent<Props, any> {
     return (
       <Grid container columnSpacing={3} className="mb-1">
         <div className="d-flex overflow-hidden">
-          <Tooltip title="Open Document URL" disableHoverListener={!validUrl}>
+          <Tooltip title={$t('open_document_url')} disableHoverListener={!validUrl}>
             <ButtonBase
               disabled={!validUrl}
               onClick={(e: any) => this.openDocumentURL(e, validUrl)}
@@ -236,13 +234,13 @@ class DocumentHeader extends React.PureComponent<Props, any> {
             disableRestoreFocus
           >
             <Alert severity="info">
-              <AlertTitle>Who can view this document</AlertTitle>
+              <AlertTitle>{$t('who_can_view_this_document')}</AlertTitle>
               {getDocumentShareSummary(item.access, item.attachmentRelations)}
             </Alert>
           </Popover>
 
           <IconButton
-            aria-label="more"
+            aria-label={$t('more')}
             aria-controls="document-more-menu"
             aria-haspopup="true"
             onClick={this.onOpenMoreMenu}
@@ -257,13 +255,13 @@ class DocumentHeader extends React.PureComponent<Props, any> {
             onClose={this.onCloseMoreMenu}
           >
             <MenuItem onClick={this.openDocumentView}>
-              Document info
+              {$t('document_info')}
             </MenuItem>
             <MenuItem onClick={this.openDocumentView}>
-              Permissions
+              {$t('permissions')}
             </MenuItem>
             <MenuItem onClick={this.unlinkItem} className="errorColor">
-              Unlink
+              {$t('unlink')}
             </MenuItem>
           </Menu>
         </div>
@@ -272,4 +270,4 @@ class DocumentHeader extends React.PureComponent<Props, any> {
   }
 }
 
-export default withStyles(styles)(DocumentHeader);
+export default withStyles(DocumentHeader, styles);

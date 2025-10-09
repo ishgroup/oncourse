@@ -13,12 +13,19 @@ import { EntityName } from "../../../../model/entities/common";
 import { CREATE_ENTITY_RECORD_REQUEST } from "../actions";
 import { createEntityItem, createEntityItemByIdErrorHandler } from "../entityItemsService";
 import { getListRecordAfterCreateActions } from "../utils";
+import history from '../../../../constants/History';
 
 const request: Request<any, { item: any, entity: EntityName }> = {
   type: CREATE_ENTITY_RECORD_REQUEST,
   getData: ({ item, entity }) => createEntityItem(entity, item),
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
-  processData: (v, s, { entity }) => getListRecordAfterCreateActions(entity),
+  processData: (v, s, { entity }) => {
+    history.push({
+      pathname: history.location.pathname.replace('/new', ''),
+      search:  history.location.search
+    });
+    return getListRecordAfterCreateActions(entity);
+  },
   processError: (response, { item, entity }) => createEntityItemByIdErrorHandler(response, entity, item)
 };
 

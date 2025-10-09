@@ -1,15 +1,15 @@
-import { Check, Clear } from "@mui/icons-material";
-import Link from "@mui/material/Link";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { III_DD_MMM_YYYY_HH_MM } from "ish-ui";
-import React, { useMemo } from "react";
+import { Check, Clear } from '@mui/icons-material';
+import Link from '@mui/material/Link';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { III_DD_MMM_YYYY_HH_MM } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   icon: {
     position: "relative",
     top: "0.3rem",
@@ -21,7 +21,9 @@ const styles = theme => createStyles({
   }
 });
 
-const ScriptRunAudit = React.memo<any>(props => {
+const ScriptRunAudit = React.memo<{
+  lastRun, selectedScriptAudits, scriptIdSelected, classes?
+}>(props => {
   const {
     lastRun, selectedScriptAudits, scriptIdSelected, classes
   } = props;
@@ -60,7 +62,7 @@ const ScriptRunAudit = React.memo<any>(props => {
             color="textSecondary"
             underline="none"
           >
-            <span>more...</span>
+            <span>{$t('more2')}</span>
           </Link>
         </Typography>
       </div>
@@ -68,4 +70,4 @@ const ScriptRunAudit = React.memo<any>(props => {
   );
 });
 
-export default withStyles(styles)(ScriptRunAudit);
+export default withStyles(ScriptRunAudit, styles);

@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AvetmissExportSettings, FundingStatus, FundingUpload } from "@api/model";
-import { Card, CardContent, Divider } from "@mui/material";
-import ButtonBase from "@mui/material/ButtonBase";
-import Collapse from "@mui/material/Collapse";
-import Fade from "@mui/material/Fade";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import React, { Component } from "react";
-import FundingUploadComponent from "../../../../common/components/form/FundingUploadComponent";
+import { AvetmissExportSettings, FundingStatus, FundingUpload } from '@api/model';
+import { Card, CardContent, Divider, Typography } from '@mui/material';
+import ButtonBase from '@mui/material/ButtonBase';
+import Collapse from '@mui/material/Collapse';
+import Fade from '@mui/material/Fade';
+import $t from '@t';
+import clsx from 'clsx';
+import React, { Component } from 'react';
+import FundingUploadComponent from '../../../../common/components/form/FundingUploadComponent';
 
 interface Props {
   classes: any;
@@ -57,7 +57,7 @@ class AvetmissHistory extends Component<Props, any> {
       <Card>
         <CardContent className={clsx("mb-0 pl-2", classes.settingsWrapper)}>
           <Typography color="inherit" component="div" className="heading mt-1 centeredFlex">
-            History
+            {$t('history')}
           </Typography>
 
           <Divider className={classes.divider} />

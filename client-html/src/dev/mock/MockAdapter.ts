@@ -69,8 +69,6 @@ import { GradingTypesApiMock } from "./api/preference/GradingTypesApiMock";
 import { SecurityApiMock } from "./api/security/SecurityApiMock";
 import { IS_JEST } from "../../js/constants/EnvironmentConstants";
 
-export const initMockDB = () => new MockAdapter();
-
 export class MockAdapter {
   public api = new axiosMockAdapter(defaultAxios);
 
@@ -222,3 +220,5 @@ const parseJson = data => {
 
   return json;
 };
+
+export const initMockDB = () => new MockAdapter();

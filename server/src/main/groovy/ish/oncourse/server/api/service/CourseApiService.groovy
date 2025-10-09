@@ -111,6 +111,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.futureClasseCount = course.futureClasseCount
             courseDTO.unscheduledClasseCount = course.unscheduledClassesCount
             courseDTO.passedClasseCount = course.passedClassesCount
+            courseDTO.hybridClassesCount = course.hybridClassesCount
             courseDTO.selfPacedclassesCount = course.selfPacedClassesCount
             courseDTO.cancelledClassesCount = course.cancelledClassesCount
             courseDTO.studentWaitingListCount = course.waitingLists.size()

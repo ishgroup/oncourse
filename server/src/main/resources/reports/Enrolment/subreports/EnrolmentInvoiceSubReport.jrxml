@@ -61,18 +61,18 @@
 	<field name="invoiceLine.invoice.contact.homePhone" class="java.lang.String"/>
 	<field name="invoiceLine.invoice.contact.workPhone" class="java.lang.String"/>
 	<field name="invoiceLine.invoice.contact.mobilePhone" class="java.lang.String"/>
-	<field name="invoiceLine.taxEach" class="java.lang.Number"/>
-	<field name="invoiceLine.priceEachExTax" class="java.lang.Number"/>
-	<field name="invoiceLine.discountEachExTax" class="java.lang.Number"/>
+	<field name="invoiceLine.taxEach" class="ish.math.Money"/>
+	<field name="invoiceLine.priceEachExTax" class="ish.math.Money"/>
+	<field name="invoiceLine.discountEachExTax" class="ish.math.Money"/>
 	<field name="invoiceLine.finalPriceToPayIncTax" class="ish.math.Money"/>
-	<field name="courseClass.feeExGst" class="java.lang.Number"/>
+	<field name="courseClass.feeExGst" class="ish.math.Money"/>
 	<field name="courseClass.code" class="java.lang.String"/>
 	<field name="courseClass.course.code" class="java.lang.String"/>
-	<field name="invoiceLine.invoice.amountOwing" class="java.lang.Number"/>
-	<variable name="invoicetotal" class="java.lang.Number">
+	<field name="invoiceLine.invoice.amountOwing" class="ish.math.Money"/>
+	<variable name="invoicetotal" class="ish.math.Money">
 		<variableExpression><![CDATA[$F{enrolment}.invoiceLine.invoice.totalIncTax]]></variableExpression>
 	</variable>
-	<variable name="BalanceOutstanding" class="java.lang.Number">
+	<variable name="BalanceOutstanding" class="ish.math.Money">
 		<variableExpression><![CDATA[$F{invoiceLine.invoice.amountOwing}]]></variableExpression>
 	</variable>
 	<variable name="sumInvoiceTotal" class="java.math.BigDecimal" calculation="Sum">

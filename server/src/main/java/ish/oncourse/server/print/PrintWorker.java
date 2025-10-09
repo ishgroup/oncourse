@@ -10,6 +10,7 @@
  */
 package ish.oncourse.server.print;
 
+import ish.math.context.MoneyContext;
 import ish.oncourse.cayenne.PersistentObjectI;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.ICayenneService;
@@ -69,6 +70,7 @@ public class PrintWorker implements Runnable {
 	private DocumentService documentService;
 	private PrintRequest printRequest;
 	private UserPreferenceService userPreferenceService;
+	private MoneyContext moneyContext;
 
 	private Map<String, JasperReport> compiledReports = new LinkedHashMap<>();
 	private Map<String, byte[]> images = new LinkedHashMap<>();
@@ -85,12 +87,13 @@ public class PrintWorker implements Runnable {
 	private String reportName;
 
 	public PrintWorker(PrintRequest printRequest, ICayenneService cayenneService, DocumentService documentService,
-					   UserPreferenceService userPreferenceService) {
+					   UserPreferenceService userPreferenceService, MoneyContext moneyContext) {
 		this.uid = printRequest.getUID();
 		this.printRequest = printRequest;
 		this.cayenneService = cayenneService;
 		this.documentService = documentService;
 		this.userPreferenceService = userPreferenceService;
+		this.moneyContext = moneyContext;
 
 		progress = 0d;
 		result = ResultType.IN_PROGRESS;
@@ -339,7 +342,7 @@ public class PrintWorker implements Runnable {
 	 * @throws Exception if anythig went wrong while filling the reports
 	 */
 	protected JasperPrint fillReport(Report report, List<?> recordsToPrint) throws Exception {
-		var reportDataSource = new ReportDataSource(this, report, recordsToPrint);
+		var reportDataSource = new ReportDataSource(this, moneyContext, report, recordsToPrint);
 
 		var result = reportDataSource.getJPrint();
 		if (result.getPages().size() == 0) {

@@ -3,80 +3,51 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CheckoutResponse } from "@api/model";
-import { format } from "date-fns";
-import { YYYY_MM_DD_MINUSED } from "ish-ui";
-import { getFormValues } from "redux-form";
-import { Epic } from "redux-observable";
-import { SHOW_MESSAGE } from "../../../../common/actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { CheckoutCCResponse, CheckoutResponse } from '@api/model';
+import { Epic } from 'redux-observable';
+import { SHOW_MESSAGE } from '../../../../common/actions';
+import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import * as EpicUtils from '../../../../common/epics/EpicUtils';
 import {
-  CHECKOUT_EMPTY_PAYMENT_ACTION,
   CHECKOUT_PROCESS_PAYMENT,
   checkoutPaymentSetCustomStatus,
   checkoutPaymentSetStatus,
   checkoutProcessPaymentFulfilled,
   checkoutSetPaymentProcessing
-} from "../../actions/checkoutPayment";
-import { FORM } from "../../components/CheckoutSelection";
-import {
-  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
-} from "../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList";
-import { CHECKOUT_SUMMARY_FORM } from "../../components/summary/CheckoutSummaryList";
-import CheckoutService from "../../services/CheckoutService";
-import { getCheckoutModel } from "../../utils";
+} from '../../actions/checkoutPayment';
+import CheckoutService from '../../services/CheckoutService';
+import { getCheckoutModel, getPaymentErrorMessage, paymentErrorMessageDefault } from '../../utils';
 
-const errorMessageDefault = "Payment gateway cannot be contacted. Please try again later or contact ish support.";
-
-const getErrorMessage = response => {
-  if (Array.isArray(response.data)) {
-    return response.data.reduce((p, c, i) => p + c.error + (i === response.data.length - 1 ? "" : "\n\n"), "");
-  }
-
-  return response.data?.responseText
-    ? response.data.responseText
-    : /(4|5)+/.test(response.status)
-      ? response.error
-        ? response.error
-        : errorMessageDefault
-      : null;
-};
-
-const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string }> = {
+const request: EpicUtils.Request<CheckoutResponse | CheckoutCCResponse, undefined> = {
   type: CHECKOUT_PROCESS_PAYMENT,
-  getData: ({
-  xValidateOnly, xPaymentSessionId, xOrigin
-  }, s) => {
-    const paymentPlans = (getFormValues(FORM)(s) as any)?.paymentPlans || [];
+  getData: async (p, s) => {
+    const paymentMethod = s.checkout.payment.availablePaymentTypes.find(t => t.name === s.checkout.payment.selectedPaymentType);
+    const paymentType = paymentMethod ? paymentMethod.type : s.checkout.payment.selectedPaymentType;
 
     const checkoutModel = getCheckoutModel(
-      s.checkout,
-      paymentPlans.filter(p => p.amount && p.date).map(p => ({ amount: p.amount, date: format(new Date(p.date), YYYY_MM_DD_MINUSED) })),
-      (getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(s) as any).fundingInvoices,
-      (getFormValues(CHECKOUT_SUMMARY_FORM)(s) as any)
+      s
     );
-    return CheckoutService.checkoutSubmitPayment(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin);
+
+    if (paymentType === "Credit card") {
+      return CheckoutService.createSession(checkoutModel, s.checkout.payment.sessionId);
+    }
+
+    return CheckoutService.submitPayment(checkoutModel);
   },
-  processData: (checkoutResponse: CheckoutResponse, s, { xValidateOnly }) => {
+  processData: (checkoutResponse, s) => {
     const paymentMethod = s.checkout.payment.availablePaymentTypes.find(t => t.name === s.checkout.payment.selectedPaymentType);
     const paymentType = paymentMethod ? paymentMethod.type : s.checkout.payment.selectedPaymentType;
 
     return [
-      paymentType !== "Credit card" && !xValidateOnly
-        ? checkoutPaymentSetCustomStatus("success")
-        : { type: CHECKOUT_EMPTY_PAYMENT_ACTION },
+      ...paymentType !== "Credit card" ? [checkoutPaymentSetCustomStatus("success")] : [],
       checkoutProcessPaymentFulfilled(checkoutResponse),
       checkoutSetPaymentProcessing(false),
     ];
   },
-  processError: (response, { xValidateOnly }) => {
+  processError: (response, xValidateOnly) => {
     const actions: any = [
       checkoutSetPaymentProcessing(false),
       checkoutProcessPaymentFulfilled({
-        sessionId: null,
-        ccFormUrl: null,
-        merchantReference: null,
         paymentId: null,
         invoice: null,
       })
@@ -89,7 +60,7 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
             "fail",
             response.status,
             response.statusText,
-            { ...response.data, responseText: getErrorMessage(response) }
+            { ...response.data, responseText: getPaymentErrorMessage(response) }
           )
         );
       }
@@ -97,17 +68,17 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
         actions.push({
           type: SHOW_MESSAGE,
           payload: {
-            message: getErrorMessage(response),
+            message: getPaymentErrorMessage(response),
             persist: true
           }
         });
       } else {
         actions.push(
-          ...FetchErrorHandler(response, getErrorMessage(response))
+          ...FetchErrorHandler(response, getPaymentErrorMessage(response))
         );
       }
     } else {
-      actions.push(...FetchErrorHandler(response, errorMessageDefault));
+      actions.push(...FetchErrorHandler(response, paymentErrorMessageDefault));
     }
 
     return actions;

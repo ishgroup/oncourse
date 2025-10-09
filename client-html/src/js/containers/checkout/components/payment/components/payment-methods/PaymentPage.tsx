@@ -5,24 +5,26 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { BooleanArgFunction, formatCurrency, YYYY_MM_DD_MINUSED } from "ish-ui";
-import React, { Dispatch } from "react";
-import { connect } from "react-redux";
-import { InjectedFormProps, isInvalid, reduxForm } from "redux-form";
-import { CheckoutPayment, CheckoutSummary } from "../../../../../../model/checkout";
-import { State } from "../../../../../../reducers/state";
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { BooleanArgFunction, formatCurrency, NoArgFunction, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { Dispatch } from 'react';
+import { connect } from 'react-redux';
+import { InjectedFormProps, isInvalid, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { CheckoutPayment, CheckoutSummary } from '../../../../../../model/checkout';
+import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
   checkoutProcessPayment,
   checkoutSetPaymentSuccess
-} from "../../../../actions/checkoutPayment";
-import { FORM as CheckoutSelectionForm } from "../../../CheckoutSelection";
-import PaymentMessageRenderer from "../PaymentMessageRenderer";
-import styles from "./styles";
+} from '../../../../actions/checkoutPayment';
+import { checkoutUpdateSummaryPrices } from '../../../../actions/checkoutSummary';
+import { CHECKOUT_SELECTION_FORM_NAME as CheckoutSelectionForm } from '../../../CheckoutSelection';
+import PaymentMessageRenderer from '../PaymentMessageRenderer';
+import styles from './styles';
 
 const CHECKOUT_CASH_PAYMENT_FORM = "checkoutCashPaymentForm";
 
@@ -38,8 +40,9 @@ interface CashPaymentPageProps {
   summary?: CheckoutSummary;
   payment?: CheckoutPayment;
   paymentInvoice?: any;
+  checkoutUpdateSummaryPrices?: NoArgFunction;
   setPaymentSuccess?: BooleanArgFunction;
-  checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
+  checkoutProcessPayment?: () => void;
   onCheckoutClearPaymentStatus?: () => void;
   paymentStatus?: any;
   hasSummarryErrors?: boolean;
@@ -55,33 +58,32 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
     currencySymbol,
     invalid,
     summary,
-    checkoutProcessCcPayment,
+    checkoutProcessPayment,
     payment,
     onCheckoutClearPaymentStatus,
     hasSummarryErrors,
     paymentStatus,
+    checkoutUpdateSummaryPrices,
     payerName
   } = props;
 
   const [finalized, setFinalized] = React.useState(false);
-  const [validatePayment, setValidatePayment] = React.useState(true);
 
-  const proceedPayment = React.useCallback(validate => {
+  const proceedPayment = React.useCallback(() => {
     onCheckoutClearPaymentStatus();
 
-    setValidatePayment(validate);
+    setFinalized(true);
 
-    if (!validate) setFinalized(true);
-
-    checkoutProcessCcPayment(validate, null, window.location.origin);
+    checkoutProcessPayment();
   }, [summary.payNowTotal]);
 
   React.useEffect(() => {
     if (hasSummarryErrors || (paymentType === "No payment" && summary.payNowTotal > 0)) {
       return;
     }
-    proceedPayment(true);
-  }, [summary.payNowTotal, summary.paymentDate, summary.invoiceDueDate, paymentType]);
+
+    checkoutUpdateSummaryPrices();
+  }, [summary.payNowTotal, hasSummarryErrors, summary.paymentDate, summary.invoiceDueDate, paymentType]);
 
   return (
     <div className={clsx("d-flex flex-fill justify-content-center", classes.content)}>
@@ -93,11 +95,11 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
                 <div className={classes.fieldCardRoot}>
                   <div className={classes.contentRoot}>
                     <h1>
-                      Details
+                      {$t('details')}
                     </h1>
                     <div className={clsx("centeredFlex", classes.cardLabelPadding)}>
                       <span className={classes.legend}>
-                        Amount:
+                        {$t('amount2')}
                       </span>
                       <Typography variant="body2" component="span" className="money fontWeight600">
                         {formatCurrency(priceToPay, currencySymbol)}
@@ -105,7 +107,7 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
                     </div>
                     <div className={clsx("centeredFlex", classes.cardLabelPadding)}>
                       <span className={classes.legend}>
-                        Payer:
+                        {$t('payer2')}
                       </span>
                       <b>{payerName}</b>
                     </div>
@@ -122,11 +124,11 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
                         && (
                         <>
                           <h1>
-                            Pay with saved credit card
+                            {$t('pay_with_saved_credit_card')}
                           </h1>
                           <div className={clsx("centeredFlex", classes.cardLabelPadding)}>
                             <span className={classes.legend}>
-                              Name on card:
+                              {$t('name_on_card')}
                             </span>
                             <b>
                               {payment.savedCreditCard.creditCardName}
@@ -134,7 +136,7 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
                           </div>
                           <div className={clsx("centeredFlex", classes.cardLabelPadding, classes.legendLastMargin)}>
                             <span className={classes.legend}>
-                              Card number:
+                              {$t('card_number')}
                             </span>
                             <b>
                               {payment.savedCreditCard.creditCardType}
@@ -154,9 +156,9 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
                               !summary.list.some(l => l.items.some(li => li.checked))
                               && !summary.voucherItems.some(i => i.checked)
                               && summary.previousOwing.invoiceTotal === 0)) && "disabled")}
-                      onClick={() => proceedPayment(false)}
+                      onClick={() => proceedPayment()}
                     >
-                      Finalise checkout
+                      {$t('finalise_checkout')}
                     </div>
                   </div>
                 </div>
@@ -166,9 +168,9 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
         </form>
         ) : paymentStatus !== "" ? (
           <PaymentMessageRenderer
-            tryAgain={() => proceedPayment(true)}
+            tryAgain={() => proceedPayment()}
             payment={payment}
-            validatePayment={validatePayment}
+            validatePayment={false}
             summary={summary}
           />
         ) : null}
@@ -179,7 +181,7 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
 const mapStateToProps = (state: State) => ({
   hasSummarryErrors: isInvalid(CheckoutSelectionForm)(state),
   priceToPay: state.checkout.summary.payNowTotal,
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol,
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol,
   payment: state.checkout.payment,
   paymentId: state.checkout.payment.paymentId,
   paymentInvoice: state.checkout.payment.invoice,
@@ -188,13 +190,14 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setPaymentSuccess: (isSuccess: boolean) => dispatch(checkoutSetPaymentSuccess(isSuccess)),
-  checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => {
-    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId, xOrigin));
+  checkoutProcessPayment: () => {
+    dispatch(checkoutProcessPayment());
   },
-  onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus())
+  onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
+  checkoutUpdateSummaryPrices: () => dispatch(checkoutUpdateSummaryPrices())
 });
 
 export default reduxForm<any, CashPaymentPageProps>({
   form: CHECKOUT_CASH_PAYMENT_FORM,
   initialValues
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PaymentForm)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(PaymentForm, styles)));

@@ -36,6 +36,7 @@ import org.codehaus.groovy.tools.groovydoc.SimpleGroovyRootDoc
 import java.util.regex.Matcher
 
 class QueryLanguageModelDocBuilder {
+
     List<LinkArgument> links
     SimpleGroovyRootDoc rootDoc
     Properties properties

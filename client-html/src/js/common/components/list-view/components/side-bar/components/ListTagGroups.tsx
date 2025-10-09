@@ -1,19 +1,20 @@
-import { DataResponse, TableModel } from "@api/model";
-import { createStyles, withStyles } from "@mui/styles";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd-next";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../../../../constants/Config";
-import { FormMenuTag } from "../../../../../../model/tags";
-import { State } from "../../../../../../reducers/state";
-import { useAppSelector } from "../../../../../utils/hooks";
-import { updateTableModel } from "../../../actions";
-import { COLUMN_WITH_COLORS } from "../../list/constants";
-import ListTagGroup from "./ListTagGroup";
+import { DataResponse, TableModel } from '@api/model';
+import React, { useEffect, useMemo, useState } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd-next';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { SPECIAL_TYPES_DISPLAY_KEY } from '../../../../../../constants/Config';
+import { FormMenuTag } from '../../../../../../model/tags';
+import { State } from '../../../../../../reducers/state';
+import { IAction } from '../../../../../actions/IshAction';
+import { useAppSelector } from '../../../../../utils/hooks';
+import { updateTableModel } from '../../../actions';
+import { COLUMN_WITH_COLORS } from '../../list/constants';
+import ListTagGroup from './ListTagGroup';
 
 const styles = theme =>
-  createStyles({
+  ({
     container: {
       marginLeft: theme.spacing(-0.5)
     },
@@ -63,19 +64,16 @@ const ListTagGroups = ({
     setTagsForRender(filteredSortedTags.concat(filteredTags));
   }, [records, tags]);
   
-  const updateActive = useCallback(
-    (updated: FormMenuTag) => {
-      const updatedTags = tags.map(t => {
-        if (t.tagBody.id === updated.tagBody.id && t.prefix === updated.prefix) {
-          return updated;
-        }
+  const updateActive = (updated: FormMenuTag) => {
+    const updatedTags = tags.map(t => {
+      if (t.tagBody.id === updated.tagBody.id && t.prefix === updated.prefix) {
+        return updated;
+      }
 
-        return t;
-      });
-      onChangeTagGroups(updatedTags, "tags");
-    },
-    [tags]
-  );
+      return t;
+    });
+    onChangeTagGroups(updatedTags, "tags");
+  };
 
   const onDragEnd = result => {
     if (!result.destination || result.destination.index === result.source.index) {
@@ -147,11 +145,11 @@ const mapStateToProps = (state: State) => ({
   records: state.list.records,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>, ownProps) => ({
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(ListTagGroups));
+)(withStyles(ListTagGroups, styles));

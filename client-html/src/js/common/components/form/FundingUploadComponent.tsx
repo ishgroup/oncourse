@@ -3,16 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AvetmissExportSettings, FundingStatus, FundingUpload } from "@api/model";
-import { KeyboardArrowDown, OpenInNew } from "@mui/icons-material";
-import { Button, ButtonBase, FormControl, MenuItem, Select, Typography } from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { AnyArgFunction, AppTheme, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL, openInternalLink, stubComponent } from "ish-ui";
-import React, { Component } from "react";
+import { AvetmissExportSettings, FundingStatus, FundingUpload } from '@api/model';
+import { KeyboardArrowDown, OpenInNew } from '@mui/icons-material';
+import { Button, ButtonBase, FormControl, MenuItem, Select, Typography } from '@mui/material';
+import $t from '@t';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { AnyArgFunction, AppTheme, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL, openInternalLink, stubComponent } from 'ish-ui';
+import React, { Component } from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   rootPanel: {
     display: "grid",
     gridTemplateColumns: "1fr auto",
@@ -60,7 +61,7 @@ const styles = (theme: AppTheme) => createStyles({
     borderRadius: `${theme.shape.borderRadius}px`,
     margin: theme.spacing(0, 0, 0.25, 0.25)
   },
-  linkButtonIcon: {fontSize: "1.2em"},
+  linkButtonIcon: { fontSize: "1.2em" },
   rootSelect: {
     fontWeight: 700,
     paddingRight: `${theme.spacing(2.5)}`
@@ -69,9 +70,9 @@ const styles = (theme: AppTheme) => createStyles({
 });
 
 const fundingStatuses: any[] = [
-  {value: FundingStatus.success, label: "Success"},
-  {value: FundingStatus.fail, label: "Failed"},
-  {value: FundingStatus.unknown, label: "Unknown"}
+  { value: FundingStatus.success, label: "Success" },
+  { value: FundingStatus.fail, label: "Failed" },
+  { value: FundingStatus.unknown, label: "Unknown" }
 ];
 
 interface Props {
@@ -90,7 +91,7 @@ class FundingUploadComponent extends Component<Props, any> {
   };
 
   handleChange = event => {
-    const {onStatusChange, fundingUpload} = this.props;
+    const { onStatusChange, fundingUpload } = this.props;
 
     onStatusChange(fundingUpload.id, event.target.value);
   };
@@ -101,7 +102,7 @@ class FundingUploadComponent extends Component<Props, any> {
     } = this.props;
 
     return (
-      <div ref={setFirstUploadNode} className={clsx(className, classes.rootPanel)}>
+      (<div ref={setFirstUploadNode} className={clsx(className, classes.rootPanel)}>
         <div>
           <Typography variant="body2">
             {format(new Date(fundingUpload.created), III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL).replace(/\./g, "")}
@@ -110,8 +111,7 @@ class FundingUploadComponent extends Component<Props, any> {
             <span>{fundingUpload.systemUser}</span>
             <span>
               {fundingUpload.outcomesCount}
-              {' '}
-              outcomes
+              {$t('outcomes2')}
               <ButtonBase
                 onClick={() => this.handleOutcomeLink(fundingUpload.id)}
                 classes={{
@@ -172,13 +172,13 @@ class FundingUploadComponent extends Component<Props, any> {
                 contained: classes.buttonContained
               }}
             >
-              Run again
+              {$t('run_again')}
             </Button>
           )}
         </div>
-      </div>
+      </div>)
     );
   }
 }
 
-export default withStyles(styles)(FundingUploadComponent);
+export default withStyles(FundingUploadComponent, styles);

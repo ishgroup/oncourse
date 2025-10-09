@@ -9,49 +9,60 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import { LoginRequest } from "@api/model";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import { darken, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import Slide from "@mui/material/Slide";
+import { LoginRequest } from '@api/model';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Button, Collapse, darken, Grid, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Slide from '@mui/material/Slide';
 import { alpha } from '@mui/material/styles';
-import Typography from "@mui/material/Typography";
-import { withStyles } from "@mui/styles";
-import { FormTextField } from "ish-ui";
-import QRCode from "qrcode.react";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Action, Dispatch } from "redux";
-import { change, Field, FieldArray, Form, initialize, reduxForm, touch } from "redux-form";
-import { DecoratedFormProps } from "redux-form/lib/reduxForm";
-import ishLogoSmall from "../../../images/logo_small.png";
-import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
+import $t from '@t';
+import { FormTextField } from 'ish-ui';
+import QRCode from 'qrcode.react';
+import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
+import { Action, Dispatch } from 'redux';
 import {
-  setLoginState
-} from "../../common/actions";
-import { validateSingleMandatoryField } from "../../common/utils/validation";
-import { State } from "../../reducers/state";
-import { SSOProviders } from "../automation/containers/integrations/components/SSOProviders";
-import { isComplexPassRequired } from "../preferences/actions";
+  change,
+  clearFields,
+  DecoratedFormProps,
+  Field,
+  FieldArray,
+  Form,
+  initialize,
+  reduxForm,
+  touch
+} from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { setLoginState } from '../../common/actions';
+import Logo from '../../common/components/layout/Logo';
+import { validateSingleMandatoryField } from '../../common/utils/validation';
+import { PASSWORD_PASS_SCORE } from '../../constants/Config';
+import { Fetch } from '../../model/common/Fetch';
+import { State } from '../../reducers/state';
+import { SSOProviders } from '../automation/containers/integrations/components/SSOProviders';
+import { isComplexPassRequired } from '../preferences/actions';
 import {
   checkPassword,
   createPasswordRequest,
-  getEmailByToken, getSsoIntegrations,
+  getEmailByToken,
+  getSsoIntegrations,
+  postKickOutSsoAuthenticationRequest,
   postLoginRequest,
   updatePasswordRequest
-} from "./actions";
-import AuthCodeFieldRenderer from "./components/AuthCodeFieldRenderer";
-import Credits from "./components/Credits";
-import EulaDialog from "./components/EulaDialog";
-import NewPasswordField from "./components/NewPasswordField";
-import { LoginState } from "./reducers/state";
+} from './actions';
+import AuthCodeFieldRenderer from './components/AuthCodeFieldRenderer';
+import Credits from './components/Credits';
+import EulaDialog from './components/EulaDialog';
+import NewPasswordField from './components/NewPasswordField';
+import { LoginState } from './reducers/state';
 
 const FORM_NAME = "LoginForm";
 
-const styles: any = theme => ({
+const styles = (theme => ({
   loginFormWrapper: {
     maxWidth: "520px",
     display: "flex",
@@ -123,6 +134,9 @@ const styles: any = theme => ({
     backgroundColor: alpha(theme.palette.primary.main, 0.5)
   },
   sideImageWrapper: {
+    background: 'url("https://ish-oncourse-sttrianians.s3.ap-southeast-2.amazonaws.com/88d2fb9a-0141-4014-be17-9ed898197727") no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
     position: "absolute",
     width: "100%",
     height: "100%",
@@ -132,23 +146,7 @@ const styles: any = theme => ({
     display: "none",
     [theme.breakpoints.up("md")]: {
       display: "block"
-    },
-    "& > iframe": {
-      position: "relative",
-      maxWidth: "100%",
-      minWidth: "100%",
-      minHeight: "100%",
-      top: "50%",
-      left: "50%",
-      transform: "translateX(-50%) translateY(-50%)",
-      objectFit: "cover"
     }
-  },
-  splashIframe: {
-    width: "100%",
-    height: "100%",
-    border: "0",
-    overflow: "hidden",
   },
   loginFormRight: {
     position: "relative"
@@ -180,7 +178,7 @@ const styles: any = theme => ({
       }
     }
   }
-});
+}));
 
 const validatePasswordConfirm = (value, allValues) => {
   if (!value) {
@@ -207,12 +205,23 @@ const asyncValidate = (values, dispatch) => new Promise((resolve, reject) => {
     throw { newPasswordAsync: error };
   });
 
+const validatePasswordStrengthLight = (value, values) => {
+  if (!value) {
+    return "Enter your new password";
+  }
+
+  if (value && values.user && value.trim() === values.user.trim()) {
+    return "You must enter password which is different to login";
+  }
+
+  return value && value.trim().length < 5 ? "Password minimum length is 5 symbols" : undefined;
+};
+
 interface Props extends LoginState {
   classes: any;
   handleSubmit: any;
   anyTouched: boolean;
   invalid: boolean;
-  asyncValidating: boolean;
   complexPass: any;
   totpUrl: string;
   postLoginRequest: (body: LoginRequest, host?: string, port?: number) => void;
@@ -221,53 +230,82 @@ interface Props extends LoginState {
   isComplexPassRequired: () => void;
   submit: () => void;
   getSSO: () => void;
+  resetLoginForm: () => void;
   dispatch: (action: Action) => void;
   getEmailByToken: (value: string) => void;
   createPasswordRequest: (token: string, password: string) => void;
   email?: string;
   eulaUrl?: string;
   ssoTypes?: number[];
+  fetch?: Fetch;
 }
 
-export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProps, any> {
-  private savedTFAState;
 
-  private isInviteForm: boolean = false;
+export function LoginPageBase(
+  {
+    postLoginRequest,
+    updatePasswordRequest,
+    isUpdatePassword,
+    isNewPassword,
+    isKickOut,
+    submittingSSOType,
+    totpUrl,
+    isOptionalTOTP,
+    createPasswordRequest,
+    isComplexPassRequired,
+    passwordComplexity,
+    asyncValidating,
+    setLoginState,
+    dispatch,
+    getSSO,
+    fetch,
+    classes,
+    handleSubmit,
+    isTOTP,
+    isNewTOTP,
+    isBasic = true,
+    strongPasswordValidation,
+    passwordChangeMessage,
+    isEnableTOTP,
+    withNetworkFields,
+    anyTouched,
+    invalid,
+    complexPass,
+    email,
+    eulaUrl,
+    ssoTypes,
+    resetLoginForm,
+    match,
+    location
+  }: Props & DecoratedFormProps & RouteComponentProps<{ token: string }>) {
 
-  private token: string = '';
-
-  private submitRef = React.createRef<any>();
-
-  state = {
-    passwordScore: 0,
-    passwordFeedback: "",
-    openCredits: false,
-    eulaAccess: false
-  };
-
-  constructor(props) {
-    super(props);
-
+  const savedTFAState = useRef(null);
+  const token = useRef('');
+  const submitRef = useRef(null);
+  
+  const [openCredits, setOpenCredits] = useState(false);
+  const [eulaAccess, setEulaAccess] = useState(false);
+  const [isInviteForm, setSsInviteForm] = useState(false);
+  
+  useEffect(() => {
+    getSSO();
+    const params: any = new URLSearchParams(location.search);
     const prefilled: any = {};
+    prefilled.user = params.get("user");
+    prefilled.password = params.get("password");
+    prefilled.host = params.get("host");
+    prefilled.port = params.get("port");
 
-    if (window.location.search) {
-      const params: any = new URLSearchParams(window.location.search);
-      prefilled.user = params.get("user");
-      prefilled.password = params.get("password");
-      prefilled.host = params.get("host");
-      prefilled.port = params.get("port");
-
-      // temporary, until web implementation is not full
-      if (params.get("updatePassword") === "true") {
-        this.props.isComplexPassRequired();
-        props.setLoginState({
-          isNewPassword: true,
-          isUpdatePassword: true
-        });
-      }
+    // temporary, until web implementation is not full
+    if (params.get("updatePassword") === "true") {
+      isComplexPassRequired();
+      setLoginState({
+        isNewPassword: true,
+        isUpdatePassword: true
+      });
     }
 
-    props.dispatch(
+    dispatch(
       initialize(FORM_NAME, {
         authCodeDigits: Array.of("", "", "", "", "", ""),
         ...prefilled
@@ -275,82 +313,51 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
     );
 
     if (prefilled.user != null && prefilled.password != null) {
-      props.dispatch(touch(FORM_NAME, "user"));
+      dispatch(touch(FORM_NAME, "user"));
     }
+    
+    const isInvite = match?.path === "/invite/:token";
 
-    this.isInviteForm = window.location.pathname.includes('invite');
-  }
+    setSsInviteForm(isInvite);
 
-  componentDidMount() {
-    const { getSSO } = this.props;
-
-    getSSO();
-
-    if (this.isInviteForm) {
-      this.token = window.location.pathname.match(/(\w+)$/g)[0];
-      this.token && this.props.getEmailByToken(this.token);
+    if (isInvite) {
+      token.current = match.params.token;
+      if (token.current) dispatch(getEmailByToken(token.current));
     }
-  }
-
-  componentDidUpdate() {
-    if (this.props.passwordComplexity && this.props.asyncValidating) {
-      const {
-        passwordComplexity: { score, feedback }
-      } = this.props;
-      const { passwordScore, passwordFeedback } = this.state;
-
-      if (passwordScore !== score) {
-        this.setState({
-          passwordScore: score
-        });
-      }
-
-      if (passwordFeedback !== feedback) {
-        this.setState({
-          passwordFeedback: feedback
-        });
-      }
-
-      if (score >= 2) {
-        this.setState({
-          passwordFeedback: ""
-        });
-        resolveAsyncValidate();
-
+    
+    return () => {
+      setLoginState({ isBasic: true });
+    };
+  }, []);
+  
+  useEffect(() => {
+    if (asyncValidating && passwordComplexity) {
+      const { score, feedback  } = passwordComplexity;
+      if (score >= PASSWORD_PASS_SCORE) {
+        resolveAsyncValidate("");
         return;
       }
-
       rejectAsyncValidate(feedback);
     }
-  }
+  }, [passwordComplexity]);
+  
+  const kickOutWithSSO = (type: string) => {
+    dispatch(postKickOutSsoAuthenticationRequest(type));
+  };
 
-  componentWillUnmount() {
-    this.props.setLoginState({ isBasic: true });
-  }
+  const onSubmit = values => {
+    if (submittingSSOType && isKickOut) {
+      kickOutWithSSO(submittingSSOType);
+      return;
+    }
 
-  onSubmit = values => {
-    const {
-      postLoginRequest,
-      updatePasswordRequest,
-      isUpdatePassword,
-      isNewPassword,
-      isKickOut,
-      totpUrl,
-      isOptionalTOTP,
-      createPasswordRequest,
-    } = this.props;
-
-    const {
-      eulaAccess
-    } = this.state;
-
-    if (this.isInviteForm) {
-      createPasswordRequest(this.token, values.newPassword);
+    if (isInviteForm) {
+      createPasswordRequest(token.current, strongPasswordValidation ? values.newPasswordAsync : values.newPassword);
       return;
     }
 
     if (isUpdatePassword && isNewPassword) {
-      updatePasswordRequest(values.newPassword || values.newPasswordAsync);
+      updatePasswordRequest(strongPasswordValidation ? values.newPasswordAsync : values.newPassword);
       return;
     }
 
@@ -373,433 +380,364 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
     );
   };
 
-  validatePasswordStrengthLight = (value, values) => {
-    if (!value) {
-      return "Enter your new password";
-    }
-
-    if (value && values.user && value.trim() === values.user.trim()) {
-      return "You must enter password which is different to login";
-    }
-
-    return value && value.trim().length < 5 ? "Password minimum length is 5 symbols" : undefined;
-  };
-
-  autocompleteHost = (value, prev) => {
+  const autocompleteHost = (value, prev) => {
     if (value.match(/^(?!cloud\b)\b\D\w+\.$/) && (!prev || prev.length < value.length)) {
       setTimeout(() => {
-        this.props.dispatch(change(FORM_NAME, "host", value + "cloud.oncourse.cc"));
-        this.props.dispatch(change(FORM_NAME, "port", 443));
+        dispatch(change(FORM_NAME, "host", value + "cloud.oncourse.cc"));
+        dispatch(change(FORM_NAME, "port", 443));
       });
     }
   };
 
-  toggleCredits = () => {
-    const { openCredits } = this.state;
-    this.setState({ openCredits: !openCredits });
+  const toggleCredits = () => {
+    setOpenCredits(prev => !prev);
   };
 
-  render() {
-    const {
-      classes,
-      handleSubmit,
-      isTOTP,
-      isNewTOTP,
-      isBasic = true,
-      isNewPassword,
-      isUpdatePassword,
-      strongPasswordValidation,
-      passwordChangeMessage,
-      isEnableTOTP,
-      isOptionalTOTP,
-      isKickOut,
-      withNetworkFields,
-      anyTouched,
-      totpUrl,
-      invalid,
-      setLoginState,
-      asyncValidating,
-      complexPass,
-      dispatch,
-      email,
-      eulaUrl,
-      ssoTypes
-    } = this.props;
-
-    const { passwordScore, passwordFeedback, openCredits } = this.state;
-
-    return (
-      <Form onSubmit={handleSubmit(this.onSubmit)}>
-        <Grid container columnSpacing={3} alignItems="center">
-          <Grid item xs={1} md={6} />
-          <Grid item xs={12} md={6} className={classes.loginFormRight}>
-            <Slide direction="right" in timeout={300}>
-              <span className={classes.sideImageWrapper}>
-                <iframe
-                  src="https://www.ish.com.au/oncourse-news/splash.html"
-                  title="splash image"
-                  className={classes.splashIframe}
-                />
-              </span>
-            </Slide>
-            <Slide direction="left" in timeout={300}>
-              <div className={classes.loginFormWrapper}>
-                <Grid
-                  container
-                  alignItems="center"
-                  alignContent="space-between"
-                >
-                  <Grid item xs={12}>
-                    <Grid container columnSpacing={3} alignItems="center">
-                      <Grid item xs={12} sm={9}>
-                        <div className={classes.logoWrapper}>
-                          <img src={onCourseLogoDark} height={55} draggable={false} alt="Logo" />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12} sm={3} className={classes.versionText}>
-                        <Typography
-                          variant="body1"
-                          component="span"
-                          className="cursor-pointer linkDecoration"
-                          onClick={() => window.open("https://www.ish.com.au/s/onCourse/doc/release-notes/", "_blank")}
-                        >
-                          Version
-                          {' '}
-                          {process.env.RELEASE_VERSION}
-                        </Typography>
-                      </Grid>
+  return (
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <Grid container columnSpacing={3} alignItems="center">
+        <Grid item xs={1} md={6} />
+        <Grid item xs={12} md={6} className={classes.loginFormRight}>
+          <Slide direction="right" in timeout={300}>
+            <span className={classes.sideImageWrapper} />
+          </Slide>
+          <Slide direction="left" in timeout={300}>
+            <div className={classes.loginFormWrapper}>
+              <Grid
+                container
+                alignItems="center"
+                alignContent="space-between"
+              >
+                <Grid item xs={12}>
+                  <Grid container columnSpacing={3} alignItems="center">
+                    <Grid item xs={12} sm={9}>
+                      <div className={classes.logoWrapper}>
+                        <Logo />
+                      </div>
+                    </Grid>
+                    <Grid item xs={12} sm={3} className={classes.versionText}>
+                      <Typography
+                        variant="body1"
+                        component="span"
+                        className="cursor-pointer linkDecoration"
+                        onClick={() => window.open(`https://ishoncourse.readme.io/changelog/release-${String(process.env.RELEASE_VERSION).match(/([0-9]+)\.?/)[0]}`, "_blank")}
+                      >
+                        {$t('version', [process.env.RELEASE_VERSION])}
+                      </Typography>
                     </Grid>
                   </Grid>
-                  <div className="flex-fill" />
-                  <Grid item xs={12}>
-                    <Collapse in={!openCredits} timeout="auto" unmountOnExit>
-                      <div className={classes.loginModalWrapper}>
-                        {isTOTP && (
-                          <>
-                            <div className={classes.textWrapper}>
-                              {isNewTOTP
-                                ? "Enter the six digit code that is displayed on your TOTP software to enable two factor authentication."
-                                : "Enter your authentication code."}
-                            </div>
+                </Grid>
+                <div className="flex-fill" />
+                <Grid item xs={12}>
+                  <Collapse in={!openCredits} timeout="auto" unmountOnExit>
+                    <div className={classes.loginModalWrapper}>
+                      {isTOTP && (
+                        <>
+                          <div className={classes.textWrapper}>
+                            {isNewTOTP
+                              ? "Enter the six digit code that is displayed on your TOTP software to enable two factor authentication."
+                              : "Enter your authentication code."}
+                          </div>
 
-                            <div className={classes.authCodefield}>
-                              <FieldArray
-                                name="authCodeDigits"
-                                component={AuthCodeFieldRenderer}
-                                dispatch={dispatch}
-                                submitRef={this.submitRef.current}
+                          <div className={classes.authCodefield}>
+                            <FieldArray
+                              name="authCodeDigits"
+                              component={AuthCodeFieldRenderer}
+                              dispatch={dispatch}
+                              submitRef={submitRef.current}
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {isBasic && !isInviteForm && (
+                        <>
+                          <div className={classes.textFieldWrapper}>
+                            <Field
+                              name="user"
+                              placeholder={$t('email2')}
+                              autoComplete="user-name"
+                              component={FormTextField}
+                              validate={validateSingleMandatoryField}
+                                                            />
+                          </div>
+
+                          <div className={classes.textFieldWrapper}>
+                            <Field
+                              name="password"
+                              type="password"
+                              autoComplete="current-password"
+                              placeholder={$t('password')}
+                              component={FormTextField}
+                              validate={validateSingleMandatoryField}
+                                                            />
+                          </div>
+
+                          {withNetworkFields && (
+                            <div className="d-flex">
+                              <Field
+                                name="host"
+                                placeholder={$t('host')}
+                                autoComplete="host"
+                                className="flex-fill"
+                                component={FormTextField}
+                                validate={validateSingleMandatoryField}
+                                onChange={(e, v, prev) => autocompleteHost(v, prev)}
+                              />
+
+                              <Field
+                                name="port"
+                                placeholder={$t('port')}
+                                autoComplete="port"
+                                className={classes.portField}
+                                component={FormTextField}
+                                validate={validateSingleMandatoryField}
                               />
                             </div>
-                          </>
-                        )}
+                          )}
+                        </>
+                      )}
 
-                        {isBasic && !this.isInviteForm && (
-                          <>
-                            <div className={classes.textFieldWrapper}>
-                              <Field
-                                name="user"
-                                placeholder="Email"
-                                autoComplete="user-name"
-                                component={FormTextField}
-                                validate={validateSingleMandatoryField}
-                                                              />
-                            </div>
-
-                            <div className={classes.textFieldWrapper}>
-                              <Field
-                                name="password"
-                                type="password"
-                                autoComplete="current-password"
-                                placeholder="Password"
-                                component={FormTextField}
-                                validate={validateSingleMandatoryField}
-                                                              />
-                            </div>
-
-                            {withNetworkFields && (
-                              <div className="d-flex">
-                                <Field
-                                  name="host"
-                                  placeholder="Host"
-                                  autoComplete="host"
-                                  className="flex-fill"
-                                  component={FormTextField}
-                                  validate={validateSingleMandatoryField}
-                                  onChange={(e, v, prev) => this.autocompleteHost(v, prev)}
-                                />
-
-                                <Field
-                                  name="port"
-                                  placeholder="Port"
-                                  autoComplete="port"
-                                  className={classes.portField}
-                                  component={FormTextField}
-                                  validate={validateSingleMandatoryField}
-                                />
-                              </div>
-                            )}
-                          </>
-                        )}
-
-                        {isNewPassword && (
-                          <>
-                            {!isUpdatePassword && (
-                              <div className={classes.textWrapper}>
-                                {passwordChangeMessage
-                                  || "Your existing password does not meet minimum complexity requirements."}
-                              </div>
-                            )}
-
-                            <div className={classes.textWrapper}>Please create a new password below.</div>
-
-                            <div className={classes.textFieldWrapper}>
-                              {strongPasswordValidation || complexPass === "true" ? (
-                                <Field
-                                  name="newPasswordAsync"
-                                  type="password"
-                                  autoComplete="new-password"
-                                  placeholder="New password"
-                                  component={NewPasswordField}
-                                  passwordScore={passwordScore}
-                                  helperText={passwordFeedback}
-                                                                  />
-                              ) : (
-                                <Field
-                                  name="newPassword"
-                                  type="password"
-                                  autoComplete="new-password"
-                                  placeholder="New password"
-                                  component={FormTextField}
-                                  validate={this.validatePasswordStrengthLight}
-                                                                  />
-                              )}
-                            </div>
-
-                            <div className={classes.textFieldWrapper}>
-                              <Field
-                                name="newPasswordConfirm"
-                                type="password"
-                                autoComplete="off"
-                                placeholder="Confirm new password"
-                                component={FormTextField}
-                                validate={validatePasswordConfirm}
-                                                              />
-                            </div>
-                          </>
-                        )}
-
-                        {this.isInviteForm && (
-                          <>
+                      {isNewPassword && (
+                        <>
+                          {!isUpdatePassword && (
                             <div className={classes.textWrapper}>
-                              {email
-                                ? `You have been invited to ish onCourse. Please create a password. Your username is ${email}.`
-                                : "User not found."}
+                              {passwordChangeMessage
+                                || "Your existing password does not meet minimum complexity requirements."}
                             </div>
-
-                            <div className={classes.textFieldWrapper}>
-                              {strongPasswordValidation || complexPass === "true" ? (
-                                <Field
-                                  name="newPasswordAsync"
-                                  type="password"
-                                  autoComplete="new-password"
-                                  placeholder="New password"
-                                  component={NewPasswordField}
-                                  passwordScore={passwordScore}
-                                  helperText={passwordFeedback}
-                                                                  />
-                              ) : (
-                                <Field
-                                  name="newPassword"
-                                  type="password"
-                                  autoComplete="new-password"
-                                  placeholder="Password"
-                                  component={FormTextField}
-                                  validate={this.validatePasswordStrengthLight}
-                                                                  />
-                              )}
-                            </div>
-
-                            <div className={classes.textFieldWrapper}>
-                              <Field
-                                name="passwordConfirm"
-                                type="password"
-                                autoComplete="off"
-                                placeholder="Confirm password"
-                                component={FormTextField}
-                                validate={validatePasswordConfirm}
-                                                              />
-                            </div>
-                          </>
-                        )}
-
-                        {(isEnableTOTP || isOptionalTOTP) && (
-                          <Grid container columnSpacing={3} alignItems="flex-start" direction="row-reverse" spacing={3}>
-                            <Grid item xs={12} sm={4}>
-                              {totpUrl && <QRCode className={classes.code} size={106} value={totpUrl} />}
-                            </Grid>
-                            <Grid item xs={12} sm={8}>
-                              <div>
-                                <div className={classes.textWrapper}>
-                                  Two-factor authentication is an extra layer of security for your onCourse application.
-                                </div>
-
-                                <div className={classes.textWrapper}>
-                                  Install TOTP software on your phone and scan the QR code before pressing 'enable'.
-                                </div>
-
-                                <div className={classes.textWrapper}>
-                                  Download:
-                                  <a
-                                    className={classes.extLink}
-                                    target="_blank"
-                                    href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en"
-                                    rel="noreferrer"
-                                  >
-                                    Android
-                                  </a>
-                                  <a
-                                    className={classes.extLink}
-                                    target="_blank"
-                                    href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8"
-                                    rel="noreferrer"
-                                  >
-                                    iPhone
-                                  </a>
-                                </div>
-                              </div>
-                            </Grid>
-                          </Grid>
-                        )}
-
-                        {isKickOut && (
-                          <>
-                            <div className={classes.textWrapper}>You are currently logged in from another session.</div>
-
-                            <div className={classes.textWrapper}>
-                              You can kick out the other session without giving that user time to save their work.
-                            </div>
-                          </>
-                        )}
-
-                        <div className="flex-fill" />
-
-                        <div className={classes.buttonsContainer}>
-                          {!this.isInviteForm && (
-                            <>
-                              <a href="login" className={classes.link} draggable={false} tabIndex={-1}>
-                                <Button
-                                  type={isOptionalTOTP ? "submit" : "button"}
-                                  classes={{
-                                    root: classes.declineButton
-                                  }}
-                                  onClick={
-                                    isTOTP && isNewTOTP
-                                      ? e => {
-                                        e.preventDefault();
-                                        dispatch(change(FORM_NAME, "authCodeDigits", Array.of("", "", "", "", "", "")));
-                                        setLoginState(this.savedTFAState);
-                                      }
-                                      : undefined
-                                  }
-                                >
-                                  {(isBasic
-                                    || (isNewPassword && !isUpdatePassword)
-                                    || isKickOut
-                                    || isEnableTOTP
-                                    || (isTOTP && !isNewTOTP))
-                                  && "Quit"}
-                                  {((isTOTP && isNewTOTP) || (isNewPassword && isUpdatePassword)) && "Cancel"}
-                                  {isOptionalTOTP && "Maybe Later"}
-                                </Button>
-                              </a>
-                            </>
                           )}
 
+                          <div className={classes.textWrapper}>{$t('please_create_a_new_password_below')}</div>
+
+                          <div className={classes.textFieldWrapper}>
+                            {strongPasswordValidation || complexPass === "true" ? (
+                              <Field
+                                name="newPasswordAsync"
+                                type="password"
+                                autoComplete="new-password"
+                                placeholder={$t('new_password')}
+                                component={NewPasswordField}
+                                passwordScore={passwordComplexity?.score}
+                              />
+                            ) : (
+                              <Field
+                                name="newPassword"
+                                type="password"
+                                autoComplete="new-password"
+                                placeholder={$t('new_password')}
+                                component={FormTextField}
+                                validate={validatePasswordStrengthLight}
+                                                                />
+                            )}
+                          </div>
+
+                          <div className={classes.textFieldWrapper}>
+                            <Field
+                              name="newPasswordConfirm"
+                              type="password"
+                              autoComplete="off"
+                              placeholder={$t('confirm_new_password')}
+                              component={FormTextField}
+                              validate={validatePasswordConfirm}
+                                                            />
+                          </div>
+                        </>
+                      )}
+
+                      {isInviteForm && (
+                        <>
+                          <div className={classes.textWrapper}>
+                            {email
+                              ? `You have been invited to ish onCourse. Please create a password. Your username is ${email}.`
+                              : "User not found."}
+                          </div>
+
+                          <div className={classes.textFieldWrapper}>
+                            {strongPasswordValidation || complexPass === "true" ? (
+                              <Field
+                                name="newPasswordAsync"
+                                type="password"
+                                autoComplete="new-password"
+                                placeholder={$t('new_password')}
+                                component={NewPasswordField}
+                                passwordScore={passwordComplexity.score}
+                                helperText={passwordComplexity.feedback}
+                              />
+                            ) : (
+                              <Field
+                                name="newPassword"
+                                type="password"
+                                autoComplete="new-password"
+                                placeholder={$t('password')}
+                                component={FormTextField}
+                                validate={validatePasswordStrengthLight}
+                                                                />
+                            )}
+                          </div>
+
+                          <div className={classes.textFieldWrapper}>
+                            <Field
+                              name="passwordConfirm"
+                              type="password"
+                              autoComplete="off"
+                              placeholder={$t('confirm_password')}
+                              component={FormTextField}
+                              validate={validatePasswordConfirm}
+                                                            />
+                          </div>
+                        </>
+                      )}
+
+                      {(isEnableTOTP || isOptionalTOTP) && (
+                        <Grid container columnSpacing={3} alignItems="flex-start" direction="row-reverse" spacing={3}>
+                          <Grid item xs={12} sm={4}>
+                            {totpUrl && <QRCode className={classes.code} size={106} value={totpUrl} />}
+                          </Grid>
+                          <Grid item xs={12} sm={8}>
+                            <div>
+                              <div className={classes.textWrapper}>
+                                {$t('twofactor_authentication_is_an_extra_layer_of_secu')}
+                              </div>
+
+                              <div className={classes.textWrapper}>
+                                {$t('install_totp_software_on_your_phone_and_scan_the_q')}
+                              </div>
+
+                              <div className={classes.textWrapper}>
+                                {$t('Download')}:
+                                <a
+                                  className={classes.extLink}
+                                  target="_blank"
+                                  href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en"
+                                  rel="noreferrer"
+                                >
+                                  {$t('Android')}
+                                </a>
+                                <a
+                                  className={classes.extLink}
+                                  target="_blank"
+                                  href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8"
+                                  rel="noreferrer"
+                                >
+                                  {$t('iPhone')}
+                                </a>
+                              </div>
+                            </div>
+                          </Grid>
+                        </Grid>
+                      )}
+
+                      {isKickOut && (
+                        <>
+                          <div className={classes.textWrapper}>{$t('you_are_currently_logged_in_from_another_session')}</div>
+
+                          <div className={classes.textWrapper}>
+                            {$t('you_can_kick_out_the_other_session_without_giving')}
+                          </div>
+                        </>
+                      )}
+
+                      <div className="flex-fill" />
+
+                      <div className={classes.buttonsContainer}>
+                        {!isInviteForm && (isKickOut || isEnableTOTP || isTOTP || isNewPassword || isNewTOTP || isOptionalTOTP || isUpdatePassword) && (
                           <Button
-                            ref={this.submitRef}
-                            type="submit"
-                            disabled={!anyTouched || invalid || asyncValidating || (this.isInviteForm && !email)}
+                            disabled={fetch.pending}
+                            type={isOptionalTOTP ? "submit" : "button"}
                             classes={{
-                              root: classes.loginButton,
-                              disabled: classes.loginButtonDisabled
+                              root: classes.declineButton
                             }}
                             onClick={
-                              isEnableTOTP || isOptionalTOTP ? e => {
+                              isTOTP && isNewTOTP
+                                ? e => {
                                   e.preventDefault();
-                                  this.savedTFAState = { isEnableTOTP, isOptionalTOTP };
-                                  setLoginState({ isTOTP: true, isNewTOTP: true });
                                   dispatch(change(FORM_NAME, "authCodeDigits", Array.of("", "", "", "", "", "")));
+                                  setLoginState(savedTFAState.current);
                                 }
-                                : undefined
+                                : isOptionalTOTP ? undefined : resetLoginForm
                             }
                           >
-                            {((isTOTP && !isNewTOTP) || (isBasic && !this.isInviteForm)) && "Login"}
-                            {((isTOTP && isNewTOTP) || isEnableTOTP || isOptionalTOTP) && "Enable"}
-                            {isNewPassword && "Confirm"}
-                            {isKickOut && "Kick out"}
-                            {this.isInviteForm && "Create password"}
+                            {isOptionalTOTP ? "Maybe Later" : "Cancel"}
                           </Button>
-                          {eulaUrl && (
-                          <EulaDialog
-                            eulaUrl={eulaUrl}
-                            classes={classes}
-                            onCancel={() => {
-                              const resetProps = { ...this.props };
-                              resetProps.eulaUrl = undefined;
-                              this.props.setLoginState(resetProps);
-                            }}
-                            onAccept={() => {
-                              this.setState({
-                                eulaAccess: true
-                              });
-                            }}
-                          />
-                          )}
-                        </div>
-                      </div>
-                    </Collapse>
-                    <Collapse in={openCredits} timeout="auto" unmountOnExit>
-                      <Credits wrapperClass={classes.creditsWrapper} itemClass={classes.creditHeader} />
-                    </Collapse>
-                  </Grid>
-                  <SSOProviders providers={ssoTypes}/>
-                  <div className="flex-fill" />
-                  <Grid container columnSpacing={3} alignItems="center">
-                    <div className="flex-fill">
-                      <div>
-                        <IconButton
-                          color="inherit"
-                          size="medium"
-                          onClick={this.toggleCredits.bind(this)}
-                          className="p-0"
+                        )}
+
+                        <LoadingButton
+                          loading={fetch.pending}
+                          ref={submitRef}
+                          type="submit"
+                          disabled={(!isKickOut && !anyTouched) || invalid || asyncValidating || (isInviteForm && !email)}
+                          classes={{
+                            root: classes.loginButton,
+                            disabled: classes.loginButtonDisabled
+                          }}
+                          onClick={
+                            isEnableTOTP || isOptionalTOTP ? e => {
+                                e.preventDefault();
+                                savedTFAState.current = { isEnableTOTP, isOptionalTOTP };
+                                setLoginState({ isTOTP: true, isNewTOTP: true });
+                                dispatch(change(FORM_NAME, "authCodeDigits", Array.of("", "", "", "", "", "")));
+                              }
+                              : undefined
+                          }
                         >
-                          {openCredits ? <ExpandMore fontSize="inherit" /> : <ExpandLess fontSize="inherit" />}
-                        </IconButton>
-                        <span>Credits</span>
+                          {((isTOTP && !isNewTOTP) || (isBasic && !isInviteForm)) && "Login"}
+                          {((isTOTP && isNewTOTP) || isEnableTOTP || isOptionalTOTP) && "Enable"}
+                          {isNewPassword && "Confirm"}
+                          {isKickOut && "Kick out"}
+                          {isInviteForm && "Create password"}
+                        </LoadingButton>
+                        {eulaUrl && (
+                        <EulaDialog
+                          eulaUrl={eulaUrl}
+                          classes={classes}
+                          onCancel={() => setLoginState({
+                            eulaUrl: undefined
+                          })}
+                          onAccept={() => setEulaAccess(true)}
+                        />
+                        )}
                       </div>
-                      <div>
-                        @2005-
-                        {new Date().getFullYear()}
-                        {' '}
-                        ish group. All rights reserved.
-                      </div>
+                    </div>
+                  </Collapse>
+                  <Collapse in={openCredits} timeout="auto" unmountOnExit>
+                    <Credits wrapperClass={classes.creditsWrapper} itemClass={classes.creditHeader} />
+                  </Collapse>
+                </Grid>
+                <SSOProviders providers={ssoTypes}/>
+                <div className="flex-fill" />
+                <Grid container columnSpacing={3} alignItems="center">
+                  <div className="flex-fill">
+                    <div>
+                      <IconButton
+                        color="inherit"
+                        size="medium"
+                        onClick={toggleCredits}
+                        className="p-0"
+                      >
+                        {openCredits ? <ExpandMore fontSize="inherit" /> : <ExpandLess fontSize="inherit" />}
+                      </IconButton>
+                      <span>{$t('credits')}</span>
                     </div>
                     <div>
-                      <img src={ishLogoSmall} className={classes.footerIshLogo} alt="" />
+                      {$t('2005_ish_group_all_rights_reserved', [new Date().getFullYear().toString()])}
                     </div>
-                  </Grid>
+                  </div>
+                  <div className={classes.footerIshLogo}>
+                    <Logo small />
+                  </div>
                 </Grid>
-              </div>
-            </Slide>
-          </Grid>
+              </Grid>
+            </div>
+          </Slide>
         </Grid>
-      </Form>
-    );
-  }
+      </Grid>
+    </Form>
+  );
 }
 
 const mapStateToProps = (state: State) => ({
   ...state.login,
+  fetch: state.fetch,
   complexPass: state.preferences && state.preferences.complexPass,
   ssoTypes: state.automation.integration.ssoTypes
 });
@@ -813,6 +751,14 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   isComplexPassRequired: () => dispatch(isComplexPassRequired()),
   getEmailByToken: (token: string) => dispatch(getEmailByToken(token)),
   createPasswordRequest: (token: string, password: string) => dispatch(createPasswordRequest(token, password)),
+  resetLoginForm: () => {
+    dispatch(setLoginState({
+      isBasic: true,
+      passwordComplexity: null
+    }));
+    dispatch(clearFields(FORM_NAME, false, false, 'newPasswordAsync',  'newPasswordConfirm'));
+    dispatch(touch(FORM_NAME, 'user'));
+  }
 });
 
 const shouldAsyncValidate = params => {
@@ -827,6 +773,6 @@ const LoginPage = reduxForm({
   form: FORM_NAME,
   touchOnChange: true,
   asyncChangeFields: ["newPasswordAsync"]
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginPageBase)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(LoginPageBase, styles)));
 
 export default LoginPage;

@@ -8,11 +8,12 @@
 
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import Typography from "@mui/material/Typography";
-import { makeAppStyles } from "ish-ui";
-import React from "react";
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { makeAppStyles } from 'ish-ui';
+import React from 'react';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   root: {
     minHeight: "unset",
     marginRight: theme.spacing(1)
@@ -26,7 +27,7 @@ const useStyles = makeAppStyles(theme => ({
 }));
 
 export default function FiltersSwitcher({ setValue, value }) {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -35,20 +36,20 @@ export default function FiltersSwitcher({ setValue, value }) {
   return (
     <div className="w100 centeredFlex mt-2">
       <Typography variant="caption" className="flex-fill">
-        Filter by
+        {$t('filter_by')}
       </Typography>
       <Tabs classes={{ root: classes.root }} value={value} onChange={handleChange}>
         <Tab
           classes={{
             root: classes.tab
           }}
-          label="Filters & Tags"
+          label={$t('filters_tags')}
         />
         <Tab
           classes={{
             root: classes.tab
           }}
-          label="Checklists"
+          label={$t('checklists')}
         />
       </Tabs>
     </div>

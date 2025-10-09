@@ -6,27 +6,27 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import React, { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import { Grid, Typography } from '@mui/material';
+import $t from '@t';
+import clsx from 'clsx';
+import React, { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
 import {
   CalendarGrouping,
   CalendarGroupingState,
   CalendarMode,
   CalendarTagsState,
   TimetableDay
-} from "../../../../../../model/timetable";
-import { getTimetableSessionsByIds, getTimetableSessionsTags } from "../../../../actions";
-import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from "../../../../constants";
-import { gapHoursDayPeriodsBase, getGapHours, getGroupings } from "../../../../utils";
-import CalendarSession from "../session/CalendarSession";
-import CalendarSessionHour from "../session/CalendarSessionHour";
-import styles from "../styles";
-import CalendarDayBase from "./CalendarDayBase";
+} from '../../../../../../model/timetable';
+import { getTimetableSessionsByIds, getTimetableSessionsTags } from '../../../../actions';
+import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from '../../../../constants';
+import { gapHoursDayPeriodsBase, getGapHours, getGroupings } from '../../../../utils';
+import CalendarSession from '../session/CalendarSession';
+import CalendarSessionHour from '../session/CalendarSessionHour';
+import styles from '../styles';
+import CalendarDayBase from './CalendarDayBase';
 
 interface CompactModeDayProps extends TimetableDay {
   monthIndex: number;
@@ -132,7 +132,7 @@ const GapDay: React.FunctionComponent<any> = React.memo(
                             tagsState={tagsState}
                           />
                         ) : (
-                          <Typography className="text-disabled">available</Typography>
+                          <Typography className="text-disabled">{$t('available')}</Typography>
                         )}
                       </Grid>
                     </Fragment>
@@ -201,7 +201,7 @@ const GroupingDay = React.memo<GroupingDayProps>(
                   variant="body2"
                   className="text-disabled"
                 >
-                  Loading...
+                  {$t('loading')}
                 </Typography>
               )}
            </Grid>
@@ -218,14 +218,14 @@ const GroupingDay = React.memo<GroupingDayProps>(
                   />
                 ))
               ) : (
-                <Typography className="text-disabled dayOffset">available</Typography>
+                <Typography className="text-disabled dayOffset">{$t('available')}</Typography>
               )}
            </Grid>
          </Grid>
           ))}
      </>
     ) : (
-      <Typography className="text-disabled dayOffset">available</Typography>
+      <Typography className="text-disabled dayOffset">{$t('available')}</Typography>
     ))
 );
 
@@ -265,7 +265,7 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
   }, [updated, tagsUpdated, isScrolling, inView, tagsState]);
 
   useEffect(() => {
-    if (!gapHours.length && calendarMode === "Gap(Hours)" && sessions.length && updated) {
+    if (calendarMode === "Gap(Hours)" && sessions.length && (updated || tagsUpdated)) {
       setGapHours(getGapHours(sessions));
     }
   }, [calendarMode, sessions, updated, tagsUpdated]);
@@ -300,7 +300,7 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
           />
         ))
       ) : (
-        <Typography className="text-disabled dayOffset">available</Typography>
+        <Typography className="text-disabled dayOffset">{$t('available')}</Typography>
       )),
     [sessions, updated, selectedDayPeriods, tagsState, calendarGrouping]
   );
@@ -347,4 +347,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export const CalendarDay = connect<any, any, any>(
   null,
   mapDispatchToProps
-)(withStyles(styles)(CalendarDayWrapper));
+)(withStyles(CalendarDayWrapper, styles));

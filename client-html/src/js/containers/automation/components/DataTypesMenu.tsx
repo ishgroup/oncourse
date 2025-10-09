@@ -3,24 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Binding, DataType } from "@api/model";
-import Button from "@mui/material/Button";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import Grow from "@mui/material/Grow";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
-import { makeAppStyles, NoArgFunction } from "ish-ui";
-import React, { useCallback, useEffect, useRef } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { Form, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
-import FormField from "../../../common/components/form/formFields/FormField";
-import { BindingsItemType } from "./Bindings";
+import { Binding, DataType } from '@api/model';
+import Button from '@mui/material/Button';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Grow from '@mui/material/Grow';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import $t from '@t';
+import { makeAppStyles, NoArgFunction } from 'ish-ui';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { Form, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import { IAction } from '../../../common/actions/IshAction';
+import FormField from '../../../common/components/form/formFields/FormField';
+import { BindingsItemType } from './Bindings';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   popper: {
     zIndex: theme.zIndex.modal + 1
   },
@@ -50,7 +52,7 @@ const useStyles = makeAppStyles(theme => ({
   }
 }));
 
-const DataTypes = Object.keys(DataType).filter(k => !["Portal subdomain","Record", "Pattern text", "List", "Map", "Long text", "URL", "Email"].includes(k));
+const DataTypes = Object.keys(DataType).filter(k => !["Portal subdomain", "Record", "Pattern text", "List", "Map", "Long text", "URL", "Email"].includes(k));
 
 interface BindingEditPopupProps extends InjectedFormProps {
   popupAnchorEl: any;
@@ -64,10 +66,10 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
   ({
      popupAnchorEl, onCancel, onSave, handleSubmit, invalid, values, reset
   }) => {
-    const nameRef = useRef<any>();
-    const popperRef = useRef<any>();
+    const nameRef = useRef<any>(undefined);
+    const popperRef = useRef<any>(undefined);
 
-    const classes  = useStyles();
+    const { classes }  = useStyles();
 
     const setPopperRef = useCallback(node => {
       if (node) {
@@ -114,7 +116,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
                 <DialogContent className="overflow-hidden">
                   <FormField
                     type="text"
-                    label="Label"
+                    label={$t('label')}
                     name="label"
                     inputRef={nameRef}
                     className="mb-2"
@@ -123,7 +125,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
 
                   <FormField
                     type="text"
-                    label="Name"
+                    label={$t('name')}
                     name="name"
                     validate={validateBindingName}
                     required
@@ -132,7 +134,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
 
                 <DialogActions>
                   <Button onClick={onSubmit} color="primary" disabled={invalid}>
-                    Save
+                    {$t('save2')}
                   </Button>
                 </DialogActions>
               </Form>
@@ -161,7 +163,7 @@ interface DataTypesMenuProps {
   anchorEl: HTMLElement;
   handleClose: NoArgFunction;
   handleAdd: (val: Binding) => void;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   itemsType: BindingsItemType;
   isOptionsBindingType?: boolean;
   isVariablesBindingType?: boolean;

@@ -6,20 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { LIST_PAGE_SIZE, LIST_SIDE_BAR_DEFAULT_WIDTH, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { GetRecordsArgs, ListState } from "../../../../model/common/ListView";
-import { GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED, GET_SCRIPTS_FULFILLED } from "../../../actions";
-import { IAction } from "../../../actions/IshAction";
-import { latestActivityStorageHandler } from "../../../utils/storage";
+import { LIST_PAGE_SIZE, LIST_SIDE_BAR_DEFAULT_WIDTH, PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../constants/Config';
+import { GetRecordsArgs, ListState } from '../../../../model/common/ListView';
+import { GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED, GET_SCRIPTS_FULFILLED } from '../../../actions';
+import { IAction } from '../../../actions/IshAction';
+import { latestActivityStorageHandler } from '../../../utils/storage';
 import {
-  CLEAR_LIST_STATE,
   CLEAR_RECIPIENTS_MESSAGE_DATA,
   GET_FILTERS_FULFILLED,
   GET_PLAIN_RECORDS_REQUEST_FULFILLED,
   GET_RECORDS_FULFILLED,
   GET_RECORDS_REQUEST,
   SET_LIST_CORE_FILTERS,
-  SET_LIST_CREATING_NEW,
   SET_LIST_CUSTOM_TABLE_MODEL,
   SET_LIST_EDIT_RECORD,
   SET_LIST_EDIT_RECORD_FETCHING,
@@ -34,25 +32,24 @@ import {
   SET_LIST_USER_AQL_SEARCH,
   SET_RECIPIENTS_MESSAGE_DATA,
   UPDATE_TAGS_ORDER,
-} from "../actions";
-import { getUpdated } from "../utils/listFiltersUtils";
+} from '../actions';
+import { getUpdated } from '../utils/listFiltersUtils';
 
-class State implements ListState {
-  menuTags = [];
+const Initial: ListState = {
+  menuTags: [],
+  checkedChecklists: [],
 
-  checkedChecklists = [];
+  uncheckedChecklists: [],
 
-  uncheckedChecklists = [];
+  menuTagsLoaded: false,
 
-  menuTagsLoaded = false;
+  filterGroups: [],
 
-  filterGroups = [];
+  filterGroupsLoaded: false,
 
-  filterGroupsLoaded = false;
+  showColoredDots: false,
 
-  showColoredDots = false;
-
-  records = {
+  records: {
     entity: "",
     columns: [],
     rows: [],
@@ -64,38 +61,36 @@ class State implements ListState {
     filteredCount: 0,
     filterColumnWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
     tagsOrder: []
-  };
+  },
 
-  plainRecords = {};
+  plainRecords: {},
 
-  search = "";
+  search:  "",
 
-  searchQuery = {
+  searchQuery: {
     search: "",
     filter: "",
     tagGroups: []
-  };
+  },
 
-  searchError = false;
+  searchError: false,
 
-  editRecord = null;
+  editRecord: null,
 
-  recepients = null;
+  recepients: null,
 
-  selection = [];
+  selection: [],
 
-  fetching = false;
+  fetching: false,
 
-  editRecordFetching = false;
+  editRecordFetching: false,
+  
+  fullScreenEditView: false,
 
-  creatingNew = false;
+  customTableModel: null
+};
 
-  fullScreenEditView = false;
-
-  customTableModel = null;
-}
-
-export const listReducer = (state: State = new State(), action: IAction<any>): any => {
+export const listReducer = (state: ListState = {...Initial}, action: IAction<any>): ListState => {
   switch (action.type) {
     case GET_RECORDS_REQUEST:
       return {
@@ -167,13 +162,6 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
       return {
         ...state,
         editRecordFetching: true
-      };
-    }
-
-    case SET_LIST_CREATING_NEW: {
-      return {
-        ...state,
-        creatingNew: action.payload
       };
     }
 
@@ -324,10 +312,6 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
         checkedChecklists: getUpdated(checkedChecklists, null, null, null),
         uncheckedChecklists: getUpdated(uncheckedChecklists, null, null, null),
       };
-    }
-
-    case CLEAR_LIST_STATE: {
-      return new State();
     }
 
     case UPDATE_TAGS_ORDER: {

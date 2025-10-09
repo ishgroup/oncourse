@@ -6,26 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Contact } from "@api/model";
-import { useTheme } from "@mui/styles";
-import { AppTheme, formatCurrency } from "ish-ui";
-import React, { useMemo, useState } from "react";
-import { connect } from "react-redux";
+import { Contact } from '@api/model';
+import { formatCurrency, useAppTheme } from 'ish-ui';
+import React, { useMemo, useState } from 'react';
 import AvailabilityFormComponent
-  from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import ContactsDetails from "./ContactDetails";
-import ContactsDocuments from "./ContactsDocuments";
-import ContactsEducation from "./ContactsEducation";
-import ContactsFinancial from "./ContactsFinancial";
-import ContactsGeneral from "./ContactsGeneral";
-import ContactsMessages from "./ContactsMessages";
-import ContactsResume from "./ContactsResume";
-import ContactsTutor from "./ContactsTutor";
-import ContactsVET from "./ContactsVET";
+  from '../../../../common/components/form/availabilityComponent/AvailabilityFormComponent';
+import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
+import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
+import { useAppSelector } from '../../../../common/utils/hooks';
+import { EditViewProps } from '../../../../model/common/ListView';
+import ContactsDetails from './ContactDetails';
+import ContactsDocuments from './ContactsDocuments';
+import ContactsEducation from './ContactsEducation';
+import ContactsFinancial from './ContactsFinancial';
+import ContactsGeneral from './ContactsGeneral';
+import ContactsMessages from './ContactsMessages';
+import ContactsResume from './ContactsResume';
+import ContactsTutor from './ContactsTutor';
+import ContactsVET from './ContactsVET';
 
 const studentItems: TabsListItem[] = [
   {
@@ -88,11 +86,10 @@ const items: TabsListItem[] = [
 
 interface Props {
   classes?: any;
-  currencySymbol?: any;
   leftOffset?: number;
 }
 
-const ContactEditView = (props: EditViewProps<Contact> & Props) => {
+const ContactEditView = (props: Partial<EditViewProps<Contact>> & Props) => {
   const {
     isNew,
     isNested,
@@ -101,13 +98,11 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
     dispatch,
     dirty,
     form,
-    nestedIndex,
     rootEntity,
     twoColumn,
     showConfirm,
     manualLink,
     invalid,
-    currencySymbol,
     syncErrors,
     onScroll,
     leftOffset
@@ -118,7 +113,10 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
   const [isCompany, setIsCompany] = useState(false);
   const [usiUpdateLocked, setUsiUpdateLocked] = useState(true);
 
-  const theme = useTheme<AppTheme>();
+  const hideAUSReporting = useAppSelector(state => state.location.countryCode !== 'AU');
+  const currencySymbol = useAppSelector(state => state.location.currency.shortCurrencySymbol);
+
+  const theme = useAppTheme();
 
   const getActiveItems = () => {
     let activeItems = [...items];
@@ -130,18 +128,14 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
       });
     }
 
-    activeItems[activeItems.findIndex(i => i.label === "Financial")].labelAdornment = React.useMemo(
-      () =>
-        (twoColumn ? (
+    activeItems[activeItems.findIndex(i => i.label === "Financial")].labelAdornment = twoColumn ? (
           <span className="money centeredFlex">
             {`(Owing ${formatCurrency(totalOwing, currencySymbol)})`}
           </span>
-        ) : null),
-       [twoColumn, values.financialData, currencySymbol]
-    );
+        ) : null;
 
     if (isStudent) {
-      activeItems = [...activeItems, ...studentItems];
+      activeItems = [...activeItems, ...studentItems.filter(i => i.label === 'VET' ? !hideAUSReporting : true)];
     }
 
     if (isTutor) {
@@ -170,7 +164,6 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
         dirty,
         invalid,
         form,
-        nestedIndex,
         rootEntity,
         twoColumn,
         showConfirm,
@@ -191,9 +184,4 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  currencySymbol: state.currency.shortCurrencySymbol
-});
-
-export default connect<any, any, any>(mapStateToProps)((props: any) =>
-  (props.values ? <ContactEditView {...props} /> : null));
+export default ContactEditView;

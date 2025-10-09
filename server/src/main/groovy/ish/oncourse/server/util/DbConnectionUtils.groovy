@@ -27,4 +27,23 @@ class DbConnectionUtils {
                 connection.close()
         }
     }
+
+    static BigDecimal getBigDecimalForDbQuery(String query, DataSource dataSource) {
+        def getValue = { Statement statement ->
+            return getNumberForQueryFromDb(statement, query)
+        }
+
+        return executeWithClose(getValue, dataSource) as BigDecimal
+    }
+
+    private static BigDecimal getNumberForQueryFromDb(Statement statement, String query) {
+        def resultSet = statement.executeQuery(query)
+        resultSet.last()
+
+        //we need this to avoid null cases
+        def doubleValue = resultSet.getDouble(1)
+        return BigDecimal.valueOf(doubleValue)
+    }
+
+
 }

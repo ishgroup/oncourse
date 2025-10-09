@@ -23,6 +23,7 @@ import ish.oncourse.server.api.v1.model.SystemPreferenceDTO
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.SystemUser
 import ish.util.DateFormatter
+import static ish.persistence.Preferences.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
@@ -47,14 +48,12 @@ class PreferenceFunctions {
             if(value instanceof Date)
                 return DateFormatter.formatDateISO8601(value as Date)
 
+            if (value instanceof Country) {
+                return (value as Country).displayName
+            }
             if (value instanceof DisplayableExtendedEnumeration) {
                 return (value as DisplayableExtendedEnumeration).databaseValue.toString()
             }
-
-            if (value instanceof Country) {
-                return (value as Country).currencySymbol()
-            }
-
             return value.toString()
         }
         return null
@@ -91,6 +90,7 @@ class PreferenceFunctions {
             case AUTO_DISABLE_INACTIVE_ACCOUNT:
             case PASSWORD_COMPLEXITY:
             case EXTENDED_SEARCH_TYPES:
+            case AUS_REPORTING:
                 return Boolean.valueOf(value)
             case SERVICES_INFO_REPLICATION_VERSION:
             case LDAP_SERVERPORT:
@@ -110,8 +110,8 @@ class PreferenceFunctions {
                 return TypesUtil.getEnumForDatabaseValue(Integer.valueOf(value), ExportJurisdiction)
             case TWO_FACTOR_AUTHENTICATION:
                 return TypesUtil.getEnumForDatabaseValue(value, TwoFactorAuthorizationStatus)
-            case ACCOUNT_CURRENCY:
-                return Country.forCurrencySymbol(value)
+            case ACCOUNT_COUNTRY:
+                return Country.fromDatabaseValue(value)
             default:
                 return value
         }

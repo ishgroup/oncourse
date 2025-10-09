@@ -10,17 +10,18 @@ import {
   AvetmissExportRequest,
   AvetmissExportSettings,
   AvetmissExportType
-} from "@api/model";
-import Launch from "@mui/icons-material/Launch";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { ButtonBase, Divider, Typography } from "@mui/material";
-import clsx from "clsx";
-import { openInternalLink } from "ish-ui";
-import React from "react";
-import { change } from "redux-form";
-import FormField from "../../../common/components/form/formFields/FormField";
-import SpeechCard from "../../../common/components/layout/SpeechCard";
-import { saveCategoryAQLLink } from "../../../common/utils/links";
+} from '@api/model';
+import Launch from '@mui/icons-material/Launch';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { ButtonBase, Divider, Typography } from '@mui/material';
+import $t from '@t';
+import clsx from 'clsx';
+import { openInternalLink } from 'ish-ui';
+import React from 'react';
+import { change } from 'redux-form';
+import FormField from '../../../common/components/form/formFields/FormField';
+import SpeechCard from '../../../common/components/layout/SpeechCard';
+import { saveCategoryAQLLink } from '../../../common/utils/links';
 
 interface ExtendedValues extends AvetmissExportSettings {
   defaultStatus: boolean;
@@ -152,12 +153,11 @@ class AvetmissExportResults extends React.Component<Props, any> {
           >
             <Typography color="inherit" className={clsx("heading", classes.resultsHeader)}>
               {this.outcomeIds.length}
-              {' '}
-              Outcomes
+              {$t('outcomes')}
             </Typography>
 
             <Typography variant="body1">
-              <strong>Not yet started</strong>
+              <strong>{$t('not_yet_started')}</strong>
             </Typography>
 
             {Object.keys(outcome["Not yet started"]).map(k => {
@@ -185,9 +185,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
 
             <div className="d-flex mt-2">
               <Typography>
-                export as
-                <br />
-                not yet started (85)
+                {$t('export_as_br_not_yet_started_85')}
               </Typography>
             </div>
           </SpeechCard>
@@ -195,7 +193,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
           <div className={classes.stepsArrowContainer}>
             <div className={classes.stepWrapper}>
               <div className={classes.step}>
-                <Typography color="inherit">enrol</Typography>
+                <Typography color="inherit">{$t('enrol')}</Typography>
               </div>
             </div>
             <div className={classes.arrowLine} />
@@ -209,12 +207,11 @@ class AvetmissExportResults extends React.Component<Props, any> {
           >
             <Typography color="inherit" className={clsx("heading", classes.resultsHeader)}>
               {this.enrolmentIds.length}
-              {' '}
-              Enrolments
+              {$t('enrolments3')}
             </Typography>
 
             <Typography variant="body1">
-              <strong>Not yet started</strong>
+              <strong>{$t('not_yet_started')}</strong>
             </Typography>
 
             {Object.keys(enrolment["Not yet started"]).map(k => {
@@ -254,7 +251,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
             })}
             >
               <Typography variant="body1">
-                <strong>Started (not assessed)</strong>
+                <strong>{$t('started_not_assessed')}</strong>
               </Typography>
 
               {Object.keys(outcome["Started (not assessed)"]).map(k => {
@@ -282,7 +279,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
 
               <div className="d-flex mt-2 mb-2">
                 <Typography color={!values.noAssessment ? "textSecondary" : undefined}>
-                  don't require assessment
+                  {$t('dont_require_assessment')}
                 </Typography>
 
                 <FormField
@@ -304,7 +301,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
               })}
             >
               <Typography variant="body1">
-                <strong>Commenced</strong>
+                <strong>{$t('commenced2')}</strong>
               </Typography>
 
               {Object.keys(outcome["Commenced"]).map(k => {
@@ -330,14 +327,14 @@ class AvetmissExportResults extends React.Component<Props, any> {
                 return null;
               })}
 
-              <Typography className="mt-1">export as continuing (70)</Typography>
+              <Typography className="mt-1">{$t('export_as_continuing_70')}</Typography>
             </SpeechCard>
           </div>
 
           <div className={classes.stepsArrowContainer}>
             <div className={classes.stepWrapper}>
               <div className={classes.step}>
-                <Typography color="inherit">start</Typography>
+                <Typography color="inherit">{$t('start2')}</Typography>
               </div>
             </div>
             <div className={classes.arrowLine} />
@@ -350,7 +347,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
             })}
           >
             <Typography variant="body1">
-              <strong>Commenced</strong>
+              <strong>{$t('commenced2')}</strong>
             </Typography>
             {Object.keys(enrolment["Commenced"]).map(k => {
               const item = enrolment["Commenced"][k];
@@ -387,7 +384,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
             })}
           >
             <Typography variant="body1">
-              <strong>Delivered</strong>
+              <strong>{$t('delivered')}</strong>
             </Typography>
 
             {Object.keys(outcome["Delivered"]).map(k => {
@@ -415,11 +412,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
 
             <div className="d-flex mt-2">
               <Typography color={!values.defaultStatus ? "textSecondary" : undefined}>
-                export as continuing (70)
-                <br />
-                ending 7 days
-                <br />
-                from now
+                {$t('export_as_continuing_70_br_ending_7_days_br_from_n')}
               </Typography>
 
               <FormField
@@ -434,7 +427,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
           <div className={classes.stepsArrowContainer}>
             <div className={classes.stepWrapper}>
               <div className={classes.step}>
-                <Typography color="inherit">end</Typography>
+                <Typography color="inherit">{$t('end2')}</Typography>
               </div>
             </div>
             <div className={classes.arrowLine} />
@@ -447,7 +440,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
             })}
           >
             <Typography variant="body1">
-              <strong>Delivered</strong>
+              <strong>{$t('delivered')}</strong>
             </Typography>
 
             {Object.keys(enrolment["Delivered"]).map(k => {
@@ -486,7 +479,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
             })}
           >
             <Typography variant="body1">
-              <strong>Final Status</strong>
+              <strong>{$t('final_status')}</strong>
             </Typography>
 
             {Object.keys(outcome["Final Status"]).map(k => {
@@ -516,7 +509,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
           <div className={classes.stepsArrowContainer}>
             <div className={classes.stepWrapper}>
               <div className={classes.step}>
-                <Typography color="inherit">verify</Typography>
+                <Typography color="inherit">{$t('verify')}</Typography>
               </div>
             </div>
             <div className={classes.arrowLine} />
@@ -530,7 +523,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
               })}
             >
               <Typography variant="body1">
-                <strong>All outcomes final</strong>
+                <strong>{$t('all_outcomes_final')}</strong>
               </Typography>
 
               {Object.keys(enrolment["All outcomes final"]).map(k => {
@@ -564,7 +557,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
               })}
             >
               <Typography variant="body1">
-                <strong>Issued</strong>
+                <strong>{$t('issued')}</strong>
               </Typography>
 
               {Object.keys(enrolment["Issued"]).map(k => {
@@ -613,7 +606,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
             onClick={() => this.export(outcome)}
             loading={pending}
           >
-            Export
+            {$t('export')}
           </LoadingButton>
         </div>
       </>

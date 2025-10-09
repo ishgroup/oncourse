@@ -3,28 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, CancelEnrolment, Tax } from "@api/model";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { FormControlLabel, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import { BooleanArgFunction, WarningMessage } from "ish-ui";
-import React, { useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
-import { getUserPreferences } from "../../../../../common/actions";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../../../constants/Config";
-import { State } from "../../../../../reducers/state";
-import { cancelEnrolment } from "../../actions";
-import { useOutcomeWarnings } from "./hooks";
-import { enrolmentModalStyles } from "./styles";
-import TransferEnrolmentInvoiceLines from "./TransferEnrolmentInvoiceLines";
+import { Account, CancelEnrolment, Tax } from '@api/model';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { FormControlLabel, Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import $t from '@t';
+import { BooleanArgFunction, WarningMessage } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { getUserPreferences } from '../../../../../common/actions';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from '../../../../../constants/Config';
+import { State } from '../../../../../reducers/state';
+import { cancelEnrolment } from '../../actions';
+import { useOutcomeWarnings } from './hooks';
+import { enrolmentModalStyles } from './styles';
+import TransferEnrolmentInvoiceLines from './TransferEnrolmentInvoiceLines';
 
 export const FORM: string = "TRANSFER_ENROLMENT_MODAL_FORM";
 
@@ -194,19 +194,17 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
           <Grid container columnSpacing={3}>
             <Grid item xs={12}>
               <div className="centeredFlex">
-                <div className="heading mt-2 mb-2">Transfer Enrolment</div>
+                <div className="heading mt-2 mb-2">{$t('transfer_enrolment')}</div>
               </div>
 
               <Typography variant="body2">
                 {plainEnrolmentRecord.studentName}
                 {' '}
-                is currently enrolled in
+                {$t('is currently enrolled in')}
                 {plainEnrolmentRecord.courseClassName}
                 {" "}
                 {plainEnrolmentRecord.courseClassCode}
-                . This enrolment will be cancelled and a credit note created (if
-                selected below). Quick Enrol will then open and allow you to complete the enrolment into the new class,
-                using the credit created here.
+                . {$t('this_enrolment_will_be_cancelled')}
               </Typography>
 
               <FormControlLabel
@@ -240,11 +238,11 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
 
         <DialogActions className="p-1">
           <Button color="primary" onClick={onClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
 
           <LoadingButton variant="contained" color="primary" type="submit" loading={processing}>
-            Proceed
+            {$t('proceed')}
           </LoadingButton>
         </DialogActions>
       </form>
@@ -274,4 +272,4 @@ const TransferEnrolmentModal = reduxForm({
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(enrolmentModalStyles)(TransferEnrolmentModal));
+)(withStyles(TransferEnrolmentModal, enrolmentModalStyles as any));

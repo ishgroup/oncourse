@@ -12,6 +12,8 @@ trait AutomationStatusDTOTrait {
                 return AutomationStatus.INSTALLED_DISABLED
             case AutomationStatusDTO.ENABLED:
                 return AutomationStatus.ENABLED
+            case AutomationStatusDTO.HIDDEN:
+                return AutomationStatus.HIDDEN
             default:
                 throw new IllegalArgumentException("${toString()}")
         }
@@ -28,6 +30,8 @@ trait AutomationStatusDTOTrait {
                 return AutomationStatusDTO.INSTALLED_BUT_DISABLED
             case AutomationStatus.ENABLED:
                 return AutomationStatusDTO.ENABLED
+            case AutomationStatus.HIDDEN:
+                return AutomationStatusDTO.HIDDEN
             default:
                 throw new IllegalArgumentException("$dataType.displayName")
         }

@@ -14,11 +14,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import clsx from "clsx";
-import { makeAppStyles } from "ish-ui";
-import React from "react";
+import clsx from 'clsx';
+import { makeAppStyles } from 'ish-ui';
+import React from 'react';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   tagColorDotExtraSmall: {
     width: theme.spacing(1),
     minWidth: theme.spacing(1),
@@ -29,9 +29,9 @@ const useStyles = makeAppStyles(theme => ({
 }));
 
 const TagDotRenderer = ({
-                          colors, className = null
-                        }) => {
-  const classes = useStyles();
+  colors = [], className = null
+}) => {
+  const { classes } = useStyles();
 
   return (
     <div className={clsx("centeredFlex", className)}>

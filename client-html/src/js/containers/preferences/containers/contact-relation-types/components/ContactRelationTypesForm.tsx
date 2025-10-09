@@ -1,21 +1,22 @@
-import { ContactRelationType } from "@api/model";
-import Grid from "@mui/material/Grid";
-import withStyles from "@mui/styles/withStyles";
-import { idsToString, ShowConfirmCaller } from "ish-ui";
-import isEqual from "lodash.isequal";
-import * as React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../../reducers/state";
-import { cardsFormStyles } from "../../../styles/formCommonStyles";
-import ContactRelationTypesRenderer from "./ContactRelationTypesRenderer";
+import { ContactRelationType } from '@api/model';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import { idsToString, ShowConfirmCaller } from 'ish-ui';
+import isEqual from 'lodash.isequal';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../reducers/state';
+import { cardsFormStyles } from '../../../styles/formCommonStyles';
+import ContactRelationTypesRenderer from './ContactRelationTypesRenderer';
 
-const manualUrl = getManualLink("generalPrefs_contactRelationTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#contact-relation-types");
 
 export const CONTACT_RELATION_TYPES_FORM: string = "ContactRelationTypesForm";
 
@@ -166,7 +167,7 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
           getAuditsUrl={() => `audit?search=~"ContactRelationType" and entityId in (${idsToString(data.types)})`}
           disabled={!dirty}
           invalid={invalid}
-          title="Contact Relation Types"
+          title={$t('contact_relation_types')}
           disableInteraction
           createdOn={() => created}
           modifiedOn={() => modified}
@@ -196,12 +197,11 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-
 const ContactRelationTypesForm = reduxForm({
   onSubmitFail,
   form: CONTACT_RELATION_TYPES_FORM
-})(connect<any, any, any>(mapStateToProps, null)(
-  withStyles(cardsFormStyles)(withRouter(ContactRelationTypesBaseForm)) as any
+})(connect<any, any, any>(mapStateToProps)(
+  withStyles(withRouter(ContactRelationTypesBaseForm), cardsFormStyles)
 ));
 
 export default ContactRelationTypesForm;

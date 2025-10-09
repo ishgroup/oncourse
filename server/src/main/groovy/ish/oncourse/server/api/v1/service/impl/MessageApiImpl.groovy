@@ -53,9 +53,4 @@ class MessageApiImpl implements MessageApi {
     void archiveMessages(ArchiveParamDTO archiveDate) {
         archivingMessagesService.archiveMessages(archiveDate.archiveBefore)
     }
-
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 }

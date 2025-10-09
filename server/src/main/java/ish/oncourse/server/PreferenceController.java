@@ -13,8 +13,6 @@ package ish.oncourse.server;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import ish.math.Country;
-import ish.math.CurrencyFormat;
-import ish.oncourse.entity.services.TagService;
 import ish.oncourse.server.cayenne.Preference;
 import ish.oncourse.server.display.DisplayService;
 import ish.oncourse.server.integration.PluginsPrefsService;
@@ -31,8 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.JobKey;
 
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 import static ish.oncourse.DefaultAccount.defaultAccountPreferences;
 import static ish.oncourse.server.services.ISchedulerService.BACKGROUND_JOBS_GROUP_ID;
@@ -51,36 +48,27 @@ public class PreferenceController extends CommonPreferenceController {
 	private final ISystemUserService systemUserService;
 	private final LicenseService licenseService;
 	private final PluginsPrefsService pluginsPrefsService;
-	private final TagService tagService;
+	private final ISchedulerService schedulerService;
+
 	private ObjectContext objectContext;
 
-    @Inject
-    private ISchedulerService schedulerService;
+	public static final List<String> CUSTOM_LOGO_PREFERENCES = List.of(
+			CUSTOM_LOGO_BLACK, CUSTOM_LOGO_BLACK_SMALL,
+			CUSTOM_LOGO_WHITE, CUSTOM_LOGO_WHITE_SMALL,
+			CUSTOM_LOGO_COLOUR, CUSTOM_LOGO_COLOUR_SMALL
+	);
 
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,
 								LicenseService licenseService, PluginsPrefsService pluginsPrefsService,
-								DisplayService displayService, TagService tagService) {
+								ISchedulerService schedulerService) {
 		this.cayenneService = cayenneService;
 		this.systemUserService = systemUserService;
 		this.licenseService = licenseService;
 		this.pluginsPrefsService = pluginsPrefsService;
-		this.tagService = tagService;
+		this.schedulerService = schedulerService;
 		sharedController = this;
-
-		initDisplayPreferencesFromConfigFile(displayService);
 	}
-
-	private void initDisplayPreferencesFromConfigFile(DisplayService displayService) {
-		if(displayService.getExtendedSearchTypes() != null) {
-			boolean extendedTypesAlreadyWereAllowed = getExtendedSearchTypesAllowed();
-			setExtendedTypesAllowed(displayService.getExtendedSearchTypes());
-			if(!extendedTypesAlreadyWereAllowed && displayService.getExtendedSearchTypes()){
-				tagService.updateSubjectsAsEntities(cayenneService.getNewContext());
-			}
-		}
-	}
-
 
 	public Long getTimeoutMs() {
 		Integer timeout =  getTimeoutSec();
@@ -145,10 +133,6 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 	public void setValueForKey(String key, Object value) {
-	    if ((key.equals(ACCOUNT_CURRENCY)) && (value != null)) {
-			var country = (Country) value;
-	        CurrencyFormat.updateLocale(country.locale());
-        }
         if (defaultAccountPreferences.contains(key)) {
             setDefaultAccountId(key, (Long)value);
         } else {
@@ -168,11 +152,14 @@ public class PreferenceController extends CommonPreferenceController {
                     e.printStackTrace();
                 }
             }
-            super.setValueForKey(key, value);
+
+			if (CUSTOM_LOGO_PREFERENCES.contains(key)) {
+				setValue(key, false, Optional.ofNullable(value).orElse("").toString());
+			}
+
+			super.setValueForKey(key, value);
         }
 	}
-
-
 
 	/**
 	 * @deprecated Replace with Google Guice injection.

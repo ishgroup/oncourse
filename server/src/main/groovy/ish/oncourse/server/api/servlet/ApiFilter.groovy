@@ -39,11 +39,25 @@ class ApiFilter implements Filter {
     private static final Logger logger = LogManager.getLogger()
 
     private static final String LOGIN_PATH_INFO = 'login'
+    private static final String CHECKOUT_PATH_INFO = '/checkout/submitPaymentRedirect'
     private static final String CHECK_PASSWORD_INFO = 'user/checkPassword/'
     private static final String INVITATION = 'invite/'
+    private static final String LOGO_PATH_INFO = '/preference/logo'
+    private static final String LOCATION_PATH_INFO = '/preference/location'
     private static final String SSO_TYPES = 'integration/ssoTypes'
     private static final String X_VALIDATE_ONLY = 'x-validate-only'
     private static final String XVALIDATEONLY = 'XValidateOnly'
+
+
+    private static final List<String> ALLOWED_CORS_REQUESTS = [
+            LOGIN_PATH_INFO,
+            CHECK_PASSWORD_INFO,
+            INVITATION,
+            SSO_TYPES,
+            CHECKOUT_PATH_INFO,
+            LOGO_PATH_INFO,
+            LOCATION_PATH_INFO,
+    ]
 
     public static final String AUTHORIZATION = 'Authorization'
     
@@ -54,6 +68,8 @@ class ApiFilter implements Filter {
     private final AuditService auditService
 
     public static final ThreadLocal<Boolean> validateOnly = new ThreadLocal<>()
+
+    public static final boolean CLIENT_MODE = "true".equals(System.getProperty("ish.devMode"))
 
     @Inject
     ApiFilter(AuditService auditService, ICayenneService cayenneService, IPermissionService permissionService) {
@@ -71,11 +87,9 @@ class ApiFilter implements Filter {
     void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) {
         Request request = (Request) servletRequest
         Response response = (Response) servletResponse
-
         validateOnly.set(Boolean.valueOf(request.getHeader(X_VALIDATE_ONLY)) || Boolean.valueOf(request.getHeader(XVALIDATEONLY)))
 
-        if (request.pathInfo.contains(LOGIN_PATH_INFO) || request.pathInfo.contains(CHECK_PASSWORD_INFO)
-                || request.pathInfo.contains(INVITATION) || request.pathInfo.contains(SSO_TYPES)) {
+        if (CLIENT_MODE || ALLOWED_CORS_REQUESTS.any {request.pathInfo.contains(it) }) {
             allowCrossOriginRequest(response)
         } else if (unautorized(request, response) || !permissionService.authorize(request, response)) {
             return
@@ -91,8 +105,13 @@ class ApiFilter implements Filter {
 
     private static void allowCrossOriginRequest(Response response) {
         response.addHeader('Access-Control-Allow-Origin', '*')
-        response.addHeader('Access-Control-Allow-Methods', 'PUT, GET, OPTIONS, PATCH')
-        response.addHeader('Access-Control-Allow-Headers', 'Content-Type, Ish-JXBrowser-Header')
+        if (CLIENT_MODE) {
+            response.addHeader('Access-Control-Allow-Methods', '*')
+            response.addHeader('Access-Control-Allow-Headers', '*')
+        } else {
+            response.addHeader('Access-Control-Allow-Methods', 'PUT, GET, OPTIONS, PATCH')
+            response.addHeader('Access-Control-Allow-Headers', 'Content-Type, Ish-JXBrowser-Header')
+        }
     }
 
     private boolean unautorized(HttpServletRequest request, HttpServletResponse response) {

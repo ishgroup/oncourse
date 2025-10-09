@@ -3,20 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import TableCell from "@mui/material/TableCell";
-import { flexRender } from "@tanstack/react-table";
-import clsx from "clsx";
-import React, { memo } from "react";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { areEqual, FixedSizeList } from "react-window";
-import { NestedTableColumnsTypes } from "../../../../../../model/common/NestedTable";
-import NestedTableCheckboxCell from "./NestedTableCheckboxCell";
-import NestedTableDeleteCell from "./NestedTableDeleteCell";
-import NestedTableLinkCell from "./NestedTableLinkCell";
+import TableCell from '@mui/material/TableCell';
+import { flexRender } from '@tanstack/react-table';
+import clsx from 'clsx';
+import React, { memo } from 'react';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { areEqual, FixedSizeList } from 'react-window';
+import { NestedTableColumnsTypes } from '../../../../../../model/common/NestedTable';
+import NestedTableCheckboxCell from './NestedTableCheckboxCell';
+import NestedTableDeleteCell from './NestedTableDeleteCell';
+import NestedTableLinkCell from './NestedTableLinkCell';
 
-const ListCell = React.memo<any>(({
-                                    value, fieldName, column, row, onCheckboxChange, onRowDelete, classes
-                                  }) => {
+const ListCell = React.memo<{
+  value, fieldName, column, row, onCheckboxChange, onRowDelete, classes?
+}>(({
+  value, fieldName, column, row, onCheckboxChange, onRowDelete, classes
+}) => {
   switch (column.type as NestedTableColumnsTypes) {
     case "delete":
       return (

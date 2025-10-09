@@ -1,21 +1,22 @@
-import { EntityRelationType } from "@api/model";
-import Grid from "@mui/material/Grid";
-import withStyles from "@mui/styles/withStyles";
-import { idsToString, ShowConfirmCaller } from "ish-ui";
-import isEqual from "lodash.isequal";
-import * as React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../../reducers/state";
-import { cardsFormStyles } from "../../../styles/formCommonStyles";
-import EntityRelationTypesRenderer from "./EntityRelationTypesRenderer";
+import { EntityRelationType } from '@api/model';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import { idsToString, ShowConfirmCaller } from 'ish-ui';
+import isEqual from 'lodash.isequal';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../reducers/state';
+import { cardsFormStyles } from '../../../styles/formCommonStyles';
+import EntityRelationTypesRenderer from './EntityRelationTypesRenderer';
 
-const manualUrl = getManualLink("generalPrefs_sellableItemsRelationTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#sellable-items-relationships");
 
 export const ENTITY_RELATION_TYPES_FORM: string = "EntityRelationTypesForm";
 
@@ -171,7 +172,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
           getAuditsUrl={() => `audit?search=~"EntityRelationType" and entityId in (${idsToString(data.types)})`}
           disabled={!dirty}
           invalid={invalid}
-          title="Sellable items relation types"
+          title={$t('sellable_items_relation_types')}
           disableInteraction
           createdOn={() => created}
           modifiedOn={() => modified}
@@ -206,7 +207,7 @@ const EntityRelationTypesForm = reduxForm({
   onSubmitFail,
   form: ENTITY_RELATION_TYPES_FORM
 })(connect<any, any, any>(mapStateToProps, null)(
-  withStyles(cardsFormStyles)(withRouter(EntityRelationTypesBaseForm) as any)
+  withStyles(withRouter(EntityRelationTypesBaseForm) as any, cardsFormStyles)
 ));
 
 export default EntityRelationTypesForm;

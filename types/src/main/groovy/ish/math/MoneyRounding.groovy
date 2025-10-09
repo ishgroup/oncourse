@@ -50,7 +50,15 @@ public enum MoneyRounding implements DisplayableExtendedEnumeration<Integer> {
 	 * Rounding to nearest dollar, e.g. $9.70 becomes $10.00
 	 */
 	@API
-	ROUNDING_1D(3, "Nearest dollar");
+	ROUNDING_1D(3, "Nearest dollar"),
+
+	/**
+	 * Database value: 4
+	 *
+	 * Rounding to nearest even value, e.g. $38.005 becomes $38.00
+	 */
+	@API
+	ROUNDING_EVEN(4, "Nearest two digits");
 
 	private String displayName;
 	private int value;

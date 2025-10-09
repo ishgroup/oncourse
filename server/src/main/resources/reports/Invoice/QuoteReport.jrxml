@@ -114,7 +114,7 @@
 				<textField evaluationTime="Group" evaluationGroup="details" isBlankWhenNull="false">
 					<reportElement key="textField-3" style="data field" x="403" y="27" width="136" height="38" uuid="d1b72d14-7eeb-4d96-97c3-bd767ebdefd2"/>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{quoteLine}.quote.title + "\n" + "Quote"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{quoteLine}.quote.title ?: "") + "\n" + "Quote"]]></textFieldExpression>
 					<anchorNameExpression><![CDATA["Summary"]]></anchorNameExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="details" isBlankWhenNull="false">
@@ -246,12 +246,6 @@
 						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#9E9898"/>
 					</graphicElement>
 				</line>
-				<line direction="BottomUp">
-					<reportElement key="line-7" x="0" y="72" width="538" height="1" forecolor="#9C9595" uuid="a64b7621-961f-4e2e-b4e9-05320f07e0f2"/>
-					<graphicElement fill="Solid">
-						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#9E9898"/>
-					</graphicElement>
-				</line>
 				<textField evaluationTime="Group" evaluationGroup="details" isBlankWhenNull="false">
 					<reportElement key="textField-6" style="header 3 (right)" x="473" y="0" width="66" height="15" uuid="f8c8f9c8-3c3a-4771-8f2e-92b428c0314d"/>
 					<textElement textAlignment="Right"/>
@@ -265,43 +259,12 @@
 					<reportElement key="textField-7" style="header 3 (right)" x="398" y="1" width="70" height="15" uuid="582881c5-2e28-40ad-b8f9-958b59a6060d"/>
 					<textFieldExpression><![CDATA[new ish.math.Money($V{invoiceLineTaxTotal})]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement key="staticText-9" style="Label" x="347" y="36" width="104" height="15" uuid="6d4828f1-3e10-458b-a8d9-bc91b586d768"/>
-					<text><![CDATA[Less amount paid]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="details" isBlankWhenNull="true">
-					<reportElement key="textField-9" style="data field (money)" x="474" y="36" width="65" height="14" uuid="993b0a5c-c387-4d2a-9afe-c173b0595d7b"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[(new ish.math.Money($V{invoiceLineTotal})).subtract($F{quote.amountOwing})]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement key="staticText-9" style="Label" x="347" y="51" width="104" height="15" uuid="db6fd469-dfad-434f-a89b-0af43fad048d"/>
-					<textElement textAlignment="Left"/>
-					<text><![CDATA[Total owing]]></text>
-				</staticText>
-				<textField evaluationTime="Group" evaluationGroup="details" isBlankWhenNull="false">
-					<reportElement key="textField-6" style="data field (money)" x="474" y="51" width="65" height="15" uuid="5021b469-8c8e-41f5-8a62-8ce7b2adc4f3"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{quote.amountOwing}]]></textFieldExpression>
-				</textField>
 				<line>
-					<reportElement key="line-7" stretchType="RelativeToBandHeight" x="471" y="1" width="1" height="71" forecolor="#9C9595" uuid="5dd01bd4-71c3-48aa-855c-6b1b36dc8bdd"/>
+					<reportElement key="line-7" stretchType="RelativeToBandHeight" x="471" y="1" width="1" height="18" forecolor="#9C9595" uuid="5dd01bd4-71c3-48aa-855c-6b1b36dc8bdd"/>
 					<graphicElement fill="Solid">
 						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#9E9898"/>
 					</graphicElement>
 				</line>
-			</band>
-			<band height="40" splitType="Stretch">
-				<staticText>
-					<reportElement key="staticText-1" style="header 3 (right)" x="347" y="5" width="104" height="15" uuid="46588bb8-5c03-4950-ac04-a168190fa6d7"/>
-					<textElement textAlignment="Right"/>
-					<text><![CDATA[Payment due date]]></text>
-				</staticText>
-				<staticText>
-					<reportElement key="staticText-1" style="header 3 (right)" x="454" y="5" width="85" height="15" uuid="4b4af405-d810-4110-99e6-531dda19732b"/>
-					<textElement textAlignment="Right"/>
-					<text><![CDATA[Amount Payable]]></text>
-				</staticText>
 			</band>
 		</groupFooter>
 	</group>

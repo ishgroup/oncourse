@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, Transaction } from "@api/model";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize } from "redux-form";
-import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { State } from "../../../reducers/state";
-import { getPlainAccounts } from "../accounts/actions";
-import TransactionsEditView from "./components/TransactionsEditView";
+import { Account, Transaction } from '@api/model';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import { getFilters, setListEditRecord, } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
+import { getPlainAccounts } from '../accounts/actions';
+import TransactionsEditView from './components/TransactionsEditView';
 
 const primaryColumnCondition = rows => `${rows["transactionDate"]}  ${rows["amount"]}`;
 
@@ -59,20 +59,21 @@ const findRelatedGroup: FindRelatedItem[] = [
 ];
 
 class Transactions extends React.Component<any, any> {
+  state = { acountsAwaitedAction: null };
+  
   componentDidMount() {
     this.props.getAccounts();
     this.props.getFilters();
   }
-
-  componentWillUnmount() {
-    this.props.clearListState();
+  
+  componentDidUpdate() {
+    if (this.state.acountsAwaitedAction && this.props.accounts?.length) {
+      this.state.acountsAwaitedAction();
+      this.setState({ acountsAwaitedAction: null });
+    }
   }
 
-  shouldComponentUpdate() {
-    return false;
-  }
-
-  onInit = () => {
+  initAction = () => {
     const { dispatch, accounts } = this.props;
 
     Initial.fromAccount = accounts[1].id;
@@ -82,6 +83,16 @@ class Transactions extends React.Component<any, any> {
 
     dispatch(setListEditRecord(Initial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
+  };
+
+  onInit = () => {
+    const { accounts } = this.props;
+    
+    if (!accounts?.length) {
+      this.setState({ acountsAwaitedAction: this.initAction });
+    } else  {
+      this.initAction();
+    }
   };
 
   getTransactionAccountName = (value: Transaction) => {
@@ -118,7 +129,7 @@ class Transactions extends React.Component<any, any> {
 
 const mapStateToProps = (state: State) => ({
   accounts: state.plainSearchRecords.Account.items,
-  currency: state.currency
+  currency: state.location.currency
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -127,7 +138,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("AccountTransaction"));
   },
   getAccounts: () => getPlainAccounts(dispatch),
-  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(

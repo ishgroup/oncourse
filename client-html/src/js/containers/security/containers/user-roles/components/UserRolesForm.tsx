@@ -3,26 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { UserRole } from "@api/model";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import { Grid } from "@mui/material";
-import React, { ComponentClass } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { Dispatch } from "redux";
-import { Form, getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import Categories from "../../../../../model/user-roles/index";
-import { State } from "../../../../../reducers/state";
-import { removeUserRole, updateUserRole } from "../../../actions";
-import UserRolePreference from "./UserRolePreference";
+import { UserRole } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import React, { ComponentClass } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Dispatch } from 'redux';
+import { Form, getFormSyncErrors, getFormValues, initialize, reduxForm } from 'redux-form';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import Categories from '../../../../../model/user-roles/index';
+import { State } from '../../../../../reducers/state';
+import { removeUserRole, updateUserRole } from '../../../actions';
+import UserRolePreference from './UserRolePreference';
 
-const manualUrl = getManualLink("users_roles");
+const manualUrl = getManualLink("user-roles");
 
 const initialRights: { [key: string]: string } = {};
 
@@ -153,7 +154,7 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
               <FormField
                 type="text"
                 name="name"
-                label="Name"
+                label={$t('name')}
                 validate={validateUniqueNames}
                 required
               />

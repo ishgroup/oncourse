@@ -1,25 +1,24 @@
-import AddIcon from "@mui/icons-material/Add";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import CloseIcon from "@mui/icons-material/Close";
-import CodeIcon from "@mui/icons-material/Code";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
-import UploadIcon from "@mui/icons-material/Upload";
-import Button from "@mui/material/Button";
-import Collapse from "@mui/material/Collapse";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { transition } from "ish-ui";
-import React, { useCallback, useState } from "react";
-import { change } from "redux-form";
+import AddIcon from '@mui/icons-material/Add';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CloseIcon from '@mui/icons-material/Close';
+import CodeIcon from '@mui/icons-material/Code';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
+import UploadIcon from '@mui/icons-material/Upload';
+import { Button, Collapse } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import { transition } from 'ish-ui';
+import React, { useCallback, useState } from 'react';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 
-const styles = createStyles(theme => ({
+const styles = ((theme, p, classes) => ({
   addActionButton: {
     position: "relative",
     marginLeft: theme.spacing(-9),
@@ -28,17 +27,17 @@ const styles = createStyles(theme => ({
   },
   addActionButtonHover: {
     "&:hover": {
-      "& $cardLeftIcon": {
+      [`& .${classes.cardLeftIcon}`]: {
         color: theme.heading.color
       },
-      "& $buttonRoot": {
+      [`& .${classes.buttonRoot}`]: {
         height: "auto",
         padding: theme.spacing(3.5, 2),
         border: `2px dashed ${theme.palette.divider}`,
         visibility: "visible",
         opacity: 1,
       },
-      "&:not($active) $addActionWrapper": {
+      [`&:not(.${classes.active}) .${classes.addActionWrapper}`]: {
         margin: theme.spacing(3, 0),
       }
     },
@@ -58,7 +57,7 @@ const styles = createStyles(theme => ({
   },
   activeStep: {
     marginTop: theme.spacing(3),
-    "& $buttonRoot": {
+    [`& .${classes.buttonRoot}`]: {
       height: "auto",
       padding: theme.spacing(3.5, 2),
       border: `2px dashed ${theme.palette.divider}`,
@@ -206,7 +205,7 @@ const AddScriptAction: React.FC<any> = props => {
             className="w-100 heading"
             onClick={() => setOpen(true)}
           >
-            Add step / action
+            {$t('add_step_action')}
           </Button>
         </div>
       </Collapse>
@@ -215,7 +214,7 @@ const AddScriptAction: React.FC<any> = props => {
         <Paper className={classes.actionPaper}>
           <div className={clsx('centeredFlex pl-2 pr-1', classes.heading)}>
             <Typography className="heading flex-fill">
-              Select an action
+              {$t('select_an_action')}
             </Typography>
             <IconButton onClick={() => setOpen(false)}>
               <CloseIcon />
@@ -225,7 +224,7 @@ const AddScriptAction: React.FC<any> = props => {
             <Grid item xs={12} md={6}>
               <ScriptAction
                 icon={<UploadIcon />}
-                title="Import"
+                title={$t('import')}
                 detail="The Import block allows you to import external Java and Groovy libraries to be used in your script. Libraries can give you access to certain methods or classes to be used in an Advanced script block."
                 classes={classes}
                 iconClass={classes.importIcon}
@@ -236,7 +235,7 @@ const AddScriptAction: React.FC<any> = props => {
             <Grid item xs={12} md={6}>
               <ScriptAction
                 icon={<HelpOutlineIcon />}
-                title="Query"
+                title={$t('query')}
                 detail="The Query block allows you to retrieve records from your database. You must specify what entity type is to be returned from your query, as well as provide a name to reference the returned objects."
                 classes={classes}
                 iconClass={classes.queryIcon}
@@ -246,7 +245,7 @@ const AddScriptAction: React.FC<any> = props => {
             <Grid item xs={12} md={6}>
               <ScriptAction
                 icon={<CodeIcon />}
-                title="Script"
+                title={$t('script')}
                 detail="The script block contains the core code that powers your script. Write code directly into this block and it will be executed when the script is triggered."
                 classes={classes}
                 iconClass={classes.scriptIcon}
@@ -256,7 +255,7 @@ const AddScriptAction: React.FC<any> = props => {
             <Grid item xs={12} md={6}>
               <ScriptAction
                 icon={<EmailOutlinedIcon />}
-                title="Message"
+                title={$t('message')}
                 detail="The message block allows you to set a message template to be sent out by the script, or create a message within the script itself to be emailed to set a email address."
                 classes={classes}
                 iconClass={classes.messageIcon}
@@ -266,7 +265,7 @@ const AddScriptAction: React.FC<any> = props => {
             <Grid item xs={12} md={6}>
               <ScriptAction
                 icon={<StackedLineChartIcon />}
-                title="Report"
+                title={$t('report')}
                 detail="The report block allows you to set a report that is generated by the running of a script. The reports to choose from in this list come from the PDF reports section of your Automation window."
                 classes={classes}
                 iconClass={classes.reportIcon}
@@ -280,4 +279,4 @@ const AddScriptAction: React.FC<any> = props => {
   );
 };
 
-export default withStyles(styles)(AddScriptAction);
+export default withStyles(AddScriptAction, styles);

@@ -3,23 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Button from "@mui/material/Button";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import Grow from "@mui/material/Grow";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import { mapSelectItems, normalizeNumberToPositive } from "ish-ui";
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-import { getFormValues, reduxForm } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
+import Button from '@mui/material/Button';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { mapSelectItems, normalizeNumberToPositive } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { connect } from 'react-redux';
+import { getFormValues, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { SessionRepeatTypes } from '../../../../../model/entities/CourseClass';
 
-const styles = createStyles(theme => ({
+const styles = (theme => ({
   popper: {
     zIndex: theme.zIndex.modal
   },
@@ -91,9 +92,9 @@ const CopySessionDialogBase = React.memo<any>(props => {
             <form>
               <Paper className={classes.paper} elevation={8}>
                 <DialogContent className="overflow-hidden">
-                  <div className="heading pb-2">Repeat</div>
+                  <div className="heading pb-2">{$t('repeat')}</div>
                   <Typography variant="body2" color="inherit" component="div" className="pb-1">
-                    Repeat this session
+                    {$t('repeat_this_session')}
                     {" "}
                     <FormField
                       type="number"
@@ -107,11 +108,11 @@ const CopySessionDialogBase = React.memo<any>(props => {
                       inline
                     />
                     {" "}
-                    times
+                    {$t('times2')}
                   </Typography>
 
                   <Typography variant="body2" color="inherit" component="div" className="pb-2">
-                    Repeat every
+                    {$t('repeat_every')}
                     {" "}
                     <FormField
                       type="select"
@@ -125,10 +126,10 @@ const CopySessionDialogBase = React.memo<any>(props => {
 
                 <DialogActions>
                   <Button color="primary" onClick={onCancel}>
-                    Cancel
+                    {$t('cancel')}
                   </Button>
                   <Button color="primary" onClick={onSaveBase} disabled={invalid} variant="contained">
-                    Create Sessions
+                    {$t('create_sessions')}
                   </Button>
                 </DialogActions>
                 <div className={classes.corner} />
@@ -152,5 +153,5 @@ export default reduxForm<any, any>({
       values: getFormValues("CopySessionForm")(state)
     }),
     null
-  )(withStyles(styles)(CopySessionDialogBase))
+  )(withStyles(CopySessionDialogBase, styles))
 );

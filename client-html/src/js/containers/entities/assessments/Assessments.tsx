@@ -3,27 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Assessment } from "@api/model";
-import React, { Dispatch, useEffect } from "react";
-import { connect } from "react-redux";
-import { initialize } from "redux-form";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { getGradingTypes } from "../../preferences/actions";
-import { getListTags } from "../../tags/actions";
-import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
-import AssessmentEditView from "./components/AssessmentEditView";
+import { Assessment } from '@api/model';
+import React, { Dispatch, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { initialize } from 'redux-form';
+import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
+import { getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { getGradingTypes } from '../../preferences/actions';
+import { getListTags } from '../../tags/actions';
+import BulkEditCogwheelOption from '../common/components/BulkEditCogwheelOption';
+import AssessmentEditView from './components/AssessmentEditView';
 
-const manualLink = getManualLink("assessment");
+const manualLink = getManualLink("assessment-tasks-list-view");
 
 interface AssessmentsProps {
   onInit?: () => void;
   getFilters?: () => void;
-  clearListState?: () => void;
   getTags?: () => void;
   getGradingTypes?: () => void;
 }
@@ -76,7 +75,6 @@ const Assessments: React.FC<AssessmentsProps> = props => {
     onInit,
     getFilters,
     getGradingTypes,
-    clearListState,
     getTags
   } = props;
 
@@ -84,9 +82,6 @@ const Assessments: React.FC<AssessmentsProps> = props => {
     getFilters();
     getTags();
     getGradingTypes();
-    return () => {
-      clearListState();
-    };
   }, []);
 
   return (
@@ -120,7 +115,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getGradingTypes: () => dispatch(getGradingTypes()),
   getTags: () => dispatch(getListTags("Assessment")),
   getFilters: () => dispatch(getFilters("Assessment")),
-  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(

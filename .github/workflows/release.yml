@@ -1,48 +1,90 @@
 name: Release
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
+    inputs:
+      type:
+        type: choice
+        description: Release type
+        required: true
+        options: 
+        - major
+        - minor
+        - patch
+        default: patch
 
 jobs:
-
   release:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
-      - name: Get tag
-        id: tag
-        uses: dawidd6/action-get-tag@v1
-        with:
-          strip_v: true
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Get next version
+      uses: rmeneely/git-next-version@v1
+      with:
+        tag_pattern: 'v[0-9]*.[0-9]*.[0-9]*'
+        increment: ${{ inputs.type }}
+        
+    - name: Format version
+      id: format
+      uses: mad9000/actions-find-and-replace-string@5
+      with:
+        source: ${{ env.NEXT_VERSION }} 
+        find: 'v'        
+        replace: ''    
 
-      - uses: actions/checkout@v2
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: 11
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'temurin'
-          java-version: 11
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+    - name: Cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          **/node_modules
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: 11-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: 11-
 
-      - name: Cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            **/node_modules
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: 11-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: 11-
+    - name: Build artifacts
+      run: ./gradlew clean server:build types:build -x types:test -x server:test -x client-html:test -PreleaseVersion=${{steps.format.outputs.value}}
 
-      - name: Build artifacts
-        run: ./gradlew clean server:distZip types:build -x types:test -x server:test -x client-html:test -PreleaseVersion=${{steps.tag.outputs.tag}}
+    - name: Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "server/build/distributions/onCourseServer-*"
+        allowUpdates: true
+        generateReleaseNotes: true
+        commit: main
+        tag: ${{ env.NEXT_VERSION }}
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "server/build/distributions/onCourseServer-*"
-          allowUpdates: true
-          body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${{steps.tag.outputs.tag}}/release-notes.html"
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Sync Jira CS version
+      uses: fjogeleit/http-request-action@v1
+      with:
+       url: 'https://api-private.atlassian.com/automation/webhooks/jira/a/de4b6a09-1369-4e27-9ae9-a9e5bf95fe88/0194ac19-5566-7ca2-a281-fb8b7ef1d15c'
+       method: 'POST'
+       customHeaders: '{ "X-Automation-Webhook-Token": "${{ secrets.JIRA_CST_HOOK_SECRET }}" }'
+       data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}'
+
+    - name: Sync Jira SST version
+      uses: fjogeleit/http-request-action@v1
+      with:
+       url: 'https://api-private.atlassian.com/automation/webhooks/jira/a/de4b6a09-1369-4e27-9ae9-a9e5bf95fe88/019488f3-16c8-7c2d-81c4-efa4a2e2a5b6'
+       method: 'POST'
+       customHeaders: '{ "X-Automation-Webhook-Token": "${{ secrets.JIRA_SST_HOOK_SECRET }}" }'
+       data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}'
+
+    - name: Sync Jira OD version
+      uses: fjogeleit/http-request-action@v1
+      with:
+       url: 'https://api-private.atlassian.com/automation/webhooks/jira/a/de4b6a09-1369-4e27-9ae9-a9e5bf95fe88/01992f98-68ef-7808-b564-23ea626e1c29'
+       method: 'POST'
+       customHeaders: '{ "X-Automation-Webhook-Token": "${{ secrets.JIRA_OD_HOOK_SECRET }}" }'
+       data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}'

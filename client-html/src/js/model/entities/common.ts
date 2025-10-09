@@ -1,4 +1,5 @@
 import { StringValueType } from "ish-ui";
+import { IAction } from '../../common/actions/IshAction';
 import { stringLiterals } from "../../common/utils/stringLiteral";
 
 
@@ -84,3 +85,7 @@ export type CustomTableModelName = StringValueType<typeof CUSTOM_TABLE_MODELS>;
 
 export type ListActionEntity = EntityName | CustomTableModelName;
 
+export type AccessByPath = {
+  hasAccess: boolean,
+  action?: IAction
+}

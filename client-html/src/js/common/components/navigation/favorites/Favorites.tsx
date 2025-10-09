@@ -3,23 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Script } from "@api/model";
-import Close from "@mui/icons-material/Close";
-import { Grid, IconButton, List } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { useHoverShowStyles } from "ish-ui";
-import React, { useMemo } from "react";
-import { connect } from "react-redux";
-import { DashboardItem } from "../../../../model/dashboard";
-import { State } from "../../../../reducers/state";
-import FavoriteItem from "./FavoriteItem";
-import FavoriteScriptItem from "./FavoriteScriptItem";
+import { Script } from '@api/model';
+import Close from '@mui/icons-material/Close';
+import { Grid, IconButton, List, Typography } from '@mui/material';
+import Divider from '@mui/material/Divider';
+import $t from '@t';
+import clsx from 'clsx';
+import { useHoverShowStyles } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { connect } from 'react-redux';
+import { withStyles } from 'tss-react/mui';
+import { DashboardItem } from '../../../../model/dashboard';
+import { State } from '../../../../reducers/state';
+import FavoriteItem from './FavoriteItem';
+import FavoriteScriptItem from './FavoriteScriptItem';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   root: {
     padding: theme.spacing(2),
     columnCount: 1
@@ -93,7 +92,7 @@ const Favorites: React.FC<Props> = props => {
     updateFavorites
   } = props;
 
-  const hoverClasses = useHoverShowStyles();
+  const { classes: hoverClasses } = useHoverShowStyles();
 
   const renderFavorites = useMemo(() => groupedSortedItems
     .filter(c => (favorites.includes(c.category)
@@ -139,7 +138,7 @@ const Favorites: React.FC<Props> = props => {
   return (
     <Grid container alignItems="center">
       <Grid item xs={12} className={classes.topBar}>
-        <Typography className="heading">Favourites</Typography>
+        <Typography className="heading">{$t('favourites')}</Typography>
       </Grid>
 
       <Grid item xs={12}>
@@ -158,4 +157,4 @@ const mapStateToProps = (state: State) => ({
   hasScriptsPermissions: state.access["ADMIN"]
 });
 
-export default connect<any, any, any>(mapStateToProps)(withStyles(styles)(Favorites));
+export default connect<any, any, any>(mapStateToProps)(withStyles(Favorites, styles));

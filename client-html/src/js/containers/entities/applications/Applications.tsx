@@ -6,29 +6,28 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Application } from "@api/model";
-import { format as formatDate } from "date-fns";
-import { YYYY_MM_DD_MINUSED } from "ish-ui";
-import React, { Dispatch } from "react";
-import { connect } from "react-redux";
-import { initialize } from "redux-form";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { State } from "../../../reducers/state";
-import { getListTags } from "../../tags/actions";
-import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
-import ApplicationEditView from "./components/ApplicationEditView";
+import { Application } from '@api/model';
+import { format as formatDate } from 'date-fns';
+import { YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { Dispatch } from 'react';
+import { connect } from 'react-redux';
+import { initialize } from 'redux-form';
+import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
+import { getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
+import { getListTags } from '../../tags/actions';
+import BulkEditCogwheelOption from '../common/components/BulkEditCogwheelOption';
+import ApplicationEditView from './components/ApplicationEditView';
 
 interface ApplicationsProps {
   getApplicationRecord?: () => void;
   onInit?: () => void;
   getFilters?: () => void;
   getTags?: () => void;
-  clearListState?: () => void;
   customFieldTypesUpdating: any;
   customFieldTypes: any;
 }
@@ -90,7 +89,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const manualLink = getManualLink("applications");
+const manualLink = getManualLink("navigating-the-application-window");
 
 const nameCondition = values => (values ? values.studentName : "");
 
@@ -109,10 +108,6 @@ class Applications extends React.Component<ApplicationsProps, any> {
   componentDidMount() {
     this.props.getTags();
     this.props.getFilters();
-  }
-
-  componentWillUnmount(): void {
-    this.props.clearListState();
   }
 
   render() {
@@ -156,7 +151,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("Application")),
   getTags: () => dispatch(getListTags("Application")),
-  clearListState: () => dispatch(clearListState()),
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Applications);

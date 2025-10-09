@@ -6,14 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from "@api/model";
-import { AnyArgFunction } from "ish-ui";
-import { FilterGroup, GetRecordsArgs, SavingFilterState } from "../../../../model/common/ListView";
-import { MessageData } from "../../../../model/common/Message";
-import { CustomTableModelName, EntityName } from "../../../../model/entities/common";
-import { FormMenuTag } from "../../../../model/tags";
-import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
-import { IAction } from "../../../actions/IshAction";
+import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from '@api/model';
+import { AnyArgFunction } from 'ish-ui';
+import { FilterGroup, GetRecordsArgs, SavingFilterState } from '../../../../model/common/ListView';
+import { MessageData } from '../../../../model/common/Message';
+import { CustomTableModelName, EntityName } from '../../../../model/entities/common';
+import { FormMenuTag } from '../../../../model/tags';
+import { _toRequestType, FULFILLED } from '../../../actions/ActionUtils';
+import { IAction } from '../../../actions/IshAction';
 
 // Common list actions
 export const GET_RECORDS_REQUEST = _toRequestType("get/records");
@@ -42,8 +42,6 @@ export const BULK_CHANGE_RECORDS = _toRequestType("post/listView/bulkChange");
 
 export const FIND_RELATED_BY_FILTER = "find/related/byFilter";
 
-export const CLEAR_LIST_STATE = "clear/listView";
-
 export const SET_LIST_CORE_FILTERS = "set/listView/coreFilters";
 
 export const SET_LIST_SEARCH = "set/listView/search";
@@ -67,8 +65,6 @@ export const SET_LIST_MENU_TAGS = "set/listView/menuTags";
 export const SET_LIST_EDIT_RECORD = "set/listView/editRecord";
 
 export const UPDATE_TAGS_ORDER = "set/listView/tagsOrder";
-
-export const SET_LIST_CREATING_NEW = "set/listView/creatingNew";
 
 export const SET_LIST_FULL_SCREEN_EDIT_VIEW = "set/listView/fullScreenEditView";
 
@@ -142,10 +138,6 @@ export const clearRecipientsMessageData = () => ({
   type: CLEAR_RECIPIENTS_MESSAGE_DATA
 });
 
-export const clearListState = () => ({
-  type: CLEAR_LIST_STATE
-});
-
 export const setListEditRecordFetching = () => ({
   type: SET_LIST_EDIT_RECORD_FETCHING
 });
@@ -183,11 +175,6 @@ export const setListSearchError = (searchError: boolean) => ({
 export const setListEditRecord = (editRecord: any) => ({
   type: SET_LIST_EDIT_RECORD,
   payload: { editRecord }
-});
-
-export const setListCreatingNew = (creatingNew: boolean) => ({
-  type: SET_LIST_CREATING_NEW,
-  payload: creatingNew
 });
 
 export const bulkChangeRecords = (entity: EntityName, diff: Diff) => ({
