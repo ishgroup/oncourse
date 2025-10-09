@@ -216,6 +216,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
         def statisticDto = new ScriptStatisticDTO()
         statisticDto.setName(script.getName())
         statisticDto.setLastRuns(lastRunsForScript(script.getId()))
+        statisticDto.setId(script.getId())
         return statisticDto
     }
 
@@ -466,7 +467,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
         def context = cayenneService.getNewReadonlyContext();
         def lastScriptIds = ObjectSelect.columnQuery(Audit.class, Audit.ENTITY_ID)
                 .where(Audit.ACTION.in(AuditAction.SCRIPT_EXECUTED, AuditAction.SCRIPT_FAILED))
-                .orderBy(Audit.CREATED_ON_PROPERTY, SortOrder.DESCENDING)
+                .orderBy(Audit.CREATED.desc())
                 .distinct()
                 .limit(10)
                 .select(context)
