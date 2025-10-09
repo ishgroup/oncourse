@@ -1,0 +1,11 @@
+type: object
+description: script object
+properties:
+  name:
+    type: string
+    required: true
+    description: script name
+  lastRuns:
+    type: array
+    items:
+      $ref: './LastRun.yaml'
