@@ -146,14 +146,14 @@ export const attachScript = url => {
   const script = document.createElement('script');
   script.type = 'text/javascript';
   script.src = url;
-  document.head.appendChild(script);
+  document.head.prepend(script);
 };
 
 export const attachScriptHTML = (html: string) => {
   const script = document.createElement('script');
   script.type = 'text/javascript';
   script.innerHTML = html;
-  document.head.appendChild(script);
+  document.head.prepend(script);
 };
 
 export const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1920;
