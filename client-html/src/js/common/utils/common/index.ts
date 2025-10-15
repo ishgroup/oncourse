@@ -141,19 +141,33 @@ export const getArrayFieldMeta = name => {
   return { field: match[2], index: Number(match[1]) };
 };
 
-export const attachScript = url => {
+export const attachScript = (url: string, place: 'bottom' | 'top' = 'bottom') => {
   if (document.querySelector(`script[src="${url}"]`)) return;
   const script = document.createElement('script');
   script.type = 'text/javascript';
   script.src = url;
-  document.head.prepend(script);
+  switch (place) {
+    case 'bottom':
+      document.head.append(script);
+      break;
+    case 'top':
+      document.head.prepend(script);
+      break;
+  }
 };
 
-export const attachScriptHTML = (html: string) => {
+export const attachScriptHTML = (html: string,  place: 'bottom' | 'top' = 'bottom') => {
   const script = document.createElement('script');
   script.type = 'text/javascript';
   script.innerHTML = html;
-  document.head.prepend(script);
+  switch (place) {
+    case 'bottom':
+      document.head.append(script);
+      break;
+    case 'top':
+      document.head.prepend(script);
+      break;
+  }
 };
 
 export const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1920;
