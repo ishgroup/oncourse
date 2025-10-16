@@ -84,8 +84,7 @@ jobs:
     - name: Sync Jira OD version
       uses: fjogeleit/http-request-action@v1
       with:
-       url: 'https://automation.atlassian.com/pro/hooks/7d15dffd9e447f7d16e7676f3e300f42ee773090'
+       url: 'https://api-private.atlassian.com/automation/webhooks/jira/a/de4b6a09-1369-4e27-9ae9-a9e5bf95fe88/01992f98-68ef-7808-b564-23ea626e1c29'
        method: 'POST'
-       username: ${{ secrets.JIRA_USERNAME }}
-       password: ${{ secrets.JIRA_PASSWORD }}
+       customHeaders: '{ "X-Automation-Webhook-Token": "${{ secrets.JIRA_OD_HOOK_SECRET }}" }'
        data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}'

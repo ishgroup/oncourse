@@ -69,18 +69,16 @@ public class PayrollService {
     public void generatePayslips(PayrollGenerationRequest request) {
         ObjectContext context = cayenneService.getNewContext();
         List<ClassCost> classCosts;
-        classCosts = getEligibleClassCosts(context, request.getUntil());
 
+        Expression additionalFilter = null;
         if (request.getIds() != null && request.getIds().size() > 0) {
             switch (request.getEntityName()) {
                 case COURSE_CLASS_ENTITY_NAME: {
-                    var courseClasses = EntityUtil.getObjectsByIds(context, CourseClass.class, request.getIds());
-                    classCosts = ClassCost.COURSE_CLASS.in(courseClasses).filterObjects(classCosts);
+                    additionalFilter = ClassCost.COURSE_CLASS.dot(CourseClass.ID).in(request.getIds());
                     break;
                 }
                 case CONTACT_ENTITY_NAME: {
-                    var contacts = EntityUtil.getObjectsByIds(context, Contact.class, request.getIds());
-                    classCosts = ClassCost.CONTACT.in(contacts).filterObjects(classCosts);
+                    additionalFilter = ClassCost.CONTACT.dot(Contact.ID).in(request.getIds());
                     break;
                 }
                 default:
@@ -88,6 +86,7 @@ public class PayrollService {
             }
         }
 
+        classCosts = getEligibleClassCosts(context, request.getUntil(), additionalFilter);
         generatePayslipsForClassCosts(context, classCosts, request.getUntil(), request.isConfirm());
 
         context.commitChanges();
@@ -153,9 +152,13 @@ public class PayrollService {
      * @param until
      * @return
      */
-    public List<ClassCost> getEligibleClassCosts(ObjectContext context, Date until) {
+    public List<ClassCost> getEligibleClassCosts(ObjectContext context, Date until, Expression additionalFilter) {
+        Expression classCostsExpression = getEligibleClassCostsExpression(until);
+        if(additionalFilter != null)
+            classCostsExpression = classCostsExpression.andExp(additionalFilter);
+
         return ObjectSelect.query(ClassCost.class)
-                .where(getEligibleClassCostsExpression(until))
+                .where(classCostsExpression)
                 .prefetch(ClassCost.TUTOR_ROLE.disjoint())
                 .prefetch(ClassCost.TUTOR_ROLE.dot(CourseClassTutor.SESSIONS_TUTORS).disjoint())
                 .prefetch(ClassCost.TUTOR_ROLE.dot(CourseClassTutor.DEFINED_TUTOR_ROLE).disjoint())
@@ -298,7 +301,7 @@ public class PayrollService {
                     .filter(cost -> cost.getTutorRole() != null)
                     .collect(Collectors.toList());
         }
-        return getEligibleClassCosts(context, request.getUntil());
+        return getEligibleClassCosts(context, request.getUntil(), null);
     }
 
 
