@@ -50,10 +50,9 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
   const voucherItem = selectedDiscount ? summaryVouchers.find(v => v.id === selectedDiscount.id) : null;
 
   useEffect(() => {
-    attachScriptHTML('vice={config:{viceAccountId:\'93bcb219-23a6-4426-806c-d32eb914c411\',viceSiteId:\'baf2d5c8-68fa-49c7-9379-49f248dc8fb3\'}}');
-    attachScript('//vice-prod.sdiapi.com/vice_loader/93bcb219-23a6-4426-806c-d32eb914c411/baf2d5c8-68fa-49c7-9379-49f248dc8fb3');
+    attachScriptHTML('vice={config:{viceAccountId:\'93bcb219-23a6-4426-806c-d32eb914c411\',viceSiteId:\'baf2d5c8-68fa-49c7-9379-49f248dc8fb3\'}}', 'top');
+    attachScript('//vice-prod.sdiapi.com/vice_loader/93bcb219-23a6-4426-806c-d32eb914c411/baf2d5c8-68fa-49c7-9379-49f248dc8fb3', 'top');
   }, []);
-
 
   useEffect(() => {
     if (['EWAY', 'EWAY_TEST'].includes(gateway)) {
@@ -61,7 +60,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
         'https://secure.ewaypayments.com/scripts/eWAY.min.js',
         // Switch between production and test environments
         gateway === 'EWAY' ? 'https://static.assets.eway.io/cerberus/6.6.2.54470/assets/sdk/cerberus.bundle.js' : 'https://static.assets.eway.io/cerberus/6.6.2.54470/assets/sdk/cerberus-sandbox.bundle.js'
-      ].forEach(attachScript);
+      ].forEach(path => attachScript(path));
     }
     if (['SQUARE', 'SQUARE_TEST'].includes(gateway)) {
       attachScript(`https://${gateway === 'SQUARE_TEST' ? "sandbox." : ""}web.squarecdn.com/v1/square.js`);
