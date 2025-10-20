@@ -159,7 +159,6 @@ interface Props {
   createButtonDisabled?: boolean;
   scriptsFilterColumn?: string;
   filterEntity?: EntityName;
-  filterGroups?: FilterGroup[];
   filterGroupsInitial?: FilterGroup[];
   onInit?: NoArgFunction;
   findRelated?: FindRelatedItem[];

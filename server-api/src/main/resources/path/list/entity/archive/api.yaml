@@ -1,0 +1,20 @@
+get:
+  description: Returns archives records
+  operationId: getAllArchives
+  tags:
+    - Archive
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/archive/Archive.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ATTACHMENT_INFO
+    errorMessage: Sorry, you have no permissions to get archived messages. Please contact your administrator
