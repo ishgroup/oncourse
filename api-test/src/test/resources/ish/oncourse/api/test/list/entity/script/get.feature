@@ -14,7 +14,8 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
 
         Given path ishPathList
         And param entity = 'Script'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And assert response.rows.length >= 46
 
@@ -23,8 +24,8 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
 
         Given path ishPathList
         And param entity = 'Script'
-        And param pageSize = 1000
-        When method GET
+        And request {pageSize: 1000}
+        When method POST
         Then status 200
         * def row = get[0] response.rows[?(@.values[0] == 'VET Course completion survey')]
         * def id = row.id
@@ -52,7 +53,8 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
 
         Given path ishPathList
         And param entity = 'Script'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And assert response.rows.length >= 46
 
@@ -67,7 +69,8 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
 
         Given path ishPathList
         And param entity = 'Script'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And assert response.rows.length >= 46
 
@@ -82,8 +85,8 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
 
         Given path ishPathList
         And param entity = 'Script'
-        And param search = 'name == "send weekly finance summary report"'
-        When method GET
+        And request {search: 'name == "send weekly finance summary report"'}
+        When method POST
         Then status 200
         * def id = response.rows[0].id
 
