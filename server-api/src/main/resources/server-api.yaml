@@ -97,8 +97,6 @@ paths:
     $ref: './path/list/entity/accountTransaction/api.yaml'
   /list/entity/application:
     $ref: './path/list/entity/application/api.yaml'
-  /list/entity/archive:
-    $ref: './path/list/entity/archive/api.yaml'
   /list/entity/articleProduct:
     $ref: './path/list/entity/articleProduct/api.yaml'
   /list/entity/assessment:
@@ -195,8 +193,6 @@ paths:
     $ref: './path/list/entity/lead/api.yaml'
   /list/entity/message:
     $ref: './path/list/entity/message/api.yaml'
-  /list/entity/message/archive:
-    $ref: './path/list/entity/message/archive/api.yaml'
   /list/entity/membershipProduct:
     $ref: './path/list/entity/membershipProduct/api.yaml'
   /list/entity/membershipProduct/checkout:

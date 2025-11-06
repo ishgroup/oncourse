@@ -440,7 +440,7 @@ public interface Preferences {
 	String MYOB_LAST_EXPORT_DATE = "myob.last.export.date";
 	String DATE_MESSAGE_BEFORE_ARCHIVED = "ish.message.date.archived";
 	String DATE_MESSAGE_EXPECTED_BEFORE_ARCHIVED = "ish.message.date.expected.archived";
-	String ARCHIVED_MESSAGES_INTERVALS = "ish.message.archived.intervals";
+	String DAYS_MESSAGE_EXPIRES = "ish.message.days.expires";
 
 
 	String FEATURE_CONCESSIONS_IN_ENROLMENT = "feature.concessionsInEnrolment";

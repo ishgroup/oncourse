@@ -36,4 +36,4 @@ enum:
 - systemUser.defaultAdministrationCentre.name
 - timezone.default
 - tutorial.skip.systemuser
-- ish.message.date.expected.archived
+- ish.message.days.expires

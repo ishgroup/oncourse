@@ -17,6 +17,7 @@ import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.Archive
 import ish.oncourse.server.cayenne.Message
+import ish.oncourse.server.document.ArchiveService
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.services.AuditService
@@ -36,10 +37,7 @@ import java.sql.Statement
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.locks.ReentrantLock
 import java.util.zip.GZIPOutputStream
 
 class ArchivingMessagesService {
@@ -71,7 +69,7 @@ class ArchivingMessagesService {
     private AmazonS3Service s3Service
 
     @Inject
-    ArchivingMessagesService(DocumentService documentService) {
+    ArchivingMessagesService(ArchiveService documentService) {
         this.s3Service = new AmazonS3Service(documentService)
         this.documentService = documentService
     }
@@ -84,7 +82,7 @@ class ArchivingMessagesService {
 
         def dateToArchive = localDateToArchive.toDate()
 
-        while(archiveInProgress.get() == Boolean.TRUE)
+        while (archiveInProgress.get() == Boolean.TRUE)
             continue
         archiveInProgress.set(true)
 
@@ -92,7 +90,7 @@ class ArchivingMessagesService {
         Message firstMessage = null
         try {
             firstMessage = firstByDateMessagesBefore(dateToArchive)
-            if(!firstMessage){
+            if (!firstMessage) {
                 validator.throwClientErrorException("archiveDate", "There are no messages before date $dateToArchive")
             }
         } catch (Exception e) {
@@ -101,35 +99,33 @@ class ArchivingMessagesService {
             throw e
         }
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor()
-        executorService.execute({ runnable ->
-            try {
-                logger.warn("Full start time of archiving: " + System.currentTimeMillis())
+        try {
+            logger.warn("Full start time of archiving: " + System.currentTimeMillis())
 
-                String fileName = buildCompressedCsvForExcludeIntervalAndGetFilename(firstMessage.createdOn, dateToArchive)
-                String uuid = uploadArchiveAndGetKey(fileName)
-                new File("$TEMP_ARCHIVES_DIRECTORY/$fileName").delete()
-                removeMessagesCreatedInInterval(dateToArchive)
+            String fileName = buildCompressedCsvForExcludeIntervalAndGetFilename(firstMessage.createdOn, dateToArchive)
+            String uuid = uploadArchiveAndGetKey(fileName)
+            new File("$TEMP_ARCHIVES_DIRECTORY/$fileName").delete()
+            removeMessagesCreatedInInterval(dateToArchive)
 
-                preferenceController.setDateMessageBeforeArchived(dateToArchive)
+            preferenceController.setDateMessageBeforeArchived(dateToArchive)
 
-                def archive = cayenneService.newContext.newObject(Archive)
-                archive.createdOn = new Date()
-                archive.fileName = fileName
-                archive.uniqueCode = uuid
-                archive.dateFrom = firstMessage.createdOn
-                archive.dateTo = dateToArchive
-                archive.context.commitChanges()
+            def archive = cayenneService.newContext.newObject(Archive)
+            archive.createdOn = new Date()
+            archive.fileName = fileName
+            archive.uniqueCode = uuid
+            archive.dateFrom = firstMessage.createdOn
+            archive.dateTo = dateToArchive
+            archive.context.commitChanges()
 
-                auditService.submit(archive, AuditAction.MESSAGES_ARCHIVING_COMPLETED, "Messages before $dateToArchive archived successfully")
-                logger.warn("Full end time of archiving: " + System.currentTimeMillis())
-            } catch (Exception e) {
-                auditService.submit(firstMessage, AuditAction.MESSAGES_ARCHIVING_FAILED, e.getMessage())
-            } finally {
-                archiveInProgress.set(false)
-                preferenceController.setDateMessageExpectedBeforeArchived(null)
-            }
-        })
+            auditService.submit(archive, AuditAction.MESSAGES_ARCHIVING_COMPLETED, "Messages before $dateToArchive archived successfully")
+            logger.warn("Full end time of archiving: " + System.currentTimeMillis())
+        } catch (Exception e) {
+            logger.catching(e)
+            auditService.submit(firstMessage, AuditAction.MESSAGES_ARCHIVING_FAILED, e.getMessage())
+        } finally {
+            archiveInProgress.set(false)
+            preferenceController.setDateMessageExpectedBeforeArchived(null)
+        }
     }
 
 
@@ -192,7 +188,7 @@ class ArchivingMessagesService {
         String fileName = "$collegeName-$formattedStart-$formattedEnd" + ".csv.gz"
 
         def file = new File(TEMP_ARCHIVES_DIRECTORY + "/" + fileName)
-        if(file.exists())
+        if (file.exists())
             file.delete()
 
         if (s3Service.fileExists(fileName)) {
@@ -215,8 +211,9 @@ class ArchivingMessagesService {
         cayenneService.newContext.performGenericQuery(sqlTemplate)
     }
 
-    String getLink(Long archiveId){
+    String getLink(Long archiveId) {
         def archive = SelectById.query(Archive, archiveId).selectOne(cayenneService.newReadonlyContext)
         return s3Service.getFileUrl(archive.uniqueCode, AttachmentInfoVisibility.PRIVATE)
     }
+
 }

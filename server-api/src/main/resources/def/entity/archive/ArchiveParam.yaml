@@ -1,7 +1,0 @@
-type: object
-properties:
-  archiveBefore:
-    type: string
-    format: date
-    required: true
-    example: 2019-01-01
