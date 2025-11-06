@@ -23,4 +23,12 @@ class DocumentModule extends ConfigModule {
                 .config(DocumentService.class, defaultConfigPrefix())
                 .createDocumentService(cayenneService)
     }
+
+    @Singleton
+    @Provides
+    ArchiveService createArchiveService(ICayenneService cayenneService, ConfigurationFactory configFactory) {
+        return configFactory
+                .config(ArchiveService.class, "archives")
+                .createDocumentService(cayenneService)
+    }
 }
