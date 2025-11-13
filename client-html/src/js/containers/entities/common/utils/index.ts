@@ -7,7 +7,8 @@ import {
   Account,
   ArticleProduct,
   Course,
-  EntityRelationType, MembershipProduct,
+  EntityRelationType,
+  MembershipProduct,
   Module,
   Qualification,
   Sale,
@@ -24,11 +25,7 @@ import {
   FETCH_SUCCESS
 } from '../../../../common/actions';
 import { getNoteItems } from '../../../../common/components/form/notes/actions';
-import {
-  getRecords,
-  SET_LIST_EDIT_RECORD,
-  setListSelection
-} from '../../../../common/components/list-view/actions';
+import { getRecords, SET_LIST_EDIT_RECORD, setListSelection } from '../../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
 import AccessService from '../../../../common/services/AccessService';
 import { getFeeExTaxByFeeIncTax, getTotalByFeeExTax } from '../../../../common/utils/financial';
@@ -278,30 +275,22 @@ export const getListRecordAfterCreateActions = (entity: EntityName) => [
   initialize(LIST_EDIT_VIEW_FORM_NAME, null),
 ];
 
-export const getAccessesByPath = async (pathes: string[], state: State, method = 'GET'): Promise<AccessByPath[]> => {
-  const accesses = [];
+export const getAccessesByPath = async (pathes: string[], state: State, method = 'GET'): Promise<AccessByPath[]> =>  Promise.all(pathes.map(path => {
+  const accessValue = state.access[path];
 
-  for (const path of pathes) {
-    const accessValue = state.access[path];
-
-    if (accessValue) {
-      accesses.push( { hasAccess: accessValue[method] });
-    } else {
-      const request = { path, method };
-      const { hasAccess } = await AccessService.checkPermissions(request);
-      accesses.push({
-          hasAccess,
-          action: checkPermissionsRequestFulfilled({
-            ...request,
-            hasAccess
-          }),
-        }
-      );
-    }
+  if (accessValue) {
+    return Promise.resolve({  hasAccess: accessValue[method] });
   }
 
-  return accesses;
-};
+  const request = { path, method };
+  return AccessService.checkPermissions(request).then(({ hasAccess }) => ({
+    hasAccess,
+    action: checkPermissionsRequestFulfilled({
+      ...request,
+      hasAccess
+    }),
+  }));
+}));
 
 // Products financial fields handlers
 export const handleChangeProductFeeExTax = (taxRate, dispatch, form) => value => {
