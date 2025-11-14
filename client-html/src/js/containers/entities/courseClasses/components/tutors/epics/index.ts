@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { combineEpics } from "redux-observable";
-import { EpicDeleteCourseClassTutor } from "./EpicDeleteCourseClassTutor";
-import { EpicGetCourseClassTutors } from "./EpicGetCourseClassTutors";
-import { EpicPostCourseClassTutor } from "./EpicPostCourseClassTutor";
-import { EpicPutCourseClassTutor } from "./EpicPutCourseClassTutor";
+import { combineEpics } from 'redux-observable';
+import { EpicDeleteCourseClassTutor } from './EpicDeleteCourseClassTutor';
+import { EpicGetCourseClassTutorsWarnings } from './EpicGetCourseClassTutorsWarnings';
+import { EpicPostCourseClassTutor } from './EpicPostCourseClassTutor';
+import { EpicPutCourseClassTutor } from './EpicPutCourseClassTutor';
 
 export const EpicCourseClassTutors = combineEpics(
-  EpicGetCourseClassTutors,
+  EpicGetCourseClassTutorsWarnings,
   EpicPutCourseClassTutor,
   EpicPostCourseClassTutor,
   EpicDeleteCourseClassTutor
