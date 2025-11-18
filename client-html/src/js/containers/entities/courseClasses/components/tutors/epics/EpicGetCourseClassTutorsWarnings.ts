@@ -17,7 +17,7 @@ const request: EpicUtils.Request<any, string> = {
   type: GET_COURSE_CLASS_TUTORS_WARNINGS,
   hideLoadIndicator: true,
   getData: (ids, state) => EntityService
-    .getPlainRecords("Contact", columns, `id in (${ids}`)
+    .getPlainRecords("Contact", columns, `id in (${ids})`)
     .then(
     response => {
       const warnings = { ...state.courseClass.tutorNamesWarnings };
