@@ -68,6 +68,7 @@ const request: EpicUtils.Request<{  courseClass: CourseClassExtended, access: Ac
     const relatedActions = [
       getCourseClassTutorsWarnings(courseClass.tutors.map(t => t.id).toString()),
       getCourseClassAttendance(id),
+      getNoteItems("CourseClass", id, LIST_EDIT_VIEW_FORM_NAME),
       ...access.flatMap((accItem, index) => [
         ... index === 0 && accItem.hasAccess ? [getCourseClassCosts(id)] : [],
         ... index === 1 && accItem.hasAccess ? [getCourseClassEnrolments(id)] : [],
@@ -84,9 +85,8 @@ const request: EpicUtils.Request<{  courseClass: CourseClassExtended, access: Ac
           name: `${courseClass.courseName} ${courseClass.courseCode}-${courseClass.code}`
         }
       },
-      ...relatedActions,
       initialize(LIST_EDIT_VIEW_FORM_NAME, courseClass),
-      getNoteItems("CourseClass", id, LIST_EDIT_VIEW_FORM_NAME),
+      ...relatedActions,
       ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : [])
     ];
   },
