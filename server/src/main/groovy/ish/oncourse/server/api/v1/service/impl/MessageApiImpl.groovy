@@ -13,7 +13,6 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.api.service.MessageApiService
-import ish.oncourse.server.api.v1.model.ArchiveParamDTO
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.MessageDTO
 import ish.oncourse.server.api.v1.model.RecipientsDTO
@@ -47,10 +46,5 @@ class MessageApiImpl implements MessageApi {
 
     RecipientsDTO getRecipients(String entity, String messageType, SearchQueryDTO search, Long templateId) {
         return service.getRecipients(entity, messageType, search, templateId)
-    }
-
-    @Override
-    void archiveMessages(ArchiveParamDTO archiveDate) {
-        archivingMessagesService.archiveMessages(archiveDate.archiveBefore)
     }
 }
