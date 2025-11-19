@@ -1,10 +1,4 @@
-import { PreferenceSchema } from "./PreferencesSchema";
-
-export const MessageDateArchived: PreferenceSchema = {
-  uniqueKey: "ish.message.date.expected.archived",
-  mandatory: false,
-  editable: false
-};
+import { PreferenceSchema } from './PreferencesSchema';
 
 export const EmailAdminAddress: PreferenceSchema = {
   uniqueKey: "email.admin",

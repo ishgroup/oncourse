@@ -3,25 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Message } from "@api/model";
-import { format, isValid } from "date-fns";
-import { DD_MM_YYYY_SLASHED } from "ish-ui";
-import React, { Dispatch, useEffect } from "react";
-import { connect } from "react-redux";
-import { getFilters, setFilterGroups, } from "../../../common/components/list-view/actions";
-import ListView from "../../../common/components/list-view/ListView";
-import { useAppSelector } from "../../../common/utils/hooks";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { Categories, MessageDateArchived } from "../../../model/preferences";
-import { getPreferencesByKeys } from "../../preferences/actions";
-import MessageEditView from "./components/MessageEditView";
-import MessagesCogwheelActions from "./components/MessagesCogwheelActions";
+import React, { Dispatch, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { clearListState, getFilters } from '../../../common/components/list-view/actions';
+import ListView from '../../../common/components/list-view/ListView';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import MessageEditView from './components/MessageEditView';
+import MessagesCogwheelActions from './components/MessagesCogwheelActions';
 
 interface MessagesProps {
   onInit?: () => void;
   getFilters?: () => void;
-  getPreferences?: () => void;
-  setFilterGroups?: (filterGroups: FilterGroup[]) => void;
+  clearListState?: () => void;
   onDelete?: (id: string) => void;
 }
 
@@ -53,33 +46,14 @@ const primaryColumnCondition = row => row["recipientsString"] || "No recipients"
 const Messages: React.FC<MessagesProps> = props => {
   const {
     getFilters,
-    getPreferences,
-    setFilterGroups
+    clearListState
   } = props;
-  
-  const archivedDate = useAppSelector(state => state.preferences.messaging && state.preferences.messaging[MessageDateArchived.uniqueKey]);
-  const filterGroupdsCurrent = useAppSelector(state => state.list.filterGroups);
-  
-  useEffect(() => {
-    const archivedDateObj = new Date(archivedDate);
-    if (isValid(archivedDateObj)) {
-      setFilterGroups((filterGroupdsCurrent.length ? filterGroupdsCurrent : filterGroups).map(fg => ({
-        ...fg,
-        filters: [
-          ...fg.filters,
-          ...fg.title === 'CORE FILTER' ? [{
-            name: "Not archived",
-            active: true,
-            expression: `createdOn after ${format(archivedDateObj, DD_MM_YYYY_SLASHED)}`
-          }] : []
-        ]
-      })));
-    }
-  }, [archivedDate]);
 
   useEffect(() => {
     getFilters();
-    getPreferences();
+    return () => {
+      clearListState();
+    };
   }, []);
 
   return (
@@ -105,8 +79,7 @@ const Messages: React.FC<MessagesProps> = props => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("Message")),
-  getPreferences: () => dispatch(getPreferencesByKeys([MessageDateArchived.uniqueKey], Categories.messaging)),
-  setFilterGroups: filterGroups => dispatch(setFilterGroups(filterGroups))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Messages);

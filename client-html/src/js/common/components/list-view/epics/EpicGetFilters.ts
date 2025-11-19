@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { CoreFilter } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
+import { Epic } from 'redux-observable';
+import { CoreFilter } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
 
-import * as EpicUtils from "../../../epics/EpicUtils";
-import CustomFiltersService from "../../../services/CustomFiltersService";
-import { GET_FILTERS_REQUEST, GET_RECORDS_REQUEST, getFiltersFulfilled } from "../actions/index";
+import * as EpicUtils from '../../../epics/EpicUtils';
+import CustomFiltersService from '../../../services/CustomFiltersService';
+import { GET_FILTERS_FULFILLED, GET_FILTERS_REQUEST, GET_RECORDS_REQUEST } from '../actions/index';
 
 const request: EpicUtils.Request = {
   type: GET_FILTERS_REQUEST,
@@ -19,12 +19,12 @@ const request: EpicUtils.Request = {
       f.active = false;
     });
 
-    let filterGroups = state.list.filterGroups.map(f => ({ ...f }));
+    let filterGroups = state.list.filterGroups.map(f => ({...f}));
 
     const customFiltersIndex = state.list.filterGroups.findIndex(i => i.title === "Custom Filters");
 
     if (customFiltersIndex === -1) {
-      filterGroups = [...filterGroups, ...(filters.length ? [{ title: "Custom Filters", filters }] : [])];
+      filterGroups = [...filterGroups, ...(filters.length ? [{title: "Custom Filters", filters}] : [])];
     } else {
       if (filters.length) {
         filterGroups[customFiltersIndex].filters = filters;
@@ -34,7 +34,13 @@ const request: EpicUtils.Request = {
     }
 
     return [
-      getFiltersFulfilled(filterGroups),
+      {
+        type: GET_FILTERS_FULFILLED,
+        payload: {
+          filterGroups,
+          entity: payload.entity
+        }
+      },
       ...(payload.listUpdate
         ? [
           {
