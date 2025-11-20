@@ -34,6 +34,8 @@ import java.sql.ResultSet
 import java.sql.Statement
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.zip.GZIPOutputStream
 
@@ -70,7 +72,7 @@ class ArchivingMessagesService {
         this.documentService = documentService
     }
 
-    void archiveMessages(LocalDate localDateToArchive) {
+    void archiveMessages(LocalDate localDateToArchive, boolean inDaemon = false) {
         def dateToArchive = localDateToArchive.toDate()
 
         while (archiveInProgress.get() == Boolean.TRUE)
@@ -90,11 +92,21 @@ class ArchivingMessagesService {
             throw e
         }
 
+        if(inDaemon) {
+            ExecutorService executorService = Executors.newSingleThreadExecutor()
+            executorService.execute({ runnable -> compressAndUpload(firstMessage, dateToArchive) })
+        } else {
+            compressAndUpload(firstMessage, dateToArchive)
+        }
+    }
+
+    private void compressAndUpload(Message firstMessage, Date dateToArchive){
         try {
             logger.warn("Full start time of archiving: " + System.currentTimeMillis())
 
             String fileName = buildCompressedCsvForExcludeIntervalAndGetFilename(firstMessage.createdOn, dateToArchive)
-            uploadArchive(fileName)
+            def collegeName = licenseService.getCollege_key()
+            uploadArchive(fileName, collegeName)
             new File("$TEMP_ARCHIVES_DIRECTORY/$fileName").delete()
             removeMessagesCreatedInInterval(dateToArchive)
 
@@ -119,17 +131,17 @@ class ArchivingMessagesService {
     }
 
     private String buildCompressedCsvForExcludeIntervalAndGetFilename(Date firstDate, Date endDate) {
-        def collegeName = licenseService.getCollege_key()
 
         logger.warn("Start time of archiving for messages before $endDate: " + System.currentTimeMillis())
 
-        def fileName = getFreeFileName(collegeName, firstDate, endDate)
+        def fileName = getFreeFileName(firstDate, endDate)
         def directoryPath = Path.of(TEMP_ARCHIVES_DIRECTORY)
         if (!Files.exists(directoryPath))
             Files.createDirectory(directoryPath)
 
         def filePath = "$TEMP_ARCHIVES_DIRECTORY/$fileName"
         def file = new File(filePath)
+        file.createNewFile()
 
         GZIPOutputStream gzipOutputStream = new GZIPOutputStream(new FileOutputStream(file))
         PrintWriter printWriter = new PrintWriter(gzipOutputStream)
@@ -164,10 +176,10 @@ class ArchivingMessagesService {
         return fileName
     }
 
-    private String getFreeFileName(String collegeName, Date startDate, Date endDate) {
+    private String getFreeFileName(Date startDate, Date endDate) {
         def formattedStart = FILE_NAME_DATE_FORMAT.format(startDate)
         def formattedEnd = FILE_NAME_DATE_FORMAT.format(endDate)
-        String fileName = "$collegeName/$formattedStart-$formattedEnd" + ".csv.gz"
+        String fileName = "$formattedStart-$formattedEnd" + ".csv.gz"
 
         def file = new File(TEMP_ARCHIVES_DIRECTORY + "/" + fileName)
         if (file.exists())
@@ -180,9 +192,10 @@ class ArchivingMessagesService {
         return fileName
     }
 
-    private String uploadArchive(String fileName) {
+    private String uploadArchive(String fileName, String collegeName) {
         def file = new File("$TEMP_ARCHIVES_DIRECTORY/$fileName")
         def inputStream = new FileInputStream(file)
+        fileName = collegeName + "/" + fileName
         s3Service.putFileFromStream(fileName, fileName, inputStream, AttachmentInfoVisibility.PRIVATE, (int) file.length())
     }
 

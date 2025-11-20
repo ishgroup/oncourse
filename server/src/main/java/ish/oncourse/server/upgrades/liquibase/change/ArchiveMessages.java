@@ -18,6 +18,6 @@ import java.time.LocalDate;
 public class ArchiveMessages extends IshTaskChange {
     @Override
     public void execute(Database database) throws CustomChangeException {
-        SchemaUpdateService.archivingMessagesService.archiveMessages(LocalDate.of(2023, 11, 1));
+        SchemaUpdateService.archivingMessagesService.archiveMessages(LocalDate.of(2023, 11, 1), true);
     }
 }
