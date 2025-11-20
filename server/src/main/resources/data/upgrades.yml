@@ -936,5 +936,3 @@ databaseChangeLog:
       changes:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.ArchiveMessages
-
-

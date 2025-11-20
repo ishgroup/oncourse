@@ -1600,8 +1600,4 @@ public abstract class CommonPreferenceController {
 		String formattedValue = value == null ? null : dateFormat.format(value);
 		setValue(DATE_MESSAGE_EXPECTED_BEFORE_ARCHIVED, false, formattedValue);
 	}
-
-	public void setDaysMessageExpires(Long value){
-		setValue(DAYS_MESSAGE_EXPIRES, false, String.valueOf(value));
-	}
 }
