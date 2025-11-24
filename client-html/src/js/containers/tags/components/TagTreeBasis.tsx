@@ -8,7 +8,7 @@
 
 import Tree from '@atlaskit/tree';
 import { AppTheme } from 'ish-ui';
-import isEmpty from 'lodash.isempty';
+import { isEmpty } from 'es-toolkit/compat';
 import React from 'react';
 import * as ReactBeautifulDnD from 'react-beautiful-dnd-next';
 import { withStyles } from 'tss-react/mui';

@@ -4,7 +4,7 @@
  */
 
 import $t from '@t';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';

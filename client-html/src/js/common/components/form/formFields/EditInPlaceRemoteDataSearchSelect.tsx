@@ -3,19 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { EditInPlaceSearchSelect } from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getDefaultRemoteColumns } from "../../../../containers/entities/common/entityConstants";
-import { EditInPlaceRemoteDataSelectFieldProps, } from "../../../../model/common/Fields";
-import { State } from "../../../../reducers/state";
+import { debounce } from 'es-toolkit/compat';
+import { EditInPlaceSearchSelect } from 'ish-ui';
+import React, { useCallback, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getDefaultRemoteColumns } from '../../../../containers/entities/common/entityConstants';
+import { EditInPlaceRemoteDataSelectFieldProps, } from '../../../../model/common/Fields';
+import { State } from '../../../../reducers/state';
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
-} from "../../../actions/CommonPlainRecordsActions";
+} from '../../../actions/CommonPlainRecordsActions';
 
 const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFieldProps> = (
   {
