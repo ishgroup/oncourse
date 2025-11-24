@@ -14,7 +14,7 @@ import Hidden from '@mui/material/Hidden';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
-import isEmpty from 'lodash.isempty';
+import { isEmpty } from 'es-toolkit/compat'
 import * as React from 'react';
 import { Form, initialize, reduxForm } from 'redux-form';
 import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';

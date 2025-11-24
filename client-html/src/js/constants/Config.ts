@@ -52,10 +52,6 @@ export const ENTITY_AQL_STORAGE_NAME = "entityAqlState";
 
 // // Google constants
 
-// Google Maps
-
-export const GOOGLE_MAPS_API_KEY = "QUl6YVN5Q1lnMlIzMnc4TVhtNXBwNEJjalNlLTRuUDFHYTNaa0p3";
-
 // Google tag manager
 export const GOOGLE_TAG_MANAGER = "GTM-PQ23P93";
 

@@ -8,7 +8,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import $t from '@t';
 import { FormRadioButtons, Switch } from 'ish-ui';
-import isEmpty from 'lodash.isempty';
+import { isEmpty } from 'es-toolkit/compat'
 import React from 'react';
 import { connect } from 'react-redux';
 import { change, Field, Form, getFormValues, initialize, reduxForm } from 'redux-form';

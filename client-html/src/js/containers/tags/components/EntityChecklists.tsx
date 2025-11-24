@@ -10,7 +10,7 @@ import { Card, CircularProgress, Collapse, Divider, IconButton, Link, Menu, Menu
 import $t from '@t';
 import clsx from 'clsx';
 import { BooleanArgFunction, ColoredCheckBox, openInternalLink } from 'ish-ui';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { change } from 'redux-form';
 import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
