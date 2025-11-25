@@ -46,9 +46,6 @@ export const validateRoomUniqueName = (value: string, allValues: any) => {
 
 const openRoom = (_: any, id: number) => openRoomLink(id);
 
-//
-// ---- SUBCOMPONENT ------------------------------------------------
-//
 const SitesRoomFields = ({
                            item,
                            isParenSiteVirtual
@@ -97,28 +94,20 @@ const getLayoutArray = (twoColumn: boolean): { xs: number }[] =>
     ? [{ xs: 12 }, { xs: 12 }, { xs: 4 }, { xs: 6 }, { xs: 6 }, { xs: 6 }, { xs: 6 }, { xs: 8 }, { xs: 12 }]
     : Array(9).fill({ xs: 12 });
 
-interface Props {
-  tags: any;
-  countries: any;
-  timezones: any;
-  validateDeleteRoom: (id: number, callback: () => void) => any;
-  isScrolling?: boolean;
-}
-
-const SitesGeneral: React.FC<EditViewProps<Site> & Props> = props => {
+const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
   const {
     values,
     form,
     showConfirm,
     twoColumn,
-    tags,
-    countries,
-    timezones,
-    syncErrors
+    syncErrors,
   } = props;
   
   const isMounted = useRef(false);
   const geo = useAppSelector(state => state.googleApiResponse.geocode);
+  const tags = useAppSelector(state => state.tags.entityTags["Site"]);
+  const countries = useAppSelector(state => state.countries);
+  const timezones = useAppSelector(state => state.timezones);
 
   const dispatch = useAppDispatch();
 
@@ -144,6 +133,8 @@ const SitesGeneral: React.FC<EditViewProps<Site> & Props> = props => {
       dispatch(change(form, 'latitude', geo.lat));
     }
   }, [geo]);
+  
+  const validateDeleteRoom = (id: number, callback: any) => dispatch(validateDeleteRoom(id, callback));
 
   const onCalendarClick = useCallback(() => {
     openInternalLink(
@@ -165,12 +156,12 @@ const SitesGeneral: React.FC<EditViewProps<Site> & Props> = props => {
       const callback = () => dispatch(arrayRemove(form, 'rooms', index));
 
       showConfirm({
-        onConfirm: id ? () => props.validateDeleteRoom(id, callback) : callback,
+        onConfirm: id ? () => validateDeleteRoom(id, callback) : callback,
         confirmMessage: 'Room entity will be deleted. This action can not be undone',
         confirmButtonText: 'Delete'
       });
     },
-    [dispatch, form, props.validateDeleteRoom, showConfirm]
+    [dispatch, form, validateDeleteRoom, showConfirm]
   );
   
   const updateLatLong = useCallback(debounce(() => {
