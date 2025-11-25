@@ -405,7 +405,7 @@ const CourseClassEditView: React.FC<Props> = ({
 
       return (twoColumn ? (
         <BudgetAdornment
-          studentFee={{ ...values.budget[studentFeeIndex] || {}, index: studentFeeIndex }}
+          studentFee={{ ...values?.budget && values?.budget[studentFeeIndex] || {}, index: studentFeeIndex }}
           currencySymbol={currencySymbol}
           isNew={isNew}
           dispatch={dispatch}

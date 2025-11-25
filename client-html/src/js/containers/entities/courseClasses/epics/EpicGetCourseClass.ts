@@ -66,7 +66,7 @@ const request: EpicUtils.Request<{  courseClass: CourseClassExtended, access: Ac
   processData: ({ courseClass, access }, s, id) => {
 
     const relatedActions = [
-      getCourseClassTutorsWarnings(courseClass.tutors.map(t => t.id).toString()),
+      ...courseClass.tutors.length ? [getCourseClassTutorsWarnings(courseClass.tutors.map(t => t.id).toString())] : [],
       getCourseClassAttendance(id),
       getNoteItems("CourseClass", id, LIST_EDIT_VIEW_FORM_NAME),
       ...access.flatMap((accItem, index) => [
