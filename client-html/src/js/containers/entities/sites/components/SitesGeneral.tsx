@@ -164,13 +164,18 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
     [dispatch, form, validateDeleteRoom, showConfirm]
   );
   
-  const updateLatLong = useCallback(debounce(() => {
+  const updateLatLongHandler = useCallback(debounce(values => {
     if (values.street && values.suburb && values.country) {
+      const address = [values.country.name, values.postcode, values.state, values.suburb, values.street].filter(Boolean).join(', ');
       setAddressString(
-        [values.street, values.suburb, values.country.name].filter(Boolean).join(', ')
+        address
       );
     }
-  }, 500), [values]);
+  }, 500), []);
+  
+  useEffect(() => {
+    updateLatLongHandler(values)
+  }, [values.country.name, values.postcode, values.state, values.suburb, values.street]);
   
   const layoutArray = getLayoutArray(twoColumn);
 
@@ -275,20 +280,19 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
                 name="street"
                 label={$t('street')}
                 validate={greaterThanNullValidation}
-                onChange={updateLatLong}
               />
             </Grid>
 
             <Grid item xs={12}>
-              <FormField type="text" name="suburb" label={$t('suburb')} onChange={updateLatLong} />
+              <FormField type="text" name="suburb" label={$t('suburb')} />
             </Grid>
 
             <Grid item xs={12}>
-              <FormField type="text" name="state" label={$t('state')} onChange={updateLatLong}/>
+              <FormField type="text" name="state" label={$t('state')} />
             </Grid>
 
             <Grid item xs={12}>
-              <FormField type="text" name="postcode" label={$t('postcode')} onChange={updateLatLong}/>
+              <FormField type="text" name="postcode" label={$t('postcode')}/>
             </Grid>
 
             <Grid item xs={12}>
@@ -300,7 +304,6 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
                   name="country"
                   label={$t('country')}
                   returnType="object"
-                  onChange={updateLatLong}
                   required={!values.isVirtual}
                   items={countries}
                 />
