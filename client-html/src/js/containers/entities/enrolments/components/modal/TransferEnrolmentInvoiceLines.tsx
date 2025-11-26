@@ -10,19 +10,17 @@ import { formatCurrency, WarningMessage } from 'ish-ui';
 import React, { useCallback } from 'react';
 import { change } from 'redux-form';
 import FormField from '../../../../../common/components/form/formFields/FormField';
-import { useAppSelector } from '../../../../../common/utils/hooks';
+import { bankRounding, useAppSelector } from '../../../../../common/utils/hooks';
 import { accountLabelCondition } from '../../../accounts/utils';
 
 const FORM: string = "TRANSFER_ENROLMENT_MODAL_FORM";
 const CANCEL_FEE_AMOUNT_WARNING_MESSAGE = "The cancellation fee is greater than the fee paid";
 
-const roundCancellationFeeExTax = val => val && new Decimal(val || 0).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN).toNumber();
+const roundCancellationFeeExTax = val => bankRounding(val || 0);
 
-const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => new Decimal(cancellationFeeExTax || 0)
+const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => bankRounding(new Decimal(cancellationFeeExTax || 0)
   .mul(taxRate)
-  .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
-  .plus(new Decimal(cancellationFeeExTax || 0))
-  .toNumber();
+  .plus(new Decimal(cancellationFeeExTax || 0)));
 
 const TransferEnrolmentInvoiceLines: React.FC<any> = ({
     fields, dispatch, incomeAccounts, taxes
