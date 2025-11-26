@@ -19,14 +19,19 @@ import ish.oncourse.server.api.v1.model.RecipientsDTO
 import ish.oncourse.server.api.v1.model.SearchQueryDTO
 import ish.oncourse.server.api.v1.model.SendMessageRequestDTO
 import ish.oncourse.server.api.v1.service.MessageApi
+import ish.oncourse.server.messaging.ArchivingMessagesService
 
 class MessageApiImpl implements MessageApi {
 
-    @Inject private MessageApiService service
+    @Inject
+    private MessageApiService service
+
+    @Inject
+    private ArchivingMessagesService archivingMessagesService
 
     @Override
     MessageDTO get(Long id) {
-        return service.get(id)
+        return service.getById(id)
     }
 
     @Override
@@ -42,5 +47,4 @@ class MessageApiImpl implements MessageApi {
     RecipientsDTO getRecipients(String entity, String messageType, SearchQueryDTO search, Long templateId) {
         return service.getRecipients(entity, messageType, search, templateId)
     }
-
 }
