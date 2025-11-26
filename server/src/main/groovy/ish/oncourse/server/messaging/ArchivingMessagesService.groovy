@@ -89,7 +89,8 @@ class ArchivingMessagesService {
         } catch (Exception e) {
             archiveInProgress.set(false)
             preferenceController.setDateMessageExpectedBeforeArchived(null)
-            throw e
+            logger.catching(e)
+            return
         }
 
         if(inDaemon) {
