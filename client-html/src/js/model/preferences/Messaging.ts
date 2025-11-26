@@ -1,4 +1,4 @@
-import { PreferenceSchema } from "./PreferencesSchema";
+import { PreferenceSchema } from './PreferencesSchema';
 
 export const EmailAdminAddress: PreferenceSchema = {
   uniqueKey: "email.admin",

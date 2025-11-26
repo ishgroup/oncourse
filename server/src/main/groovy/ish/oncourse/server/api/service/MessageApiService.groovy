@@ -18,6 +18,7 @@ import ish.common.types.EnrolmentStatus
 import ish.common.types.MessageType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.MessageDao
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Lead
@@ -29,6 +30,7 @@ import ish.oncourse.server.api.model.RecipientGroupModel
 import ish.oncourse.server.api.model.RecipientsModel
 import ish.oncourse.server.scripting.api.MetaclassCleaner
 import ish.util.AbstractEntitiesUtil
+import org.apache.cayenne.Persistent
 import org.apache.cayenne.validation.ValidationException
 
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getEntityTransformationProperty
@@ -99,6 +101,8 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
 
     @Inject private LicenseService licenseService
 
+    @Inject private PreferenceController preferenceController
+
 
     @Override
     Class<Message> getPersistentClass() {
@@ -127,6 +131,18 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
     Message toCayenneModel(MessageDTO messageDTO, Message message) {
         // Is not applicable for this entity
         return null
+    }
+
+    MessageDTO getById(Long messageId) {
+        ObjectContext context = cayenneService.newContext
+        Message message = getEntityAndValidateExistence(context, messageId)
+        def dateExpectedArchived = preferenceController.getDateMessageExpectedBeforeArchived()
+        if(dateExpectedArchived != null) {
+            if(message.createdOn.before(dateExpectedArchived))
+                validator.throwClientErrorException("messageId", "Message you try to get is in process of archiving")
+        }
+
+        return toRestModel(message)
     }
 
     @Override

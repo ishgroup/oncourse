@@ -11,7 +11,7 @@ import $t from '@t';
 import clsx from 'clsx';
 import { addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth } from 'date-fns';
 import { DD_MMM_YYYY_MINUSED, DynamicSizeList, makeAppStyles, usePrevious } from 'ish-ui';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
