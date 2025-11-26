@@ -13,12 +13,16 @@ import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-vie
 import * as EpicUtils from '../../../../common/epics/EpicUtils';
 import { courseClassBudgetPath, courseClassTimetablePath, plainEnrolmentPath } from '../../../../constants/Api';
 import { AccessByPath } from '../../../../model/entities/common';
-import { CourseClassExtended } from '../../../../model/entities/CourseClass';
+import {
+  CourseClassExtended,
+  StudentAttendanceExtended,
+  TrainingPlanExtended
+} from '../../../../model/entities/CourseClass';
 import { getEntityItemById } from '../../common/entityItemsService';
 import { getAccessesByPath } from '../../common/utils';
 import { GET_COURSE_CLASS, getCourseClassEnrolments, getCourseClassSessionsWarnings } from '../actions';
 import CourseClassAssessmentService from '../components/assessments/services/CourseClassAssessmentService';
-import { getCourseClassAttendance } from '../components/attendance/actions';
+import CourseClassAttendanceService from '../components/attendance/services/CourseClassAttendanceService';
 import { getCourseClassCosts } from '../components/budget/actions';
 import CourseClassTimetableService from '../components/timetable/services/CourseClassTimetableService';
 import { getCourseClassTutorsWarnings } from '../components/tutors/actions';
@@ -42,13 +46,25 @@ const request: EpicUtils.Request<{  courseClass: CourseClassExtended, access: Ac
       courseClass,
       tutors,
       assessments,
-      sessions
+      sessions,
+      studentAttendance
     ] = await Promise.all([
       getEntityItemById("CourseClass", id),
       CourseClassTutorService.getCourseClassTutors(id),
       CourseClassAssessmentService.getCourseClassAssessments(id),
-      CourseClassTimetableService.findTimetableSessionsForCourseClasses(id)
+      CourseClassTimetableService.findTimetableSessionsForCourseClasses(id),
+      CourseClassAttendanceService.getStudentAttendance(id)
     ]);
+
+    studentAttendance.forEach((s: StudentAttendanceExtended, index) => {
+      s.index = index;
+    });
+
+    const trainingPlan = await CourseClassAttendanceService.getTrainingPlans(id);
+
+    trainingPlan.forEach((t: TrainingPlanExtended, index) => {
+      t.index = index;
+    });
 
     sessions.sort((a, b) => (new Date(a.start) > new Date(b.start) ? 1 : -1));
     assessments.forEach((assessment: any, index) => { assessment.index = index; });
@@ -56,8 +72,8 @@ const request: EpicUtils.Request<{  courseClass: CourseClassExtended, access: Ac
     courseClass.tutors = tutors;
     courseClass.assessments = assessments;
     courseClass.sessions = sessions;
-    courseClass.studentAttendance = [];
-    courseClass.trainingPlan = [];
+    courseClass.studentAttendance = studentAttendance;
+    courseClass.trainingPlan = trainingPlan;
     courseClass.budget = [];
     courseClass.notes = [];
 
@@ -67,7 +83,6 @@ const request: EpicUtils.Request<{  courseClass: CourseClassExtended, access: Ac
 
     const relatedActions = [
       ...courseClass.tutors.length ? [getCourseClassTutorsWarnings(courseClass.tutors.map(t => t.id).toString())] : [],
-      getCourseClassAttendance(id),
       getNoteItems("CourseClass", id, LIST_EDIT_VIEW_FORM_NAME),
       ...access.flatMap((accItem, index) => [
         ... index === 0 && accItem.hasAccess ? [getCourseClassCosts(id)] : [],
