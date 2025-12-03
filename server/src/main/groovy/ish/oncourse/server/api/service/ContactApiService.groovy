@@ -161,7 +161,6 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             dto.relations += cayenneModel.toContacts.collect{ toRestToContactRelation(it as ContactRelation) }
             dto.relations += cayenneModel.fromContacts.collect{ toRestFromContactRelation(it as ContactRelation)}
             dto.financialData = getFinancialDataForContact(cayenneModel)
-            dto.messages = cayenneModel.messages.collect{ toRestMessagePerson(it) }
             dto.rules = cayenneModel.unavailableRuleRelations*.rule.collect{ toRestHoliday(it)}
             dto
         }

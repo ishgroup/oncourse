@@ -195,10 +195,6 @@ properties:
   modifiedOn:
     type: string
     format: date-time
-  messages:
-    type: array
-    items:
-      $ref: '../MessagePerson.yaml'
   rules:
     type: array
     items:
