@@ -3,7 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { TableCell } from '@mui/material';
 import TableCell from '@mui/material/TableCell';
 import { flexRender } from '@tanstack/react-table';
 import { Row } from '@tanstack/table-core/src/types';
