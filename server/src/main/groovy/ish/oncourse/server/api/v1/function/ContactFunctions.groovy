@@ -265,19 +265,6 @@ class ContactFunctions {
 
     }
 
-    static MessagePersonDTO toRestMessagePerson(Message message) {
-        new MessagePersonDTO().with { m ->
-            m.messageId = message.id
-            m.createdOn = LocalDateUtils.dateToTimeValue(message.createdOn)
-            m.sentOn = LocalDateUtils.dateToTimeValue(message.timeOfDelivery)
-            m.creatorKey = message.creatorKey
-            m.subject = message.emailSubject
-            m.status = MessageStatusDTO.values()[0].fromDbType(message.status)
-            m.type = MessageTypeDTO.values()[0].fromDbType(message.type)
-            m
-        }
-    }
-
     static void updateAbandonedCarts(ObjectContext context, Contact contact, List<CartDTO> carts){
         def removedCarts = contact.abandonedCarts.findAll { !(it.id in carts*.id) }
         context.deleteObjects(removedCarts)
