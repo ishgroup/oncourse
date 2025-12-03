@@ -26,7 +26,6 @@
     "@types/react-dom": "19.0.2",
     "@types/react-redux": "7.*",
     "@types/react-router-dom": "5.3.3",
-    "@types/react-window": "^1.8.8",
     "@types/recharts": "1.*",
     "@types/redux-form": "8.*",
     "@types/webpack": "5.*",

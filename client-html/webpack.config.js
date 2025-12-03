@@ -93,7 +93,6 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
     plugins: plugins(NODE_ENV, BUILD_NUMBER),
     devServer: {
       historyApiFallback: true,
-      static: "./build/dist",
       client: {
         overlay: false
       }
