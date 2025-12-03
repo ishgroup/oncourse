@@ -20,7 +20,6 @@ import ish.oncourse.server.api.dao.ContactRelationDao
 import ish.oncourse.server.api.dao.ContactRelationTypeDao
 import ish.oncourse.server.api.v1.model.CartDTO
 import ish.oncourse.server.api.v1.model.ContactDTO
-import ish.oncourse.server.api.v1.model.MessagePersonDTO
 import ish.oncourse.server.api.v1.model.MessageStatusDTO
 import ish.oncourse.server.api.v1.model.MessageTypeDTO
 import ish.oncourse.server.api.v1.model.StudentConcessionDTO
