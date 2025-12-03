@@ -6,13 +6,13 @@
 import Launch from '@mui/icons-material/Launch';
 import RemoveCircle from '@mui/icons-material/RemoveCircle';
 import {
-  Typography,
   IconButton,
   Table as MaUTable,
   TableCell,
   TableHead,
   TableRow,
-  TableSortLabel
+  TableSortLabel,
+  Typography
 } from '@mui/material';
 import $t from '@t';
 import {
@@ -30,7 +30,7 @@ import { useSelector } from 'react-redux';
 import { NESTED_TABLE_ROW_HEIGHT } from '../../../../../constants/Config';
 import { NestedTableColumn } from '../../../../../model/common/NestedTable';
 import { State } from '../../../../../reducers/state';
-import StaticList from './components/StaticList';
+import NestedList from './components/NestedList';
 import styles from './styles';
 import { getNestedTableCell } from './utils';
 
@@ -44,6 +44,7 @@ interface NestedListTableProps {
   columns: any;
   data: any;
   selection: string[];
+  onLoadMore?: any;
   onRowDelete?: any;
   onRowDoubleClick?: any;
   onCheckboxChange?: any;
@@ -59,7 +60,8 @@ const Table: React.FC<NestedListTableProps> = ({
    onRowDelete,
    onRowDoubleClick,
    onCheckboxChange,
-   calculateHeight
+   calculateHeight,
+                                                 onLoadMore
 }) => {
 
   const [sorting, onSortingChange] = useState<ColumnSort[]>([]);
@@ -156,10 +158,11 @@ const Table: React.FC<NestedListTableProps> = ({
   const rows = table.getRowModel().rows;
 
   const List = useMemo(() => (rows.length ? (
-    <StaticList
+    <NestedList
       rows={rows}
       classes={classes}
       totalColumnsWidth={table.getCenterTotalSize()}
+      onLoadMore={onLoadMore}
       onRowSelect={onRowSelect}
       onRowDelete={onRowDelete}
       onRowDoubleClick={onRowDoubleClick}
@@ -171,7 +174,7 @@ const Table: React.FC<NestedListTableProps> = ({
         {$t('no_data')}
       </Typography>
     </div>
-  )), [rows, selection, onRowDoubleClick, onCheckboxChange, onRowSelect]);
+  )), [rows, selection, onRowDoubleClick, onCheckboxChange, onLoadMore, onRowSelect]);
 
   const tableHeight = useMemo(() => 100 + rows.length * NESTED_TABLE_ROW_HEIGHT,
     [rows.length]);
@@ -213,6 +216,7 @@ export interface NestedListProps {
   total?: any;
   goToLink?: string;
   primaryHeader?: boolean;
+  onLoadMore?: any;
 }
 
 const ListRoot = React.memo<NestedListProps>(({
@@ -228,6 +232,7 @@ const ListRoot = React.memo<NestedListProps>(({
   onRowDelete,
   onRowDoubleClick,
   onCheckboxChange,
+  onLoadMore,
   meta: { invalid, error },
   total,
   goToLink,
@@ -330,6 +335,7 @@ const ListRoot = React.memo<NestedListProps>(({
             onCheckboxChange={onCheckboxChange}
             onSelectionChangeHangler={setSelection}
             calculateHeight={calculateHeight}
+            onLoadMore={onLoadMore}
           />
         )}
         {invalid && (
