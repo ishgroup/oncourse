@@ -1,4 +1,6 @@
 import { Contact } from '@api/model';
+import Launch from '@mui/icons-material/Launch';
+import { IconButton } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { openInternalLink } from 'ish-ui';
 import React, { useEffect, useState } from 'react';
@@ -15,8 +17,8 @@ interface ContactsMessagesProps extends EditViewProps<Contact> {
   twoColumn?: boolean;
 }
 
-const openRow = ({ messageId }) => {
-  openInternalLink(`/message/${messageId}`);
+const openRow = ({ id }) => {
+  openInternalLink(`/message/${id}`);
 };
 
 const plainColumns = 'createdOn,timeOfDelivery,emailSubject,creatorKey,status,type';
@@ -106,14 +108,22 @@ const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
         formErrors={syncErrors} 
         index={tabIndex} 
         expanded={expanded} 
-        setExpanded={setExpanded} 
+        setExpanded={setExpanded}
         header={`${values.messagesCount} message${values.messagesCount === 1 ? '' : 's'}`}
+        headerAdornment={
+          <IconButton
+            color="primary"
+            size="small"
+            onClick={() => openInternalLink(`/message?search=contact.id is ${values.id}`)}
+          >
+            <Launch fontSize="inherit"/>
+          </IconButton>
+        }
       >
         <div
           className="flex-column pb-3"
         >
           <NestedTable
-            goToLink={`/message?search=contact.id is ${values.id}`}
             columns={messagesColumns}
             onRowDoubleClick={openRow}
             fields={messageRows}
