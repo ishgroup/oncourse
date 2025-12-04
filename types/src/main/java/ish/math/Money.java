@@ -108,6 +108,8 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	public static Money ZERO = Money.of(BigDecimal.ZERO);
 	public static Money ONE = Money.of(BigDecimal.ONE);
 
+	public static final int DEFAULT_PRECISE_VALUE_SCALE = 6;
+
 	/**
 	 * Constructs a new {@code Money} instance. If {@code null} is passed as value,
 	 * a {@code Money.ZERO} amount will be created.
@@ -871,6 +873,23 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	public BigDecimal toBigDecimal() {
 		return round(number);
+	}
+
+	/**
+	 * Returns the monetary value as a precise {@link BigDecimal}.
+	 */
+	@API
+	public BigDecimal toPreciseBigDecimal() {
+		return number;
+	}
+
+	/**
+	 * Returns the monetary value as a precise {@link BigDecimal}.
+	 */
+	@API
+	public BigDecimal toPreciseBigDecimal(int scale) {
+		RoundingMode mode = RoundingMode.HALF_EVEN;
+		return number.setScale(scale, mode);
 	}
 
 	/**
