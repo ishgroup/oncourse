@@ -24,6 +24,7 @@ import {
 import { EditViewProps } from '../../../../model/common/ListView';
 import { EntityChecklists } from '../../../tags/components/EntityChecklists';
 import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import { validateDeleteRoom } from '../../rooms/actions';
 import { openRoomLink } from '../../rooms/utils';
 
 //
@@ -134,7 +135,7 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
     }
   }, [geo]);
   
-  const validateDeleteRoom = (id: number, callback: any) => dispatch(validateDeleteRoom(id, callback));
+  const validateDeleteRoomHandler = (id: number, callback: any) => dispatch(validateDeleteRoom(id, callback));
 
   const onCalendarClick = useCallback(() => {
     openInternalLink(
@@ -156,12 +157,12 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
       const callback = () => dispatch(arrayRemove(form, 'rooms', index));
 
       showConfirm({
-        onConfirm: id ? () => validateDeleteRoom(id, callback) : callback,
+        onConfirm: id ? () => validateDeleteRoomHandler(id, callback) : callback,
         confirmMessage: 'Room entity will be deleted. This action can not be undone',
         confirmButtonText: 'Delete'
       });
     },
-    [dispatch, form, validateDeleteRoom, showConfirm]
+    [dispatch, form, validateDeleteRoomHandler, showConfirm]
   );
   
   const updateLatLongHandler = useCallback(debounce(values => {

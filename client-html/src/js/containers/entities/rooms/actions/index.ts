@@ -8,7 +8,7 @@ import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtil
 export const GET_ROOM_DELETE_VALIDATION = _toRequestType("get/list/entity/room/validation");
 export const GET_ROOM_DELETE_VALIDATION_FULFILLED = FULFILLED(GET_ROOM_DELETE_VALIDATION);
 
-export const validateDeleteRoom = (id: string, callback: any) => ({
+export const validateDeleteRoom = (id: number, callback: any) => ({
   type: GET_ROOM_DELETE_VALIDATION,
   payload: { id, callback }
 });
