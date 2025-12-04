@@ -7,6 +7,7 @@ import TableCell from '@mui/material/TableCell';
 import { flexRender } from '@tanstack/react-table';
 import { Row } from '@tanstack/table-core/src/types';
 import clsx from 'clsx';
+import { stubFunction } from 'ish-ui';
 import React, { memo } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { areEqual, FixedSizeList } from 'react-window';
@@ -131,37 +132,33 @@ export default function NestedList(props: StaticListProps)  {
   const {
     totalColumnsWidth,
     rows,
-    onLoadMore
+    onLoadMore = stubFunction
   } = props;
 
   const isItemLoaded = index => Boolean(rows[index]);
-  
-  const ListComp = ({ onItemsRendered = null, ref = null }) =>
-    <AutoSizer>
-      {({ height, width }) => (
-        <FixedSizeList
-          style={{ overflow: "hidden auto" }}
-          itemCount={rows.length}
-          itemData={props}
-          itemSize={27}
-          onItemsRendered={onItemsRendered}
-          height={isNaN(height) ? 0 : height}
-          width={totalColumnsWidth > width ? totalColumnsWidth : (isNaN(width) ? 0 : width)}
-          ref={ref}
-        >
-          {ListRow}
-        </FixedSizeList>
-      )}
-    </AutoSizer>;
 
-  return onLoadMore ? (
-    <InfiniteLoader
-      minimumBatchSize={NESTED_LIST_PAGE_SIZE}
-      isItemLoaded={isItemLoaded}
-      itemCount={rows.length * 2}
-      loadMoreItems={onLoadMore}
-    >
-      {ListComp}
-    </InfiniteLoader>
-  ) : <ListComp />;
+  return <InfiniteLoader
+    minimumBatchSize={NESTED_LIST_PAGE_SIZE}
+    isItemLoaded={isItemLoaded}
+    itemCount={rows.length * 2}
+    loadMoreItems={onLoadMore}
+  >
+    {({ onItemsRendered = null, ref = null }) =>
+      <AutoSizer>
+        {({ height, width }) => (
+          <FixedSizeList
+            style={{ overflow: "hidden auto" }}
+            itemCount={rows.length}
+            itemData={props}
+            itemSize={27}
+            onItemsRendered={onItemsRendered}
+            height={isNaN(height) ? 0 : height}
+            width={totalColumnsWidth > width ? totalColumnsWidth : (isNaN(width) ? 0 : width)}
+            ref={ref}
+          >
+            {ListRow}
+          </FixedSizeList>
+        )}
+      </AutoSizer>}
+  </InfiniteLoader>;
 }
