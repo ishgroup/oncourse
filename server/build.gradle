@@ -91,7 +91,7 @@ dependencies {
 		exclude group: 'com.lowagie', module: 'itext'
 	}
 
-	api 'com.lowagie:itext:2.1.7'
+	implementation 'com.lowagie:itext:2.1.7'
 
 	implementation "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
 	implementation "org.bouncycastle:bcmail-jdk15on:$bouncycastleVersion"
