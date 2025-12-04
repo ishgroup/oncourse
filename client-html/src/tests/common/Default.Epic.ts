@@ -1,10 +1,10 @@
-import { Epic, StateObservable } from "redux-observable";
-import { filter, toArray } from "rxjs/operators";
-import { Subject, from } from "rxjs";
+import { Epic, StateObservable } from 'redux-observable';
+import { from, lastValueFrom, Subject } from 'rxjs';
+import { filter, toArray } from 'rxjs/operators';
+import { FETCH_FINISH, FETCH_START } from '../../js/common/actions';
+import TestStore from '../../js/constants/Store';
 import { State } from '../../js/reducers/state';
-import { mockedAPI } from "../TestEntry";
-import { FETCH_FINISH, FETCH_START } from "../../js/common/actions";
-import TestStore from "../../js/constants/Store";
+import { mockedAPI } from '../TestEntry';
 
 interface Props {
   action: any;
@@ -39,12 +39,13 @@ export const DefaultEpic = ({
 
   // Testing epic to be resolved with expected array of actions
   return expect(
-    epic$
-      .pipe(
-        // Filtering common actions
-        filter((a: any) => ![FETCH_START, FETCH_FINISH].includes(a.type)),
-        toArray()
-      )
-      .toPromise()
+    lastValueFrom(
+      epic$
+        .pipe(
+          // Filtering common actions
+          filter((a: any) => ![FETCH_START, FETCH_FINISH].includes(a.type)),
+          toArray()
+        )
+    )
   ).resolves.toEqual(processData(mockedAPI, state?.value));
 };

@@ -143,7 +143,7 @@ const ExpandableContainer: React.FC<Props> = ({
               onClick={clickHandler}>
               {header}
             </div>
-            <AddButton className={onAdd ? null : "invisible"} onClick={onAdd} />
+            {Boolean(onAdd) && <AddButton className={onAdd} onClick={onAdd} /> }
           </div>
           {headerAdornment}
           <IconButton

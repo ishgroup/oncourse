@@ -485,6 +485,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     const plansFinal = [
       {
         amount: checkoutSummary.payNowTotal,
+        payDate: checkoutSummary.paymentDate
       },
       ...[
         ...updatedPaymentPlans,
