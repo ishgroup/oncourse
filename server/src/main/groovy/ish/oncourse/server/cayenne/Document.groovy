@@ -16,6 +16,7 @@ import ish.common.types.AttachmentInfoVisibility
 import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.server.api.v1.model.DocumentVisibilityDTO
 import ish.oncourse.server.cayenne.glue._Document
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.license.LicenseService
@@ -36,6 +37,7 @@ class Document extends _Document implements DocumentTrait, Queueable {
 	public static final String LINK_PROPERTY = "link"
 	public static final String ACTIVE_PROPERTY = "active"
 	public static final String CURRENT_VERSION_PROPERTY = "currentVersion"
+	public static final String DISPLAY_WEB_VISIBILITY_PROPERTY = "displayWebVisibility"
 
 	@Inject
 	private DocumentService documentService
@@ -214,7 +216,27 @@ class Document extends _Document implements DocumentTrait, Queueable {
 		String collegeKey = licenseService.getCollege_key()
 		return collegeKey != null ? "https://${collegeKey}.cloud.oncourse.cc/document/${id}" : ""
 	}
+
+
+	/**
+	 * Returns the display value of webVisibility, considering document attachments.
+	 *
+	 * @return this document's display visibility
+	 */
+	@API
+	DocumentVisibilityDTO getDisplayWebVisibility() {
+		boolean hasCourseAttachment = attachmentRelations.stream()
+                .map { it -> it.entityIdentifier }
+                .anyMatch { it -> AttachmentRelation.TUTOR_RELATED_ENTITIES.contains(it) }
+
+		def visibility = DocumentVisibilityDTO.values()[0].fromDbType(webVisibility)
+		if (!hasCourseAttachment) {
+			if (visibility == DocumentVisibilityDTO.TUTORS_AND_ENROLLED_STUDENTS) {
+				return DocumentVisibilityDTO.STUDENTS_ONLY
+			} else if (visibility == DocumentVisibilityDTO.TUTORS_ONLY) {
+				return DocumentVisibilityDTO.PRIVATE
+			}
+		}
+		return visibility
+	}
 }
-
-
-

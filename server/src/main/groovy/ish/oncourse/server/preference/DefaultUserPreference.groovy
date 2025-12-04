@@ -305,7 +305,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Document name', attribute: Document.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Date added', attribute: Document.ADDED.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Size', attribute: Document.CURRENT_VERSION_PROPERTY + "." + DocumentVersion.BYTE_SIZE.name, sortable: false, width: W200, visible: true),
-                new ColumnDTO(title: 'Security level', attribute: Document.WEB_VISIBILITY.name, sortable: true, width: W100, visible: true),
+                new ColumnDTO(title: 'Security level', attribute: Document.DISPLAY_WEB_VISIBILITY_PROPERTY, sortable: false, width: W100, visible: true, prefetches: [Document.ATTACHMENT_RELATIONS.path().toString()]),
                 new ColumnDTO(title: 'File name', attribute: Document.CURRENT_VERSION_PROPERTY + "." + DocumentVersion.FILE_NAME.name, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Type', attribute: Document.CURRENT_VERSION_PROPERTY + "." + DocumentVersion.MIME_TYPE.name, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Active', attribute: Document.ACTIVE_PROPERTY, sortable: false, width: W100, visible: false, system: true, type: ColumnTypeDTO.BOOLEAN)
