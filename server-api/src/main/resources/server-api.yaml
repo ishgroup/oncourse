@@ -235,6 +235,8 @@ paths:
     $ref: './path/list/entity/room/validation/api.yaml'
   /list/entity/script:
     $ref: './path/list/entity/script/api.yaml'
+  /list/entity/script/statistic:
+    $ref: './path/list/entity/script/statistic/api.yaml'
   /list/entity/script/config:
     $ref: './path/list/entity/script/config/api.yaml'
   /list/entity/script/execute:
@@ -385,6 +387,9 @@ definitions:
 
   ForbiddenTagNames:
     $ref: './def/enum/ForbiddenTagNames.yaml'
+
+  MessageStatus:
+    $ref: './def/enum/MessageStatus.yaml'
 
   ExecuteImportRequest:
     $ref: './def/entity/import/ExecuteImportRequest.yaml'

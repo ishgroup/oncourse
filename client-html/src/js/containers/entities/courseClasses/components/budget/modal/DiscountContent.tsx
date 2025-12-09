@@ -20,7 +20,7 @@ import {
   parseFieldPercent,
   preventNegativeOrLogEnter
 } from 'ish-ui';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Dispatch } from 'redux';
 import { change } from 'redux-form';

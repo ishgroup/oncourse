@@ -4,13 +4,12 @@
  */
 
 import { ExpandMore } from '@mui/icons-material';
-import { ListItemButton } from '@mui/material';
+import { IconButton, ListItemButton } from '@mui/material';
 import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import clsx from 'clsx';
+import { debounce } from 'es-toolkit/compat';
 import { AddButton } from 'ish-ui';
-import debounce from 'lodash.debounce';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { withStyles } from 'tss-react/mui';
 import { CommonListItem, SidebarSharedProps } from '../../../../model/common/sidebar';

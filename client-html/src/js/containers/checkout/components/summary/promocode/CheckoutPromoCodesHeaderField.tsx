@@ -4,8 +4,8 @@
  */
 
 import $t from '@t';
+import { debounce } from 'es-toolkit/compat';
 import { StringArgFunction } from 'ish-ui';
-import debounce from 'lodash.debounce';
 import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';

@@ -4,12 +4,10 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicGetCourseClassAttendance } from "./EpicGetCourseClassAttendance";
 import { EpicUpdateCourseClassStudentAttendance } from "./EpicUpdateCourseClassStudentAttendance";
 import { EpicUpdateCourseClassTrainingPlans } from "./EpicUpdateCourseClassTrainingPlans";
 
 export const EpicCourseClassAttendance = combineEpics(
-  EpicGetCourseClassAttendance,
   EpicUpdateCourseClassStudentAttendance,
   EpicUpdateCourseClassTrainingPlans
 );

@@ -7,6 +7,7 @@
  */
 
 import { Tag } from '@api/model';
+import { debounce } from 'es-toolkit/compat';
 import {
   CheckboxField,
   CodeEditorField,
@@ -22,7 +23,6 @@ import {
   stubFunction,
   TagInputList,
 } from 'ish-ui';
-import debounce from 'lodash.debounce';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from 'redux-form/lib/Field';
 import { COMMON_PLACEHOLDER } from '../../../../constants/Forms';

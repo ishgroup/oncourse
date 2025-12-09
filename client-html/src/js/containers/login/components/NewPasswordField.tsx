@@ -8,7 +8,7 @@ import { green } from '@mui/material/colors';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import ClassNames from 'clsx';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import React from 'react';
 import { withStyles } from 'tss-react/mui';
 

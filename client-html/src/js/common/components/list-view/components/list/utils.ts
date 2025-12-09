@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ColumnType, DataResponse } from "@api/model";
-import { format } from "date-fns";
+import { ColumnType, DataResponse } from '@api/model';
+import { format } from 'date-fns';
 import {
   AnyArgFunction,
   EEE_D_MMM_YYYY,
@@ -12,9 +12,9 @@ import {
   formatPercent,
   III_DD_MMM_YYYY,
   III_DD_MMM_YYYY_HH_MM
-} from "ish-ui";
-import { CustomColumnFormats } from "../../../../../model/common/ListView";
-import { NestedTableColumnsTypes } from "../../../../../model/common/NestedTable";
+} from 'ish-ui';
+import { CustomColumnFormats } from '../../../../../model/common/ListView';
+import { NestedTableColumnsTypes } from '../../../../../model/common/NestedTable';
 
 const formatBoolean = val => {
   switch (val) {
@@ -95,7 +95,7 @@ export const getNestedTableCell = (value, type, currencySymbol) => {
     case "date":
     case "date-time": {
       const dateFormat = type === "date" ? EEE_D_MMM_YYYY : III_DD_MMM_YYYY_HH_MM;
-      return value === null ? "not set" : format(new Date(value), dateFormat);
+      return value ? format(new Date(value), dateFormat) : "not set";
     }
 
     case "currency": {
