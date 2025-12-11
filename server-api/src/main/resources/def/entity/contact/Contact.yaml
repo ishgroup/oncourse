@@ -205,8 +205,4 @@ properties:
       $ref: '../Cart.yaml'
   removeCChistory:
     type: boolean
-  messagesCount:
-    type: integer
-    format: int64
-    description: amount of related messages
 
