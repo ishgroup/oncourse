@@ -70,7 +70,7 @@ class WindcavePaymentAPI {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard) {
+    SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard, String payerEmail) {
         SessionAttributes attributes = new SessionAttributes()
 
         try {
@@ -98,7 +98,8 @@ class WindcavePaymentAPI {
                                                 declined :  origin + '/checkout?paymentStatus=fail',
                                                 cancelled:  origin + '/checkout?paymentStatus=cancel'
                                             ],
-                                        notificationUrl: sessionManager.host + CheckoutUtils.SERVER_REDIRECT_PATH+"?key=$licenseService.college_key"
+                                        notificationUrl: sessionManager.host + CheckoutUtils.SERVER_REDIRECT_PATH+"?key=$licenseService.college_key",
+                                        "Cardholder Email Address" : payerEmail
                                         ]
             if (storeCard) {
                 body['storeCard'] = true
