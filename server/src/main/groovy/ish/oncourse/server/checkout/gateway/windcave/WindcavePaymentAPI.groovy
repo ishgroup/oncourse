@@ -77,7 +77,9 @@ class WindcavePaymentAPI {
 
             HTTPBuilder builder =  new HTTPBuilder()
 
-            builder.handler['failure'] = { response, body -> failHandler(response, body, attributes)}
+            builder.handler['failure'] = {
+                response, body -> failHandler(response, body, attributes)
+            }
 
             builder.handler['success'] = { response, body ->
                 attributes.sessionId = body["id"]
@@ -99,8 +101,7 @@ class WindcavePaymentAPI {
                                                 cancelled:  origin + '/checkout?paymentStatus=cancel'
                                             ],
                                         notificationUrl: sessionManager.host + CheckoutUtils.SERVER_REDIRECT_PATH+"?key=$licenseService.college_key",
-                                        "Cardholder Email Address" : payerEmail
-                                        ]
+                                        EmailAddress : payerEmail]
             if (storeCard) {
                 body['storeCard'] = true
                 body['storedCardIndicator'] = 'recurringinitial'
