@@ -78,7 +78,9 @@ public class DiscountUtils {
 
 		MoneyRounding rounding = classDiscount.getDiscount().getRounding();
 
-		Money total = priceExTax.subtract(discountAmount).multiply(BigDecimal.ONE.add(taxRate));
+		discountAmount = discountAmount.multiply(BigDecimal.ONE.add(taxRate));
+
+		Money total = Money.of(priceExTax.multiply(BigDecimal.ONE.add(taxRate)).toBigDecimal()).subtract(discountAmount);
 		return total.round(rounding);
 	}
 
