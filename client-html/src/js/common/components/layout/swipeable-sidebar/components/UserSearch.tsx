@@ -8,8 +8,8 @@ import Search from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
 import clsx from 'clsx';
+import { debounce } from 'es-toolkit/compat';
 import { BooleanArgFunction, makeAppStyles, StringArgFunction } from 'ish-ui';
-import debounce from 'lodash.debounce';
 import React from 'react';
 
 const useStyles = makeAppStyles()(theme => ({

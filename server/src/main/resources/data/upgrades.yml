@@ -913,4 +913,26 @@ databaseChangeLog:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.ConvertPreferenceDefaultCurrentcyToDefaultCountry
 
+  - changeSet:
+      id: 148-0
+      author: dmitriy
+      comment: convert all marketing fields in existed data collection forms to not mandatory
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Field
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.MakeMarketingFieldsNotMandatory
 
+  - changeSet:
+      id: 149-0
+      author: dmitriy
+      comment: archive messages before requested date
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Message
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.ArchiveMessages

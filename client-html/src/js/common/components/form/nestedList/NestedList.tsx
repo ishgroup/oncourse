@@ -3,10 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Typography } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
+import { CircularProgress, Typography } from '@mui/material';
 import $t from '@t';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Field, Validator } from 'redux-form';

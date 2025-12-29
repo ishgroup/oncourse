@@ -22,7 +22,7 @@ import {
   makeAppStyles,
   StringArgFunction
 } from 'ish-ui';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -405,7 +405,7 @@ const CourseClassEditView: React.FC<Props> = ({
 
       return (twoColumn ? (
         <BudgetAdornment
-          studentFee={{ ...values.budget[studentFeeIndex] || {}, index: studentFeeIndex }}
+          studentFee={{ ...values?.budget && values?.budget[studentFeeIndex] || {}, index: studentFeeIndex }}
           currencySymbol={currencySymbol}
           isNew={isNew}
           dispatch={dispatch}

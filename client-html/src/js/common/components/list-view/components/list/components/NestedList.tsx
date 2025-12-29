@@ -5,10 +5,14 @@
 
 import TableCell from '@mui/material/TableCell';
 import { flexRender } from '@tanstack/react-table';
+import { Row } from '@tanstack/table-core/src/types';
 import clsx from 'clsx';
+import { stubFunction } from 'ish-ui';
 import React, { memo } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { areEqual, FixedSizeList } from 'react-window';
+import InfiniteLoader from 'react-window-infinite-loader';
+import { NESTED_LIST_PAGE_SIZE } from '../../../../../../constants/Config';
 import { NestedTableColumnsTypes } from '../../../../../../model/common/NestedTable';
 import NestedTableCheckboxCell from './NestedTableCheckboxCell';
 import NestedTableDeleteCell from './NestedTableDeleteCell';
@@ -60,7 +64,7 @@ const ListCell = React.memo<{
   }
 });
 
-const ListRow = memo<any>(({data, index, style}) => {
+const ListRow = memo<any>(({ data, index, style }) => {
   const {
     rows,
     classes,
@@ -113,26 +117,48 @@ const ListRow = memo<any>(({data, index, style}) => {
   );
 }, areEqual);
 
-export default itemData => {
+interface StaticListProps {
+  rows: Row<any>[];
+  classes?: Record<string, string>;
+  totalColumnsWidth?: number;
+  onLoadMore?: any;
+  onRowSelect
+  onRowDelete
+  onRowDoubleClick
+  onCheckboxChange
+}
+
+export default function NestedList(props: StaticListProps)  {
   const {
     totalColumnsWidth,
-    rows
-  } = itemData;
+    rows,
+    onLoadMore = stubFunction
+  } = props;
 
-  return (
-    <AutoSizer>
-      {({height, width}) => (
-        <FixedSizeList
-          style={{overflow: "hidden auto"}}
-          itemCount={rows.length}
-          itemData={itemData}
-          itemSize={27}
-          height={isNaN(height) ? 0 : height}
-          width={totalColumnsWidth > width ? totalColumnsWidth : (isNaN(width) ? 0 : width)}
-        >
-          {ListRow}
-        </FixedSizeList>
-      )}
-    </AutoSizer>
-  );
-};
+  const isItemLoaded = index => Boolean(rows[index]);
+
+  return <InfiniteLoader
+    minimumBatchSize={NESTED_LIST_PAGE_SIZE}
+    isItemLoaded={isItemLoaded}
+    itemCount={rows.length * 2}
+    loadMoreItems={onLoadMore}
+  >
+    {({ onItemsRendered = null, ref = null }) =>
+      <AutoSizer>
+        {({ height, width }) => (
+          <FixedSizeList
+            style={{ overflow: "hidden auto" }}
+            itemCount={rows.length}
+            itemData={props}
+            itemSize={27}
+            onItemsRendered={onItemsRendered}
+            height={isNaN(height) ? 0 : height}
+            width={totalColumnsWidth > width ? totalColumnsWidth : (isNaN(width) ? 0 : width)}
+            ref={ref}
+          >
+            {ListRow}
+          </FixedSizeList>
+        )}
+      </AutoSizer>}
+  </InfiniteLoader>;
+}

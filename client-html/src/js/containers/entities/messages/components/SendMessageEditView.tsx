@@ -24,7 +24,7 @@ import {
   Switch,
   YYYY_MM_DD_MINUSED
 } from 'ish-ui';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';

@@ -56,7 +56,7 @@ import org.apache.cayenne.query.ObjectSelect
 @CompileStatic
 class DocumentService {
 
-	private ICayenneService cayenneService
+	protected ICayenneService cayenneService
 	private static final Logger logger = LogManager.logger
 
 	DocumentService createDocumentService(ICayenneService cayenneService) {

@@ -158,6 +158,11 @@ public class AngelServerFactory {
                     randomSchedule, prefController.getOncourseServerDefaultTimezone(),
                     false, false);
 
+
+            schedulerService.scheduleCronJob(ArchiveMessagesJob.class, ARCHIVE_MESSAGES_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
+                    ARCHIVE_MESSAGES_JOB_CRON_SCHEDULE_INTERVAL, prefController.getOncourseServerDefaultTimezone(),
+                    false, false);
+
             schedulerService.scheduleCronJob(FundingContractUpdateJob.class,
                     FUNDING_CONTRACT_JOB_ID,
                     BACKGROUND_JOBS_GROUP_ID,

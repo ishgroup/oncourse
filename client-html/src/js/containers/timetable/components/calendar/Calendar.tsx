@@ -11,7 +11,7 @@ import $t from '@t';
 import clsx from 'clsx';
 import { addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth } from 'date-fns';
 import { DD_MMM_YYYY_MINUSED, DynamicSizeList, makeAppStyles, usePrevious } from 'ish-ui';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -123,7 +123,7 @@ const scrollToCalendarDay = debounce((dayNode, list, index, dayNodesObserver) =>
     animateListScroll(
       list,
       dayNode.parentElement.offsetTop + list._instanceProps.itemMetadataMap[index].offset - 32,
-      list._outerRef.scrollTop,
+      list._outerRef?.scrollTop || 0,
       performance.now(),
       dayNodesObserver
     );
