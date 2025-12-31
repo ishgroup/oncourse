@@ -65,6 +65,7 @@ const _common = (dirname, options) => {
       ],
       extensions: [".ts", ".tsx", ".js"],
       plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(dirname, './tsconfig.dev.json') })],
+      fallback: { 'process/browser': require.resolve('process/browser') }
     },
     module: {
       rules: [
@@ -72,11 +73,7 @@ const _common = (dirname, options) => {
           test: /\.ts(x?)$/,
           use: [
             {
-              loader: "ts-loader",
-              options: {
-                transpileOnly: true,
-                happyPackMode: true,
-              },
+              loader: "swc-loader"
             },
           ],
           include: [
@@ -198,7 +195,8 @@ const _styleModule = dirname => [
 const _DefinePlugin = (NODE_ENV, BUILD_NUMBER) => new webpack.EnvironmentPlugin({
     NODE_ENV,
     RELEASE_VERSION: BUILD_NUMBER,
-  });
+    GOOGLE_MAPS_API_KEY: 'QUl6YVN5Q1lnMlIzMnc4TVhtNXBwNEJjalNlLTRuUDFHYTNaa0p3'
+});
 
 const _CompressionPlugin = () => new CompressionPlugin({
     asset: "[path].gz[query]",

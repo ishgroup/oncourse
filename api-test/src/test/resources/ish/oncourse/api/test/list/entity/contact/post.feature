@@ -186,7 +186,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[{"id":"#ignore","description":"test","startDate":null,"endDate":null,"startDateTime":"2020-02-01T00:00:00.000Z","endDateTime":"2020-02-29T00:00:00.000Z","repeat":"week","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]
         }
         """
@@ -278,7 +278,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         {
         "id":"#(~~id)",
         "student":null,
-        "tutor":{"defaultPayType":null, "customFields":{}, "id":"#number","dateFinished":"2025-01-01","dateStarted":"2018-02-02","familyNameLegal":"familyNameLegal","givenNameLegal":"givenNameLegal","payrollRef":"some payrollRef","resume":"some resume","wwChildrenCheckedOn":"2018-03-03","wwChildrenExpiry":"2024-04-04","wwChildrenRef":"some wwChildrenRef","wwChildrenStatus":"Interim barred","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "tutor":{"defaultPayType":null, "customFields":{}, "id":"#number","dateFinished":"2025-01-01","dateStarted":"2018-02-02","familyNameLegal":"familyNameLegal","givenNameLegal":"givenNameLegal","payrollRef":"some payrollRef","resume":"some resume","wwChildrenCheckedOn":"2018-03-03","wwChildrenExpiry":"2024-04-04","wwChildrenRef":"some wwChildrenRef","wwChildrenStatus":"Interim barred","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0,"hybridClassesCount":0},
         "abn":"12345678901",
         "birthDate":"1991-07-20",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
@@ -318,7 +318,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -442,7 +442,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         {
         "id":"#(~~id)",
         "student":{"id":"#number", "customFields":{},"countryOfBirth":{"id":2,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"United States of America","saccCode":null},"disabilityType":"Mental illness","labourForceStatus":"Not stated","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":"#number","countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[]},
-        "tutor":{"defaultPayType":null, "customFields":{}, "id":"#number","dateFinished":"2025-01-01","dateStarted":"2018-02-02","familyNameLegal":"familyNameLegal","givenNameLegal":"givenNameLegal","payrollRef":"some payrollRef","resume":"some resume","wwChildrenCheckedOn":"2018-03-03","wwChildrenExpiry":"2024-04-04","wwChildrenRef":"some wwChildrenRef","wwChildrenStatus":"Interim barred","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "tutor":{"defaultPayType":null, "customFields":{}, "id":"#number","dateFinished":"2025-01-01","dateStarted":"2018-02-02","familyNameLegal":"familyNameLegal","givenNameLegal":"givenNameLegal","payrollRef":"some payrollRef","resume":"some resume","wwChildrenCheckedOn":"2018-03-03","wwChildrenExpiry":"2024-04-04","wwChildrenRef":"some wwChildrenRef","wwChildrenStatus":"Interim barred","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0,"hybridClassesCount":0},
         "abn":"12345678901",
         "birthDate":"1991-07-20",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
@@ -482,7 +482,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -574,7 +574,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         {
         "id":"#(~~id)",
         "student":null,
-        "tutor":{"defaultPayType":null, "customFields":{}, "id":"#number","dateFinished":"2025-01-01","dateStarted":"2018-02-02","familyNameLegal":"familyNameLegal","givenNameLegal":"givenNameLegal","payrollRef":"some payrollRef","resume":"some resume","wwChildrenCheckedOn":"2018-03-03","wwChildrenExpiry":"2024-04-04","wwChildrenRef":"some wwChildrenRef","wwChildrenStatus":"Interim barred","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "tutor":{"defaultPayType":null, "customFields":{}, "id":"#number","dateFinished":"2025-01-01","dateStarted":"2018-02-02","familyNameLegal":"familyNameLegal","givenNameLegal":"givenNameLegal","payrollRef":"some payrollRef","resume":"some resume","wwChildrenCheckedOn":"2018-03-03","wwChildrenExpiry":"2024-04-04","wwChildrenRef":"some wwChildrenRef","wwChildrenStatus":"Interim barred","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0,"hybridClassesCount":0},
         "abn":"12345678901",
         "birthDate":"1991-07-20",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
@@ -614,7 +614,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -734,7 +734,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -3191,7 +3191,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
             "financialData":[],
             "createdOn":null,
             "modifiedOn":null,
-            "messages":[],
+            "messagesCount":0,
             "rules":[{"id":"#ignore","description":"test","startDate":"2020-02-11","endDate":"2020-02-11","startDateTime":null,"endDateTime":null,"repeat":"hour","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2020-02-11","created":"#ignore","modified":"#ignore"}]
         }
         """

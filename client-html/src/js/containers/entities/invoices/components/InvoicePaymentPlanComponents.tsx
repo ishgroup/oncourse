@@ -3,14 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Currency, InvoicePaymentPlan } from "@api/model";
-import DeleteIcon from "@mui/icons-material/Delete";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { format, isPast } from "date-fns";
+import { Currency, InvoicePaymentPlan } from '@api/model';
+import DeleteIcon from '@mui/icons-material/Delete';
+import OpenInNew from '@mui/icons-material/OpenInNew';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import { format, isPast } from 'date-fns';
 import {
   decimalMinus,
   decimalPlus,
@@ -18,10 +19,10 @@ import {
   III_DD_MMM_YYYY,
   openInternalLink,
   useHoverShowStyles
-} from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { reducePayments } from "../utils";
+} from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import { reducePayments } from '../utils';
 
 const validateAmount = val => (val <= 0 ? "Payment due amount must be greater than zero" : undefined);
 
@@ -58,7 +59,7 @@ export const InvoicePaymentPlanHeader: React.FunctionComponent<PaymentPlanHeader
     classes, field, currency, index, onDelete
   } = props;
 
-  const hoverShowClasses = useHoverShowStyles();
+  const { classes: hoverShowClasses } = useHoverShowStyles();
 
   const handleDeleteClick = useCallback(e => onDelete(e, index), [index]);
 
@@ -108,7 +109,7 @@ export const InvoicePaymentPlanHeader: React.FunctionComponent<PaymentPlanHeader
       </div>
 
       {hasLink && (
-        <Tooltip title="open payment">
+        <Tooltip title={$t('open_payment')}>
           <IconButton
             classes={{
               root: classes.deleteIcon
@@ -121,7 +122,7 @@ export const InvoicePaymentPlanHeader: React.FunctionComponent<PaymentPlanHeader
       )}
 
       {isPaymentDue && onDelete && (
-        <Tooltip title="remove payment due" className={hoverShowClasses.target}>
+        <Tooltip title={$t('remove_payment_due')} className={hoverShowClasses.target}>
           <IconButton
             classes={{
               root: classes.deleteIcon
@@ -196,7 +197,7 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
       <div>
         <div className="centeredFlex pt-1 pr-4 justify-content-end">
           <Typography variant="subtitle2" noWrap>
-            Overdue
+            {$t('overdue')}
           </Typography>
           <Typography variant="body2" color="textSecondary" className="pl-1 money">
             {formatCurrency(lineOwerdue, currency.shortCurrencySymbol)}
@@ -210,7 +211,7 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
     <div>
       <div className="centeredFlex pt-1 pr-4 justify-content-end">
         <Typography variant="subtitle2" noWrap>
-          Total Owing
+          {$t('total_owing2')}
         </Typography>
         <Typography variant="body2" color="textSecondary" className="pl-1 money">
           {formatCurrency(lineOwing, currency.shortCurrencySymbol)}
@@ -225,7 +226,7 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
         <FormField
           type="date"
           name={`${item}.date`}
-          label="Date"
+          label={$t('date')}
           disabled={!isPaymentDue}
           className="mb-2 mt-2"
         />
@@ -235,7 +236,7 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
         <FormField
           type="money"
           name={`${item}.amount`}
-          label="Amount"
+          label={$t('amount')}
           validate={validatePaymentDueAmount}
           disabled={!isPaymentDue}
         />

@@ -30,12 +30,9 @@ import ish.oncourse.server.export.avetmiss.functions.GetPredominantDeliveryMode
 
 import ish.util.LocalDateUtils
 import org.apache.commons.lang3.StringUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
 import java.time.Month
-
 /**
  * AVETMISS export for outcomes - also known as file 120.
  */
@@ -417,12 +414,12 @@ class Avetmiss120Factory extends AvetmissFactory {
                     break
 
                 case ExportJurisdiction.VIC:
-                    fee = hourlyFee.multiply(100) // hourly fee in cents
+                    fee = hourlyFee.multiply(100l) // hourly fee in cents
                     break
 
                 default:
                     fee = hourlyFee.multiply(outcome.reportableHours) // fee in dollars for this unit
-                    def cents = fee.getCents()
+                    def cents = fee.getFractional()
                     fee = fee.round(MoneyRounding.ROUNDING_1D)
                     if (cents > 0 && cents < 50) {
                         fee = fee.add(Money.ONE)
@@ -439,7 +436,7 @@ class Avetmiss120Factory extends AvetmissFactory {
                 fee = Money.ZERO
             }
 
-            line.setStudentFee(fee.intValue())
+            line.setStudentFee(fee.toInteger())
 
 
             // ------------------
@@ -542,7 +539,8 @@ class Avetmiss120Factory extends AvetmissFactory {
 
             // ------------------
             // hours attended
-            line.setHoursAttended(outcome.getHoursAttended())
+            if(OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN == outcome.status || OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN_INCOMPLETE_DUE_TO_RTO == outcome.status)
+                line.setHoursAttended(outcome.getHoursAttended())
 
             // ------------------
             // associated course
@@ -583,7 +581,7 @@ class Avetmiss120Factory extends AvetmissFactory {
                 case ExportJurisdiction.QLD:
                     // ------------------
                     // hours attended
-                    if (OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN == outcome.getStatus()) {
+                    if (OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN == outcome.getStatus() || OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN_INCOMPLETE_DUE_TO_RTO == outcome.getStatus()) {
                         line.setHoursAttended(outcome.getHoursAttended())
                     } else {
                         line.setHoursAttended(null)
@@ -617,7 +615,7 @@ class Avetmiss120Factory extends AvetmissFactory {
                 case ExportJurisdiction.VIC:
                     // ------------------
                     // hours attended
-                    if (OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN == outcome.getStatus()) {
+                    if (OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN == outcome.getStatus() || OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN_INCOMPLETE_DUE_TO_RTO == outcome.getStatus()) {
                         line.setHoursAttended(outcome.getHoursAttended())
                     }
 

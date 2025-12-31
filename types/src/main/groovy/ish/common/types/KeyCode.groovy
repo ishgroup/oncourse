@@ -763,7 +763,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	FACULTY(115, "FACULTY", VIEW),
+	FACULTY(115, "Faculty", VIEW),
 
 
 	private int value

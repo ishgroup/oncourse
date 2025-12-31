@@ -6,22 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { PaymentMethod, PaymentOut } from "@api/model";
-import { Grid } from "@mui/material";
-import { addDays, compareAsc, format } from "date-fns";
-import { D_MMM_YYYY, III_DD_MMM_YYYY, LinkAdornment, openInternalLink } from "ish-ui";
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-import { FieldArray, getFormInitialValues } from "redux-form";
-import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { State } from "../../../../reducers/state";
-import { SiteState } from "../../sites/reducers/state";
-import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
+import { PaymentMethod, PaymentOut } from '@api/model';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import { addDays, compareAsc, format } from 'date-fns';
+import { D_MMM_YYYY, III_DD_MMM_YYYY, LinkAdornment, openInternalLink } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { connect } from 'react-redux';
+import { FieldArray, getFormInitialValues } from 'redux-form';
+import { ContactLinkAdornment } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import NestedTable from '../../../../common/components/list-view/components/list/ReactTableNestedList';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { NestedTableColumn } from '../../../../model/common/NestedTable';
+import { State } from '../../../../reducers/state';
+import { SiteState } from '../../sites/reducers/state';
+import { getAdminCenterLabel, openSiteLink } from '../../sites/utils';
 
 const invoiceColumns: NestedTableColumn[] = [
   {
@@ -94,7 +95,7 @@ const isDatePayedLocked = (lockedDate: any, datePayed: any, settlementDate: any)
   );
 };
 
-const getPaymentNameById = (paymentMethods: PaymentMethod[], id: number) => paymentMethods.find(payment => payment.id === id).name;
+const getPaymentNameById = (paymentMethods: PaymentMethod[], id: number) => paymentMethods.find(payment => payment.id === id)?.name;
 
 const validateSettlementDatePayed = (settlementDate, allValues) => {
   if (!settlementDate) {
@@ -163,7 +164,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
       <Grid item {...gridItemProps}>
         <Uneditable
           value={values.payeeName}
-          label="Payment to"
+          label={$t('payment_to')}
           labelAdornment={
             <ContactLinkAdornment id={values?.payeeId} />
           }
@@ -173,7 +174,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
         <FormField
           type="select"
           name="administrationCenterId"
-          label="Site"
+          label={$t('site')}
           defaultValue={values && values.administrationCenterName}
           selectLabelCondition={getAdminCenterLabel}
           items={adminSites || []}
@@ -182,17 +183,17 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
         />
       </Grid>
       {!twoColumn && <Grid item {...gridItemProps}>
-        <Uneditable value={values.type} label="Payment method type" />
+        <Uneditable value={values.type} label={$t('payment_method_type')} />
       </Grid>}
       <Grid item {...gridItemProps}>
-        <Uneditable value={paymentMethods && getPaymentNameById(paymentMethods, values.paymentMethodId)} label="Payment method name" />
+        <Uneditable value={paymentMethods && getPaymentNameById(paymentMethods, values.paymentMethodId)} label={$t('payment_method_name')} />
       </Grid>
       <Grid item {...gridItemProps}>
-        <Uneditable value={values.status} label="Status" />
+        <Uneditable value={values.status} label={$t('status')} />
       </Grid>
 
       <Grid item {...gridItemProps}>
-        <Uneditable value={getAccountById(accountItems, values.accountOut)} label="Account" />
+        <Uneditable value={getAccountById(accountItems, values.accountOut)} label={$t('account')} />
       </Grid>
    
       {values.chequeSummary && Object.keys(values.chequeSummary).length > 0 && (
@@ -203,43 +204,43 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
         </Grid>
         )}
       <Grid item {...gridItemProps}>
-        <Uneditable value={values.amount} money label="Amount" />
+        <Uneditable value={values.amount} money label={$t('amount')} />
       </Grid>
   
       <Grid item {...gridItemProps}>
         {datePayedDisabled
-            ? <Uneditable value={values.datePayed} format={v => v && format(new Date(v), III_DD_MMM_YYYY)} label="Date paid" />
+            ? <Uneditable value={values.datePayed} format={v => v && format(new Date(v), III_DD_MMM_YYYY)} label={$t('date_paid')} />
           : (
             <FormField
               type="date"
               name="datePayed"
-              label="Date paid"
+              label={$t('date_paid')}
               validate={[validateSettlementDatePayed, validateLockedDate]}
             />
           )}
       </Grid>
       <Grid item {...gridItemProps}>
         {dateBankedDisabled
-          ? <Uneditable value={values.dateBanked} format={v => v && format(new Date(v), III_DD_MMM_YYYY)} label="Date banked" />
+          ? <Uneditable value={values.dateBanked} format={v => v && format(new Date(v), III_DD_MMM_YYYY)} label={$t('date_banked')} />
           : (
             <FormField
               type="date"
               name="dateBanked"
-              label="Date banked"
+              label={$t('date_banked')}
               validate={[validateSettlementDateBanked, validateLockedDate]}
             />
         )}
       </Grid>
       <Grid item {...gridItemProps}>
-        <FormField type="multilineText" name="privateNotes" label="Private notes"  />
+        <FormField type="multilineText" name="privateNotes" label={$t('private_notes')}  />
       </Grid>
       <Grid item {...gridItemProps}>
-        <Uneditable value={values.createdBy} label="Created by" />
+        <Uneditable value={values.createdBy} label={$t('created_by')} />
       </Grid>
       <Grid item xs={12} className="saveButtonTableOffset">
         <FieldArray
           name="invoices"
-          goToLink="/invoice"
+          goToLink={`/invoice?search=paymentOutLines.paymentOut in (${values?.id})`}
           title={(values && values.invoices && values.invoices.length) === 1 ? "Invoice" : "Invoices"}
           component={NestedTable}
           columns={invoiceColumns}

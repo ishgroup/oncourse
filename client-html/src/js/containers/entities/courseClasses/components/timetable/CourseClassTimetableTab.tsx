@@ -3,48 +3,57 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseClassTutor, CourseClassType, SessionWarning, TutorAttendance } from "@api/model";
-import Settings from "@mui/icons-material/Settings";
-import { FormControlLabel, Grid, MenuItem } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { addDays, addHours, addMinutes, differenceInMinutes, subDays } from "date-fns";
-import { appendTimezone, normalizeNumber, normalizeNumberToPositive, SelectItemDefault, validateMinMaxDate } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from "redux-form";
-import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
-import uniqid from "../../../../../common/utils/uniqid";
-import { instantAsyncValidateFieldArrayItemCallback } from "../../../../../common/utils/validation";
-import history from "../../../../../constants/History";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { ClassCostExtended, CourseClassExtended, SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
-import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
-import { State } from "../../../../../reducers/state";
-import CalendarDayBase from "../../../../timetable/components/calendar/components/day/CalendarDayBase";
-import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
-import { getAllMonthsWithSessions } from "../../../../timetable/utils";
-import { setCourseClassSessionsWarnings } from "../../actions";
-import { getSessionsWithRepeated, setShiftedTutorAttendances } from "../../utils";
+import { CourseClassTutor, CourseClassType, Room, SessionWarning, TutorAttendance } from '@api/model';
+import { CSSObject } from '@emotion/serialize';
+import Settings from '@mui/icons-material/Settings';
+import { FormControlLabel, Grid, MenuItem } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import $t from '@t';
+import clsx from 'clsx';
+import { addDays, addHours, addMinutes, differenceInMinutes, subDays } from 'date-fns';
+import {
+  appendTimezone,
+  AppTheme,
+  normalizeNumber,
+  normalizeNumberToPositive,
+  SelectItemDefault,
+  validateMinMaxDate
+} from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { addActionToQueue, removeActionsFromQueue } from '../../../../../common/actions';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import ExpandableContainer from '../../../../../common/components/layout/expandable/ExpandableContainer';
+import uniqid from '../../../../../common/utils/uniqid';
+import { instantAsyncValidateFieldArrayItemCallback } from '../../../../../common/utils/validation';
+import history from '../../../../../constants/History';
+import { EditViewProps } from '../../../../../model/common/ListView';
+import { ClassCostExtended, CourseClassExtended, SessionRepeatTypes } from '../../../../../model/entities/CourseClass';
+import { TimetableMonth, TimetableSession } from '../../../../../model/timetable';
+import { State } from '../../../../../reducers/state';
+import CalendarDayBase from '../../../../timetable/components/calendar/components/day/CalendarDayBase';
+import CalendarMonthBase from '../../../../timetable/components/calendar/components/month/CalendarMonthBase';
+import { getAllMonthsWithSessions } from '../../../../timetable/utils';
+import { setCourseClassSessionsWarnings } from '../../actions';
+import { getSessionsWithRepeated, setShiftedTutorAttendances } from '../../utils';
 import {
   courseClassCloseBulkUpdateModal,
   courseClassOpenBulkUpdateModal,
   courseClassSelectAllSession,
   courseClassSelectSingleSession,
   postCourseClassSessions
-} from "./actions";
-import CopySessionDialog from "./CopySessionDialog";
-import CourseClassBulkChangeSession from "./CourseClassBulkChangeSession";
-import CourseClassExpandableSession from "./CourseClassExpandableSession";
-import CourseClassTimetableService from "./services/CourseClassTimetableService";
+} from './actions';
+import CopySessionDialog from './CopySessionDialog';
+import CourseClassBulkChangeSession from './CourseClassBulkChangeSession';
+import CourseClassExpandableSession from './CourseClassExpandableSession';
+import CourseClassTimetableService from './services/CourseClassTimetableService';
 
-const styles = () => createStyles({
+const styles = (theme: AppTheme, p, classes): CSSObject => ({
     root: {
       width: "100%"
     },
@@ -53,13 +62,13 @@ const styles = () => createStyles({
     },
     sessionExpansionPanelSummayRoot: {
       "&:hover": {
-        "& $sessionActionButton, & $sessionActionCheckBox": {
+        [`& .${classes.sessionActionButton}, & .${classes.sessionActionCheckBox}`]: {
           visibility: "visible"
         }
       }
     },
     visibleActionButtons: {
-      "& $sessionActionButton, & $sessionActionCheckBox": {
+      [`& .${classes.sessionActionButton}, & .${classes.sessionActionCheckBox}`]: {
         visibility: "visible"
       }
     },
@@ -74,12 +83,37 @@ const styles = () => createStyles({
     },
     sessionItemFormControlRoot: {
       marginRight: 0
+    },
+    siteFields: {
+      transition: theme.transitions.create(["grid-template-rows", "grid-template-columns"], {
+        easing: theme.transitions.easing.easeInOut
+      }),
+      display: 'grid',
+      gridTemplateRows: '1fr 0fr',
+      gridTemplateColumns: '1fr',
+      overflow: 'hidden',
+      '&.twoColumn': {
+        gridTemplateRows: '1fr',
+        gridTemplateColumns: '1fr 0fr',
+      }
+    },
+    roomIdField: {
+      minWidth: '0px',
+      minHeight: '0px'
+    },
+    roomIdVisible: {
+      gap: theme.spacing(2, 3),
+      gridTemplateRows: '1fr 1fr',
+      '&.twoColumn': {
+        gridTemplateRows: '1fr',
+        gridTemplateColumns: '1fr 1fr',
+      }
     }
   });
 
 interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   classes?: any;
-  virualSites?: SelectItemDefault[];
+  virualSites?: (SelectItemDefault & { rooms: Room[] })[];
   sessionWarnings?: SessionWarning[];
   sessionSelection?: any[];
   bulkSessionModalOpened?: boolean;
@@ -88,9 +122,19 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
 
 let pendingSessionActionArgs = null;
 
-const validateStartDate = (value, allValues: CourseClassExtended) => validateMinMaxDate(value, '', allValues?.sessions[0]?.start, '', 'Start date cannot be after the first session');
+const validateStartDate = (value, allValues: CourseClassExtended) => {
+  if (allValues.type === 'Distant Learning') {
+    return (allValues.endDateTime && !value && $t("start_date_is_required_is_end_date_is_set")) || validateMinMaxDate(value, '', allValues.endDateTime, '', $t("start_date_cannot_be_set_after_the_end_date"));
+  }
+  return validateMinMaxDate(value, '', allValues?.sessions && allValues.sessions[0]?.start, '', 'Start date cannot be after the first session');
+};
 
-const validateEndDate = (value, allValues: CourseClassExtended) => validateMinMaxDate(value, allValues?.sessions[allValues?.sessions?.length - 1]?.start, '', 'End date cannot be before the last session');
+const validateEndDate = (value, allValues: CourseClassExtended) => {
+  if (allValues.type === 'Distant Learning') {
+    return (allValues.startDateTime && !value && $t("end_date_is_required_is_start_date_is_set")) || validateMinMaxDate(value, allValues.startDateTime, '', $t("end_date_cannot_be_set_before_the_start_date"));
+  }
+  return validateMinMaxDate(value, allValues?.sessions && allValues.sessions[allValues.sessions.length - 1]?.start, '', 'End date cannot be before the last session');
+};
 
 const validateSessionUpdate = (id: number, sessions: TimetableSession[], dispatch, form) => {
   const updatedForValidate = sessions.map(({ index, ...rest }) => ({ ...rest }));
@@ -165,6 +209,8 @@ const CourseClassTimetableTab = ({
   const [openCopyDialog, setOpenCopyDialog] = React.useState({ open: false, session: { id: -1 } });
   const [months, setMonths] = useState<TimetableMonth[]>([]);
   const [sessionMenu, setSessionMenu] = useState(null);
+  
+  const virualRooms = useMemo(() => values.virtualSiteId ? virualSites?.find(s => s.value === values.virtualSiteId)?.rooms : [], [virualSites, values.virtualSiteId]);
 
   const onSelfPacedChange = (e, value) => {
     e.preventDefault();
@@ -221,7 +267,7 @@ const CourseClassTimetableTab = ({
         )
       );
     }
-  }, [expandedSession, values.sessions && values.sessions.length, values.courseName]);
+  }, [expandedSession, values.sessions, values.courseName]);
 
   useEffect(() => {
     if (!twoColumn && expanded.includes(tabIndex)) {
@@ -410,7 +456,7 @@ const CourseClassTimetableTab = ({
           search: decodeURIComponent(search.toString())
         });
 
-        toogleFullScreenEditView();
+        toogleFullScreenEditView(true);
       }
     },
     [twoColumn, expanded, tabIndex]
@@ -654,6 +700,10 @@ const CourseClassTimetableTab = ({
     dispatch(courseClassSelectSingleSession(session));
   }, []);
 
+  const onVirtualSiteChange = id => {
+    dispatch(change(form, 'roomId', id ? virualSites?.find(s => s.value === id)?.rooms[0]?.id : null));
+  };
+  
   const renderedMonths = useMemo(
     () => months.map((m, i) => (
       <CalendarMonthBase key={i} fullWidth showYear {...m}>
@@ -727,7 +777,7 @@ const CourseClassTimetableTab = ({
             debounced={false}
           />
         )}
-        label="Hybrid"
+        label={$t('hybrid')}
         labelPlacement="start"
       />
     </div>
@@ -790,45 +840,42 @@ const CourseClassTimetableTab = ({
           )}
           >
           {["Distant Learning", "Hybrid"].includes(values.type) && (
-            <Grid container columnSpacing={3} rowSpacing={2}>
-              {isHybrid && <>
+            <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="dateTime"
-                    label="Hybrid class start date"
+                    label={$t('class_start_date')}
                     name="startDateTime"
                     validate={validateStartDate}
                     timezone={values.sessions[0]?.siteTimezone}
-                    required
+                    required={isHybrid}
                   />
                 </Grid>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="dateTime"
-                    label="Hybrid class end date"
+                    label={$t('class_end_date')}
                     name="endDateTime"
                     validate={validateEndDate}
                     timezone={values.sessions[values.sessions?.length - 1]?.siteTimezone}
-                    required
+                    required={isHybrid}
                   />
                 </Grid>
+              {isHybrid ? <Grid item xs={twoColumn ? 3 : 12}>
+                <FormField
+                  type="number"
+                  label={$t('minimum_sessions_to_complete')}
+                  name="minimumSessionsToComplete"
+                  step="1"
+                  normalize={normalizeNumberToPositive}
+                  debounced={false}
+                  required
+                />
+              </Grid> : <>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="number"
-                    label="Minimum sessions to complete"
-                    name="minimumSessionsToComplete"
-                    step="1"
-                    normalize={normalizeNumberToPositive}
-                    debounced={false}
-                    required
-                  />
-                </Grid>
-              </>}
-              {!isHybrid && <>
-                <Grid item xs={twoColumn ? 3 : 12}>
-                  <FormField
-                    type="number"
-                    label="Maximum days to complete"
+                    label={$t('maximum_days_to_complete')}
                     name="maximumDays"
                     min="1"
                     max="99"
@@ -841,7 +888,7 @@ const CourseClassTimetableTab = ({
               <Grid item xs={twoColumn ? 3 : 12}>
                 <FormField
                   type="number"
-                  label="Expected study hours"
+                  label={$t('expected_study_hours')}
                   name="expectedHours"
                   min="1"
                   max="99"
@@ -852,14 +899,27 @@ const CourseClassTimetableTab = ({
                 />
               </Grid>
               <Grid item xs={twoColumn ? 6 : 12}>
-                <FormField
-                  type="select"
-                  label="Virtual site"
-                  name="virtualSiteId"
-                  items={virualSites}
-                  allowEmpty
-                />
+                <div className={clsx(classes.siteFields, values.virtualSiteId && classes.roomIdVisible, { twoColumn })}>
+                  <FormField
+                    type="select"
+                    label={$t('virtual_site')}
+                    name="virtualSiteId"
+                    items={virualSites}
+                    onChange={onVirtualSiteChange}
+                    allowEmpty
+                  />
+                  <FormField
+                    type="select"
+                    name="roomId"
+                    selectValueMark="id"
+                    selectLabelMark="name"
+                    className={classes.roomIdField}
+                    label={$t('virtual_room')}
+                    items={virualRooms}
+                  />
+                </div>
               </Grid>
+
             </Grid>
           )}
           {["With Sessions", "Hybrid"].includes(values.type) && <>
@@ -909,4 +969,4 @@ const mapStateToProps = (state: State) => ({
   bulkSessionModalOpened: state.courseClassesBulkSession.modalOpened
 });
 
-export default connect<any, any, any>(mapStateToProps)(withStyles(styles)(CourseClassTimetableTab));
+export default connect<any, any, any>(mapStateToProps)(withStyles(CourseClassTimetableTab, styles));

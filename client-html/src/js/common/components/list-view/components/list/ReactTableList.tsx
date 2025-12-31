@@ -6,11 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Column, DataResponse, TableModel } from "@api/model";
-import DragIndicator from "@mui/icons-material/DragIndicator";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Typography from "@mui/material/Typography";
-import makeStyles from "@mui/styles/makeStyles";
+import { Column, DataResponse, TableModel } from '@api/model';
+import DragIndicator from '@mui/icons-material/DragIndicator';
+import { TableSortLabel, Typography } from '@mui/material';
+import $t from '@t';
 import {
   ColumnDef,
   ColumnOrderState,
@@ -22,21 +21,21 @@ import {
   useReactTable,
   VisibilityState
 } from '@tanstack/react-table';
-import clsx from "clsx";
-import { AnyArgFunction, StringKeyObject, StyledCheckbox } from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
-import { CustomColumnFormats } from "../../../../../model/common/ListView";
-import StaticProgress from "../../../progress/StaticProgress";
-import ColumnChooser from "./components/ColumnChooser";
-import InfiniteLoaderList from "./components/InfiniteLoaderList";
-import TagDotRenderer from "./components/TagDotRenderer";
-import { CHECKLISTS_COLUMN, CHOOSER_COLUMN, COLUMN_MIN_WIDTH, COLUMN_WITH_COLORS, SELECTION_COLUMN } from "./constants";
-import styles from "./styles";
-import { getTableRows } from "./utils";
+import { debounce } from 'es-toolkit/compat';
+import { AnyArgFunction, StringKeyObject, StyledCheckbox } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd-next';
+import { makeStyles } from 'tss-react/mui';
+import { CustomColumnFormats } from '../../../../../model/common/ListView';
+import StaticProgress from '../../../progress/StaticProgress';
+import ColumnChooser from './components/ColumnChooser';
+import InfiniteLoaderList from './components/InfiniteLoaderList';
+import TagDotRenderer from './components/TagDotRenderer';
+import { CHECKLISTS_COLUMN, CHOOSER_COLUMN, COLUMN_MIN_WIDTH, COLUMN_WITH_COLORS, SELECTION_COLUMN } from './constants';
+import styles from './styles';
+import { getTableRows } from './utils';
 
-const useStyles = makeStyles(styles);
+const useStyles = makeStyles()(styles);
 
 const listRef = React.createRef<any>();
 
@@ -82,9 +81,9 @@ const Table = ({
   const [columnOrder, onColumnOrderChange] = useState<ColumnOrderState>([]);
   const [rowSelection, onRowSelectionChange] = useState<RowSelectionState>(reduceSelection(selection));
 
-  const tableRef = useRef<any>();
+  const tableRef = useRef<any>(undefined);
 
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   useEffect(() => {
     if (tableRef.current) {
@@ -170,10 +169,10 @@ const Table = ({
     getRowId
   });
 
-  const onSelectionChangeHangler = useCallback<any>(debounce(() => {
-    onSelectionChange(Object.keys(table.getState().rowSelection).map(k => k));
-  }, 500), [selection]);
-
+  const onSelectionChangeHangler = (newSelection: RowSelectionState) => {
+    onSelectionChange(Object.keys(newSelection).map(k => k));
+  };
+  
   const onHiddenChange = useCallback<any>(debounce(() => {
     const updated = {};
     columns.forEach(c => {
@@ -202,7 +201,7 @@ const Table = ({
       updated[id] = true;
     }
     onRowSelectionChange(updated);
-    onSelectionChangeHangler();
+    onSelectionChangeHangler(updated);
   };
 
   const onRowSelect = (e, row) => {
@@ -211,7 +210,7 @@ const Table = ({
 
     if (e.shiftKey && currentSelectionKeys.length) {
       const rowsById = table.getRowModel().rowsById;
-      const selectionIndicies = currentSelectionKeys.map(id => rowsById[id].index);
+      const selectionIndicies = currentSelectionKeys.filter(id => rowsById[id]).map(id => rowsById[id].index);
       const firstSelectedIndex = Math.min(...selectionIndicies);
       const lastSelectedIndex = Math.max(...selectionIndicies);
 
@@ -223,7 +222,7 @@ const Table = ({
         }, {});
 
       onRowSelectionChange(selectionData);
-      onSelectionChangeHangler();
+      onSelectionChangeHangler(selectionData);
       return;
     }
     if (e.ctrlKey || e.metaKey) {
@@ -231,7 +230,7 @@ const Table = ({
       return;
     }
     onRowSelectionChange({ [row.id]: true });
-    onSelectionChangeHangler();
+    onSelectionChangeHangler({ [row.id]: true });
   };
 
   const onRowCheckboxSelect = (e, id) => {
@@ -282,7 +281,7 @@ const Table = ({
     return {
       userSelect: 'none',
       ...draggableStyle,
-      ...isDragging ? { left: draggableStyle.left - sidebarWidth + tableRef.current.scrollLeft } : {}
+      ...(isDragging ? { left: draggableStyle.left - sidebarWidth + tableRef.current.scrollLeft } : {})
     };
   };
 
@@ -308,7 +307,7 @@ const Table = ({
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 className={classes.headerRow}
-                style={{ ...snapshot.isDraggingOver ? { pointerEvents: "none" } : {} }}
+                style={{ ...(snapshot.isDraggingOver ? { pointerEvents: "none" } : {}) }}
               >
                 {headerGroup.headers.filter(({ column }) => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map(({
                                                                                                                                column,
@@ -322,7 +321,7 @@ const Table = ({
                   const canResize = !columnDef.disableResizing;
 
                   return (
-                    <Draggable
+                    (<Draggable
                       key={columnIndex}
                       draggableId={columnIndex.toString()}
                       index={columnIndex}
@@ -331,7 +330,7 @@ const Table = ({
                       {(provided, snapshot) => {
                         const isDragging = snapshot.isDragging;
                         return (
-                          <div
+                          (<div
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             style={getItemStyle(
@@ -341,7 +340,7 @@ const Table = ({
                           >
                             <div
                               style={{ width: column.getSize() }}
-                              className={clsx(
+                              className={cx(
                                 classes.draggableCellItem,
                                 "text-truncate text-nowrap",
                                 {
@@ -364,7 +363,7 @@ const Table = ({
                                   <span  {...provided.dragHandleProps} className="relative">
                                     <DragIndicator
                                       className={
-                                        clsx(
+                                        cx(
                                           "dndActionIcon",
                                           classes.dragIndicator,
                                           {
@@ -390,7 +389,7 @@ const Table = ({
                                         : null
                                       }
                                       classes={{
-                                        root: clsx(
+                                        root: cx(
                                           canSort ? classes.canSort : classes.noSort,
                                           columnDef.colClass,
                                           "overflow-hidden"
@@ -416,10 +415,10 @@ const Table = ({
                                 />
                               }
                             </div>
-                          </div>
+                          </div>)
                         );
                       }}
-                    </Draggable>
+                    </Draggable>)
                   );
                 })}
               </div>
@@ -446,7 +445,7 @@ const Table = ({
   ) : (
     <div className="noRecordsMessage h-100">
       <Typography variant="h6" color="inherit" align="center">
-        No data
+        {$t('no_data')}
       </Typography>
     </div>
   )), [sorting, columnSizing, columnVisibility, columnOrder, rowSelection, recordsCount, mainContentWidth, threeColumn, onRowDoubleClick]);

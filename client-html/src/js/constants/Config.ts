@@ -3,8 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PreferenceEnum } from "@api/model";
-import { EntityName } from "../model/entities/common";
+import { PreferenceEnum } from '@api/model';
+import { CHECKOUT_SELECTION_FORM_NAME } from '../containers/checkout/components/CheckoutSelection';
+import {
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
+} from '../containers/checkout/components/fundingInvoice/CheckoutFundingInvoiceSummaryList';
+import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from '../containers/checkout/components/items/components/CkecoutItemViewForm';
+import { EntityName } from '../model/entities/common';
+import { SEND_MESSAGE_FORM_NAME } from './Forms';
 
 export const SIMPLE_SEARCH_REGEX = /(^[^~\s."#]+$)/;
 
@@ -24,7 +30,11 @@ export const APP_BAR_HEIGHT = 64;
 
 export const LIST_PAGE_SIZE = 50;
 
+export const NESTED_LIST_PAGE_SIZE = 20;
+
 export const PLAIN_LIST_MAX_PAGE_SIZE = 65000;
+
+export const PASSWORD_PASS_SCORE = 2;
 
 export const LIST_TWO_COLUMN_ROW_HEIGHT = 27;
 
@@ -43,10 +53,6 @@ export const DASHBOARD_ACTIVITY_STORAGE_NAME = "dashboardActivityState";
 export const ENTITY_AQL_STORAGE_NAME = "entityAqlState";
 
 // // Google constants
-
-// Google Maps
-
-export const GOOGLE_MAPS_API_KEY = "QUl6YVN5Q1lnMlIzMnc4TVhtNXBwNEJjalNlLTRuUDFHYTNaa0p3";
 
 // Google tag manager
 export const GOOGLE_TAG_MANAGER = "GTM-PQ23P93";
@@ -133,4 +139,11 @@ export const NOTE_ENTITIES: EntityName[] = [
   "Room",
   "Site",
   "Faculty"
+];
+
+export const FORM_NAMES_ALLOWED_FOR_REFRESH = [
+  CHECKOUT_SELECTION_FORM_NAME,
+  CHECKOUT_ITEM_EDIT_VIEW_FORM,
+  SEND_MESSAGE_FORM_NAME,
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
 ];

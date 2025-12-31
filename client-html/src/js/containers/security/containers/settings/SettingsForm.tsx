@@ -3,26 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { FormRadioButtons, Switch } from "ish-ui";
-import isEmpty from "lodash.isempty";
-import React from "react";
-import { connect } from "react-redux";
-import { change, Field, Form, getFormValues, initialize, reduxForm } from "redux-form";
-import RouteChangeConfirm from "../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
-import { FormModelSchema } from "../../../../model/preferences/FormModelShema";
-import * as Model from "../../../../model/preferences/security/SecuritySettings";
-import { State } from "../../../../reducers/state";
-import { PREFERENCES_AUDITS_LINK } from "../../../preferences/constants";
+import { Grid, Typography } from '@mui/material';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import $t from '@t';
+import { FormRadioButtons, Switch } from 'ish-ui';
+import { isEmpty } from 'es-toolkit/compat'
+import React from 'react';
+import { connect } from 'react-redux';
+import { change, Field, Form, getFormValues, initialize, reduxForm } from 'redux-form';
+import RouteChangeConfirm from '../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../common/utils/highlightFormErrors';
+import { FormModelSchema } from '../../../../model/preferences/FormModelShema';
+import * as Model from '../../../../model/preferences/security/SecuritySettings';
+import { State } from '../../../../reducers/state';
+import { PREFERENCES_AUDITS_LINK } from '../../../preferences/constants';
 
-const manualUrl = getManualLink("users_Users");
+const manualUrl = getManualLink("security-settings");
 
 class SettingsForm extends React.Component<any, any> {
   private formModel: FormModelSchema;
@@ -118,7 +118,7 @@ class SettingsForm extends React.Component<any, any> {
           getAuditsUrl={PREFERENCES_AUDITS_LINK}
           disabled={!dirty}
           invalid={invalid}
-          title="Settings"
+          title={$t('settings')}
           disableInteraction
           createdOn={v => v.created}
           modifiedOn={v => v.modified}
@@ -140,7 +140,7 @@ class SettingsForm extends React.Component<any, any> {
                       stringValue
                     />
                   )}
-                  label="Automatically disable inactive accounts"
+                  label={$t('automatically_disable_inactive_accounts')}
                 />
 
                 <FormControlLabel
@@ -156,7 +156,7 @@ class SettingsForm extends React.Component<any, any> {
                       stringValue
                     />
                   )}
-                  label="Require better passwords"
+                  label={$t('require_better_passwords')}
                 />
 
                 <FormControlLabel
@@ -175,7 +175,7 @@ class SettingsForm extends React.Component<any, any> {
                       noWrap
                       onClick={e => e.preventDefault()}
                     >
-                      Require password change every
+                      {$t('require_password_change_every')}
                       {" "}
                       <FormField
                         type="number"
@@ -196,7 +196,7 @@ class SettingsForm extends React.Component<any, any> {
                         disabled={!enablePasswordScheduleField}
                       />
                       {" "}
-                      days
+                      {$t('days')}
                     </Typography>
                   )}
                 />
@@ -209,7 +209,7 @@ class SettingsForm extends React.Component<any, any> {
                   control={<Switch onChange={this.onEnableTOTPSchedule} checked={enableTOTPScheduleField} />}
                   label={(
                     <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
-                      Require two factor authentication every
+                      {$t('require_two_factor_authentication_every')}
                       {" "}
                       <FormField
                         type="number"
@@ -231,7 +231,7 @@ class SettingsForm extends React.Component<any, any> {
                         disabled={!enableTOTPScheduleField}
                       />
                       {" "}
-                      hours
+                      {$t('hours')}
                     </Typography>
                   )}
                 />
@@ -240,7 +240,7 @@ class SettingsForm extends React.Component<any, any> {
 
             <Grid item xs={12} sm={8} className="mt-3">
               <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
-                Disable account after
+                {$t('disable_account_after')}
                 {" "}
                 <FormField
                   type="number"
@@ -261,12 +261,12 @@ class SettingsForm extends React.Component<any, any> {
                   debounced={false}
                 />
                 {" "}
-                incorrect login attempts
+                {$t('incorrect_login_attempts')}
               </Typography>
             </Grid>
 
             <Grid item xs={12} sm={8} className="mt-3">
-              <Typography className="heading">Two factor authentication</Typography>
+              <Typography className="heading">{$t('two_factor_authentication')}</Typography>
 
               <Field
                 name={this.formModel.SecurityTFAStatus.uniqueKey}

@@ -5,16 +5,14 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import { CheckoutPaymentPlan, PaymentMethod } from "@api/model";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { addDays, compareAsc, isSameDay } from "date-fns";
-import { format } from "date-fns-tz";
+import { CheckoutPaymentPlan, PaymentMethod } from '@api/model';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import { FormControlLabel, Tooltip, Typography } from '@mui/material';
+import $t from '@t';
+import clsx from 'clsx';
+import { addDays, compareAsc, isSameDay } from 'date-fns';
+import { format } from 'date-fns-tz';
+import { debounce } from 'es-toolkit/compat';
 import {
   BooleanArgFunction,
   D_MMM_YYYY,
@@ -25,37 +23,37 @@ import {
   StringArgFunction,
   StyledCheckbox,
   YYYY_MM_DD_MINUSED
-} from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, getFormValues } from "redux-form";
-import { checkPermissions } from "../../../../../common/actions";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { UserPreferencesState } from "../../../../../common/reducers/userPreferencesReducer";
-import { CheckoutItem, CheckoutPayment, CheckoutSummary } from "../../../../../model/checkout";
-import { State } from "../../../../../reducers/state";
-import { getAccountTransactionLockedDate } from "../../../../preferences/actions";
+} from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, getFormValues } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { checkPermissions } from '../../../../../common/actions';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { UserPreferencesState } from '../../../../../common/reducers/userPreferencesReducer';
+import { CheckoutItem, CheckoutPayment, CheckoutSummary } from '../../../../../model/checkout';
+import { State } from '../../../../../reducers/state';
+import { getAccountTransactionLockedDate } from '../../../../preferences/actions';
 import {
   checkoutGetSavedCard,
   checkoutSetPaymentMethod,
   checkoutSetPaymentPlans,
   clearCcIframeUrl
-} from "../../../actions/checkoutPayment";
+} from '../../../actions/checkoutPayment';
 import {
   checkoutGetVoucherPromo,
   checkoutRemoveVoucher,
   checkoutUncheckAllPreviousInvoice,
   checkoutUpdatePromo,
   checkoutUpdateSummaryField
-} from "../../../actions/checkoutSummary";
-import { CheckoutPage } from "../../../constants";
-import HeaderField, { HeaderFieldTypo } from "../../HeaderField";
-import SelectedPromoCodesRenderer from "../../summary/promocode/SelectedPromoCodesRenderer";
-import CheckoutPaymentPlans from "./payment-plans/CheckoutPaymentPlans";
+} from '../../../actions/checkoutSummary';
+import { CheckoutPage } from '../../../constants';
+import HeaderField, { HeaderFieldTypo } from '../../HeaderField';
+import SelectedPromoCodesRenderer from '../../summary/promocode/SelectedPromoCodesRenderer';
+import CheckoutPaymentPlans from './payment-plans/CheckoutPaymentPlans';
 
-const styles = () => createStyles({
+const styles = () => ({
   success: {
     color: "green",
     border: "2px solid",
@@ -90,6 +88,7 @@ interface PaymentHeaderFieldProps {
   paymentProcessStatus?: any;
   paymentMethod?: string;
   formInvalid?: boolean;
+  isProcessing?: boolean;
   getVoucher?: StringArgFunction;
   removeVoucher?: NumberArgFunction;
   setDisablePayment?: BooleanArgFunction;
@@ -141,7 +140,8 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     setDisablePayment,
     setPaymentPlans,
     values,
-    paymentGateway
+    paymentGateway,
+    isProcessing
   } = props;
   
   const payerContact = useMemo(() => checkoutSummary.list.find(l => l.payer).contact, [checkoutSummary.list]);
@@ -364,7 +364,12 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     });
   };
 
+  const query = new URLSearchParams(window.location.search);
+  const transactionId = query.get("payment_intent");
+
   useEffect(() => {
+      if (transactionId || paymentProcessStatus === "success") return;
+
       let updated = decimalPlus(
         decimalMinus(checkoutSummary.finalTotal, classVouchersTotal),
         checkoutSummary.previousOwing.invoiceTotal,
@@ -395,11 +400,14 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     [
       vouchersTotal,
       classVouchersTotal,
+      paymentProcessStatus,
       checkoutSummary.finalTotal,
       checkoutSummary.previousOwing.invoices,
       checkoutSummary.previousCredit.invoices]);
 
   useEffect(() => {
+    if (transactionId || paymentProcessStatus === "success") return;
+
     const planItems = [];
     let updatedPaymentPlans = [];
 
@@ -477,6 +485,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     const plansFinal = [
       {
         amount: checkoutSummary.payNowTotal,
+        payDate: checkoutSummary.paymentDate
       },
       ...[
         ...updatedPaymentPlans,
@@ -499,6 +508,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     classVouchersTotal,
     payerContact,
     paymentPlans,
+    paymentProcessStatus,
     checkoutSummary.invoiceDueDate,
     checkoutSummary.payNowTotal,
     checkoutSummary.previousOwing.invoices,
@@ -512,7 +522,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     <>
       <div className="pl-2 pr-2">
         <HeaderFieldTypo
-          title="This invoice"
+          title={$t('this_invoice')}
           field="thisInvoice"
           amount={checkoutSummary.finalTotal}
           currencySymbol={currencySymbol}
@@ -521,7 +531,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         />
         {Boolean(checkoutSummary.previousCredit.invoices.length) && (
           <HeaderFieldTypo
-            title="Apply previous credit"
+            title={$t('apply_previous_credit')}
             activeField={activeField}
             field={CheckoutPage.previousCredit}
             onClick={onClickPreviousCredit}
@@ -579,7 +589,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
 
       <HeaderField
         name="vouchers"
-        placeholder="Enter voucher code"
+        placeholder={$t('enter_voucher_code')}
         onFocus={clearSelectedDiscount}
         validate={validateVoucher}
         form={form}
@@ -607,19 +617,19 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           canChangePaymentDate={canChangePaymentDate}
         />
         <div className="centeredFlex">
-          <div className="secondaryHeading flex-fill">Payment method</div>
+          <div className="secondaryHeading flex-fill">{$t('payment_method')}</div>
         </div>
 
         <FormField
           type="select"
           name="payment_method"
-          placeholder="Payment method"
+          placeholder={$t('payment_method')}
           items={isZeroPayment ? noPaymentItems : paymentTypes}
           onChange={hendelMethodChange}
-          disabled={paymentProcessStatus === "success" || isZeroPayment || formInvalid}
+          disabled={isProcessing || paymentProcessStatus === "success" || isZeroPayment || formInvalid}
         />
-        {selectedPaymentMethod && selectedPaymentMethod.type === "Credit card" && (
-          <Tooltip title="Retain a secure link to the bank which allows this card to be used for future billing or payment plans">
+        {!['STRIPE', 'STRIPE_TEST'].includes(paymentGateway) && selectedPaymentMethod && selectedPaymentMethod.type === "Credit card" && (
+          <Tooltip title={$t('retain_a_secure_link_to_the_bank_which_allows_this')}>
             <FormControlLabel
               classes={{
                 root: "mt-1 mb-3"
@@ -630,7 +640,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
                   onChange={onAllowAutoPayChange}
                 />
               )}
-              label="Store Card"
+              label={$t('store_card')}
               disabled={paymentProcessStatus === "success"}
             />
           </Tooltip>
@@ -639,7 +649,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           <div className="relative selectedItemArrow mb-2">
             <div className={clsx("centeredFlex", classes.success)}>
               <Typography variant="body2" className="flex-fill fontWeight600" component="span">
-                Paid
+                {$t('paid')}
               </Typography>
               <Typography variant="body2" component="span" className="fontWeight600 money">
                 {formatCurrency(checkoutSummary.payNowTotal, currencySymbol)}
@@ -661,10 +671,11 @@ const mapStateToProps = (state: State, ownProps) => ({
   checkoutSummary: state.checkout.summary,
   checkoutItems: state.checkout.items,
   savedCreditCard: state.checkout.payment.savedCreditCard,
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol,
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol,
   defaultTerms: state.invoices.defaultTerms,
   paymentProcessStatus: state.checkout.payment.process.status,
   paymentMethod: state.checkout.payment.selectedPaymentType,
+  isProcessing: state.checkout.payment.isFetchingDetails || state.checkout.payment.isProcessing,
   lockedDate: state.lockedDate,
   canChangePaymentDate: state.access["/a/v1/preference/lockedDate"] && state.access["/a/v1/preference/lockedDate"]["GET"]
 });
@@ -691,4 +702,4 @@ const CheckoutPaymentHeaderField = connect<any, any, any>(
   mapDispatchToProps
 )(CheckoutPaymentHeaderFieldForm);
 
-export default withStyles(styles)(CheckoutPaymentHeaderField);
+export default withStyles(CheckoutPaymentHeaderField, styles);

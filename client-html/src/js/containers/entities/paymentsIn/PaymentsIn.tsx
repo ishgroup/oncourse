@@ -2,33 +2,34 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import { PaymentIn } from "@api/model";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { checkPermissions } from "../../../common/actions";
-import { clearListState, getFilters, } from "../../../common/components/list-view/actions";
-import ListView from "../../../common/components/list-view/ListView";
-import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup } from "../../../model/common/ListView";
-import { State } from "../../../reducers/state";
-import { getAccountTransactionLockedDate } from "../../preferences/actions";
-import { getAdministrationSites } from "../sites/actions";
-import PaymentInCogwheel from "./components/PaymentInCogwheel";
-import PaymentInsEditView from "./components/PaymentInEditView";
+import { PaymentIn } from '@api/model';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { checkPermissions } from '../../../common/actions';
+import { getFilters, } from '../../../common/components/list-view/actions';
+import ListView from '../../../common/components/list-view/ListView';
+import { getWindowHeight, getWindowWidth } from '../../../common/utils/common';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
+import { getAccountTransactionLockedDate } from '../../preferences/actions';
+import { getAdministrationSites } from '../sites/actions';
+import PaymentInCogwheel from './components/PaymentInCogwheel';
+import PaymentInsEditView from './components/PaymentInEditView';
 
 const isNotFailed = "(status !== FAILED and status !== FAILED_CARD_DECLINED and status !== FAILED_NO_PLACES and status !== CORRUPTED)";
 const isSuccess = "status == SUCCESS";
 const isFailed = "(status == FAILED or status == FAILED_CARD_DECLINED or status == FAILED_NO_PLACES or status == CORRUPTED)";
 const bankingIsNull = "bankingId == null";
 const bankingIsNotNull = "bankingId !== null";
-// eslint-disable-next-line max-len
+
 const isNotSystem = "(paymentMethod.type !== CONTRA and paymentMethod.type !== INTERNAL and paymentMethod.type !== REVERSE and paymentMethod.type !== VOUCHER)";
 const reversable = "(paymentMethod.type !== INTERNAL and paymentMethod.type !== REVERSE and paymentMethod.type !== VOUCHER)";
-// eslint-disable-next-line max-len
+
 const isSystem = "(paymentMethod.type == CONTRA or paymentMethod.type == INTERNAL or paymentMethod.type == REVERSE or paymentMethod.type == VOUCHER)";
 const isNotReversed = "reversedById == null";
 const isReversal = "reversalOfId !== null";
@@ -67,7 +68,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const manualLink = getManualLink("processingEnrolments_PaymentIn");
+const manualLink = getManualLink("processing-a-payment-in");
 
 const nameCondition = (paymentIn: PaymentIn) => paymentIn.paymentInType;
 
@@ -79,7 +80,6 @@ const PaymentsIn = ({
     getLockedDate,
     getAdministrationSites,
     getQePermissions,
-    clearListState,
     hasQePermissions
   }) => {
   const [createMenuOpen, setCreateCreateMenuOpen] = useState(false);
@@ -89,8 +89,6 @@ const PaymentsIn = ({
     getLockedDate();
     getAdministrationSites();
     getQePermissions();
-
-    return clearListState;
   }, []);
 
     return (
@@ -145,7 +143,7 @@ const PaymentsIn = ({
               root: "listItemPadding"
             }}
           >
-            Create one payment...
+            {$t('create_one_payment')}
           </MenuItem>
           <MenuItem
             onClick={openBatchPayment}
@@ -154,7 +152,7 @@ const PaymentsIn = ({
               root: "listItemPadding"
             }}
           >
-            Process all due payments...
+            {$t('process_all_due_payments')}
           </MenuItem>
         </Menu>
       </div>
@@ -173,7 +171,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("PaymentIn"));
   },
   getAdministrationSites: () => dispatch(getAdministrationSites()),
-  clearListState: () => dispatch(clearListState()),
   getQePermissions: () => dispatch(checkPermissions({ keyCode: "PAYMENT_IN_CREATE" }))
 });
 

@@ -4,10 +4,10 @@
  */
 
 import { alpha } from '@mui/material/styles';
-import createStyles from "@mui/styles/createStyles";
+
 
 const styles = theme =>
-  createStyles({
+  ({
     notesContainer: {
       padding: theme.spacing(1, 0)
     },

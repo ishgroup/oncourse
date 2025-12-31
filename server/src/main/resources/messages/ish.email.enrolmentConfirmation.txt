@@ -10,8 +10,24 @@ Expected duration: ${enrolment.courseClass.expectedHours ?: "not specified"}
 Start: ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())}
 End: ${enrolment.courseClass.endDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())}
 <% } %>
-Location:${enrolment.courseClass.displayableLocation}
+Location: ${enrolment.courseClass.room?.virtualRoomUrl ?: enrolment.courseClass.displayableLocation ?: "-"}
 
+<% if (enrolment.courseClass.isDistantLearningCourse && enrolment.courseClass.room?.virtualRoomUrl != null) { %>
+You can start your class any time by clicking here - ${enrolment.courseClass.room.virtualRoomUrl}
+<% } else if (enrolment.courseClass.isHybrid) { %>
+  <% enrolment.courseClass.sessions.sort{it.startDatetime}.eachWithIndex{ session, i -> %>
+      ${session.startDatetime.format("EEEE d MMMM yyyy", session.getTimeZone())}
+      ${session.startDatetime.format("h.mm a", session.getTimeZone())} - ${session.endDatetime.format("h.mm a", session.getTimeZone())}
+      ${session.room ? session.room.site.name + " " + session.room.name:""}
+      <% if (enrolment.courseClass.room?.virtualRoomUrl != null) { %>
+        ${enrolment.courseClass.room?.virtualRoomUrl}
+      <% } %>
+      <% if (session.publicNotes) { %>
+        Notes:
+        ${session.publicNotes}
+      <% } %>
+  <% } %>
+<% } %>
 Please visit ${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code} to confirm the class details, directions and course requirements.
 
 <% if (Preferences.hasSurveyForm()) { %>

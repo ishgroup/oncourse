@@ -1,23 +1,23 @@
-import { Filter } from "@api/model";
-import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
-import Delete from "@mui/icons-material/Delete";
-import { createStyles } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
-import Tooltip from "@mui/material/Tooltip";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX } from "../../../../../../constants/Config";
-import { SavingFilterState } from "../../../../../../model/common/ListView";
-import { validateForbiddenSymbols, validateSingleMandatoryField } from "../../../../../utils/validation";
-import { createCustomFilter, setListSavingFilter } from "../../../actions";
+import { Filter } from '@api/model';
+import BookmarkBorder from '@mui/icons-material/BookmarkBorder';
+import Delete from '@mui/icons-material/Delete';
+import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
+import clsx from 'clsx';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX } from '../../../../../../constants/Config';
+import { SavingFilterState } from '../../../../../../model/common/ListView';
+import { validateForbiddenSymbols, validateSingleMandatoryField } from '../../../../../utils/validation';
+import { createCustomFilter, setListSavingFilter } from '../../../actions';
 
-const styles = theme =>
-  createStyles({
+const styles = (theme, p, classes) =>
+  ({
     checkbox: {
       height: "1.3em",
       width: "1.3em",
@@ -25,7 +25,7 @@ const styles = theme =>
     },
     root: {
       display: "flex",
-      "&:hover $deleteButton": {
+      [`&:hover .${classes.deleteButton}`]: {
         visibility: "visible"
       }
     },
@@ -129,7 +129,7 @@ export class StubFilterItem extends React.PureComponent<any, any> {
           className="ml-1"
         />
 
-        <Tooltip title="Save Filter" placement="right">
+        <Tooltip title={$t('save_filter')} placement="right">
           <div>
             <IconButton onClick={this.onSaveFilter} className={classes.iconButton} disabled={error}>
               <BookmarkBorder fontSize="inherit" color={error ? "disabled" : "secondary"} />
@@ -137,7 +137,7 @@ export class StubFilterItem extends React.PureComponent<any, any> {
           </div>
         </Tooltip>
 
-        <Tooltip title="Delete Filter" placement="right">
+        <Tooltip title={$t('delete_filter')} placement="right">
           <IconButton onClick={this.clearFilter} className={clsx(classes.deleteButton, classes.iconButton)}>
             <Delete fontSize="inherit" color="secondary" />
           </IconButton>
@@ -147,7 +147,7 @@ export class StubFilterItem extends React.PureComponent<any, any> {
   }
 }
 
-export const StubFilterItemBase = withStyles(styles)(StubFilterItem);
+export const StubFilterItemBase = withStyles(StubFilterItem, styles);
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     saveFilter: (filter: Filter, rootEntity: string) => dispatch(createCustomFilter(filter, rootEntity)),

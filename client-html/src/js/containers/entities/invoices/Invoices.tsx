@@ -6,40 +6,39 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Invoice } from "@api/model";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { formatToDateOnly } from "ish-ui";
-import React, { useCallback, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize } from "redux-form";
-import { checkPermissions, getUserPreferences } from "../../../common/actions";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import { Invoice } from '@api/model';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import { formatToDateOnly } from 'ish-ui';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import { checkPermissions, getUserPreferences } from '../../../common/actions';
+import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
 import {
-  clearListState,
   getFilters,
-  setListCreatingNew,
   setListEditRecord,
-  setListSelection,
-} from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../constants/Config";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { State } from "../../../reducers/state";
-import { getAccountTransactionLockedDate } from "../../preferences/actions";
-import { getListTags } from "../../tags/actions";
-import { getPlainAccounts } from "../accounts/actions";
-import LeadService from "../leads/services/LeadService";
-import { getAdministrationSites } from "../sites/actions";
-import { getPlainTaxes } from "../taxes/actions";
-import { getDefaultInvoiceTerms } from "./actions";
-import InvoiceCogwheel from "./components/InvoiceCogwheel";
-import InvoicesEditView from "./components/InvoicesEditView";
-import { isInvoiceType } from "./utils";
+  setListFullScreenEditView,
+} from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getWindowHeight, getWindowWidth, updateHistory } from '../../../common/utils/common';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from '../../../constants/Config';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
+import { getAccountTransactionLockedDate } from '../../preferences/actions';
+import { getListTags } from '../../tags/actions';
+import { getPlainAccounts } from '../accounts/actions';
+import LeadService from '../leads/services/LeadService';
+import { getAdministrationSites } from '../sites/actions';
+import { getPlainTaxes } from '../taxes/actions';
+import { getDefaultInvoiceTerms } from './actions';
+import InvoiceCogwheel from './components/InvoiceCogwheel';
+import InvoicesEditView from './components/InvoicesEditView';
+import { isInvoiceType } from './utils';
 
 const filterGroups: FilterGroup[] = [
   {
@@ -131,16 +130,14 @@ const nameCondition = (invoice: Invoice) => {
   return result;
 };
 
-const manualLink = getManualLink("invoice");
+const manualLink = getManualLink("about-invoices");
 
 const secondaryColumnCondition = row => (row.invoiceNumber ? "Invoice #" + row.invoiceNumber : "Quote #" + row.quoteNumber);
 
 const Invoices = React.memo<any>(({
-  clearListState,
-  setListCreatingNew,
+  setListFullScreenEditView,
+  fullScreenEditView,
   selection,
-  history,
-  updateSelection,
   location,
   listRecords,
   match: { params, url },
@@ -149,12 +146,14 @@ const Invoices = React.memo<any>(({
   }) => {
   useEffect(() => {
     onMount();
-    return clearListState;
   }, []);
 
   const [createMenuOpened, setCreateMenuOpened] = useState(false);
 
   const closeCreateMenu = () => {
+    if (!fullScreenEditView && selection[0] === 'new') {
+      updateHistory(location.search, url.replace("/new", ''));
+    }
     setCreateMenuOpened(false);
   };
 
@@ -162,23 +161,10 @@ const Invoices = React.memo<any>(({
     setCreateMenuOpened(true);
   };
 
-  const updateHistory = (pathname, search) => {
-    const newUrl = window.location.origin + pathname + search;
-
-    if (newUrl !== window.location.href) {
-      history.push({
-        pathname,
-        search
-      });
-    }
-  };
-
-  const onCreateNew = useCallback((type, lead?) => {
+  const onCreateNew = (type, lead?) => {
     closeCreateMenu();
-    updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", location.search);
-
-    setListCreatingNew(true);
-    updateSelection(["new"]);
+    updateHistory(location.search, params.id ? url.replace(`/${params.id}`, "/new") : url + "/new");
+    setListFullScreenEditView(true);
 
     if (lead) {
       Initial.leadId = lead.id;
@@ -189,7 +175,7 @@ const Invoices = React.memo<any>(({
 
     Initial.type = type;
     onInit();
-  }, [params, location, url, listRecords]);
+  };
 
   const customOnCreate = async () => {
     if (params.id === "new" && window.location.search?.includes("lead.id")) {
@@ -255,7 +241,7 @@ const Invoices = React.memo<any>(({
             root: "listItemPadding"
           }}
         >
-          Create Invoice
+          {$t('create_invoice')}
         </MenuItem>
         <MenuItem
           onClick={() => onCreateNew("Quote")}
@@ -263,7 +249,7 @@ const Invoices = React.memo<any>(({
             root: "listItemPadding"
           }}
         >
-          Create Quote
+          {$t('create_quote')}
         </MenuItem>
       </Menu>
     </div>
@@ -273,6 +259,7 @@ const Invoices = React.memo<any>(({
 const mapStateToProps = (state: State) => ({
   listRecords: state.list.records,
   selection: state.list.selection,
+  fullScreenEditView: state.list.fullScreenEditView
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -284,8 +271,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
   onMount: () => {
-    dispatch(getFilters("Invoice"));
     getPlainAccounts(dispatch);
+    dispatch(getFilters("Invoice"));
     dispatch(getPlainTaxes());
     dispatch(getDefaultInvoiceTerms());
     dispatch(getAccountTransactionLockedDate());
@@ -294,9 +281,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getListTags("AbstractInvoice"));
     dispatch(getUserPreferences([ACCOUNT_DEFAULT_INVOICELINE_ID]));
   },
-  clearListState: () => dispatch(clearListState()),
-  setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
-  updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
+  setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Invoices);
+export default connect(mapStateToProps, mapDispatchToProps)(Invoices);

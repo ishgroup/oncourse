@@ -22,7 +22,10 @@ public interface ISchedulerService {
 	String TRIGGER_POSTFIX = "Trigger";
 
 	String AUDIT_PURGE_JOB = "auditPurgeJob";
+	String ARCHIVE_MESSAGES_JOB_ID = "archiveMessagesJob";
 	String EMAIL_DEQUEUEING_JOB_ID = "emailDequeueingJob";
+	String CHARGEBEE_JOB_ID = "chargebeeJob";
+	String REMOVE_SESSIONS_JOB_ID = "removeSessionsJob";
 	String BACKUP_JOB_ID = "backupJob";
 	String DELAYED_ENROLMENT_INCOME_POSTING_JOB_ID = "delayedEnrolmentIncomePostingJob";
 	String VOUCHER_EXPIRY_JOB_ID = "voucherExpiryJob";
@@ -37,10 +40,13 @@ public interface ISchedulerService {
 	String CUSTOM_SCRIPT_JOBS_GROUP_ID = "customScriptJobs";
 
 	String EMAIL_DEQUEUEING_JOB_INTERVAL = "45 * * * * ?";
+	String CHARGEBEE_JOB_INTERVAL = "0 0 3am * * ?";
+	String REMOVE_SESSIONS_JOB_INTERVAL = "0 0 4 ? * MON *";
 	String DELAYED_ENROLMENT_INCOME_POSTING_JOB_INTERVAL = "0 30 0am * * ?";
 	String VOUCHER_EXPIRY_JOB_CRON_SCHEDULE = "0 45 0am * * ?";
 	String INVOICE_OVERDUE_UPDATE_JOB_CRON_SCHEDULE_TEMPLATE = "0 %d 1am * * ?";
 	String AUDIT_PURGE_JOB_CRON_SCHEDULE_TEMPLATE = "0 %d 2am * * ?";
+	String ARCHIVE_MESSAGES_JOB_CRON_SCHEDULE_INTERVAL = "0 0 1 * */6 ?";
 	String USER_DISAIBLE_JOB_TEMPLATE = "0 %d 3 ? * MON *";
 
 	String FUNDING_CONTRACT_JOB_ID = "fundingContractJob";

@@ -3,37 +3,37 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Close from "@mui/icons-material/Close";
-import Collapse from "@mui/material/Collapse";
-import Dialog from "@mui/material/Dialog";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import LinearProgress from "@mui/material/LinearProgress";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import withTheme from "@mui/styles/withTheme";
-import clsx from "clsx";
-import { format } from "date-fns";
+import Close from '@mui/icons-material/Close';
+import Collapse from '@mui/material/Collapse';
+import Dialog from '@mui/material/Dialog';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import LinearProgress from '@mui/material/LinearProgress';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { debounce } from 'es-toolkit/compat';
 import {
   AnyArgFunction,
   EditInPlaceSearchSelect,
   FileUploaderDialog,
-  KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL, NoArgFunction,
+  KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL,
+  NoArgFunction,
   stubFunction
-} from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { Fetch } from "../../../../../../model/common/Fetch";
-import { DocumentSearchItemType } from "../../../../../../model/entities/Document";
-import { State } from "../../../../../../reducers/state";
-import { getDocumentItem, searchDocumentByName, setSearchDocuments } from "../../actions";
-import { dialogStyles } from "./dialogStyles";
+} from 'ish-ui';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { Fetch } from '../../../../../../model/common/Fetch';
+import { DocumentSearchItemType } from '../../../../../../model/entities/Document';
+import { State } from '../../../../../../reducers/state';
+import { getDocumentItem, searchDocumentByName, setSearchDocuments } from '../../actions';
+import { dialogStyles } from './dialogStyles';
 
-const addDialogStyles = theme => createStyles({
+const addDialogStyles = theme => ({
   addDialogMargin: {
     marginBottom: "300px"
   },
@@ -132,8 +132,8 @@ const DocumentAddDialog = (
     searchExistingDocsDisabled
   }: OwnProps & StateProps & DispatchProps) => {
   
-  const searchContainerNode = useRef<HTMLDivElement>();
-  const dialogRef = useRef<HTMLDivElement>();
+  const searchContainerNode = useRef<HTMLDivElement>(undefined);
+  const dialogRef = useRef<HTMLDivElement>(undefined);
 
   const [searchValue, setSearchValue] = useState("");
   
@@ -221,7 +221,7 @@ const DocumentAddDialog = (
             input={{ value: searchValue, onChange: onSelectChange as any, onBlur: stubFunction } as any}
             meta={{} as any}
             onInputChange={onSelectInputChange}
-            placeholder="Find existing documents"
+            placeholder={$t('find_existing_documents')}
             items={searchItems || []}
             itemRenderer={searchItemsRenderer}
             popperAnchor={searchContainerNode.current}
@@ -262,4 +262,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default connect<StateProps, DispatchProps, OwnProps>(
   mapStateToProps,
   mapDispatchToProps
-)(withTheme(withStyles(theme => ({ ...dialogStyles(theme), ...addDialogStyles(theme) }))(DocumentAddDialog)));
+)(withStyles(
+  DocumentAddDialog,
+  theme => ({ ...dialogStyles(theme), ...addDialogStyles(theme) })
+));

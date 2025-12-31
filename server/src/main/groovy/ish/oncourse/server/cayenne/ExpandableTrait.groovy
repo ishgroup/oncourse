@@ -15,8 +15,6 @@ import ish.common.types.DataType
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.server.api.v1.function.CustomFieldFunctions
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.api.validation.EntityValidator
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -141,7 +139,6 @@ trait ExpandableTrait {
             case MONEY:
                 if (value instanceof String) {
                     try {
-                        Money money = new Money(value)
                         customField.value = value.toString()
                     } catch (NumberFormatException e) {
                         throw new NumberFormatException(e.message)

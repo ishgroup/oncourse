@@ -56,7 +56,7 @@ import org.apache.cayenne.query.ObjectSelect
 @CompileStatic
 class DocumentService {
 
-	private ICayenneService cayenneService
+	protected ICayenneService cayenneService
 	private static final Logger logger = LogManager.logger
 
 	DocumentService createDocumentService(ICayenneService cayenneService) {
@@ -68,6 +68,7 @@ class DocumentService {
 	private String accessKeyId = null
 	private String accessSecretKey
 	private String region
+	private String endpoint
 	private Long storageLimit
 
 	@BQConfigProperty
@@ -88,6 +89,11 @@ class DocumentService {
 	@BQConfigProperty
 	void setRegion(String region) {
 		this.region = region
+	}
+
+	@BQConfigProperty
+	void setEndpoint(String endpoint) {
+		this.endpoint = endpoint
 	}
 
 	@BQConfigProperty
@@ -124,6 +130,10 @@ class DocumentService {
 
 	String getRegion() {
 		return region
+	}
+
+	String getEndpoint() {
+		return endpoint
 	}
 
 	Long getStorageLimit() {

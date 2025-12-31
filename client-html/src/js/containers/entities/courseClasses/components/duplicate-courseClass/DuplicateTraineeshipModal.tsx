@@ -3,25 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, ClassCost, CourseClassDuplicate, Tax } from "@api/model";
-import { Grid, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
-import Tooltip from "@mui/material/Tooltip";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from "date-fns";
-import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import { Account, ClassCost, CourseClassDuplicate, Tax } from '@api/model';
+import { Button, FormControlLabel, Grid, Typography } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import FormGroup from '@mui/material/FormGroup';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
+import clsx from 'clsx';
+import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from 'date-fns';
+import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from 'ish-ui';
+import { debounce } from 'es-toolkit/compat';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import {
   change,
   DecoratedComponentClass,
@@ -30,25 +28,26 @@ import {
   initialize,
   InjectedFormProps,
   reduxForm
-} from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import EntityService from "../../../../../common/services/EntityService";
-import history from "../../../../../constants/History";
-import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
-import { State } from "../../../../../reducers/state";
-import { getAllMonthsWithSessions } from "../../../../timetable/utils";
-import { getPlainAccounts } from "../../../accounts/actions";
-import { getPlainTaxes } from "../../../taxes/actions";
+} from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import EntityService from '../../../../../common/services/EntityService';
+import history from '../../../../../constants/History';
+import { TimetableMonth, TimetableSession } from '../../../../../model/timetable';
+import { State } from '../../../../../reducers/state';
+import { getAllMonthsWithSessions } from '../../../../timetable/utils';
+import { getPlainAccounts } from '../../../accounts/actions';
+import { getPlainTaxes } from '../../../taxes/actions';
 import {
   clearDuplicateCourseClassesSessions,
   duplicateCourseClass,
   getDuplicateCourseClassesBudget,
   getDuplicateCourseClassesSessions,
   setDuplicateCourseClassesBudget
-} from "../../actions";
-import StudentFeeContent from "../budget/modal/StudentFeeContent";
-import DuplicateCourseClassTimetable from "./DuplicateCourseClassTimetable";
-import modalStyles from "./modalStyles";
+} from '../../actions';
+import StudentFeeContent from '../budget/modal/StudentFeeContent';
+import DuplicateCourseClassTimetable from './DuplicateCourseClassTimetable';
+import modalStyles from './modalStyles';
 
 export const DUPLICATE_TRAINEESHIP_FORM: string = "DuplicateTraineeshipForm";
 
@@ -323,12 +322,12 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
             <Grid item xs={4}>
               <div className="centeredFlex">
                 <div className="heading mt-2 mb-2">
-                  Duplicate traineeship class
+                  {$t('duplicate_traineeship_class')}
                 </div>
               </div>
               {Boolean(sessions.length) && (
                 <div className="pb-2 pr-2">
-                  Advance class by
+                  {$t('advance_class_by')}
                   {" "}
                   <FormField
                     type="number"
@@ -341,7 +340,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     required
                   />
                   {" "}
-                  days, so that it is starts on
+                  {$t('days_so_that_it_is_starts_on')}
                   {" "}
                   <FormField
                     type="date"
@@ -354,7 +353,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   />
                 </div>
               )}
-              <div>Copy to new class:</div>
+              <div>{$t('copy_to_new_class')}</div>
               <FormGroup>
                 <FormControlLabel
                   classes={{
@@ -370,7 +369,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                       disabled={fetching}
                     />
                   )}
-                  label="Tutors for each session"
+                  label={$t('tutors_for_each_session')}
                 />
                 <FormControlLabel
                   classes={{
@@ -386,7 +385,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                       disabled={fetching}
                     />
                   )}
-                  label="Site and room for each session"
+                  label={$t('site_and_room_for_each_session')}
                 />
                 <FormControlLabel
                   classes={{
@@ -395,9 +394,9 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   control={<FormField type="checkbox" name="copyCosts" color="secondary" disabled={fetching} />}
                   label={
                     hasZeroWages ? (
-                      <Tooltip title="Found one or more classes with overridden by zero wage">
+                      <Tooltip title={$t('found_one_or_more_classes_with_overridden_by_zero')}>
                         <Typography variant="body2" color="error">
-                          Budget
+                          {$t('budget')}
                         </Typography>
                       </Tooltip>
                     ) : (
@@ -413,7 +412,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   control={
                     <FormField type="checkbox" name="copyTrainingPlans" color="secondary" disabled={fetching} />
                   }
-                  label="Training plan"
+                  label={$t('training_plan')}
                 />
                 <FormControlLabel
                   classes={{
@@ -422,7 +421,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   control={
                     <FormField type="checkbox" name="applyDiscounts" color="secondary" disabled={fetching} />
                   }
-                  label="Discounts"
+                  label={$t('discounts')}
                 />
                 <FormControlLabel
                   classes={{
@@ -431,14 +430,14 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   control={(
                     <FormField type="checkbox" name="tutorRosterOverrides" color="secondary" disabled={fetching} />
                   )}
-                  label="Payable time"
+                  label={$t('payable_time')}
                 />
                 <FormControlLabel
                   classes={{
                     root: "checkbox"
                   }}
                   control={<FormField type="checkbox" name="copyVetData" color="secondary" disabled={fetching} />}
-                  label="VET fields"
+                  label={$t('vet_fields')}
                 />
                 <FormControlLabel
                   classes={{
@@ -447,7 +446,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   control={
                     <FormField type="checkbox" name="copyAssessments" color="secondary" disabled={fetching} />
                   }
-                  label="Assessment task"
+                  label={$t('assessment_task')}
                 />
                 <FormControlLabel
                   classes={{
@@ -456,14 +455,14 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   control={(
                     <FormField type="checkbox" name="copyOnlyMandatoryTags" color="secondary" onChange={onTagsChange} debounced={false} disabled={fetching} />
                   )}
-                  label="Tags"
+                  label={$t('tags')}
                 />
                 <FormControlLabel
                   classes={{
                     root: "checkbox"
                   }}
                   control={<FormField type="checkbox" name="copyNotes" color="secondary" disabled={fetching} />}
-                  label="Class notes"
+                  label={$t('class_notes')}
                 />
               </FormGroup>
             </Grid>
@@ -476,7 +475,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
               >
                 <Tab label={(
                   <div className={clsx("heading", selectedTab !== 0 && "text-disabled")}>
-                    Timetable
+                    {$t('timetable')}
                   </div>
                 )}
                 />
@@ -484,7 +483,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   disabled={!budget.length}
                   label={(
                     <div className={clsx("heading", selectedTab !== 1 && "text-disabled")}>
-                      Budget override
+                      {$t('budget_override')}
                     </div>
                 )}
                 />
@@ -523,7 +522,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
         <DialogActions className="p-3">
           {!disableClose && (
             <Button color="primary" onClick={onClose}>
-              Cancel
+              {$t('cancel')}
             </Button>
           )}
 
@@ -533,7 +532,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
             color="primary"
             type="submit"
           >
-            Duplicate and enrol
+            {$t('duplicate_and_enrol')}
           </Button>
         </DialogActions>
       </form>
@@ -550,7 +549,7 @@ const mapStateToProps = (state: State) => ({
   earliest: state.courseClass.timetable.earliest,
   sessions: state.courseClass.timetable.sessions,
   hasZeroWages: state.courseClass.timetable.hasZeroWages,
-  currencySymbol: state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -568,5 +567,5 @@ export default reduxForm({
   form: DUPLICATE_TRAINEESHIP_FORM,
   initialValues
 })(
-  connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(modalStyles)(DuplicateCourseClassModal))
+  connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(DuplicateCourseClassModal, modalStyles))
 ) as DecoratedComponentClass<CourseClassDuplicate & { toDate: string }, Props>;

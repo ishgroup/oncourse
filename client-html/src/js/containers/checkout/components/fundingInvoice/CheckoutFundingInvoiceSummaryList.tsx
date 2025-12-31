@@ -3,30 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { AppTheme } from "ish-ui";
-import React from "react";
-import { connect } from "react-redux";
-import { change, FieldArray } from "redux-form";
-import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { validateVetPurchasingContractIdentifier } from "../../../../common/utils/validation";
-import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { State } from "../../../../reducers/state";
-import ContactSelectItemRenderer from "../../../entities/contacts/components/ContactSelectItemRenderer";
-import { getContactFullName } from "../../../entities/contacts/utils";
-import { summaryListStyles } from "../../styles/summaryListStyles";
-import CheckoutFundingInvoicePaymentPlans from "./CheckoutFundingInvoicePaymentPlans";
-import CheckoutFundingInvoiceSummaryExpandableItemRenderer from "./CheckoutFundingInvoiceSummaryExpandableItemRenderer";
+import { Grid, Typography } from '@mui/material';
+import $t from '@t';
+import { AppTheme } from 'ish-ui';
+import React from 'react';
+import { change, FieldArray } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { ContactLinkAdornment } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import NestedTable from '../../../../common/components/list-view/components/list/ReactTableNestedList';
+import { validateVetPurchasingContractIdentifier } from '../../../../common/utils/validation';
+import { CheckoutFundingInvoice } from '../../../../model/checkout/fundingInvoice';
+import { NestedTableColumn } from '../../../../model/common/NestedTable';
+import ContactSelectItemRenderer from '../../../entities/contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../../entities/contacts/utils';
+import { summaryListStyles } from '../../styles/summaryListStyles';
+import CheckoutFundingInvoicePaymentPlans from './CheckoutFundingInvoicePaymentPlans';
+import CheckoutFundingInvoiceSummaryExpandableItemRenderer from './CheckoutFundingInvoiceSummaryExpandableItemRenderer';
 
 export const CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM = "checkout_funding_invoice_summary_list_form";
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   tableTabRow: {
     padding: theme.spacing(0, 2.625, 0, 2)
   }
@@ -52,7 +49,6 @@ const trainingPlansColumns: NestedTableColumn[] = [
 interface Props {
   classes?: any;
   dispatch?: any;
-  syncErrors?: any;
   fundingInvoice?: CheckoutFundingInvoice;
   currency?: any;
   form?: string;
@@ -63,7 +59,6 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
   const {
     classes,
     dispatch,
-    syncErrors,
     currency,
     fundingInvoice,
     selectedItemIndex,
@@ -82,7 +77,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           name={`fundingInvoices[${selectedItemIndex}].fundingProviderId`}
           entity="Contact"
           aqlFilter="isCompany is true"
-          label="Funding provider"
+          label={$t('funding_provider')}
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
           defaultValue={fundingInvoice.company && getContactFullName(fundingInvoice.company)}
@@ -98,7 +93,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
         <FormField
           type="text"
           name={`fundingInvoices[${selectedItemIndex}].vetPurchasingContractID`}
-          label="Purchasing contract identifier (NSW Commitment ID)"
+          label={$t('purchasing_contract_identifier_nsw_commitment_id')}
           validate={validateVetPurchasingContractIdentifier}
         />
       </Grid>
@@ -117,11 +112,10 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
       </Grid>
       <Grid item xs={12} container>
         {fundingInvoice && fundingInvoice.paymentPlans && (
-          <Grid item sm={6} className="pr-2">
+          <Grid item sm={4} className="pr-2">
             <CheckoutFundingInvoicePaymentPlans
               name={`fundingInvoices[${selectedItemIndex}].paymentPlans`}
               currency={currency}
-              syncErrors={syncErrors}
               form={CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM}
               dispatch={dispatch}
               total={fundingInvoice ? fundingInvoice.total : 0}
@@ -129,10 +123,10 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           </Grid>
         )}
         {fundingInvoice && fundingInvoice.trainingPlans && fundingInvoice.trainingPlans.length > 0 && (
-          <Grid item sm={6}>
+          <Grid item sm={8}>
             <div className="centeredFlex">
               <Typography className="heading pt-1 pb-1">
-                Training Plan
+                {$t('training_plan2')}
               </Typography>
             </div>
             <FieldArray
@@ -150,10 +144,8 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
   );
 });
 
-const mapStateToProps = (state: State) => ({
-  currency: state.currency
-});
 
-export default connect<any, any, any>(
-  mapStateToProps
-)(withStyles((theme: AppTheme) => ({ ...summaryListStyles(theme), ...styles(theme) }))(CheckoutFundingInvoiceSummaryList));
+export default withStyles(
+  CheckoutFundingInvoiceSummaryList,
+  (theme: AppTheme, p, classes) => ({ ...summaryListStyles(theme, p, classes), ...styles(theme) })
+);

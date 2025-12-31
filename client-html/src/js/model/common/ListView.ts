@@ -6,14 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { DataResponse, EmailTemplate, Filter, Script, SearchQuery } from "@api/model";
-import { AnyArgFunction, NoArgFunction, ShowConfirmCaller } from "ish-ui";
-import React, { ReactElement } from "react";
-import { Dispatch } from "redux";
-import { FormErrors, InjectedFormProps } from "redux-form";
-import { CustomTableModelName, EntityName } from "../entities/common";
-import { FormMenuTag } from "../tags";
-import { MessageData } from "./Message";
+import { DataResponse, EmailTemplate, Filter, Script, SearchQuery } from '@api/model';
+import { AnyArgFunction, BooleanArgFunction, NoArgFunction, ShowConfirmCaller } from 'ish-ui';
+import React, { ReactElement } from 'react';
+import { Dispatch } from 'redux';
+import { FormErrors, InjectedFormProps } from 'redux-form';
+import { CustomTableModelName, EntityName } from '../entities/common';
+import { FormMenuTag } from '../tags';
+import { MessageData } from './Message';
 
 export interface CoreFilter extends Filter {
   active?: boolean;
@@ -76,7 +76,6 @@ export interface ListState {
   scripts?: Script[];
   emailTemplates?: EmailTemplate[];
   emailTemplatesWithKeyCode?: EmailTemplate[];
-  creatingNew?: boolean;
   fullScreenEditView?: boolean;
   recepients?: MessageData;
 }
@@ -91,18 +90,16 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   values?: E;
   updateDeleteCondition?: any;
   fullScreenEditView?: any;
-  toogleFullScreenEditView: any;
+  toogleFullScreenEditView: BooleanArgFunction;
   dispatch?: Dispatch<any>;
   rootEntity: EntityName;
   showConfirm: ShowConfirmCaller;
   manualLink?: any;
   isNested?: boolean;
   match?: any;
-  nestedIndex?: number;
   nameCondition?: AnyArgFunction;
   updateCaption?: (arg: string) => React.Component;
   threeColumn?: boolean;
-  alwaysFullScreenCreateView?: boolean;
   syncErrors?: any;
   disabledSubmitCondition?: boolean;
   hideTitle?: boolean;
@@ -119,13 +116,12 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   onScroll?: AnyArgFunction;
   twoColumn?: boolean;
   isNested?: boolean;
-  nestedIndex?: number;
   onCloseClick?: AnyArgFunction;
   syncErrors?: FormErrors<V>;
   tabIndex?: number;
   expanded?: number[];
   setExpanded?: (arg: number[] | ((arg: number[]) => void)) => void;
-  toogleFullScreenEditView?: any;
+  toogleFullScreenEditView?: BooleanArgFunction;
 }
 
 export type ListAqlMenuItemsRenderer = (content: React.ReactNode, rowData: any, searchValue: string) => void;

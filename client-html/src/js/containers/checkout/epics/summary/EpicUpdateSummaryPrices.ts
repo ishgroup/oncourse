@@ -3,30 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { SHOW_MESSAGE } from "../../../../common/actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { checkoutSetHasErrors } from "../../actions";
+import { Epic } from 'redux-observable';
+import { SHOW_MESSAGE } from '../../../../common/actions';
+import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import * as EpicUtils from '../../../../common/epics/EpicUtils';
+import { checkoutSetHasErrors } from '../../actions';
 import {
   CHECKOUT_UPDATE_SUMMARY_PRICES,
   CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED,
   checkoutUncheckSummaryItems,
   checkoutUpdateSummaryPrices
-} from "../../actions/checkoutSummary";
-import CheckoutService from "../../services/CheckoutService";
-import { getCheckoutModel } from "../../utils";
+} from '../../actions/checkoutSummary';
+import CheckoutService from '../../services/CheckoutService';
+import { getCheckoutModel, getCheckoutModelMembershipsValidTo } from '../../utils';
 
 const request: EpicUtils.Request = {
   type: CHECKOUT_UPDATE_SUMMARY_PRICES,
-  hideLoadIndicator: true,
-  getData: (p, s) => {
-    const model = getCheckoutModel(s.checkout, [], null, {}, true);
-    return CheckoutService.checkoutSubmitPayment(
-      model,
-      true,
-      null,
-      window.location.origin
+  getData: async (p, s) => {
+    const model = getCheckoutModel(s, true);
+    await getCheckoutModelMembershipsValidTo(model);
+    return CheckoutService.updateModel(
+      model
     );
   },
   processData: res => [

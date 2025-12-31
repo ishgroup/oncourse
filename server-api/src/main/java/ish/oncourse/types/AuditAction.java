@@ -60,7 +60,19 @@ public enum AuditAction implements DisplayableExtendedEnumeration<String> {
      * Api token used
      */
     @API
-    API_TOKEN("API_TOKEN", "Api token used");
+    API_TOKEN("API_TOKEN", "Api token used"),
+
+    /**
+     * Messages archiving completed
+     */
+    @API
+    MESSAGES_ARCHIVING_COMPLETED("MESSAGES_ARCHIVING_COMPLETED", "Messages archiving completed"),
+
+    /**
+     * Messages archiving failed
+     */
+    @API
+    MESSAGES_ARCHIVING_FAILED("MESSAGES_ARCHIVING_FAILED", "Messages archiving failed");
     
     
     private String displayValue;

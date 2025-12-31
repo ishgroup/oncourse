@@ -92,7 +92,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
         }
 
         if (cayenneModel.flowType in [ClassCostFlowType.INCOME , ClassCostFlowType.EXPENSE ]) {
-            ccDto.perUnitAmountIncTax = MoneyUtil.getPriceIncTax(cayenneModel.perUnitAmountExTax, cayenneModel.tax.rate, cayenneModel.taxAdjustment).toBigDecimal()
+            ccDto.perUnitAmountIncTax = MoneyUtil.getPriceIncTaxRounded(cayenneModel.perUnitAmountExTax, cayenneModel.tax.rate, cayenneModel.taxAdjustment, true).toBigDecimal()
         }
 
         ccDto.payableOnEnrolment = cayenneModel.payableOnEnrolment
@@ -103,7 +103,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
         ccDto.maximumCost = cayenneModel.maximumCost?.toBigDecimal()
         ccDto.minimumCost = cayenneModel.minimumCost?.toBigDecimal()
         ccDto.actualAmount = cayenneModel.calcActualCost?.toBigDecimal()
-        ccDto.onCostRate = cayenneModel.onCostRate
+        ccDto.onCostRate = cayenneModel.onCostRate != null ? cayenneModel.onCostRate : cayenneModel.tutorRole?.definedTutorRole?.currentPayrate?.oncostRate
         ccDto.unitCount = cayenneModel.unitCount
         ccDto.courseClassTutorId = cayenneModel.tutorRole?.id
         ccDto.tutorRole = cayenneModel.tutorRole?.definedTutorRole?.name
@@ -137,17 +137,17 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
         cayenneModel.description = dto.description
         cayenneModel.flowType = dto.flowType.dbType
         cayenneModel.repetitionType = dto.repetitionType?.dbType
-        cayenneModel.perUnitAmountExTax = Money.valueOf(dto.perUnitAmountExTax)
+        cayenneModel.perUnitAmountExTax = Money.of(dto.perUnitAmountExTax)
         cayenneModel.unitCount = dto.unitCount
 
         if (dto.maximumCost != null) {
-            cayenneModel.maximumCost = Money.valueOf(dto.maximumCost)
+            cayenneModel.maximumCost = Money.of(dto.maximumCost)
         } else {
             cayenneModel.maximumCost = null
         }
 
         if (dto.minimumCost != null) {
-            cayenneModel.minimumCost = Money.valueOf(dto.minimumCost)
+            cayenneModel.minimumCost = Money.of(dto.minimumCost)
         } else {
             cayenneModel.minimumCost = null
         }
@@ -199,7 +199,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
                 }
 
                 if (dto.courseClassDiscount.discountOverride != null) {
-                    dcc.discountDollar = Money.valueOf(dto.courseClassDiscount.discountOverride)
+                    dcc.discountDollar = Money.of(dto.courseClassDiscount.discountOverride)
                 } else {
                     dcc.discountDollar = null
                 }
@@ -217,7 +217,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
 
     void updateTax(ClassCost cost, ClassCostDTO dto) {
         Tax tax = taxDao.getById(cost.context, dto.taxId)
-        Money incTax = Money.valueOf(dto.perUnitAmountIncTax)
+        Money incTax = Money.of(dto.perUnitAmountIncTax)
         Money taxAdjustment =  MoneyUtil.calculateTaxAdjustment(incTax, cost.perUnitAmountExTax, tax.rate)
         cost.tax = tax
         cost.taxAdjustment = taxAdjustment
@@ -371,7 +371,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
             dto.paymentPlan.each { l ->
                 CourseClassPaymentPlanLine line = context.newObject(CourseClassPaymentPlanLine)
                 line.dayOffset = l.dayOffset
-                line.amount = Money.valueOf(l.amount)
+                line.amount = Money.of(l.amount)
                 line.courseClass = courseClass
             }
         }

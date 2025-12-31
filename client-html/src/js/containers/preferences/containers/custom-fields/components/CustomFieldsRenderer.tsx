@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CustomFieldType, DataType, EntityType } from "@api/model";
-import DeleteIcon from "@mui/icons-material/Delete";
-import DragIndicator from "@mui/icons-material/DragIndicator";
-import { FormControlLabel, Grid } from "@mui/material";
-import Card from "@mui/material/Card";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import clsx from "clsx";
+import { CustomFieldType, DataType, EntityType } from '@api/model';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DragIndicator from '@mui/icons-material/DragIndicator';
+import { Card, FormControlLabel, Grid } from '@mui/material';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import $t from '@t';
+import clsx from 'clsx';
 import {
   CheckboxField,
   EditInPlaceDateTimeField,
@@ -20,23 +20,23 @@ import {
   SelectItemDefault,
   sortDefaultSelectItems,
   StyledCheckbox
-} from "ish-ui";
-import React, { useMemo, useState } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
-import { change, Field } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
-import { reorder } from "../../../../../common/utils/DnD";
-import { useAppSelector } from "../../../../../common/utils/hooks";
+} from 'ish-ui';
+import React, { useMemo, useState } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd-next';
+import { change, Field } from 'redux-form';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import ExpandableItem from '../../../../../common/components/layout/expandable/ExpandableItem';
+import { reorder } from '../../../../../common/utils/DnD';
+import { useAppSelector } from '../../../../../common/utils/hooks';
 import {
   validateEmail,
   validateRegex,
   validateSingleMandatoryField,
   validateUniqueNamesInArray,
   validateURL
-} from "../../../../../common/utils/validation";
-import ListMapRenderer from "./ListMapRenderer";
+} from '../../../../../common/utils/validation';
+import ListMapRenderer from './ListMapRenderer';
 
 const mapEntityType = (entityType: EntityType) => {
   switch (entityType) {
@@ -129,7 +129,7 @@ const validateListMap = (value, dataType) => {
 const CustomFieldsResolver = React.memo<{ field: CustomFieldType & { uniqid: string }, classes: any }>(
   ({ classes, field, ...props }) => {
 
-    const currencySymbol = useAppSelector(state => state.currency?.shortCurrencySymbol);
+    const currencySymbol = useAppSelector(state => state.location.currency?.shortCurrencySymbol);
 
     switch (field.dataType) {
       case "Checkbox":
@@ -137,7 +137,7 @@ const CustomFieldsResolver = React.memo<{ field: CustomFieldType & { uniqid: str
           <FormControlLabel
             className={clsx(classes.checkbox)}
             control={<CheckboxField {...props} stringValue color="primary" className={undefined} />}
-            label="Checked by default"
+            label={$t('checked_by_default')}
           />
         );
       case "Date":
@@ -154,12 +154,12 @@ const CustomFieldsResolver = React.memo<{ field: CustomFieldType & { uniqid: str
             {...props as any}
             dataType={field.dataType}
             key={field.id || field.uniqid}
-            label="Options"
+            label={$t('options')}
             onKeyPress={preventStarEnter}
           />
       );
       case "Map":
-        return <ListMapRenderer {...props as any} dataType={field.dataType} key={field.id || field.uniqid} label="Options" />;
+        return <ListMapRenderer {...props as any} dataType={field.dataType} key={field.id || field.uniqid} label={$t('options')} />;
       case "Money":
         return <EditInPlaceMoneyField {...props} currencySymbol={currencySymbol} />;
       case "URL":
@@ -191,7 +191,20 @@ const validateResolver = (value, allValues, props, name) => {
   return undefined;
 };
 
-const ExpandableCustomFields = React.memo<any>(props => {
+const ExpandableCustomFields = React.memo<{
+  item,
+  classes,
+  field,
+  onDataTypeChange,
+  onDelete,
+  index,
+  onAddOther,
+  isListOrMap,
+  expanded,
+  onChange,
+  form,
+  dispatch
+}>(props => {
   const {
     item,
     classes,
@@ -251,19 +264,19 @@ const ExpandableCustomFields = React.memo<any>(props => {
           <Grid item xs={4}>
             <Uneditable
               value={field.name}
-              label="Name"
+              label={$t('name')}
             />
           </Grid>
           <Grid item xs={4}>
             <Uneditable
               value={mapEntityType(field.entityType)}
-              label="Record Type"
+              label={$t('record_type')}
             />
           </Grid>
           <Grid item xs={4}>
             <Uneditable
               value={field.dataType}
-              label="Data Type"
+              label={$t('data_type')}
             />
           </Grid>
         </Grid>
@@ -283,7 +296,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
             <FormField
               type="text"
               name={`${item}.name`}
-              label="Name"
+              label={$t('name')}
                             className={classes.field}
               validate={[validateSingleMandatoryField, validateUniqueNamesInArray]}
             />
@@ -293,7 +306,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
             <FormField
               type="text"
               name={`${item}.fieldKey`}
-              label="Custom field key"
+              label={$t('custom_field_key')}
               disabled={!!field.id}
               className={classes.field}
               required
@@ -304,7 +317,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
             <FormField
               type="select"
               name={`${item}.dataType`}
-              label="Data Type"
+              label={$t('data_type')}
               items={availableDataTypes}
               disabled={!!field.id}
               debounced={false}
@@ -319,7 +332,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               type="select"
               name={`${item}.entityType`}
               selectLabelCondition={entityTypeCondition}
-              label="Record Type"
+              label={$t('record_type')}
               items={availableEntities}
               disabled={!!field.id}
               className={classes.field}
@@ -339,7 +352,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
                   color="primary"
                 />
               )}
-              label="Mandatory"
+              label={$t('mandatory')}
             />
 
             {field.dataType === "List" && (
@@ -352,7 +365,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
                     color="primary"
                   />
                 )}
-                label="Add 'other' option"
+                label={$t('add_other_option')}
               />
             )}
           </Grid>
@@ -361,7 +374,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
             <Collapse in={isListOrMap} mountOnEnter unmountOnExit>
               <Field
                 name={`${item}.defaultValue`}
-                label="Default value"
+                label={$t('default_value')}
                 field={field}
                 component={CustomFieldsResolver}
                 className={classes.field}
@@ -373,7 +386,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               <FormField
                 type="text"
                 name={`${item}.pattern`}
-                label="Pattern"
+                label={$t('pattern')}
                 disabled={!!field.id}
                 className={classes.field}
                 validate={validateRegex}

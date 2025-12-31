@@ -6,32 +6,32 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Tag } from "@api/model";
-import Launch from "@mui/icons-material/Launch";
-import { FormControlLabel, Grid, IconButton } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { decimalDivide, decimalMinus, decimalPlus, LinkAdornment } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import { showMessage } from "../../../../../common/actions";
-import FormField from "../../../../../common/components/form/formFields/FormField";
+import { Tag } from '@api/model';
+import Launch from '@mui/icons-material/Launch';
+import { FormControlLabel, Grid, IconButton, Typography } from '@mui/material';
+import Collapse from '@mui/material/Collapse';
+import $t from '@t';
+import clsx from 'clsx';
+import { decimalDivide, decimalMinus, decimalPlus, LinkAdornment } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { showMessage } from '../../../../../common/actions';
+import FormField from '../../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import history from "../../../../../constants/History";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { AppMessage } from "../../../../../model/common/Message";
-import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
-import { State } from "../../../../../reducers/state";
-import { EntityChecklists } from "../../../../tags/components/EntityChecklists";
-import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
-import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
-import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes";
-import { getClassCostTypes } from "../../utils";
-import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
+  from '../../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import history from '../../../../../constants/History';
+import { EditViewProps } from '../../../../../model/common/ListView';
+import { AppMessage } from '../../../../../model/common/Message';
+import { CourseClassExtended } from '../../../../../model/entities/CourseClass';
+import { State } from '../../../../../reducers/state';
+import { EntityChecklists } from '../../../../tags/components/EntityChecklists';
+import CourseItemRenderer from '../../../courses/components/CourseItemRenderer';
+import { courseFilterCondition, openCourseLink } from '../../../courses/utils';
+import CustomFields from '../../../customFieldTypes/components/CustomFieldsTypes';
+import { getClassCostTypes } from '../../utils';
+import CourseClassEnrolmentsChart from './CourseClassEnrolmentsChart';
 
 interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   tags?: Tag[];
@@ -65,7 +65,7 @@ const CourseClassGeneralTab = React.memo<Props>(
 
     const openBudget = useCallback(() => {
       if (!twoColumn) {
-        toogleFullScreenEditView();
+        toogleFullScreenEditView(true);
       }
 
       const search = new URLSearchParams(window.location.search);
@@ -222,7 +222,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                   <Grid item xs={twoColumn ? 6 : 12}>
                     <FormField
                       type="remoteDataSelect"
-                      label="Course"
+                      label={$t('course')}
                       entity="Course"
                       name="courseId"
                       selectValueMark="id"
@@ -241,9 +241,9 @@ const CourseClassGeneralTab = React.memo<Props>(
                   <Grid item xs={twoColumn ? 4 : 12}>
                     <FormField
                       type="text"
-                      label="Class code"
+                      label={$t('class_code')}
                       name="code"
-                      placeholder="Select course first"
+                      placeholder={$t('select_course_first')}
                       normalize={normalizeClassCode}
                       format={formatClassCode}
                       disabled={!values.courseCode}
@@ -256,7 +256,7 @@ const CourseClassGeneralTab = React.memo<Props>(
             />
           </Grid>
           {Boolean(values.isCancelled) && (
-            <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>Cancelled</div>
+            <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>{$t('cancelled2')}</div>
           )}
         </Grid>
 
@@ -273,15 +273,15 @@ const CourseClassGeneralTab = React.memo<Props>(
               type="select"
               items={specialTags}
               name="specialTagId"
-              label="Type"
+              label={$t('type')}
               selectValueMark="id"
               selectLabelMark="name"
               allowEmpty
             />
             
-            <div className="heading pb-2 pt-3">Restrictions</div>
+            <div className="heading pb-2 pt-3">{$t('restrictions')}</div>
             <Typography variant="body2" color="inherit" component="div" className="pb-1">
-              Students must be at least
+              {$t('students_must_be_at_least')}
               {" "}
               <FormField
                 type="number"
@@ -292,11 +292,11 @@ const CourseClassGeneralTab = React.memo<Props>(
                 inline
               />
               {" "}
-              years old to enrol
+              {$t('years_old_to_enrol')}
             </Typography>
 
             <Typography variant="body2" color="inherit" component="div" className="pb-2">
-              Students must be no older than
+              {$t('students_must_be_no_older_than')}
               {" "}
               <FormField
                 type="number"
@@ -307,7 +307,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 inline
               />
               {" "}
-              years old to enrol
+              {$t('years_old_to_enrol')}
             </Typography>
 
             <Collapse in={!values.isCancelled}>
@@ -315,7 +315,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 <FormControlLabel
                   className="switchWrapper"
                   control={<FormField type="switch" name="isActive" />}
-                  label="Enrolments allowed"
+                  label={$t('enrolments_allowed')}
                   labelPlacement="start"
                 />
               </div>
@@ -323,7 +323,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 <FormControlLabel
                   className="switchWrapper"
                   control={<FormField type="switch" name="isShownOnWeb" />}
-                  label="Visible online"
+                  label={$t('visible_online')}
                   labelPlacement="start"
                 />
               </div>
@@ -331,7 +331,7 @@ const CourseClassGeneralTab = React.memo<Props>(
             <FormField
               type="multilineText"
               name="message"
-              label="Message for operator"
+              label={$t('message_for_operator')}
               className="pt-2"
             />
           </Grid>

@@ -3,72 +3,94 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { initialize } from "redux-form";
-import { Epic } from "redux-observable";
-import { clearActionsQueue } from "../../../../common/actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { getNoteItems } from "../../../../common/components/form/notes/actions";
-import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { courseClassBudgetPath, plainEnrolmentPath } from "../../../../constants/Api";
-import { CourseClassExtended } from "../../../../model/entities/CourseClass";
-import { getEntityItemById } from "../../common/entityItemsService";
-import { GET_COURSE_CLASS, GET_COURSE_CLASS_ENROLMENTS } from "../actions";
-import { GET_COURSE_CLASS_ASSESSMENTS } from "../components/assessments/actions";
-import { GET_COURSE_CLASS_ATTENDANCE } from "../components/attendance/actions";
-import { GET_COURSE_CLASS_COSTS } from "../components/budget/actions";
-import { GET_COURSE_CLASS_SESSIONS } from "../components/timetable/actions";
-import { GET_COURSE_CLASS_TUTORS } from "../components/tutors/actions";
+import { initialize } from 'redux-form';
+import { Epic } from 'redux-observable';
+import { clearActionsQueue } from '../../../../common/actions';
+import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import { getNoteItems } from '../../../../common/components/form/notes/actions';
+import { SET_LIST_EDIT_RECORD } from '../../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
+import * as EpicUtils from '../../../../common/epics/EpicUtils';
+import { courseClassBudgetPath, courseClassTimetablePath, plainEnrolmentPath } from '../../../../constants/Api';
+import { AccessByPath } from '../../../../model/entities/common';
+import {
+  CourseClassExtended,
+  StudentAttendanceExtended,
+  TrainingPlanExtended
+} from '../../../../model/entities/CourseClass';
+import { getEntityItemById } from '../../common/entityItemsService';
+import { getAccessesByPath } from '../../common/utils';
+import { GET_COURSE_CLASS, getCourseClassEnrolments, getCourseClassSessionsWarnings } from '../actions';
+import CourseClassAssessmentService from '../components/assessments/services/CourseClassAssessmentService';
+import CourseClassAttendanceService from '../components/attendance/services/CourseClassAttendanceService';
+import { getCourseClassCosts } from '../components/budget/actions';
+import CourseClassTimetableService from '../components/timetable/services/CourseClassTimetableService';
+import { getCourseClassTutorsWarnings } from '../components/tutors/actions';
+import CourseClassTutorService from '../components/tutors/services/CourseClassTutorService';
 
-const request: EpicUtils.Request<any, number> = {
+const request: EpicUtils.Request<{  courseClass: CourseClassExtended, access: AccessByPath[] }, number> = {
   type: GET_COURSE_CLASS,
   hideLoadIndicator: true,
-  getData: id => getEntityItemById("CourseClass", id),
-  processData: (courseClass: CourseClassExtended, s, id) => {
-    courseClass.tutors = [];
-    courseClass.sessions = [];
-    courseClass.assessments = [];
-    courseClass.studentAttendance = [];
-    courseClass.trainingPlan = [];
+  getData: async (id, state) => {
+
+    const access = await getAccessesByPath(
+      [
+        courseClassBudgetPath,
+        plainEnrolmentPath,
+        courseClassTimetablePath
+      ],
+      state
+    );
+
+    const [
+      courseClass,
+      tutors,
+      assessments,
+      sessions,
+      studentAttendance
+    ] = await Promise.all([
+      getEntityItemById("CourseClass", id),
+      CourseClassTutorService.getCourseClassTutors(id),
+      CourseClassAssessmentService.getCourseClassAssessments(id),
+      CourseClassTimetableService.findTimetableSessionsForCourseClasses(id),
+      CourseClassAttendanceService.getStudentAttendance(id)
+    ]);
+
+    studentAttendance.forEach((s: StudentAttendanceExtended, index) => {
+      s.index = index;
+    });
+
+    const trainingPlan = await CourseClassAttendanceService.getTrainingPlans(id);
+
+    trainingPlan.forEach((t: TrainingPlanExtended, index) => {
+      t.index = index;
+    });
+
+    sessions.sort((a, b) => (new Date(a.start) > new Date(b.start) ? 1 : -1));
+    assessments.forEach((assessment: any, index) => { assessment.index = index; });
+
+    courseClass.tutors = tutors;
+    courseClass.assessments = assessments;
+    courseClass.sessions = sessions;
+    courseClass.studentAttendance = studentAttendance;
+    courseClass.trainingPlan = trainingPlan;
     courseClass.budget = [];
     courseClass.notes = [];
 
+    return { courseClass, access };
+  },
+  processData: ({ courseClass, access }, s, id) => {
+
     const relatedActions = [
-      {
-        type: GET_COURSE_CLASS_TUTORS,
-        payload: id
-      },
-      {
-        type: GET_COURSE_CLASS_ASSESSMENTS,
-        payload: id
-      },
-      {
-        type: GET_COURSE_CLASS_SESSIONS,
-        payload: id
-      },
-      {
-        type: GET_COURSE_CLASS_ATTENDANCE,
-        payload: id
-      },
+      ...courseClass.tutors.length ? [getCourseClassTutorsWarnings(courseClass.tutors.map(t => t.id).toString())] : [],
+      getNoteItems("CourseClass", id, LIST_EDIT_VIEW_FORM_NAME),
+      ...access.flatMap((accItem, index) => [
+        ... index === 0 && accItem.hasAccess ? [getCourseClassCosts(id)] : [],
+        ... index === 1 && accItem.hasAccess ? [getCourseClassEnrolments(id)] : [],
+        ... index === 2 && accItem.hasAccess ? [getCourseClassSessionsWarnings(id, [...courseClass.sessions])] : [],
+        ... accItem.action ? [accItem.action] : []
+      ])
     ];
-
-    const budgetAccess = s.access[courseClassBudgetPath] && s.access[courseClassBudgetPath]["GET"];
-    const enrolmentAccess = s.access[plainEnrolmentPath] && s.access[plainEnrolmentPath]["GET"];
-
-    if (budgetAccess) {
-      relatedActions.push({
-        type: GET_COURSE_CLASS_COSTS,
-        payload: id
-      });
-    }
-
-    if (enrolmentAccess) {
-      relatedActions.push({
-        type: GET_COURSE_CLASS_ENROLMENTS,
-        payload: id
-      });
-    }
 
     return [
       {
@@ -78,9 +100,8 @@ const request: EpicUtils.Request<any, number> = {
           name: `${courseClass.courseName} ${courseClass.courseCode}-${courseClass.code}`
         }
       },
-      ...relatedActions,
       initialize(LIST_EDIT_VIEW_FORM_NAME, courseClass),
-      getNoteItems("CourseClass", id, LIST_EDIT_VIEW_FORM_NAME),
+      ...relatedActions,
       ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : [])
     ];
   },

@@ -6,33 +6,35 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ImportModel } from "@api/model";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import FileCopy from "@mui/icons-material/FileCopy";
-import PlayArrow from "@mui/icons-material/PlayArrow";
-import Grid from "@mui/material/Grid";
-import Grow from "@mui/material/Grow";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL, formatRelativeDate, InfoPill, NumberArgFunction } from "ish-ui";
-import React, { useCallback, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { CatalogItemType } from "../../../../../model/common/Catalog";
-import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import getConfigActions from "../../../components/ImportExportConfig";
-import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { validateKeycode, validateNameForQuotes } from "../../../utils";
-import ScriptCard from "../../scripts/components/cards/CardBase";
-import ExecuteImportModal from "../components/ExecuteImportModal";
+import { ImportModel } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import FileCopy from '@mui/icons-material/FileCopy';
+import PlayArrow from '@mui/icons-material/PlayArrow';
+import Grid from '@mui/material/Grid';
+import Grow from '@mui/material/Grow';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL, formatRelativeDate, InfoPill, NumberArgFunction } from 'ish-ui';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import { FieldArray, Form, initialize, InjectedFormProps } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { CatalogItemType } from '../../../../../model/common/Catalog';
+import Bindings, { BindingsRenderer } from '../../../components/Bindings';
+import getConfigActions from '../../../components/ImportExportConfig';
+import SaveAsNewAutomationModal from '../../../components/SaveAsNewAutomationModal';
+import { validateKeycode, validateNameForQuotes } from '../../../utils';
+import ScriptCard from '../../scripts/components/cards/CardBase';
+import ExecuteImportModal from '../components/ExecuteImportModal';
 
-const manualUrl = getManualLink("advancedSetup_Import");
+const manualUrl = getManualLink("importing");
 const getAuditsUrl = (id: number) => `audit?search=~"ImportTemplate" and entityId == ${id}`;
 
 interface Props extends InjectedFormProps {
@@ -40,7 +42,7 @@ interface Props extends InjectedFormProps {
   values: any;
   history: any;
   syncErrors: any;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onCreate: (template: ImportModel) => void;
   onUpdateInternal: (template: ImportModel) => void;
   onUpdate: (template: ImportModel) => void;
@@ -96,7 +98,7 @@ const ImportTemplatesForm = React.memo<Props>(
 
     const defaultVariables = useMemo(
       () => [
-        {name: "context", type: "Context"}
+        { name: "context", type: "Context" }
       ],
       [values]
     );
@@ -163,7 +165,7 @@ const ImportTemplatesForm = React.memo<Props>(
                 <FormField
                   type="text"
                   name="name"
-                  label="Name"
+                  label={$t('name')}
                   validate={validateTemplateName}
                   disabled={isInternal}
                   required
@@ -208,7 +210,7 @@ const ImportTemplatesForm = React.memo<Props>(
                       ]}
                     />
                     <Grow in={isInternal}>
-                      <Tooltip title="Save as new import template">
+                      <Tooltip title={$t('save_as_new_import_template')}>
                         <IconButton onClick={onInternalSaveClick} color="inherit">
                           <FileCopy color="primary" />
                         </IconButton>
@@ -226,7 +228,7 @@ const ImportTemplatesForm = React.memo<Props>(
                   name="shortDescription"
                   disabled={isInternal}
                   className="overflow-hidden mb-1"
-                  placeholder="Short description"
+                  placeholder={$t('short_description')}
                 />
                 <Typography variant="caption" fontSize="13px">
                   <FormField
@@ -234,7 +236,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     name="description"
                     disabled={isInternal}
                     className="overflow-hidden mb-1"
-                    placeholder="Description"
+                    placeholder={$t('description')}
                     fieldClasses={{
                       text: "fw300 fsInherit"
                     }}
@@ -267,7 +269,7 @@ const ImportTemplatesForm = React.memo<Props>(
 
                 <FormField
                   type="text"
-                  label="Key code"
+                  label={$t('key_code2')}
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}
@@ -278,7 +280,7 @@ const ImportTemplatesForm = React.memo<Props>(
               <Grid item xs={3}>
                 <div>
                   <FormField
-                    label="Enabled"
+                    label={$t('enabled')}
                     type="switch"
                     name="status"
                     color="primary"
@@ -293,7 +295,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     dispatch={dispatch}
                     form={form}
                     name="variables"
-                    label="Variables"
+                    label={$t('variables')}
                     itemsType="label"
                     disabled={isInternal}
                   />
@@ -304,7 +306,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     form={form}
                     itemsType="component"
                     name="options"
-                    label="Options"
+                    label={$t('options')}
                     disabled={isInternal}
                   />
                 </div>
@@ -313,7 +315,7 @@ const ImportTemplatesForm = React.memo<Props>(
                   <FormField
                     type="text"
                     name="description"
-                    label="Description"
+                    label={$t('description')}
                     className="overflow-hidden"
                     multiline
                                       />
@@ -322,7 +324,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     <Grid item xs className="d-flex">
                       <div className="flex-fill">
                         <Typography variant="caption" color="textSecondary">
-                          Last run
+                          {$t('last_run')}
                         </Typography>
 
                         {values.lastRun && values.lastRun.length ? (
@@ -333,7 +335,7 @@ const ImportTemplatesForm = React.memo<Props>(
                           ))
                         ) : (
                           <Typography variant="subtitle1" color="textSecondary">
-                            Never
+                            {$t('never')}
                           </Typography>
                         )}
                       </div>

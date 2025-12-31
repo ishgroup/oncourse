@@ -6,20 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Close from "@mui/icons-material/Close";
+import Close from '@mui/icons-material/Close';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { Grid, IconButton, Typography } from "@mui/material";
-import { BooleanArgFunction, makeAppStyles, NumberArgFunction, openInternalLink } from "ish-ui";
-import React, { useMemo } from "react";
-import StructureGraph from "../../../containers/dashboard/StructureGraph";
-import { getPrivisioningLink } from "../../../routes/routesMapping";
-import { useAppSelector } from "../../utils/hooks";
-import CatalogItem from "../layout/catalog/CatalogItem";
-import navigation from "./data/navigation.json";
-import structure from "./data/structure.json";
+import { Grid, IconButton, Typography } from '@mui/material';
+import $t from '@t';
+import { BooleanArgFunction, makeAppStyles, NumberArgFunction, openInternalLink } from 'ish-ui';
+import React, { useMemo } from 'react';
+import StructureGraph from '../../../containers/dashboard/StructureGraph';
+import { getPrivisioningLink } from '../../../routes/routesMapping';
+import { useAppSelector } from '../../utils/hooks';
+import CatalogItem from '../layout/catalog/CatalogItem';
+import navigation from './data/navigation.json';
+import structure from './data/structure.json';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   description: {
     "& ul": {
       paddingLeft: theme.spacing(2)
@@ -86,16 +87,16 @@ const NavigationCategory = (
     disabled
   }:Props
 ) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const scripts = useAppSelector(state => state.dashboard.scripts);
-  
+
   const category = useMemo(() => navigation.categories.find(c => c.key === selected), [selected]);
   
   const features = useMemo(() => (category 
-    ? navigation.features.filter(f => category.features.includes(f.key))
+    ? navigation.features.filter(f => category.features.includes(f.key) && !disabled[f.key])
     : []
-  ), [category]);
+  ), [category, disabled]);
 
   const onOpen = (link: string) => openInternalLink(getPrivisioningLink(link));
 
@@ -121,7 +122,7 @@ const NavigationCategory = (
       </Grid>
 
       <div className="heading mb-2">
-        Features
+        {$t('features')}
       </div>
       {features.map(f => (
         <NavigationItem
@@ -133,13 +134,12 @@ const NavigationCategory = (
             e.stopPropagation();
             updateFavorites(f.key, "category");
           }}
-          disabled={disabled[f.key]}
         />
       ))}
       {category?.key === "automation" && (
         <div>
           <div className="heading mb-2 mt-4">
-            Automations
+            {$t('automations')}
           </div>
           {scripts.map(s => (
             <NavigationItem

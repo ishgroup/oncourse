@@ -8,28 +8,29 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
-import { EnrolmentStudyReason } from "@api/model";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Lock from "@mui/icons-material/Lock";
-import LockOpen from "@mui/icons-material/LockOpen";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { formatCurrency, mapSelectItems, StyledCheckbox } from "ish-ui";
-import debounce from "lodash.debounce";
-import React from "react";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import { showConfirm } from "../../../../../common/actions";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import { CheckoutCourse } from "../../../../../model/checkout";
-import { checkoutChangeSummaryItemField, checkoutUpdateSummaryItem } from "../../../actions/checkoutSummary";
-import { CHECKOUT_SUMMARY_FORM as summmaryForm } from "../CheckoutSummaryList";
+import { EnrolmentStudyReason } from '@api/model';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Lock from '@mui/icons-material/Lock';
+import LockOpen from '@mui/icons-material/LockOpen';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import { debounce } from 'es-toolkit/compat';
+import { formatCurrency, mapSelectItems, StyledCheckbox } from 'ish-ui';
+import React from 'react';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { showConfirm } from '../../../../../common/actions';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import { CheckoutCourse } from '../../../../../model/checkout';
+import { checkoutChangeSummaryItemField, checkoutUpdateSummaryItem } from '../../../actions/checkoutSummary';
+import { CHECKOUT_SUMMARY_FORM as summmaryForm } from '../CheckoutSummaryList';
 
 const enrolmentStudyReasonItems = Object.keys(EnrolmentStudyReason).map(mapSelectItems);
 
@@ -132,6 +133,7 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
       onChange={handleChange}
       classes={{ root: classes.summaryPanelRoot, expanded: classes.panelExpanded }}
       className={clsx(classes.panel, classes.tableTab)}
+      slotProps={{ transition: { mountOnEnter: true } }}
     >
       <AccordionSummary
         classes={{
@@ -174,7 +176,7 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
               <FormField
                 type="select"
                 name={`${item.id}_${listIndex}_studyReason`}
-                label="Study reason"
+                label={$t('study_reason')}
                 items={enrolmentStudyReasonItems}
                 defaultValue={item.studyReason || "Not stated"}
                 onChange={handleStudyReasonChange}
@@ -186,34 +188,34 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
             <FormField
               type="select"
               name={`${item.id}_${listIndex}_discount`}
-              label="Discount"
+              label={$t('discount')}
               returnType="object"
               selectValueMark="id"
               selectLabelMark="name"
               items={item.discounts}
               disabled={!item.discounts.length}
               onChange={onDiscountChange}
-              placeholder="No discount"
+              placeholder={$t('no_discount')}
               allowEmpty
             />
           </Grid>
           <Grid item container columnSpacing={3} rowSpacing={2} xs={12} lg={8}>
             <Grid item sm={3}>
-              <Uneditable label="Price (ex tax)" className="text-end" value={item.priceExTax} money />
+              <Uneditable label={$t('price_ex_tax')} className="text-end" value={item.priceExTax} money />
             </Grid>
             <Grid item sm={3}>
-              <Uneditable label="Discount (ex tax)" className="text-end" value={item.discountExTax} money />
+              <Uneditable label={$t('discount_ex_tax')} className="text-end" value={item.discountExTax} money />
             </Grid>
             <Grid item sm={3}>
-              <Uneditable label="Tax" className="text-end" value={item.taxAmount} money />
+              <Uneditable label={$t('tax')} className="text-end" value={item.taxAmount} money />
             </Grid>
             <Grid item sm={3}>
-              {priceLocked ? <Uneditable label="Total" className="text-end" labelAdornment={priceAdormnet} value={item.price} money rightAligned />
+              {priceLocked ? <Uneditable label={$t('total')} className="text-end" labelAdornment={priceAdormnet} value={item.price} money rightAligned />
               : (
                 <FormField
                   type="money"
                   name={`${item.id}_${listIndex}_price`}
-                  label="Total"
+                  label={$t('total')}
                   className="pl-2 text-end"
                   onChange={handlePriceChange}
                   labelAdornment={priceAdormnet}

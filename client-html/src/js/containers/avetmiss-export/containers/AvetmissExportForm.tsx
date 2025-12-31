@@ -11,9 +11,9 @@ import {
   FundingSource,
   FundingStatus,
   FundingUpload
-} from "@api/model";
-import { ExpandMore } from "@mui/icons-material";
-import LoadingButton from "@mui/lab/LoadingButton";
+} from '@api/model';
+import { ExpandMore } from '@mui/icons-material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Card,
   CardContent,
@@ -25,22 +25,24 @@ import {
   Grid,
   Hidden,
   Typography,
-} from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from "date-fns";
-import { ErrorMessage, III_DD_MMM_YYYY, StyledCheckbox, YYYY_MM_DD_MINUSED, validateMinMaxDate } from "ish-ui";
-import React from "react";
-import posed from "react-pose";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
-import { interruptProcess } from "../../../common/actions";
-import FormField from "../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { AvetmissExportSettingsReqired } from "../../../model/preferences";
-import { State } from "../../../reducers/state";
+} from '@mui/material';
+import $t from '@t';
+import clsx from 'clsx';
+import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from 'date-fns';
+import { ErrorMessage, III_DD_MMM_YYYY, StyledCheckbox, validateMinMaxDate, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React from 'react';
+import posed from 'react-pose';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { interruptProcess } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
+import FormField from '../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { AvetmissExportSettingsReqired } from '../../../model/preferences';
+import { State } from '../../../reducers/state';
 import {
   clearAvetmiss8ExportID,
   clearExportOutcomes,
@@ -51,15 +53,15 @@ import {
   getAvetmiss8OutcomesStatus,
   getFundingUploads,
   updateFundingUpload
-} from "../actions";
-import AvetmissExportResults from "../components/AvetmissExportResults";
-import AvetmissHistory from "../components/AvetmissHistory/AvetmissHistory";
-import PreviousExportPanel from "../components/PreviousExportPanel/PreviousExportPanel";
-import getAvetmissExportFormValues from "../utils/getAvetmissExportFormValues";
+} from '../actions';
+import AvetmissExportResults from '../components/AvetmissExportResults';
+import AvetmissHistory from '../components/AvetmissHistory/AvetmissHistory';
+import PreviousExportPanel from '../components/PreviousExportPanel/PreviousExportPanel';
+import getAvetmissExportFormValues from '../utils/getAvetmissExportFormValues';
 
 export const FORM: string = "AvetmissExportForm";
 
-const styles = theme => createStyles({
+const styles = theme => ({
   divider: {
     margin: theme.spacing(3, -3)
   },
@@ -187,7 +189,7 @@ const todayMonth = today.getMonth();
 
 const formated = setMonth(new Date(), todayMonth);
 
-const manualUrl = getManualLink("AVETMISS");
+const manualUrl = getManualLink("avetmiss-reporting");
 
 // Australian quarters
 const getCurrentQuarter = () => {
@@ -311,7 +313,7 @@ interface Props {
   values?: any;
   enrolmentsCount?: number;
   data?: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   classes?: any;
   outcomes?: any;
   exportID?: string;
@@ -647,7 +649,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
       <FormField
         type="select"
         name="flavour"
-        label="Flavour"
+        label={$t('flavour')}
         items={flavourModel}
         onChange={this.onFlavourChange}
         className="mb-2"
@@ -661,7 +663,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
     return (
       <form className="container" onSubmit={handleSubmit(this.onFind)}>
         <AppBarContainer
-          title="AVETMISS 8"
+          title={$t('avetmiss_8')}
           disableInteraction
           manualUrl={manualUrl}
           onCloseClick={onClose}
@@ -702,7 +704,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                           "mb-2": hasOutcomesOrExport
                         })}
                       >
-                        Select
+                        {$t('select')}
                         {hasOutcomesOrExport && (
                           <>
                             <div className="flex-fill" />
@@ -723,11 +725,12 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                             <div>
                               {flavourField}
                               <Typography gutterBottom variant="caption">
-                                Exporting
+                                {" "}
+                                {$t('Exporting')}
                                 {' '}
                                 {enrolmentsCount}
                                 {' '}
-                                enrolment
+                                {$t('enrolment')}
                                 {enrolmentsCount !== 1 ? "s" : ""}
                                 ...
                                 {" "}
@@ -740,7 +743,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                 <FormField
                                   type="select"
                                   name="dateRange"
-                                  label="Outcomes in progress during"
+                                  label={$t('outcomes_in_progress_during')}
                                   items={
                                     values.flavour === "NCVER (Standard AVETMISS)"
                                       ? dateRangeModel.slice(1)
@@ -758,7 +761,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                     <FormField
                                       type="date"
                                       name="outcomesStart"
-                                      label="Start"
+                                      label={$t('start')}
                                       validate={this.validateMaxDate}
                                       className="mb-2"
                                     />
@@ -766,7 +769,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                       <FormField
                                         type="date"
                                         name="outcomesEnd"
-                                        label="End"
+                                        label={$t('end')}
                                         validate={this.validateMinDate}
                                         className="mb-2"
                                       />
@@ -782,12 +785,11 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                   control={
                                     <FormField type="checkbox" name="includeLinkedOutcomes" color="primary" />
                                   }
-                                  label="Include linked outcomes"
+                                  label={$t('include_linked_outcomes')}
                                 />
 
                                 <Typography variant="caption" component="div" className="pr-2">
-                                  Outcomes outside the date range will be included if linked to the same enrolment or
-                                  if they have the same Purchasing contract identifier.
+                                  {$t('outcomes_outside_the_date_range_will_be_included_i')}
                                 </Typography>
                               </div>
                               <div className="flex-fill ml-2 pb-1">
@@ -822,7 +824,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                       onChange={this.onFeeChange}
                                     />
                                   )}
-                                  label="No funding contract (Fee for service VET)"
+                                  label={$t('no_funding_contract_fee_for_service_vet')}
                                 />
 
                                 <Collapse in={feeForServiceChecked}>
@@ -847,7 +849,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                 </Collapse>
                                 {!checkboxesValid && (
                                   <Typography variant="body1" color="error">
-                                    Please select one or more options.
+                                    {$t('please_select_one_or_more_options')}
                                   </Typography>
                                 )}
                               </div>
@@ -869,13 +871,13 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                             disabled={invalid || !checkboxesValid}
                             loading={pending}
                           >
-                            Find
+                            {$t('find')}
                           </LoadingButton>
                         )}
 
                         {hasNoResults && (
                           <Typography variant="body1" color="error">
-                            No outcomes match your criteria above
+                            {$t('no_outcomes_match_your_criteria_above')}
                           </Typography>
                         )}
                       </div>
@@ -951,4 +953,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 export default reduxForm<any, Props>({
   form: FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AvetmissExportForm)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(AvetmissExportForm, styles)));

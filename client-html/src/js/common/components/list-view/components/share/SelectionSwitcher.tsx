@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import ButtonBase from "@mui/material/ButtonBase";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import React, { useCallback, useEffect } from "react";
+import { ButtonBase, Typography } from '@mui/material';
+import $t from '@t';
+import clsx from 'clsx';
+import React, { useCallback, useEffect } from 'react';
+import { withStyles } from 'tss-react/mui';
 
 const styles = theme =>
-  createStyles({
+  ({
     select: {
       border: "1px solid rgba(255,255,255,0.4)",
       padding: theme.spacing(0.25, 1),
@@ -68,8 +68,7 @@ const SelectionSwitcher: React.FunctionComponent<any> = props => {
         >
           <Typography className={clsx(classes.selectTypography, selectAll ? "" : classes.highlightedSelectTypography)}>
             {selectedRecords}
-            {' '}
-            selected record
+            {$t('selected_record')}
             {selectedRecords > 1 ? "s" : ""}
           </Typography>
         </ButtonBase>
@@ -88,4 +87,4 @@ const SelectionSwitcher: React.FunctionComponent<any> = props => {
   );
 };
 
-export default withStyles(styles)(SelectionSwitcher);
+export default withStyles(SelectionSwitcher, styles);

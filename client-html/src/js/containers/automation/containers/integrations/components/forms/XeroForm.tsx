@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import LoadingButton from "@mui/lab/LoadingButton";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import * as React from "react";
-import { connect } from "react-redux";
-import { change, getFormValues, initialize, reduxForm } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
-import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
-import { State } from "../../../../../../reducers/state";
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Button, Typography } from '@mui/material';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { change, getFormValues, initialize, reduxForm } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import { validateSingleMandatoryField } from '../../../../../../common/utils/validation';
+import { State } from '../../../../../../reducers/state';
 
 class XeroBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -94,7 +94,7 @@ class XeroBaseForm extends React.Component<any, any> {
     const state = encodeURI(`${window.location.href}${paramsStr}`);
 
     window.open(
-      // eslint-disable-next-line max-len
+      
       `https://login.xero.com/identity/connect/authorize?response_type=code&client_id=A05FD21034974F29ABD4301FC54513BC&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/xero/auth.html&scope=accounting.transactions payroll.employees payroll.payruns payroll.payslip payroll.settings offline_access&state=${state}`,
       "_self"
     );
@@ -128,7 +128,7 @@ class XeroBaseForm extends React.Component<any, any> {
                 className="mt-1"
                 onClick={this.onDisconnect}
               >
-                Disconnect from Xero
+                {$t('disconnect_from_xero')}
               </Button>
             </>
           ) : (
@@ -157,7 +157,7 @@ class XeroBaseForm extends React.Component<any, any> {
                   loading={loading}
                   onClick={this.showTokenField}
                 >
-                  Connect to Xero
+                  {$t('connect_to_xero')}
                 </LoadingButton>
               )}
             </>

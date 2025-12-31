@@ -1,13 +1,16 @@
-import { format } from "date-fns";
-import { mockedEditView } from "../../common/MockedEditView.Components";
-import ContactEditView from "../../../js/containers/entities/contacts/components/ContactEditView";
-import { III_DD_MMM_YYYY } from "ish-ui";
+import { format } from 'date-fns';
+import { III_DD_MMM_YYYY } from 'ish-ui';
+import ContactEditView from '../../../js/containers/entities/contacts/components/ContactEditView';
+import { mockedEditView } from '../../common/MockedEditView.Components';
 
 describe("Virtual rendered ContactEditView", () => {
   mockedEditView({
     entity: "Contact",
     EditView: ContactEditView,
-    record: mockecApi => mockecApi.db.getContact(1),
+    record: mockedApi => mockedApi.db.getContact(1),
+    state: ({mockedApi}) => ({
+      location: mockedApi.db.location
+    }),
     render: ({
       screen, initialValues, formRoleName, fireEvent
     }) => {

@@ -6,20 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ClashType, Session } from "@api/model";
-import { createStyles, Theme } from "@mui/material";
-import Chip from "@mui/material/Chip";
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { differenceInMinutes, format } from "date-fns";
-import { appendTimezone, formatDurationMinutes, WarningMessage } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { CalendarTagsState } from "../../../../../../model/timetable";
-import { openCourseClassLink } from "../../../../../entities/courseClasses/utils";
-import CalendarSessionTag from "./CalendarSessionTag";
+import { ClashType, Session } from '@api/model';
+import { Theme, Typography } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import $t from '@t';
+import clsx from 'clsx';
+import { differenceInMinutes, format } from 'date-fns';
+import { appendTimezone, formatDurationMinutes, WarningMessage } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { CalendarTagsState } from '../../../../../../model/timetable';
+import { openCourseClassLink } from '../../../../../entities/courseClasses/utils';
+import CalendarSessionTag from './CalendarSessionTag';
 
-const styles = (theme: Theme) => createStyles({
+const styles = (theme: Theme) => ({
     "@global": {
       ".dayOffset": {
         marginBottom: theme.spacing(1),
@@ -145,12 +145,12 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
             ))
           ) : (
             <Typography variant="caption" component="span" className="placeholderContent">
-              No Tags
+              {$t('no_tags')}
             </Typography>
           )
         ) : (
           <Typography variant="caption" component="span" className="text-disabled">
-            Loading...
+            {$t('loading')}
           </Typography>
         )}
         </div>
@@ -190,12 +190,12 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
                 <Typography variant="caption" noWrap color={clashes && clashes.includes("Tutor") ? "error" : undefined}>
                   {tutors.length ? (
                     <span>
-                      with
+                      {$t('with')}
                       {" "}
                       {tutors.map((el, id) => (id === 0 ? el : ` ${el}`)).toString()}
                     </span>
                   ) : (
-                    <span className={classes.warningColor}>No tutor set</span>
+                    <span className={classes.warningColor}>{$t('no_tutor_set')}</span>
                   )}
                 </Typography>
               )}
@@ -212,7 +212,7 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
                       )}
                     </span>
                   ) : (
-                    <span className={classes.warningColor}>No room set</span>
+                    <span className={classes.warningColor}>{$t('no_room_set')}</span>
                   )}
                 </Typography>
               )}
@@ -223,7 +223,7 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
             {warningMessage && <WarningMessage warning={warningMessage} className="m-0" />}
           </>
         ) : (
-          <span className={classes.loadingLine}>Loading...</span>
+          <span className={classes.loadingLine}>{$t('loading')}</span>
         )}
       </div>
 
@@ -231,7 +231,7 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
         <div className="pt-1 pl-2">
           <Chip
             size="small"
-            label="clash"
+            label={$t('clash')}
             className={classes.clash}
           />
         </div>
@@ -240,4 +240,4 @@ const CalendarSession: React.FC<SessionBaseProps> = props => {
   );
 };
 
-export default withStyles(styles)(CalendarSession) as React.FC<SessionBaseProps>;
+export default withStyles(CalendarSession, styles);

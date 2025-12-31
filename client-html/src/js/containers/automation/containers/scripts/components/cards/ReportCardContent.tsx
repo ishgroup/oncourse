@@ -3,21 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import React, { useMemo } from "react";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { useAppSelector } from "../../../../../../common/utils/hooks";
-import { ScriptComponent } from "../../../../../../model/scripts";
-import { renderAutomationItems } from "../../../../utils";
-import PdfService from "../../../pdf-reports/services/PdfService";
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import React, { useMemo } from 'react';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { IAction } from '../../../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { useAppSelector } from '../../../../../../common/utils/hooks';
+import { ScriptComponent } from '../../../../../../model/scripts';
+import { renderAutomationItems } from '../../../../utils';
+import PdfService from '../../../pdf-reports/services/PdfService';
 
 interface Props {
   name: string;
   field: ScriptComponent;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   form: string;
   renderVariables: any;
   disabled: boolean;
@@ -68,7 +70,7 @@ const ReportCardContent: React.FC<Props> = props => {
         <FormField
           type="text"
           name={`${name}.fileName`}
-          label="File Name"
+          label={$t('file_name2')}
           disabled={disabled}
           required
         />
@@ -77,7 +79,7 @@ const ReportCardContent: React.FC<Props> = props => {
         <FormField
           type="select"
           name={`${name}.keycode`}
-          label="Report"
+          label={$t('report')}
           items={pdfReportsItems}
           className="d-flex mt-2"
           onInnerValueChange={changePdfReport}
@@ -92,7 +94,7 @@ const ReportCardContent: React.FC<Props> = props => {
         <FormField
           type="select"
           name={`${name}.background`}
-          label="Background"
+          label={$t('background')}
           items={pdfBackgroundsItems}
           className="d-flex mt-2"
           disabled={disabled}

@@ -42,9 +42,4 @@ class RoomApiImpl implements RoomApi {
     void update(Long id, RoomDTO room) {
         entityApiService.update(id, room)
     }
-
-    @Override
-    void bulkChange(DiffDTO diff) {
-        entityApiService.bulkChange(diff)
-    }
 }

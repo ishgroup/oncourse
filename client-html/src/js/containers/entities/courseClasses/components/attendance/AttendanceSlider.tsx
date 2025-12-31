@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import DragHandleRounded from "@mui/icons-material/DragIndicatorRounded";
-import Slider from "@mui/material/Slider";
-import { createStyles, withStyles } from "@mui/styles";
-import debounce from "lodash.debounce";
-import React, { useCallback, useMemo } from "react";
-import { AttandanceStepItem } from "../../../../../model/entities/CourseClass";
+import DragHandleRounded from '@mui/icons-material/DragIndicatorRounded';
+import Slider from '@mui/material/Slider';
+import { debounce } from 'es-toolkit/compat';
+import React, { useCallback, useMemo } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { AttandanceStepItem } from '../../../../../model/entities/CourseClass';
 
 const SliderThumbComponent = props => (
   <span {...props}>
@@ -16,7 +16,7 @@ const SliderThumbComponent = props => (
   </span>
 );
 
-const styles = () => createStyles({
+const styles = () => ({
   sliderRoot: {
     color: "#868686",
     top: 17,
@@ -147,4 +147,4 @@ const AttendanceSlider: React.FC<Props> = ({
   );
 };
 
-export default withStyles(styles)(AttendanceSlider);
+export default withStyles(AttendanceSlider, styles);

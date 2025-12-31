@@ -4,57 +4,52 @@
  */
 
 import {
+  AbstractInvoiceLine,
   CheckoutArticle,
   CheckoutEnrolment,
   CheckoutMembership,
   CheckoutModel,
-  CheckoutPaymentPlan,
   CheckoutVoucher,
   ContactNode,
+  CourseClassType,
   Invoice,
-  AbstractInvoiceLine,
   InvoicePaymentPlan,
-  ProductType, CourseClassType
-} from "@api/model";
-import { differenceInMinutes, format, isBefore } from "date-fns";
-import { decimalMinus, decimalPlus, YYYY_MM_DD_MINUSED } from "ish-ui";
+  ProductType
+} from '@api/model';
+import { differenceInMinutes, format, isBefore } from 'date-fns';
+import { decimalMinus, decimalPlus, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import { getFormValues } from 'redux-form';
+import { LSRemoveItem } from '../../../common/utils/storage';
 import {
   CheckoutCourse,
   CheckoutCourseClass,
   CheckoutDiscount,
   CheckoutEntity,
   CheckoutItem,
-  CheckoutState,
   CheckoutSummary,
   CheckoutSummaryListItem
-} from "../../../model/checkout";
-import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
+} from '../../../model/checkout';
+import { State } from '../../../reducers/state';
+import MembershipProductService from '../../entities/membershipProducts/services/MembershipProductService';
+import { CHECKOUT_SELECTION_FORM_NAME } from '../components/CheckoutSelection';
+import {
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
+} from '../components/fundingInvoice/CheckoutFundingInvoiceSummaryList';
+import { CHECKOUT_SUMMARY_FORM } from '../components/summary/CheckoutSummaryList';
 import {
   CHECKOUT_MEMBERSHIP_COLUMNS,
   CHECKOUT_PRODUCT_COLUMNS,
+  CHECKOUT_STORED_STATE_KEY,
   CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep,
   CheckoutCurrentStepType
-} from "../constants";
-import { getFundingInvoices } from "./fundingInvoice";
+} from '../constants';
+import { getFundingInvoices } from './fundingInvoice';
 
 export const filterPastClasses = courseClasses => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   return courseClasses.filter(c => c.startDateTime === null || isBefore(today, new Date(c.endDateTime)));
-};
-
-export const getExpireDate = month => {
-  const toDay = new Date();
-  const curMonth = toDay.getMonth();
-  if (curMonth > month) {
-    toDay.setFullYear(toDay.getFullYear() + 1, month, 1);
-  } else if (curMonth === month && toDay.getDate() > 1) {
-    toDay.setFullYear(toDay.getFullYear() + 1, month, 1);
-  } else {
-    toDay.setFullYear(toDay.getFullYear(), month, 1);
-  }
-  return toDay;
 };
 
 export const isPromotionalCodeExist = (code, checkout) => {
@@ -187,14 +182,25 @@ export const mergeInvoicePaymentPlans = (paymentPlans: InvoicePaymentPlan[]) => 
   }));
 };
 
+export const getCheckoutModelMembershipsValidTo = async (model: CheckoutModel) => {
+  for (const node of model.contactNodes) {
+    for (const mem of node.memberships) {
+      mem.validTo = await MembershipProductService.getCheckoutModel(mem.productId, node.contactId).then(res => res.expiresOn);
+    }
+  }
+};
+
 export const getCheckoutModel = (
-  state: CheckoutState,
-  paymentPlans: CheckoutPaymentPlan[],
-  fundingInvoices: CheckoutFundingInvoice[],
-  summaryValues: any = {},
+  appState: State,
   pricesOnly?: boolean
 ): CheckoutModel => {
-  const { summary, payment } = state;
+  const { summary, payment } = appState.checkout;
+
+  const paymentPlans = ((getFormValues(CHECKOUT_SELECTION_FORM_NAME)(appState) as any)?.paymentPlans || []).filter(p => p.amount && p.date).map(p => ({ amount: p.amount, date: format(new Date(p.date), YYYY_MM_DD_MINUSED) }));
+
+  const fundingInvoices = (getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(appState) as any).fundingInvoices;
+
+  const summaryValues = (getFormValues(CHECKOUT_SUMMARY_FORM)(appState) as any);
 
   const payerItem = summary.list.find(l => l.payer);
 
@@ -289,8 +295,6 @@ export const getCheckoutModel = (
 
     paymentPlans,
 
-    merchantReference: payment.merchantReference,
-
     contactNodes: summary.list.map((l): ContactNode => ({
 
       contactId: l.contact.id,
@@ -340,9 +344,9 @@ export const getCheckoutModel = (
       && paymentPlans.reduce((p, c) => (new Date(p.date) < new Date(c.date) ? p : c))?.date)
       || summary.invoiceDueDate,
 
-    invoiceCustomerReference: summaryValues.invoiceCustomerReference,
+    invoiceCustomerReference: summaryValues?.invoiceCustomerReference,
 
-    invoicePublicNotes: summaryValues.invoicePublicNotes
+    invoicePublicNotes: summaryValues?.invoicePublicNotes
   };
 };
 
@@ -358,6 +362,7 @@ export const getInvoiceLineKey = (entity: CheckoutEntity) => {
 };
 
 const getInvoiceLinePrices = (item: CheckoutItem, lines: AbstractInvoiceLine[], itemOriginal: CheckoutItem) => {
+
   const id = item.type === "course" && item.class ? item.class.id : item.id;
   const lineKey = getInvoiceLineKey(item.type);
   const targetLine = lines.find(l => l[lineKey] && (l[lineKey].productId === id || l[lineKey].classId === id));
@@ -401,10 +406,15 @@ const getInvoiceLinePrices = (item: CheckoutItem, lines: AbstractInvoiceLine[], 
     price: 0
   };
 
+  const validTo = item.type === "membership" ? {
+    validTo: targetLine?.membership?.validTo
+  } : {};
+
   return {
     ...item,
     ...paymentPlansObj,
-    ...prices
+    ...prices,
+    ...validTo
   };
 };
 
@@ -549,7 +559,7 @@ export const checkoutCourseMap = (courseBase, skipCheck?: boolean): CheckoutCour
   return course;
 };
 
-export const calculateVoucherOrMembershipExpiry = (item: CheckoutItem) => {
+export const calculateVoucherExpiry = (item: CheckoutItem) => {
   switch (item.type) {
     case "voucher": {
       if (item.expiryDays) {
@@ -558,25 +568,6 @@ export const calculateVoucherOrMembershipExpiry = (item: CheckoutItem) => {
         item.validTo = format(today, YYYY_MM_DD_MINUSED);
       }
       break;
-    }
-    case "membership": {
-      if (item.expiryType === "Never (Lifetime)") {
-        item.expireNever = item.expiryType;
-      } else {
-        if (item.expiryType === "Days") {
-          const today = new Date();
-          today.setDate(today.getDate() + Number(item.expiryDays));
-          item.validTo = format(today, YYYY_MM_DD_MINUSED);
-        }
-        if (item.expiryType === "1st July") {
-          const date = getExpireDate(6);
-          item.validTo = format(date, YYYY_MM_DD_MINUSED);
-        }
-        if (item.expiryType === "1st January") {
-          const date = getExpireDate(0);
-          item.validTo = format(date, YYYY_MM_DD_MINUSED);
-        }
-      }
     }
   }
 };
@@ -592,7 +583,7 @@ export const processCheckoutSale = (row, type) => {
   if ( type === "voucher") {
     row.restrictToPayer = false;
   }
-  calculateVoucherOrMembershipExpiry(row);
+  calculateVoucherExpiry(row);
 };
 
 export const getCheckoutCurrentStep = (step: CheckoutCurrentStepType): number => {
@@ -623,5 +614,30 @@ export const getProductColumnsByType = (type: ProductType | string) => {
   }
 };
 
-export * from "./asyncActions";
+export const paymentErrorMessageDefault = "Payment gateway cannot be contacted. Please try again later or contact ish support.";
 
+export const getPaymentErrorMessage = response => {
+  if (Array.isArray(response.data)) {
+    return response.data.reduce((p, c, i) => p + c.error + (i === response.data.length - 1 ? "" : "\n\n"), "");
+  }
+
+  return response.data?.responseText
+    ? response.data.responseText
+    : /(4|5)+/.test(response.status)
+      ? response.error
+        ? response.error
+        : paymentErrorMessageDefault
+      : null;
+};
+
+export const getStoredPaymentStateKey = (xPaymentSessionId: string) => `${CHECKOUT_STORED_STATE_KEY}-${xPaymentSessionId}`;
+
+export const clearStoredPaymentsState = () => {
+  for (const storageKey in localStorage) {
+    if (storageKey.includes(CHECKOUT_STORED_STATE_KEY)) {
+      LSRemoveItem(storageKey);
+    }
+  }
+};
+
+export * from "./asyncActions";

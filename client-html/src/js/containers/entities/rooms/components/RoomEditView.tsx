@@ -32,7 +32,6 @@ const RoomEditView = props => {
   const {
     isNew,
     isNested,
-    nestedIndex,
     values,
     classes,
     dispatch,
@@ -54,7 +53,6 @@ const RoomEditView = props => {
       itemProps={{
         isNew,
         isNested,
-        nestedIndex,
         values,
         classes,
         dispatch,

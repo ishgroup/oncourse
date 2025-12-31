@@ -11,27 +11,19 @@
 
 package ish.oncourse.aql.model.attribute;
 
-import ish.common.types.AttendanceType;
 import ish.common.types.CourseClassType;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.aql.impl.CompilationContext;
-import ish.oncourse.aql.impl.DateTimeInterval;
 import ish.oncourse.aql.impl.LazyExpressionNode;
-import ish.oncourse.aql.impl.converter.LazyDateTimeScalar;
 import ish.oncourse.server.api.v1.function.EnrolmentFunctions;
-import ish.oncourse.server.cayenne.*;
-import ish.oncourse.server.cayenne.glue._Enrolment;
+import ish.oncourse.server.cayenne.CourseClass;
+import ish.oncourse.server.cayenne.Enrolment;
 import org.apache.cayenne.exp.parser.*;
-import org.apache.cayenne.query.ColumnSelect;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.SQLSelect;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  *
@@ -74,6 +66,7 @@ class SyntheticEnrolmentIsClassCompletedNode extends LazyExpressionNode {
         statusCheckNode.jjtAddChild(new ASTObjPath(prefix + "status"), 0);
         statusCheckNode.jjtAddChild(new ASTScalar(EnrolmentStatus.SUCCESS.getDatabaseValue()), 1);
 
+
         var endDateNullCheck = new ASTNotEqual();
         endDateNullCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.endDateTime"), 0);
         endDateNullCheck.jjtAddChild(new ASTScalar(null), 1);
@@ -82,8 +75,52 @@ class SyntheticEnrolmentIsClassCompletedNode extends LazyExpressionNode {
         endDateCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.endDateTime"), 0);
         endDateCheck.jjtAddChild(new ASTScalar(LocalDateTime.now()), 1);
 
-        var hybridMainCheck = new ASTOr();
+        var hybridMainCheck = buildHybridCheck(ctx, prefix);
+        var selfPacedMainCheck = buildSelfPacedCheckNode(ctx, prefix);
 
+        isClassCompletedNode.jjtAddChild(statusCheckNode, 0);
+
+        var selfPacedOrCheck = new ASTOr();
+        var notSelfPacedCheck = new ASTAnd();
+        notSelfPacedCheck.jjtAddChild(notSelfPacedWithMaximumDaysCheck(prefix), 0);
+        notSelfPacedCheck.jjtAddChild(endDateNullCheck, 1);
+        notSelfPacedCheck.jjtAddChild(endDateCheck, 2);
+        notSelfPacedCheck.jjtAddChild(hybridMainCheck, 3);
+
+        selfPacedOrCheck.jjtAddChild(notSelfPacedCheck, 0);
+        selfPacedOrCheck.jjtAddChild(selfPacedMainCheck, 1);
+
+        isClassCompletedNode.jjtAddChild(selfPacedOrCheck, 1);
+
+        parent.jjtAddChild(isClassCompletedNode, 0);
+        parent.jjtAddChild(args.get(2), 1);
+        return parent;
+    }
+
+    //!(courseclass.type = distant_learning && courseclass.maximumDays != null)
+    private Node notSelfPacedWithMaximumDaysCheck(String prefix) {
+        var notSelfPacedWithMaximumDaysCheck = new ASTNot();
+        var notSelfPacedWithMaximumDays = new ASTAnd();
+
+        var selfPacedTypeCheck = new ASTEqual();
+        selfPacedTypeCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.type"), 0);
+        selfPacedTypeCheck.jjtAddChild(new ASTScalar(CourseClassType.DISTANT_LEARNING.getDatabaseValue()), 1);
+
+        var maximumDaysCheck = new ASTNotEqual();
+        maximumDaysCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.maximumDays"), 0);
+        maximumDaysCheck.jjtAddChild(new ASTScalar(null), 1);
+
+        notSelfPacedWithMaximumDays.jjtAddChild(selfPacedTypeCheck, 0);
+        notSelfPacedWithMaximumDays.jjtAddChild(maximumDaysCheck, 1);
+
+        notSelfPacedWithMaximumDaysCheck.jjtAddChild(notSelfPacedWithMaximumDays, 0);
+        return notSelfPacedWithMaximumDaysCheck;
+    }
+
+
+    // is not hybrid or class is completed with hybrid rules
+    private Node buildHybridCheck(CompilationContext ctx, String prefix) {
+        var hybridMainCheck = new ASTOr();
         var notHybridCheck = new ASTNotEqual();
         notHybridCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.type"), 0);
         notHybridCheck.jjtAddChild(new ASTScalar(CourseClassType.HYBRID.getDatabaseValue()), 1);
@@ -91,6 +128,7 @@ class SyntheticEnrolmentIsClassCompletedNode extends LazyExpressionNode {
         long basicEnrolmentId = -1L;
         List<Enrolment> enrolments;
         Set<Long> enrolmentIds = new HashSet<>();
+
         do {
             enrolments = ObjectSelect.query(Enrolment.class)
                     .where(Enrolment.ID.gt(basicEnrolmentId).andExp(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS)).andExp(
@@ -106,27 +144,36 @@ class SyntheticEnrolmentIsClassCompletedNode extends LazyExpressionNode {
             basicEnrolmentId = !enrolments.isEmpty() ? enrolments.get(enrolments.size() - 1).getId() : basicEnrolmentId;
         } while (!enrolments.isEmpty());
 
-        Node hybridCheck;
-        if (!enrolmentIds.isEmpty()) {
-            hybridCheck = new ASTIn();
-            ASTObjPath astObjPath = new ASTObjPath(prefix + "." + "id");
-            hybridCheck.jjtAddChild(astObjPath, 0);
-            hybridCheck.jjtAddChild(new ASTList(enrolmentIds), 1);
-        } else {
-            hybridCheck = new ASTFalse();
-        }
+        Node hybridCheck = buildInNodeForList(enrolmentIds, prefix);
 
         hybridMainCheck.jjtAddChild(notHybridCheck, 0);
         hybridMainCheck.jjtAddChild(hybridCheck, 1);
+        return hybridMainCheck;
+    }
 
-        isClassCompletedNode.jjtAddChild(statusCheckNode, 0);
-        isClassCompletedNode.jjtAddChild(endDateNullCheck, 1);
-        isClassCompletedNode.jjtAddChild(endDateCheck, 2);
-        isClassCompletedNode.jjtAddChild(hybridMainCheck, 3);
 
-        parent.jjtAddChild(isClassCompletedNode, 0);
-        parent.jjtAddChild(args.get(2), 1);
-        return parent;
+    // ids in (createdOn + courseClass.maximumDays < today)
+    private Node buildSelfPacedCheckNode(CompilationContext ctx, String prefix) {
+        var selfPacedIds = SQLSelect.scalarQuery(Long.class, "select e.id FROM Enrolment e join CourseClass cc ON e.courseClass_id = cc.id" +
+                        " WHERE e.status = 3 and cc.type = 1 and cc.maximumDays is not null" +
+                        " and DATE_ADD(e.createdOn, INTERVAL cc.maximumDays DAY) < CURRENT_DATE")
+                .select(ctx.getContext());
+
+        return buildInNodeForList(selfPacedIds, prefix);
+    }
+
+    private Node buildInNodeForList(Collection<Long> ids, String prefix) {
+        Node result;
+        if (!ids.isEmpty()) {
+            result = new ASTIn();
+            ASTObjPath astObjPath = new ASTObjPath(prefix + "." + "id");
+            result.jjtAddChild(astObjPath, 0);
+            result.jjtAddChild(new ASTList(ids), 1);
+        } else {
+            result = new ASTFalse();
+        }
+
+        return result;
     }
 
     @Override

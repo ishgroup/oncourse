@@ -6,17 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import ErrorOutline from "@mui/icons-material/ErrorOutline";
-import Button from "@mui/material/Button";
-import { ShowConfirmCaller } from "ish-ui";
-import * as React from "react";
-import { useEffect, useRef } from "react";
-import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Dispatch } from "redux";
-import { isInvalid, submit } from "redux-form";
-import { State } from "../../../reducers/state";
-import { closeConfirm, setNextLocation, showConfirm } from "../../actions";
+import ErrorOutline from '@mui/icons-material/ErrorOutline';
+import Button from '@mui/material/Button';
+import $t from '@t';
+import { ShowConfirmCaller } from 'ish-ui';
+import * as React from 'react';
+import { useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import { isInvalid, submit } from 'redux-form';
+import { State } from '../../../reducers/state';
+import { closeConfirm, setNextLocation, showConfirm } from '../../actions';
 
 interface Props {
   when: boolean;
@@ -48,7 +49,7 @@ const RouteChangeConfirm = (
   }: Props & RouteComponentProps
 ) => {
 
-  const unblock = useRef<any>();
+  const unblock = useRef<any>(undefined);
 
   function onCancel() {
     setNextLocation("");
@@ -72,7 +73,7 @@ const RouteChangeConfirm = (
             closeConfirm();
           }}
         >
-          SAVE
+          {$t('save')}
         </Button>
       );
 

@@ -6,28 +6,29 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { TagRequirement } from "@api/model";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import { Divider, Grid, Typography } from "@mui/material";
-import { AddButton, ColorPicker } from "ish-ui";
-import React, { useEffect } from "react";
-import { arrayInsert, arrayPush, Field, Form, initialize } from "redux-form";
-import AppBarActions from "../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { useAppDispatch } from "../../../common/utils/hooks";
-import { FormTag } from "../../../model/tags";
-import { getTagRequest } from "../actions";
-import ChecklistRequirementItem from "../components/ChecklistRequirementItem";
-import TagRequirementItem from "../components/TagRequirementItem";
-import TagRequirementsMenu from "../components/TagRequirementsMenu";
-import { ChecklistTree, TagTree } from "../components/Trees";
-import { EmptyTag, TAGS_FORM_NAME } from "../constants";
-import { TagsFormBase, TagsFormWrapper } from "./TagsFormBase";
+import { TagRequirement } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import { Divider, Grid, Typography } from '@mui/material';
+import $t from '@t';
+import { AddButton, ColorPicker } from 'ish-ui';
+import React, { useEffect } from 'react';
+import { arrayInsert, arrayPush, Field, Form, initialize } from 'redux-form';
+import AppBarActions from '../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { useAppDispatch } from '../../../common/utils/hooks';
+import { FormTag } from '../../../model/tags';
+import { getTagRequest } from '../actions';
+import ChecklistRequirementItem from '../components/ChecklistRequirementItem';
+import TagRequirementItem from '../components/TagRequirementItem';
+import TagRequirementsMenu from '../components/TagRequirementsMenu';
+import { ChecklistTree, TagTree } from '../components/Trees';
+import { EmptyTag, TAGS_FORM_NAME } from '../constants';
+import { TagsFormBase, TagsFormWrapper } from './TagsFormBase';
 
-const manualUrl = getManualLink("tagging");
+const manualUrl = getManualLink("tags-in-oncourse");
 
 class TagsFormRenderer extends TagsFormBase {
   render() {
@@ -70,7 +71,7 @@ class TagsFormRenderer extends TagsFormBase {
             <FormField
               type="text"
               name="name"
-              label="Name"
+              label={$t('name')}
               disabled={values.system}
               className="flex-fill"
             />
@@ -95,7 +96,7 @@ class TagsFormRenderer extends TagsFormBase {
                 {values && (
                   <Field
                     name="requirements"
-                    label="Available for"
+                    label={$t('available_for')}
                     component={TagRequirementsMenu}
                     items={values.requirements}
                     rootID={values.id}
@@ -122,14 +123,14 @@ class TagsFormRenderer extends TagsFormBase {
               <Divider className="mt-2 mb-2" />
 
               <div className="centeredFlex">
-                <div className="heading">Tags</div>
+                <div className="heading">{$t('tags')}</div>
                 <AddButton onClick={this.addTag} />
               </div>
 
               <div className={classes.legend}>
-                <Typography variant="caption" color="textSecondary">Name</Typography>
-                <Typography variant="caption" color="textSecondary">URL path</Typography>
-                <Typography variant="caption" color="textSecondary" textAlign="center">Website visibility</Typography>
+                <Typography variant="caption" color="textSecondary">{$t('name')}</Typography>
+                <Typography variant="caption" color="textSecondary">{$t('url_path')}</Typography>
+                <Typography variant="caption" color="textSecondary" textAlign="center">{$t('website_visibility')}</Typography>
               </div>
 
               {values && (
@@ -219,7 +220,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
               <FormField
                 type="text"
                 name="name"
-                label="Name"
+                label={$t('name')}
                 className="flex-fill"
                 disabled={values.system}
               />
@@ -247,7 +248,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
                     {values && (
                       <Field
                         name="requirements"
-                        label="Checklist visible on"
+                        label={$t('checklist_visible_on')}
                         component={TagRequirementsMenu}
                         items={values.requirements}
                         rootID={values.id}
@@ -278,7 +279,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
               <Divider className="mt-2 mb-2" />
 
               <div className="centeredFlex">
-                <div className="heading">Add a task</div>
+                <div className="heading">{$t('add_a_task')}</div>
                 <AddButton onClick={this.addTag} />
               </div>
 

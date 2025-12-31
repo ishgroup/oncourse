@@ -1,13 +1,14 @@
-import { CertificateValidationRequest, SearchQuery, Sorting } from "@api/model";
-import Typography from "@mui/material/Typography";
-import { BooleanArgFunction } from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { Dispatch, useCallback, useEffect } from "react";
-import { connect } from "react-redux";
-import { setPrintValidatingStatus } from "../../../../common/components/list-view/components/share/actions";
-import { getExpression } from "../../../../common/components/list-view/utils/listFiltersUtils";
-import { State } from "../../../../reducers/state";
-import { setCertificatesValidationStatus, validateCertificates } from "../actions";
+import { CertificateValidationRequest, SearchQuery, Sorting } from '@api/model';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { BooleanArgFunction } from 'ish-ui';
+import { debounce } from 'es-toolkit/compat';
+import React, { Dispatch, useCallback, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { setPrintValidatingStatus } from '../../../../common/components/list-view/components/share/actions';
+import { getExpression } from '../../../../common/components/list-view/utils/listFiltersUtils';
+import { State } from '../../../../reducers/state';
+import { setCertificatesValidationStatus, validateCertificates } from '../actions';
 
 interface USIAlertProps {
   selection?: any[];
@@ -78,7 +79,7 @@ const USIAlert: React.FunctionComponent<USIAlertProps> = props => {
       )}
       {validating && (
         <Typography variant="body2" paragraph>
-          Validating...
+          {$t('validating')}
         </Typography>
       )}
     </>

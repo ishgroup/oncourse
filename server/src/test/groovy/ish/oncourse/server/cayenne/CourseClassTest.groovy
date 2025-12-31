@@ -198,7 +198,7 @@ class CourseClassTest extends TestWithDatabase {
         discount.setName("name")
         discount.setAddByDefault(false)
         discount.setDiscountType(DiscountType.DOLLAR)
-        discount.setDiscountDollar(new Money("10.00"))
+        discount.setDiscountDollar(Money.of("10.00"))
         discount.setRounding(MoneyRounding.ROUNDING_10C)
         discount.setHideOnWeb(false)
         discount.setAvailableFor(DiscountAvailabilityType.ONLINE_AND_OFFICE)
@@ -467,7 +467,7 @@ class CourseClassTest extends TestWithDatabase {
 
     @Test
     void testDirtyness() {
-        new Money("55")
+        Money.of("55")
         Course course = cayenneContext.newObject(Course.class)
         course.setCode("ADV")
         course.setName("courseNamwe1")
@@ -691,7 +691,7 @@ class CourseClassTest extends TestWithDatabase {
 
     @Test
     void testFee() {
-        Money money = new Money("55")
+        Money money = Money.of("55")
         Money feeExGst
         Money feeGST
         Money feeIncGst
@@ -756,7 +756,7 @@ class CourseClassTest extends TestWithDatabase {
         Assertions.assertEquals(feeIncGst, cc.getFeeIncGst(), "Checking FeeIncGst ")
         Assertions.assertEquals(deposit, cc.getDeposit(), "Checking deposit ")
 
-        Money money2 = new Money("40")
+        Money money2 = Money.of("40")
 
         ClassCost classCost2 = cayenneContext.newObject(ClassCost.class)
         classCost2.setFlowType(ClassCostFlowType.INCOME)

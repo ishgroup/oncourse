@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import * as React from "react";
-import { connect } from "react-redux";
-import { change, getFormValues, initialize, reduxForm } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../../common/components/form/formFields/Uneditable";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
-import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
-import { State } from "../../../../../../reducers/state";
+import { Button, Typography } from '@mui/material';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { change, getFormValues, initialize, reduxForm } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import { validateSingleMandatoryField } from '../../../../../../common/utils/validation';
+import { State } from '../../../../../../reducers/state';
 
 class GoogleClassroomBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -56,7 +56,7 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
       redirect: window.location.href
     };
 
-    // eslint-disable-next-line max-len
+    
     window.open(`https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=${values.fields.clientId}&redirect_uri=${window.location.href}&state=${JSON.stringify(state)}&response_type=code&scope=https://www.googleapis.com/auth/classroom.announcements.readonly%20https://www.googleapis.com/auth/classroom.courses%20https://www.googleapis.com/auth/classroom.guardianlinks.me.readonly%20https://www.googleapis.com/auth/classroom.push-notifications%20https://www.googleapis.com/auth/classroom.rosters.readonly%20https://www.googleapis.com/auth/classroom.student-submissions.students.readonly%20https://www.googleapis.com/auth/classroom.coursework.me.readonly%20https://www.googleapis.com/auth/classroom.rosters%20https://www.googleapis.com/auth/classroom.student-submissions.me.readonly%20https://www.googleapis.com/auth/classroom.coursework.me%20https://www.googleapis.com/auth/classroom.courses.readonly%20https://www.googleapis.com/auth/classroom.coursework.students%20https://www.googleapis.com/auth/classroom.guardianlinks.students.readonly%20https://www.googleapis.com/auth/classroom.profile.emails%20https://www.googleapis.com/auth/classroom.coursework.students.readonly%20https://www.googleapis.com/auth/classroom.guardianlinks.students%20https://www.googleapis.com/auth/classroom.profile.photos%20https://www.googleapis.com/auth/classroom.announcements`,
       "_self");
   };
@@ -71,10 +71,10 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarContent>
-          <FormField name="fields.clientId" label="Client id" type="text" required className="mb-2" />
-          <FormField name="fields.clientSecret" label="Client secret" type="text" required className="mb-2" />
+          <FormField name="fields.clientId" label={$t('client_id')} type="text" required className="mb-2" />
+          <FormField name="fields.clientSecret" label={$t('client_secret')} type="text" required className="mb-2" />
           <FormField name="fields.activationCode" type="stub" validate={validateSingleMandatoryField} />
-          <Uneditable value={values && values.fields.activationCode} label="Activation Code" className="mb-2" />
+          <Uneditable value={values && values.fields.activationCode} label={$t('activation_code')} className="mb-2" />
 
           <div>
             <Button
@@ -83,12 +83,12 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
               onClick={this.getToken}
               disabled={!hasIdAndSecret || (values && values.fields.activationCode)}
             >
-              Get activation code
+              {$t('get_activation_code')}
             </Button>
           </div>
 
           {!hasIdAndSecret
-          && <Typography variant="caption">Please fill client id and client secret fields to be able to get activation code</Typography>}
+          && <Typography variant="caption">{$t('please_fill_client_id_and_client_secret_fields_to')}</Typography>}
         </AppBarContent>
       </form>
     );

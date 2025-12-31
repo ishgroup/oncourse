@@ -54,6 +54,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             "unscheduledClasseCount":0,
             "passedClasseCount":0,
             "cancelledClassesCount":0,
+            "hybridClassesCount":0,
             "customFields":{}
             },
         "abn":"222",
@@ -89,8 +90,8 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "customFields":{"cf1":"bb","cf2":"b"},
         "documents":
         [
-            {"shared":true,"thumbnail":null,"access":"Public","added":"#ignore","description":"Public description","createdOn":null,"tags":[],"attachmentRelations":[],"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"21 b","added":"#ignore","createdBy":null,"id":201,"mimeType":null,"url":null,content:null,current:true}],"name":"defaultPublicDocument","id":201,"urlWithoutVersionId":null},
-            {"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":null,"tags":[],"attachmentRelations":[],"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"22 b","added":"#ignore","createdBy":null,"id":200,"mimeType":null,"url":null,content:null,current:true}],"name":"defaultPrivateDocument","id":200,"urlWithoutVersionId":null}
+            {"shared":true,"thumbnail":null,"access":"Public","added":"#ignore","description":"Public description","createdOn":null,"tags":[],"attachmentRelations":[],"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"21 b","added":"#ignore","createdBy":null,"id":201,"mimeType":null,"url":"#string",content:null,current:true}],"name":"defaultPublicDocument","id":201,"urlWithoutVersionId":"#string"},
+            {"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":null,"tags":[],"attachmentRelations":[],"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"22 b","added":"#ignore","createdBy":null,"id":200,"mimeType":null,"url":"#string",content:null,current:true}],"name":"defaultPrivateDocument","id":200,"urlWithoutVersionId":"#string"}
         ],
         "tags":[234],
         "memberships":"#ignore",
@@ -99,12 +100,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "financialData":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":
-            [
-            {"messageId":1018,"createdOn":"#ignore","sentOn":"#ignore","subject":"a","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1019,"createdOn":"#ignore","sentOn":"#ignore","subject":"b","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1025,"createdOn":"#ignore","sentOn":"#ignore","subject":"a","creatorKey":null,"status":"#ignore","type":"Email"}
-            ],
+        "messagesCount": 3,
         "rules":[{"id":"1001","description":"bbbbb-bb","startDate":"2019-09-20","endDate":"2019-10-01","startDateTime":null,"endDateTime":null,"repeat":"year","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]
         }
         """
@@ -135,7 +131,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         {
         "id":23,
         "student":{"id":17, "customFields":{},"countryOfBirth":null,"disabilityType":"Not stated","labourForceStatus":"Not stated","englishProficiency":"Not stated","highestSchoolLevel":"Not stated","indigenousStatus":"Not stated","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Not stated","specialNeeds":null,"yearSchoolCompleted":null,"studentNumber":17,"countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":null,"usi":"3333333333","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":null,"specialNeedsAssistance":false,"clientIndustryEmployment":"Not Stated","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[]},
-        "tutor":{"defaultPayType":"Employee", "customFields":{},"id":6,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":1,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "tutor":{"defaultPayType":"Employee", "customFields":{},"id":6,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":1,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0,"hybridClassesCount":0},
         "abn":null,
         "birthDate":"1995-05-06",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
@@ -185,7 +181,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "financialData":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -271,11 +267,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":
-            [
-            {"messageId":1023,"createdOn":"#ignore","sentOn":"#ignore","subject":"co1","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1024,"createdOn":"#ignore","sentOn":"#ignore","subject":"co2","creatorKey":null,"status":"#ignore","type":"Email"}
-            ],
+        "messagesCount": 2,
         "rules":[{"id":"1003","description":"Co2","startDate":"2019-09-20","endDate":"2019-09-20","startDateTime":null,"endDateTime":null,"repeat":"month","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2019-08-01","created":"#ignore","modified":"#ignore"}]
         }
         """
@@ -349,6 +341,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             "unscheduledClasseCount":0,
             "passedClasseCount":1,
             "cancelledClassesCount":0,
+            "hybridClassesCount":0,
             "customFields":{},
             },
         "abn":null,
@@ -390,12 +383,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":
-            [
-            {"messageId":1020,"createdOn":"#ignore","sentOn":"#ignore","subject":"ta","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1021,"createdOn":"#ignore","sentOn":"#ignore","subject":"tB","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1022,"createdOn":"#ignore","sentOn":"#ignore","subject":"tb2","creatorKey":null,"status":"#ignore","type":"Email"}
-            ],
+        "messagesCount" : 3,
         "rules":[{"id":"1002","description":"tA","startDate":null,"endDate":null,"startDateTime":"#ignore","endDateTime":"#ignore","repeat":"week","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]}
         }
         """
@@ -404,4 +392,3 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         When method GET
         Then status 400
         And match $.errorMessage == "Record with id = '25' doesn't exist."
-

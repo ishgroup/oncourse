@@ -6,15 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import TabsList from "../../../../common/components/navigation/TabsList";
-import { plainCorporatePassPath } from "../../../../constants/Api";
-import { State } from "../../../../reducers/state";
-import CorporatePassCommon from "../../common/components/CorporatePassCommon";
-import DiscountClasses from "./DiscountClasses";
-import DiscountGeneral from "./DiscountGeneral";
-import DiscountStudents from "./DiscountStudents";
+import $t from '@t';
+import React from 'react';
+import { connect } from 'react-redux';
+import TabsList from '../../../../common/components/navigation/TabsList';
+import { plainCorporatePassPath } from '../../../../constants/Api';
+import { State } from '../../../../reducers/state';
+import CorporatePassCommon from '../../common/components/CorporatePassCommon';
+import DiscountClasses from './DiscountClasses';
+import DiscountGeneral from './DiscountGeneral';
+import DiscountStudents from './DiscountStudents';
 
 const items = [
   {
@@ -34,7 +35,7 @@ const items = [
     component: props => (
       <CorporatePassCommon
         path="corporatePassDiscounts"
-        title="LIMIT WITH CORPORATE PASS"
+        title={$t('limit_with_corporate_pass')}
         titleCaption="This discount is only be available with the following Corporate Passes"
         {...props}
       />
@@ -50,7 +51,6 @@ const DiscountEditView = React.memo<any>(props => {
     dispatch,
     dirty,
     form,
-    nestedIndex,
     rootEntity,
     twoColumn,
     showConfirm,
@@ -76,7 +76,6 @@ const DiscountEditView = React.memo<any>(props => {
           dispatch,
           dirty,
           form,
-          nestedIndex,
           rootEntity,
           twoColumn,
           showConfirm,

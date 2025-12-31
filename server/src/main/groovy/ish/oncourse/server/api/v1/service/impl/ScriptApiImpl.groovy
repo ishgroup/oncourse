@@ -14,6 +14,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
+import ish.oncourse.server.api.v1.model.ScriptStatisticDTO
 import ish.oncourse.types.OutputType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
@@ -63,6 +64,11 @@ class ScriptApiImpl implements ScriptApi {
     @Override
     String getConfigs(Long id) {
         return service.getConfigs(id)
+    }
+
+    @Override
+    List<ScriptStatisticDTO> getLastRunsStatistic() {
+        return service.getLastRunsStatistic()
     }
 
     @Override

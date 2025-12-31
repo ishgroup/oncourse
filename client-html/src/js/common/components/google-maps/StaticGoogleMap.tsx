@@ -1,7 +1,7 @@
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import * as React from "react";
-import { GOOGLE_MAPS_API_KEY } from "../../../constants/Config";
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
 
 const styles = theme => ({
   noAddressContainer: {
@@ -31,15 +31,15 @@ const StaticGoogleMap = (props: Props) => {
     <img
       style={{ maxWidth: size[0], width: "100%" }}
       src={`https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=${size[0]}x${size[1]}&scale=2&maptype=roadmap
-&markers=color:green%7Clabel:${markerLetter}%7C${latitude},${longitude}&key=${atob(GOOGLE_MAPS_API_KEY)}`}
+&markers=color:green%7Clabel:${markerLetter}%7C${latitude},${longitude}&key=${atob(process.env.GOOGLE_MAPS_API_KEY)}`}
     />
   ) : (
     <div className={classes.noAddressContainer}>
       <Typography variant="h6" color="inherit" align="center">
-        Enter street and suburb to see a map of the site location
+        {$t('enter_street_and_suburb_to_see_a_map_of_the_site_l')}
       </Typography>
     </div>
   );
 };
 
-export default withStyles(styles)(StaticGoogleMap as React.FunctionComponent<Props>);
+export default withStyles(StaticGoogleMap as React.FunctionComponent<Props>, styles);

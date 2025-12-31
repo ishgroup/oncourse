@@ -3,16 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { History } from "history";
-import { makeAppStyles } from "ish-ui";
-import React from "react";
-import SideBarHeader from "../../../common/components/layout/side-bar-list/SideBarHeader";
+import $t from '@t';
+import { History } from 'history';
+import { makeAppStyles } from 'ish-ui';
+import React from 'react';
+import SideBarHeader from '../../../common/components/layout/side-bar-list/SideBarHeader';
 
 interface Props {
   history: History;
 }
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   root: {
     color: theme.palette.secondary.main,
     padding: theme.spacing(3),
@@ -34,7 +35,7 @@ const getSelected = (history: History) => {
 const TagSidebar = ({
    history
  }: Props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const selectHandler = route => () => {
     history.push(route);
@@ -46,13 +47,13 @@ const TagSidebar = ({
     <div className={classes.root}>
       <SideBarHeader
         selected={selected === 1}
-        label="Tag groups"
+        label={$t('tag_groups')}
         onClick={selectHandler("/tags/tagGroups")}
       />
 
       <SideBarHeader
         selected={selected === 2}
-        label="Checklists"
+        label={$t('checklists')}
         onClick={selectHandler("/tags/checklists")}
       />
     </div>

@@ -3,22 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ExpandMore } from "@mui/icons-material";
-import { ListItemButton } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import { withStyles } from "@mui/styles";
-import createStyles from "@mui/styles/createStyles";
-import clsx from "clsx";
-import { AddButton } from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { CommonListItem, SidebarSharedProps } from "../../../../model/common/sidebar";
-import { latestActivityStorageHandler } from "../../../utils/storage";
-import CollapseSideBarListItem from "./CollapseSideBarListItem";
+import { ExpandMore } from '@mui/icons-material';
+import { IconButton, ListItemButton } from '@mui/material';
+import Collapse from '@mui/material/Collapse';
+import List from '@mui/material/List';
+import clsx from 'clsx';
+import { debounce } from 'es-toolkit/compat';
+import { AddButton } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { CommonListItem, SidebarSharedProps } from '../../../../model/common/sidebar';
+import { latestActivityStorageHandler } from '../../../utils/storage';
+import CollapseSideBarListItem from './CollapseSideBarListItem';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   listItemPadding: {
     padding: `${theme.spacing(0.5)} ${theme.spacing(3)}`,
     minHeight: "unset"
@@ -176,6 +174,7 @@ const CollapseMenuListBase = React.memo<Props>(
       <List disablePadding className="pt-1">
         <ListItemButton
           disableGutters
+          disableRipple
           className={classes.listHeadingPadding}
           onClick={onClickCollapse}
         >
@@ -226,4 +225,4 @@ const CollapseMenuListBase = React.memo<Props>(
   }
 );
 
-export default withStyles(styles)(CollapseMenuListBase);
+export default withStyles(CollapseMenuListBase, styles);

@@ -229,7 +229,7 @@ class DocumentFunctions {
     }
 
     static ValidationErrorDTO validateVersionForSave(byte[] content, ObjectContext context) {
-        if (!content && content.length) {
+        if (!content) {
             return new ValidationErrorDTO(null, 'versions', 'Your upload has failed. A least one version of document required.')
         }
 

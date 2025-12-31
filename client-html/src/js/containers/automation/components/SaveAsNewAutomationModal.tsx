@@ -3,16 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Typography from "@mui/material/Typography";
-import React from "react";
-import { InjectedFormProps, reduxForm } from "redux-form";
-import FormField from "../../../common/components/form/formFields/FormField";
-import { validateKeycode } from "../utils";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import React from 'react';
+import { InjectedFormProps, reduxForm } from 'redux-form';
+import FormField from '../../../common/components/form/formFields/FormField';
+import { validateKeycode } from '../utils';
 
 interface Props {
   opened: any;
@@ -27,19 +28,16 @@ const SaveAsNewAutomationModal = React.memo<Props & InjectedFormProps>(
     }) => (
       <Dialog open={opened} onClose={onClose} maxWidth="md" scroll="body">
         <form autoComplete="off" onSubmit={handleSubmit(onSave)}>
-          <DialogTitle>Your new custom Automation requires a unique key code</DialogTitle>
+          <DialogTitle>{$t('your_new_custom_automation_requires_a_unique_key_c')}</DialogTitle>
 
           <DialogContent>
-            <Typography variant="body2" color="textSecondary" className="pb-2" noWrap>
-              Your new custom automation requires you to create a unique identifier.
-              {' '}
-              <br />
-              Please type a combination of numbers and full stops.
+            <Typography variant="body2" color="textSecondary" className="pb-2">
+              {$t('your_new_custom_automation_requires_you_to_create')}
             </Typography>
 
             <FormField
               type="text"
-              label="Keycode"
+              label={$t('keycode')}
               name="keyCode"
               validate={validateKeycode}
               required
@@ -47,7 +45,7 @@ const SaveAsNewAutomationModal = React.memo<Props & InjectedFormProps>(
 
             <FormField
               type="text"
-              label="Name"
+              label={$t('name')}
               name="name"
               validate={validateNameField || undefined}
               className="mt-2"
@@ -58,11 +56,11 @@ const SaveAsNewAutomationModal = React.memo<Props & InjectedFormProps>(
 
           <DialogActions className="p-3">
             <Button color="primary" onClick={onClose}>
-              Cancel
+              {$t('cancel')}
             </Button>
 
             <Button variant="contained" color="primary" type="submit" disabled={invalid}>
-              Save
+              {$t('save2')}
             </Button>
           </DialogActions>
         </form>

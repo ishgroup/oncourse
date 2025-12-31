@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AutomationConfigs, ExecuteScriptRequest, Script, ScriptApi } from "@api/model";
-import { AxiosInstance } from "axios";
-import { defaultAxios } from "../../../../../common/services/DefaultHttpClient";
-import { DefaultHttpService } from "../../../../../common/services/HttpService";
+import { AutomationConfigs, ExecuteScriptRequest, Script, ScriptApi, ScriptStatistic } from '@api/model';
+import { AxiosInstance } from 'axios';
+import { defaultAxios } from '../../../../../common/services/DefaultHttpClient';
+import { DefaultHttpService } from '../../../../../common/services/HttpService';
 
 class ScriptsService {
   readonly service = new DefaultHttpService();
@@ -63,6 +63,10 @@ class ScriptsService {
 
   public updateConfigs(id: number, scriptConfigs: AutomationConfigs): Promise<any> {
     return this.scriptApi.updateConfigs(id, scriptConfigs);
+  }
+
+  getLastRunsStatistic(): Promise<Array<ScriptStatistic>> {
+    return this.scriptApi.getLastRunsStatistic();
   }
 }
 

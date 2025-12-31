@@ -6,14 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import * as React from "react";
-import { connect } from "react-redux";
-import { getFormValues, initialize, reduxForm } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../../../reducers/state";
+import { Button, Typography } from '@mui/material';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { getFormValues, initialize, reduxForm } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../../reducers/state';
 
 class VetStudentLoans extends React.Component<any, any> {
   constructor(props) {
@@ -44,7 +44,7 @@ class VetStudentLoans extends React.Component<any, any> {
         <AppBarContent>
           <FormField
             name="fields.deviceName"
-            label="Device name"
+            label={$t('device_name')}
             type="text"
             required
             disabled={values.id}
@@ -52,7 +52,7 @@ class VetStudentLoans extends React.Component<any, any> {
           />
           <FormField
             name="fields.organisationId"
-            label="Organisation ID"
+            label={$t('organisation_id')}
             type="text"
             required
             disabled={values.id}
@@ -62,7 +62,7 @@ class VetStudentLoans extends React.Component<any, any> {
             <>
               <FormField
                 name="fields.activationCode"
-                label="Activation code"
+                label={$t('activation_code2')}
                 type="text"
                 required
                 className="mb-2"
@@ -74,14 +74,14 @@ class VetStudentLoans extends React.Component<any, any> {
                   variant="contained"
                   disabled={!hasNameAndID}
                 >
-                  Get activation code
+                  {$t('get_activation_code')}
                 </Button>
               </div>
             </>
             )}
           {!hasNameAndID && (
             <Typography variant="caption">
-              Please fill Device name and Organisation ID fields to be able to get activation code
+              {$t('please_fill_device_name_and_organisation_id_fields')}
             </Typography>
           )}
         </AppBarContent>

@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { DataType } from "@api/model";
-import Delete from "@mui/icons-material/Delete";
-import { Typography } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import clsx from "clsx";
-import { AddButton, EditInPlaceField, stubFunction, useHoverShowStyles } from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useState } from "react";
-import { WrappedFieldProps } from "redux-form";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import { DataType } from '@api/model';
+import Delete from '@mui/icons-material/Delete';
+import { Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import clsx from 'clsx';
+import { AddButton, EditInPlaceField, stubFunction, useHoverShowStyles } from 'ish-ui';
+import { debounce } from 'es-toolkit/compat';
+import React, { useCallback, useState } from 'react';
+import { WrappedFieldProps } from 'redux-form';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
 
 interface Props {
   label: string;
@@ -42,7 +42,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
     label, dataType, input: { value, onChange, name }, meta: { error }, onKeyPress
   } = props;
 
-  const hoverClasses = useHoverShowStyles();
+  const { classes: hoverClasses } = useHoverShowStyles();
   const [fields, setFields] = useState(getDefaultFields(value));
 
   const debounceChange = useCallback<any>(debounce(v => {

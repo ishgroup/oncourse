@@ -9,6 +9,7 @@ import {
   CheckoutSaleRelation,
   Course,
   CourseClass,
+  CreateSessionResponse,
   Discount,
   EnrolmentStudyReason,
   EntityRelationCartAction,
@@ -17,7 +18,11 @@ import {
   PaymentMethod,
   Sale,
   VoucherProduct
-} from "@api/model";
+} from '@api/model';
+import { Stripe } from '@stripe/stripe-js';
+import { NoArgFunction, StringArgFunction } from 'ish-ui';
+import { Dispatch } from 'redux';
+import { IAction } from '../../common/actions/IshAction';
 
 export type CheckoutEntity = "contact"
   | "course"
@@ -162,6 +167,18 @@ export interface CheckoutSummaryListItem {
   sendEmail?: boolean;
 }
 
+export type CheckoutPaymentGateway =
+  'SQUARE' |
+  'SQUARE_TEST' |
+  'EWAY' |
+  'EWAY_TEST' |
+  'STRIPE' |
+  'STRIPE_TEST' |
+  'WINDCAVE' |
+  'TEST' |
+  'OFFLINE' |
+  'DISABLED'
+
 export interface CheckoutPaymentProcess {
   status?: "" | "cancel" | "fail" | "success";
   statusCode?: number;
@@ -169,16 +186,13 @@ export interface CheckoutPaymentProcess {
   data?: any;
 }
 
-export interface CheckoutPayment {
+export interface CheckoutPayment extends CreateSessionResponse {
   availablePaymentTypes?: PaymentMethod[];
   selectedPaymentType?: any;
   paymentPlans?: CheckoutPaymentPlan[];
   isProcessing?: boolean;
   isFetchingDetails?: boolean;
   isSuccess?: boolean;
-  wcIframeUrl?: string;
-  xPaymentSessionId?: string;
-  merchantReference?: string;
   process?: CheckoutPaymentProcess;
   invoice?: Invoice;
   paymentId?: number;
@@ -220,4 +234,29 @@ export type CheckoutAddItemsRequiest = {
   enrolments?: CheckoutEnrolmentCustom[],
   purchases?: CheckoutProductPurchase[],
   keepChecked?: boolean
+}
+
+export interface CreditCardPaymentPageProps {
+  dispatch?: Dispatch<IAction>;
+  classes?: any;
+  summary?: CheckoutSummary;
+  payment?: CheckoutPayment;
+  isPaymentProcessing?: boolean;
+  disablePayment?: boolean;
+  hasSummarryErrors?: boolean;
+  currencySymbol?: any;
+  iframeUrl?: string;
+  checkoutProcessCcPayment?: () => void;
+  clearCcIframeUrl: () => void;
+  checkoutProcessStripeCCPayment?: (stripePaymentMethodId: string, stripe: Stripe) => void;
+  checkoutCompleteWindcaveCcPayment?: StringArgFunction;
+  checkoutGetPaymentStatusDetails?: StringArgFunction;
+  checkoutPaymentSetCustomStatus?: StringArgFunction;
+  checkoutProcessEwayCCPayment?: StringArgFunction;
+  checkoutUpdateSummaryPrices?: NoArgFunction;
+  onCheckoutClearPaymentStatus: () => void;
+  process?: CheckoutPaymentProcess;
+  paymentInvoice?: any;
+  paymentId?: number;
+  payerName: string;
 }

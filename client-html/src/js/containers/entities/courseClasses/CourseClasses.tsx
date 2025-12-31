@@ -16,9 +16,10 @@ import {
   Enrolment,
   Outcome,
   TableModel
-} from "@api/model";
-import { Dialog, Button, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from "@mui/material";
-import { format } from "date-fns";
+} from '@api/model';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from '@mui/material';
+import $t from '@t';
+import { format } from 'date-fns';
 import {
   appendTimezone,
   BooleanArgFunction,
@@ -26,63 +27,55 @@ import {
   NoArgFunction,
   normalizeNumberToZero,
   StyledCheckbox
-} from "ish-ui";
-import React, { useCallback, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { FormErrors, getFormInitialValues, getFormValues, initialize } from "redux-form";
-import { checkPermissions, getUserPreferences } from "../../../common/actions";
-import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { postNoteItem, putNoteItem } from "../../../common/components/form/notes/actions";
-import { validateNoteCreate, validateNoteUpdate } from "../../../common/components/form/notes/utils";
+} from 'ish-ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { FormErrors, getFormInitialValues, getFormValues, initialize } from 'redux-form';
+import { checkPermissions, getUserPreferences } from '../../../common/actions';
+import { getCommonPlainRecords } from '../../../common/actions/CommonPlainRecordsActions';
+import { IAction } from '../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import { postNoteItem, putNoteItem } from '../../../common/components/form/notes/actions';
+import { validateNoteCreate, validateNoteUpdate } from '../../../common/components/form/notes/utils';
 import {
-  clearListState,
   getFilters,
-  setListCreatingNew,
   setListEditRecord,
   setListSelection,
-} from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { UserPreferencesState } from "../../../common/reducers/userPreferencesReducer";
-import EntityService from "../../../common/services/EntityService";
-import { fieldUpdateHandler } from "../../../common/utils/actionsQueue";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import uniqid from "../../../common/utils/uniqid";
-import {
-  courseClassBudgetPath,
-  courseClassCancelPath,
-  courseClassTimetablePath,
-  plainEnrolmentPath
-} from "../../../constants/Api";
+} from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { UserPreferencesState } from '../../../common/reducers/userPreferencesReducer';
+import EntityService from '../../../common/services/EntityService';
+import { fieldUpdateHandler } from '../../../common/utils/actionsQueue';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import uniqid from '../../../common/utils/uniqid';
+import { courseClassCancelPath, courseClassTimetablePath } from '../../../constants/Api';
 import {
   DEFAULT_DELIVERY_MODE_KEY,
   DEFAULT_FUNDING_SOURCE_KEY,
   DEFAULT_MAXIMUM_PLACES_KEY,
   DEFAULT_MINIMUM_PLACES_KEY,
   PLAIN_LIST_MAX_PAGE_SIZE
-} from "../../../constants/Config";
-import history from "../../../constants/History";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { CourseClassExtended } from "../../../model/entities/CourseClass";
-import { State } from "../../../reducers/state";
-import { getActiveFundingContracts } from "../../avetmiss-export/actions";
-import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
-import PreferencesService from "../../preferences/services/PreferencesService";
-import { getEntitySpecialTags } from "../../tags/actions";
-import { getPlainAccounts } from "../accounts/actions";
-import EnrolmentService from "../enrolments/services/EnrolmentService";
-import OutcomeService from "../outcomes/services/OutcomeService";
-import { getVirtualSites } from "../sites/actions";
-import { getPlainTaxes } from "../taxes/actions";
-import { getCourseClassTags, updateCourseClass } from "./actions";
-import { createCourseClassAssessment, updateCourseClassAssessment } from "./components/assessments/actions";
-import { validateAssesmentCreate, validateAssesmentUpdate } from "./components/assessments/utils";
-import CourseClassCogWheel from "./components/CourseClassCogWheel";
-import CourseClassEditView from "./components/CourseClassEditView";
-import { postCourseClassTutor, putCourseClassTutor } from "./components/tutors/actions";
-import { validateTutorCreate, validateTutorUpdate } from "./components/tutors/utils";
+} from '../../../constants/Config';
+import history from '../../../constants/History';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { CourseClassExtended } from '../../../model/entities/CourseClass';
+import { State } from '../../../reducers/state';
+import { getActiveFundingContracts } from '../../avetmiss-export/actions';
+import { getGradingTypes, getTutorRoles } from '../../preferences/actions';
+import PreferencesService from '../../preferences/services/PreferencesService';
+import { getEntitySpecialTags } from '../../tags/actions';
+import { getPlainAccounts } from '../accounts/actions';
+import { getVirtualSites } from '../sites/actions';
+import { getPlainTaxes } from '../taxes/actions';
+import { getCourseClassTags, updateCourseClass } from './actions';
+import { createCourseClassAssessment, updateCourseClassAssessment } from './components/assessments/actions';
+import { validateAssesmentCreate, validateAssesmentUpdate } from './components/assessments/utils';
+import CourseClassCogWheel from './components/CourseClassCogWheel';
+import CourseClassEditView from './components/CourseClassEditView';
+import { postCourseClassTutor, putCourseClassTutor } from './components/tutors/actions';
+import { validateTutorCreate, validateTutorUpdate } from './components/tutors/utils';
 
 const manualLink = getManualLink("classes");
 
@@ -92,13 +85,11 @@ interface CourseClassesProps {
   onFirstRender?: NoArgFunction;
   onInit?: NoArgFunction;
   onUpdate?: (id: number, courseClass: CourseClass) => void;
-  clearListState?: NoArgFunction;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   values?: CourseClass;
   initialValues?: CourseClass;
   userPreferences?: UserPreferencesState;
-  setListCreatingNew?: BooleanArgFunction;
   updateSelection?: (selection: string[]) => void;
 }
 
@@ -218,8 +209,8 @@ const filterGroups: FilterGroup[] = [
         active: true
       },
       {
-        name: "Self paced classes",
-        expression: "type is DISTANT_LEARNING and isCancelled is false",
+        name: "Self-paced classes",
+        expression: "type is DISTANT_LEARNING and isCancelled is false and (endDateTime is null or endDateTime >= today)",
         active: true
       },
       {
@@ -375,8 +366,8 @@ const formatSelfPaced = (v, row, columns) => {
   if (selfPacedIndex !== -1) {
     const type: CourseClassType = row.values[selfPacedIndex];
 
-    if (type === "Distant Learning" ) return "Self paced";
-    if (type === "Hybrid") return  dateValue || "Hybrid";
+    if (type === "Distant Learning" ) return $t("Self-paced");
+    if (type === "Hybrid") return  dateValue || $t("Hybrid");
   }
 
   return dateValue;
@@ -467,7 +458,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
     onFirstRender,
     onUpdate,
     userPreferences,
-    setListCreatingNew,
     updateSelection,
     values,
     initialValues,
@@ -542,7 +532,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
               reportableHours: res.rows[0].values[3] ? Number(res.rows[0].values[3]) : 0
             };
 
-            setListCreatingNew(true);
             updateSelection(["new"]);
             onInit(updatedInitial);
 
@@ -594,10 +583,10 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
 
     if (values) {
       if (outcomeFieldsToUpdate.length) {
-        EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values.id}`)
+        EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values?.id}`)
           .then(res => {
             const ids = res.rows.map(r => Number(r.id));
-            return OutcomeService.bulkChange({
+            return EntityService.bulkChange('Outcome', {
               ids,
               diff: outcomeFieldsToUpdate.reduce((p, o) => {
                 p[o.name] = o.value;
@@ -609,11 +598,11 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
       }
 
       if (enrolmentFieldsToUpdate.length) {
-        EntityService.getPlainRecords("Enrolment", "id", `courseClass.id is ${values.id}`)
+        EntityService.getPlainRecords("Enrolment", "id", `courseClass.id is ${values?.id}`)
           .then(res => {
             const ids = res.rows.map(r => Number(r.id));
 
-            return EnrolmentService.bulkChange({
+            return EntityService.bulkChange('Enrolment', {
               ids,
               diff: enrolmentFieldsToUpdate.reduce((p, o) => {
                 p[o.name] = o.value;
@@ -678,22 +667,22 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           root: "pb-0"
         }}
         >
-          You have updated the following default fields for the selected class:
+          {$t('you_have_updated_the_following_default_fields_for')}
         </DialogTitle>
         <DialogContent>
           <Typography className="mt-1" variant="caption" color="textSecondary">
-            To update these same fields in any associated outcomes and enrolments, click the checkbox next to each field.
+            {$t('to_update_these_same_fields_in_any_associated_outc')}
           </Typography>
           <Typography variant="caption" color="textSecondary" gutterBottom paragraph>
-            If you do not want to update any fields, leave them unchecked.
+            {$t('if_you_do_not_want_to_update_any_fields_leave_them')}
           </Typography>
           <Typography variant="caption" color="textSecondary" paragraph>
-            NOTE: This action will override any values previously set in these outcomes and enrolments.
+            {$t('note_this_action_will_override_any_values_previous')}
           </Typography>
           <div className="d-flex">
             <div className="flex-fill">
               <div className="heading">
-                Outcome
+                {$t('outcome')}
               </div>
               {
                 changedFields.filter(f => outcomeUpdateFields.includes(f.name)).map(f => (
@@ -713,7 +702,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
             </div>
             <div className="flex-fill">
               <div className="heading">
-                Enrolment
+                {$t('enrolment')}
               </div>
               {
                 changedFields.filter(f => enrolmentUpdateFields.includes(f.name)).map(f => (
@@ -736,7 +725,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         </DialogContent>
         <DialogActions className="pr-2 pb-2">
           <Button color="primary" onClick={onConfirm}>
-            OK
+            {$t('ok')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -751,7 +740,7 @@ const mapStateToProps = (state: State) => ({
   initialValues: getFormInitialValues(LIST_EDIT_VIEW_FORM_NAME)(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   dispatch,
   onFirstRender: () => {
     dispatch(getEntitySpecialTags('CourseClass'));
@@ -778,10 +767,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(getGradingTypes());
     dispatch(getActiveFundingContracts(true));
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
-    dispatch(checkPermissions({ path: courseClassBudgetPath, method: "GET" }));
     dispatch(checkPermissions({ path: courseClassTimetablePath, method: "POST" }));
     dispatch(checkPermissions({ path: courseClassCancelPath, method: "POST" }));
-    dispatch(checkPermissions({ path: plainEnrolmentPath, method: "GET" }));
     dispatch(
       getUserPreferences([
         DEFAULT_DELIVERY_MODE_KEY,
@@ -793,8 +780,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone,isVirtual", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
   },
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
-  clearListState: () => dispatch(clearListState()),
-  setListCreatingNew: creatingNew => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: selection => dispatch(setListSelection(selection)),
 });
 

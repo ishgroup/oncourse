@@ -3,32 +3,32 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { InvoicePaymentPlan } from "@api/model";
-import Step from "@mui/material/Step";
-import StepButton from "@mui/material/StepButton";
-import StepContent from "@mui/material/StepContent";
-import StepLabel from "@mui/material/StepLabel";
-import Stepper from "@mui/material/Stepper";
-import Typography from "@mui/material/Typography";
-import { withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { AddButton, decimalPlus, formatCurrency, YYYY_MM_DD_MINUSED } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { FieldArray, WrappedFieldArrayProps } from "redux-form";
-import { getDeepValue } from "../../../../common/utils/common";
+import { InvoicePaymentPlan } from '@api/model';
+import { Typography } from '@mui/material';
+import Step from '@mui/material/Step';
+import StepButton from '@mui/material/StepButton';
+import StepContent from '@mui/material/StepContent';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
+import $t from '@t';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { AddButton, decimalPlus, formatCurrency, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { FieldArray, WrappedFieldArrayProps } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { CheckoutFundingInvoice } from '../../../../model/checkout/fundingInvoice';
 import {
   InvoicePaymentPlanContent,
   InvoicePaymentPlanHeader
-} from "../../../entities/invoices/components/InvoicePaymentPlanComponents";
-import { paymentPlanStyles } from "../../../entities/invoices/styles/paymentPlanStyles";
-import { sortInvoicePaymentPlans } from "../../../entities/invoices/utils";
+} from '../../../entities/invoices/components/InvoicePaymentPlanComponents';
+import { sortInvoicePaymentPlans } from '../../../entities/invoices/utils';
+import { paymentPlanStyles } from '../../../entities/invoices/styles/paymentPlanStyles';
 
 interface PaymentPlansProps {
   classes?: any;
   fields?: any[];
   currency?: any;
-  syncErrors: any;
   form?: any;
   dispatch?: any;
   total: number;
@@ -47,9 +47,10 @@ const initialPaymentDue: InvoicePaymentPlan = {
 
 const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPlansProps> = props => {
   const {
-    classes, syncErrors, fields, currency, form, dispatch, total, dueDate, defaultOpened
+    classes, fields, currency, form, dispatch, total, dueDate, defaultOpened, meta: { error }
   } = props;
   const [activeStep, setActiveStep] = React.useState(defaultOpened || fields.length);
+
 
   const handleStep = useCallback(
     (index: number) => {
@@ -76,20 +77,18 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
     setActiveStep(fields.length);
   }, [fields, dueDate]);
 
-  const error = useMemo(
+  const errorRenderer = useMemo(
     () => {
-      const value = getDeepValue(syncErrors, fields.name);
-
-      if (value) {
+      if (error) {
         return (
-          <Typography color="error" variant="body2" className="text-pre-wrap" paragraph>
-            {value._error}
+          <Typography color="error" variant="body2" className="text-pre-wrap">
+            {error}
           </Typography>
         );
       }
       return null;
     },
-    [syncErrors, fields.name]
+    [error]
   );
 
   const all = useMemo(() => {
@@ -103,16 +102,16 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
       <div className="centeredFlex">
         <Typography
           className={clsx("heading", {
-            "errorColor": error
+            "errorColor": errorRenderer
           })}
         >
-          Payment plan
+          {$t('payment_plan')}
         </Typography>
 
         <AddButton onClick={addPaymentDue} />
       </div>
 
-      {error}
+      {errorRenderer}
 
       <Stepper
         activeStep={activeStep}
@@ -177,26 +176,27 @@ interface Props extends PaymentPlansProps {
   total: number;
 }
 
+const validatePaymentPlans = (value: any[], allValues: { fundingInvoices: CheckoutFundingInvoice[] }, props) => {
+  if (!value || !value.find(v => v.type === "Payment due")) {
+    return undefined;
+  }
+
+  const planTotal = value.filter(v => v.type === "Payment due").reduce((pre, cur) => decimalPlus(pre, cur.amount), 0);
+  const total = allValues?.fundingInvoices && allValues.fundingInvoices[0].total;
+
+  return planTotal !== total
+    ? `Payment plan adds up to ${formatCurrency(
+      planTotal,
+      props.currency.shortCurrencySymbol
+    )} but the Invoice total is ${formatCurrency(
+      total,
+      props.currency.shortCurrencySymbol
+    )}.\nThese must match before you can save this invoice`
+    : undefined;
+}
+
 const CheckoutFundingInvoicePaymentPlans: React.FC<Props> = props => {
   const { name, total, ...rest } = props;
-
-  const validatePaymentPlans = useCallback((value: any[]) => {
-    if (!value || !value.find(v => v.type === "Payment due")) {
-      return undefined;
-    }
-
-    const planTotal = value.filter(v => v.type === "Payment due").reduce((pre, cur) => decimalPlus(pre, cur.amount), 0);
-
-    return planTotal !== total
-      ? `Payment plan adds up to ${formatCurrency(
-        planTotal,
-        props.currency.shortCurrencySymbol
-      )} but the Invoice total is ${formatCurrency(
-        total,
-        props.currency.shortCurrencySymbol
-      )}.\nThese must match before you can save this invoice`
-      : undefined;
-  }, [total]);
 
   return (
     <FieldArray
@@ -212,4 +212,4 @@ const CheckoutFundingInvoicePaymentPlans: React.FC<Props> = props => {
   );
 };
 
-export default withStyles(paymentPlanStyles)(CheckoutFundingInvoicePaymentPlans) as React.FC<Props>;
+export default withStyles(CheckoutFundingInvoicePaymentPlans, paymentPlanStyles) as React.FC<Props>;

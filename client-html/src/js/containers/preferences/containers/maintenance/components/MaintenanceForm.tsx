@@ -3,24 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import isEmpty from "lodash.isempty";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Form, getFormValues, initialize, reduxForm } from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import * as Model from "../../../../../model/preferences/Maintenance";
-import { State } from "../../../../../reducers/state";
-import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { isEmpty } from 'es-toolkit/compat'
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Form, getFormValues, initialize, reduxForm } from 'redux-form';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { FormModelSchema } from '../../../../../model/preferences/FormModelShema';
+import * as Model from '../../../../../model/preferences/Maintenance';
+import { State } from '../../../../../reducers/state';
+import { PREFERENCES_AUDITS_LINK } from '../../../constants';
 
-const manualUrl = getManualLink("generalPrefs_maintenance");
+const manualUrl = getManualLink("setting-your-general-preferences#maintenance");
 
 class MaintenanceBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;
@@ -59,13 +60,13 @@ class MaintenanceBaseForm extends React.Component<any, any> {
           getAuditsUrl={PREFERENCES_AUDITS_LINK}
           disabled={!dirty}
           invalid={invalid}
-          title="Maintenance"
+          title={$t('maintenance')}
           disableInteraction
           createdOn={values => values.created}
           modifiedOn={values => values.modified}
         >
           <Typography className="heading mb-2" variant="subtitle1">
-            Automatic logout
+            {$t('automatic_logout')}
           </Typography>
 
           <Grid container columnSpacing={3}>
@@ -73,7 +74,7 @@ class MaintenanceBaseForm extends React.Component<any, any> {
               <FormField
                 type="number"
                 name={this.formModel.LogoutTimeout.uniqueKey}
-                label="Minutes of inactivity until automatic logout"
+                label={$t('minutes_of_inactivity_until_automatic_logout')}
                 parse={val => val || "0"}
                 validate={[validateSingleMandatoryField, this.validateTimeoutRange]}
                 debounced={false}

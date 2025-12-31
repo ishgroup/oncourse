@@ -3,28 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import PlusIcon from "@mui/icons-material/Add";
-import FindInPage from "@mui/icons-material/FindInPage";
-import Settings from "@mui/icons-material/Settings";
-import Share from "@mui/icons-material/Share";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import PlusIcon from '@mui/icons-material/Add';
+import FindInPage from '@mui/icons-material/FindInPage';
+import Settings from '@mui/icons-material/Settings';
+import Share from '@mui/icons-material/Share';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { alpha, darken } from '@mui/material/styles';
-import Tooltip from "@mui/material/Tooltip";
-import clsx from "clsx";
-import { makeAppStyles, openInternalLink } from "ish-ui";
-import React, { useEffect, useState, useMemo } from "react";
-import { APP_BAR_HEIGHT, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../constants/Config";
-import ExecuteScriptModal from "../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
-import { FindRelatedItem } from "../../../../../model/common/ListView";
-import instantFetchErrorHandler from "../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
-import EntityService from "../../../../services/EntityService";
-import FindRelatedMenu from "./components/FindRelatedMenu";
-import ScriptsMenu from "./components/ScriptsMenu";
-import SearchInput from "./components/SearchInput";
-import SendMessageMenu from "./components/SendMessageMenu";
-import ViewSwitcher from "./components/ViewSwitcher";
+import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
+import clsx from 'clsx';
+import { makeAppStyles, openInternalLink } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { APP_BAR_HEIGHT, PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../../constants/Config';
+import ExecuteScriptModal from '../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal';
+import { FindRelatedItem } from '../../../../../model/common/ListView';
+import instantFetchErrorHandler from '../../../../api/fetch-errors-handlers/InstantFetchErrorHandler';
+import EntityService from '../../../../services/EntityService';
+import FindRelatedMenu from './components/FindRelatedMenu';
+import ScriptsMenu from './components/ScriptsMenu';
+import SearchInput from './components/SearchInput';
+import SendMessageMenu from './components/SendMessageMenu';
+import ViewSwitcher from './components/ViewSwitcher';
 
 const SendMessageEntities = [
   "AbstractInvoice",
@@ -41,7 +42,7 @@ const SendMessageEntities = [
   "Lead"
 ];
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<void, 'buttonDisabledOpacity' | 'buttonDisabledFade'>()((theme, p, classes) => ({
   root: {
     backgroundColor:
       theme.palette.mode === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4),
@@ -63,10 +64,10 @@ const useStyles = makeAppStyles(theme => ({
   },
   actionsBarButton: {
     color: "inherit",
-    "&$buttonDisabledOpacity": {
+    [`&.${classes.buttonDisabledOpacity}`]: {
       opacity: 0.5
     },
-    "&$buttonDisabledFade": {
+    [`&.${classes.buttonDisabledFade}`]: {
       color: alpha(theme.palette.primary.contrastText, 0.5)
     }
   },
@@ -145,7 +146,7 @@ const BottomAppBar = (
   const [showFindRelatedMenu, setShowFindRelatedMenu] = useState(null);
   const [execScriptsMenuOpen, setExecScriptsMenuOpen] = useState(null);
   
-  const classes = useStyles();
+  const { classes } = useStyles();
   
   useEffect(() => {
     if (rootEntity && !scripts) {
@@ -297,7 +298,7 @@ const BottomAppBar = (
           root: "listItemPadding errorColor"
         }}
       >
-        Delete record
+        {$t('delete_record')}
       </MenuItem>
     )].filter(i => i);
 
@@ -333,7 +334,7 @@ const BottomAppBar = (
             rootEntity={rootEntity}
             changeQueryView={changeQueryView}
             searchMenuItemsRenderer={searchMenuItemsRenderer}
-            placeholder="Find..."
+            placeholder={$t('find2')}
           />
 
           <div className={clsx("centeredFlex", !querySearch && "flex-fill")}>
@@ -373,11 +374,7 @@ const BottomAppBar = (
                   root: "listItemPadding"
                 }}
               >
-                Find related to
-                {' '}
-                {selection.length}
-                {' '}
-                record
+                {$t('find_related_to_record',[selection.length])}
                 {selection.length > 1 ? "s" : ""}
               </MenuItem>
 
@@ -395,7 +392,7 @@ const BottomAppBar = (
 
             <div className={clsx("flex-fill text-center", { "d-none": querySearch })} />
             <div className={classes.actionArea}>
-              <Tooltip title="Add record" disableFocusListener>
+              <Tooltip title={$t('add_record')} disableFocusListener>
                 <div>
                   <IconButton
                     color="inherit"
@@ -419,7 +416,7 @@ const BottomAppBar = (
                 disabled={fetch.pending}
               />
 
-              <Tooltip title="Share" disableFocusListener>
+              <Tooltip title={$t('share')} disableFocusListener>
                 <div>
                   <IconButton
                     onClick={toggleExportDrawer}
@@ -434,7 +431,7 @@ const BottomAppBar = (
                   </IconButton>
                 </div>
               </Tooltip>
-              <Tooltip title="More Options" disableFocusListener>
+              <Tooltip title={$t('more_options')} disableFocusListener>
                 <div>
                   <IconButton
                     classes={{

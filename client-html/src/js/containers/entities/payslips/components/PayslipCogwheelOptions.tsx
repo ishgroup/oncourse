@@ -3,14 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PayslipStatus } from "@api/model";
-import MenuItem from "@mui/material/MenuItem";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
-import { executePayslip } from "../actions";
-import PayslipGenerateCogwheelAction from "./PayslipGenerateCogwheelAction";
+import { PayslipStatus } from '@api/model';
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import BulkEditCogwheelOption from '../../common/components/BulkEditCogwheelOption';
+import { executePayslip } from '../actions';
+import PayslipGenerateCogwheelAction from './PayslipGenerateCogwheelAction';
 
 class PayslipCogwheelOptions extends React.PureComponent<any, any> {
   executePayslip = e => {
@@ -33,18 +34,10 @@ class PayslipCogwheelOptions extends React.PureComponent<any, any> {
       <>
         <BulkEditCogwheelOption {...this.props} />
         <MenuItem disabled={hoSelectedOrNew} className={menuItemClass} role="Completed" onClick={this.executePayslip}>
-          Mark 
-          {' '}
-          {selection.length}
-          {' '}
-          tutor pay as completed
+          {$t('mark_tutor_pay_as_completed',[selection.length])}
         </MenuItem>
         <MenuItem disabled={hoSelectedOrNew} className={menuItemClass} role="Approved" onClick={this.executePayslip}>
-          Mark 
-          {' '}
-          {selection.length}
-          {' '}
-          tutor pay as approved
+          {$t('mark_tutor_pay_as_approved',[selection.length])}
         </MenuItem>
         <MenuItem
           disabled={hoSelectedOrNew}
@@ -52,11 +45,11 @@ class PayslipCogwheelOptions extends React.PureComponent<any, any> {
           role="Paid/Exported"
           onClick={this.executePayslip}
         >
-          Finalise 
+          {$t('Finalise')}
           {' '}
           {selection.length}
           {' '}
-          tutor pay
+          {$t('tutor pay')}
         </MenuItem>
 
         <PayslipGenerateCogwheelAction

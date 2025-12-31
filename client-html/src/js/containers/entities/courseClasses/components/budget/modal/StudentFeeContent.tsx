@@ -3,30 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseClassPaymentPlan, Tax } from "@api/model";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { addDays, format } from "date-fns";
-import {
-  AddButton,
-  D_MMM_YYYY,
-  decimalDivide,
-  decimalMinus,
-  decimalMul,
-  decimalPlus,
-  formatCurrency,
-  normalizeNumber
-} from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { arrayInsert, arrayRemove, change } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { IS_JEST } from "../../../../../../constants/EnvironmentConstants";
-import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { accountLabelCondition } from "../../../../accounts/utils";
-import { getCurrentTax } from "../../../../taxes/utils";
-import { getPaymentPlansTotal } from "../utils";
+import { CourseClassPaymentPlan, Tax } from '@api/model';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { addDays, format } from 'date-fns';
+import { AddButton, D_MMM_YYYY, decimalMinus, decimalPlus, formatCurrency, normalizeNumber } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { arrayInsert, arrayRemove, change } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { getCurrentTax, getFeeExTaxByFeeIncTax, getTotalByFeeExTax } from '../../../../../../common/utils/financial';
+import { IS_JEST } from '../../../../../../constants/EnvironmentConstants';
+import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
+import { accountLabelCondition } from '../../../../accounts/utils';
+import { getPaymentPlansTotal } from '../utils';
 
 const StudentFeePaymentPlan: React.FC<any> = ({
  index, item, onDelete, onBlur, classStart
@@ -59,7 +51,7 @@ const StudentFeePaymentPlan: React.FC<any> = ({
         />
       </Grid>
       <Grid item xs={3}>
-        <FormField type="money" name={`${name}.amount`} label="Amount" required {...fieldAmountProps}  />
+        <FormField type="money" name={`${name}.amount`} label={$t('amount')} required {...fieldAmountProps}  />
       </Grid>
 
       <Grid item xs={1}>
@@ -90,6 +82,8 @@ const StudentFeeContent: React.FC<Props> = ({
   }) => {
   const totalLabel = useMemo(() => `Total class fee (${currentTax.gst ? "inc " : "no "} GST)`, [currentTax]);
 
+  const currentTaxRate = useMemo(() => getCurrentTax(taxes, values.taxId).rate, [values.taxId, taxes]);
+
   const classTotalFeeLabel = useMemo(() => formatCurrency(decimalPlus(values.perUnitAmountIncTax, getPaymentPlansTotal(values.paymentPlan)), currencySymbol), [
     values.perUnitAmountIncTax,
     values.paymentPlan,
@@ -97,17 +91,12 @@ const StudentFeeContent: React.FC<Props> = ({
   ]);
 
   const onPerUnitChange = (e, v) => {
-    const taxMul = decimalPlus(getCurrentTax(taxes, values.taxId).rate, 1);
-
-    dispatch(change(form, namePrefix + "perUnitAmountExTax", decimalDivide(decimalPlus(v, getPaymentPlansTotal(values.paymentPlan)), taxMul)));
+    dispatch(change(form, namePrefix + "perUnitAmountExTax", getFeeExTaxByFeeIncTax(currentTaxRate, decimalPlus(v, getPaymentPlansTotal(values.paymentPlan)))));
   };
 
   const updateFormFeeByTax = newTaxId => {
-    const taxMul = decimalPlus(getCurrentTax(taxes, newTaxId).rate, 1);
-
     const paymentPlansTotal = getPaymentPlansTotal(values.paymentPlan);
-
-    dispatch(change(form, namePrefix + "perUnitAmountIncTax", decimalMinus(decimalMul(decimalPlus(values.perUnitAmountExTax, paymentPlansTotal), taxMul), paymentPlansTotal)));
+    dispatch(change(form, namePrefix + "perUnitAmountIncTax", decimalMinus(getTotalByFeeExTax(getCurrentTax(taxes, newTaxId).rate, decimalPlus(values.perUnitAmountExTax, paymentPlansTotal)), paymentPlansTotal)));
   };
 
   const addPaymentPlan = () => {
@@ -121,7 +110,6 @@ const StudentFeeContent: React.FC<Props> = ({
 
   const onAccountIdChange = id => {
     const selectedAccountTaxId = Number(accounts.find(a => a.id === id)["tax.id"]);
-
     if (values.taxId !== selectedAccountTaxId) {
       dispatch(change(form, namePrefix + "taxId", selectedAccountTaxId));
       updateFormFeeByTax(selectedAccountTaxId);
@@ -135,9 +123,7 @@ const StudentFeeContent: React.FC<Props> = ({
   const onPaymentPlanBlur = () => {
     setTimeout(() => {
       const updated = [...values.paymentPlan];
-
       updated.sort((a, b) => (a.dayOffset > b.dayOffset ? 1 : -1));
-
       dispatch(change(form, namePrefix + "paymentPlan", updated));
     }, 1000);
   };
@@ -145,13 +131,13 @@ const StudentFeeContent: React.FC<Props> = ({
   return (
     <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={8}>
-        <FormField type="text" name="description" label="Invoice line title"  />
+        <FormField type="text" name="description" label={$t('invoice_line_title')}  />
       </Grid>
       <Grid item xs={4}>
         <FormField
           type="select"
           name="taxId"
-          label="Tax type"
+          label={$t('tax_type')}
           selectValueMark="id"
           selectLabelMark="code"
           onChange={updateFormFeeByTax}
@@ -165,7 +151,7 @@ const StudentFeeContent: React.FC<Props> = ({
           type="select"
           name="accountId"
           selectValueMark="id"
-          label="Account"
+          label={$t('account')}
           selectLabelCondition={accountLabelCondition}
           onChange={onAccountIdChange}
           debounced={false}
@@ -176,14 +162,14 @@ const StudentFeeContent: React.FC<Props> = ({
         <FormField
           type="money"
           name="perUnitAmountIncTax"
-          label="On enrolment"
+          label={$t('on_enrolment')}
           onBlur={onPerUnitChange}
           required
         />
       </Grid>
 
       <Grid item xs={12} className="centeredFlex">
-        <div className="heading">Payment plans</div>
+        <div className="heading">{$t('payment_plans')}</div>
         <AddButton onClick={addPaymentPlan} />
       </Grid>
       <Grid container columnSpacing={3} item xs={12}>

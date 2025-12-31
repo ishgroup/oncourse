@@ -12,6 +12,7 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -43,20 +44,20 @@ public class AmazonS3Service {
     private AWSCredentials credentials;
     private Regions region;
     private String bucketName;
+    private String endpoint;
 
-    AmazonS3Service(String accessKeyId, String secretKey, String bucketName, String region) {
+    AmazonS3Service(String accessKeyId, String secretKey, String bucketName, String region, String endpoint) {
         this.credentials = new BasicAWSCredentials(accessKeyId, secretKey);
         this.bucketName = bucketName;
         this.region = Regions.fromName(region);
-        this.s3Client = AmazonS3ClientBuilder
-                .standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(this.region)
-                .build();
+        this.endpoint = endpoint;
+        this.s3Client = buildClient(credentials, region, endpoint);
     }
 
     public AmazonS3Service(DocumentService documentService) {
-        this(documentService.getAccessKeyId(), documentService.getAccessSecretKey(), documentService.getBucketName(), documentService.getRegion());
+        this(documentService.getAccessKeyId(), documentService.getAccessSecretKey(),
+             documentService.getBucketName(), documentService.getRegion(),
+             documentService.getEndpoint());
     }
 
     /**
@@ -87,11 +88,24 @@ public class AmazonS3Service {
      */
     public String putFile(String uniqueKey, String fileName, byte[] content, AttachmentInfoVisibility visibility) throws IOException {
         InputStream is = new ByteArrayInputStream(content);
+        return putFileFromStream(uniqueKey, fileName, is, visibility, content.length);
+    }
 
+    /**
+     * Uploads new file to S3 or uploads new file version of file if the file with the same UUID(key) already exist on s3.
+     *
+     * @param uniqueKey - UUID for uploaded file (also uses on s3)
+     * @param fileName - file name which will be appended to UUID
+     * @param is - file stream to upload
+     * @param visibility - visibiluty rules
+     * @return generated versionId under which file is stored in S3
+     */
+    public String putFileFromStream(String uniqueKey, String fileName, InputStream is,
+                                    AttachmentInfoVisibility visibility, int contentLength) throws IOException {
         ObjectMetadata metadata = new ObjectMetadata();
         String otherContentType = Files.probeContentType(of(fileName));
         metadata.setContentType(otherContentType);
-        metadata.setContentLength(content.length);
+        metadata.setContentLength(contentLength);
         metadata.setContentDisposition(format(CONTENT_DISPOSITION_TEMPLATE, fileName));
         metadata.addUserMetadata(METADATA_CacheControl, format(METADATA_CacheControlValueTemplate, ONE_WEEK_IN_SEC));
 
@@ -103,6 +117,10 @@ public class AmazonS3Service {
         return result.getVersionId();
     }
 
+
+    public boolean fileExists(String uniqueKey) {
+        return s3Client.doesObjectExist(bucketName, uniqueKey);
+    }
 
     /**
      * Changes stored file visibility rules. First request fetches current rules which are compared with specified,
@@ -202,6 +220,19 @@ public class AmazonS3Service {
         s3Client.deleteVersion(request);
     }
 
+    private static AmazonS3 buildClient(AWSCredentials credentials, String region, String endpoint) {
+        AmazonS3ClientBuilder builder = AmazonS3ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials));
+
+        if (endpoint == null || endpoint.isEmpty()) {
+            builder.withRegion(region);
+        } else {
+            builder.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpoint, region));
+            builder.withPathStyleAccessEnabled(true);
+        }
+
+        return builder.build();
+    }
 
     public static class UploadResult {
 

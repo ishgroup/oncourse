@@ -3,24 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import CircularProgress from "@mui/material/CircularProgress";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { getHighlightedPartLabel, useHoverShowStyles } from "ish-ui";
-import React from "react";
-import { connect } from "react-redux";
-import { State } from "../../../../../../reducers/state";
-import { getEntityDisplayName } from "../../../../../utils/getEntityDisplayName";
-import navigation from "../../../../navigation/data/navigation.json";
-import { getResultId } from "../../utils";
-import ListLinkItem from "./ListLinkItem";
-import ListLinksGroup from "./ListLinksGroup";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import CircularProgress from '@mui/material/CircularProgress';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import clsx from 'clsx';
+import { getHighlightedPartLabel, useHoverShowStyles } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { connect } from 'react-redux';
+import { withStyles } from 'tss-react/mui';
+import { State } from '../../../../../../reducers/state';
+import { getEntityDisplayName } from '../../../../../utils/getEntityDisplayName';
+import { useAppSelector } from '../../../../../utils/hooks';
+import navigation from '../../../../navigation/data/navigation.json';
+import { getResultId } from '../../utils';
+import ListLinkItem from './ListLinkItem';
+import ListLinksGroup from './ListLinksGroup';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   root: {
     padding: `${theme.spacing(2)} ${theme.spacing(2)} 228px ${theme.spacing(2)}`
   },
@@ -46,12 +46,20 @@ const SearchResults = props => {
     updateFavorites
   } = props;
 
-  const hoverClasses = useHoverShowStyles();
+  const { classes: hoverClasses } = useHoverShowStyles();
+  const hideAUSReporting = useAppSelector(state => state.location.countryCode !== 'AU');
+
+  const navigationFeatures = useMemo(() => {
+    if (hideAUSReporting) {
+      return navigation.features.filter(f => !['exportAVETMISS8', 'vetReporting'].includes(f.key));
+    }
+    return navigation.features;
+  }, [hideAUSReporting]);
 
   return (
     <List disablePadding className={classes.root}>
       {userSearch
-        && navigation.features
+        && navigationFeatures
           .filter(c => c.title.toLowerCase().includes(userSearch.toLowerCase()))
           .map((c, i) => {
 
@@ -120,7 +128,7 @@ const SearchResults = props => {
               checkSelectedResult={checkSelectedResult}
               items={r.items.map(item => {
                 const name = getHighlightedPartLabel(item.name, userSearch);
-                return {...item, name};
+                return { ...item, name };
               })}
               userSearch={userSearch}
               setSelected={setSelected}
@@ -138,4 +146,4 @@ const mapStateToProps = (state: State) => ({
   updating: state.dashboard.searchResults.updating
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(SearchResults));
+export default connect(mapStateToProps)(withStyles(SearchResults, styles));

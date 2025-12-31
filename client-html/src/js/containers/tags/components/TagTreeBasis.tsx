@@ -6,20 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Tree from "@atlaskit/tree";
-import { Props } from "@atlaskit/tree/dist/types/components/Tree/Tree-types";
-import { createStyles } from "@mui/material";
-import withStyles from "@mui/styles/withStyles";
-import { AppTheme } from "ish-ui";
-import isEmpty from "lodash.isempty";
-import * as React from "react";
-import * as ReactBeautifulDnD from "react-beautiful-dnd-next";
+import Tree from '@atlaskit/tree';
+import { AppTheme } from 'ish-ui';
+import { isEmpty } from 'es-toolkit/compat';
+import React from 'react';
+import * as ReactBeautifulDnD from 'react-beautiful-dnd-next';
+import { withStyles } from 'tss-react/mui';
 
 const TAG_ITEMS_SPACING = 8;
 
 const getDraggedDom = draggableId => document.querySelector(`[data-draggable-id='${draggableId}']`) as any;
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   placeholder: {
     border: `2px dashed ${theme.palette.action.focus}`,
     borderRadius: `${theme.shape.borderRadius}px`,
@@ -165,4 +163,4 @@ class PatchTree extends Tree {
   }
 }
 
-export default withStyles(styles)(PatchTree) as React.ClassicComponentClass<Partial<Props>>;
+export default withStyles(PatchTree, styles as any);

@@ -5,17 +5,16 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import { Binding, DataType, EmailTemplate, MessageType, Recipients, SearchQuery } from "@api/model";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import { CardContent, Dialog, FormControlLabel, Grid } from "@mui/material";
-import Card from "@mui/material/Card";
-import IconButton from "@mui/material/IconButton";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
+import { Binding, DataType, EmailTemplate, MessageType, Recipients, SearchQuery } from '@api/model';
+import OpenInNew from '@mui/icons-material/OpenInNew';
+import { CardContent, Dialog, FormControlLabel, Grid } from '@mui/material';
+import Card from '@mui/material/Card';
+import IconButton from '@mui/material/IconButton';
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
 import {
   AnyArgFunction,
   NoArgFunction,
@@ -24,34 +23,36 @@ import {
   StyledCheckbox,
   Switch,
   YYYY_MM_DD_MINUSED
-} from "ish-ui";
-import debounce from "lodash.debounce";
+} from 'ish-ui';
+import { debounce } from 'es-toolkit/compat';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, DecoratedFormProps, Field, FieldArray, getFormValues, initialize, reduxForm } from "redux-form";
-import previewSmsImage from "../../../../../images/preview-sms.png";
-import { closeSendMessage, getEmailTemplatesWithKeyCode, getUserPreferences } from "../../../../common/actions";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import DataTypeRenderer from "../../../../common/components/form/DataTypeRenderer";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
-import { clearRecipientsMessageData, getRecipientsMessageData } from "../../../../common/components/list-view/actions";
-import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
-import { getManualLink } from "../../../../common/utils/getManualLink";
-import { saveCategoryAQLLink } from "../../../../common/utils/links";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { EMAIL_FROM_KEY } from "../../../../constants/Config";
-import { SEND_MESSAGE_FORM_NAME } from "../../../../constants/Forms";
-import { MessageData, MessageExtended } from "../../../../model/common/Message";
-import { State } from "../../../../reducers/state";
-import { sendMessage } from "../actions";
-import MessageService from "../services/MessageService";
-import { getMessageRequestModel } from "../utils";
-import RecipientsSelectionSwitcher from "./RecipientsSelectionSwitcher";
+import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, DecoratedFormProps, Field, FieldArray, getFormValues, initialize, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import previewSmsImage from '../../../../../images/preview-sms.png';
+import { closeSendMessage, getEmailTemplatesWithKeyCode, getUserPreferences } from '../../../../common/actions';
+import { IAction } from '../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import DataTypeRenderer from '../../../../common/components/form/DataTypeRenderer';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
+import { clearRecipientsMessageData, getRecipientsMessageData } from '../../../../common/components/list-view/actions';
+import LoadingIndicator from '../../../../common/components/progress/LoadingIndicator';
+import { getManualLink } from '../../../../common/utils/getManualLink';
+import { saveCategoryAQLLink } from '../../../../common/utils/links';
+import { validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { EMAIL_FROM_KEY } from '../../../../constants/Config';
+import { SEND_MESSAGE_FORM_NAME } from '../../../../constants/Forms';
+import { MessageData, MessageExtended } from '../../../../model/common/Message';
+import { State } from '../../../../reducers/state';
+import { sendMessage } from '../actions';
+import MessageService from '../services/MessageService';
+import { getMessageRequestModel } from '../utils';
+import RecipientsSelectionSwitcher from './RecipientsSelectionSwitcher';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   previewContent: {
     "& table": {
       width: "100%"
@@ -115,6 +116,7 @@ const styles = theme => createStyles({
 });
 
 interface MessageEditViewProps {
+  dispatch?: Dispatch<IAction>;
   selection: string[];
   filteredCount: number;
   listEntity: string;
@@ -215,7 +217,7 @@ const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
   <Slide direction="up" ref={ref} {...props as any} mountOnEnter unmountOnExit />
 ));
 
-const manualUrl = getManualLink("messages");
+const manualUrl = getManualLink("sending-messages");
 
 const EntitiesToMessageTemplateEntitiesMap = {
   Invoice: ["Contact", "Invoice", "AbstractInvoice"],
@@ -258,7 +260,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
     clearOnClose
   } = props;
 
-  const htmlRef = useRef<HTMLDivElement>();
+  const htmlRef = useRef<HTMLDivElement>(undefined);
 
   const [preview, setPreview] = useState(null);
   const [suppressed, setSuppressed] = useState(false);
@@ -531,9 +533,9 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
           submitButtonText="Send"
           title={(
             <div>
-              Send
+              {$t('Send')}
               {' '}
-              { isEmailView ? "email" : "SMS" }
+              { isEmailView ? $t('email') : $t('SMS')}
             </div>
           )}
         >
@@ -554,7 +556,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                 <FormField
                   type="select"
                   name="templateId"
-                  label="Template"
+                  label={$t('template')}
                   selectValueMark="id"
                   selectLabelMark="name"
                   categoryKey="entity"
@@ -568,7 +570,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                 <FieldArray name="bindings" component={bindingsRenderer} rerenderOnEveryChange />
 
                 {isEmailView && (
-                  <FormField type="text" name="fromAddress" label="From address" className="mb-2" />
+                  <FormField type="text" name="fromAddress" label={$t('from_address')} className="mb-2" />
                 )}
 
                 <FormControlLabel
@@ -582,7 +584,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                       color="primary"
                     />
                   )}
-                  label="This is a marketing message"
+                  label={$t('this_is_a_marketing_message')}
                 />
                 <br />
                 {counterItems}
@@ -590,12 +592,12 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
 
               <Grid item xs={12} md={6} className="relative">
                 <Typography variant="body1" className={clsx(classes.noRecipients, { "d-none": values.recipientsCount })}>
-                  No recipients
+                  {$t('no_recipients')}
                 </Typography>
                 <div className={clsx({ "d-none": !values.recipientsCount })}>
                   <div className={isEmailView ? undefined : "d-none"}>
                     <Typography variant="caption" color="textSecondary">
-                      Preview
+                      {$t('preview')}
                     </Typography>
                     <Card>
                       <CardContent>
@@ -641,7 +643,7 @@ const mapStateToProps = (state: State) => ({
   recipientsMessageData: state.list.recepients
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   getRecipientsMessageData: (entityName: string, messageType: MessageType, listSearchQuery: SearchQuery, selection: string[], templateId: number) => dispatch(
     getRecipientsMessageData(
       entityName,
@@ -664,4 +666,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 export default reduxForm<any, any, any>({
   form: SEND_MESSAGE_FORM_NAME,
-})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SendMessageEditView)));
+})(connect(mapStateToProps, mapDispatchToProps)(withStyles(SendMessageEditView, styles)));
