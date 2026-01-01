@@ -19,7 +19,7 @@ import { DefaultHttpService } from "./HttpService";
 class EntityService {
   readonly entityApi = new EntityApi(new DefaultHttpService());
 
-  public getList(payload: GetRecordsArgs, state?: State): Promise<any> {
+  public getList(payload: GetRecordsArgs, state?: State): Promise<[res: DataResponse, searchQuery: SearchQuery]> {
     const {
       viewAll, listUpdate, entity, stopIndex
     } = payload;

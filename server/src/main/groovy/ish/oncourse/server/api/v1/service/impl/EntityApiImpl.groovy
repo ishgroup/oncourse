@@ -152,6 +152,10 @@ class EntityApiImpl implements EntityApi {
         ObjectContext context = cayenneService.newReadonlyContext
         query = addAqlExp(search, clzz, context, query, aql)
 
+        if (search) {
+            dataResponse.filteredCount = query.column(Property.create("id", Long).countDistinct()).suppressDistinct().selectOne(context) as Long // Can't use query.selectCount(context), because selectCount with Joins can't use Distinct correct. If tables with Joins have same column names (id, createdOn, modifiedOn, ...) 'Select *' and 'Select count(*)' using Distinct will have duplicates
+        }
+
         dataResponse.offset = offset ? offset : DEF_OFFSET
         dataResponse.pageSize = pageSize ? pageSize : DEF_PAGE_SIZE
         query.offset(dataResponse.offset.intValue())
