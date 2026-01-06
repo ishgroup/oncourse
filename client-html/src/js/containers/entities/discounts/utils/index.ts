@@ -55,7 +55,7 @@ export const getRoundingByType = (type: MoneyRounding, value: Decimal): number =
   }
 };
 
-export const getDiscountedFee = (discount: Discount, taxMul: Decimal, fee: number = 0): Decimal => {
+export const getDiscountAmountByFee = (discount: Discount, taxMul: Decimal, fee: number = 0): Decimal => {
   const dFee = new Decimal(fee);
   switch (discount.discountType) {
     case "Percent":
@@ -72,7 +72,8 @@ export const getDiscountedFee = (discount: Discount, taxMul: Decimal, fee: numbe
 export const getDiscountAmountByFeeIncTaxAndDiscount = (discount: Discount, feeIncDiscountExTax: Decimal): Decimal => {
   switch (discount.discountType) {
     case 'Percent':
-      return new Decimal(feeIncDiscountExTax).div(new Decimal(1).sub(discount.discountPercent)).mul(discount.discountPercent);
+      const divider = new Decimal(1).sub(discount.discountPercent);
+      return divider.isZero() ? new Decimal(feeIncDiscountExTax) : new Decimal(feeIncDiscountExTax).div(divider).mul(discount.discountPercent);
     case 'Dollar':
       return new Decimal(discount.discountValue);
     case 'Fee override':
@@ -83,7 +84,7 @@ export const getDiscountAmountByFeeIncTaxAndDiscount = (discount: Discount, feeI
 };
 
 export const getDiscountAmountExTax = (discount: Discount, taxRate: number, fee: number = 0): Decimal => {
-  let amountNumber = getDiscountedFee(discount,  new Decimal(1).plus(taxRate), fee).toNumber();
+  let amountNumber = getDiscountAmountByFee(discount,  new Decimal(1).plus(taxRate), fee).toNumber();
   amountNumber = (typeof discount.discountMin  === 'number' && amountNumber < discount.discountMin)
     ? discount.discountMin
     : (typeof discount.discountMax  === 'number' && amountNumber > discount.discountMax)
