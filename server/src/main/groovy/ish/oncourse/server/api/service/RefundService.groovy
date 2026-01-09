@@ -143,7 +143,7 @@ class RefundService {
             cancelaltionFeeLine.priceEachExTax = cancellationFee
             cancelaltionFeeLine.discountEachExTax = Money.ZERO
 
-            cancelaltionFeeLine.taxEach = InvoiceUtil.calculateTaxEachForInvoiceLine(cancellationFee, Money.ZERO, tax.rate,  Money.ZERO)
+            cancelaltionFeeLine.taxEach = InvoiceUtil.calculateTaxEachForInvoiceLine(cancellationFee, Money.ZERO, tax.rate)
         }
 
         ValidationResult result = new ValidationResult()
