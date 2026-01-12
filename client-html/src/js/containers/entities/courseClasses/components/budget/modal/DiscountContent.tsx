@@ -27,7 +27,7 @@ import { change } from 'redux-form';
 import { IAction } from '../../../../../../common/actions/IshAction';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
-import { getTaxAmountByFeeExTax } from '../../../../../../common/utils/financial';
+import { bankRounding, getTaxAmountByFeeExTax } from '../../../../../../common/utils/financial';
 import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
 import { getDiscountAmountExTax, getRoundingByType } from '../../../../discounts/utils';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
@@ -72,7 +72,7 @@ const onBeforeLockSet = (
     dispatch(change(
       COURSE_CLASS_COST_DIALOG_FORM,
       "perUnitAmountExTax",
-      getDiscountAmountExTax(discount, currentTax, classFee)
+      bankRounding(getDiscountAmountExTax(discount, currentTax.rate, classFee))
     ));
   }
 };
