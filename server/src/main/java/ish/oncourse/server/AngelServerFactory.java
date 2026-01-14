@@ -28,6 +28,8 @@ import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
 import ish.oncourse.server.services.*;
 import ish.oncourse.server.services.chargebee.ChargebeeUploadJob;
+import ish.oncourse.server.services.ISchedulerService;
+import ish.oncourse.server.services.*;
 import ish.persistence.Preferences;
 import ish.util.RuntimeUtil;
 import org.apache.cayenne.access.DataContext;
@@ -171,12 +173,12 @@ public class AngelServerFactory {
                     true,
                     false);
 
-            schedulerService.scheduleCronJob(CertificateUpdateWatcher.class,
+            /*schedulerService.scheduleCronJob(CertificateUpdateWatcher.class,
                     CERTIFICATE_UPDATE_WATCHER_ID, BACKGROUND_JOBS_GROUP_ID,
                     CERTIFICATE_UPDATE_WATCHER_INTERVAL,
                     prefController.getOncourseServerDefaultTimezone(),
                     false,
-                    false);
+                    false);*/
 
 
             // disable cristmas theme automatical update since we did not prepare anything this year (2021-2022)
