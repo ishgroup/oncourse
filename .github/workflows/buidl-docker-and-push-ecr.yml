@@ -1,0 +1,90 @@
+name: Build and Push Server to ECR
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_version:
+        type: string
+        required: true
+        description: App version (e.g., 123.53.2)
+        default: ''
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: ap-southeast-2
+  ECR_REPOSITORY: angel
+
+jobs:
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download release artifact
+        run: |
+          VERSION="${{ inputs.app_version }}"
+          ASSET_NAME="onCourseServer-${VERSION}.tgz"
+          TAG_NAME="v${VERSION}"
+
+          echo "TAG_NAME=$TAG_NAME"
+          echo "ASSET_NAME=$ASSET_NAME"
+          echo "Download URL: https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/$ASSET_NAME"
+
+          curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/octet-stream" \
+            "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/$ASSET_NAME" \
+            --output "$ASSET_NAME"
+          
+          mkdir -p artifacts
+          mv $ASSET_NAME artifacts/
+          echo "✓ Downloaded successfully: $ASSET_NAME"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract artifact
+        run: |
+          file=$(find artifacts/ -type f -name "*.tgz" | head -n1)
+          name=$(basename "$file")
+          echo "APP_ARTIFACT=$name" >> $GITHUB_ENV
+          
+          mkdir -p artifacts/unpack
+          tar xvf artifacts/$name --strip-components=1 -C artifacts/unpack
+          echo "✓ Extracted: $name"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ inputs.app_version }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Image digest
+        run: |
+          echo "✓ Image pushed successfully!"
+          echo "ECR Repository: ${{ env.ECR_REPOSITORY }}"
+          echo "Version: ${{ inputs.app_version }}"
+          echo "Registry: ${{ steps.login-ecr.outputs.registry }}/willow/${{ env.ECR_REPOSITORY }}"
