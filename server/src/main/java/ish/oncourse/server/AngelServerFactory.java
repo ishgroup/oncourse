@@ -12,7 +12,9 @@
 package ish.oncourse.server;
 
 import com.google.inject.Inject;
+import io.bootique.BQRuntime;
 import io.bootique.annotation.BQConfig;
+import io.bootique.annotation.BQConfigProperty;
 import ish.math.Country;
 import ish.math.context.MoneyContextUpdater;
 import ish.oncourse.common.ResourcesUtil;
@@ -28,8 +30,6 @@ import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
 import ish.oncourse.server.services.*;
 import ish.oncourse.server.services.chargebee.ChargebeeUploadJob;
-import ish.oncourse.server.services.ISchedulerService;
-import ish.oncourse.server.services.*;
 import ish.persistence.Preferences;
 import ish.util.RuntimeUtil;
 import org.apache.cayenne.access.DataContext;
@@ -62,6 +62,13 @@ public class AngelServerFactory {
 
     public final static String YAML_SYSTEM_USERS_FILE = "createAdminUsers.yaml";
     public static boolean QUIT_SIGNAL_CAUGHT = false;
+
+    private Boolean sslHttp2 = Boolean.TRUE;
+
+    @BQConfigProperty
+    public void setSslHttp2(boolean sslHttp2) {
+        this.sslHttp2 = sslHttp2;
+    }
 
     @Inject
     public AngelServerFactory() {
@@ -173,12 +180,14 @@ public class AngelServerFactory {
                     true,
                     false);
 
-            /*schedulerService.scheduleCronJob(CertificateUpdateWatcher.class,
-                    CERTIFICATE_UPDATE_WATCHER_ID, BACKGROUND_JOBS_GROUP_ID,
-                    CERTIFICATE_UPDATE_WATCHER_INTERVAL,
-                    prefController.getOncourseServerDefaultTimezone(),
-                    false,
-                    false);*/
+            if(sslHttp2 == Boolean.TRUE) {
+                schedulerService.scheduleCronJob(CertificateUpdateWatcher.class,
+                        CERTIFICATE_UPDATE_WATCHER_ID, BACKGROUND_JOBS_GROUP_ID,
+                        CERTIFICATE_UPDATE_WATCHER_INTERVAL,
+                        prefController.getOncourseServerDefaultTimezone(),
+                        false,
+                        false);
+            }
 
 
             // disable cristmas theme automatical update since we did not prepare anything this year (2021-2022)

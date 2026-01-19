@@ -12,20 +12,18 @@
 package ish.oncourse.server.modules;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.google.inject.Binder;
-import com.google.inject.Inject;
 import io.bootique.annotation.BQConfig;
 import io.bootique.jetty.connector.ConnectorFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.jetty.alpn.server.ALPNServerConnectionFactory;
-import org.eclipse.jetty.http2.server.HTTP2ServerConnectionFactory;
-import org.eclipse.jetty.server.*;
+import org.eclipse.jetty.server.ConnectionFactory;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
 
 
 @BQConfig
-@JsonTypeName("https2")
-public class AngelHttpsConnectorFactory extends ConnectorFactory {
+@JsonTypeName("http1")
+public class AngelHttpConnectorFactory extends ConnectorFactory {
 
     /**
      * Maximum idle time, equals to setting timeout. We set it to fairly large number because we have to be sure that it's always greater than the length of
@@ -37,28 +35,14 @@ public class AngelHttpsConnectorFactory extends ConnectorFactory {
 
     private static final Logger logger = LogManager.getLogger();
 
-    @Override
     protected ConnectionFactory[] buildHttpConnectionFactories(HttpConfiguration httpConfig) {
-        var http2 = new HTTP2ServerConnectionFactory(httpConfig);
-        var alpn = new ALPNServerConnectionFactory("h2");
-        SslConnectionFactory ssl = new SslConnectionFactory(SslContextHolder.get(), "alpn");
-        return new ConnectionFactory[]{ssl, alpn, http2 };
+        return new ConnectionFactory[]{new HttpConnectionFactory(httpConfig)};
     }
 
-    @Override
-    public ServerConnector createConnector(Server server) {
-        var connector = super.createConnector(server);
-        connector.setIdleTimeout(MAX_IDLE_TIME);
-        return connector;
-    }
-
-    @Override
     protected HttpConfiguration buildHttpConfiguration() {
-        var config = super.buildHttpConfiguration();
-        config.setSendServerVersion(false);
-        config.setSecureScheme("https");
-        config.addCustomizer(new SecureRequestCustomizer(false,false, STS_MAX_AGE, true));
-        return config;
+        HttpConfiguration httpConfig = super.buildHttpConfiguration();
+        httpConfig.setSendServerVersion(false);
+        return httpConfig;
     }
 }
 
