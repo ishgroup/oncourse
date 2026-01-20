@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { CoreFilter } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
+import { Epic } from 'redux-observable';
+import { CoreFilter } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
 
-import * as EpicUtils from "../../../epics/EpicUtils";
-import CustomFiltersService from "../../../services/CustomFiltersService";
-import { GET_FILTERS_FULFILLED, GET_FILTERS_REQUEST, GET_RECORDS_REQUEST } from "../actions/index";
+import * as EpicUtils from '../../../epics/EpicUtils';
+import CustomFiltersService from '../../../services/CustomFiltersService';
+import { GET_FILTERS_FULFILLED, GET_FILTERS_REQUEST, GET_RECORDS_REQUEST } from '../actions/index';
 
 const request: EpicUtils.Request = {
   type: GET_FILTERS_REQUEST,

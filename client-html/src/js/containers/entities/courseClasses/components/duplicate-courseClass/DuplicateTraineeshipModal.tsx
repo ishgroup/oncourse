@@ -16,7 +16,7 @@ import $t from '@t';
 import clsx from 'clsx';
 import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from 'date-fns';
 import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from 'ish-ui';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';

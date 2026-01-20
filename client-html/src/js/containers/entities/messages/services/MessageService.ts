@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { MessageApi, MessageType, Recipients, SearchQuery, SendMessageRequest } from "@api/model";
-import { DefaultHttpService } from "../../../../common/services/HttpService";
+import { MessageApi, MessageType, Recipients, SearchQuery, SendMessageRequest } from '@api/model';
+import { DefaultHttpService } from '../../../../common/services/HttpService';
 
 class MessageService {
   readonly service = new DefaultHttpService();

@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import Hidden from '@mui/material/Hidden';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
-import isEmpty from 'lodash.isempty';
+import { isEmpty } from 'es-toolkit/compat'
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Form, getFormInitialValues, initialize, reduxForm } from 'redux-form';

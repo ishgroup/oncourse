@@ -70,14 +70,16 @@ class WindcavePaymentAPI {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard) {
+    SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard, String payerEmail) {
         SessionAttributes attributes = new SessionAttributes()
 
         try {
 
             HTTPBuilder builder =  new HTTPBuilder()
 
-            builder.handler['failure'] = { response, body -> failHandler(response, body, attributes)}
+            builder.handler['failure'] = {
+                response, body -> failHandler(response, body, attributes)
+            }
 
             builder.handler['success'] = { response, body ->
                 attributes.sessionId = body["id"]
@@ -98,8 +100,8 @@ class WindcavePaymentAPI {
                                                 declined :  origin + '/checkout?paymentStatus=fail',
                                                 cancelled:  origin + '/checkout?paymentStatus=cancel'
                                             ],
-                                        notificationUrl: sessionManager.host + CheckoutUtils.SERVER_REDIRECT_PATH+"?key=$licenseService.college_key"
-                                        ]
+                                        notificationUrl: sessionManager.host + CheckoutUtils.SERVER_REDIRECT_PATH+"?key=$licenseService.college_key",
+                                        EmailAddress : payerEmail]
             if (storeCard) {
                 body['storeCard'] = true
                 body['storedCardIndicator'] = 'recurringinitial'

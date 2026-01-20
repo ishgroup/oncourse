@@ -235,7 +235,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":null,
         "modifiedOn":null,
-        "messages":[],
+        "messagesCount":0,
         "rules":[{"id":"#ignore","description":"test","startDate":"2020-02-11","endDate":"2020-02-11","startDateTime":null,"endDateTime":null,"repeat":"hour","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2020-02-11","created":"#ignore","modified":"#ignore"}]
         }
         """
@@ -340,7 +340,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         "profilePicture":null,
         "relations":[],
         "financialData":[],
-        "messages":[]
+        "messagesCount":0
         }
         """
 
@@ -397,7 +397,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -1362,7 +1362,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":null,
         "modifiedOn":null,
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -1420,7 +1420,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":null,
         "modifiedOn":null,
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """

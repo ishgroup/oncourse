@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { debounce } from 'es-toolkit/compat';
 import { BooleanArgFunction, NumberArgFunction, usePrevious } from 'ish-ui';
-import debounce from 'lodash.debounce';
 import React from 'react';
 import { connect } from 'react-redux';
 import LoadingIndicator from '../../../../common/components/progress/LoadingIndicator';

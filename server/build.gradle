@@ -75,7 +75,7 @@ dependencies {
 	implementation "com.nulab-inc:zxcvbn:1.4.1"
 
 	implementation ("org.apache.maven:maven-artifact:3.3.9")
-	api ("org.liquibase:liquibase-core:4.20.0") {
+	api ("org.liquibase:liquibase-core:4.30.0") {
 		exclude group: "ch.qos.logback"
 	}
 	implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
@@ -143,6 +143,8 @@ dependencies {
 	implementation "com.stripe:stripe-java:28.1.0"
 	implementation 'com.squareup:square:43.0.0.20250123'
 	implementation 'com.google.code.gson:gson:2.11.0'
+
+	implementation 'com.opencsv:opencsv:5.9'
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'

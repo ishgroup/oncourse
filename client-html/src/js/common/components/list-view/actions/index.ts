@@ -42,6 +42,8 @@ export const BULK_CHANGE_RECORDS = _toRequestType("post/listView/bulkChange");
 
 export const FIND_RELATED_BY_FILTER = "find/related/byFilter";
 
+export const CLEAR_LIST_STATE = "clear/listView";
+
 export const SET_LIST_CORE_FILTERS = "set/listView/coreFilters";
 
 export const SET_LIST_SEARCH = "set/listView/search";
@@ -65,6 +67,8 @@ export const SET_LIST_MENU_TAGS = "set/listView/menuTags";
 export const SET_LIST_EDIT_RECORD = "set/listView/editRecord";
 
 export const UPDATE_TAGS_ORDER = "set/listView/tagsOrder";
+
+export const SET_LIST_CREATING_NEW = "set/listView/creatingNew";
 
 export const SET_LIST_FULL_SCREEN_EDIT_VIEW = "set/listView/fullScreenEditView";
 
@@ -133,6 +137,10 @@ export const clearRecipientsMessageData = () => ({
   type: CLEAR_RECIPIENTS_MESSAGE_DATA
 });
 
+export const clearListState = () => ({
+  type: CLEAR_LIST_STATE
+});
+
 export const setListEditRecordFetching = () => ({
   type: SET_LIST_EDIT_RECORD_FETCHING
 });
@@ -170,6 +178,11 @@ export const setListSearchError = (searchError: boolean) => ({
 export const setListEditRecord = (editRecord: any) => ({
   type: SET_LIST_EDIT_RECORD,
   payload: {editRecord}
+});
+
+export const setListCreatingNew = (creatingNew: boolean) => ({
+  type: SET_LIST_CREATING_NEW,
+  payload: creatingNew
 });
 
 export const bulkChangeRecords = (entity: EntityName, diff: Diff) => ({

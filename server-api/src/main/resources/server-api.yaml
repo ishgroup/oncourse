@@ -388,6 +388,9 @@ definitions:
   ForbiddenTagNames:
     $ref: './def/enum/ForbiddenTagNames.yaml'
 
+  MessageStatus:
+    $ref: './def/enum/MessageStatus.yaml'
+
   ExecuteImportRequest:
     $ref: './def/entity/import/ExecuteImportRequest.yaml'
 
