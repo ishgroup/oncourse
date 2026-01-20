@@ -874,6 +874,14 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	}
 
 	/**
+	 * Returns the monetary value as a {@link BigDecimal}.
+	 */
+	@API
+	public BigDecimal toPrecisedBigDecimal() {
+		return number;
+	}
+
+	/**
 	 * Returns the monetary value as a {@link Double}.
 	 *
 	 * @deprecated use {@link #toDouble()}

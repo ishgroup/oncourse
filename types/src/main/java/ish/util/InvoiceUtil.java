@@ -490,7 +490,7 @@ public final class InvoiceUtil {
 	 */
 	public static Money calculateTaxEachForInvoiceLine(Money priceEachEx, Money discountEachEx, BigDecimal taxRate, Money taxAdjustment) {
 		// calculate final total value ex tax
-		return calculateTaxEachForInvoiceLine(priceEachEx, discountEachEx, taxRate).add(taxAdjustment);
+		return calculateTaxEachForInvoiceLine(priceEachEx, discountEachEx, taxRate);
 	}
 	public static Money calculateTaxEachForInvoiceLine(Money priceEachEx, Money discountEachEx, BigDecimal taxRate) {
 		// calculate final total value ex tax
