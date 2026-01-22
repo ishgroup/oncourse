@@ -14,6 +14,7 @@ package ish.oncourse.server;
 import com.google.inject.*;
 import com.google.inject.name.Names;
 import io.bootique.BQCoreModule;
+import io.bootique.BQRuntime;
 import io.bootique.ConfigModule;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.command.CommandDecorator;
@@ -24,11 +25,14 @@ import io.bootique.jetty.command.ServerCommand;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.servlet.*;
 import ish.oncourse.server.db.AngelCayenneModule;
+import ish.oncourse.server.db.URIDataSourceFactory;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.integration.PluginsPrefsService;
 import ish.oncourse.server.jetty.AngelJettyModule;
+import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.lifecycle.*;
+import ish.oncourse.server.modules.AngelHttpsConnectorFactory;
 import ish.oncourse.server.modules.AngelJobFactory;
 import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.scripting.GroovyScriptService;
@@ -159,7 +163,10 @@ public class AngelModule extends ConfigModule {
                 .addServlet(new ResourceServlet(),"resources", ROOT_URL_PATTERN);
 
         binder.bind(ISessionManager.class).to(SessionManager.class).in(Scopes.SINGLETON);
+
         binder.bind(CertificateUpdateWatcher.class).in(Scopes.SINGLETON);
+
+        binder.bind(URIDataSourceFactory.class);
         binder.bind(ICayenneService.class).to(CayenneService.class).in(Scopes.SINGLETON);
         binder.bind(PreferenceController.class);
         binder.bind(PluginsPrefsService.class);
