@@ -17,6 +17,7 @@ jdbc:
     connectionTimeout: 30000
     registerMbeans: true
 
+
 cayenne:
   datasource: angel
   configs:
