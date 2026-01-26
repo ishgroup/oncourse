@@ -76,7 +76,7 @@ public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 	}
 
     public Money getDiscountedPriceEachIncTax() {
-        if (getPriceEachExTax() == null || getInvoiceTax() == null) {
+        if (getPriceEachExTax() == null || getInvoiceTax() == null || getQuantity() == null) {
             return Money.ZERO;
         }
 
