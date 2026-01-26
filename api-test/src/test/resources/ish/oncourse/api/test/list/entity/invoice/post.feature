@@ -28,12 +28,12 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         "shippingAddress":"some shipping address",
         "customerReference":"invoice100",
         "sendEmail":true,
-        "invoiceLines":[{"quantity":1,"incomeAccountId":8,"taxId":1,"taxEach":20,"discountEachExTax":10,"priceEachExTax":200,"title":"invoiceLine1","unit":"kg","description":"some description"}],
-        "paymentPlans":[{"amount":210,"date":null,"entityName":"Invoice","id":null,"successful":true,"type":"Invoice office"}],
+        "invoiceLines":[{"quantity":1,"incomeAccountId":8,"taxId":1,"taxEach":19,"discountEachExTax":10,"priceEachExTax":200,"title":"invoiceLine1","unit":"kg","description":"some description"}],
+        "paymentPlans":[{"amount":209,"date":null,"entityName":"Invoice","id":null,"successful":true,"type":"Invoice office"}],
         "overdue":0,
         "contactName":"stud202 stud202",
         "contactId":202,
-        "total":210,
+        "total":209,
         "relatedFundingSourceId":null
         }
         """
@@ -69,7 +69,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "shippingAddress":"some shipping address",
             "invoiceDate":"2019-09-09",
             "dateDue":"2019-09-09",
-            "overdue":210.00,
+            "overdue":209.00,
             "invoiceLines":
                 [{
                 "id":"#number",
@@ -82,7 +82,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
                 "discountName":null,
                 "priceEachExTax":200.00,
                 "discountEachExTax":10.00,
-                "taxEach":20.00,
+                "taxEach":19.00,
                 "finalPriceToPayIncTax":null,
                 "taxId":1,
                 "taxName":"Australian GST",
@@ -100,10 +100,10 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
                 "membership": null,
                 "contactId": null
                 }],
-            "total":210.00,
-            "amountOwing":210.00,
+            "total":209.00,
+            "amountOwing":209.00,
             "publicNotes":null,
-            "paymentPlans":[{"id":"#number","date":"#ignore","type":"Invoice office","successful":true,"amount":210.00,"entityName":"Invoice"}],
+            "paymentPlans":[{"id":"#number","date":"#ignore","type":"Invoice office","successful":true,"amount":209.00,"entityName":"Invoice"}],
             "source":"office",
             "createdByUser":"admin@gmail.com",
             "sendEmail":true,
