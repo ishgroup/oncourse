@@ -117,3 +117,6 @@ properties:
       $ref: "../AssessmentSubmission.yaml"
   vetPurchasingContractScheduleID:
     type: string
+  effectiveFrom:
+    type: string
+    format: date-time
