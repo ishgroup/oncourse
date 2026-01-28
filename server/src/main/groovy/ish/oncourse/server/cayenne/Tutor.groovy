@@ -330,6 +330,18 @@ class Tutor extends _Tutor implements Queueable, Taggable, AttachableTrait, Expa
 	}
 
 	/**
+	 * Get all checklists related to the contact, that is related to this tutor, which are designed for tutor type.
+	 * Note: this method will return only tasks, that were marked for this record, not all allowed
+	 * @return List of related checklists
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<? extends Tag> getChecklists() {
+		return contact.checklists.findAll {it.getTagRequirement(Tutor.class) != null}
+	}
+
+	/**
 	 * @return a list of all the tags for this tutor
 	 */
 	@Nonnull
