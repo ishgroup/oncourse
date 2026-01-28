@@ -8,6 +8,11 @@ on:
         required: true
         description: App version (e.g., 123.53.2)
         default: ''
+      plugins_version:
+        type: string
+        required: true
+        description: Plugins version (e.g., 1.100.1)
+        default: ''
 
 permissions:
   id-token: write
@@ -57,6 +62,50 @@ jobs:
           tar xvf artifacts/$name --strip-components=1 -C artifacts/unpack
           echo "✓ Extracted: $name"
 
+      - name: Download plugins
+        run: |
+          PLUGINS_VERSION="${{ inputs.plugins_version }}"
+          PLUGINS_TAG="v${PLUGINS_VERSION}"
+          PLUGINS_REPO="ishgroup/oncourse-secret"
+          
+          # Создаем директорию для плагинов
+          mkdir -p artifacts/unpack/plugins
+          
+          # Список плагинов для загрузки
+          PLUGINS=(
+            "cloud-assess"
+            "myob"
+            "replication"
+            "service-nsw"
+            "tcsi"
+            "xero"
+          )
+          
+          echo "Downloading plugins version: $PLUGINS_VERSION"
+          
+          for plugin in "${PLUGINS[@]}"; do
+            PLUGIN_FILE="${plugin}-${PLUGINS_VERSION}.jar"
+            DOWNLOAD_URL="https://github.com/${PLUGINS_REPO}/releases/download/${PLUGINS_TAG}/${PLUGIN_FILE}"
+            
+            echo "Downloading: $PLUGIN_FILE"
+            curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/octet-stream" \
+              "$DOWNLOAD_URL" \
+              --output "artifacts/unpack/plugins/$PLUGIN_FILE"
+            
+            if [ -f "artifacts/unpack/plugins/$PLUGIN_FILE" ]; then
+              echo "✓ Downloaded: $PLUGIN_FILE"
+            else
+              echo "✗ Failed to download: $PLUGIN_FILE"
+              exit 1
+            fi
+          done
+          
+          echo "✓ All plugins downloaded successfully"
+          ls -lh artifacts/unpack/plugins/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -86,5 +135,6 @@ jobs:
         run: |
           echo "✓ Image pushed successfully!"
           echo "ECR Repository: ${{ env.ECR_REPOSITORY }}"
-          echo "Version: ${{ inputs.app_version }}"
-          echo "Registry: ${{ steps.login-ecr.outputs.registry }}/willow/${{ env.ECR_REPOSITORY }}"
+          echo "App Version: ${{ inputs.app_version }}"
+          echo "Plugins Version: ${{ inputs.plugins_version }}"
+          echo "Registry: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}"
