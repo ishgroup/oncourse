@@ -176,8 +176,12 @@ class MessageService {
 
 		if (messageSpec.entityRecords.isEmpty()) {
 			if (!messageSpec.toList.isEmpty() && (messageSpec.templateIdentifier != null || messageSpec.content != null || !messageSpec.attachments.isEmpty())) {
+				def batchIsOver = messageSpec.toList.size() > mailDeliveryService.smtpService.email_batch
+				if(batchIsOver)
+					throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch $mailDeliveryService.smtpService.email_batch.")
+
 				SmtpParameters parameters = new SmtpParameters(messageSpec)
-				SendEmailViaSmtp.valueOf(parameters, cayenneService.newContext, templateService, mailDeliveryService, collision).send()
+				SendEmailViaSmtp.valueOf(parameters, cayenneService.newContext, templateService, mailDeliveryService, collision, batchIsOver).send()
 			}
 		} else {
 
@@ -207,6 +211,23 @@ class MessageService {
 		} else {
 			records = messageSpec.entityRecords.collect { it as CayenneDataObject } as List<CayenneDataObject>
 		}
+
+		boolean batchIsOver = false
+		def maxEmailBatch = mailDeliveryService.getSmtpService().email_batch
+		if(records.size() > maxEmailBatch)
+			throw new IllegalArgumentException("Number of records was more, than max allowed email batch $maxEmailBatch")
+
+		def recipientsFullCount = 0
+
+		for(def it: records) {
+			recipientsFullCount += getRecipientsListFromEntity(it).size()
+			if(recipientsFullCount > maxEmailBatch) {
+				throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch $maxEmailBatch")
+			}
+		}
+
+		if(!messageSpec.toList.isEmpty() && messageSpec.toList.size() > maxEmailBatch)
+			throw new IllegalArgumentException("Number of recipients in to list was more, than max allowed email batch $maxEmailBatch")
 
 
 		int counter = 0
@@ -251,6 +272,7 @@ class MessageService {
 			SmtpParameters parameters = new SmtpParameters(messageSpec)
 			SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision).send()
 		}
+
 
 		if (counter > 0) {
 			context.commitChanges()
