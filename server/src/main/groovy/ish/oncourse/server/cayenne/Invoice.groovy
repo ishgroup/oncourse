@@ -22,6 +22,7 @@ import ish.oncourse.cayenne.PaymentLineInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Invoice
 import ish.oncourse.server.services.IAutoIncrementService
+import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 
@@ -297,5 +298,13 @@ class Invoice extends _Invoice implements InvoiceInterface, ExpandableTrait {
     @Override
     Class<? extends CustomField> getCustomFieldClass() {
         return InvoiceCustomField
+    }
+
+    @Override
+    void validateObject(ObjectContext atomicContext) {
+        def invoiceLines = getInvoiceLines()
+        if (invoiceLines.isEmpty()) {
+            throw new ReplicationException(getClass().simpleName + " has no related " + INVOICE_LINES.name)
+        }
     }
 }
