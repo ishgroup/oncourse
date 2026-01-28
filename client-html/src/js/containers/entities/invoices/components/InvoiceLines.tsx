@@ -6,80 +6,55 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Course } from '@api/model';
+import { Course, Currency, Discount, InvoiceType, Tax } from '@api/model';
+import Lock from '@mui/icons-material/Lock';
+import LockOpen from '@mui/icons-material/LockOpen';
 import { Grid, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import $t from '@t';
 import { Decimal } from 'decimal.js-light';
-import { decimalPlus, formatCurrency, LinkAdornment, normalizeNumber, usePrevious } from 'ish-ui';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { decimalMul, LinkAdornment, NoArgFunction, NumberArgFunction, usePrevious } from 'ish-ui';
+import { normalizeNumberToPositive } from 'ish-ui/dist/utils/numbers/numbersNormalizing';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { change } from 'redux-form';
+import { IAction } from '../../../../common/actions/IshAction';
+import InstantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import FormField from '../../../../common/components/form/formFields/FormField';
 import Uneditable from '../../../../common/components/form/formFields/Uneditable';
-import { useAppSelector } from '../../../../common/utils/hooks';
+import LoadingIndicator from '../../../../common/components/progress/LoadingIndicator';
+import EntityService from '../../../../common/services/EntityService';
+import { getCustomColumnsMap } from '../../../../common/utils/common';
+import {
+  bankRounding,
+  getCurrentTax,
+  getPriceAndDeductionsByTotal,
+  getTotalAndDeductionsByPrice,
+  useAppSelector
+} from '../../../../common/utils/hooks';
+import { AccountTypes } from '../../../../model/entities/Account';
+import { InvoiceLineWithTotal } from '../../../../model/entities/Invoice';
 import { State } from '../../../../reducers/state';
 import { accountLabelCondition } from '../../accounts/utils';
 import CourseItemRenderer from '../../courses/components/CourseItemRenderer';
 import { courseFilterCondition, openCourseLink } from '../../courses/utils';
-import { getDiscountAmountExTax } from '../../discounts/utils';
+import { openDiscountsLink, plainDiscountToAPIModel } from '../../discounts/utils';
 import {
   getInvoiceLineCourse,
   getInvoiceLineEnrolments,
   setInvoiceLineCourse,
   setInvoiceLineEnrolments
 } from '../actions';
-import { calculateInvoiceLineTotal } from '../utils';
+import { INVOICE_LINE_DISCOUNT_AQL, INVOICE_LINE_DISCOUNT_COLUMNS } from '../constants';
+import { InvoicesState } from '../reducers/state';
 
-const calculateInvoiceLineTaxEach = (priceEachExTax: number, discountEachExTax: number, taxRate: number) => new Decimal(priceEachExTax || 0)
-    .minus(discountEachExTax || 0)
-    .mul(taxRate)
-    .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
-    .toNumber();
+interface HeaderProps {
+  row: InvoiceLineWithTotal;
+  shortCurrencySymbol: string;
+}
 
-const calculateInvoiceLineTaxAndPrice = (
-  total: number,
-  taxRate: number,
-  discountEachExTax: number,
-  quantity: number
-) => {
-  const taxEach = new Decimal(total || 0).div(quantity || 1).minus(
-    new Decimal(total || 0)
-      .div(quantity || 1)
-      .div(new Decimal(taxRate).plus(1))
-      .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
-  );
-
-  return [
-    taxEach.toNumber(),
-    new Decimal(total || 0)
-      .div(quantity || 1)
-      .plus(discountEachExTax || 0)
-      .minus(taxEach)
-      .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
-      .toNumber()
-  ];
-};
-
-const HeaderContentBase: React.FunctionComponent<any> = React.memo((props: any) => {
-  const { row, currency } = props;
-
-  const total = useMemo(
-    () => formatCurrency(
-        row.total || calculateInvoiceLineTotal(row.priceEachExTax, row.discountEachExTax, row.taxEach, row.quantity),
-        currency.shortCurrencySymbol
-      ),
-    [
-      row.id,
-      row.priceEachExTax,
-      row.discountEachExTax,
-      row.taxEach,
-      row.total,
-      row.quantity,
-      currency.shortCurrencySymbol
-    ]
-  );
-
+export const HeaderContent = React.memo<HeaderProps>(({ row, shortCurrencySymbol }) => {
   return (
     <div className="w-100 d-grid gridTemplateColumns-1fr">
       <div>
@@ -89,62 +64,99 @@ const HeaderContentBase: React.FunctionComponent<any> = React.memo((props: any) 
       </div>
 
       <Typography variant="body2" color="textSecondary" className="centeredFlex pl-1 money">
-        {total}
+        {shortCurrencySymbol} {row.total}
       </Typography>
     </div>
   );
 });
 
-export const HeaderContent = HeaderContentBase;
-
-let ignoreChange: boolean = false;
-
 const USE_ALL_ACCOUNTS_FLAG = "allAccounts";
 
-const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) => {
-  const {
-    row,
-    rows,
-    item,
-    isNew,
-    currency,
-    twoColumn,
-    dispatch,
-    form,
-    taxes,
-    selectedLineCourse,
-    getInvoiceLineCourse,
-    clearInvoiceLineCourse,
-    selectedLineEnrolments,
-    getInvoiceLineEnrolments,
-    clearInvoiceLineEnrolments,
-    accountTypes,
-    courseClasses,
-    selectedContact,
-    type
-  } = props;
+interface InvoiceLineBaseProps {
+  row: InvoiceLineWithTotal,
+  rows: InvoiceLineWithTotal[];
+  item: string;
+  isNew: boolean;
+  currency: Currency;
+  twoColumn: boolean;
+  dispatch: Dispatch<IAction>;
+  form: string;
+  taxes: Tax[];
+  selectedLineCourse: InvoicesState['selectedLineCourse'];
+  getInvoiceLineCourse: NumberArgFunction;
+  clearInvoiceLineCourse: NoArgFunction;
+  selectedLineEnrolments: InvoicesState['selectedLineEnrolments'];
+  getInvoiceLineEnrolments: NumberArgFunction;
+  clearInvoiceLineEnrolments: NoArgFunction;
+  accountTypes: AccountTypes;
+  courseClasses: InvoicesState['selectedLineCourseClasses'];
+  selectedContact: InvoicesState['selectedContact'];
+  type: InvoiceType;
+}
 
-  const [postDiscounts, setPostDiscounts] = useState(false);
+const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
+  row,
+  rows,
+  item,
+  isNew,
+  twoColumn,
+  dispatch,
+  form,
+  taxes,
+  selectedLineCourse,
+  getInvoiceLineCourse,
+  clearInvoiceLineCourse,
+  selectedLineEnrolments,
+  getInvoiceLineEnrolments,
+  clearInvoiceLineEnrolments,
+  accountTypes,
+  courseClasses,
+  selectedContact,
+  type
+}) => {
+
   const [useAllAccounts, setUseAllAccounts] = useState(false);
   const [courseClassEnrolments, setCourseClassEnrolments] = useState([]);
+  const [currentDiscount, setCurrentDiscount] = useState<Discount | number>(null);
+  const [loading, setLoading] = useState(false);
+  const [discountEachExTaxLocked, setDiscountEachExTaxLocked] = useState(false);
 
   const accountRef = useRef<any>(undefined);
+  const lastEditedField = useRef<'priceEachExTax' | 'total'>(undefined);
 
   const prevCourseClassId = usePrevious(row.courseClassId);
   
   const plainAccounts = useAppSelector(state => state.plainSearchRecords.Account.items);
 
   useEffect(() => {
-    if (!postDiscounts && row.cosAccountId) {
-      setPostDiscounts(true);
-    }
-  }, [postDiscounts, row.id, row.cosAccountId]);
-
-  useEffect(() => {
     if (selectedLineEnrolments) {
       setCourseClassEnrolments(selectedLineEnrolments);
     }
   }, [selectedLineEnrolments]);
+
+  useEffect(() => {
+    if (row.discountId && typeof currentDiscount !== 'number' && currentDiscount?.id !== row.discountId) {
+      setLoading(true);
+
+      EntityService.getPlainRecords(
+        'Discount',
+        INVOICE_LINE_DISCOUNT_COLUMNS,
+        `id is ${row.discountId} and ${INVOICE_LINE_DISCOUNT_AQL}`,
+        1,
+        0,
+      )
+      .then(({ rows }) => {
+        setCurrentDiscount(plainDiscountToAPIModel(rows.map(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS))[0]));
+        setLoading(false);
+      })
+      .catch(e => {
+        InstantFetchErrorHandler(dispatch, e);
+        setLoading(false);
+      });
+    } else {
+      setCurrentDiscount(null);
+    }
+  }, [row.discountId]);
 
   useEffect(() => {
     if (!row.courseId) {
@@ -167,14 +179,20 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
   useEffect(() => {
     if (isNew) {
-      const averageTotal = rows.reduce((pr, cur) => decimalPlus(pr, cur.total), 0);
+      const averageTotal = rows.reduce((pr, cur) => new Decimal(pr).plus(cur.total || 0), new Decimal(0)).toNumber();
 
       if (!isNaN(averageTotal)) {
-        dispatch(change(form, "total", averageTotal));
-        dispatch(change(form, "paymentPlans[0].amount", averageTotal));
+        dispatch(change(form, "total", bankRounding(averageTotal)));
+        dispatch(change(form, "paymentPlans[0].amount", bankRounding(averageTotal)));
       }
     }
   }, [form, item, rows, isNew, row.total]);
+
+  useEffect(() => {
+    if (currentDiscount && typeof currentDiscount !== 'number') {
+      setDiscountEachExTaxLocked(true);
+    }
+  }, [currentDiscount]);
 
   const taxRate = useMemo(() => {
     const tax = taxes.find(t => t.id === row.taxId);
@@ -182,27 +200,19 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
     return tax ? tax.rate : 0;
   }, [taxes, row.taxId]);
 
-  const total = useMemo(() => formatCurrency(
-    calculateInvoiceLineTotal(row.priceEachExTax, row.discountEachExTax, row.taxEach, row.quantity),
-    currency.shortCurrencySymbol
-  ), [row.id, row.priceEachExTax, row.discountEachExTax, row.taxEach, row.quantity, currency.shortCurrencySymbol]);
-
-  const taxDisplayedAmount = useMemo(
-    () => new Decimal(row.taxEach).mul(row.quantity || 1).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN).toNumber(),
-    [row.taxEach, row.quantity]
-  );
+  const taxDisplayedAmount = useMemo(() => bankRounding(new Decimal(row.taxEach).mul(row.quantity || 1)), [row.taxEach, row.quantity]);
 
   const incomeAccountOptions = useMemo(() => accountTypes.income?.concat({
-    id: USE_ALL_ACCOUNTS_FLAG,
+    id: USE_ALL_ACCOUNTS_FLAG as any,
     description: "Other...",
     accountCode: ""
   }) || [], [accountTypes]);
 
-  const courseLinkHandler = useCallback(() => {
+  const courseLinkHandler = () => {
     openCourseLink(row.courseId);
-  }, [row.courseId]);
+  };
 
-  const onCourseNameChange = useCallback(
+  const onCourseNameChange =
     (value: Course) => {
       dispatch(change(form, `${item}.courseCode`, value ? value.code : null));
       dispatch(change(form, `${item}.courseId`, value ? value.id : null));
@@ -210,88 +220,71 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
       dispatch(change(form, `${item}.classCode`, null));
       dispatch(change(form, `${item}.enrolledStudent`, null));
       dispatch(change(form, `${item}.enrolmentId`, null));
-    },
-    [form, item]
-  );
+    };
 
-  const onClassCodeChange = useCallback(() => {
+  const onClassCodeChange = () => {
     dispatch(change(form, `${item}.enrolledStudent`, null));
-  }, [form, item]);
+  };
 
-  const onEnrolmentIdChange = useCallback(
+  const onEnrolmentIdChange =
     id => {
       const student = courseClassEnrolments.find(i => i.id === id);
 
       dispatch(change(form, `${item}.enrolledStudent`, student ? student.label : null));
-    },
-    [form, item, courseClassEnrolments]
-  );
+    };
 
-  const onQuantityChange = useCallback(
-    value => {
-      dispatch(
-        change(
-          form,
-          `${item}.total`,
-          calculateInvoiceLineTotal(row.priceEachExTax, row.discountEachExTax, row.taxEach, value.target.value)
-        )
-      );
-    },
-    [form, item, taxRate, row.priceEachExTax, row.discountEachExTax, row.priceEachExTax, row.taxEach]
-  );
+  const recalculateByTotal = (total: number, taxRate: number, discount: Discount | number, quantity = 1) => {
+    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(new Decimal(total).div(quantity).toNumber(), taxRate, discount);
 
-  const onPriceEachExTaxChange = useCallback(
-    value => {
-      if (ignoreChange) {
-        ignoreChange = false;
-        return;
-      }
+    dispatch(change(form, `${item}.taxEach`, taxEach));
+    dispatch(change(form, `${item}.discountEachExTax`, discountAmount));
+    dispatch(change(form, `${item}.priceEachExTax`, priceEachExTax));
+  };
 
-      const taxEach = calculateInvoiceLineTaxEach(value, row.discountEachExTax, taxRate);
+  const recalculateByPrice = (priceEachExTax: number, taxRate: number, discount: Discount | number, quantity= 1) => {
+    const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice( priceEachExTax, taxRate, discount);
 
-      dispatch(change(form, `${item}.taxEach`, taxEach));
-      dispatch(
-        change(form, `${item}.total`, calculateInvoiceLineTotal(value, row.discountEachExTax, taxEach, row.quantity))
-      );
-    },
-    [form, item, taxRate, row.discountEachExTax, row.quantity]
-  );
+    dispatch(change(form, `${item}.taxEach`, taxEach));
+    dispatch(change(form, `${item}.discountEachExTax`, discountEach));
+    dispatch(change(form, `${item}.total`, decimalMul(total, quantity)));
+  };
 
-  const onDiscountEachExTaxChange = useCallback(
-    value => {
-      dispatch(change(form, `${item}.taxEach`, calculateInvoiceLineTaxEach(row.priceEachExTax, value, taxRate)));
-    },
-    [form, item, taxRate, row.priceEachExTax, row.quantity, row.taxEach]
-  );
+  const recalculate = (total: number, priceEachExTax: number, qantity: number, taxRate: number, discount: Discount | number)=> {
+    if (total === 0 && priceEachExTax === 0) {
+      dispatch(change(form, `${item}.taxEach`, 0));
+      dispatch(change(form, `${item}.discountEachExTax`, 0));
+      return;
+    }
 
-  const onTaxIdChange = useCallback(
-    value => {
-      const taxEach = calculateInvoiceLineTaxEach(
-        row.priceEachExTax,
-        row.discountEachExTax,
-        taxes.find(t => t.id === value).rate
-      );
-      dispatch(change(form, `${item}.taxEach`, taxEach));
-      dispatch(
-        change(
-          form,
-          `${item}.total`,
-          calculateInvoiceLineTotal(row.priceEachExTax, row.discountEachExTax, taxEach, row.quantity)
-        )
-      );
-    },
-    [form, item, row.priceEachExTax, row.discountEachExTax, row.quantity]
-  );
+    if (lastEditedField.current === 'total') {
+      recalculateByTotal(total, taxRate, discount, qantity);
+    }
 
-  const onTotalBlur = useCallback(() => {
-    const priceAndTax = calculateInvoiceLineTaxAndPrice(row.total, taxRate, row.discountEachExTax, row.quantity);
+    if (lastEditedField.current === 'priceEachExTax') {
+      recalculateByPrice(priceEachExTax, taxRate, discount, qantity);
+    }
+  };
 
-    ignoreChange = true;
+  const onPriceEachExTaxBlur = (e, value) => {
+    recalculateByPrice(value, taxRate, currentDiscount, row.quantity);
+  };
 
-    dispatch(change(form, `${item}.taxEach`, priceAndTax[0]));
+  const onDiscountEachExTaxBlur = (e, value) => {
+    setCurrentDiscount(value || 0);
+    recalculateByPrice(row.priceEachExTax, taxRate, value || 0, row.quantity);
+  };
 
-    dispatch(change(form, `${item}.priceEachExTax`, priceAndTax[1]));
-  }, [form, item, taxRate, row.total, row.discountEachExTax, row.quantity]);
+  const onTaxIdChange = value => {
+    recalculate(row.total, row.priceEachExTax, row.quantity, getCurrentTax(taxes, value)?.rate, currentDiscount);
+  };
+
+  const onQuantityBlur = (e, value) => {
+    recalculateByPrice(row.priceEachExTax || 0, taxRate, currentDiscount, value);
+  };
+
+  const onTotalBlur = (e, total) => {
+    recalculate(total, row.priceEachExTax, row.quantity, taxRate, currentDiscount);
+  };
 
   const onIncomeAccountChange = v => {
     if (v === USE_ALL_ACCOUNTS_FLAG) {
@@ -303,7 +296,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
       return;
     }
 
-    dispatch(change(form, `${item}.incomeAccountName`, useAllAccounts 
+    dispatch(change(form, `${item}.incomeAccountName`, useAllAccounts
       ? accountLabelCondition(plainAccounts.find(a => a.id === v))
       : accountLabelCondition(incomeAccountOptions.find(a => a.id === v))));
 
@@ -315,46 +308,49 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
   };
 
   const onDiscountIdChange = discount => {
-    if (!discount) {
-      dispatch(change(form, `${item}.discountName`, null));
-      dispatch(change(
-        form,
-        `${item}.discountEachExTax`,
-        null
-      ));
+    const apiDiscount: Discount | number =  typeof discount !== 'number' && discount ? plainDiscountToAPIModel(discount) : null;
+    setCurrentDiscount(apiDiscount);
+    dispatch(change(form, `${item}.discountName`, typeof apiDiscount !== 'number' && apiDiscount?.name || null));
+
+    if (
+      (typeof apiDiscount !== 'number' && apiDiscount !== null && apiDiscount?.discountType === 'Fee override') ||
+      (!discount && typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override' && lastEditedField.current !== 'priceEachExTax')
+    ) {
+      const total = bankRounding(new Decimal((apiDiscount || (typeof currentDiscount !== 'number' && currentDiscount))?.discountValue).mul(new Decimal(taxRate).plus(1)).toNumber());
+      recalculateByTotal(
+        total,
+        taxRate,
+        apiDiscount,
+        row.quantity
+      );
+      dispatch(change(form, `${item}.total`, decimalMul(total, row.quantity)));
       return;
     }
 
-    const {
-     name, discountType, discountDollar, discountPercent, rounding
-    } = discount;
-
-    dispatch(change(form, `${item}.discountName`, name));
-    dispatch(change(
-      form,
-      `${item}.discountEachExTax`,
-      getDiscountAmountExTax(
-        {
-          name,
-          discountType,
-          rounding,
-          discountPercent,
-          discountValue: parseFloat(discountDollar)
-        },
-        taxes.find(t => t.id === row.taxId),
-        (row && row.total) || 1
-      )
-    ));
+    recalculate(row.total, row.priceEachExTax, row.quantity, taxRate, apiDiscount);
+  };
+  
+  const onDiscountEachExTaxLock = () => {
+    setDiscountEachExTaxLocked(prev => {
+      if (!prev && currentDiscount && typeof currentDiscount !== 'number') {
+       onDiscountIdChange(currentDiscount);
+      }
+      return !prev;
+    });
   };
 
+  const disableFinanceFileds = type !== "Quote" && !isNew;
+  const hasFeeOverride =  typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override' && discountEachExTaxLocked;
+
   return (
-    <Grid container columnSpacing={3} rowSpacing={2}>
+    <Grid container columnSpacing={3} rowSpacing={2} className="relative">
+      <LoadingIndicator customLoading={loading}/>
       <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
           type="text"
           name={`${item}.title`}
           label={$t('title')}
-          disabled={type !== "Quote" && !isNew}
+          disabled={disableFinanceFileds}
           required
         />
       </Grid>
@@ -363,15 +359,15 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           type="number"
           name={`${item}.quantity`}
           label={$t('quantity')}
-          onChange={onQuantityChange}
-          normalize={normalizeNumber}
-          disabled={type !== "Quote" && !isNew}
+          normalize={normalizeNumberToPositive}
+          onBlur={onQuantityBlur}
+          disabled={disableFinanceFileds}
           required
         />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 6}>
-        <FormField type="text" name={`${item}.unit`} label={$t('unit_egkg')} disabled={type !== "Quote" && !isNew} />
+        <FormField type="text" name={`${item}.unit`} label={$t('unit_egkg')} disabled={disableFinanceFileds} />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -379,7 +375,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           type="select"
           name={`${item}.incomeAccountId`}
           label={$t('income_account')}
-          disabled={type !== "Quote" && !isNew}
+          disabled={disableFinanceFileds}
           items={useAllAccounts ? accountTypes.all : incomeAccountOptions}
           defaultValue={row.incomeAccountName}
           selectValueMark="id"
@@ -395,7 +391,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           type="multilineText"
           name={`${item}.description`}
           label={$t('description')}
-          disabled={type !== "Quote" && !isNew}
+          disabled={disableFinanceFileds}
         />
       </Grid>
 
@@ -419,7 +415,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
                 <LinkAdornment link={row.courseId} linkHandler={courseLinkHandler} disabled={!row.courseId} />
               }
               onInnerValueChange={onCourseNameChange}
-              disabled={type !== "Quote" && !isNew}
+              disabled={disableFinanceFileds}
               itemRenderer={CourseItemRenderer}
               rowHeight={55}
               allowEmpty
@@ -430,15 +426,22 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             <FormField
               type="remoteDataSelect"
               entity="Discount"
-              aqlColumns="name,discountType,discountDollar,discountPercent,rounding"
-              aqlFilter="((validTo >= today) or (validTo == null)) and ((validFrom <= today) or (validFrom == null)) "
+              aqlColumns={INVOICE_LINE_DISCOUNT_COLUMNS}
+              aqlFilter={INVOICE_LINE_DISCOUNT_AQL}
               label={$t('discount')}
               selectValueMark="id"
               selectLabelMark="name"
               name={`${item}.discountId`}
               defaultValue={row.discountName}
               onInnerValueChange={onDiscountIdChange}
-              disabled={type !== "Quote" && !isNew}
+              disabled={disableFinanceFileds}
+              labelAdornment={
+                <LinkAdornment
+                  link={row.discountId}
+                  disabled={!row.discountId}
+                  linkHandler={openDiscountsLink}
+                />
+              }
               allowEmpty
             />
           </Grid>
@@ -451,7 +454,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
               defaultValue={row.classCode}
               selectValueMark="id"
               selectLabelMark="code"
-              disabled={(type !== "Quote" && !isNew) || !row.courseId}
+              disabled={disableFinanceFileds || !row.courseId}
               onChange={onClassCodeChange}
               items={courseClasses}
               allowEmpty
@@ -465,7 +468,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
               label={$t('enrolled_student')}
               selectValueMark="id"
               defaultValue={row.enrolledStudent}
-              disabled={(type !== "Quote" && !isNew) || !row.courseClassId}
+              disabled={disableFinanceFileds || !row.courseClassId}
               onChange={onEnrolmentIdChange}
               items={courseClassEnrolments}
               allowEmpty
@@ -484,8 +487,9 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             type="money"
             name={`${item}.priceEachExTax`}
             label={$t('price_each_extax')}
-            onChange={onPriceEachExTaxChange}
-            disabled={type !== "Quote" && !isNew}
+            onBlur={onPriceEachExTaxBlur}
+            onFocus={() => lastEditedField.current = 'priceEachExTax'}
+            disabled={disableFinanceFileds}
           />
         </Grid>
 
@@ -494,8 +498,11 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             type="money"
             name={`${item}.discountEachExTax`}
             label={$t('discount_each_extax')}
-            onChange={onDiscountEachExTaxChange}
-            disabled={type !== "Quote" && !isNew}
+            onBlur={onDiscountEachExTaxBlur}
+            labelAdornment={<IconButton className="inputAdornmentButton" onClick={onDiscountEachExTaxLock}>
+              {discountEachExTaxLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
+            </IconButton>}
+            disabled={disableFinanceFileds || discountEachExTaxLocked}
           />
         </Grid>
 
@@ -507,9 +514,9 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             selectValueMark="id"
             selectLabelMark="code"
             onChange={onTaxIdChange}
-            disabled={type !== "Quote" && !isNew}
+            disabled={disableFinanceFileds}
             items={taxes || []}
-            required
+            required={isNew}
           />
         </Grid>
 
@@ -531,10 +538,10 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             <FormField
               type="money"
               name={`${item}.total`}
-              disabled={type !== "Quote" && !isNew}
-              defaultValue={total}
+              disabled={disableFinanceFileds || hasFeeOverride}
+              defaultValue={row.total}
+              onFocus={() => lastEditedField.current = 'total'}
               onBlur={onTotalBlur}
-              debounced={false}
               inline
             />
           </Typography>
@@ -551,11 +558,11 @@ const mapStateToProps = (state: State) => ({
   selectedContact: state.invoices.selectedContact
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ( {
   getInvoiceLineCourse: (id: number) => dispatch(getInvoiceLineCourse(id)),
   getInvoiceLineEnrolments: (courseClassId: number) => dispatch(getInvoiceLineEnrolments(courseClassId)),
   clearInvoiceLineCourse: () => dispatch(setInvoiceLineCourse(null, [])),
   clearInvoiceLineEnrolments: () => dispatch(setInvoiceLineEnrolments(null))
 });
 
-export const InvoiceLines = connect<any, any, any>(mapStateToProps, mapDispatchToProps)(InvoiceLineBase);
+export const InvoiceLines = connect(mapStateToProps, mapDispatchToProps)(InvoiceLineBase);

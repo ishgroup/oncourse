@@ -874,6 +874,14 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	}
 
 	/**
+	 * Returns the monetary value as a {@link BigDecimal}.
+	 */
+	@API
+	public BigDecimal toPrecisedBigDecimal() {
+		return number;
+	}
+
+	/**
 	 * Returns the monetary value as a {@link Double}.
 	 *
 	 * @deprecated use {@link #toDouble()}
@@ -1062,7 +1070,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	}
 
 	private BigDecimal round(BigDecimal value) {
-		RoundingMode mode = RoundingMode.HALF_UP;
+		RoundingMode mode = RoundingMode.HALF_EVEN;
 		int scale = getCurrency().getDefaultFractionDigits();
 		return value.setScale(scale, mode);
 	}

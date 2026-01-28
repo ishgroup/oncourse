@@ -13,6 +13,7 @@ import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import Decimal from 'decimal.js-light';
+import { debounce } from 'es-toolkit/compat';
 import {
   appendTimezone,
   D_MMM,
@@ -22,7 +23,6 @@ import {
   makeAppStyles,
   StringArgFunction
 } from 'ish-ui';
-import { debounce } from 'es-toolkit/compat';
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -38,7 +38,7 @@ import history from '../../../../constants/History';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from '../../../../model/entities/CourseClass';
 import { State } from '../../../../reducers/state';
-import { getRoundingByType } from '../../discounts/utils';
+import { getDiscountAmountByFee } from '../../discounts/utils';
 import { setCourseClassBudgetModalOpened, setCourseClassLatestSession } from '../actions';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../constants';
 import { getClassCostTypes } from '../utils';
@@ -202,13 +202,8 @@ const useBudgetAdornmentStyles = makeAppStyles()(theme => ({
 }));
 
 const getDiscountedFee = (discount, currentTax, classFee) => {
-  const taxOnDiscount = new Decimal(discount.courseClassDiscount.discountOverride || discount.perUnitAmountExTax || 0).mul(currentTax.rate);
-
-  let decimal = new Decimal(classFee).minus(discount.perUnitAmountExTax || 0).minus(taxOnDiscount);
-  
-  if (decimal.toNumber() < 0) decimal = new Decimal(0);
-
-  return getRoundingByType(discount.courseClassDiscount.discount.rounding, decimal);
+  const discountAmount = getDiscountAmountByFee(discount.courseClassDiscount?.discount, new Decimal(1).plus(currentTax.rate), classFee);
+  return new Decimal(classFee).minus(discountAmount)?.toNumber()
 };
 
 interface BudgetAdornmentProps {
@@ -247,8 +242,8 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
       && (!b.courseClassDiscount.discount.code && b.courseClassDiscount.discount.relationDiscount));
     discountsRelations.sort(discountsSort);
 
-    const mapDiscount = d => (
-      <Fragment key={d.id}>
+    const mapDiscount = d => {
+      return <Fragment key={d.id}>
         <div>
           {d.courseClassDiscount.discount.name}
         </div>
@@ -258,8 +253,9 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
             currencySymbol
           )}
         </div>
-      </Fragment>
-    );
+      </Fragment>;
+
+    };
 
     const discountHeader = header => <Typography variant="button" component="div" className="mt-3">{header}</Typography>;
 
