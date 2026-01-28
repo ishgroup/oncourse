@@ -1,4 +1,4 @@
-import { Contact } from '@api/model';
+import { Contact, DataRow } from '@api/model';
 import Launch from '@mui/icons-material/Launch';
 import { IconButton } from '@mui/material';
 import Divider from '@mui/material/Divider';
@@ -58,6 +58,12 @@ const messagesColumns: NestedTableColumn[] = [
 
 const messagesColumnsMap = getCustomColumnsMap(plainColumns);
 
+const messageRowsInitial = {
+  rows: [],
+  getAll: () => [],
+  length: 0
+};
+
 const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
   const {
     values,
@@ -68,13 +74,10 @@ const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
     dispatch
   } = props;
 
-  const [messageRows, setMessageRows] = useState({
-    rows: [],
-    getAll: () => [],
-    length: 0
-  });
+  const [messagesCount, setMessagesCount] = useState(0);
+  const [messageRows, setMessageRows] = useState(messageRowsInitial);
   
-  const loadMoreMessages = (start: number, end?: number) => end > values.messagesCount
+  const loadMoreMessages = (start: number, end?: number) => end > messagesCount
     ? null
     : EntityService.getPlainRecords(
     'Message',
@@ -84,23 +87,25 @@ const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
     start,
     'createdOn'
   )
-    .then(data => setMessageRows(prev => {
-      const newRows = [
-        ...prev.rows,
-        ...data.rows.map(messagesColumnsMap)];
-      return {
-        rows: newRows,
-        getAll: () => newRows,
-        length: newRows.length
-      };
-    }))
+    .then(data => {
+      setMessagesCount(data.filteredCount)
+      setMessageRows(prev => {
+        const newRows = [
+          ...prev.rows,
+          ...data.rows.map(messagesColumnsMap)];
+        return {
+          rows: newRows,
+          getAll: () => newRows,
+          length: newRows.length
+        };
+      })
+    })
     .catch(e => InstantFetchErrorHandler(dispatch, e));
 
   useEffect(() => {
-    if (values.messagesCount) {
-      loadMoreMessages(0);
-    }
-  }, [values.messagesCount]);
+    setMessageRows(messageRowsInitial);
+    loadMoreMessages(0);
+  }, [values.id]);
 
   return values ? (
     <div className="pl-3 pr-3">
@@ -109,7 +114,7 @@ const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
         index={tabIndex} 
         expanded={expanded} 
         setExpanded={setExpanded}
-        header={`${values.messagesCount} message${values.messagesCount === 1 ? '' : 's'}`}
+        header={`${messagesCount} message${messagesCount === 1 ? '' : 's'}`}
         headerAdornment={
           <IconButton
             color="primary"
