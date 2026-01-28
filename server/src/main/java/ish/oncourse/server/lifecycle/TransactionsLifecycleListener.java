@@ -11,6 +11,8 @@
 package ish.oncourse.server.lifecycle;
 
 import ish.common.types.PaymentStatus;
+import ish.oncourse.cayenne.PaymentInterface;
+import ish.oncourse.cayenne.PaymentLineInterface;
 import ish.oncourse.server.accounting.AccountTransactionService;
 import ish.oncourse.server.accounting.builder.DepositTransactionsBuilder;
 import ish.oncourse.server.accounting.builder.PaymentInTransactionsBuilder;
@@ -20,124 +22,126 @@ import ish.oncourse.server.services.TransactionLockedService;
 import ish.util.AccountUtil;
 import ish.validation.ValidationFailure;
 import ish.validation.ValidationResult;
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.annotation.PostPersist;
 import org.apache.cayenne.annotation.PreUpdate;
+import org.apache.cayenne.exp.Property;
 import org.apache.cayenne.validation.ValidationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static ish.oncourse.server.lifecycle.ChangeFilter.getAtrAttributeChange;
 
 public class TransactionsLifecycleListener {
 
-	private TransactionLockedService transactionLockedService;
-	private AccountTransactionService accountTransactionService;
-	private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
+    private final TransactionLockedService transactionLockedService;
+    private final AccountTransactionService accountTransactionService;
 
 
-	public TransactionsLifecycleListener (TransactionLockedService transactionLockedService, AccountTransactionService accountTransactionService) {
-		this.transactionLockedService = transactionLockedService;
-		this.accountTransactionService = accountTransactionService;
-	}
+    public TransactionsLifecycleListener(TransactionLockedService transactionLockedService, AccountTransactionService accountTransactionService) {
+        this.transactionLockedService = transactionLockedService;
+        this.accountTransactionService = accountTransactionService;
+    }
 
-	@PostPersist(value = PaymentIn.class)
-	public void postPersist(PaymentIn payment) {
+    @PostPersist(value = PaymentIn.class)
+    public void postPersist(PaymentIn payment) {
+        processPaymentPostPersist(payment);
+    }
 
-		if (PaymentStatus.SUCCESS.equals(payment.getStatus())) {
-			payment.getPaymentInLines().forEach(this::createInitialTransactions);
-			payment.getContext().commitChanges();
-		}
+    @PostPersist(value = PaymentOut.class)
+    public void postPersist(PaymentOut payment) {
+        processPaymentPostPersist(payment);
+    }
 
-	}
+    private void processPaymentPostPersist(PaymentInterface payment) {
+        if (PaymentStatus.SUCCESS.equals(payment.getStatus())) {
+            linesOf(payment).forEach(this::createInitialTransactions);
+            payment.getContext().commitChanges();
+        }
+    }
 
-	@PostPersist(value = PaymentOut.class)
-	public void postPersist(PaymentOut payment) {
 
-		if (PaymentStatus.SUCCESS.equals(payment.getStatus())) {
-			payment.getPaymentOutLines().forEach(this::createInitialTransactions);
-			payment.getContext().commitChanges();
-		}
+    private void createInitialTransactions(PaymentLineInterface line) {
+        if (line instanceof PaymentOutLine)
+            accountTransactionService.createTransactions(PaymentOutTransactionsBuilder.valueOf((PaymentOutLine) line));
+        else if (line instanceof PaymentInLine) {
+            var voucherExpense = AccountUtil.getDefaultVoucherExpenseAccount(line.getObjectContext(), Account.class);
+            accountTransactionService.createTransactions(PaymentInTransactionsBuilder.valueOf((PaymentInLine) line, voucherExpense));
+        }
+    }
 
-	}
+    @PreUpdate(value = PaymentIn.class)
+    public void preUpdate(PaymentIn paymentIn) {
+        processPaymentPreUpdate(paymentIn);
+    }
 
-	@PreUpdate(value = PaymentIn.class)
-	public void preUpdate(PaymentIn paymentIn) {
-		var objectContext = paymentIn.getObjectContext();
+    @PreUpdate(value = PaymentOut.class)
+    public void preUpdate(PaymentOut paymentOut) {
+        processPaymentPreUpdate(paymentOut);
+    }
 
-		var statusChange = getAtrAttributeChange(objectContext, paymentIn.getObjectId(),PaymentIn.STATUS.getName());
 
-		if (statusChange != null && PaymentStatus.SUCCESS.equals(statusChange.getNewValue())) {
-			paymentIn.getPaymentInLines().forEach(this::createInitialTransactions);
-		} else if (getAtrAttributeChange(objectContext, paymentIn.getObjectId(),PaymentIn.BANKING.getName()) != null) {
+    private void validateBanking(Banking banking, Persistent o) {
+        var lockedTade = transactionLockedService.getTransactionLocked();
+        if (banking != null && banking.getSettlementDate().compareTo(lockedTade) < 1) {
+            logger.error("Attempt to change banking property for payment: {}. Banking: {}  has settlement date: {} before transaction locked date: {}",
+                    o.getObjectId(), banking.getObjectId(), banking.getSettlementDate(), lockedTade);
 
-			var changeHelper = new BankingChangeHandler(paymentIn.getContext());
-			ChangeFilter.preCommitGraphDiff(objectContext).apply(changeHelper);
+            var result = new ValidationResult();
+            result.addFailure(new ValidationFailure(o, PaymentIn.BANKING.getName(), "You can not modify banking which has settlement date before " + lockedTade.toString()));
+            throw new ValidationException(result);
+        }
+    }
 
-			var oldValue = changeHelper.getOldValueFor(paymentIn.getObjectId());
-			var newValue = changeHelper.getNewValueFor(paymentIn.getObjectId());
 
-			validateBanking(oldValue, paymentIn);
-			validateBanking(newValue, paymentIn);
+    private void processPaymentPreUpdate(PaymentInterface payment) {
+        var statusProperty = paymentStatusPropertyOf(payment);
+        var bankingProperty = bankingPropertyOf(payment);
+        var statusChange = getAtrAttributeChange(payment.getContext(), payment.getObjectId(), statusProperty.getName());
 
-			var oldSettlementDate = oldValue == null ? null : oldValue.getSettlementDate();
-			var newSettlementDate = newValue == null ? null : newValue.getSettlementDate();
+        if (statusChange != null && PaymentStatus.SUCCESS.equals(statusChange.getNewValue())) {
+            linesOf(payment).forEach(this::createInitialTransactions);
+        } else if (getAtrAttributeChange(payment.getContext(), payment.getObjectId(), bankingProperty.getName()) != null) {
+            processBankingChanges(payment);
+        }
+    }
 
-			paymentIn.getPaymentInLines()
-					.forEach(line -> accountTransactionService.createTransactions(DepositTransactionsBuilder.valueOf(line, oldSettlementDate, newSettlementDate)));
-		}
-	}
 
-	@PreUpdate(value = PaymentOut.class)
-	public void preUpdate(PaymentOut paymentOut) {
-		var objectContext = paymentOut.getObjectContext();
+    private Property<PaymentStatus> paymentStatusPropertyOf(PaymentInterface paymentInterface) {
+        return paymentInterface instanceof PaymentIn ? PaymentIn.STATUS : PaymentOut.STATUS;
+    }
 
-		var statusChange = getAtrAttributeChange(objectContext, paymentOut.getObjectId(),PaymentIn.STATUS.getName());
 
-		if (statusChange != null && PaymentStatus.SUCCESS.equals(statusChange.getNewValue())) {
-			paymentOut.getPaymentOutLines().forEach(this::createInitialTransactions);
-		} else if (getAtrAttributeChange(objectContext, paymentOut.getObjectId(),PaymentIn.BANKING.getName()) != null) {
+    private Property<Banking> bankingPropertyOf(PaymentInterface paymentInterface) {
+        return paymentInterface instanceof PaymentIn ? PaymentIn.BANKING : PaymentOut.BANKING;
+    }
 
-			var changeHalper = new BankingChangeHandler(paymentOut.getContext());
-			ChangeFilter.preCommitGraphDiff(objectContext).apply(changeHalper);
 
-			var oldValue = changeHalper.getOldValueFor(paymentOut.getObjectId());
-			var newValue = changeHalper.getNewValueFor(paymentOut.getObjectId());
+    private void processBankingChanges(PaymentInterface payment) {
+        var changeHelper = new BankingChangeHandler(payment.getContext());
+        ChangeFilter.preCommitGraphDiff(payment.getContext()).apply(changeHelper);
 
-			validateBanking(oldValue,paymentOut);
-			validateBanking(newValue,paymentOut);
+        var oldBankingValue = changeHelper.getOldValueFor(payment.getObjectId());
+        var newBankingValue = changeHelper.getNewValueFor(payment.getObjectId());
 
-			var oldSettlementDate = oldValue == null ? null : oldValue.getSettlementDate();
-			var newSettlementDate = newValue == null ? null : newValue.getSettlementDate();
+        validateBanking(oldBankingValue, payment);
+        validateBanking(newBankingValue, payment);
 
-			paymentOut.getPaymentOutLines()
-					.forEach(line -> {
-						accountTransactionService.createTransactions(DepositTransactionsBuilder.valueOf(line, oldSettlementDate, newSettlementDate));
-					});
-		}
-	}
+        var oldSettlementDate = oldBankingValue == null ? null : oldBankingValue.getSettlementDate();
+        var newSettlementDate = newBankingValue == null ? null : newBankingValue.getSettlementDate();
+        linesOf(payment).forEach(line -> accountTransactionService.createTransactions(DepositTransactionsBuilder.valueOf(line, oldSettlementDate, newSettlementDate)));
+    }
 
-	private void createInitialTransactions(PaymentOutLine line) {
-		accountTransactionService.createTransactions(PaymentOutTransactionsBuilder.valueOf(line));
-	}
-
-	private void createInitialTransactions(PaymentInLine line) {
-		var voucherExpense = AccountUtil.getDefaultVoucherExpenseAccount(line.getObjectContext(), Account.class);
-		accountTransactionService.createTransactions(PaymentInTransactionsBuilder.valueOf(line, voucherExpense));
-	}
-
-	private void validateBanking(Banking banking, Persistent o) {
-		var lockedTade = transactionLockedService.getTransactionLocked();
-		if (banking != null && banking.getSettlementDate().compareTo(lockedTade) < 1) {
-			logger.error("Attempt to change banking property for payment: {}. Banking: {}  has settlement date: {} before transaction locked date: {}",
-					o.getObjectId(), banking.getObjectId(), banking.getSettlementDate(),  lockedTade);
-
-			var result = new ValidationResult();
-			result.addFailure(new ValidationFailure(o, PaymentIn.BANKING.getName(), "You can not modify banking which has settlement date before " + lockedTade.toString()));
-			throw new ValidationException(result);
-		}
-	}
+    private List<? extends PaymentLineInterface> linesOf(PaymentInterface payment) {
+        if (payment instanceof PaymentIn)
+            return ((PaymentIn) payment).getPaymentInLines();
+        else if (payment instanceof PaymentOut)
+            return ((PaymentOut) payment).getPaymentOutLines();
+        else
+            return new ArrayList<>();
+    }
 }
