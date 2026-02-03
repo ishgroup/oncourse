@@ -3,6 +3,17 @@ name: Build and Push Server to ECR
 on:
   workflow_dispatch:
     inputs:
+      target:
+        description: Deploy target group
+        required: true
+        type: choice
+        options:
+          - test
+          - staging
+          - minor
+          - middle
+          - major
+          - all
       app_version:
         type: string
         required: true
@@ -10,7 +21,6 @@ on:
         default: ''
       plugins_version:
         type: string
-        required: true
         description: Plugins version (e.g., 1.100.1)
         default: ''
 
@@ -24,8 +34,56 @@ env:
 
 jobs:
   build-and-push:
-    name: Build and Push Docker Image
+    name: Build and Push (${{ matrix.env }})
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # test
+          - { env: sttrinians, group: test }
+
+          # staging
+          - { env: testishminor, group: staging }
+
+          # minor
+          - { env: beaches, group: minor }
+          - { env: byron, group: minor }
+          - { env: east, group: minor }
+          - { env: hunter, group: minor }
+          - { env: mcc, group: minor }
+          - { env: nida, group: minor }
+          - { env: riverina, group: minor }
+          - { env: parramatta, group: minor }
+
+          # middle
+          - { env: acwa, group: middle }
+          - { env: apstudio, group: middle }
+          - { env: bpc, group: middle }
+          - { env: chp, group: middle }
+          - { env: coasit, group: middle }
+          - { env: csa, group: middle }
+          - { env: gallerylanecove, group: middle }
+          - { env: hornsby, group: middle }
+          - { env: hse, group: middle }
+          - { env: macquarie, group: middle }
+          - { env: stgeorge, group: middle }
+          - { env: tasmania, group: middle }
+          - { env: term, group: middle }
+          - { env: testish, group: middle }
+          - { env: tlk, group: middle }
+          - { env: willoughbyarts, group: middle }
+
+          # major
+          - { env: llpuat, group: major }
+          - { env: scc, group: major }
+          - { env: sscprod, group: major }
+          - { env: weasydney, group: major }
+          - { env: con, group: major }
+          - { env: cce, group: major }
+
+    if: ${{ inputs.target == 'all' || matrix.group == inputs.target }}
 
     steps:
       - name: Checkout code
@@ -37,74 +95,35 @@ jobs:
           ASSET_NAME="onCourseServer-${VERSION}.tgz"
           TAG_NAME="v${VERSION}"
 
-          echo "TAG_NAME=$TAG_NAME"
-          echo "ASSET_NAME=$ASSET_NAME"
-          echo "Download URL: https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/$ASSET_NAME"
-
           curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/octet-stream" \
             "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/$ASSET_NAME" \
             --output "$ASSET_NAME"
-          
+
           mkdir -p artifacts
-          mv $ASSET_NAME artifacts/
-          echo "✓ Downloaded successfully: $ASSET_NAME"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          mv "$ASSET_NAME" artifacts/
 
       - name: Extract artifact
         run: |
-          file=$(find artifacts/ -type f -name "*.tgz" | head -n1)
-          name=$(basename "$file")
-          echo "APP_ARTIFACT=$name" >> $GITHUB_ENV
-          
+          file=$(find artifacts/ -name "*.tgz" | head -n1)
           mkdir -p artifacts/unpack
-          tar xvf artifacts/$name --strip-components=1 -C artifacts/unpack
-          echo "✓ Extracted: $name"
+          tar xvf "$file" --strip-components=1 -C artifacts/unpack
 
       - name: Download plugins
+        if: ${{ inputs.plugins_version != '' }}
         run: |
           PLUGINS_VERSION="${{ inputs.plugins_version }}"
           PLUGINS_TAG="v${PLUGINS_VERSION}"
           PLUGINS_REPO="ishgroup/oncourse-secret"
-          
-          # Создаем директорию для плагинов
+
           mkdir -p artifacts/unpack/plugins
-          
-          # Список плагинов для загрузки
-          PLUGINS=(
-            "cloud-assess"
-            "myob"
-            "replication"
-            "service-nsw"
-            "tcsi"
-            "xero"
-          )
-          
-          echo "Downloading plugins version: $PLUGINS_VERSION"
-          
-          for plugin in "${PLUGINS[@]}"; do
-            PLUGIN_FILE="${plugin}-${PLUGINS_VERSION}.jar"
-            DOWNLOAD_URL="https://github.com/${PLUGINS_REPO}/releases/download/${PLUGINS_TAG}/${PLUGIN_FILE}"
-            
-            echo "Downloading: $PLUGIN_FILE"
+
+          for plugin in cloud-assess myob replication service-nsw tcsi xero; do
             curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/octet-stream" \
-              "$DOWNLOAD_URL" \
-              --output "artifacts/unpack/plugins/$PLUGIN_FILE"
-            
-            if [ -f "artifacts/unpack/plugins/$PLUGIN_FILE" ]; then
-              echo "✓ Downloaded: $PLUGIN_FILE"
-            else
-              echo "✗ Failed to download: $PLUGIN_FILE"
-              exit 1
-            fi
+              "https://github.com/${PLUGINS_REPO}/releases/download/${PLUGINS_TAG}/${plugin}-${PLUGINS_VERSION}.jar" \
+              --output "artifacts/unpack/plugins/${plugin}-${PLUGINS_VERSION}.jar"
           done
-          
-          echo "✓ All plugins downloaded successfully"
-          ls -lh artifacts/unpack/plugins/
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -126,15 +145,14 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ inputs.app_version }}
-            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ inputs.app_version }}-${{ matrix.env }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ matrix.env }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Image digest
+      - name: Summary
         run: |
-          echo "✓ Image pushed successfully!"
-          echo "ECR Repository: ${{ env.ECR_REPOSITORY }}"
-          echo "App Version: ${{ inputs.app_version }}"
-          echo "Plugins Version: ${{ inputs.plugins_version }}"
-          echo "Registry: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}"
+          echo "Group:        ${{ matrix.group }}"
+          echo "Environment:  ${{ matrix.env }}"
+          echo "App version:  ${{ inputs.app_version }}"
+          echo "Plugins:      ${{ inputs.plugins_version }}"
