@@ -83,9 +83,15 @@ jobs:
           - { env: con, group: major }
           - { env: cce, group: major }
 
-    if: ${{ inputs.target == 'all' || matrix.group == inputs.target }}
-
     steps:
+      # ---------- GUARD ----------
+      - name: Guard – skip unrelated envs
+        if: ${{ inputs.target != 'all' && matrix.group != inputs.target }}
+        run: |
+          echo "Skipping env=${{ matrix.env }} (group=${{ matrix.group }})"
+          exit 0
+
+      # ---------- BUILD ----------
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -125,6 +131,7 @@ jobs:
               --output "artifacts/unpack/plugins/${plugin}-${PLUGINS_VERSION}.jar"
           done
 
+      # ---------- AWS / DOCKER ----------
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -152,7 +159,7 @@ jobs:
 
       - name: Summary
         run: |
-          echo "Group:        ${{ matrix.group }}"
-          echo "Environment:  ${{ matrix.env }}"
-          echo "App version:  ${{ inputs.app_version }}"
-          echo "Plugins:      ${{ inputs.plugins_version }}"
+          echo "Group:       ${{ matrix.group }}"
+          echo "Environment: ${{ matrix.env }}"
+          echo "App version: ${{ inputs.app_version }}"
+          echo "Plugins:     ${{ inputs.plugins_version }}"
