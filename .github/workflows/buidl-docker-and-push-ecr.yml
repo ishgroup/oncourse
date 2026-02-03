@@ -45,7 +45,7 @@ jobs:
           - { env: sttrinians, group: test }
 
           # staging
-          - { env: testishminor, group: staging }
+          - { env: testish, group: staging }
 
           # minor
           - { env: beaches, group: minor }
