@@ -396,3 +396,6 @@ definitions:
 
   FieldValidationType:
     $ref: './def/enum/FieldValidationType.yaml'
+
+  CorporatePassPaymentType:
+    $ref: './def/enum/CorporatePassPaymentType.yaml'
