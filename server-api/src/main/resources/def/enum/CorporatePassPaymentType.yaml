@@ -1,0 +1,6 @@
+type: string
+description: List of corporate pass payment statuses.
+enum:
+  - Default
+  - Decline if balance not enough
+  - Pay with credit notes

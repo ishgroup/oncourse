@@ -31,3 +31,5 @@ properties:
   modifiedOn:
     type: string
     format: date-time
+  paymentType:
+    $ref: '../enum/CorporatePassPaymentType.yaml'

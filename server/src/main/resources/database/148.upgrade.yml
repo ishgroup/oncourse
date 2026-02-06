@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 148-1
+      author: dmitriy
+      validCheckSum: ANY
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: CorporatePass
+                columnName: paymentType
+      changes:
+        - addColumn:
+            tableName: CorporatePass
+            columns:
+              - column:
+                  name: paymentType
+                  type: smallint
+                  constraints:
+                    nullable: false
+                  defaultValue: 0
+
