@@ -67,9 +67,9 @@ jobs:
           PLUGINS_VERSION="${{ inputs.plugins_version }}"
           PLUGINS_TAG="v${PLUGINS_VERSION}"
           PLUGINS_REPO="ishgroup/oncourse-secret"
-    
+          
           mkdir -p artifacts/unpack/plugins
-    
+          
           PLUGINS=(
             "cloud-assess"
             "myob"
@@ -78,29 +78,49 @@ jobs:
             "tcsi"
             "xero"
           )
-    
+          
           echo "Downloading plugins version: $PLUGINS_VERSION"
-    
+          
+          RELEASE_INFO=$(curl -L \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.ONCOURSE_SECRET_PAT }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${PLUGINS_REPO}/releases/tags/${PLUGINS_TAG}")
+          
           for plugin in "${PLUGINS[@]}"; do
             PLUGIN_FILE="${plugin}-${PLUGINS_VERSION}.jar"
-            DOWNLOAD_URL="https://github.com/${PLUGINS_REPO}/releases/download/${PLUGINS_TAG}/${PLUGIN_FILE}"
-      
+            
             echo "Downloading: $PLUGIN_FILE"
-            curl -L -H "Authorization: token ${{ secrets.ONCOURSE_SECRET_PAT }}" \
+            
+            ASSET_ID=$(echo "$RELEASE_INFO" | jq -r ".assets[] | select(.name==\"${PLUGIN_FILE}\") | .id")
+            
+            if [ -z "$ASSET_ID" ] || [ "$ASSET_ID" = "null" ]; then
+              echo "✗ Asset not found: $PLUGIN_FILE"
+              echo "Available assets:"
+              echo "$RELEASE_INFO" | jq -r '.assets[].name'
+              exit 1
+            fi
+            
+            echo "Found asset ID: $ASSET_ID"
+            
+            curl -L \
               -H "Accept: application/octet-stream" \
-              "$DOWNLOAD_URL" \
+              -H "Authorization: Bearer ${{ secrets.ONCOURSE_SECRET_PAT }}" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${PLUGINS_REPO}/releases/assets/${ASSET_ID}" \
               --output "artifacts/unpack/plugins/$PLUGIN_FILE"
-      
-            FILE_SIZE=$(stat -f%z "artifacts/unpack/plugins/$PLUGIN_FILE" 2>/dev/null || stat -c%s "artifacts/unpack/plugins/$PLUGIN_FILE" 2>/dev/null)
+            
+            FILE_SIZE=$(stat -c%s "artifacts/unpack/plugins/$PLUGIN_FILE" 2>/dev/null || stat -f%z "artifacts/unpack/plugins/$PLUGIN_FILE" 2>/dev/null)
+            
             if [ "$FILE_SIZE" -lt 100 ]; then
               echo "✗ Failed: $PLUGIN_FILE is too small ($FILE_SIZE bytes)"
               cat "artifacts/unpack/plugins/$PLUGIN_FILE"
               exit 1
             fi
-
+            
             echo "✓ Downloaded: $PLUGIN_FILE ($FILE_SIZE bytes)"
           done
-    
+          
           echo "✓ All plugins downloaded successfully"
           ls -lh artifacts/unpack/plugins/
         env:
