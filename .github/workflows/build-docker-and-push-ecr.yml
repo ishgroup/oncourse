@@ -67,11 +67,9 @@ jobs:
           PLUGINS_VERSION="${{ inputs.plugins_version }}"
           PLUGINS_TAG="v${PLUGINS_VERSION}"
           PLUGINS_REPO="ishgroup/oncourse-secret"
-          
-          # Создаем директорию для плагинов
+    
           mkdir -p artifacts/unpack/plugins
-          
-          # Список плагинов для загрузки
+    
           PLUGINS=(
             "cloud-assess"
             "myob"
@@ -80,31 +78,33 @@ jobs:
             "tcsi"
             "xero"
           )
-          
+    
           echo "Downloading plugins version: $PLUGINS_VERSION"
-          
+    
           for plugin in "${PLUGINS[@]}"; do
             PLUGIN_FILE="${plugin}-${PLUGINS_VERSION}.jar"
             DOWNLOAD_URL="https://github.com/${PLUGINS_REPO}/releases/download/${PLUGINS_TAG}/${PLUGIN_FILE}"
-            
+      
             echo "Downloading: $PLUGIN_FILE"
-            curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            curl -L -H "Authorization: token ${{ secrets.ONCOURSE_SECRET_PAT }}" \
               -H "Accept: application/octet-stream" \
               "$DOWNLOAD_URL" \
               --output "artifacts/unpack/plugins/$PLUGIN_FILE"
-            
-            if [ -f "artifacts/unpack/plugins/$PLUGIN_FILE" ]; then
-              echo "✓ Downloaded: $PLUGIN_FILE"
-            else
-              echo "✗ Failed to download: $PLUGIN_FILE"
+      
+            FILE_SIZE=$(stat -f%z "artifacts/unpack/plugins/$PLUGIN_FILE" 2>/dev/null || stat -c%s "artifacts/unpack/plugins/$PLUGIN_FILE" 2>/dev/null)
+            if [ "$FILE_SIZE" -lt 100 ]; then
+              echo "✗ Failed: $PLUGIN_FILE is too small ($FILE_SIZE bytes)"
+              cat "artifacts/unpack/plugins/$PLUGIN_FILE"
               exit 1
             fi
+
+            echo "✓ Downloaded: $PLUGIN_FILE ($FILE_SIZE bytes)"
           done
-          
+    
           echo "✓ All plugins downloaded successfully"
           ls -lh artifacts/unpack/plugins/
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ONCOURSE_SECRET_PAT }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
