@@ -2,7 +2,7 @@
   "course": {
     "entity": "Course",
     "title": "Getting starting with onCourse",
-    "documentation": "/creating-courses",
+    "documentation": "creating-courses",
     "link": "/course/new",
     "canSkip": false,
     "video": "q8m9kIYW1Cw",
@@ -11,7 +11,7 @@
   "site": {
     "entity": "Site",
     "title": "Where are you?",
-    "documentation": "/working-with-sites-and-rooms",
+    "documentation": "working-with-sites-and-rooms",
     "link": "/site/new",
     "canSkip": false,
     "video": "LtNbcrRsJIc",
@@ -20,7 +20,7 @@
   "tutor": {
     "entity": "Tutor",
     "title": "Who is delivering your courses?",
-    "documentation": "/working-with-tutors",
+    "documentation": "working-with-tutors",
     "link": "/contact/new?filter=@Tutors",
     "canSkip": false,
     "video": "ZO48UZc1pd8",
@@ -29,7 +29,7 @@
   "courseclass": {
     "entity": "CourseClass",
     "title": "Let's add a class",
-    "documentation": "/classes",
+    "documentation": "classes",
     "link": "/class/new",
     "canSkip": false,
     "video": "oQUEBMXe1SA",
@@ -37,7 +37,7 @@
   },
   "systemuser": {
     "title": "Invite a colleague.",
-    "documentation": "/users",
+    "documentation": "users",
     "link": "/security/users/new",
     "canSkip": true,
     "video": "pcv-PIZrNmc",
