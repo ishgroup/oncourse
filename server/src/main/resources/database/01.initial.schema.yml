@@ -1854,7 +1854,7 @@ databaseChangeLog:
                   type: datetime
               - column:
                   name: value
-                  type: TEXT
+                  type: LONGTEXT
               - column:
                   defaultValueComputed: 'NULL'
                   name: willowId
