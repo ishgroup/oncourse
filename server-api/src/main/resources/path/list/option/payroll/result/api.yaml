@@ -1,0 +1,22 @@
+get:
+  operationId: getPreparationResult
+  description: get result of preparation process
+  tags:
+    - Payroll
+  parameters:
+    - name: processId
+      in: query
+      required: true
+      type: string
+      description: The process id to get
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/payroll/WagesToProcess.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: LAZY/entity
+    errorMessage: Sorry, you have no permissions to generate payroll. Please contact your administrator

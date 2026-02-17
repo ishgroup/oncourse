@@ -18,6 +18,7 @@ import ish.math.Money;
 import ish.oncourse.entity.services.SessionService;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.concurrent.ExecutorManager;
 import ish.oncourse.server.payroll.filters.ClassCostConfirmed;
 import ish.payroll.PayrollGenerationRequest;
 import ish.payroll.WagesSummaryResponse;
@@ -50,14 +51,16 @@ public class PayrollService {
 
     private ICayenneService cayenneService;
     private SessionService sessionService;
+    private ExecutorManager executorManager;
 
     private static final String COURSE_CLASS_ENTITY_NAME = "CourseClass";
     private static final String CONTACT_ENTITY_NAME = "Contact";
 
     @Inject
-    public PayrollService(ICayenneService cayenneService, SessionService sessionService) {
+    public PayrollService(ICayenneService cayenneService, SessionService sessionService, ExecutorManager executorManager) {
         this.cayenneService = cayenneService;
         this.sessionService = sessionService;
+        this.executorManager = executorManager;
     }
 
     /**
@@ -154,7 +157,7 @@ public class PayrollService {
      */
     public List<ClassCost> getEligibleClassCosts(ObjectContext context, Date until, Expression additionalFilter) {
         Expression classCostsExpression = getEligibleClassCostsExpression(until);
-        if(additionalFilter != null)
+        if (additionalFilter != null)
             classCostsExpression = classCostsExpression.andExp(additionalFilter);
 
         return ObjectSelect.query(ClassCost.class)
@@ -256,7 +259,15 @@ public class PayrollService {
         return false;
     }
 
-    public WagesSummaryResponse getWagesSummary(PayrollGenerationRequest request) {
+    public String startWagesPreparation(PayrollGenerationRequest request) {
+        return executorManager.submit(() -> getWagesSummary(request));
+    }
+
+    public WagesSummaryResponse getPreparationResult(String processId) {
+        return (WagesSummaryResponse) executorManager.getResult(processId);
+    }
+
+    private WagesSummaryResponse getWagesSummary(PayrollGenerationRequest request) {
         var response = new WagesSummaryResponse();
         ObjectContext context = cayenneService.getNewContext();
 
@@ -397,7 +408,7 @@ public class PayrollService {
     private boolean hasValidEnrolments(CourseClass courseClass) {
         return courseClass.getValidEnrolmentCount() > 0;
     }
-    
+
     private boolean hasZeroOrMoreUnits(ClassCost classCost){
         return BigDecimal.ZERO.compareTo(classCost.getUnitCount()) >= 0;
     }
