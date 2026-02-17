@@ -273,6 +273,8 @@ paths:
     $ref: './path/list/option/message/recipients/api.yaml'
   /list/option/payroll:
     $ref: './path/list/option/payroll/api.yaml'
+  /list/option/payroll/result:
+    $ref: './path/list/option/payroll/result/api.yaml'
   /list/plain:
     $ref: './path/list/plain/api.yaml'
   /list/plain/bulkDelete:

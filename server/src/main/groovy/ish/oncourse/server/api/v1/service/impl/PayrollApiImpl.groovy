@@ -12,6 +12,9 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+
+import javax.ws.rs.QueryParam
+
 import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
 import static ish.oncourse.server.api.v1.function.PayrollFunctions.toPayrollGenerationRequest
 import static ish.oncourse.server.api.v1.function.PayrollFunctions.toWagesToProcess
@@ -47,8 +50,13 @@ class PayrollApiImpl implements PayrollApi {
     }
 
     @Override
-    WagesToProcessDTO prepare(String entity, PayrollRequestDTO payrollRequest) {
+    String prepare(String entity, PayrollRequestDTO payrollRequest) {
         checkForBadRequest(validate(payrollRequest))
-        toWagesToProcess(payrollService.getWagesSummary(toPayrollGenerationRequest(payrollRequest, false)))
+        payrollService.startWagesPreparation(toPayrollGenerationRequest(payrollRequest, false))
+    }
+
+    @Override
+    WagesToProcessDTO getPreparationResult(String processId) {
+        toWagesToProcess(payrollService.getPreparationResult(processId))
     }
 }
