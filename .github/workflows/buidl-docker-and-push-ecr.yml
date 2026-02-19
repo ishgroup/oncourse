@@ -1,165 +1,165 @@
-name: Build and Push Server to ECR
-
-on:
-  workflow_dispatch:
-    inputs:
-      target:
-        description: Deploy target group
-        required: true
-        type: choice
-        options:
-          - test
-          - staging
-          - minor
-          - middle
-          - major
-          - all
-      app_version:
-        type: string
-        required: true
-        description: App version (e.g., 123.53.2)
-        default: ''
-      plugins_version:
-        type: string
-        description: Plugins version (e.g., 1.100.1)
-        default: ''
-
-permissions:
-  id-token: write
-  contents: read
-
-env:
-  AWS_REGION: ap-southeast-2
-  ECR_REPOSITORY: angel
-
-jobs:
-  build-and-push:
-    name: Build and Push (${{ matrix.env }})
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # test
-          - { env: sttrinians, group: test }
-
-          # staging
-          - { env: testish, group: staging }
-
-          # minor
-          - { env: beaches, group: minor }
-          - { env: byron, group: minor }
-          - { env: east, group: minor }
-          - { env: hunter, group: minor }
-          - { env: mcc, group: minor }
-          - { env: nida, group: minor }
-          - { env: riverina, group: minor }
-          - { env: parramatta, group: minor }
-
-          # middle
-          - { env: acwa, group: middle }
-          - { env: apstudio, group: middle }
-          - { env: bpc, group: middle }
-          - { env: chp, group: middle }
-          - { env: coasit, group: middle }
-          - { env: csa, group: middle }
-          - { env: gallerylanecove, group: middle }
-          - { env: hornsby, group: middle }
-          - { env: hse, group: middle }
-          - { env: macquarie, group: middle }
-          - { env: stgeorge, group: middle }
-          - { env: tasmania, group: middle }
-          - { env: term, group: middle }
-          - { env: testish, group: middle }
-          - { env: tlk, group: middle }
-          - { env: willoughbyarts, group: middle }
-
-          # major
-          - { env: llpuat, group: major }
-          - { env: scc, group: major }
-          - { env: sscprod, group: major }
-          - { env: weasydney, group: major }
-          - { env: con, group: major }
-          - { env: cce, group: major }
-
-    steps:
-      # ---------- GUARD ----------
-      - name: Guard – skip unrelated envs
-        if: ${{ inputs.target != 'all' && matrix.group != inputs.target }}
-        run: |
-          echo "Skipping env=${{ matrix.env }} (group=${{ matrix.group }})"
-          exit 0
-
-      # ---------- BUILD ----------
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download release artifact
-        run: |
-          VERSION="${{ inputs.app_version }}"
-          ASSET_NAME="onCourseServer-${VERSION}.tgz"
-          TAG_NAME="v${VERSION}"
-
-          curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/octet-stream" \
-            "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/$ASSET_NAME" \
-            --output "$ASSET_NAME"
-
-          mkdir -p artifacts
-          mv "$ASSET_NAME" artifacts/
-
-      - name: Extract artifact
-        run: |
-          file=$(find artifacts/ -name "*.tgz" | head -n1)
-          mkdir -p artifacts/unpack
-          tar xvf "$file" --strip-components=1 -C artifacts/unpack
-
-      - name: Download plugins
-        if: ${{ inputs.plugins_version != '' }}
-        run: |
-          PLUGINS_VERSION="${{ inputs.plugins_version }}"
-          PLUGINS_TAG="v${PLUGINS_VERSION}"
-          PLUGINS_REPO="ishgroup/oncourse-secret"
-
-          mkdir -p artifacts/unpack/plugins
-
-          for plugin in cloud-assess myob replication service-nsw tcsi xero; do
-            curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Accept: application/octet-stream" \
-              "https://github.com/${PLUGINS_REPO}/releases/download/${PLUGINS_TAG}/${plugin}-${PLUGINS_VERSION}.jar" \
-              --output "artifacts/unpack/plugins/${plugin}-${PLUGINS_VERSION}.jar"
-          done
-
-      # ---------- AWS / DOCKER ----------
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: |
-            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ inputs.app_version }}-${{ matrix.env }}
-            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ matrix.env }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Summary
-        run: |
-          echo "Group:       ${{ matrix.group }}"
-          echo "Environment: ${{ matrix.env }}"
-          echo "App version: ${{ inputs.app_version }}"
-          echo "Plugins:     ${{ inputs.plugins_version }}"
+#name: Build and Push Server to ECR
+#
+#on:
+#  workflow_dispatch:
+#    inputs:
+#      target:
+#        description: Deploy target group
+#        required: true
+#        type: choice
+#        options:
+#          - test
+#          - staging
+#          - minor
+#          - middle
+#          - major
+#          - all
+#      app_version:
+#        type: string
+#        required: true
+#        description: App version (e.g., 123.53.2)
+#        default: ''
+#      plugins_version:
+#        type: string
+#        description: Plugins version (e.g., 1.100.1)
+#        default: ''
+#
+#permissions:
+#  id-token: write
+#  contents: read
+#
+#env:
+#  AWS_REGION: ap-southeast-2
+#  ECR_REPOSITORY: angel
+#
+#jobs:
+#  build-and-push:
+#    name: Build and Push (${{ matrix.env }})
+#    runs-on: ubuntu-latest
+#
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        include:
+#          # test
+#          - { env: sttrinians, group: test }
+#
+#          # staging
+#          - { env: testish, group: staging }
+#
+#          # minor
+#          - { env: beaches, group: minor }
+#          - { env: byron, group: minor }
+#          - { env: east, group: minor }
+#          - { env: hunter, group: minor }
+#          - { env: mcc, group: minor }
+#          - { env: nida, group: minor }
+#          - { env: riverina, group: minor }
+#          - { env: parramatta, group: minor }
+#
+#          # middle
+#          - { env: acwa, group: middle }
+#          - { env: apstudio, group: middle }
+#          - { env: bpc, group: middle }
+#          - { env: chp, group: middle }
+#          - { env: coasit, group: middle }
+#          - { env: csa, group: middle }
+#          - { env: gallerylanecove, group: middle }
+#          - { env: hornsby, group: middle }
+#          - { env: hse, group: middle }
+#          - { env: macquarie, group: middle }
+#          - { env: stgeorge, group: middle }
+#          - { env: tasmania, group: middle }
+#          - { env: term, group: middle }
+#          - { env: testish, group: middle }
+#          - { env: tlk, group: middle }
+#          - { env: willoughbyarts, group: middle }
+#
+#          # major
+#          - { env: llpuat, group: major }
+#          - { env: scc, group: major }
+#          - { env: sscprod, group: major }
+#          - { env: weasydney, group: major }
+#          - { env: con, group: major }
+#          - { env: cce, group: major }
+#
+#    steps:
+#      # ---------- GUARD ----------
+#      - name: Guard – skip unrelated envs
+#        if: ${{ inputs.target != 'all' && matrix.group != inputs.target }}
+#        run: |
+#          echo "Skipping env=${{ matrix.env }} (group=${{ matrix.group }})"
+#          exit 0
+#
+#      # ---------- BUILD ----------
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Download release artifact
+#        run: |
+#          VERSION="${{ inputs.app_version }}"
+#          ASSET_NAME="onCourseServer-${VERSION}.tgz"
+#          TAG_NAME="v${VERSION}"
+#
+#          curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+#            -H "Accept: application/octet-stream" \
+#            "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/$ASSET_NAME" \
+#            --output "$ASSET_NAME"
+#
+#          mkdir -p artifacts
+#          mv "$ASSET_NAME" artifacts/
+#
+#      - name: Extract artifact
+#        run: |
+#          file=$(find artifacts/ -name "*.tgz" | head -n1)
+#          mkdir -p artifacts/unpack
+#          tar xvf "$file" --strip-components=1 -C artifacts/unpack
+#
+#      - name: Download plugins
+#        if: ${{ inputs.plugins_version != '' }}
+#        run: |
+#          PLUGINS_VERSION="${{ inputs.plugins_version }}"
+#          PLUGINS_TAG="v${PLUGINS_VERSION}"
+#          PLUGINS_REPO="ishgroup/oncourse-secret"
+#
+#          mkdir -p artifacts/unpack/plugins
+#
+#          for plugin in cloud-assess myob replication service-nsw tcsi xero; do
+#            curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+#              -H "Accept: application/octet-stream" \
+#              "https://github.com/${PLUGINS_REPO}/releases/download/${PLUGINS_TAG}/${plugin}-${PLUGINS_VERSION}.jar" \
+#              --output "artifacts/unpack/plugins/${plugin}-${PLUGINS_VERSION}.jar"
+#          done
+#
+#      # ---------- AWS / DOCKER ----------
+#      - name: Configure AWS credentials
+#        uses: aws-actions/configure-aws-credentials@v4
+#        with:
+#          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+#          aws-region: ${{ env.AWS_REGION }}
+#
+#      - name: Login to Amazon ECR
+#        id: login-ecr
+#        uses: aws-actions/amazon-ecr-login@v2
+#
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v3
+#
+#      - name: Build and push Docker image
+#        uses: docker/build-push-action@v5
+#        with:
+#          context: .
+#          file: ./Dockerfile
+#          push: true
+#          tags: |
+#            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ inputs.app_version }}-${{ matrix.env }}
+#            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ matrix.env }}
+#          cache-from: type=gha
+#          cache-to: type=gha,mode=max
+#
+#      - name: Summary
+#        run: |
+#          echo "Group:       ${{ matrix.group }}"
+#          echo "Environment: ${{ matrix.env }}"
+#          echo "App version: ${{ inputs.app_version }}"
+#          echo "Plugins:     ${{ inputs.plugins_version }}"
