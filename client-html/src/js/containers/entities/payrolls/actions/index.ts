@@ -3,10 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PayrollRequest } from "@api/model";
-import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
+import { PayrollRequest } from '@api/model';
+import { _toRequestType, FULFILLED } from '../../../../common/actions/ActionUtils';
 
 export const PREPARE_PAYROLL = _toRequestType("post/list/option/payroll");
+export const SET_PREPARED_PAYROLL = "set/prepared/payroll";
 export const PREPARE_PAYROLL_FULFILLED = FULFILLED(PREPARE_PAYROLL);
 
 export const EXECUTE_PAYROLL = _toRequestType("put/list/option/payroll");
@@ -14,6 +15,11 @@ export const EXECUTE_PAYROLL_FULFILLED = FULFILLED(EXECUTE_PAYROLL);
 export const PAYROLL_PROCESS_FINISHED = "payroll/process/finished";
 
 export const CLEAR_PAYROLL_PREPARED_WAGES = "clear/list/option/payroll/wages";
+
+export const setPreparedPayroll = (processId: string, payrollRequest: PayrollRequest ) => ({
+  type: SET_PREPARED_PAYROLL,
+  payload: { processId, payrollRequest  }
+});
 
 export const preparePayroll = (entity: string, payrollRequest: PayrollRequest) => ({
   type: PREPARE_PAYROLL,
