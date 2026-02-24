@@ -2,7 +2,7 @@ FROM eclipse-temurin:11-jdk-alpine
 
 WORKDIR /app
 
-RUN mkdir -p logs
+RUN mkdir -p {logs,finance-export}
 
 COPY artifacts/unpack/ .
 
