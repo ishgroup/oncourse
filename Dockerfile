@@ -2,7 +2,9 @@ FROM eclipse-temurin:11-jdk-alpine
 
 WORKDIR /app
 
-RUN mkdir -p logs finance-export
+RUN mkdir -p logs finance-export fonts
+
+COPY scripts-fonts/tw-cen-mt.ttf fonts/
 
 COPY artifacts/unpack/ .
 
