@@ -1,4 +1,10 @@
 import org.apache.commons.lang3.StringUtils
+import ish.oncourse.server.imports.avetmiss.AvetmissImportService
+import ish.oncourse.server.imports.avetmiss.InputLine
+import org.apache.cayenne.ObjectContext
+import ish.oncourse.server.imports.avetmiss.ContactProvider
+import ish.oncourse.server.imports.avetmiss.Avetmiss85Parser
+import ish.oncourse.server.imports.avetmiss.Avetmiss80Parser
 
 import java.time.LocalDate
 
