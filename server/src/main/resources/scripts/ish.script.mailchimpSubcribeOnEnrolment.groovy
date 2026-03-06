@@ -6,5 +6,6 @@ if (record.student.contact.email && record.student.contact.allowEmail) {
         firstName record.student.contact.firstName
         lastName record.student.contact.lastName
         postcode record.student.contact.postcode
+        optIn false
     }
 }
