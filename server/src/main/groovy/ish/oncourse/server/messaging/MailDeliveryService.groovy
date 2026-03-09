@@ -59,7 +59,8 @@ class MailDeliveryService {
             if(emailFrom == null)
                 throw new IllegalArgumentException("email.from preference must be specified for scripts message sending")
 
-            message.from = new InternetAddress(emailFrom)
+            String emailDomain = emailFrom.substring(emailFrom.lastIndexOf("@") + 1)
+            message.from = new InternetAddress(MailSession.SMTP_DEFAULT_USER_NAME_VALUE+"@"+emailDomain)
         } else
             message.from = param.getFrom.get()
 
