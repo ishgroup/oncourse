@@ -17,6 +17,9 @@ import com.sun.mail.smtp.SMTPMessage
 import groovy.transform.CompileDynamic
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.PreferenceController
+
+import javax.mail.internet.InternetAddress
+
 import static javax.mail.Message.RecipientType
 import org.apache.commons.lang3.StringUtils
 
@@ -31,14 +34,17 @@ class MailDeliveryService {
     SMTPService smtpService
     MailSession mailSession
     String angelVersion
+    private PreferenceController preferenceController
 
     @Inject
     MailDeliveryService(SMTPService smtpService,
                         MailSession mailSession,
-                        @Named(AngelModule.ANGEL_VERSION) String angelVersion) {
+                        @Named(AngelModule.ANGEL_VERSION) String angelVersion,
+                        PreferenceController preferenceController) {
         this.smtpService = smtpService
         this.mailSession = mailSession
         this.angelVersion = angelVersion
+        this.preferenceController = preferenceController
     }
 
     void sendEmail(MailDeliveryParam param) throws MessagingException {
@@ -48,7 +54,15 @@ class MailDeliveryService {
 
         SMTPMessage message = new SMTPMessage(mailSession.session)
 
-        param.getFrom.get() ? message.from = param.getFrom.get() : message.setFrom()
+        if(param.getFrom.get() == null) {
+            def emailFrom = preferenceController.getEmailFromAddress()
+            if(emailFrom == null)
+                throw new IllegalArgumentException("email.from preference must be specified for scripts message sending")
+
+            message.from = new InternetAddress(emailFrom)
+        } else
+            message.from = param.getFrom.get()
+
         message.envelopeFrom = param.getEnvelopeFrom.get()
         message.setRecipients(RecipientType.TO, param.getAddressesTO.get())
         message.setRecipients(RecipientType.CC, param.getAddressesCC.get())
