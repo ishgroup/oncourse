@@ -42,7 +42,7 @@ public class SetEnrolmentHybridCompleted extends IshTaskChange {
         do {
             enrolments = ObjectSelect.query(Enrolment.class)
                     .where(Enrolment.COURSE_CLASS.dot(CourseClass.TYPE).eq(CourseClassType.HYBRID)
-                            .andExp(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS)))
+                            .andExp(Enrolment.STATUS.in(List.of(EnrolmentStatus.SUCCESS, EnrolmentStatus.IN_TRANSACTION))))
                     .offset(n++)
                     .limit(500)
                     .prefetch(Enrolment.COURSE_CLASS.joint())
