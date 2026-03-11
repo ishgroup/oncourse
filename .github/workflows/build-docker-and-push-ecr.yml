@@ -5,9 +5,13 @@ on:
     inputs:
       app_version:
         type: string
-        required: true
+        required: false
         description: App version (e.g., 123.54.2)
         default: ''
+      include_snapshot:
+        description: 'Also build 99-SNAPSHOT'
+        type: boolean
+        default: false
       plugins_version:
         type: string
         required: true
@@ -49,6 +53,25 @@ jobs:
           mkdir -p artifacts
           mv $ASSET_NAME artifacts/
           echo "✓ Downloaded successfully: $ASSET_NAME"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download snapshot artifact
+        if: ${{ inputs.include_snapshot == true }} 
+        run: |
+          SNAPSHOT_ASSET="onCourseServer-99-SNAPSHOT.tgz"
+          SNAPSHOT_URL="https://github.com/ishgroup/oncourse/releases/download/99-SNAPSHOT/${SNAPSHOT_ASSET}"
+
+          echo "Downloading snapshot from: $SNAPSHOT_URL"
+
+          curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/octet-stream" \
+            "$SNAPSHOT_URL" \
+            --output "$SNAPSHOT_ASSET"
+
+          mkdir -p artifacts
+          mv $SNAPSHOT_ASSET artifacts/
+          echo "✓ Downloaded successfully: $SNAPSHOT_ASSET"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
