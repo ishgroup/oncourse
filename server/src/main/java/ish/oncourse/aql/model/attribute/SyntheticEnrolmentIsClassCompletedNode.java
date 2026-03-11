@@ -126,22 +126,23 @@ class SyntheticEnrolmentIsClassCompletedNode extends LazyExpressionNode {
         notHybridCheck.jjtAddChild(new ASTScalar(CourseClassType.HYBRID.getDatabaseValue()), 1);
 
         long basicEnrolmentId = -1L;
-        List<Enrolment> enrolments;
+        List<Long> enrolments;
         Set<Long> enrolmentIds = new HashSet<>();
 
         do {
-            enrolments = ObjectSelect.query(Enrolment.class)
+            enrolments = ObjectSelect.columnQuery(Enrolment.class, Enrolment.ID)
                     .where(Enrolment.ID.gt(basicEnrolmentId).andExp(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS)).andExp(
                                     Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).isNotNull())
                             .andExp(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).lt(new Date()))
                             .andExp(Enrolment.COURSE_CLASS.dot(CourseClass.TYPE).eq(CourseClassType.HYBRID))
+                            .andExp(Enrolment.IS_HYBRID_COMPLETED.isTrue())
                     )
                     .limit(200)
                     .orderBy(Enrolment.ID.getName())
                     .select(ctx.getContext());
 
-            enrolmentIds.addAll(EnrolmentFunctions.filterEnrolmentsWithCompletedClasses(enrolments));
-            basicEnrolmentId = !enrolments.isEmpty() ? enrolments.get(enrolments.size() - 1).getId() : basicEnrolmentId;
+            enrolmentIds.addAll(enrolments);
+            basicEnrolmentId = !enrolments.isEmpty() ? enrolments.get(enrolments.size() - 1) : basicEnrolmentId;
         } while (!enrolments.isEmpty());
 
         Node hybridCheck = buildInNodeForList(enrolmentIds, prefix);
