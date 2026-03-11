@@ -143,6 +143,16 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		context.commitChanges()
 	}
 
+	void updateHybridCompleted(){
+		int attendancesSize = attendances
+				.findAll{attendance -> attendance.getAttendanceType() == AttendanceType.ATTENDED}
+				.size()
+
+		Integer minSessionsToComplete = getCourseClass().getMinimumSessionsToComplete()
+		if(minSessionsToComplete != null && attendancesSize >= minSessionsToComplete)
+			setIsHybridCompleted(true)
+	}
+
 	/**
 	 * @return class cacellation warning message
 	 */

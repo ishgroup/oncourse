@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 152-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: Enrolment
+                columnName: isHybridCompleted
+      changes:
+        - addColumn:
+            tableName: Enrolment
+            columns:
+              - column:
+                  name: isHybridCompleted
+                  type: SMALLINT
+                  defaultValue: false
+                  constraints:
+                    nullable: false
