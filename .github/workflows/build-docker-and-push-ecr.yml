@@ -6,10 +6,10 @@ on:
       app_version:
         type: string
         required: false
-        description: App version (e.g., 123.54.2)
+        description: App version (e.g., 123.54.2). Leave empty to build snapshot only
         default: ''
-      include_snapshot:
-        description: 'Also build 99-SNAPSHOT'
+      build_snapshot:
+        description: 'Build 99-SNAPSHOT'
         type: boolean
         default: false
       plugins_version:
@@ -35,7 +35,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Validate inputs
+        run: |
+          if [[ -z "${{ inputs.app_version }}" && "${{ inputs.build_snapshot }}" == "false" ]]; then
+            echo "❌ Either app_version must be set or build_snapshot must be enabled"
+            exit 1
+          fi
+
       - name: Download release artifact
+        if: ${{ inputs.app_version != '' }}
         run: |
           VERSION="${{ inputs.app_version }}"
           ASSET_NAME="onCourseServer-${VERSION}.tgz"
@@ -57,14 +65,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download snapshot artifact
-        if: ${{ inputs.include_snapshot == true }} 
+        if: ${{ inputs.build_snapshot == true }}
         run: |
           SNAPSHOT_ASSET="onCourseServer-99-SNAPSHOT.tgz"
           SNAPSHOT_URL="https://github.com/ishgroup/oncourse/releases/download/99-SNAPSHOT/${SNAPSHOT_ASSET}"
 
           echo "Downloading snapshot from: $SNAPSHOT_URL"
 
-          curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          curl -L \
             -H "Accept: application/octet-stream" \
             "$SNAPSHOT_URL" \
             --output "$SNAPSHOT_ASSET"
@@ -72,8 +80,6 @@ jobs:
           mkdir -p artifacts
           mv $SNAPSHOT_ASSET artifacts/
           echo "✓ Downloaded successfully: $SNAPSHOT_ASSET"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract artifact
         run: |
@@ -169,17 +175,16 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ inputs.app_version }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ inputs.app_version != '' && inputs.app_version || '99-SNAPSHOT' }}
             ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Image digest
         run: |
+          VERSION="${{ inputs.app_version != '' && inputs.app_version || '99-SNAPSHOT' }}"
           echo "✓ Image pushed successfully!"
           echo "ECR Repository: ${{ env.ECR_REPOSITORY }}"
-          echo "Version: ${{ inputs.app_version }}"
-          echo "Registry: ${{ steps.login-ecr.outputs.registry }}/willow/${{ env.ECR_REPOSITORY }}"
-          echo "App Version: ${{ inputs.app_version }}"
-          echo "Plugins Version: ${{ inputs.plugins_version }}"
+          echo "Version: $VERSION"
           echo "Registry: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}"
+          echo "Plugins Version: ${{ inputs.plugins_version }}"
