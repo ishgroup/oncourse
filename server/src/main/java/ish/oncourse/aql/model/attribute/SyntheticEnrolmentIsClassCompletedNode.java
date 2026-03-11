@@ -125,30 +125,35 @@ class SyntheticEnrolmentIsClassCompletedNode extends LazyExpressionNode {
         notHybridCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.type"), 0);
         notHybridCheck.jjtAddChild(new ASTScalar(CourseClassType.HYBRID.getDatabaseValue()), 1);
 
-        long basicEnrolmentId = -1L;
-        List<Long> enrolments;
-        Set<Long> enrolmentIds = new HashSet<>();
+        ASTAnd hybridCompletedCheck = new ASTAnd();
 
-        do {
-            enrolments = ObjectSelect.columnQuery(Enrolment.class, Enrolment.ID)
-                    .where(Enrolment.ID.gt(basicEnrolmentId).andExp(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS)).andExp(
-                                    Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).isNotNull())
-                            .andExp(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).lt(new Date()))
-                            .andExp(Enrolment.COURSE_CLASS.dot(CourseClass.TYPE).eq(CourseClassType.HYBRID))
-                            .andExp(Enrolment.IS_HYBRID_COMPLETED.isTrue())
-                    )
-                    .limit(200)
-                    .orderBy(Enrolment.ID.getName())
-                    .select(ctx.getContext());
+        ASTEqual statusCheck = new ASTEqual();
+        statusCheck.jjtAddChild(new ASTObjPath(prefix+"status"), 0);
+        statusCheck.jjtAddChild(new ASTScalar(EnrolmentStatus.SUCCESS.getDatabaseValue()), 1);
 
-            enrolmentIds.addAll(enrolments);
-            basicEnrolmentId = !enrolments.isEmpty() ? enrolments.get(enrolments.size() - 1) : basicEnrolmentId;
-        } while (!enrolments.isEmpty());
+        ASTNotEqual astNotEqual = new ASTNotEqual();
+        astNotEqual.jjtAddChild(new ASTObjPath(prefix+"courseClass.endDateTime"), 0);
+        astNotEqual.jjtAddChild(new ASTScalar(null), 1);
 
-        Node hybridCheck = buildInNodeForList(enrolmentIds, prefix);
+        ASTLess astLess = new ASTLess();
+        astLess.jjtAddChild(new ASTObjPath(prefix+"courseClass.endDateTime"), 0);
+        astLess.jjtAddChild(new ASTCurrentDate(), 1);
+
+        ASTEqual typeCheck = new ASTEqual();
+        typeCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.type"), 0);
+        typeCheck.jjtAddChild(new ASTScalar(CourseClassType.HYBRID.getDatabaseValue()), 1);
+
+        ASTTrue astTrue = new ASTTrue();
+        astTrue.jjtAddChild(new ASTObjPath(prefix+".isHybridCompleted"), 0);
+
+        hybridCompletedCheck.jjtAddChild(statusCheck, 0);
+        hybridCompletedCheck.jjtAddChild(astNotEqual, 1);
+        hybridCompletedCheck.jjtAddChild(astLess, 2);
+        hybridCompletedCheck.jjtAddChild(typeCheck, 3);
+        hybridCompletedCheck.jjtAddChild(astTrue, 4);
 
         hybridMainCheck.jjtAddChild(notHybridCheck, 0);
-        hybridMainCheck.jjtAddChild(hybridCheck, 1);
+        hybridMainCheck.jjtAddChild(hybridCompletedCheck, 1);
         return hybridMainCheck;
     }
 
