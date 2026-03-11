@@ -109,14 +109,14 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		if (getAttendanceType() == null) {
 			setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
 		}
-
-		if(isHybridCompleted == null)
-			updateHybridCompleted()
 	}
 
 	@Override
 	void prePersist() {
 		updateOverriddenFields()
+
+		if(isHybridCompleted == null)
+			updateHybridCompleted()
 	}
 
 	@Override
