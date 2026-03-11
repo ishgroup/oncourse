@@ -184,49 +184,49 @@
 
   <Enrolment id="100" courseClass_id="100" studentId="300" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="200" courseClass_id="100" studentId="400" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="300" courseClass_id="200" studentId="300" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="400" courseClass_id="200" studentId="400" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="500" courseClass_id="300" studentId="500" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="600" courseClass_id="400" studentId="600" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="700" courseClass_id="200" studentId="700" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="800" courseClass_id="200" studentId="800" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="900" courseClass_id="200" studentId="900" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="1000" courseClass_id="200" studentId="1000" eligibilityExemptionIndicator="0" source="O"
              studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="1100" courseClass_id="200" studentId="1000" eligibilityExemptionIndicator="0" source="O"
              studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="8" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="1200" courseClass_id="400" studentId="1000" eligibilityExemptionIndicator="0" source="O"
              studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="4" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="1300" courseClass_id="500" studentId="300" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="1400" courseClass_id="500" studentId="400" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
   <Enrolment id="1500" courseClass_id="500" studentId="1000" eligibilityExemptionIndicator="0" source="O"
              studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"
-             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+             attendanceType="9" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0" isHybridCompleted="0"/>
 
   <Invoice allowAutoPay="1" type="1" overdue="0.00" id="100" invoiceNumber="1" amoutOwing="0.00" contactId="3"
            dateDue="[start_date4]" debtorsAccountId="100" invoiceDate="[start_date1]" source="O"
