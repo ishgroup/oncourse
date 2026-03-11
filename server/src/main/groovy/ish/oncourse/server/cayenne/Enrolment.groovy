@@ -114,9 +114,6 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Override
 	void prePersist() {
 		updateOverriddenFields()
-
-		if(isHybridCompleted == null)
-			updateHybridCompleted()
 	}
 
 	@Override
@@ -177,6 +174,9 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 
 	@Override
 	void preUpdate() {
+		if(isHybridCompleted == null || courseClass.type == CourseClassType.HYBRID)
+			updateHybridCompleted()
+
 		super.preUpdate()
 	}
 
