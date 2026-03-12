@@ -90,10 +90,4 @@ class EnrolmentFunctions {
         put(CreditLevel.STATEMENT_OF_ATTEINMENT_AT_CERTIFICATE_1_LEVEL, EnrolmentCreditLevelDTO.STATEMENT_OF_ATTAINMENT_AT_CERTIFICATE_I_LEVEL)
         put(CreditLevel.OTHER, EnrolmentCreditLevelDTO.OTHER_QUALIFICATION)
     }}
-
-
-    static List<Long> filterEnrolmentsWithCompletedClasses(List<Enrolment> enrolments){
-        return enrolments.findAll {e -> e.isHybridCompleted}
-                .collect {it.id}
-    }
 }
