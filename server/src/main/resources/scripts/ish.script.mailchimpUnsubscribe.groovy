@@ -8,5 +8,6 @@ if (integration && record.taggedContact.email) {
         name record.tag.name
         action integrationAction
         email record.taggedContact.email
+        optIn false
     }
 }
