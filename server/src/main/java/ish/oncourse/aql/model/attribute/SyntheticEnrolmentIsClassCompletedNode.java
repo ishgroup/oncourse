@@ -125,29 +125,35 @@ class SyntheticEnrolmentIsClassCompletedNode extends LazyExpressionNode {
         notHybridCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.type"), 0);
         notHybridCheck.jjtAddChild(new ASTScalar(CourseClassType.HYBRID.getDatabaseValue()), 1);
 
-        long basicEnrolmentId = -1L;
-        List<Enrolment> enrolments;
-        Set<Long> enrolmentIds = new HashSet<>();
+        ASTAnd hybridCompletedCheck = new ASTAnd();
 
-        do {
-            enrolments = ObjectSelect.query(Enrolment.class)
-                    .where(Enrolment.ID.gt(basicEnrolmentId).andExp(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS)).andExp(
-                                    Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).isNotNull())
-                            .andExp(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE_TIME).lt(new Date()))
-                            .andExp(Enrolment.COURSE_CLASS.dot(CourseClass.TYPE).eq(CourseClassType.HYBRID))
-                    )
-                    .limit(200)
-                    .orderBy(Enrolment.ID.getName())
-                    .select(ctx.getContext());
+        ASTEqual statusCheck = new ASTEqual();
+        statusCheck.jjtAddChild(new ASTObjPath(prefix+"status"), 0);
+        statusCheck.jjtAddChild(new ASTScalar(EnrolmentStatus.SUCCESS.getDatabaseValue()), 1);
 
-            enrolmentIds.addAll(EnrolmentFunctions.filterEnrolmentsWithCompletedClasses(enrolments));
-            basicEnrolmentId = !enrolments.isEmpty() ? enrolments.get(enrolments.size() - 1).getId() : basicEnrolmentId;
-        } while (!enrolments.isEmpty());
+        ASTNotEqual endDateNotNullCheck = new ASTNotEqual();
+        endDateNotNullCheck.jjtAddChild(new ASTObjPath(prefix+"courseClass.endDateTime"), 0);
+        endDateNotNullCheck.jjtAddChild(new ASTScalar(null), 1);
 
-        Node hybridCheck = buildInNodeForList(enrolmentIds, prefix);
+        ASTLess endDateBeforeNowCheck = new ASTLess();
+        endDateBeforeNowCheck.jjtAddChild(new ASTObjPath(prefix+"courseClass.endDateTime"), 0);
+        endDateBeforeNowCheck.jjtAddChild(new ASTCurrentDate(), 1);
+
+        ASTEqual typeCheck = new ASTEqual();
+        typeCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.type"), 0);
+        typeCheck.jjtAddChild(new ASTScalar(CourseClassType.HYBRID.getDatabaseValue()), 1);
+
+        ASTTrue isHybridCompletedCheck = new ASTTrue();
+        isHybridCompletedCheck.jjtAddChild(new ASTObjPath(prefix+".isHybridCompleted"), 0);
+
+        hybridCompletedCheck.jjtAddChild(statusCheck, 0);
+        hybridCompletedCheck.jjtAddChild(endDateNotNullCheck, 1);
+        hybridCompletedCheck.jjtAddChild(endDateBeforeNowCheck, 2);
+        hybridCompletedCheck.jjtAddChild(typeCheck, 3);
+        hybridCompletedCheck.jjtAddChild(isHybridCompletedCheck, 4);
 
         hybridMainCheck.jjtAddChild(notHybridCheck, 0);
-        hybridMainCheck.jjtAddChild(hybridCheck, 1);
+        hybridMainCheck.jjtAddChild(hybridCompletedCheck, 1);
         return hybridMainCheck;
     }
 

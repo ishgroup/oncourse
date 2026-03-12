@@ -302,15 +302,15 @@
   <Enrolment courseClass_Id="204" createdOn="2014-10-17 22:47:53.0" id="200" modifiedOn="2014-10-17 22:47:57.0"
              source="O" status="3" studentId="201" studyReason="-1" vetFeeExemptionType="-1" vetIsFullTime="0"
              eligibilityExemptionIndicator="0" vetFeeIndicator="0" confirmationStatus="3" feeHelpAmount="0.00"
-             attendanceType="9"/>
+             attendanceType="9" isHybridCompleted="0" />
   <Enrolment courseClass_Id="204" createdOn="2014-10-17 22:47:53.0" id="202" modifiedOn="2014-10-17 22:47:57.0"
              source="O" status="3" studentId="200" studyReason="-1" vetFeeExemptionType="-1" vetIsFullTime="0"
              eligibilityExemptionIndicator="0" vetFeeIndicator="0" confirmationStatus="3" feeHelpAmount="0.00"
-             attendanceType="9"/>
+             attendanceType="9" isHybridCompleted="0" />
   <Enrolment courseClass_Id="204" createdOn="2014-10-17 22:47:53.0" id="214" modifiedOn="2014-10-17 22:47:57.0"
              source="O" status="3" studentId="202" studyReason="-1" vetFeeExemptionType="-1" vetIsFullTime="0"
              eligibilityExemptionIndicator="0" vetFeeIndicator="0" confirmationStatus="3" feeHelpAmount="0.00"
-             attendanceType="9"/>
+             attendanceType="9" isHybridCompleted="0" />
 
   <Attendance attendanceType="0" id="1090" sessionID="247" studentID="201" createdOn="2014-10-17 22:47:54.0"
               modifiedOn="2014-10-17 22:47:54.0"/>

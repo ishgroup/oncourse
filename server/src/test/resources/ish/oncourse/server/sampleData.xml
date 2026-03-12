@@ -3097,238 +3097,238 @@
 
   <Enrolment COURSECLASS_ID="521" CREATEDON="2010-10-12 16:02:43.547" ID="240" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="263" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="521" CREATEDON="2010-10-12 16:02:43.547" ID="241" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="280" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="521" CREATEDON="2010-10-12 16:02:43.546" ID="242" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="260" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="521" CREATEDON="2010-10-14 09:32:15.948" ID="260" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="271" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="521" CREATEDON="2010-10-14 09:32:48.852" ID="261" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="227" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="521" CREATEDON="2010-10-14 09:33:35.07" ID="262" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="221" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="522" CREATEDON="2010-10-14 09:36:21.387" ID="263" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="225" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="522" CREATEDON="2010-10-14 09:37:15.792" ID="264" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="265" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="522" CREATEDON="2010-10-14 09:37:15.796" ID="265" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="226" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="522" CREATEDON="2010-10-14 09:37:47.268" ID="266" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="233" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="520" CREATEDON="2010-10-14 09:38:13.638" ID="267" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="272" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="520" CREATEDON="2010-10-14 09:39:06.79" ID="268" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="220" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="520" CREATEDON="2010-10-14 09:40:58.241" ID="269" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="280" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="520" CREATEDON="2010-10-14 09:40:58.242" ID="270" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="260" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="520" CREATEDON="2010-10-14 09:40:58.244" ID="271" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="273" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="520" CREATEDON="2010-10-14 09:40:58.241" ID="272" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="263" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="281" CREATEDON="2010-10-14 09:44:06.643" ID="273" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="225" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="281" CREATEDON="2010-10-14 09:44:32.256" ID="274" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="272" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="281" CREATEDON="2010-10-14 09:44:57.294" ID="275" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="270" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="281" CREATEDON="2010-10-14 09:45:27.507" ID="276" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="264" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="281" CREATEDON="2010-10-14 09:46:10.583" ID="277" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="232" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="281" CREATEDON="2010-10-14 09:46:32.888" ID="278" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="227" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="281" CREATEDON="2010-10-14 09:46:55.958" ID="279" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="271" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="206" CREATEDON="2010-10-14 09:48:32.929" ID="280" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="267" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="206" CREATEDON="2010-10-14 09:48:32.928" ID="281" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="200" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="206" CREATEDON="2010-10-14 09:48:32.924" ID="282" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="268" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="206" CREATEDON="2010-10-14 09:49:02.565" ID="283" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="224" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="206" CREATEDON="2010-10-14 09:49:28.789" ID="284" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="262" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="338" CREATEDON="2007-11-18 22:04:34.526" ID="220" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="8" STUDENTID="228" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="343" CREATEDON="2007-11-18 22:04:34.853" ID="221" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="228" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="329" CREATEDON="2007-11-18 22:04:34.845" ID="222" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="228" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="338" CREATEDON="2007-11-18 22:10:40.786" ID="223" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="8" STUDENTID="225" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="329" CREATEDON="2007-11-18 22:10:40.335" ID="224" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="225" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="343" CREATEDON="2007-11-18 22:10:40.648" ID="225" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="225" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="206" CREATEDON="2010-10-14 09:49:51.94" ID="285" MODIFIEDON="2011-02-07 13:44:42.043"
              SOURCE="O" STATUS="3" STUDENTID="300" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="207" CREATEDON="2011-02-07 14:09:42.452" ID="300" MODIFIEDON="2011-02-07 14:09:42.452"
              SOURCE="O" STATUS="3" STUDENTID="260" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="524" CREATEDON="2011-02-11 16:15:52.983" ID="320" MODIFIEDON="2011-02-11 16:15:52.983"
              SOURCE="O" STATUS="3" STUDENTID="223" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="524" CREATEDON="2011-02-11 16:15:52.961" ID="321" MODIFIEDON="2011-02-11 16:15:52.961"
              SOURCE="O" STATUS="3" STUDENTID="263" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="524" CREATEDON="2011-02-11 16:15:52.926" ID="322" MODIFIEDON="2011-02-11 16:15:52.926"
              SOURCE="O" STATUS="3" STUDENTID="260" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="668" CREATEDON="2012-05-08 15:58:33.857" ID="340" MODIFIEDON="2012-05-08 15:58:35.43"
              SOURCE="O" STATUS="3" STUDENTID="225" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="668" CREATEDON="2012-05-08 15:59:48.966" ID="341" MODIFIEDON="2012-05-08 15:59:51.16"
              SOURCE="O" STATUS="3" STUDENTID="224" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="668" CREATEDON="2012-05-08 15:59:48.949" ID="342" MODIFIEDON="2012-05-08 15:59:50.898"
              SOURCE="O" STATUS="3" STUDENTID="273" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="616" CREATEDON="2012-05-08 15:59:48.976" ID="343" MODIFIEDON="2012-05-08 15:59:51.352"
              SOURCE="O" STATUS="3" STUDENTID="224" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="668" CREATEDON="2012-05-08 15:59:48.893" ID="344" MODIFIEDON="2012-05-08 15:59:50.634"
              SOURCE="O" STATUS="3" STUDENTID="220" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="580" CREATEDON="2012-05-08 15:59:48.954" ID="345" MODIFIEDON="2012-05-08 15:59:50.979"
              SOURCE="O" STATUS="3" STUDENTID="273" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="616" CREATEDON="2012-05-08 15:59:48.959" ID="346" MODIFIEDON="2012-05-08 15:59:51.114"
              SOURCE="O" STATUS="3" STUDENTID="273" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="616" CREATEDON="2012-05-08 15:59:48.944" ID="347" MODIFIEDON="2012-05-08 15:59:50.79"
              SOURCE="O" STATUS="3" STUDENTID="220" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="580" CREATEDON="2012-05-08 15:59:48.972" ID="348" MODIFIEDON="2012-05-08 15:59:51.226"
              SOURCE="O" STATUS="3" STUDENTID="224" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="580" CREATEDON="2012-05-08 15:59:48.937" ID="349" MODIFIEDON="2012-05-08 15:59:50.733"
              SOURCE="O" STATUS="3" STUDENTID="220" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="635" CREATEDON="2012-05-08 16:02:01.114" ID="350" MODIFIEDON="2012-05-08 16:02:02.85"
              SOURCE="O" STATUS="3" STUDENTID="228" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="660" CREATEDON="2012-05-08 16:02:01.198" ID="351" MODIFIEDON="2012-05-08 16:02:03.843"
              SOURCE="O" STATUS="3" STUDENTID="227" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="660" CREATEDON="2012-05-08 16:02:01.144" ID="352" MODIFIEDON="2012-05-08 16:02:03.152"
              SOURCE="O" STATUS="3" STUDENTID="220" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="581" CREATEDON="2012-05-08 16:02:01.088" ID="353" MODIFIEDON="2012-05-08 16:02:02.694"
              SOURCE="O" STATUS="3" STUDENTID="222" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="660" CREATEDON="2012-05-08 16:02:01.131" ID="354" MODIFIEDON="2012-05-08 16:02:03.02"
              SOURCE="O" STATUS="3" STUDENTID="262" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="581" CREATEDON="2012-05-08 16:02:01.188" ID="355" MODIFIEDON="2012-05-08 16:02:03.65"
              SOURCE="O" STATUS="3" STUDENTID="227" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="660" CREATEDON="2012-05-08 16:02:01.158" ID="356" MODIFIEDON="2012-05-08 16:02:03.265"
              SOURCE="O" STATUS="3" STUDENTID="229" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="581" CREATEDON="2012-05-08 16:02:01.15" ID="357" MODIFIEDON="2012-05-08 16:02:03.193"
              SOURCE="O" STATUS="3" STUDENTID="229" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="660" CREATEDON="2012-05-08 16:02:01.228" ID="358" MODIFIEDON="2012-05-08 16:02:04.132"
              SOURCE="O" STATUS="3" STUDENTID="270" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="581" CREATEDON="2012-05-08 16:02:01.064" ID="359" MODIFIEDON="2012-05-08 16:02:02.437"
              SOURCE="O" STATUS="3" STUDENTID="260" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="635" CREATEDON="2012-05-08 16:02:01.097" ID="360" MODIFIEDON="2012-05-08 16:02:02.723"
              SOURCE="O" STATUS="3" STUDENTID="222" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="635" CREATEDON="2012-05-08 16:02:01.075" ID="361" MODIFIEDON="2012-05-08 16:02:02.571"
              SOURCE="O" STATUS="3" STUDENTID="260" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="635" CREATEDON="2012-05-08 16:02:01.215" ID="362" MODIFIEDON="2012-05-08 16:02:04.098"
              SOURCE="O" STATUS="3" STUDENTID="270" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="660" CREATEDON="2012-05-08 16:02:01.084" ID="363" MODIFIEDON="2012-05-08 16:02:02.631"
              SOURCE="O" STATUS="3" STUDENTID="260" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="581" CREATEDON="2012-05-08 16:02:01.137" ID="364" MODIFIEDON="2012-05-08 16:02:03.088"
              SOURCE="O" STATUS="3" STUDENTID="220" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="581" CREATEDON="2012-05-08 16:02:01.124" ID="365" MODIFIEDON="2012-05-08 16:02:02.93"
              SOURCE="O" STATUS="3" STUDENTID="262" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="635" CREATEDON="2012-05-08 16:02:01.14" ID="366" MODIFIEDON="2012-05-08 16:02:03.118"
              SOURCE="O" STATUS="3" STUDENTID="220" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="581" CREATEDON="2012-05-08 16:02:01.108" ID="367" MODIFIEDON="2012-05-08 16:02:02.818"
              SOURCE="O" STATUS="3" STUDENTID="228" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="207" CREATEDON="2011-02-07 14:10:47.96" ID="301" MODIFIEDON="2011-02-07 14:10:47.96"
              SOURCE="O" STATUS="3" STUDENTID="223" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="305" CREATEDON="2011-02-07 14:15:57.424" ID="302" MODIFIEDON="2011-02-07 14:15:57.424"
              SOURCE="O" STATUS="3" STUDENTID="260" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="581" CREATEDON="2012-05-08 16:02:01.202" ID="368" MODIFIEDON="2012-05-08 16:02:03.949"
              SOURCE="O" STATUS="3" STUDENTID="270" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="635" CREATEDON="2012-05-08 16:02:01.193" ID="369" MODIFIEDON="2012-05-08 16:02:03.683"
              SOURCE="O" STATUS="3" STUDENTID="227" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="660" CREATEDON="2012-05-08 16:02:01.118" ID="370" MODIFIEDON="2012-05-08 16:02:02.889"
              SOURCE="O" STATUS="3" STUDENTID="228" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="635" CREATEDON="2012-05-08 16:02:01.178" ID="371" MODIFIEDON="2012-05-08 16:02:03.449"
              SOURCE="O" STATUS="3" STUDENTID="263" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="581" CREATEDON="2012-05-08 16:02:01.173" ID="372" MODIFIEDON="2012-05-08 16:02:03.32"
              SOURCE="O" STATUS="3" STUDENTID="263" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="660" CREATEDON="2012-05-08 16:02:01.183" ID="373" MODIFIEDON="2012-05-08 16:02:03.581"
              SOURCE="O" STATUS="3" STUDENTID="263" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="635" CREATEDON="2012-05-08 16:02:01.127" ID="374" MODIFIEDON="2012-05-08 16:02:02.976"
              SOURCE="O" STATUS="3" STUDENTID="262" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="635" CREATEDON="2012-05-08 16:02:01.154" ID="375" MODIFIEDON="2012-05-08 16:02:03.227"
              SOURCE="O" STATUS="3" STUDENTID="229" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
   <Enrolment COURSECLASS_ID="660" CREATEDON="2012-05-08 16:02:01.102" ID="376" MODIFIEDON="2012-05-08 16:02:02.782"
              SOURCE="O" STATUS="3" STUDENTID="222" STUDYREASON="-1" VETISFULLTIME="0" ELIGIBILITYEXEMPTIONINDICATOR="0"
-             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+             VETFEEINDICATOR="0" confirmationStatus="2" feeHelpAmount="0"  attendanceType="9" isHybridCompleted="0"/>
 
   <InvoiceLine ACCOUNTID="14" CREATEDON="2010-10-12 15:53:16.762" DISCOUNTEACHEXTAX="0.00" ID="240" INVOICEID="240"
                MODIFIEDON="2010-10-12 15:53:16.762" PRICEEACHEXTAX="1636.36" QUANTITY="1.00" TAXEACH="163.64" TAXID="1"
