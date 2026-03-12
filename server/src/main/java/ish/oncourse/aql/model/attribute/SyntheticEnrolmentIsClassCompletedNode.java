@@ -131,26 +131,26 @@ class SyntheticEnrolmentIsClassCompletedNode extends LazyExpressionNode {
         statusCheck.jjtAddChild(new ASTObjPath(prefix+"status"), 0);
         statusCheck.jjtAddChild(new ASTScalar(EnrolmentStatus.SUCCESS.getDatabaseValue()), 1);
 
-        ASTNotEqual astNotEqual = new ASTNotEqual();
-        astNotEqual.jjtAddChild(new ASTObjPath(prefix+"courseClass.endDateTime"), 0);
-        astNotEqual.jjtAddChild(new ASTScalar(null), 1);
+        ASTNotEqual endDateNotNullCheck = new ASTNotEqual();
+        endDateNotNullCheck.jjtAddChild(new ASTObjPath(prefix+"courseClass.endDateTime"), 0);
+        endDateNotNullCheck.jjtAddChild(new ASTScalar(null), 1);
 
-        ASTLess astLess = new ASTLess();
-        astLess.jjtAddChild(new ASTObjPath(prefix+"courseClass.endDateTime"), 0);
-        astLess.jjtAddChild(new ASTCurrentDate(), 1);
+        ASTLess endDateBeforeNowCheck = new ASTLess();
+        endDateBeforeNowCheck.jjtAddChild(new ASTObjPath(prefix+"courseClass.endDateTime"), 0);
+        endDateBeforeNowCheck.jjtAddChild(new ASTCurrentDate(), 1);
 
         ASTEqual typeCheck = new ASTEqual();
         typeCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.type"), 0);
         typeCheck.jjtAddChild(new ASTScalar(CourseClassType.HYBRID.getDatabaseValue()), 1);
 
-        ASTTrue astTrue = new ASTTrue();
-        astTrue.jjtAddChild(new ASTObjPath(prefix+".isHybridCompleted"), 0);
+        ASTTrue isHybridCompletedCheck = new ASTTrue();
+        isHybridCompletedCheck.jjtAddChild(new ASTObjPath(prefix+".isHybridCompleted"), 0);
 
         hybridCompletedCheck.jjtAddChild(statusCheck, 0);
-        hybridCompletedCheck.jjtAddChild(astNotEqual, 1);
-        hybridCompletedCheck.jjtAddChild(astLess, 2);
+        hybridCompletedCheck.jjtAddChild(endDateNotNullCheck, 1);
+        hybridCompletedCheck.jjtAddChild(endDateBeforeNowCheck, 2);
         hybridCompletedCheck.jjtAddChild(typeCheck, 3);
-        hybridCompletedCheck.jjtAddChild(astTrue, 4);
+        hybridCompletedCheck.jjtAddChild(isHybridCompletedCheck, 4);
 
         hybridMainCheck.jjtAddChild(notHybridCheck, 0);
         hybridMainCheck.jjtAddChild(hybridCompletedCheck, 1);
