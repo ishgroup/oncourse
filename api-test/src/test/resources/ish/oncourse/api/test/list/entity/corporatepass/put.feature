@@ -21,6 +21,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "contactFullName":"company #3",
         "password":"pass001",
         "expiryDate":"2040-03-31",
+        "paymentType":"Default",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -49,6 +50,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "contactFullName":"company #2",
         "password":"pass001_upd",
         "expiryDate":"2026-02-01",
+        "paymentType":"Default",
         "invoiceEmail":"co2@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -72,6 +74,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "password":"pass001_upd",
         "expiryDate":"2026-02-01",
         "invoiceEmail":"co2@gmail.com",
+        "paymentType":"Default",
         "linkedDiscounts":[],
         "linkedSalables":[],
         "createdOn":"#ignore",
@@ -88,6 +91,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "password":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A",
         "expiryDate":"2016-02-01",
         "invoiceEmail":"co2@gmail.com",
+        "paymentType":"Default",
         "linkedDiscounts":[],
         "linkedSalables":[]
         }
@@ -115,6 +119,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "contactFullName":"company #3",
         "password":"pass002",
         "expiryDate":"2040-03-31",
+        "paymentType":"Default",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -148,6 +153,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "contactFullName":"company #2",
         "password":"pass002_upd",
         "expiryDate":null,
+        "paymentType":"Default",
         "invoiceEmail":"co2@gmail.com",
         "linkedDiscounts":[{"id":1001,"name":"discount1","discountType":"Percent","discountValue":null,"courseIdMustEnrol":null,"minEnrolmentsForAnyCourses":null,"discountPercent":0.1}],
         "linkedSalables":
@@ -176,6 +182,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "contactFullName":"company #2",
         "password":"pass002_upd",
         "expiryDate":null,
+        "paymentType":"Default",
         "invoiceEmail":"co2@gmail.com",
         "linkedDiscounts":[{"id":1001,"studentEmail":null,"name":"discount1","discountType":"Percent","rounding":null,"discountValue":null,"discountPercent":0.100,"courseIdMustEnrol":null,"minEnrolmentsForAnyCourses":null,"discountMin":null,"discountMax":null,"cosAccount":null,"predictedStudentsPercentage":null,"availableFor":null,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":null,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":null,"minEnrolments":null,"minValue":null,"corporatePassDiscounts":[],"createdOn":null,"modifiedOn":null,"courseIdMustEnrol":null,"courseNameMustEnrol":null,"minEnrolmentsForAnyCourses":null,"limitPreviousEnrolment":null,"relationDiscount":null}],
         "linkedSalables":[{"expiryDate":null,"entityToId":null,"code":"course2-1","entityFromId":null,"name":"Course2","active":true,"relationId":null,"id":4,"type":"Class"},{"expiryDate":null,"entityToId":null,"code":"SKU01","entityFromId":null,"name":"Membership#1","active":true,"relationId":null,"id":1003,"type":"Membership"},{"expiryDate":null,"entityToId":null,"code":"prd1","entityFromId":null,"name":"product1","active":true,"relationId":null,"id":1001,"type":"Product"},{"expiryDate":null,"entityToId":null,"code":"VOU1","entityFromId":null,"name":"voucherType1","active":true,"relationId":null,"id":1002,"type":"Voucher"}],
@@ -192,6 +199,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "contactFullName":"company #2",
         "password":"pass002_upd",
         "expiryDate":"2026-02-01",
+        "paymentType":"Default",
         "invoiceEmail":"co2@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -224,6 +232,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "contactFullName":"company #3",
         "password":"pass003",
         "expiryDate":"2040-03-31",
+        "paymentType":"Default",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -258,6 +267,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "password":"pass003_upd",
         "expiryDate":"2026-02-01",
         "invoiceEmail":"co2@gmail.com",
+        "paymentType":"Default",
         "linkedDiscounts":[{"id":1001,"name":"discount1","studentEmail":null, "discountType":"Percent","courseIdMustEnrol":null,"courseNameMustEnrol":null,"minEnrolmentsForAnyCourses":null,"discountValue":null,"discountPercent":0.1}],
         "linkedSalables":
             [
@@ -296,6 +306,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "contactFullName":null,
         "password":"password1",
         "expiryDate":null,
+        "paymentType":"Default",
         "invoiceEmail":"co1@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -316,6 +327,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "contactFullName":"company #1",
         "password":"",
         "expiryDate":null,
+        "paymentType":"Default",
         "invoiceEmail":"co1@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -339,6 +351,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "contactFullName":"company #1",
         "password":"password2",
         "expiryDate":null,
+        "paymentType":"Default",
         "invoiceEmail":"co1@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -362,6 +375,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/corporatepass'
         "contactFullName":"company #1",
         "password":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A1",
         "expiryDate":null,
+        "paymentType":"Default",
         "invoiceEmail":"co1@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]

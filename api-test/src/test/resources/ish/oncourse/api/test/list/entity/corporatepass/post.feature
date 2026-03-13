@@ -75,6 +75,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "contactFullName":"company #3",
         "password":"pass1",
         "expiryDate":"2040-03-31",
+        "paymentType":"Default",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -163,6 +164,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "contactFullName":"company #3",
         "password":"pass2",
         "expiryDate":"2040-03-31",
+        "paymentType":"Default",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
