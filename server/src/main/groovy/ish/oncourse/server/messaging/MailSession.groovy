@@ -36,7 +36,7 @@ class MailSession {
     private static final String SMTP_PORT = 'mail.smtp.port'
 
     //mail SMTP values
-    private static final String SMTP_DEFAULT_USER_NAME_VALUE = "noreply"
+    public static final String SMTP_DEFAULT_USER_NAME_VALUE = "noreply"
     private static final int SMTP_CONNECTION_TIMEOUT_VALUE = 300000
     private static final int SMTP_IO_TIMEOUT_VALUE = 300000
 
