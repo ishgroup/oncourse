@@ -391,11 +391,11 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 		List<Product> products = new ArrayList<>()
 
 		EntityRelationDao.getRelatedFrom(context, Course.simpleName, id)
-				.findAll { it -> Product.simpleName == it.fromEntityIdentifier }
+				.findAll { it -> Product.simpleName.equals(it.fromEntityIdentifier) }
 				.each { it -> products.add(SelectById.query(Product, it.fromRecordId).selectOne(context))} as List<Product>
 
 		EntityRelationDao.getRelatedTo(context, Course.simpleName, id)
-				.findAll { it -> Product.simpleName == it.toEntityIdentifier }
+				.findAll { it -> Product.simpleName.equals(it.toEntityIdentifier) }
 				.each { it -> products.add(SelectById.query(Product, it.toRecordId).selectOne(context))} as List<Product>
 
 		return products
@@ -425,7 +425,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 		List<Product> products = new ArrayList<>()
 
 		EntityRelationDao.getRelatedFrom(context, Course.simpleName, id)
-				.findAll { it -> Product.simpleName == it.fromEntityIdentifier }
+				.findAll { it -> Product.simpleName.equals(it.fromEntityIdentifier) }
 				.each { it -> products.add(SelectById.query(Product, it.fromRecordId).selectOne(context))} as List<Product>
 
 		return products
@@ -440,7 +440,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 		List<Course> courses = new ArrayList<>()
 
 		EntityRelationDao.getRelatedTo(context, Course.simpleName, id)
-				.findAll { it -> Course.simpleName == it.toEntityIdentifier }
+				.findAll { it -> Course.simpleName.equals(it.toEntityIdentifier) }
 				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context))}  as List<Course>
 
 		return courses
@@ -456,7 +456,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 		List<Course> courses = new ArrayList<>()
 
 		EntityRelationDao.getRelatedToByName(context, Course.simpleName, id, name)
-				.findAll { it -> Course.simpleName == it.toEntityIdentifier }
+				.findAll { it -> Course.simpleName.equals(it.toEntityIdentifier) }
 				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context))} as List<Course>
 
 		return courses
@@ -471,7 +471,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 		List<Course> courses = new ArrayList<>()
 
 		EntityRelationDao.getRelatedFrom(context, Course.simpleName, id)
-				.findAll { it -> Course.simpleName == it.fromEntityIdentifier }
+				.findAll { it -> Course.simpleName.equals(it.fromEntityIdentifier) }
 				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context))}  as List<Course>
 
 		return courses
@@ -486,7 +486,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 		List<Course> courses = new ArrayList<>()
 
 		EntityRelationDao.getRelatedFromByName(context, Course.simpleName, id, name)
-				.findAll { it -> Course.simpleName == it.fromEntityIdentifier }
+				.findAll { it -> Course.simpleName.equals(it.fromEntityIdentifier) }
 				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context))}  as List<Course>
 
 		return courses
