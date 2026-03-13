@@ -21,6 +21,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "password":"pass1",
         "expiryDate":"2040-03-31",
         "invoiceEmail":"co3@gmail.com",
+        "paymentType":"0",
         "linkedDiscounts":[{"id":1001,"courseIdMustEnrol":null,"studentEmail":null,"courseNameMustEnrol":null,"minEnrolmentsForAnyCourses":null,"name":"discount1","discountType":"Percent","discountValue":null,"discountPercent":0.1}],
         "linkedSalables":
             [
@@ -57,6 +58,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "password":"pass1",
         "expiryDate":"2040-03-31",
         "invoiceEmail":"co3@gmail.com",
+        "paymentType":"0",
         "linkedDiscounts":[{"id":1001,"name":"discount1","studentEmail":null,"discountType":"Percent","rounding":null,"discountValue":null,"discountPercent":0.100,"discountMin":null,"discountMax":null,"cosAccount":null,"predictedStudentsPercentage":null,"availableFor":null,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":null,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":null,"minEnrolments":null,"minValue":null,"corporatePassDiscounts":[],"createdOn":null,"modifiedOn":null,"limitPreviousEnrolment":null,"relationDiscount":null, "courseIdMustEnrol":null,"courseNameMustEnrol":null,"minEnrolmentsForAnyCourses":null}],
         "linkedSalables":"#ignore",
         "createdOn":"#ignore",
@@ -107,6 +109,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "password":"pass2",
         "expiryDate":"2040-03-31",
         "invoiceEmail":"co3@gmail.com",
+        "paymentType":"0",
         "linkedDiscounts":[{"id":1001,"name":"discount1","discountType":"Percent","discountValue":null,"courseIdMustEnrol":null,"courseNameMustEnrol":null,"minEnrolmentsForAnyCourses":null,"discountPercent":0.1}],
         "linkedSalables":
             [
@@ -142,6 +145,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "contactFullName":"company #3",
         "password":"pass2",
         "expiryDate":"2040-03-31",
+        "paymentType":"0",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[{"id":1001,"studentEmail":null,"name":"discount1","discountType":"Percent","rounding":null,"discountValue":null,"discountPercent":0.100,"courseIdMustEnrol":null,"courseNameMustEnrol":null,"minEnrolmentsForAnyCourses":null,"discountMin":null,"discountMax":null,"cosAccount":null,"predictedStudentsPercentage":null,"availableFor":null,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":null,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":null,"minEnrolments":null,"minValue":null,"corporatePassDiscounts":[],"createdOn":null,"modifiedOn":null,"limitPreviousEnrolment":null,"relationDiscount":null}],
         "linkedSalables":"#ignore",
@@ -196,6 +200,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "contactFullName":"company #3",
         "password":"pass3",
         "expiryDate":"2040-03-31",
+        "paymentType":"0",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -219,6 +224,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "contactFullName":null,
         "password":"pass3",
         "expiryDate":"2040-03-31",
+        "paymentType":"0",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -242,6 +248,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "contactFullName":"company #3",
         "password":"",
         "expiryDate":"2040-03-31",
+        "paymentType":"0",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -265,6 +272,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "contactFullName":"company #3",
         "password":"password1",
         "expiryDate":"2040-03-31",
+        "paymentType":"0",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -288,6 +296,7 @@ Feature: Main feature for all POST requests with path 'list/entity/corporatepass
         "contactFullName":"company #3",
         "password":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A1",
         "expiryDate":"2040-03-31",
+        "paymentType":"0",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
