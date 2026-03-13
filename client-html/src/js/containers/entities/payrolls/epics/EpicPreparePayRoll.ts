@@ -3,26 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PayrollRequest, WagesToProcess } from "@api/model";
-import { initialize } from "redux-form";
-import { Epic } from "redux-observable";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { PayrollRequest } from '@api/model';
+import { startProcess } from '../../../../common/actions';
+import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import { Create, Request } from '../../../../common/epics/EpicUtils';
+import { CLEAR_PAYROLL_PREPARED_WAGES, PREPARE_PAYROLL, setPreparedPayroll } from '../actions';
+import PayrollService from '../services/PayrollService';
 
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { PAYSLIP_GENERATE_FORM } from "../../payslips/components/PayslipGenerateDialog";
-import { CLEAR_PAYROLL_PREPARED_WAGES, PREPARE_PAYROLL, PREPARE_PAYROLL_FULFILLED } from "../actions/index";
-import PayrollService from "../services/PayrollService";
-
-const request: EpicUtils.Request<any, { entity: string; payrollRequest: PayrollRequest }> = {
+const request: Request<string, { entity: string; payrollRequest: PayrollRequest }> = {
   type: PREPARE_PAYROLL,
   getData: ({ entity, payrollRequest }) => PayrollService.prepare(entity, payrollRequest),
-  processData: (preparedWages: WagesToProcess, state, { payrollRequest }) => {
+  processData: (preparedWagesProcessId: string, s, { payrollRequest }) => {
     return [
-      {
-        type: PREPARE_PAYROLL_FULFILLED,
-        payload: { preparedWages }
-      },
-      initialize(PAYSLIP_GENERATE_FORM, payrollRequest)
+      startProcess(preparedWagesProcessId, [
+        setPreparedPayroll(preparedWagesProcessId, payrollRequest)
+      ])
     ];
   },
   processError: response => {
@@ -35,4 +30,4 @@ const request: EpicUtils.Request<any, { entity: string; payrollRequest: PayrollR
   }
 };
 
-export const EpicPreparePayRoll: Epic<any, any> = EpicUtils.Create(request);
+export const EpicPreparePayRoll = Create(request);

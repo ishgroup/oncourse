@@ -66,7 +66,6 @@ export const CLEAR_MESSAGE = "common/message/clear";
 export const START_PROCESS = "start/process";
 export const UPDATE_PROCESS = "update/process";
 export const CLEAR_PROCESS = "clear/process";
-export const CLEAR_ACTION_ON_FAIL = "clear/action/on/fail";
 
 export const SET_LOGIN_STATE = "login/state/set";
 
@@ -182,7 +181,7 @@ export const clearFetch = () => ({
   type: FETCH_CLEAR
 });
 
-export const getProcessStatus = (processId: string, actions: any[]) => ({
+export const startProcess = (processId: string, actions: any[]) => ({
   type: START_PROCESS,
   payload: { processId, actions }
 });
