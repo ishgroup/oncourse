@@ -56,7 +56,7 @@ class PayrollApiImpl implements PayrollApi {
     }
 
     @Override
-    WagesToProcessDTO getPreparationResult(String processId) {
+    WagesToProcessDTO getPreparationResult(String entity, String processId) {
         toWagesToProcess(payrollService.getPreparationResult(processId))
     }
 }
