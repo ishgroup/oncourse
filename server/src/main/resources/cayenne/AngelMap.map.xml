@@ -337,6 +337,7 @@
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="paymentType" type="INTEGER"/>
 	</db-entity>
 	<db-entity name="CorporatePass_CourseClass">
 		<db-attribute name="corporatePassId" type="BIGINT" isMandatory="true"/>
@@ -2090,6 +2091,7 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="paymentType" type="ish.common.types.CorporatePassPaymentType" db-attribute-path="paymentType"/>
 	</obj-entity>
 	<obj-entity name="CorporatePassCourseClass" className="ish.oncourse.server.cayenne.CorporatePassCourseClass" clientClassName="ish.oncourse.cayenne.CorporatePassCourseClass" dbEntityName="CorporatePass_CourseClass" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>

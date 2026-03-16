@@ -21,6 +21,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/corporatepa
         "contactFullName":"company #3",
         "password":"pass30",
         "expiryDate":"2040-03-31",
+        "paymentType":"Default",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -63,6 +64,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/corporatepa
         "contactFullName":"company #3",
         "password":"pass31",
         "expiryDate":"2040-03-31",
+        "paymentType":"Default",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]
@@ -110,6 +112,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/corporatepa
         "contactFullName":"company #3",
         "password":"pass32",
         "expiryDate":"2040-03-31",
+        "paymentType":"Default",
         "invoiceEmail":"co3@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":[]

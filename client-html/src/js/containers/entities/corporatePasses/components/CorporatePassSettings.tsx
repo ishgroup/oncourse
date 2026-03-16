@@ -3,9 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Contact } from '@api/model';
+import { Contact, CorporatePassPaymentType } from '@api/model';
 import Grid from '@mui/material/Grid';
 import $t from '@t';
+import { mapSelectItems } from 'ish-ui';
 import * as React from 'react';
 import { change } from 'redux-form';
 import {
@@ -18,6 +19,8 @@ import FullScreenStickyHeader
 import { EditViewProps } from '../../../../model/common/ListView';
 import ContactSelectItemRenderer from '../../contacts/components/ContactSelectItemRenderer';
 import { getContactFullName } from '../../contacts/utils';
+
+const paymentPatternOptions = Object.keys(CorporatePassPaymentType).map(mapSelectItems);
 
 class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
   onContactChange = (value: Contact) => {
@@ -79,6 +82,9 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField type="date" name="expiryDate" label={$t('expire_on')} />
+        </Grid>
+        <Grid item xs={twoColumn ? 6 : 12}>
+          <FormField type="select" name="paymentType" label={$t("payment_pattern")} items={paymentPatternOptions} />
         </Grid>
       </Grid>
     );
