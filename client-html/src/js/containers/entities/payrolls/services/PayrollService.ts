@@ -8,8 +8,8 @@ class PayrollService {
     return this.payrollApi.execute(entity, confirm, payrollRequest);
   }
 
-  getPreparationResult(processId: string): Promise<WagesToProcess> {
-    return this.payrollApi.getPreparationResult(processId);
+  public getPreparationResult(entity: string, processId: string): Promise<WagesToProcess> {
+    return this.payrollApi.getPreparationResult(entity, processId);
   }
 
   public prepare(entity: string, payrollRequest: PayrollRequest): Promise<string> {
