@@ -13,10 +13,10 @@ import PayrollService from '../services/PayrollService';
 const request: Request<string, { entity: string; payrollRequest: PayrollRequest }> = {
   type: PREPARE_PAYROLL,
   getData: ({ entity, payrollRequest }) => PayrollService.prepare(entity, payrollRequest),
-  processData: (preparedWagesProcessId: string, s, { payrollRequest }) => {
+  processData: (preparedWagesProcessId: string, s, { entity, payrollRequest }) => {
     return [
       startProcess(preparedWagesProcessId, [
-        setPreparedPayroll(preparedWagesProcessId, payrollRequest)
+        setPreparedPayroll(preparedWagesProcessId, entity, payrollRequest)
       ])
     ];
   },
