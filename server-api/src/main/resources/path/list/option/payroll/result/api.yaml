@@ -4,6 +4,12 @@ get:
   tags:
     - Payroll
   parameters:
+    - name: entity
+      in: query
+      required: true
+      type: string
+      description: The onCourse entity name that you wish to get. Use for lazy permission checking
+      example: Course
     - name: processId
       in: query
       required: true
