@@ -11,9 +11,9 @@ import { PAYSLIP_GENERATE_FORM } from '../../payslips/components/PayslipGenerate
 import { CLEAR_PAYROLL_PREPARED_WAGES, PREPARE_PAYROLL_FULFILLED, SET_PREPARED_PAYROLL } from '../actions';
 import PayrollService from '../services/PayrollService';
 
-const request: Request<WagesToProcess, { processId: string, payrollRequest: PayrollRequest }> = {
+const request: Request<WagesToProcess, { processId: string, entity:string, payrollRequest: PayrollRequest }> = {
   type: SET_PREPARED_PAYROLL,
-  getData: ({ processId }) => PayrollService.getPreparationResult(processId),
+  getData: ({ processId, entity }) => PayrollService.getPreparationResult(entity, processId),
   processData: (preparedWages: WagesToProcess, s, { payrollRequest }) => {
     return [
       {
