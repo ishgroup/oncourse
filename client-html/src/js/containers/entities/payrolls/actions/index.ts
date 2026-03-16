@@ -16,9 +16,9 @@ export const PAYROLL_PROCESS_FINISHED = "payroll/process/finished";
 
 export const CLEAR_PAYROLL_PREPARED_WAGES = "clear/list/option/payroll/wages";
 
-export const setPreparedPayroll = (processId: string, payrollRequest: PayrollRequest ) => ({
+export const setPreparedPayroll = (processId: string, entity: string, payrollRequest: PayrollRequest ) => ({
   type: SET_PREPARED_PAYROLL,
-  payload: { processId, payrollRequest  }
+  payload: { processId, entity, payrollRequest  }
 });
 
 export const preparePayroll = (entity: string, payrollRequest: PayrollRequest) => ({
