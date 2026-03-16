@@ -846,6 +846,7 @@
   "payment_method": "Payment method",
   "payment_method_name": "Payment method name",
   "payment_method_type": "Payment method type",
+  "payment_pattern": "Payment pattern",
   "payment_plan": "Payment plan",
   "payment_plan_payments": " Payment plan / payments",
   "payment_plans": "Payment plans",

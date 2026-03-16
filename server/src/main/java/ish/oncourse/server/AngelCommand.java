@@ -13,6 +13,7 @@ package ish.oncourse.server;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import io.bootique.BQRuntime;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
@@ -27,6 +28,7 @@ import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.localization.UploadLocalizationSettingsCommand;
 import ish.oncourse.server.messaging.MailDeliveryService;
+import ish.oncourse.server.modules.AngelHttpsConnectorFactory;
 import ish.oncourse.server.services.ISchedulerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -89,7 +91,6 @@ public class AngelCommand extends CommandWithMetadata {
 
     @Override
     public CommandOutcome run(Cli cli) {
-
         var serverFactory = serverFactoryProvider.get();
         try {
             CayenneService cayenneService = cayenneServiceProvider.get();
@@ -105,7 +106,8 @@ public class AngelCommand extends CommandWithMetadata {
             );
 
             logger.warn("Configure QRTZ...");
-            serverFactory.configureQRTZScheduler(schedulerServiceProvider.get(), schedulerProvider.get(), prefControllerProvider.get());
+            serverFactory.configureQRTZScheduler(schedulerServiceProvider.get(), schedulerProvider.get(),
+                    prefControllerProvider.get());
 
 
             logger.warn("Start Plugins...");

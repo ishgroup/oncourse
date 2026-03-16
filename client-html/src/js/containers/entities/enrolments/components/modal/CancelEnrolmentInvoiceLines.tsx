@@ -11,21 +11,17 @@ import { formatCurrency, WarningMessage } from 'ish-ui';
 import React, { useCallback } from 'react';
 import { change } from 'redux-form';
 import FormField from '../../../../../common/components/form/formFields/FormField';
-import { useAppSelector } from '../../../../../common/utils/hooks';
+import { bankRounding, useAppSelector } from '../../../../../common/utils/hooks';
 import { accountLabelCondition } from '../../../accounts/utils';
 
 const FORM: string = "CANCEL_ENROLMENT_FORM";
 const CANCEL_FEE_AMOUNT_WARNING_MESSAGE = "The cancellation fee is greater than the fee paid";
 
-const roundCancellationFeeExTax = val => val && new Decimal(val || 0).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN).toNumber();
-
 const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => {
   const cancellationFee = new Decimal(cancellationFeeExTax || 0);
-  return cancellationFee
+  return bankRounding(cancellationFee
     .mul(taxRate)
-    .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
-    .plus(cancellationFee)
-    .toNumber();
+    .plus(cancellationFee));
 };
 
 const CancelEnrolmentInvoiceLines: React.FC<any> = ({
@@ -43,7 +39,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
       const field = fields.get(ind);
 
       const cancellationFeeIncTax = addInvoiceLineTax(
-        roundCancellationFeeExTax(e.target.value),
+        bankRounding(e.target.value),
         taxes.find(t => t.id === field.taxId).rate
       );
       dispatch(change(FORM, `invoices[${ind}].chargedFee`, cancellationFeeIncTax));
@@ -112,7 +108,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                         <FormField
                           type="number"
                           name={`${item}.cancellationFeeExTax`}
-                          normalize={roundCancellationFeeExTax}
+                          normalize={bankRounding}
                           onChange={e => onCancelFeeChange(e, index)}
                           debounced={false}
                           disabled={!field.isReverseCreditNotes}
