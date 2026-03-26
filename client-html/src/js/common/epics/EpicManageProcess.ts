@@ -5,7 +5,7 @@
 
 import { ProcessResult } from '@api/model';
 import { Epic } from 'redux-observable';
-import { CLEAR_ACTION_ON_FAIL, CLEAR_PROCESS, FETCH_FAIL, START_PROCESS, UPDATE_PROCESS } from '../actions';
+import { CLEAR_PROCESS, FETCH_FAIL, START_PROCESS, UPDATE_PROCESS } from '../actions';
 import { IAction } from '../actions/IshAction';
 import FetchErrorHandler from '../api/fetch-errors-handlers/FetchErrorHandler';
 import ProcessService from '../services/ProcessService';
@@ -61,7 +61,7 @@ const switchByStatus = (
           type: FETCH_FAIL,
           payload: { message: process.message || "Process failed" }
         },
-        ...(actionsOnFail !== undefined ? actionsOnFail : [{ type: CLEAR_ACTION_ON_FAIL }]),
+        ...actionsOnFail ? actionsOnFail : [],
         {
           type: CLEAR_PROCESS
         }

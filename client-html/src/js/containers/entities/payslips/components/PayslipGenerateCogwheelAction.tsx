@@ -3,19 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PayrollRequest } from "@api/model";
-import MenuItem from "@mui/material/MenuItem";
-import { format as formatDate } from "date-fns";
-import { AnyArgFunction, NoArgFunction, ShowConfirmCaller, usePrevious, YYYY_MM_DD_MINUSED } from "ish-ui";
-import React, { useCallback, useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize, isDirty } from "redux-form";
-import { interruptProcess } from "../../../../common/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { State } from "../../../../reducers/state";
-import { clearPayrollPreparedWages, executePayroll, preparePayroll } from "../../payrolls/actions";
-import PayslipGenerateDialog from "./PayslipGenerateDialog";
+import { PayrollRequest } from '@api/model';
+import { CircularProgress, Collapse, ListItemIcon, MenuItem, Typography } from '@mui/material';
+import { format as formatDate } from 'date-fns';
+import { AnyArgFunction, NoArgFunction, ShowConfirmCaller, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize, isDirty } from 'redux-form';
+import { interruptProcess } from '../../../../common/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
+import { State } from '../../../../reducers/state';
+import { clearPayrollPreparedWages, executePayroll, preparePayroll } from '../../payrolls/actions';
+import PayslipGenerateDialog from './PayslipGenerateDialog';
 
 const getPayrollInitial = (): PayrollRequest => {
   const yesterday = new Date();
@@ -97,21 +97,6 @@ const PayslipGenerateCogwheelAction: React.FC<Props> = ({
     }
   }, []);
 
-  const prevProcessRunning = usePrevious(processRunning);
-  const prevPreparedWages = usePrevious(preparedWages);
-
-  useEffect(() => {
-    if (!processRunning && prevProcessRunning) {
-      clearPreparedPayroll();
-    }
-  }, [processRunning]);
-
-  useEffect(() => {
-    if (!preparedWages && prevPreparedWages) {
-      closeMenu();
-    }
-  }, [preparedWages]);
-
   return (
     <>
       {preparedWages && (
@@ -124,8 +109,15 @@ const PayslipGenerateCogwheelAction: React.FC<Props> = ({
         />
       )}
 
-      <MenuItem disabled={!generateIsAllowed} className={menuItemClass} onClick={checkDirtyBeforePreparePayslip}>
-        {generateLabel}
+      <MenuItem disabled={!generateIsAllowed || processRunning} className={menuItemClass} onClick={checkDirtyBeforePreparePayslip}>
+        <Collapse orientation="horizontal" in={processRunning}>
+          <ListItemIcon>
+            <CircularProgress size={24} />
+          </ListItemIcon>
+        </Collapse>
+        <Typography variant="inherit" noWrap>
+          {generateLabel}
+        </Typography>
       </MenuItem>
     </>
   );
