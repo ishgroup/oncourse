@@ -133,19 +133,24 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       ),
     [isNew, twoColumn, form]
   );
+  
+  const findTaxByIncomeAccount = incomeAccountId => {
+    const account = accounts.find(a => a.id === incomeAccountId);
+    return account ? parseInt([account]['tax.id']) : null;
+  };
 
   const addInvoiceLine = isNew || values.type === "Quote"
     ? () => {
-      const incomeAccountId =  defaultInvoiceLineAccount ? Number(defaultInvoiceLineAccount) : null;
+      const incomeAccountId =  defaultInvoiceLineAccount ? parseInt(defaultInvoiceLineAccount) : null;
       const newLine: InvoiceLineWithTotal = {
         quantity: 1,
         incomeAccountId,
         taxId:
           selectedContact && selectedContact["taxOverride.id"]
-            ? Number(selectedContact["taxOverride.id"])
+            ? parseInt(selectedContact["taxOverride.id"])
             : incomeAccountId
-              ? parseInt(accounts.find(a => a.id === incomeAccountId)['tax.id'])
-              : taxes.length ? taxes[0].id : null,
+              ? findTaxByIncomeAccount(incomeAccountId)
+              : taxes.length ? taxes[0]?.id : null,
         taxEach: 0,
         discountEachExTax: 0,
         priceEachExTax: 0,
