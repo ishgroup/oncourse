@@ -143,8 +143,9 @@ class SyntheticEnrolmentIsClassCompletedNode extends LazyExpressionNode {
         typeCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.type"), 0);
         typeCheck.jjtAddChild(new ASTScalar(CourseClassType.HYBRID.getDatabaseValue()), 1);
 
-        ASTTrue isHybridCompletedCheck = new ASTTrue();
-        isHybridCompletedCheck.jjtAddChild(new ASTObjPath(prefix+".isHybridCompleted"), 0);
+        ASTEqual isHybridCompletedCheck = new ASTEqual();
+        isHybridCompletedCheck.jjtAddChild(new ASTObjPath(prefix+"isHybridCompleted"), 0);
+        isHybridCompletedCheck.jjtAddChild(new ASTTrue(), 1);
 
         hybridCompletedCheck.jjtAddChild(statusCheck, 0);
         hybridCompletedCheck.jjtAddChild(endDateNotNullCheck, 1);
