@@ -327,6 +327,9 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		super.preUpdate()
 		onCourseClassModified()
 		updateOutcomesStartEndDates()
+
+        if(getType() == CourseClassType.HYBRID)
+            enrolments.each {it.updateHybridCompleted()}
 	}
 
 	private void onCourseClassModified() {

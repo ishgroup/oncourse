@@ -114,6 +114,8 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Override
 	void prePersist() {
 		updateOverriddenFields()
+		if(isHybridCompleted == null || courseClass.type == CourseClassType.HYBRID)
+			updateHybridCompleted()
 	}
 
 	@Override
@@ -143,6 +145,15 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		context.commitChanges()
 	}
 
+	void updateHybridCompleted(){
+		int attendancesSize = attendances
+				.findAll{attendance -> attendance.getAttendanceType() == AttendanceType.ATTENDED}
+				.size()
+
+		Integer minSessionsToComplete = getCourseClass().getMinimumSessionsToComplete()
+		setIsHybridCompleted(minSessionsToComplete != null && attendancesSize >= minSessionsToComplete)
+	}
+
 	/**
 	 * @return class cacellation warning message
 	 */
@@ -165,6 +176,9 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 
 	@Override
 	void preUpdate() {
+		if(isHybridCompleted == null || courseClass.type == CourseClassType.HYBRID)
+			updateHybridCompleted()
+
 		super.preUpdate()
 	}
 
