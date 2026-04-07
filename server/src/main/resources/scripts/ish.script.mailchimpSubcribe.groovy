@@ -11,5 +11,6 @@ if (integration && record.taggedContact.email && record.taggedContact.allowEmail
         firstName record.taggedContact.firstName
         lastName record.taggedContact.lastName
         postcode record.taggedContact.postcode
+        optIn false
     }
 }
