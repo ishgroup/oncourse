@@ -31,7 +31,7 @@ export const setInvoiceLinesTotal = async (value: InvoiceWithTotalLine): Promise
         `id is ${line.discountId} and ${INVOICE_LINE_DISCOUNT_AQL}`,
         1,
         0,
-      ).then(({ rows }) => plainDiscountToAPIModel(rows.map(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS))[0]));
+      ).then(({ rows }) => rows.length ? plainDiscountToAPIModel(rows.map(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS))[0]) : null);
 
       const taxRate = await EntityService.getPlainRecords(
         'Tax',
