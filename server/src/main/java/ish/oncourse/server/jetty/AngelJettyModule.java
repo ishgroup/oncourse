@@ -8,9 +8,12 @@
 
 package ish.oncourse.server.jetty;
 
+import com.google.inject.Provides;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.jetty.JettyModule;
 import ish.oncourse.server.jetty.server.AngelServerFactory;
+import ish.oncourse.server.license.LicenseService;
+import ish.oncourse.server.modules.AngelHttpsConnectorFactory;
 
 public class AngelJettyModule extends JettyModule {
 
@@ -26,5 +29,7 @@ public class AngelJettyModule extends JettyModule {
     protected <T> T config(Class<T> type, ConfigurationFactory configurationFactory) {
         return (T) configurationFactory.config(AngelServerFactory.class, getConfigPrefix());
     }
+
+
 
 }

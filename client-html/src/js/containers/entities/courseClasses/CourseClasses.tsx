@@ -40,7 +40,6 @@ import { postNoteItem, putNoteItem } from '../../../common/components/form/notes
 import { validateNoteCreate, validateNoteUpdate } from '../../../common/components/form/notes/utils';
 import {
   getFilters,
-  setListCreatingNew,
   setListEditRecord,
   setListSelection,
 } from '../../../common/components/list-view/actions';
@@ -91,7 +90,6 @@ interface CourseClassesProps {
   values?: CourseClass;
   initialValues?: CourseClass;
   userPreferences?: UserPreferencesState;
-  setListCreatingNew?: BooleanArgFunction;
   updateSelection?: (selection: string[]) => void;
 }
 
@@ -460,7 +458,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
     onFirstRender,
     onUpdate,
     userPreferences,
-    setListCreatingNew,
     updateSelection,
     values,
     initialValues,
@@ -535,7 +532,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
               reportableHours: res.rows[0].values[3] ? Number(res.rows[0].values[3]) : 0
             };
 
-            setListCreatingNew(true);
             updateSelection(["new"]);
             onInit(updatedInitial);
 
@@ -587,7 +583,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
 
     if (values) {
       if (outcomeFieldsToUpdate.length) {
-        EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values.id}`)
+        EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values?.id}`)
           .then(res => {
             const ids = res.rows.map(r => Number(r.id));
             return EntityService.bulkChange('Outcome', {
@@ -602,7 +598,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
       }
 
       if (enrolmentFieldsToUpdate.length) {
-        EntityService.getPlainRecords("Enrolment", "id", `courseClass.id is ${values.id}`)
+        EntityService.getPlainRecords("Enrolment", "id", `courseClass.id is ${values?.id}`)
           .then(res => {
             const ids = res.rows.map(r => Number(r.id));
 
@@ -784,7 +780,6 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
     dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone,isVirtual", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
   },
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
-  setListCreatingNew: creatingNew => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: selection => dispatch(setListSelection(selection)),
 });
 

@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import $t from '@t';
 import { addHours } from 'date-fns';
 import { idsToString, ShowConfirmCaller } from 'ish-ui';
-import isEqual from 'lodash.isequal';
+import { isEqual } from 'es-toolkit/compat';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';

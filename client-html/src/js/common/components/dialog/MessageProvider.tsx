@@ -6,17 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Message } from "ish-ui";
-import { MessageProps } from "ish-ui/dist/model/Message";
-import debounce from "lodash.debounce";
-import { useEffect, useState } from "react";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { Fetch } from "../../../model/common/Fetch";
-import { AppMessage } from "../../../model/common/Message";
-import { State } from "../../../reducers/state";
-import { clearFetch, clearMessage } from "../../actions";
+import { debounce } from 'es-toolkit/compat';
+import { Message } from 'ish-ui';
+import { MessageProps } from 'ish-ui/dist/model/Message';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { Fetch } from '../../../model/common/Fetch';
+import { AppMessage } from '../../../model/common/Message';
+import { State } from '../../../reducers/state';
+import { clearFetch, clearMessage } from '../../actions';
 
 type MessageProviderState = Omit<MessageProps, "clearMessage" >
 

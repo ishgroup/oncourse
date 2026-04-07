@@ -18,7 +18,6 @@ import {
   GET_RECORDS_FULFILLED,
   GET_RECORDS_REQUEST,
   SET_LIST_CORE_FILTERS,
-  SET_LIST_CREATING_NEW,
   SET_LIST_CUSTOM_TABLE_MODEL,
   SET_LIST_EDIT_RECORD,
   SET_LIST_EDIT_RECORD_FETCHING,
@@ -36,22 +35,21 @@ import {
 } from '../actions';
 import { getUpdated } from '../utils/listFiltersUtils';
 
-class State implements ListState {
-  menuTags = [];
+const Initial: ListState = {
+  menuTags: [],
+  checkedChecklists: [],
 
-  checkedChecklists = [];
+  uncheckedChecklists: [],
 
-  uncheckedChecklists = [];
+  menuTagsLoaded: false,
 
-  menuTagsLoaded = false;
+  filterGroups: [],
 
-  filterGroups = [];
+  filterGroupsLoaded: false,
 
-  filterGroupsLoaded = false;
+  showColoredDots: false,
 
-  showColoredDots = false;
-
-  records = {
+  records: {
     entity: "",
     columns: [],
     rows: [],
@@ -63,38 +61,36 @@ class State implements ListState {
     filteredCount: 0,
     filterColumnWidth: LIST_SIDE_BAR_DEFAULT_WIDTH,
     tagsOrder: []
-  };
+  },
 
-  plainRecords = {};
+  plainRecords: {},
 
-  search = "";
+  search:  "",
 
-  searchQuery = {
+  searchQuery: {
     search: "",
     filter: "",
     tagGroups: []
-  };
+  },
 
-  searchError = false;
+  searchError: false,
 
-  editRecord = null;
+  editRecord: null,
 
-  recepients = null;
+  recepients: null,
 
-  selection = [];
+  selection: [],
 
-  fetching = false;
+  fetching: false,
 
-  editRecordFetching = false;
+  editRecordFetching: false,
+  
+  fullScreenEditView: false,
 
-  creatingNew = false;
+  customTableModel: null
+};
 
-  fullScreenEditView = false;
-
-  customTableModel = null;
-}
-
-export const listReducer = (state: State = new State(), action: IAction<any>): any => {
+export const listReducer = (state: ListState = {...Initial}, action: IAction<any>): ListState => {
   switch (action.type) {
     case GET_RECORDS_REQUEST:
       return {
@@ -166,13 +162,6 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
       return {
         ...state,
         editRecordFetching: true
-      };
-    }
-
-    case SET_LIST_CREATING_NEW: {
-      return {
-        ...state,
-        creatingNew: action.payload
       };
     }
 

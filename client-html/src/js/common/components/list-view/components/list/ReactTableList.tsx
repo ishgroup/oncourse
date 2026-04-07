@@ -8,8 +8,7 @@
 
 import { Column, DataResponse, TableModel } from '@api/model';
 import DragIndicator from '@mui/icons-material/DragIndicator';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Typography from '@mui/material/Typography';
+import { TableSortLabel, Typography } from '@mui/material';
 import $t from '@t';
 import {
   ColumnDef,
@@ -22,8 +21,8 @@ import {
   useReactTable,
   VisibilityState
 } from '@tanstack/react-table';
+import { debounce } from 'es-toolkit/compat';
 import { AnyArgFunction, StringKeyObject, StyledCheckbox } from 'ish-ui';
-import debounce from 'lodash.debounce';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd-next';
 import { makeStyles } from 'tss-react/mui';
@@ -170,10 +169,10 @@ const Table = ({
     getRowId
   });
 
-  const onSelectionChangeHangler = useCallback<any>(debounce(() => {
-    onSelectionChange(Object.keys(table.getState().rowSelection).map(k => k));
-  }, 500), [selection]);
-
+  const onSelectionChangeHangler = (newSelection: RowSelectionState) => {
+    onSelectionChange(Object.keys(newSelection).map(k => k));
+  };
+  
   const onHiddenChange = useCallback<any>(debounce(() => {
     const updated = {};
     columns.forEach(c => {
@@ -202,7 +201,7 @@ const Table = ({
       updated[id] = true;
     }
     onRowSelectionChange(updated);
-    onSelectionChangeHangler();
+    onSelectionChangeHangler(updated);
   };
 
   const onRowSelect = (e, row) => {
@@ -223,7 +222,7 @@ const Table = ({
         }, {});
 
       onRowSelectionChange(selectionData);
-      onSelectionChangeHangler();
+      onSelectionChangeHangler(selectionData);
       return;
     }
     if (e.ctrlKey || e.metaKey) {
@@ -231,7 +230,7 @@ const Table = ({
       return;
     }
     onRowSelectionChange({ [row.id]: true });
-    onSelectionChangeHangler();
+    onSelectionChangeHangler({ [row.id]: true });
   };
 
   const onRowCheckboxSelect = (e, id) => {

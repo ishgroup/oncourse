@@ -13,17 +13,16 @@ import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import Decimal from 'decimal.js-light';
+import { debounce } from 'es-toolkit/compat';
 import {
   appendTimezone,
   D_MMM,
   decimalMinus,
-  decimalMul,
   decimalPlus,
   formatCurrency,
   makeAppStyles,
   StringArgFunction
 } from 'ish-ui';
-import debounce from 'lodash.debounce';
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -33,14 +32,13 @@ import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
 import EntityService from '../../../../common/services/EntityService';
 import { getCustomColumnsMap } from '../../../../common/utils/common';
-import { useAppSelector } from '../../../../common/utils/hooks';
+import { getCurrentTax, useAppSelector } from '../../../../common/utils/hooks';
 import { getLabelWithCount } from '../../../../common/utils/strings';
 import history from '../../../../constants/History';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from '../../../../model/entities/CourseClass';
 import { State } from '../../../../reducers/state';
-import { getRoundingByType } from '../../discounts/utils';
-import { getCurrentTax } from '../../taxes/utils';
+import { getDiscountAmountByFee } from '../../discounts/utils';
 import { setCourseClassBudgetModalOpened, setCourseClassLatestSession } from '../actions';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../constants';
 import { getClassCostTypes } from '../utils';
@@ -204,13 +202,8 @@ const useBudgetAdornmentStyles = makeAppStyles()(theme => ({
 }));
 
 const getDiscountedFee = (discount, currentTax, classFee) => {
-  const taxOnDiscount = decimalMul(discount.courseClassDiscount.discountOverride || discount.perUnitAmountExTax || 0, currentTax.rate);
-
-  let decimal = new Decimal(classFee).minus(discount.perUnitAmountExTax || 0).minus(taxOnDiscount);
-  
-  if (decimal.toNumber() < 0) decimal = new Decimal(0);
-
-  return getRoundingByType(discount.courseClassDiscount.discount.rounding, decimal);
+  const discountAmount = getDiscountAmountByFee(discount.courseClassDiscount?.discount, new Decimal(1).plus(currentTax.rate), classFee);
+  return new Decimal(classFee).minus(discountAmount)?.toNumber()
 };
 
 interface BudgetAdornmentProps {
@@ -249,8 +242,8 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
       && (!b.courseClassDiscount.discount.code && b.courseClassDiscount.discount.relationDiscount));
     discountsRelations.sort(discountsSort);
 
-    const mapDiscount = d => (
-      <Fragment key={d.id}>
+    const mapDiscount = d => {
+      return <Fragment key={d.id}>
         <div>
           {d.courseClassDiscount.discount.name}
         </div>
@@ -260,8 +253,9 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
             currencySymbol
           )}
         </div>
-      </Fragment>
-    );
+      </Fragment>;
+
+    };
 
     const discountHeader = header => <Typography variant="button" component="div" className="mt-3">{header}</Typography>;
 
@@ -407,7 +401,7 @@ const CourseClassEditView: React.FC<Props> = ({
 
       return (twoColumn ? (
         <BudgetAdornment
-          studentFee={{ ...values.budget[studentFeeIndex] || {}, index: studentFeeIndex }}
+          studentFee={{ ...values?.budget && values?.budget[studentFeeIndex] || {}, index: studentFeeIndex }}
           currencySymbol={currencySymbol}
           isNew={isNew}
           dispatch={dispatch}

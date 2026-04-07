@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ClassCost } from "@api/model";
-import { _toRequestType } from "../../../../../../common/actions/ActionUtils";
+import { ClassCost } from '@api/model';
+import { _toRequestType } from '../../../../../../common/actions/ActionUtils';
 
 export const GET_COURSE_CLASS_COSTS = _toRequestType("get/courseClass/costs");
 
@@ -26,5 +26,10 @@ export const postCourseClassCost = (cost: ClassCost) => ({
 
 export const deleteCourseClassCost = (id: number) => ({
   type: DELETE_COURSE_CLASS_COST,
+  payload: id
+});
+
+export const getCourseClassCosts = (id: number) => ({
+  type: GET_COURSE_CLASS_COSTS,
   payload: id
 });

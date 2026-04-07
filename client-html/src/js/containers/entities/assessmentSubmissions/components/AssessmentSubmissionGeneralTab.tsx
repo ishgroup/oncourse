@@ -34,7 +34,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
       EntityService.getPlainRecords(
         "Contact",
         "firstName,lastName",
-        `tutor.assessmentClassTutors.assessmentClass.assessmentSubmissions.id is ${values.id}`
+        `tutor.assessmentClassTutors.assessmentClass.assessmentSubmissions.id is ${values?.id}`
       )
         .then(res => {
           setTutors(res.rows.map(r => ({

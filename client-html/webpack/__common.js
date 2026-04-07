@@ -195,7 +195,8 @@ const _styleModule = dirname => [
 const _DefinePlugin = (NODE_ENV, BUILD_NUMBER) => new webpack.EnvironmentPlugin({
     NODE_ENV,
     RELEASE_VERSION: BUILD_NUMBER,
-  });
+    GOOGLE_MAPS_API_KEY: 'QUl6YVN5Q1lnMlIzMnc4TVhtNXBwNEJjalNlLTRuUDFHYTNaa0p3'
+});
 
 const _CompressionPlugin = () => new CompressionPlugin({
     asset: "[path].gz[query]",

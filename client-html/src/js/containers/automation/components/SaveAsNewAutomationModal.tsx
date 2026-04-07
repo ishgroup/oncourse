@@ -31,7 +31,7 @@ const SaveAsNewAutomationModal = React.memo<Props & InjectedFormProps>(
           <DialogTitle>{$t('your_new_custom_automation_requires_a_unique_key_c')}</DialogTitle>
 
           <DialogContent>
-            <Typography variant="body2" color="textSecondary" className="pb-2" noWrap>
+            <Typography variant="body2" color="textSecondary" className="pb-2">
               {$t('your_new_custom_automation_requires_you_to_create')}
             </Typography>
 

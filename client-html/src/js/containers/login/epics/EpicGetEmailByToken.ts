@@ -3,22 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { FETCH_SUCCESS } from "../../../common/actions";
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import history from "../../../constants/History";
-import { GET_EMAIL_BY_TOKEN_FULFILLED, GET_EMAIL_BY_TOKEN_REQUEST } from "../actions";
-import LoginService from "../services/LoginService";
+import { InvitationResponse } from '@api/model';
+import { Epic } from 'redux-observable';
+import { FETCH_SUCCESS } from '../../../common/actions';
+import * as EpicUtils from '../../../common/epics/EpicUtils';
+import history from '../../../constants/History';
+import { GET_EMAIL_BY_TOKEN_REQUEST, getEmailByTokenFulfilled } from '../actions';
+import LoginService from '../services/LoginService';
 
-const request: EpicUtils.Request = {
+const request: EpicUtils.Request<InvitationResponse> = {
   type: GET_EMAIL_BY_TOKEN_REQUEST,
   getData: payload => LoginService.getEmailByToken(payload.value),
-  processData: (responce: string) => {
+  processData: response => {
     return [
-      {
-        type: GET_EMAIL_BY_TOKEN_FULFILLED,
-        payload: { email: responce }
-      },
+      getEmailByTokenFulfilled({ email: response.email, strongPasswordValidation: response.requireComplexPass }),
       {
         type: FETCH_SUCCESS,
       }

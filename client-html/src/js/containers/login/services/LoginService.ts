@@ -1,4 +1,12 @@
-import { AuthenticationApi, LoginRequest, LoginResponse, PasswordComplexity, User, UserApi } from "@api/model";
+import {
+  AuthenticationApi,
+  InvitationResponse,
+  LoginRequest,
+  LoginResponse,
+  PasswordComplexity,
+  User,
+  UserApi
+} from '@api/model';
 import axios from "axios";
 import { CONTEXT } from "../../../common/api/Constants";
 import { DefaultHttpService } from "../../../common/services/HttpService";
@@ -40,7 +48,7 @@ class LoginService {
     return this.createCustomAPI("user").updatePassword(encodeURIComponent(value));
   }
 
-  public getEmailByToken(token: string): Promise<LoginResponse> {
+  public getEmailByToken(token: string): Promise<InvitationResponse> {
     return this.createCustomAPI("user").getUserEmailByInvitation(token);
   }
 

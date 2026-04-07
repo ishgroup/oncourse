@@ -16,6 +16,7 @@ import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.license.LicenseService;
 import ish.liquibase.NumberedFilesComparator;
+import ish.oncourse.server.messaging.ArchivingMessagesService;
 import liquibase.Liquibase;
 import liquibase.Scope;
 import liquibase.database.DatabaseFactory;
@@ -48,10 +49,12 @@ public class SchemaUpdateService {
 	private final ICayenneService cayenneService;
 
 	public static ICayenneService sharedCayenneService;
+	public static ArchivingMessagesService archivingMessagesService;
 
 	@Inject
-	public SchemaUpdateService(ICayenneService cayenneService, LicenseService licenseService) {
+	public SchemaUpdateService(ICayenneService cayenneService, ArchivingMessagesService archivingMessagesService) {
 		this.cayenneService = cayenneService;
+		SchemaUpdateService.archivingMessagesService = archivingMessagesService;
 	}
 
 	/**

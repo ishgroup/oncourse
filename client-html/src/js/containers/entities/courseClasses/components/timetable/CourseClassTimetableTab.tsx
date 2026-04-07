@@ -267,7 +267,7 @@ const CourseClassTimetableTab = ({
         )
       );
     }
-  }, [expandedSession, values.sessions && values.sessions.length, values.courseName]);
+  }, [expandedSession, values.sessions, values.courseName]);
 
   useEffect(() => {
     if (!twoColumn && expanded.includes(tabIndex)) {

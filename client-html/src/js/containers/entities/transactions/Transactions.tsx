@@ -59,16 +59,21 @@ const findRelatedGroup: FindRelatedItem[] = [
 ];
 
 class Transactions extends React.Component<any, any> {
+  state = { acountsAwaitedAction: null };
+  
   componentDidMount() {
     this.props.getAccounts();
     this.props.getFilters();
   }
-
-  shouldComponentUpdate() {
-    return false;
+  
+  componentDidUpdate() {
+    if (this.state.acountsAwaitedAction && this.props.accounts?.length) {
+      this.state.acountsAwaitedAction();
+      this.setState({ acountsAwaitedAction: null });
+    }
   }
 
-  onInit = () => {
+  initAction = () => {
     const { dispatch, accounts } = this.props;
 
     Initial.fromAccount = accounts[1].id;
@@ -78,6 +83,16 @@ class Transactions extends React.Component<any, any> {
 
     dispatch(setListEditRecord(Initial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
+  };
+
+  onInit = () => {
+    const { accounts } = this.props;
+    
+    if (!accounts?.length) {
+      this.setState({ acountsAwaitedAction: this.initAction });
+    } else  {
+      this.initAction();
+    }
   };
 
   getTransactionAccountName = (value: Transaction) => {

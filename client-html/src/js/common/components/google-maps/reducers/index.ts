@@ -1,8 +1,9 @@
-import { IAction } from "../../../actions/IshAction";
-import { GET_GOOGLE_GEOCODE_DETAILS_FULFILLED } from "../actions/index";
+import { GoogleMapsCoordinates } from '../../../../model/google';
+import { IAction } from '../../../actions/IshAction';
+import { GET_GOOGLE_GEOCODE_DETAILS_FULFILLED } from '../actions/index';
 
 export interface GoogleApiResponse {
-  responseJSON?: any;
+  geocode?: GoogleMapsCoordinates;
 }
 
 export const googleApiReducer = (state: GoogleApiResponse = {}, action: IAction<any>): GoogleApiResponse => {
@@ -10,7 +11,9 @@ export const googleApiReducer = (state: GoogleApiResponse = {}, action: IAction<
     case GET_GOOGLE_GEOCODE_DETAILS_FULFILLED: {
       return {
         ...state,
-        ...action.payload
+        geocode: {
+          ...action.payload
+        }
       };
     }
 

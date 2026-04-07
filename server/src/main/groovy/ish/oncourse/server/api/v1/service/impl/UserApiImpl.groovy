@@ -18,6 +18,7 @@ import com.nulabinc.zxcvbn.Zxcvbn
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.UserDao
+import ish.oncourse.server.api.v1.model.InvitationResponseDTO
 import ish.oncourse.server.http.HttpFactory
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.MailDeliveryService
@@ -72,9 +73,14 @@ class UserApiImpl implements UserApi {
                 .collect { toRestUserMinimized(it) }
     }
 
-    String getUserEmailByInvitation(String invitationToken) {
+    InvitationResponseDTO getUserEmailByInvitation(String invitationToken) {
         SystemUser dbUser = getUserByInvitation(invitationToken)
-        dbUser.email
+
+        return new InvitationResponseDTO().with{
+            it.email = dbUser.email
+            it.requireComplexPass = preferenceController.getPasswordComplexity()
+            it
+        }
     }
 
     void createPassword(String invitationToken, String password) {

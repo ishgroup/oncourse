@@ -50,7 +50,7 @@ class MailDeliveryServiceTest {
         Mockito.when(smtpService.password).thenReturn(SMTP_PASSWORD)
         Mockito.when(smtpService.port).thenReturn(SMTP_PORT)
         MailSession mailSession = new MailSession(smtpService)
-        service = new MailDeliveryService(smtpService, mailSession, ANGEL_VERSION)
+        service = new MailDeliveryService(smtpService, mailSession, ANGEL_VERSION, null)
         fillTestParameters()
     }
 

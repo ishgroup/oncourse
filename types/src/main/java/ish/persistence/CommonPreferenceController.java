@@ -1110,6 +1110,10 @@ public abstract class CommonPreferenceController {
 			return getTutorialSkipSystemUser();
 		} else if (EXTENDED_SEARCH_TYPES.equals(key)) {
 			return getExtendedSearchTypesAllowed();
+		} else if (DATE_MESSAGE_EXPECTED_BEFORE_ARCHIVED.equals(key)) {
+			return getDateMessageExpectedBeforeArchived();
+		} else if (DAYS_MESSAGE_EXPIRES.equals(key)) {
+			return getDaysMessageExpires();
 		} else if (CUSTOM_LOGO_BLACK.equals(key)) {
 			return getCustomLogoBlack();
 		} else if (CUSTOM_LOGO_BLACK_SMALL.equals(key)) {
@@ -1292,6 +1296,8 @@ public abstract class CommonPreferenceController {
 		} else if(DEFAULT_INVOICE_LINE_ACCOUNT.equals(key)){
 			setDefaultInvoiceLineAccount((Long) value);
 		} else if(EXTENDED_SEARCH_TYPES.equals(key)){
+			setExtendedTypesAllowed((Boolean) value);
+		} else if(DATE_MESSAGE_BEFORE_ARCHIVED.equals(key)){
 			setExtendedTypesAllowed((Boolean) value);
 		}
 	}
@@ -1553,5 +1559,45 @@ public abstract class CommonPreferenceController {
 
 	public String getCustomLogoColourSmall() {
 		return getValue(CUSTOM_LOGO_COLOUR_SMALL, false);
+	}
+
+	public Date getDateMessageBeforeArchived(){
+		if (getValue(DATE_MESSAGE_BEFORE_ARCHIVED, false) == null) {
+			return null;
+		}
+		try {
+			return dateFormat.parse(getValue(DATE_MESSAGE_BEFORE_ARCHIVED, false));
+		} catch (ParseException e) {
+			return null;
+		}
+	}
+
+	public void setDateMessageBeforeArchived(Date value){
+		setValue(DATE_MESSAGE_BEFORE_ARCHIVED, false, dateFormat.format(value));
+	}
+
+	public Date getDateMessageExpectedBeforeArchived(){
+		if (getValue(DATE_MESSAGE_EXPECTED_BEFORE_ARCHIVED, false) == null) {
+			return null;
+		}
+		try {
+			return dateFormat.parse(getValue(DATE_MESSAGE_EXPECTED_BEFORE_ARCHIVED, false));
+		} catch (ParseException e) {
+			return null;
+		}
+	}
+
+	public Long getDaysMessageExpires(){
+		var value = getValue(DAYS_MESSAGE_EXPIRES, false);
+		if (value == null) {
+			return null;
+		}
+
+		return Long.parseLong(value);
+	}
+
+	public void setDateMessageExpectedBeforeArchived(Date value){
+		String formattedValue = value == null ? null : dateFormat.format(value);
+		setValue(DATE_MESSAGE_EXPECTED_BEFORE_ARCHIVED, false, formattedValue);
 	}
 }

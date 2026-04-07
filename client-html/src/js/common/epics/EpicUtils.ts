@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AxiosResponse } from "axios";
-import { Epic, ofType, StateObservable } from "redux-observable";
-import { concat, from, Observable, tap } from 'rxjs';
-import { catchError, delay, mergeMap } from "rxjs/operators";
-import { EnvironmentConstants } from "../../constants/EnvironmentConstants";
-import { State } from "../../reducers/state";
-import { FETCH_FINISH, FETCH_START } from "../actions";
-import { REJECTED } from "../actions/ActionUtils";
-import { IAction } from "../actions/IshAction";
-import FetchErrorHandler from "../api/fetch-errors-handlers/FetchErrorHandler";
+import { AxiosResponse } from 'axios';
+import { Epic, ofType, StateObservable } from 'redux-observable';
+import { concat, delayWhen, from, interval, Observable } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
+import { EnvironmentConstants } from '../../constants/EnvironmentConstants';
+import { State } from '../../reducers/state';
+import { FETCH_FINISH, FETCH_START } from '../actions';
+import { REJECTED } from '../actions/ActionUtils';
+import { IAction } from '../actions/IshAction';
+import FetchErrorHandler from '../api/fetch-errors-handlers/FetchErrorHandler';
 
 export interface Request<V = any, P = any> {
   type: string;
@@ -41,7 +41,7 @@ export const processError = (data: any, type: string, processError: any, payload
 
 export const CreateWithTimeout = <V, P>(request: DelayedRequest<V, P>): Epic<any, any, any> => (action$: Observable<any>, state$: StateObservable<State>): Observable<any> => action$.pipe(
   ofType(request.type),
-  tap(action => delay(typeof request.delay === 'number' ? request.delay : request.delay(action.payload, state$.value))),
+  delayWhen(action => interval(typeof request.delay === 'number' ? request.delay : request.delay(action.payload, state$.value))),
   mergeMap(action =>
     concat(
       [

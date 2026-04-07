@@ -81,7 +81,7 @@ const TutorialPanel = ({ tutorial, customLink }: Props) => {
           variant="body2"
           component="div"
           className={clsx("cursor-pointer fontWeight600", classes.manualLink)}
-          onClick={() => openInternalLink(`https://www.ish.com.au/onCourse/doc${tutorial.documentation}`)}
+          onClick={() => openInternalLink(`https://ishoncourse.readme.io/docs/${tutorial.documentation}`)}
         >
           {$t('read_documentation')}
         </Typography>

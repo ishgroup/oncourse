@@ -240,7 +240,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
       <Grid item xs={12} className="saveButtonTableOffset">
         <FieldArray
           name="invoices"
-          goToLink={`/invoice?search=paymentOutLines.paymentOut in (${values.id})`}
+          goToLink={`/invoice?search=paymentOutLines.paymentOut in (${values?.id})`}
           title={(values && values.invoices && values.invoices.length) === 1 ? "Invoice" : "Invoices"}
           component={NestedTable}
           columns={invoiceColumns}

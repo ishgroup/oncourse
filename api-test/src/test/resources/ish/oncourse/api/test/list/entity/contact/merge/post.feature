@@ -100,12 +100,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "financialData":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":
-            [
-            {"messageId":1018,"createdOn":"#ignore","sentOn":"#ignore","subject":"a","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1019,"createdOn":"#ignore","sentOn":"#ignore","subject":"b","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1025,"createdOn":"#ignore","sentOn":"#ignore","subject":"a","creatorKey":null,"status":"#ignore","type":"Email"}
-            ],
+        "messagesCount": 3,
         "rules":[{"id":"1001","description":"bbbbb-bb","startDate":"2019-09-20","endDate":"2019-10-01","startDateTime":null,"endDateTime":null,"repeat":"year","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]
         }
         """
@@ -186,7 +181,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "financialData":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -272,11 +267,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":
-            [
-            {"messageId":1023,"createdOn":"#ignore","sentOn":"#ignore","subject":"co1","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1024,"createdOn":"#ignore","sentOn":"#ignore","subject":"co2","creatorKey":null,"status":"#ignore","type":"Email"}
-            ],
+        "messagesCount": 2,
         "rules":[{"id":"1003","description":"Co2","startDate":"2019-09-20","endDate":"2019-09-20","startDateTime":null,"endDateTime":null,"repeat":"month","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2019-08-01","created":"#ignore","modified":"#ignore"}]
         }
         """
@@ -392,12 +383,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":
-            [
-            {"messageId":1020,"createdOn":"#ignore","sentOn":"#ignore","subject":"ta","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1021,"createdOn":"#ignore","sentOn":"#ignore","subject":"tB","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1022,"createdOn":"#ignore","sentOn":"#ignore","subject":"tb2","creatorKey":null,"status":"#ignore","type":"Email"}
-            ],
+        "messagesCount" : 3,
         "rules":[{"id":"1002","description":"tA","startDate":null,"endDate":null,"startDateTime":"#ignore","endDateTime":"#ignore","repeat":"week","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]}
         }
         """

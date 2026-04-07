@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { _toRequestType } from "../../../../common/actions/ActionUtils";
-import { MessageExtended } from "../../../../model/common/Message";
+import { _toRequestType } from '../../../../common/actions/ActionUtils';
+import { MessageExtended } from '../../../../model/common/Message';
 
-export const SEND_MESSAGE = _toRequestType("post/sendMessage");
+export const SEND_MESSAGE = _toRequestType("post/message/send");
 
 export const sendMessage = (model: MessageExtended, selection: string[]) => ({
   type: SEND_MESSAGE,

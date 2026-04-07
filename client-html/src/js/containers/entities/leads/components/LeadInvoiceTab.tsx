@@ -38,7 +38,7 @@ const invoiceColumns: NestedTableColumn[] = [
 const LeadInvoiceTab = props => {
   const { isNew, values } = props;
 
-  const quoteAddLink = () => openInternalLink(`/invoice/new?search=lead.id=${values.id}`);
+  const quoteAddLink = () => openInternalLink(`/invoice/new?search=lead.id=${values?.id}`);
 
   const openRow = value => openInternalLink(`/invoice/${value.id}`);
 
@@ -46,7 +46,7 @@ const LeadInvoiceTab = props => {
     <div className="pl-3 pr-3">
       <FieldArray
         name="invoices"
-        goToLink={`/invoice?search=lead.id=${values.id}`}
+        goToLink={`/invoice?search=lead.id=${values?.id}`}
         title={(values && values.invoices && values.invoices.length) === 1 ? "Quote/Invoice" : "Quotes/Invoices"}
         component={NestedTable}
         onAdd={isNew ? null : quoteAddLink}

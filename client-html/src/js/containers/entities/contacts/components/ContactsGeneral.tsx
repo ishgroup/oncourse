@@ -146,13 +146,13 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
   }, [isInitiallyCompany, isInitiallyStudent, isInitiallyTutor]);
 
   const onStudentCalendarClick = () => openInternalLink(
-    `/timetable?search=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+    `/timetable?search=attendance.student.contact.id=${values?.id}&title=Timetable for ${getContactFullName(
       values
     )}`
   );
 
   const onTutorCalendarClick = () => openInternalLink(
-    `/timetable?search=tutor.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+    `/timetable?search=tutor.contact.id=${values?.id}&title=Timetable for ${getContactFullName(
       values
     )}`
   );

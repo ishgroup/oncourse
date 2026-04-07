@@ -12,6 +12,7 @@ import { getNoteItems } from "../../../../common/components/form/notes/actions";
 import GoogleApiService from "../../../../common/components/google-maps/services/GoogleApiService";
 import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { processError } from '../../../../common/epics/EpicUtils';
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { compareByName } from "../../../../common/utils/sortArrayOfObjectsByName";
 import { updateEntityRecord } from "../../common/actions";
@@ -23,11 +24,11 @@ const request: EpicUtils.Request = {
   getData: (id: number) => getEntityItemById("Site", id).then((site: Site) => {
       if (!site.latitude && !site.longitude && site.street && site.suburb && site.country && site.country.name) {
         return GoogleApiService.getGeocodeDetails([site.street, site.suburb, site.country.name].toString()).then(
-          (response: any) => {
-            if (response.status === "OK") {
-              const { location } = response.results[0].geometry;
+          response => {
+            if (response) {
+              const { lat, lng } = response;
 
-              return { site: { ...site, latitude: location.lat, longitude: location.lng }, updateSite: true };
+              return { site: { ...site, latitude: lat, longitude: lng }, updateSite: true };
             }
 
             return { site: { ...site }, updateSite: false, error: true };

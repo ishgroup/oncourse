@@ -8,6 +8,7 @@ import ish.math.Money
 import ish.oncourse.entity.services.SessionService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.concurrent.ExecutorManager
 import org.apache.cayenne.DataObject
 import org.apache.cayenne.exp.Expression
 import org.junit.jupiter.api.Assertions
@@ -49,7 +50,7 @@ class PayrollGenerationSelfPacedTest {
         when(courseClass.getType()).thenReturn(CourseClassType.DISTANT_LEARNING)
         when(classCost.getCourseClass()).thenReturn(courseClass)
 
-        PayrollService service = new PayrollService(cayenneService, sessionService)
+        PayrollService service = new PayrollService(cayenneService, sessionService, new ExecutorManager())
 
         // self-paced class: check non payable
         when(classCost.getRepetitionType()).thenReturn(ClassCostRepetitionType.PER_SESSION)
@@ -81,7 +82,7 @@ class PayrollGenerationSelfPacedTest {
         payRates.add(payRate)
         when(tutorRole.getPayRates()).thenReturn(payRates)
 
-        PayrollService service = new PayrollService(cayenneService, sessionService)
+        PayrollService service = new PayrollService(cayenneService, sessionService, new ExecutorManager())
         Assertions.assertTrue(service.hasEligibleRateOnDate(classCost, new Date()))
     }
 
@@ -98,7 +99,7 @@ class PayrollGenerationSelfPacedTest {
         when(classCost.getContact()).thenReturn(mock(Contact.class))
         when(classCost.getCourseClass()).thenReturn(courseClass)
 
-        PayrollService service = new PayrollService(cayenneService, sessionService)
+        PayrollService service = new PayrollService(cayenneService, sessionService, new ExecutorManager())
         Assertions.assertTrue(service.validateClassCost(classCost, until))
     }
 
@@ -111,7 +112,7 @@ class PayrollGenerationSelfPacedTest {
     void testEligibleClassCostsExpression() throws Exception {
         List<DataObject> sourceList = createClassCostDataSetForFiltering()
 
-        PayrollService service = new PayrollService(cayenneService, sessionService)
+        PayrollService service = new PayrollService(cayenneService, sessionService, new ExecutorManager())
         Expression expr = service.getEligibleClassCostsExpression(new Date(1L))
 
         List<DataObject> filteredList = expr.filterObjects(sourceList)

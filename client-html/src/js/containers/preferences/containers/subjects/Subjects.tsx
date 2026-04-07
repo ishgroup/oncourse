@@ -58,7 +58,7 @@ function Subjects(
 
   useEffect(() => {
     if (Object.keys(syncErrors || {}).length) {
-      getInvalidValueOdjects(syncErrors, values).forEach(t => setEditingIds(prev => Array.from(new Set([...prev, t.id]))));
+      getInvalidValueOdjects(syncErrors, values).forEach(t => setEditingIds(prev => Array.from(new Set([...prev, t?.id]))));
     }
   }, [syncErrors]);
 

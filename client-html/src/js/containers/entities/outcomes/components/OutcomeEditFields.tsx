@@ -162,7 +162,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   useEffect(() => {
     if (values.id && fundingUploadAccess) {
       FundingUploadService
-        .getFundingUploads(`fundingUploadOutcomes.outcome.id is ${values.id}`)
+        .getFundingUploads(`fundingUploadOutcomes.outcome.id is ${values?.id}`)
         .then(res => {
           setFundingUploads(res);
         })
@@ -171,7 +171,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           instantFetchErrorHandler(dispatch, er);
         });
     }
-  }, [values.id, access]);
+  }, [values?.id, access]);
 
   const setModuleWarnings = async () => {
     try {

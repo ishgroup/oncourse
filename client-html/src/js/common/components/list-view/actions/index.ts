@@ -42,6 +42,8 @@ export const BULK_CHANGE_RECORDS = _toRequestType("post/listView/bulkChange");
 
 export const FIND_RELATED_BY_FILTER = "find/related/byFilter";
 
+export const CLEAR_LIST_STATE = "clear/listView";
+
 export const SET_LIST_CORE_FILTERS = "set/listView/coreFilters";
 
 export const SET_LIST_SEARCH = "set/listView/search";
@@ -133,6 +135,10 @@ export const setRecipientsMessageData = (recepients: MessageData) => ({
 
 export const clearRecipientsMessageData = () => ({
   type: CLEAR_RECIPIENTS_MESSAGE_DATA
+});
+
+export const clearListState = () => ({
+  type: CLEAR_LIST_STATE
 });
 
 export const setListEditRecordFetching = () => ({

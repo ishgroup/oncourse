@@ -51,19 +51,19 @@
 	<field name="invoiceLine" class="ish.oncourse.server.cayenne.InvoiceLine"/>
 	<field name="discountNames" class="java.lang.String"/>
 	<field name="enrolment" class="java.lang.Object"/>
-	<field name="finalPriceToPayExTax" class="java.lang.Number"/>
-	<field name="discountTotalExTax" class="java.lang.Number"/>
+	<field name="finalPriceToPayExTax" class="ish.math.Money"/>
+	<field name="discountTotalExTax" class="ish.math.Money"/>
 	<variable name="discountEachExTax" class="java.math.BigDecimal" resetType="Group" resetGroup="detail" calculation="Sum">
-		<variableExpression><![CDATA[((ish.math.Money)$F{discountTotalExTax}).toBigDecimal()]]></variableExpression>
+		<variableExpression><![CDATA[$F{discountTotalExTax}.toBigDecimal()]]></variableExpression>
 	</variable>
 	<variable name="discountEachExTaxTotal" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[((ish.math.Money)$F{discountTotalExTax}).toBigDecimal()]]></variableExpression>
+		<variableExpression><![CDATA[$F{discountTotalExTax}.toBigDecimal()]]></variableExpression>
 	</variable>
 	<variable name="total_price" class="java.math.BigDecimal" resetType="Group" resetGroup="detail" calculation="Sum">
-		<variableExpression><![CDATA[((ish.math.Money)$F{finalPriceToPayExTax}).toBigDecimal()]]></variableExpression>
+		<variableExpression><![CDATA[$F{finalPriceToPayExTax}.toBigDecimal()]]></variableExpression>
 	</variable>
 	<variable name="total_priceTotal" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[((ish.math.Money)$F{finalPriceToPayExTax}).toBigDecimal()]]></variableExpression>
+		<variableExpression><![CDATA[$F{finalPriceToPayExTax}.toBigDecimal()]]></variableExpression>
 	</variable>
 	<variable name="manualDiscountEnrolmentCount" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[(($F{discountNames}==null)? (new BigDecimal(1)): (new BigDecimal(0)))]]></variableExpression>

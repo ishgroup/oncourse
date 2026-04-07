@@ -1,11 +1,10 @@
-import * as React from "react";
-// import * as _ from "lodash";
-import { format } from "date-fns";
-import { defaultComponents } from "../../common/Default.Components";
+import { format } from 'date-fns';
+import { formatCurrency, III_DD_MMM_YYYY } from 'ish-ui';
+import * as React from 'react';
 import TutorRolesForm, {
   TUTOR_ROLES_FORM
-} from "../../../js/containers/preferences/containers/tutor-roles/components/TutorRolesForm";
-import { formatCurrency, III_DD_MMM_YYYY } from "ish-ui";
+} from '../../../js/containers/preferences/containers/tutor-roles/components/TutorRolesForm';
+import { defaultComponents } from '../../common/Default.Components';
 
 describe("Virtual rendered TutorRolesForm", () => {
   defaultComponents({
