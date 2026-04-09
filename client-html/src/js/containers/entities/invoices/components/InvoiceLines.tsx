@@ -137,7 +137,6 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   useEffect(() => {
     if (row.discountId && typeof currentDiscount !== 'number' && currentDiscount?.id !== row.discountId) {
       setLoading(true);
-
       EntityService.getPlainRecords(
         'Discount',
         INVOICE_LINE_DISCOUNT_COLUMNS,
@@ -146,7 +145,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
         0,
       )
       .then(({ rows }) => {
-        setCurrentDiscount(plainDiscountToAPIModel(rows.map(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS))[0]));
+        setCurrentDiscount(plainDiscountToAPIModel(rows?.length ? rows.map(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS))[0] : null));
         setLoading(false);
       })
       .catch(e => {
