@@ -145,7 +145,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
         0,
       )
       .then(({ rows }) => {
-        setCurrentDiscount(plainDiscountToAPIModel(rows?.length ? rows.map(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS))[0] : null));
+        setCurrentDiscount(rows?.length ? plainDiscountToAPIModel(rows.map(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS))[0]) : null);
         setLoading(false);
       })
       .catch(e => {
