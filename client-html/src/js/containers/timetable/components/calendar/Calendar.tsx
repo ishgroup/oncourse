@@ -10,9 +10,9 @@ import Typography from '@mui/material/Typography';
 import $t from '@t';
 import clsx from 'clsx';
 import { addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth } from 'date-fns';
-import { DD_MMM_YYYY_MINUSED, DynamicSizeList, makeAppStyles, usePrevious } from 'ish-ui';
 import { debounce } from 'es-toolkit/compat';
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { DD_MMM_YYYY_MINUSED, DynamicSizeList, makeAppStyles, usePrevious } from 'ish-ui';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -198,7 +198,6 @@ const Calendar = React.memo<Props>(props => {
   const prevSearch = usePrevious(search, "");
 
   const params = new URLSearchParams(location.search);
-  const prevParams = usePrevious(params, params);
 
   const targetDayHandler = (day: Date) => {
     if (listEl.current && listEl.current.state.isScrolling) {
@@ -212,7 +211,7 @@ const Calendar = React.memo<Props>(props => {
   };
 
   // fetch next two months
-  const loadNextMonths = (baseDate, reset = false) => {
+  const loadNextMonths = useCallback(debounce((baseDate, reset = false) => {
     const startMonth = startOfMonth(baseDate);
     const endMonth = startOfMonth(addMonths(startMonth, 1));
 
@@ -230,7 +229,7 @@ const Calendar = React.memo<Props>(props => {
     ], true));
     
     dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endOfMonth(endMonth).toISOString() }, reset));
-  };
+  }, 100), []);
 
   const onRowsRendered = args => {
     renderedArgs.current = args;
@@ -296,9 +295,10 @@ const Calendar = React.memo<Props>(props => {
           params.delete("filter");
         }
         updateHistory(params, url);
+        loadNextMonths(selectedMonth, true);
       }
     }
-  }, [filters, params]);
+  }, [filters]);
 
   useEffect(() => {
     if (prevSearch !== search) {
@@ -310,19 +310,6 @@ const Calendar = React.memo<Props>(props => {
       updateHistory(params, url);
     }
   }, [search, prevSearch]);
-
-  useEffect(() => {
-    const currentSearch = decodeURIComponent(params.get("search"));
-    const prevSearch = decodeURIComponent(prevParams.get("search"));
-
-    const currentFilters = params.get("filter");
-    const prevFilters = prevParams.get("filter");
-
-    if (currentSearch !== prevSearch || currentFilters !== prevFilters) {
-      loadNextMonths(selectedMonth, true);
-      setScrollToTargetDayOnRender(targetDay);
-    }
-  }, [params, prevParams]);
 
   useEffect(() => {
     dispatch(getTimetableSessionsDays(selectedMonth.getMonth(), selectedMonth.getFullYear()));
