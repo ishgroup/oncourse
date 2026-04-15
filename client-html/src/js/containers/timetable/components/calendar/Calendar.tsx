@@ -308,6 +308,7 @@ const Calendar = React.memo<Props>(props => {
         params.delete("search");
       }
       updateHistory(params, url);
+      loadNextMonths(selectedMonth, true);
     }
   }, [search, prevSearch]);
 
