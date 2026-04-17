@@ -33,7 +33,6 @@ interface Props {
   tutors: CourseClassTutor[];
   dispatch: Dispatch<IAction>
   form: string;
-  triggerDebounseUpdate: any;
   selectSessionItem: (s: any) => void;
   sessionSelection: any[];
   warnings: SessionWarning[];
@@ -41,6 +40,7 @@ interface Props {
   openCopyDialog?: { open?: boolean, session: { id: any } };
   budget: ClassCostExtended[];
   addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
+  asyncValidate?: any;
 }
 
 const CourseClassExpandableSession = React.memo<Props>(props => {
@@ -53,7 +53,6 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
     classes,
     tutors,
     dispatch,
-    triggerDebounseUpdate,
     form,
     selectSessionItem,
     sessionSelection,
@@ -61,7 +60,8 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
     setOpenCopyDialog,
     openCopyDialog,
     budget,
-    addTutorWage
+    addTutorWage,
+    asyncValidate
   } = props;
 
   const onCopyClick = React.useCallback(e => {
@@ -126,11 +126,11 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
             index={session.index}
             form={form}
             dispatch={dispatch}
-            triggerDebounseUpdate={triggerDebounseUpdate}
             tutors={tutors}
             warnings={warnings}
             budget={budget}
             addTutorWage={addTutorWage}
+            asyncValidate={asyncValidate}
           />
         )
       }

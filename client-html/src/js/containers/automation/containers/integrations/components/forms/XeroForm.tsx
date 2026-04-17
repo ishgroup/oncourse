@@ -3,7 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Button, Typography } from '@mui/material';
 import $t from '@t';
 import * as React from 'react';
@@ -150,7 +149,7 @@ class XeroBaseForm extends React.Component<any, any> {
               </Typography>
 
               {!hideConfig && (
-                <LoadingButton
+                <Button
                   variant="contained"
                   className="mt-1"
                   disabled={!values.name}
@@ -158,7 +157,7 @@ class XeroBaseForm extends React.Component<any, any> {
                   onClick={this.showTokenField}
                 >
                   {$t('connect_to_xero')}
-                </LoadingButton>
+                </Button>
               )}
             </>
           )}

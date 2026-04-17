@@ -111,7 +111,7 @@ const CourseClassTutorRooster = (
           />
         ))}
       </div>
-      {invalid && <FormHelperText className="shakingError">{error}</FormHelperText>}
+      {invalid && <FormHelperText className="shakingError errorColor">{error}</FormHelperText>}
     </div>
 );
 };

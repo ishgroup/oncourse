@@ -1,7 +1,6 @@
 import { Binding, ExecuteImportRequest, ImportModel } from '@api/model';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Grid, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
+import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -172,7 +171,7 @@ const ExecuteImportModal = React.memo<Props & InjectedFormProps>(props => {
           <Button color="primary" onClick={onDialogClose}>
             {$t('cancel')}
           </Button>
-          <LoadingButton
+          <Button
             variant="contained"
             color="primary"
             type="submit"
@@ -180,7 +179,7 @@ const ExecuteImportModal = React.memo<Props & InjectedFormProps>(props => {
             loading={submitting || executing}
           >
             {$t('run_import')}
-          </LoadingButton>
+          </Button>
         </DialogActions>
       </form>
     </Dialog>

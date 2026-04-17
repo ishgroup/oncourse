@@ -6,8 +6,8 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Typography } from '@mui/material';
+import Button from '@mui/material/Button'
 import $t from '@t';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -49,14 +49,14 @@ export const OktaButton = () => {
     }
   };
   
-  return <LoadingButton
+  return <Button
     loading={loading}
     variant="outlined"
     color="inherit"
     onClick={openOktaConcent}
   >
     <img src={okta} width={80} alt={$t('okta')} className={loading ? 'invisible' : undefined}/>
-  </LoadingButton>;
+  </Button>;
 };
 
 interface SSOProvidersProps {

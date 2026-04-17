@@ -82,7 +82,8 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
   const sharedProps = {
     ...rest,
     ...debounced ? { input: inputProxy } : {},
-    placeholder: (rest as any).placeholder || COMMON_PLACEHOLDER
+    placeholder: (rest as any).placeholder || COMMON_PLACEHOLDER,
+    label: (rest as any).label || ''
   };
 
   switch (type) {

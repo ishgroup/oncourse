@@ -87,7 +87,6 @@ const request: EpicUtils.Request<{  courseClass: CourseClassExtended, access: Ac
       ...access.flatMap((accItem, index) => [
         ... index === 0 && accItem.hasAccess ? [getCourseClassCosts(id)] : [],
         ... index === 1 && accItem.hasAccess ? [getCourseClassEnrolments(id)] : [],
-        ... index === 2 && accItem.hasAccess ? [getCourseClassSessionsWarnings(id, [...courseClass.sessions])] : [],
         ... accItem.action ? [accItem.action] : []
       ])
     ];
