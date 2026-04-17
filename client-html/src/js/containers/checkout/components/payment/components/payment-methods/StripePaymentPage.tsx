@@ -5,10 +5,10 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import LoadingButton from '@mui/lab/LoadingButton';
+import Button from '@mui/material/Button'
 import { Elements, PaymentElement, useElements, useStripe, } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js/pure';
 import { Stripe } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js/pure';
 import clsx from 'clsx';
 import { decimalMul, makeAppStyles } from 'ish-ui';
 import React, { useEffect, useState } from 'react';
@@ -81,7 +81,7 @@ const StripePaymentForm = ({ isPaymentProcessing, handleError, setLoading, check
 
   return <form onSubmit={handleSubmit} className="flex-column">
     <PaymentElement onReady={() => setReady(true)} />
-    <LoadingButton
+    <Button
       variant="contained"
       color="primary"
       size="large"
@@ -90,7 +90,7 @@ const StripePaymentForm = ({ isPaymentProcessing, handleError, setLoading, check
       disabled={!ready || !stripe || isPaymentProcessing}
       loading={isPaymentProcessing}>
       Finalize checkout
-    </LoadingButton>
+    </Button>
   </form>;
 };
 

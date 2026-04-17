@@ -12,7 +12,6 @@
 import { LoginRequest } from '@api/model';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Button, Collapse, darken, Grid, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Slide from '@mui/material/Slide';
@@ -661,7 +660,7 @@ export function LoginPageBase(
                           </Button>
                         )}
 
-                        <LoadingButton
+                        <Button
                           loading={fetch.pending}
                           ref={submitRef}
                           type="submit"
@@ -685,7 +684,7 @@ export function LoginPageBase(
                           {isNewPassword && "Confirm"}
                           {isKickOut && "Kick out"}
                           {isInviteForm && "Create password"}
-                        </LoadingButton>
+                        </Button>
                         {eulaUrl && (
                         <EulaDialog
                           eulaUrl={eulaUrl}

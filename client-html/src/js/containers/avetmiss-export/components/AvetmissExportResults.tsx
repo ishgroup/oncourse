@@ -12,8 +12,8 @@ import {
   AvetmissExportType
 } from '@api/model';
 import Launch from '@mui/icons-material/Launch';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { ButtonBase, Divider, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
 import $t from '@t';
 import clsx from 'clsx';
 import { openInternalLink } from 'ish-ui';
@@ -600,14 +600,14 @@ class AvetmissExportResults extends React.Component<Props, any> {
 
         <div className="centeredFlex">
           <div className="flex-fill" />
-          <LoadingButton
+          <Button
             variant="contained"
             color="primary"
             onClick={() => this.export(outcome)}
             loading={pending}
           >
             {$t('export')}
-          </LoadingButton>
+          </Button>
         </div>
       </>
     );

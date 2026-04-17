@@ -4,7 +4,6 @@
  */
 
 import { Account, CancelEnrolment, Tax } from '@api/model';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Button, FormControlLabel, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -248,9 +247,9 @@ const CancelEnrolmentModalForm = React.memo<CancelEnrolmentModalProps & Injected
           <Button color="primary" onClick={onClose}>
             {$t('cancel')}
           </Button>
-          <LoadingButton variant="contained" color="primary" type="submit" loading={loading}>
+          <Button variant="contained" color="primary" type="submit" loading={loading}>
             {$t('proceed')}
-          </LoadingButton>
+          </Button>
         </DialogActions>
       </form>
     </Dialog>

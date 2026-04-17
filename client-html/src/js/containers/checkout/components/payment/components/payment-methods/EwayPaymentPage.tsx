@@ -5,11 +5,11 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import LoadingButton from '@mui/lab/LoadingButton';
+import Button from '@mui/material/Button'
+import $t from '@t';
 import clsx from 'clsx';
 import { makeAppStyles } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import $t from '@t';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { showMessage } from '../../../../../../common/actions';
@@ -186,7 +186,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
       {!process.status && <form onSubmit={handleSubmit} ref={formRef} className="d-flex flex-column justify-content-center">
         <img alt="EwayLogo" className={classes.logo} src="https://eway.io/api-v3/images/eway-logo-yellow-ec3677c6.png" />
         <div id="eway-secure-panel" />
-        <LoadingButton
+        <Button
           variant="contained"
           color="primary"
           size="large"
@@ -196,7 +196,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
           loading={isPaymentProcessing}
         >
           {$t('finalize_checkout')}
-        </LoadingButton>
+        </Button>
       </form>}
 
       {process.status !== "" && !isPaymentProcessing && (

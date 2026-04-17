@@ -338,6 +338,7 @@ const CourseClassEditView: React.FC<Props> = ({
   onCloseClick,
   rootEntity,
   invalid,
+  asyncValidate,
   toogleFullScreenEditView,
   currencySymbol,
   taxes,
@@ -565,6 +566,7 @@ const CourseClassEditView: React.FC<Props> = ({
         dispatch,
         dirty,
         invalid,
+        asyncValidate,
         form,
         twoColumn,
         submitSucceeded,
@@ -595,4 +597,4 @@ const mapStateToProps = (state: State) => ({
   currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
-export default connect<any, any, any>(mapStateToProps)((props: any) => (props.values ? <CourseClassEditView {...props} /> : null));
+export default connect(mapStateToProps)((props: any) => (props.values ? <CourseClassEditView {...props} /> : null));

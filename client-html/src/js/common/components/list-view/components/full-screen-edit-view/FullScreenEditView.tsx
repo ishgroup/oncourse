@@ -165,6 +165,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       toogleFullScreenEditView,
       form,
       asyncValidating,
+      asyncValidate,
       disabledSubmitCondition,
       hideTitle,
     } = this.props;
@@ -234,6 +235,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               twoColumn
               onScroll={this.onScroll}
               asyncValidating={asyncValidating}
+              asyncValidate={asyncValidate}
               syncErrors={syncErrors}
               submitSucceeded={submitSucceeded}
               invalid={invalid}

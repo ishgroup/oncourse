@@ -11,7 +11,6 @@ import Close from '@mui/icons-material/Close';
 import Launch from '@mui/icons-material/Launch';
 import Mail from '@mui/icons-material/Mail';
 import PhoneIcon from '@mui/icons-material/Phone';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Button, CircularProgress, Collapse, Divider, Grid, ListItemText, Typography } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
@@ -644,7 +643,7 @@ const ContactInsight = (
                             />
                             <div className="flex-fill" />
                             <div className="d-flex">
-                              <LoadingButton
+                              <Button
                                 loading={noteLoading}
                                 onClick={onSendNote}
                                 type="submit"
@@ -655,7 +654,7 @@ const ContactInsight = (
                                 disableElevation
                               >
                                 {$t('save2')}
-                              </LoadingButton>
+                              </Button>
                             </div>
                           </Stack>
                         </Box>

@@ -13,7 +13,6 @@ import {
   FundingUpload
 } from '@api/model';
 import { ExpandMore } from '@mui/icons-material';
-import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Card,
   CardContent,
@@ -26,6 +25,7 @@ import {
   Hidden,
   Typography,
 } from '@mui/material';
+import Button from '@mui/material/Button'
 import $t from '@t';
 import clsx from 'clsx';
 import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from 'date-fns';
@@ -864,7 +864,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                     {!hasOutcomesOrExport && (
                       <div className="centeredFlex justify-content-center pt-1 pb-1">
                         {!hasNoResults && (
-                          <LoadingButton
+                          <Button
                             color="primary"
                             type="submit"
                             variant="contained"
@@ -872,7 +872,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                             loading={pending}
                           >
                             {$t('find')}
-                          </LoadingButton>
+                          </Button>
                         )}
 
                         {hasNoResults && (
