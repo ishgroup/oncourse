@@ -230,6 +230,7 @@ const CourseClassTimetableTab = ({
             : new Date(values.sessions[0].start)
         )
       );
+      asyncValidate?.("sessions", values.sessions, "change");
     }
   }, [expandedSession, values.sessions, values.courseName]);
 
@@ -326,8 +327,6 @@ const CourseClassTimetableTab = ({
 
     setExpandedSession(updated[0].temporaryId);
     dispatch(change(form, "sessions", updated));
-
-    asyncValidate?.("sessions", updated, "change");
   };
 
   const onDeleteHandler = (e, index) => {
@@ -349,7 +348,6 @@ const CourseClassTimetableTab = ({
           return;
         }
       }
-        asyncValidate?.("sessions", updated, "change");
     },
       confirmMessage: "Session will be deleted permanently",
       confirmButtonText: "Delete"
