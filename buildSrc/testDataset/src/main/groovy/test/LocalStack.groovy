@@ -49,7 +49,9 @@ class LocalStack {
         void run() {
             try {
                 logger.lifecycle("Starting Localstack container...")
-                container = new LocalStackContainer(DockerImageName.parse("localstack/localstack:latest")).withServices(S3)
+                container = new LocalStackContainer(DockerImageName.parse("localstack/localstack:latest"))
+                        .withServices(S3)
+                        .withEnv("LOCALSTACK_AUTH_TOKEN", "free")
                 container.start()
 
                 logger.lifecycle("Localstack container started at ${container.getEndpoint()}")
