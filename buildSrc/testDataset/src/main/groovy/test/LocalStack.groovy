@@ -15,20 +15,17 @@ import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.amazonaws.services.s3.model.CreateBucketRequest
 import groovy.transform.CompileStatic
+import io.findify.s3mock.S3Mock
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
-import org.testcontainers.containers.localstack.LocalStackContainer
-import org.testcontainers.utility.DockerImageName
-
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.S3
 
 @CompileStatic
 class LocalStack {
 
-    private static LocalStackContainer container
+    private static S3Mock s3Mock
 
     static class Start extends DefaultTask {
 
@@ -48,61 +45,65 @@ class LocalStack {
         @TaskAction
         void run() {
             try {
-                logger.lifecycle("Starting Localstack container...")
-                DockerImageName image = DockerImageName.parse("localstack/localstack:3.8.1")
-                        .asCompatibleSubstituteFor("localstack/localstack")
+                logger.lifecycle("Starting S3Mock server...")
 
-                container = new LocalStackContainer(image)
-                        .withServices(S3)
-                        .withEnv("USE_LIGHT_IMAGE", "true")  // Используем легковесную версию
-                        .withEnv("SKIP_SSL_CERT_DOWNLOAD", "true")
-                container.start()
+                int port = 8001
+                String dataDir = "${project.buildDir}/s3mock-data"
 
-                logger.lifecycle("Localstack container started at ${container.getEndpoint()}")
+                // Создаем директорию для данных
+                File dataDirFile = new File(dataDir)
+                if (!dataDirFile.exists()) {
+                    dataDirFile.mkdirs()
+                }
 
-                createBucket(bucketName)
-                writePropertiesToFile()
+                // Запускаем S3Mock
+                s3Mock = S3Mock.create(port, dataDir)
+                s3Mock.start()
 
-                logger.lifecycle("Localstack configuration prepared successfully")
+                logger.lifecycle("S3Mock server started at http://localhost:${port}")
+
+                createBucket(bucketName, port)
+                writePropertiesToFile(port)
+
+                logger.lifecycle("S3Mock configuration prepared successfully")
             } catch (Exception e) {
-                throw new RuntimeException("Error starting Localstack container: ${e.message}", e)
+                throw new RuntimeException("Error starting S3Mock server: ${e.message}", e)
             }
         }
 
-        private void createBucket(String bucketName) {
+        private void createBucket(String bucketName, int port) {
             logger.lifecycle("Creating S3 bucket {}", bucketName)
 
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
-                            container.getEndpoint().toString(),
-                            container.getRegion()
+                            "http://localhost:${port}",
+                            "us-east-1"
                     ))
-                    .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(
-                            container.getAccessKey(),
-                            container.getSecretKey()
-                    )))
+                    .withPathStyleAccessEnabled(true)
+                    .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials("test", "test")))
                     .build()
 
-            s3Client.createBucket(new CreateBucketRequest(bucketName))
-
-            logger.lifecycle("S3 bucket {} created successfully", bucketName)
+            if (!s3Client.doesBucketExistV2(bucketName)) {
+                s3Client.createBucket(new CreateBucketRequest(bucketName))
+                logger.lifecycle("S3 bucket {} created successfully", bucketName)
+            }
         }
 
-        private void writePropertiesToFile() {
-            logger.lifecycle("Writing Localstack properties to: ${propertiesFilePath}")
+        private void writePropertiesToFile(int port) {
+            logger.lifecycle("Writing S3Mock properties to: ${propertiesFilePath}")
 
             File propertiesFile = new File(propertiesFilePath)
             propertiesFile.parentFile.mkdirs()
 
             Properties properties = new Properties()
-            properties.setProperty("document.accessKeyId", container.getAccessKey())
-            properties.setProperty("document.accessSecretKey", container.getSecretKey())
+            properties.setProperty("document.accessKeyId", "test")
+            properties.setProperty("document.accessSecretKey", "test")
             properties.setProperty("document.bucket", bucketName)
-            properties.setProperty("document.region", container.getRegion())
-            properties.setProperty("document.endpoint", container.getEndpointOverride(S3).toString())
+            properties.setProperty("document.region", "us-east-1")
+            properties.setProperty("document.endpoint", "http://localhost:${port}")
 
             propertiesFile.withOutputStream { outputStream ->
-                properties.store(outputStream, "Localstack properties for S3")
+                properties.store(outputStream, "S3Mock properties for S3")
             }
         }
     }
@@ -111,12 +112,12 @@ class LocalStack {
 
         @TaskAction
         void run() {
-            logger.lifecycle("Attempting to stop Localstack container...")
-            if (container != null) {
-                container.stop()
-                logger.lifecycle("Localstack container has been successfully stopped")
+            logger.lifecycle("Attempting to stop S3Mock server...")
+            if (s3Mock != null) {
+                s3Mock.stop()
+                logger.lifecycle("S3Mock server has been successfully stopped")
             } else {
-                logger.lifecycle("No running Localstack container found to stop")
+                logger.lifecycle("No running S3Mock server found to stop")
             }
         }
     }
