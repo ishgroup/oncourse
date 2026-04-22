@@ -49,7 +49,8 @@ class LocalStack {
         void run() {
             try {
                 logger.lifecycle("Starting Localstack container...")
-                container = new LocalStackContainer(DockerImageName.parse("hectorvent/floci:latest"))
+                container = new LocalStackContainer(DockerImageName.parse("hectorvent/floci:latest")
+                        .asCompatibleSubstituteFor("localstack/localstack"))
                         .withServices(S3)
                 container.start()
 
