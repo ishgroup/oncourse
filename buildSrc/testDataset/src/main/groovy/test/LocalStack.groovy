@@ -49,9 +49,8 @@ class LocalStack {
         void run() {
             try {
                 logger.lifecycle("Starting Localstack container...")
-                container = new LocalStackContainer(DockerImageName.parse("localstack/localstack:latest"))
+                container = new LocalStackContainer(DockerImageName.parse("hectorvent/floci:latest"))
                         .withServices(S3)
-                        .withEnv("LOCALSTACK_AUTH_TOKEN", "free")
                 container.start()
 
                 logger.lifecycle("Localstack container started at ${container.getEndpoint()}")
