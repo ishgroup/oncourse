@@ -15,6 +15,13 @@ jobs:
         java: [11]
 
     steps:
+      - name: Set up Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+          sudo systemctl start docker
+          sudo docker info
+
       - uses: ankane/setup-mariadb@v1
         with:
           mariadb-version: "10.11"
@@ -57,6 +64,11 @@ jobs:
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://localhost:3306/angel_api_test?user=root
+        env:
+          TESTCONTAINERS_RYUK_DISABLED: "true"
+          TESTCONTAINERS_CHECKS_DISABLE: "true"
+          DOCKER_HOST: "unix:///var/run/docker.sock"
+          DOCKER_TLS_VERIFY: "0"
 
 #      - name: Build coverage report
 #        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
