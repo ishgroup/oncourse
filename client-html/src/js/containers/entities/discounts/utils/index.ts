@@ -30,7 +30,7 @@ export const getRoundingByType = (type: MoneyRounding, value: Decimal): number =
     case "No Rounding":
       return value.toNumber();
     case "Nearest 10 cents":
-      return value.toDecimalPlaces(1, Decimal.ROUND_UP).toNumber();
+      return value.div(0.1).toDecimalPlaces(0, Decimal.ROUND_HALF_UP).mul(0.1).toNumber();
     case "Nearest 50 cents": {
       // @ts-ignore
       const cents = new Decimal(value.d[1] || 0).div(100000).toNumber();
@@ -57,6 +57,9 @@ export const getRoundingByType = (type: MoneyRounding, value: Decimal): number =
 
 export const getDiscountAmountByFee = (discount: Discount, taxMul: Decimal, fee: number = 0): Decimal => {
   const dFee = new Decimal(fee);
+
+  console.log('!!!dFee!!!', fee);
+
   switch (discount.discountType) {
     case "Percent":
       return dFee.minus(getRoundingByType(discount.rounding, dFee.mul(new Decimal(1).minus(discount.discountPercent))));
