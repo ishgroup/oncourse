@@ -57,9 +57,6 @@ export const getRoundingByType = (type: MoneyRounding, value: Decimal): number =
 
 export const getDiscountAmountByFee = (discount: Discount, taxMul: Decimal, fee: number = 0): Decimal => {
   const dFee = new Decimal(fee);
-
-  console.log('!!!dFee!!!', fee);
-
   switch (discount.discountType) {
     case "Percent":
       return dFee.minus(getRoundingByType(discount.rounding, dFee.mul(new Decimal(1).minus(discount.discountPercent))));
