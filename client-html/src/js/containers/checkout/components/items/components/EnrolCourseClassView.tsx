@@ -14,10 +14,10 @@ const EnrolCourseClassView = React.memo<any>(props => {
     course,
     courseClasses,
     onClose,
-    isClassesEmpty,
     currencySymbol,
     onClassSelect,
-    selectedItems
+    selectedItems,
+    onLoadMoreClasses
   } = props;
 
   return (
@@ -39,9 +39,9 @@ const EnrolCourseClassView = React.memo<any>(props => {
           course={course}
           courseClasses={courseClasses}
           onSelect={onClassSelect}
-          isClassesEmpty={isClassesEmpty}
           currencySymbol={currencySymbol}
           selectedItems={selectedItems}
+          onLoadMoreClasses={onLoadMoreClasses}
         />
       </AppBarContainer>
     </>
@@ -49,8 +49,7 @@ const EnrolCourseClassView = React.memo<any>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  isClassesEmpty: state.checkout.checkCourseClassEmpty,
   currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(EnrolCourseClassView);
+export default connect<any,any,any>(mapStateToProps)(EnrolCourseClassView);

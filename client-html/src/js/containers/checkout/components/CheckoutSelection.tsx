@@ -10,8 +10,8 @@ import { CheckoutSaleRelation, ColumnWidth } from '@api/model';
 import Button from '@mui/material/Button';
 import $t from '@t';
 import clsx from 'clsx';
-import { AppTheme, NoArgFunction, ResizableWrapper, ShowConfirmCaller } from 'ish-ui';
 import { debounce } from 'es-toolkit/compat';
+import { AppTheme, NoArgFunction, ResizableWrapper, ShowConfirmCaller } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -200,7 +200,7 @@ interface Props extends Partial<EditViewProps> {
   clearContactsSearch?: NoArgFunction;
   getRelatedContacts?: (search: string) => void;
   relatedContacts?: any[];
-  checkoutGetCourseClassList?: (search: string) => void;
+  checkoutGetCourseClassList?: (search: string, offset?: number) => void;
   checkoutClearCourseClassList?: NoArgFunction;
   checkoutUpdateSummaryClassesDiscounts?: NoArgFunction;
   paymentProcessStatus?: any;
@@ -209,6 +209,7 @@ interface Props extends Partial<EditViewProps> {
   getClassPaymentPlans?: any;
   hasErrors?: boolean;
   summarryInvalid?: boolean;
+  checkCourseClassLoaded?: boolean;
   fundingInvoiceInvalid?: boolean;
   finalTotal?: number;
   summary?: CheckoutSummary;
@@ -219,6 +220,8 @@ interface Props extends Partial<EditViewProps> {
 }
 
 const createConfirmMessage = "Please first save or cancel the new contact you are creating.";
+
+const getCourseClassSearch = courseId => `course.id is ${courseId} and isCancelled is false and isActive is true`;
 
 const parseContactSearch = (search: string) => {
   const contact = {
@@ -308,7 +311,8 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     invalid,
     fundingInvoiceValues,
     fundingInvoiceInvalid,
-    salesRelations
+    salesRelations,
+    checkCourseClassLoaded
   } = props;
 
   const [sidebarWidth, setSidebarWidth] = useState(SIDEBAR_DEFAULT_WIDTH);
@@ -404,8 +408,9 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
   }, []);
 
-  const openItem = useCallback(
-    item => {
+  const onLoadMoreClasses = (offset: number, id: number) => !checkCourseClassLoaded && checkoutGetCourseClassList(getCourseClassSearch(id), offset);
+
+  const openItem = item => {
       if (checkoutStep > 0) handleChangeStep(CheckoutCurrentStep.shoppingCart);
       switch (item.type) {
         case "course":
@@ -417,7 +422,8 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             !selectedCourse
             || (selectedCourse && typeof selectedCourse.courseId === "number" && selectedCourse.courseId !== item.courseId)
           ) {
-            checkoutGetCourseClassList(`course.id is ${item.courseId} and isCancelled is false and isActive is true`);
+            checkoutClearCourseClassList();
+            checkoutGetCourseClassList(getCourseClassSearch(item.courseId));
           }
           setOpenClassListView(true);
           onCloseItemView();
@@ -443,12 +449,9 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       setOpenContactEditView(false);
       setSelectedContact(undefined);
       resetContactEditView();
-    },
-    [selectedCourse, openClassListView, selectedItems, checkoutStep, openedItem]
-  );
+  };
 
-  const openContactRow = useCallback(
-    (item, checkDirty = true) => {
+  const openContactRow = (item, checkDirty = true) => {
       if (selectedContact && selectedContact.id === item.id) {
         return;
       }
@@ -471,9 +474,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       onCloseClassList();
       onCloseItemView();
       openSidebarDrawer();
-    },
-    [openContactEditView, contactEditRecord, selectedContact, isContactEditViewDirty, checkoutStep, createNewContact]
-  );
+  };
 
   const onClearItemsSearch = useCallback((clearActive = false) => {
     if (clearActive) {
@@ -1231,6 +1232,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 onClassSelect={onClassSelect}
                 selectedItems={selectedItems}
                 courseClasses={courseClasses}
+                onLoadMoreClasses={onLoadMoreClasses}
               />
             )}
 
@@ -1288,6 +1290,7 @@ const mapStateToProps = (state: State) => ({
   selectedContacts: state.checkout.contacts,
   selectedItems: state.checkout.items,
   courseClasses: state.checkout.courseClasses,
+  checkCourseClassLoaded: state.checkout.checkCourseClassLoaded,
   relatedContacts: state.checkout.relatedContacts,
   paymentProcessStatus: state.checkout.payment.process.status,
   summary: state.checkout.summary,
@@ -1336,7 +1339,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   updateContact: (contact, id) => dispatch(updateContact(contact, id)),
   addSelectedItem: (item: any) => dispatch(addItem(item)),
   removeItem: (itemId: number, itemType: string) => dispatch(removeItem(itemId, itemType)),
-  checkoutGetCourseClassList: (search: string) => dispatch(checkoutGetCourseClassList(search)),
+  checkoutGetCourseClassList: (search: string, offset = 0) => dispatch(checkoutGetCourseClassList(search,offset)),
   checkoutClearCourseClassList: () => dispatch(checkoutClearCourseClassList()),
   getMemberShipRecord: (item: any) => dispatch(checkoutGetMembership(item.id)),
   getProductRecord: (id: number) => dispatch(checkoutGetProduct(id)),
