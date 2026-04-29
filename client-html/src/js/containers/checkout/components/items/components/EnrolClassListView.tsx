@@ -4,7 +4,6 @@
  */
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import { Button, Grid, List, ListItemButton, Radio, Typography } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import $t from '@t';
 import clsx from 'clsx';
 import { isBefore } from 'date-fns';
