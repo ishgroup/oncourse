@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { getHighlightedPartLabel } from 'ish-ui';
 import React from 'react';
+import { CHECKOUT_ITEMS_PER_PAGE } from '../../constants';
 import EnrolItemListRenderer from './components/EnrolItemListRenderer';
 import SaleRelations from './components/SaleRelations';
 
@@ -68,7 +69,7 @@ const EnrolItemListView = React.memo<{
           )}
           searchString={searchString}
           selectedItems={selectedItems}
-          showFirst={8}
+          showFirst={CHECKOUT_ITEMS_PER_PAGE}
         />
         <EnrolItemListRenderer
           type="voucher"
@@ -84,7 +85,7 @@ const EnrolItemListView = React.memo<{
           )}
           searchString={searchString}
           selectedItems={selectedItems}
-          showFirst={8}
+          showFirst={CHECKOUT_ITEMS_PER_PAGE}
         />
         <EnrolItemListRenderer
           type="product"
@@ -100,7 +101,7 @@ const EnrolItemListView = React.memo<{
           )}
           searchString={searchString}
           selectedItems={selectedItems}
-          showFirst={8}
+          showFirst={CHECKOUT_ITEMS_PER_PAGE}
         />
       </Grid>
       {hasSalesRelations

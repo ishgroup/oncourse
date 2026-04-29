@@ -4,11 +4,13 @@
  */
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import { Button, Grid, List, ListItemButton, Radio, Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import $t from '@t';
 import clsx from 'clsx';
 import { isBefore } from 'date-fns';
 import { appendTimezone, AppTheme, formatCurrency } from 'ish-ui';
 import React from 'react';
+import { useInView } from 'react-intersection-observer';
 import { withStyles } from 'tss-react/mui';
 import CalendarDayBase from '../../../../timetable/components/calendar/components/day/CalendarDayBase';
 import CalendarMonthBase from '../../../../timetable/components/calendar/components/month/CalendarMonthBase';
@@ -53,14 +55,22 @@ const isSelectedPassedClass = course => {
 };
 
 const EnrolClassListView = React.memo<{
-  course, courseClasses, classes?, onSelect, isClassesEmpty, currencySymbol, selectedItems
+  course, courseClasses, classes?, onSelect, currencySymbol, selectedItems, onLoadMoreClasses
 }>(props => {
   const {
-   course, courseClasses, classes, onSelect, isClassesEmpty, currencySymbol, selectedItems
+   course, courseClasses, classes, onSelect, currencySymbol, selectedItems, onLoadMoreClasses
   } = props;
 
   const [showPastClasses, setShowPastClasses] = React.useState(false);
   const [months, setMonths] = React.useState<any[]>([]);
+
+  const { ref, inView } = useInView();
+
+  React.useEffect(() => {
+    if (inView && course && courseClasses.length) {
+      onLoadMoreClasses(courseClasses?.length, course?.courseId);
+    }
+  }, [inView, courseClasses.length]);
 
   React.useEffect(() => {
     setShowPastClasses(isSelectedPassedClass(course));
@@ -97,7 +107,7 @@ const EnrolClassListView = React.memo<{
     }
   }, [visibleClasses]);
 
-  return !isClassesEmpty ? (
+  return courseClasses?.length ? (
     <div className="p-2">
       <List className={classes.list}>
         <Grid item sm={12} className={clsx("text-center", classes.showPastRoot)}>
@@ -177,6 +187,7 @@ const EnrolClassListView = React.memo<{
             })}
           </CalendarMonthBase>
         ))}
+        <div ref={ref} />
       </List>
     </div>
   ) : (

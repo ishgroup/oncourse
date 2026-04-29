@@ -136,7 +136,7 @@ const initial: CheckoutState = {
   },
   relatedContacts: [],
   courseClasses: [],
-  checkCourseClassEmpty: false,
+  checkCourseClassLoaded: false,
   hasErrors: false,
   disableDiscounts: false,
   salesRelations: []
@@ -1029,11 +1029,11 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
     }
 
     case CHECKOUT_GET_COURSE_CLASS_LIST_FULFILLED: {
-      const courseClasses = [...action.payload.courseClasses];
+      const courseClasses = [...state.courseClasses, ...action.payload.courseClasses];
       return {
         ...state,
         courseClasses,
-        checkCourseClassEmpty: courseClasses.length <= 0
+        checkCourseClassLoaded: state.courseClasses.length && action.payload.courseClasses.length <= 0
       };
     }
 
@@ -1041,7 +1041,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       return {
         ...state,
         courseClasses: [],
-        checkCourseClassEmpty: false
+        checkCourseClassLoaded: false
       };
     }
 
