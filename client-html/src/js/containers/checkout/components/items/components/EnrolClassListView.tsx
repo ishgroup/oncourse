@@ -11,11 +11,13 @@ import { appendTimezone, AppTheme, formatCurrency } from 'ish-ui';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { withStyles } from 'tss-react/mui';
+import { useAppDispatch, useAppSelector } from '../../../../../common/utils/hooks';
 import CalendarDayBase from '../../../../timetable/components/calendar/components/day/CalendarDayBase';
 import CalendarMonthBase from '../../../../timetable/components/calendar/components/month/CalendarMonthBase';
 import CalendarSession from '../../../../timetable/components/calendar/components/session/CalendarSession';
 import { getAllMonthsWithSessions } from '../../../../timetable/utils';
-import { filterPastClasses } from '../../../utils';
+import { checkoutClearCourseClassList, checkoutGetCourseClassList } from '../../../actions/chekoutItem';
+import { filterPastClasses, getCourseClassSearch } from '../../../utils';
 
 const styles = (theme: AppTheme, p, classes) => ({
     list: {
@@ -54,36 +56,58 @@ const isSelectedPassedClass = course => {
 };
 
 const EnrolClassListView = React.memo<{
-  course, courseClasses, classes?, onSelect, currencySymbol, selectedItems, onLoadMoreClasses
-}>(props => {
+  course, courseClasses, classes?, onSelect, selectedItems
+} >(props => {
   const {
-   course, courseClasses, classes, onSelect, currencySymbol, selectedItems, onLoadMoreClasses
+   course, courseClasses, classes, onSelect, selectedItems
   } = props;
 
+  const currencySymbol = useAppSelector(state => state.location.currency && state.location.currency.shortCurrencySymbol);
+  const checkCourseClassLoaded = useAppSelector(state => state.checkout.checkCourseClassLoaded);
+  const dispatch = useAppDispatch();
+  const resetClasses = () => dispatch(checkoutClearCourseClassList());
+
   const [showPastClasses, setShowPastClasses] = React.useState(false);
-  const [months, setMonths] = React.useState<any[]>([]);
+  const [months, setMonths] = React.useState([]);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  const onLoadMoreClasses = (offset: number, id: number, showPastClasses: boolean) => !checkCourseClassLoaded &&
+    dispatch(checkoutGetCourseClassList(
+      getCourseClassSearch(id) + ` and endDateTime ${showPastClasses ? '<=' : '>=' } today`,
+      offset
+    ));
 
   const { ref, inView } = useInView();
 
   React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  React.useEffect(() => {
     if (inView && course && courseClasses.length) {
-      onLoadMoreClasses(courseClasses?.length, course?.courseId);
+      onLoadMoreClasses(courseClasses?.length, course?.courseId, showPastClasses);
     }
   }, [inView, courseClasses.length]);
 
   React.useEffect(() => {
-    setShowPastClasses(isSelectedPassedClass(course));
-  }, [course.id]);
+    if (course?.id) {
+      setShowPastClasses(isSelectedPassedClass(course));
+    }
+  }, [course?.id]);
+
+  React.useEffect(() => {
+    if (isMounted) {
+      onLoadMoreClasses(courseClasses?.length, course?.courseId, showPastClasses);
+    }
+  }, [showPastClasses]);
 
   const togglePastClasses = React.useCallback(() => {
+    resetClasses();
     setShowPastClasses(prev => !prev);
   }, []);
 
   const visibleClasses = React.useMemo(() => {
-    if (!showPastClasses) {
-      return filterPastClasses(courseClasses);
-    }
-    return courseClasses;
+    return filterPastClasses(courseClasses, !showPastClasses);
   }, [showPastClasses, courseClasses]);
 
   const hidePassedClassesDisabled = React.useMemo(() => isSelectedPassedClass(course), [course]);
@@ -97,7 +121,7 @@ const EnrolClassListView = React.memo<{
     if (visibleClasses.length > 0) {
       setMonths(
         getAllMonthsWithSessions(
-          visibleClasses.map(c => ({ ...c, start: c.startDateTime, end: c.endDateTime })),
+          visibleClasses.map((c: any) => ({ ...c, start: c.startDateTime, end: c.endDateTime })),
           visibleClasses[0].siteTimezone && visibleClasses[0].siteTimezone.length > 0
             ? appendTimezone(new Date(visibleClasses[0].startDateTime), visibleClasses[0].siteTimezone)
             : new Date(visibleClasses[0].startDateTime)
@@ -191,11 +215,11 @@ const EnrolClassListView = React.memo<{
     </div>
   ) : (
     <div className={clsx("p-2 overflow-auto", classes.root)}>
-      <ListItemButton alignItems="flex-start" className="justify-content-space-between p-0-5" disabled>
+      {checkCourseClassLoaded && <ListItemButton alignItems="flex-start" className="justify-content-space-between p-0-5" disabled>
         <Typography component="div" variant="body1">
           {$t('there_are_no_classes_available_for_this_course')}
         </Typography>
-      </ListItemButton>
+      </ListItemButton>}
     </div>
   );
 });
