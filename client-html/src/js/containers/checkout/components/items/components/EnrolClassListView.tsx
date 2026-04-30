@@ -73,7 +73,7 @@ const EnrolClassListView = React.memo<{
 
   const onLoadMoreClasses = (offset: number, id: number, showPastClasses: boolean) => !checkCourseClassLoaded &&
     dispatch(checkoutGetCourseClassList(
-      getCourseClassSearch(id) + ` and endDateTime ${showPastClasses ? '<=' : '>=' } today`,
+      getCourseClassSearch(id) + (showPastClasses ? ' and endDateTime <= today' : ' and (endDateTime >= today or type is DISTANT_LEARNING)'),
       offset
     ));
 
