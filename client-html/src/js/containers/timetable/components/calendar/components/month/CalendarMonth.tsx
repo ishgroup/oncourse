@@ -16,12 +16,10 @@ import { CalendarDay } from "../day/CalendarDay";
 import CalendarMonthBase from "./CalendarMonthBase";
 
 interface CompactModeMonthProps extends TimetableMonth {
-  style: any;
   classes
   dayNodesObserver: any;
   index: number;
   isScrolling: boolean;
-  parentRef?: any;
 }
 
 const CalendarMonth: React.FunctionComponent<CompactModeMonthProps> = props => {
@@ -31,9 +29,7 @@ const CalendarMonth: React.FunctionComponent<CompactModeMonthProps> = props => {
     hasSessions,
     index,
     isScrolling,
-    style,
-    dayNodesObserver,
-    parentRef
+    dayNodesObserver
   } = props;
 
   const {
@@ -81,11 +77,11 @@ const CalendarMonth: React.FunctionComponent<CompactModeMonthProps> = props => {
   }, [days, isScrolling, month, index, hasSessions, selectedDayPeriods, selectedWeekDays, calendarMode, calendarGrouping, tagsState]);
 
   return renderedDays.length ? (
-    <CalendarMonthBase month={month} style={style} parentRef={parentRef}>
+    <CalendarMonthBase month={month}>
       {renderedDays}
     </CalendarMonthBase>
   ) : (
-    <div ref={parentRef} style={{ ...style, height: "1px", fontSize: "0px" }}>---</div>
+    <div style={{ height: "1px", fontSize: "0px" }}>---</div>
   );
 };
 

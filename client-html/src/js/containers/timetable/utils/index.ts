@@ -146,7 +146,7 @@ export const animateListScroll = (list, scrollTopFinal, scrollTopInitial, animat
     const easedTime = easing(Math.min(1, elapsed / 500));
     const scrollTop = scrollTopInitial + scrollDelta * easedTime;
 
-    list.scrollTo(scrollTop);
+    list.scrollTo({ top: scrollTop });
 
     if (elapsed < 500) {
       animateListScroll(list, scrollTopFinal, scrollTopInitial, animationStartTime, dayNodesObserver);

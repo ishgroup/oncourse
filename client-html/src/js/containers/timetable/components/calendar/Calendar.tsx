@@ -11,11 +11,11 @@ import $t from '@t';
 import clsx from 'clsx';
 import { addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth } from 'date-fns';
 import { debounce } from 'es-toolkit/compat';
-import { DD_MMM_YYYY_MINUSED, DynamicSizeList, makeAppStyles, usePrevious } from 'ish-ui';
+import { DD_MMM_YYYY_MINUSED, makeAppStyles, usePrevious } from 'ish-ui';
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 import { Dispatch } from 'redux';
 import { IAction } from '../../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
@@ -41,9 +41,12 @@ import CalendarTagsSwitcher from './components/switchers/CalendarTagsSwitcher';
 const useStyles = makeAppStyles()(theme => ({
   root: {
     display: "flex",
-    position: "relative"
+    position: "relative",
+    height: "100%",
+    minHeight: 0
   },
   list: {
+    flex: 1,
     "& > div": {
       overflow: "visible !important"
     }
@@ -86,16 +89,14 @@ interface Props extends RouteComponentProps {
   dispatch?: Dispatch<IAction>;
 }
 
-const MonthRenderer = React.forwardRef<any, any>(({
- index, isScrolling, data, style
-}, ref) => (
+const MonthRenderer = React.memo<{ index, isScrolling, dayNodesObserver, month }>(({
+ index, isScrolling, dayNodesObserver, month
+}) => (
   <CalendarMonth
-    parentRef={ref}
     index={index}
     isScrolling={isScrolling}
-    style={style}
-    dayNodesObserver={data.dayNodesObserver}
-    {...data.months[index]}
+    dayNodesObserver={dayNodesObserver}
+    {...month}
   />
 ));
 
@@ -118,12 +119,16 @@ const onRendered = ({
   }
 };
 
-const scrollToCalendarDay = debounce((dayNode, list, index, dayNodesObserver) => {
-  if (dayNode && dayNodesObserver && list._instanceProps.itemMetadataMap[index]) {
+const scrollToCalendarDay = debounce((dayNode, list, scroller, dayNodesObserver) => {
+  if (dayNode && list && scroller && dayNodesObserver) {
+    const dayRect = dayNode.getBoundingClientRect();
+    const scrollerRect = scroller.getBoundingClientRect();
+    const scrollTopFinal = scroller.scrollTop + dayRect.top - scrollerRect.top - 32;
+
     animateListScroll(
       list,
-      dayNode.parentElement.offsetTop + list._instanceProps.itemMetadataMap[index].offset - 32,
-      list._outerRef?.scrollTop || 0,
+      scrollTopFinal,
+      scroller.scrollTop || 0,
       performance.now(),
       dayNodesObserver
     );
@@ -191,8 +196,11 @@ const Calendar = React.memo<Props>(props => {
 
   const [dayNodesObserver, setDayNodesObserver] = useState<any>();
   const [scrollToTargetDayOnRender, setScrollToTargetDayOnRender] = useState(targetDay);
+  const [isScrolling, setIsScrolling] = useState(false);
 
-  const listEl = useRef(null);
+  const listEl = useRef<VirtuosoHandle>(null);
+  const scrollerEl = useRef<HTMLElement>(null);
+  const isScrollingRef = useRef(false);
   const renderedArgs = useRef<any>(null);
 
   const prevSearch = usePrevious(search, "");
@@ -200,14 +208,14 @@ const Calendar = React.memo<Props>(props => {
   const params = new URLSearchParams(location.search);
 
   const targetDayHandler = (day: Date) => {
-    if (listEl.current && listEl.current.state.isScrolling) {
+    if (isScrollingRef.current) {
       setTargetDay(day);
     }
   };
 
   const scrollToDayHandler = (targetDayMonthIndex, node?) => {
     const dayNode = node || document.getElementById(format(targetDay, DD_MMM_YYYY_MINUSED));
-    scrollToCalendarDay(dayNode, listEl.current, targetDayMonthIndex, dayNodesObserver);
+    scrollToCalendarDay(dayNode, listEl.current, scrollerEl.current, dayNodesObserver);
   };
 
   // fetch next two months
@@ -231,8 +239,22 @@ const Calendar = React.memo<Props>(props => {
     dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endOfMonth(endMonth).toISOString() }, reset));
   }, 100), []);
 
-  const onRowsRendered = args => {
-    renderedArgs.current = args;
+  const onRangeChanged = range => {
+    renderedArgs.current = {
+      visibleStartIndex: range.startIndex,
+      visibleStopIndex: range.endIndex
+    };
+  };
+
+  const onIsScrolling = scrolling => {
+    isScrollingRef.current = scrolling;
+    setIsScrolling(scrolling);
+  };
+
+  const onScrollerRef = ref => {
+    if (ref instanceof HTMLElement) {
+      scrollerEl.current = ref;
+    }
   };
   
   useEffect(() => {
@@ -318,18 +340,18 @@ const Calendar = React.memo<Props>(props => {
 
   // Layout effects
   useEffect(() => {
-    if (!dayNodesObserver && listEl.current) {
-      setDayNodesObserver(attachDayNodesObserver(listEl.current._outerRef, targetDayHandler));
+    if (!dayNodesObserver && scrollerEl.current) {
+      setDayNodesObserver(attachDayNodesObserver(scrollerEl.current, targetDayHandler));
     }
     return () => {
       if (dayNodesObserver) {
         dayNodesObserver.observer.disconnect();
       }
     };
-  }, [listEl.current, dayNodesObserver]);
+  }, [scrollerEl.current, dayNodesObserver]);
 
   useEffect(() => {
-    if (!listEl.current || listEl.current.state.isScrolling) {
+    if (!listEl.current || isScrollingRef.current) {
       return;
     }
 
@@ -362,9 +384,16 @@ const Calendar = React.memo<Props>(props => {
 
   const hasSessions = useMemo(() => (calendarMode === "Compact" ? months.some(m => m.hasSessions) : true), [months, calendarMode]);
 
-  const itemData = useMemo(() => ({
-   months, dayNodesObserver
-  }), [months, dayNodesObserver]);
+  const computeMonthKey = useCallback((index, month) => format(month.month, "yyyy-MM"), []);
+
+  const renderMonth = useCallback((index, month) => (
+    <MonthRenderer
+      index={index}
+      isScrolling={isScrolling}
+      dayNodesObserver={dayNodesObserver}
+      month={month}
+    />
+  ), [isScrolling, dayNodesObserver]);
 
   return (
     <div className={classes.root}>
@@ -378,25 +407,19 @@ const Calendar = React.memo<Props>(props => {
         </div>
       )}
 
-      <AutoSizer>
-        {({ width, height }) => (
-          <DynamicSizeList
-            listRef={listEl}
-            className={clsx(classes.list, classes.disableOutline)}
-            height={height}
-            width={width}
-            overscanCount={0}
-            initialScrollOffset={0}
-            estimatedItemSize={1000}
-            itemData={itemData}
-            itemCount={months.length}
-            onItemsRendered={onRowsRendered}
-            useIsScrolling
-          >
-            {MonthRenderer as any}
-          </DynamicSizeList>
-        )}
-      </AutoSizer>
+      <Virtuoso
+        ref={listEl}
+        scrollerRef={onScrollerRef}
+        className={clsx(classes.list, classes.disableOutline)}
+        style={{ height: "100%", width: "100%" }}
+        data={months}
+        computeItemKey={computeMonthKey}
+        defaultItemHeight={1000}
+        overscan={0}
+        rangeChanged={onRangeChanged}
+        isScrolling={onIsScrolling}
+        itemContent={renderMonth}
+      />
       <div className={classes.modesSwitcher}>
         <CalendarModesSwitcher TimetableContext={TimetableContext} />
         <CalendarTagsSwitcher className="mt-2" TimetableContext={TimetableContext} />

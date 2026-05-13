@@ -130,7 +130,7 @@ const EnrolClassListView = React.memo<{
     }
   }, [visibleClasses]);
 
-  return courseClasses?.length ? (
+  return (
     <div className="p-2">
       <List className={classes.list}>
         <Grid item sm={12} className={clsx("text-center", classes.showPastRoot)}>
@@ -147,6 +147,15 @@ const EnrolClassListView = React.memo<{
             {showPastClasses ? "Hide finished classes" : "Show finished classes"}
           </Button>
         </Grid>
+
+        {!months.length && checkCourseClassLoaded &&  <div className={clsx("p-2 overflow-auto", classes.root)}>
+          <ListItemButton alignItems="flex-start" className="justify-content-space-between p-0-5" disabled>
+            <Typography component="div" variant="body1">
+              {$t('there_are_no_classes_available_for_this_course')}
+            </Typography>
+          </ListItemButton>
+        </div>}
+
         {months.map((m, i) => (
           <CalendarMonthBase key={i} fullWidth {...m} showYear>
             {m.days.map(d => {
@@ -213,15 +222,7 @@ const EnrolClassListView = React.memo<{
         <div ref={ref} />
       </List>
     </div>
-  ) : (
-    <div className={clsx("p-2 overflow-auto", classes.root)}>
-      {checkCourseClassLoaded && <ListItemButton alignItems="flex-start" className="justify-content-space-between p-0-5" disabled>
-        <Typography component="div" variant="body1">
-          {$t('there_are_no_classes_available_for_this_course')}
-        </Typography>
-      </ListItemButton>}
-    </div>
-  );
+  )
 });
 
 export default withStyles(EnrolClassListView, styles);
