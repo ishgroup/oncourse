@@ -7,7 +7,7 @@
  */
 
 import CircularProgress from '@mui/material/CircularProgress';
-import { isSameMonth, setDate, startOfMonth } from 'date-fns';
+import { isSameMonth, parse, setDate, startOfMonth } from 'date-fns';
 import { format } from 'date-fns-tz';
 import { DD_MMM_YYYY_MINUSED } from 'ish-ui';
 import React, { createContext, useEffect, useReducer } from 'react';
@@ -39,6 +39,8 @@ export const TimetableContext = createContext<TimetableContextState>(null);
 const todayInitial = new Date();
 todayInitial.setHours(0, 0, 0, 0);
 
+const parseTimetableDay = (dayId: string) => parse(dayId, DD_MMM_YYYY_MINUSED, new Date());
+
 export const timetableContextStateInitial: TimetableContextState = {
   calendarGrouping: "No grouping",
   calendarMode: "Compact",
@@ -61,18 +63,20 @@ const initContext = (initial: TimetableContextState) => {
     calendarGrouping: LSGetItem(LS_TIMETABLE_GROUPING_MODE) || "No grouping",
     tagsState: LSGetItem(LS_TIMETABLE_TAGS_MODE) || "Tag names",
     targetDay,
-    selectedMonth: setDate(new Date(targetDay), 1),
+    selectedMonth: setDate(parseTimetableDay(targetDay), 1),
   };
 };
 
 const timetableReducer: React.Reducer<TimetableContextState, any> = (state, action) => {
   switch (action.type) {
     case "targetDay":
+      const targetDate = parseTimetableDay(action.payload);
+
       return {
         ...state,
-        selectedMonth: isSameMonth(action.payload, state.selectedMonth)
+        selectedMonth: isSameMonth(targetDate, state.selectedMonth)
           ? state.selectedMonth
-          : startOfMonth(new Date(action.payload)),
+          : startOfMonth(targetDate),
         targetDay: action.payload
       };
     case "tagsState": {

@@ -9,9 +9,9 @@
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import clsx from 'clsx';
-import { addMonths, endOfMonth, format, isAfter, startOfMonth } from 'date-fns';
+import { addMonths, endOfMonth, format, isAfter, parse, startOfMonth } from 'date-fns';
 import { debounce } from 'es-toolkit/compat';
-import { makeAppStyles, usePrevious } from 'ish-ui';
+import { DD_MMM_YYYY_MINUSED, makeAppStyles, usePrevious } from 'ish-ui';
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -33,11 +33,16 @@ import {
   setTimetableSearch
 } from '../../actions';
 import { TimetableContext } from '../../Timetable';
-import { animateListScroll, attachDayNodesObserver, getFormattedMonthDays } from '../../utils';
+import { attachDayNodesObserver, getFormattedMonthDays } from '../../utils';
 import CalendarMonth from './components/month/CalendarMonth';
 import CalendarGroupingsSwitcher from './components/switchers/CalendarGroupingsSwitcher';
 import CalendarModesSwitcher from './components/switchers/CalendarModesSwitcher';
 import CalendarTagsSwitcher from './components/switchers/CalendarTagsSwitcher';
+
+const SCROLL_DAY_OFFSET = 32;
+const SCROLL_DAY_SETTLE_DELAY = 150;
+const SCROLL_DAY_SMOOTH_SETTLE_DELAY = 500;
+const SCROLL_DAY_FINAL_THRESHOLD = 1;
 
 const useStyles = makeAppStyles()(theme => ({
   root: {
@@ -121,21 +126,13 @@ const onRendered = ({
   }
 };
 
-const scrollToCalendarDay = debounce((dayNode, list, scroller, dayNodesObserver) => {
-  if (dayNode && list && scroller && dayNodesObserver) {
-    const dayRect = dayNode.getBoundingClientRect();
-    const scrollerRect = scroller.getBoundingClientRect();
-    const scrollTopFinal = scroller.scrollTop + dayRect.top - scrollerRect.top - 32;
+const getScrollDayAnchor = (dayId: string) => document.querySelector(`[data-day-anchor="${dayId}"]`) as HTMLElement;
 
-    animateListScroll(
-      list,
-      scrollTopFinal,
-      scroller.scrollTop || 0,
-      performance.now(),
-      dayNodesObserver
-    );
-  }
-}, 100);
+const getScrollDayDelta = (dayNode: HTMLElement, scroller: HTMLElement) => (
+  dayNode.getBoundingClientRect().top - scroller.getBoundingClientRect().top - SCROLL_DAY_OFFSET
+);
+
+const parseTimetableDay = (dayId: string) => parse(dayId, DD_MMM_YYYY_MINUSED, new Date());
 
 const initDateAsync = async (searchString, setTargetDay) => {
   const firstSession = await EntityService.getPlainRecords(
@@ -198,14 +195,101 @@ const Calendar = React.memo<Props>(props => {
   const scrollerEl = useRef<HTMLElement>(null);
   const isScrollingRef = useRef(false);
   const renderedArgs = useRef<any>(null);
+  const pendingScrollDayRef = useRef<string>(null);
+  const scrollSettleTimeoutRef = useRef<number>(null);
+  const scrollAnimationFrameRef = useRef<number>(null);
+  const requestedScrollMonthRef = useRef<string>(null);
 
   const prevSearch = usePrevious(search, "");
 
   const params = new URLSearchParams(location.search);
 
-  const scrollToDayHandler = node => {
-    scrollToCalendarDay(node, listEl.current, scrollerEl.current, dayNodesObserver);
-  };
+  const clearPendingScrollDay = useCallback(() => {
+    pendingScrollDayRef.current = null;
+    requestedScrollMonthRef.current = null;
+    if (dayNodesObserver) {
+      dayNodesObserver.preventUpdate = false;
+    }
+    if (scrollSettleTimeoutRef.current) {
+      window.clearTimeout(scrollSettleTimeoutRef.current);
+      scrollSettleTimeoutRef.current = null;
+    }
+    if (scrollAnimationFrameRef.current) {
+      window.cancelAnimationFrame(scrollAnimationFrameRef.current);
+      scrollAnimationFrameRef.current = null;
+    }
+  }, [dayNodesObserver]);
+
+  const alignToScrollDay = useCallback((behavior: ScrollBehavior = "auto") => {
+    const scrollDay = pendingScrollDayRef.current;
+    const list = listEl.current;
+    const scroller = scrollerEl.current;
+
+    if (!scrollDay || !list || !scroller) {
+      return false;
+    }
+
+    const dayNode = getScrollDayAnchor(scrollDay);
+
+    if (!dayNode) {
+      return false;
+    }
+
+    const delta = getScrollDayDelta(dayNode, scroller);
+
+    if (Math.abs(delta) > SCROLL_DAY_FINAL_THRESHOLD) {
+      list.scrollBy({ top: delta, behavior });
+    }
+
+    return true;
+  }, []);
+
+  const scheduleScrollDayAlignment = useCallback((
+    behavior: ScrollBehavior = "auto",
+    clearWhenSettled = false,
+    delay = 0
+  ) => {
+    if (!pendingScrollDayRef.current) {
+      return;
+    }
+
+    if (scrollSettleTimeoutRef.current) {
+      window.clearTimeout(scrollSettleTimeoutRef.current);
+    }
+
+    scrollSettleTimeoutRef.current = window.setTimeout(() => {
+      scrollSettleTimeoutRef.current = null;
+      if (scrollAnimationFrameRef.current) {
+        window.cancelAnimationFrame(scrollAnimationFrameRef.current);
+      }
+
+      scrollAnimationFrameRef.current = window.requestAnimationFrame(() => {
+        scrollAnimationFrameRef.current = null;
+        const hadAnchor = alignToScrollDay(behavior);
+
+        if (clearWhenSettled && hadAnchor) {
+          if (behavior === "smooth") {
+            scheduleScrollDayAlignment("auto", true, SCROLL_DAY_SMOOTH_SETTLE_DELAY);
+            return;
+          }
+
+          scrollAnimationFrameRef.current = window.requestAnimationFrame(() => {
+            scrollAnimationFrameRef.current = null;
+            const scrollDay = pendingScrollDayRef.current;
+            const dayNode = getScrollDayAnchor(scrollDay);
+            const delta = dayNode && scrollerEl.current ? getScrollDayDelta(dayNode, scrollerEl.current) : 0;
+
+            if (Math.abs(delta) <= SCROLL_DAY_FINAL_THRESHOLD) {
+              clearPendingScrollDay();
+              dispatch(clearTimetableScrollDay());
+            } else {
+              scheduleScrollDayAlignment("auto", true, SCROLL_DAY_SETTLE_DELAY);
+            }
+          });
+        }
+      });
+    }, delay);
+  }, [alignToScrollDay, clearPendingScrollDay, dispatch]);
 
   // fetch next two months
   const loadNextMonths = useCallback(debounce((baseDate: Date, reset = false) => {
@@ -223,7 +307,7 @@ const Calendar = React.memo<Props>(props => {
         days: getFormattedMonthDays(endMonth),
         hasSessions: false
       }
-    ], true));
+    ], !reset));
     
     dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endOfMonth(endMonth).toISOString() }, reset));
   }, 100), []);
@@ -272,7 +356,7 @@ const Calendar = React.memo<Props>(props => {
         instantFetchErrorHandler(dispatch, e);
       }
     }
-    loadNextMonths(selectedDate ? new Date(selectedDate) : new Date(), true);
+    loadNextMonths(selectedDate ? parseTimetableDay(selectedDate) : new Date(), true);
   }, []);
 
   useEffect(() => {
@@ -321,16 +405,34 @@ const Calendar = React.memo<Props>(props => {
   }, [scrollerEl.current, dayNodesObserver]);
 
   useEffect(() => {
+    if (dayNodesObserver && pendingScrollDayRef.current) {
+      dayNodesObserver.preventUpdate = true;
+    }
+  }, [dayNodesObserver]);
+
+  useEffect(() => {
     if (scrollToDay) {
-      const dayNode = document.querySelector(`[data-dayId="${scrollToDay}"]`);
+      pendingScrollDayRef.current = scrollToDay;
+      if (dayNodesObserver) {
+        dayNodesObserver.preventUpdate = true;
+      }
+      const dayNode = getScrollDayAnchor(scrollToDay);
+
       if (dayNode) {
-        dispatch(clearTimetableScrollDay());
-        scrollToDayHandler(dayNode);
+        scheduleScrollDayAlignment(sessionsLoading ? "auto" : "smooth", !sessionsLoading);
       } else {
-        loadNextMonths(new Date(scrollToDay), true);
+        const scrollDay = parseTimetableDay(scrollToDay);
+        const scrollMonth = format(scrollDay, "yyyy-MM");
+
+        if (requestedScrollMonthRef.current !== scrollMonth) {
+          requestedScrollMonthRef.current = scrollMonth;
+          loadNextMonths(scrollDay, true);
+        }
       }
     }
-  }, [scrollToDay, months]);
+  }, [scrollToDay, months, sessionsLoading, dayNodesObserver, scheduleScrollDayAlignment]);
+
+  useEffect(() => () => clearPendingScrollDay(), []);
 
   const hasSessions = useMemo(() => (calendarMode === "Compact" ? months.some(m => m.hasSessions) : true), [months, calendarMode]);
 
@@ -368,6 +470,7 @@ const Calendar = React.memo<Props>(props => {
         overscan={0}
         rangeChanged={onRangeChanged}
         isScrolling={onIsScrolling}
+        totalListHeightChanged={() => scheduleScrollDayAlignment("auto", !sessionsLoading, SCROLL_DAY_SETTLE_DELAY)}
         itemContent={renderMonth}
       />
       <div className={classes.modesSwitcher}>
