@@ -132,7 +132,7 @@ public class RefundHelper {
         refundInvoiceLine.setSortOrder(invoiceLineToRefund.getSortOrder());
         refundInvoiceLine.setTitle(invoiceLineToRefund.getTitle());
         refundInvoiceLine.setUnit(invoiceLineToRefund.getUnit());
-        refundInvoiceLine.setQuantity(new BigDecimal("1.00"));
+        refundInvoiceLine.setQuantity(invoiceLineToRefund.getQuantity());
         refundInvoiceLine.setTax(invoiceLineToRefund.getTax());
         refundInvoiceLine.setCourseClass(invoiceLineToRefund.getCourseClass());
         // when we create refund we should not recalculate tax each calculated on payment creation,
