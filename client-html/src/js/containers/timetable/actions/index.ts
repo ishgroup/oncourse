@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Filter, SearchRequest } from "@api/model";
-import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
-import { CoreFilter, SavingFilterState } from "../../../model/common/ListView";
-import { TimetableMonth } from "../../../model/timetable";
+import { Filter, SearchRequest } from '@api/model';
+import { _toRequestType, FULFILLED } from '../../../common/actions/ActionUtils';
+import { CoreFilter, SavingFilterState } from '../../../model/common/ListView';
+import { TimetableMonth } from '../../../model/timetable';
 
 export const FIND_TIMETABLE_SESSIONS = _toRequestType("find/timetable/session");
 export const FIND_TIMETABLE_SESSIONS_FULFILLED = FULFILLED(FIND_TIMETABLE_SESSIONS);
@@ -35,9 +35,22 @@ export const GET_TIMETABLE_SESSIONS_BY_IDS_FULFILLED = FULFILLED(GET_TIMETABLE_S
 export const SET_TIMETABLE_MONTHS = "set/timetable/months";
 export const CLEAR_TIMETABLE_MONTHS = "clear/timetable/months";
 
+export const SET_TIMETABLE_SCROLL_DAY = "set/timetable/scroll/day";
+export const CLEAR_TIMETABLE_SCROLL_DAY = "clear/timetable/scroll/day";
+
 export const SET_TIMETABLE_SEARCH = "set/timetable/search";
 export const SET_TIMETABLE_SEARCH_ERROR = "set/timetable/search/error";
 export const SET_TIMETABLE_SAVING_FILTER = "set/timetable/savingFilter";
+
+export const setTimetableScrollDay = (scrollToDay: string) => ({
+  type: SET_TIMETABLE_SCROLL_DAY,
+  payload: { scrollToDay }
+});
+
+export const clearTimetableScrollDay = () => ({
+  type: CLEAR_TIMETABLE_SCROLL_DAY,
+  payload: { scrollToDay: null }
+});
 
 export const setTimetableFilters = (filters?: CoreFilter[]) => ({
   type: SET_TIMETABLE_FILTERS,

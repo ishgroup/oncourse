@@ -9,9 +9,9 @@
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import clsx from 'clsx';
-import { addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth } from 'date-fns';
+import { addMonths, endOfMonth, format, isAfter, startOfMonth } from 'date-fns';
 import { debounce } from 'es-toolkit/compat';
-import { DD_MMM_YYYY_MINUSED, makeAppStyles, usePrevious } from 'ish-ui';
+import { makeAppStyles, usePrevious } from 'ish-ui';
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -23,9 +23,10 @@ import { getFiltersNameString, } from '../../../../common/components/list-view/u
 import EntityService from '../../../../common/services/EntityService';
 import { updateHistory } from '../../../../common/utils/common';
 import { CoreFilter } from '../../../../model/common/ListView';
+import { TimetableMonth } from '../../../../model/timetable';
 import { State } from '../../../../reducers/state';
 import {
-  clearTimetableMonths,
+  clearTimetableScrollDay,
   findTimetableSessions,
   getTimetableSessionsDays,
   setTimetableMonths,
@@ -80,13 +81,14 @@ const useStyles = makeAppStyles()(theme => ({
 
 interface Props extends RouteComponentProps {
   classes?: any;
-  months?: any;
+  months?: TimetableMonth[];
   search?: string;
   searchError?: boolean;
   filters?: CoreFilter[];
   sessionsLoading?: boolean;
   selectedMonthSessionDays?: number[];
   dispatch?: Dispatch<IAction>;
+  scrollToDay?: string;
 }
 
 const MonthRenderer = React.memo<{ index, isScrolling, dayNodesObserver, month }>(({
@@ -158,23 +160,18 @@ const initDateAsync = async (searchString, setTargetDay) => {
   
   if (firstSession.rows.length && lastSession.rows.length) {
     const endDate = new Date(lastSession.rows[0].values[0]);
-    const firstDate = new Date(firstSession.rows[0].values[0]);
+    const firstDate = firstSession.rows[0].values[0];
 
-    if (isAfter(new Date(), endDate) || isAfter(firstDate, new Date())) {
+    if (isAfter(new Date(), endDate) || isAfter(new Date(firstDate), new Date())) {
       setTargetDay(firstDate);
-    } else {
-      setTargetDay(new Date());
     }
   }
 };
 
 const Calendar = React.memo<Props>(props => {
   const {
-    targetDay,
     setTargetDay,
     selectedMonth,
-    selectedWeekDays,
-    selectedDayPeriods,
     calendarMode
   } = useContext(
     TimetableContext
@@ -183,11 +180,11 @@ const Calendar = React.memo<Props>(props => {
   const {
     search,
     months,
-    selectedMonthSessionDays,
     sessionsLoading,
     location,
     filters,
     searchError,
+    scrollToDay,
     match: { url },
     dispatch,
   } = props;
@@ -195,7 +192,6 @@ const Calendar = React.memo<Props>(props => {
   const { classes } = useStyles();
 
   const [dayNodesObserver, setDayNodesObserver] = useState<any>();
-  const [scrollToTargetDayOnRender, setScrollToTargetDayOnRender] = useState(targetDay);
   const [isScrolling, setIsScrolling] = useState(false);
 
   const listEl = useRef<VirtuosoHandle>(null);
@@ -207,19 +203,12 @@ const Calendar = React.memo<Props>(props => {
 
   const params = new URLSearchParams(location.search);
 
-  const targetDayHandler = (day: Date) => {
-    if (isScrollingRef.current) {
-      setTargetDay(day);
-    }
-  };
-
-  const scrollToDayHandler = (targetDayMonthIndex, node?) => {
-    const dayNode = node || document.getElementById(format(targetDay, DD_MMM_YYYY_MINUSED));
-    scrollToCalendarDay(dayNode, listEl.current, scrollerEl.current, dayNodesObserver);
+  const scrollToDayHandler = node => {
+    scrollToCalendarDay(node, listEl.current, scrollerEl.current, dayNodesObserver);
   };
 
   // fetch next two months
-  const loadNextMonths = useCallback(debounce((baseDate, reset = false) => {
+  const loadNextMonths = useCallback(debounce((baseDate: Date, reset = false) => {
     const startMonth = startOfMonth(baseDate);
     const endMonth = startOfMonth(addMonths(startMonth, 1));
 
@@ -273,37 +262,18 @@ const Calendar = React.memo<Props>(props => {
     }
 
     const searchString = params.get("search");
+    const selectedDate = params.get("selectedDate");
     dispatch(setTimetableSearch(searchString ? decodeURIComponent(searchString) : ""));
 
-    if (searchString && !params.get("selectedDate")) {
+    if (searchString && !selectedDate) {
       try {
         initDateAsync(searchString, setTargetDay);
       } catch (e) {
         instantFetchErrorHandler(dispatch, e);
       }
     }
-
-    loadNextMonths(targetDay, true);
+    loadNextMonths(selectedDate ? new Date(selectedDate) : new Date(), true);
   }, []);
-
-  useEffect(() => {
-    const calendarModeUrl = params.get("calendarMode");
-
-    if (calendarModeUrl !== calendarMode) {
-      params.set("calendarMode", calendarMode);
-      updateHistory(params, url);
-    }
-  }, [calendarMode]);
-
-  useEffect(() => {
-    const targetDayUrlString = params.get("selectedDate");
-    const targetDayString = format(targetDay, DD_MMM_YYYY_MINUSED);
-
-    if (targetDayUrlString !== targetDayString) {
-      params.set("selectedDate", targetDayString);
-      updateHistory(params, url);
-    }
-  }, [targetDay]);
 
   useEffect(() => {
     if (filters.length) {
@@ -341,7 +311,7 @@ const Calendar = React.memo<Props>(props => {
   // Layout effects
   useEffect(() => {
     if (!dayNodesObserver && scrollerEl.current) {
-      setDayNodesObserver(attachDayNodesObserver(scrollerEl.current, targetDayHandler));
+      setDayNodesObserver(attachDayNodesObserver(scrollerEl.current, setTargetDay));
     }
     return () => {
       if (dayNodesObserver) {
@@ -351,36 +321,16 @@ const Calendar = React.memo<Props>(props => {
   }, [scrollerEl.current, dayNodesObserver]);
 
   useEffect(() => {
-    if (!listEl.current || isScrollingRef.current) {
-      return;
-    }
-
-    const targetDayMonthIndex = months.findIndex(m => isSameMonth(m.month, targetDay));
-
-    if (targetDayMonthIndex > -1 && targetDayMonthIndex < 2) {
-      if (calendarMode === "Compact" && !(selectedMonthSessionDays[targetDay.getDate() - 1] !== 0)) {
-        return;
+    if (scrollToDay) {
+      const dayNode = document.querySelector(`[data-dayId="${scrollToDay}"]`);
+      if (dayNode) {
+        dispatch(clearTimetableScrollDay());
+        scrollToDayHandler(dayNode);
+      } else {
+        loadNextMonths(new Date(scrollToDay), true);
       }
-      scrollToDayHandler(targetDayMonthIndex);
-    } else {
-      dispatch(clearTimetableMonths());
-      setScrollToTargetDayOnRender(targetDay);
-      loadNextMonths(targetDay);
     }
-  }, [targetDay, dayNodesObserver]);
-
-  useEffect(() => {
-    scrollToDayHandler(months.findIndex(m => isSameMonth(m.month, targetDay)));
-  }, [selectedWeekDays, selectedDayPeriods, calendarMode]);
-
-  useEffect(() => {
-    const dayNode = document.getElementById(format(targetDay, DD_MMM_YYYY_MINUSED));
-    if (dayNode && dayNodesObserver && scrollToTargetDayOnRender && months.length) {
-      const targetDayMonthIndex = months.findIndex(m => isSameMonth(m.month, scrollToTargetDayOnRender));
-      scrollToDayHandler(targetDayMonthIndex, dayNode);
-      setScrollToTargetDayOnRender(null);
-    }
-  }, [months, targetDay, scrollToTargetDayOnRender, dayNodesObserver]);
+  }, [scrollToDay, months]);
 
   const hasSessions = useMemo(() => (calendarMode === "Compact" ? months.some(m => m.hasSessions) : true), [months, calendarMode]);
 
@@ -435,6 +385,7 @@ const mapStateToProps = (state: State) => ({
   filters: state.timetable.filters,
   searchError: state.timetable.searchError,
   sessionsLoading: state.timetable.sessionsLoading,
+  scrollToDay: state.timetable.scrollToDay,
   selectedMonthSessionDays: state.timetable.selectedMonthSessionDays
 });
 

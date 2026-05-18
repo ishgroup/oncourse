@@ -6,21 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { addMonths, format } from "date-fns";
-import { CalendarHeader, CalendarWeekPanel, validateDate } from "ish-ui";
-import React, { useContext } from "react";
-import { connect } from "react-redux";
-import { State } from "../../../../../../reducers/state";
-import { TimetableContext } from "../../../../Timetable";
-import CalendarBody from "./components/CalendarBody";
+import { addMonths, format } from 'date-fns';
+import { CalendarHeader, CalendarWeekPanel, validateDate } from 'ish-ui';
+import React, { useContext } from 'react';
+import { TimetableContext } from '../../../../Timetable';
+import CalendarBody from './components/CalendarBody';
 
-interface Props {
-  classes?: any;
-  setTimetableSearch?: (search: string) => void;
-  selectedMonthSessionDays?: number[];
-}
-
-const MiniCalendar: React.FunctionComponent<Props> = ({ selectedMonthSessionDays }) => {
+const MiniCalendar: React.FC = () => {
   const {
    setSelectedWeekDays, selectedMonth, setSelectedMonth, selectedWeekDays
   } = useContext(TimetableContext);
@@ -53,14 +45,9 @@ const MiniCalendar: React.FunctionComponent<Props> = ({ selectedMonthSessionDays
       <CalendarBody
         month={selectedMonth}
         selectedWeekDays={selectedWeekDays}
-        selectedMonthSessionDays={selectedMonthSessionDays}
       />
     </div>
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  selectedMonthSessionDays: state.timetable.selectedMonthSessionDays || []
-});
-
-export default connect<any, any, any>(mapStateToProps)(MiniCalendar);
+export default MiniCalendar;

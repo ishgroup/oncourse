@@ -6,10 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { IAction } from "../../../common/actions/IshAction";
-import { TimetableState } from "../../../model/timetable";
+import { IAction } from '../../../common/actions/IshAction';
+import { TimetableState } from '../../../model/timetable';
 import {
-  CLEAR_TIMETABLE_MONTHS, DELETE_TIMETABLE_FILTER,
+  CLEAR_TIMETABLE_MONTHS,
+  CLEAR_TIMETABLE_SCROLL_DAY,
+  DELETE_TIMETABLE_FILTER,
   FIND_TIMETABLE_SESSIONS,
   FIND_TIMETABLE_SESSIONS_FULFILLED,
   GET_TIMETABLE_SESSIONS_BY_IDS_FULFILLED,
@@ -18,9 +20,10 @@ import {
   SET_TIMETABLE_FILTERS,
   SET_TIMETABLE_MONTHS,
   SET_TIMETABLE_SAVING_FILTER,
+  SET_TIMETABLE_SCROLL_DAY,
   SET_TIMETABLE_SEARCH,
   SET_TIMETABLE_SEARCH_ERROR
-} from "../actions";
+} from '../actions';
 
 const TimetableInitialState: TimetableState = {
   months: [],
@@ -29,6 +32,7 @@ const TimetableInitialState: TimetableState = {
   filtersLoading: true,
   sessionsLoading: false,
   search: "",
+  scrollToDay: null,
   searchError: false,
   savingFilter: null
 };
@@ -120,7 +124,9 @@ export const timetableReducer = (
     }
 
     case SET_TIMETABLE_SEARCH:
+    case SET_TIMETABLE_SCROLL_DAY:
     case SET_TIMETABLE_SEARCH_ERROR:
+    case CLEAR_TIMETABLE_SCROLL_DAY:
     case SET_TIMETABLE_SAVING_FILTER:
     case GET_TIMETABLE_SESSIONS_DAYS_FULFILLED: {
       return {

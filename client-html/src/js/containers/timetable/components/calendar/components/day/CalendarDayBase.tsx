@@ -43,7 +43,7 @@ const CalendarDayBase: React.FC<DayBaseProps> = props => {
   return (
     <Grid container className={classes.commonDayOffsetTop}>
       <Grid item xs={2}>
-        <div className={classes.day} id={id} ref={dayNodeRef}>
+        <div className={classes.day} data-dayId={id} ref={dayNodeRef}>
           {notNullDate && <Typography align="right">{format(timezone ? appendTimezone(day, timezone) : day, D_III)}</Typography>}
         </div>
       </Grid>

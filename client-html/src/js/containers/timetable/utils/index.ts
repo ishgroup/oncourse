@@ -7,8 +7,8 @@
  */
 
 import { Session } from '@api/model';
-import { format, getDaysInMonth, isSameYear, parse, setDate, setHours, startOfMonth } from 'date-fns';
-import { AfternoonIcon, appendTimezone, DD_MMM_YYYY_MINUSED, EveningIcon, HA, MorningIcon } from 'ish-ui';
+import { format, getDaysInMonth, isSameYear, setDate, setHours, startOfMonth } from 'date-fns';
+import { AfternoonIcon, appendTimezone, EveningIcon, HA, MorningIcon } from 'ish-ui';
 import { CalendarGrouping, CalendarGroupingState, TimetableMonth, TimetableSession } from '../../../model/timetable';
 import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from '../constants';
 
@@ -157,29 +157,41 @@ export const animateListScroll = (list, scrollTopFinal, scrollTopInitial, animat
 };
 
 class DayNodesObserver {
-  public observer: any;
-
+  public observer: IntersectionObserver;
+  
+  public visibilityObserver: IntersectionObserver;
+  
   public preventUpdate: boolean;
+
+  public readonly observe = (node: Element) => {
+    this.observer.observe(node);
+    this.visibilityObserver.observe(node);
+  };
+
+  public readonly unobserve = (node: Element) => {
+    this.observer.unobserve(node);
+    this.visibilityObserver.unobserve(node);
+  };
 
   private currentStickyId: string = "";
 
   private readonly setTargetDay: any;
 
-  private intersectionCallback = records => {
+  private intersectionCallback: IntersectionObserverCallback = records => {
     for (const record of records) {
-      const rootBoundsInfo = record.rootBounds;
-      const rect = record.intersectionRect;
-
-      if (rect.top === rootBoundsInfo.top && this.currentStickyId !== record.target.id) {
-        this.currentStickyId = record.target.id;
-        if (!this.preventUpdate) {
-          this.setTargetDay(parse(this.currentStickyId, DD_MMM_YYYY_MINUSED, new Date()));
-        }
+      if (!this.preventUpdate && record.isIntersecting) {
+        this.currentStickyId = (record.target as HTMLElement).dataset['dayid'];
+        this.setTargetDay(this.currentStickyId);
       }
-
-      if (!record.isInView && record.intersectionRatio > 0) {
+    }
+  };
+  
+  private inViewCallback: IntersectionObserverCallback = (records: any[]) => {
+    for (const record of records) {
+      if (!record.target.isInView && record.intersectionRatio > 0) {
         record.target.isInView = true;
         record.target.setInView(true);
+        continue;
       }
 
       if (record.target.isInView && record.intersectionRatio === 0) {
@@ -193,9 +205,14 @@ class DayNodesObserver {
     this.setTargetDay = setTargetDay;
 
     this.observer = new IntersectionObserver(this.intersectionCallback, {
-      threshold: [0, 1],
+      threshold: 0,
       root: container,
-      rootMargin: "-34px 0px 0px 0px"
+      rootMargin: "-34px 0px -99% 0px"
+    });
+    
+    this.visibilityObserver = new IntersectionObserver(this.inViewCallback, {
+      threshold: 0.1,
+      root: container,
     });
   }
 }
@@ -428,3 +445,13 @@ export const testPeriod = (session: Session, periods: boolean[]): boolean => {
 };
 
 export const filterSessionsByPeriod = (sessions: Session[], periods: boolean[]): Session[] => sessions.filter(s => testPeriod(s, periods));
+
+export const getCurrentScrolledDay = (scroller: HTMLElement) => {
+  const threshold = scroller.getBoundingClientRect().top + 34;
+  const dayNodes = scroller.querySelectorAll("[data-dayId]");
+  
+  return Array.from(dayNodes).find(node => {
+    const rect = node.getBoundingClientRect();
+    return rect.top <= threshold && rect.bottom > threshold;
+  });
+};
