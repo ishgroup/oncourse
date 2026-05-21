@@ -5,6 +5,7 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="ish.common.types.ClassCostRepetitionType"/>
 	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
 		<paragraph spacingAfter="8"/>
 	</style>
@@ -109,7 +110,7 @@
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#0.##" isBlankWhenNull="true">
 				<reportElement x="101" y="0" width="25" height="20" uuid="7350f97f-0aa2-46c8-8e05-a92b20a36cd7"/>
-				<textFieldExpression><![CDATA[(($F{classCost} != null)?(" hrs"):(" units"))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[(($F{classCost} != null && $F{classCost}.repetitionType != ClassCostRepetitionType.PER_UNIT)?(" hrs"):(" units"))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="data field (money)" x="140" y="0" width="50" height="20" uuid="6bd24f4c-8d31-4f65-a7e6-5f45f40836b2"/>
