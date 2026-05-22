@@ -33,6 +33,7 @@ import ish.oncourse.server.services.ISystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.PrefetchTreeNode
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -722,5 +723,28 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
                 validator.throwClientErrorException(key, "Unsupported attribute")
         }
         action
+    }
+
+    GroupedContactsDTO checkIfCanBeDeleted(List<Long> contactIds) {
+        def contacts = ObjectSelect.query(Contact)
+                    .where(Contact.ID.in(contactIds))
+        .select(cayenneService.newContext)
+
+        List<Long> canBeDeleted = new ArrayList<>()
+        List<Long> cannotBeDeleted = new ArrayList<>()
+        contacts.each { contact ->
+            try {
+                validateModelBeforeRemove(contact)
+                canBeDeleted.add(contact.id)
+            } catch (ClientErrorException ignored) {
+                cannotBeDeleted.add(contact.id)
+            }
+        }
+
+        return new GroupedContactsDTO().with {
+            it.canBeRemoved = canBeDeleted
+            it.cannotBeRemoved = cannotBeDeleted
+            it
+        }
     }
 }
