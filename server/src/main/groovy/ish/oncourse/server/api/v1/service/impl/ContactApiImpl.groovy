@@ -14,6 +14,8 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.ContactApiService
+import ish.oncourse.server.api.v1.model.GroupedContactsDTO
+
 import static ish.oncourse.server.api.v1.function.ContactRelationFunctions.toRestContactRelationType
 import static ish.oncourse.server.api.v1.function.ContactRelationFunctions.updateContactRelation
 import static ish.oncourse.server.api.v1.function.ContactRelationFunctions.validateForDelete
@@ -40,6 +42,11 @@ class ContactApiImpl implements ContactApi {
 
     @Inject
     private ContactApiService contactApiService
+
+    @Override
+    GroupedContactsDTO checkIfCanBeDeleted(List<Long> ids) {
+        return contactApiService.checkIfCanBeDeleted(ids)
+    }
 
     @Override
     List<Long> createContact(ContactDTO contact) {
