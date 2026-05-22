@@ -99,11 +99,6 @@ class BulkChangeApiService {
             validator.throwClientErrorException("diff", "Records for bulk delete are not found")
         }
 
-        if(clzz.equals(Message)){
-            if(entities.find {(it as Message).status != MessageStatus.QUEUED})
-                validator.throwClientErrorException("diff", "Request returned messages with disallowed status. Bulk remove of messages that are not queued is not allowed")
-        }
-
         if(clzz.equals(Outcome)) {
             if(entities.find {(it as Outcome).status != OutcomeStatus.STATUS_NOT_SET})
                 validator.throwClientErrorException("diff", "Request returned outcomes with status not equal to 'Not set'. Bulk removing these outcomes is not allowed")
