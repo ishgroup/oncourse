@@ -5,11 +5,7 @@ import { getNoteItems } from '../../../js/common/components/form/notes/actions';
 import { SET_LIST_EDIT_RECORD } from '../../../js/common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../js/common/components/list-view/constants';
 import { courseClassBudgetPath, courseClassTimetablePath, plainEnrolmentPath } from '../../../js/constants/Api';
-import {
-  getCourseClass,
-  getCourseClassEnrolments,
-  getCourseClassSessionsWarnings
-} from '../../../js/containers/entities/courseClasses/actions';
+import { getCourseClass, getCourseClassEnrolments } from '../../../js/containers/entities/courseClasses/actions';
 import { getCourseClassCosts } from '../../../js/containers/entities/courseClasses/components/budget/actions';
 import { getCourseClassTutorsWarnings } from '../../../js/containers/entities/courseClasses/components/tutors/actions';
 import { AccessByPath } from '../../../js/model/entities/common';
@@ -81,7 +77,6 @@ describe("Get course class epic tests", () => {
           ...[budgetAccess, enrolmentAccess,timetabletAccess].flatMap((accItem, index) => [
             ... index === 0 && accItem.hasAccess ? [getCourseClassCosts(id)] : [],
             ... index === 1 && accItem.hasAccess ? [getCourseClassEnrolments(id)] : [],
-            ... index === 2 && accItem.hasAccess ? [getCourseClassSessionsWarnings(id, [...courseClassEx.sessions])] : [],
             ... accItem.action ? [accItem.action] : []
           ])
         ];
