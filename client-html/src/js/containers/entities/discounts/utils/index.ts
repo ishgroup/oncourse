@@ -30,7 +30,7 @@ export const getRoundingByType = (type: MoneyRounding, value: Decimal): number =
     case "No Rounding":
       return value.toNumber();
     case "Nearest 10 cents":
-      return value.toDecimalPlaces(1, Decimal.ROUND_UP).toNumber();
+      return value.div(0.1).toDecimalPlaces(0, Decimal.ROUND_HALF_UP).mul(0.1).toNumber();
     case "Nearest 50 cents": {
       // @ts-ignore
       const cents = new Decimal(value.d[1] || 0).div(100000).toNumber();

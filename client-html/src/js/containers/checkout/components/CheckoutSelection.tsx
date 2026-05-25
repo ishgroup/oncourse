@@ -10,8 +10,8 @@ import { CheckoutSaleRelation, ColumnWidth } from '@api/model';
 import Button from '@mui/material/Button';
 import $t from '@t';
 import clsx from 'clsx';
-import { AppTheme, NoArgFunction, ResizableWrapper, ShowConfirmCaller } from 'ish-ui';
 import { debounce } from 'es-toolkit/compat';
+import { AppTheme, NoArgFunction, ResizableWrapper, ShowConfirmCaller } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -67,7 +67,6 @@ import { checkoutUpdateSummaryClassesDiscounts } from '../actions/checkoutSummar
 import {
   checkoutClearCourseClassList,
   checkoutGetClassPaymentPlans,
-  checkoutGetCourseClassList,
   checkoutGetMembership,
   checkoutGetProduct,
   checkoutGetVoucher,
@@ -88,7 +87,7 @@ import {
   checkoutCourseMap,
   checkoutProductMap,
   checkoutVoucherMap,
-  getCheckoutCurrentStep,
+  getCheckoutCurrentStep, getCourseClassSearch,
   processCheckoutContactId,
   processCheckoutCourseClassId,
   processCheckoutEnrolmentId,
@@ -200,7 +199,6 @@ interface Props extends Partial<EditViewProps> {
   clearContactsSearch?: NoArgFunction;
   getRelatedContacts?: (search: string) => void;
   relatedContacts?: any[];
-  checkoutGetCourseClassList?: (search: string) => void;
   checkoutClearCourseClassList?: NoArgFunction;
   checkoutUpdateSummaryClassesDiscounts?: NoArgFunction;
   paymentProcessStatus?: any;
@@ -295,7 +293,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     clearContactsSearch,
     getRelatedContacts,
     relatedContacts,
-    checkoutGetCourseClassList,
     checkoutClearCourseClassList,
     checkoutUpdateSummaryClassesDiscounts,
     paymentProcessStatus,
@@ -404,8 +401,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
   }, []);
 
-  const openItem = useCallback(
-    item => {
+  const openItem = item => {
       if (checkoutStep > 0) handleChangeStep(CheckoutCurrentStep.shoppingCart);
       switch (item.type) {
         case "course":
@@ -413,12 +409,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             return;
           }
           setSelectedCourse(item);
-          if (
-            !selectedCourse
-            || (selectedCourse && typeof selectedCourse.courseId === "number" && selectedCourse.courseId !== item.courseId)
-          ) {
-            checkoutGetCourseClassList(`course.id is ${item.courseId} and isCancelled is false and isActive is true`);
-          }
           setOpenClassListView(true);
           onCloseItemView();
           break;
@@ -443,12 +433,9 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       setOpenContactEditView(false);
       setSelectedContact(undefined);
       resetContactEditView();
-    },
-    [selectedCourse, openClassListView, selectedItems, checkoutStep, openedItem]
-  );
+  };
 
-  const openContactRow = useCallback(
-    (item, checkDirty = true) => {
+  const openContactRow = (item, checkDirty = true) => {
       if (selectedContact && selectedContact.id === item.id) {
         return;
       }
@@ -471,9 +458,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
       onCloseClassList();
       onCloseItemView();
       openSidebarDrawer();
-    },
-    [openContactEditView, contactEditRecord, selectedContact, isContactEditViewDirty, checkoutStep, createNewContact]
-  );
+  };
 
   const onClearItemsSearch = useCallback((clearActive = false) => {
     if (clearActive) {
@@ -1224,7 +1209,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
               />
             )}
 
-            {openClassListView && Boolean(courseClasses.length) && (
+            {openClassListView  && (
               <EnrolCourseClassView
                 course={selectedCourse}
                 onClose={onCloseClassList}
@@ -1336,7 +1321,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   updateContact: (contact, id) => dispatch(updateContact(contact, id)),
   addSelectedItem: (item: any) => dispatch(addItem(item)),
   removeItem: (itemId: number, itemType: string) => dispatch(removeItem(itemId, itemType)),
-  checkoutGetCourseClassList: (search: string) => dispatch(checkoutGetCourseClassList(search)),
   checkoutClearCourseClassList: () => dispatch(checkoutClearCourseClassList()),
   getMemberShipRecord: (item: any) => dispatch(checkoutGetMembership(item.id)),
   getProductRecord: (id: number) => dispatch(checkoutGetProduct(id)),

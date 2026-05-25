@@ -13,7 +13,15 @@ import { Grid, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import $t from '@t';
 import { Decimal } from 'decimal.js-light';
-import { decimalMul, LinkAdornment, NoArgFunction, NumberArgFunction, usePrevious } from 'ish-ui';
+import {
+  decimalMul,
+  EditInPlaceMoneyField,
+  LinkAdornment,
+  NoArgFunction,
+  NumberArgFunction,
+  stubFunction,
+  usePrevious
+} from 'ish-ui';
 import { normalizeNumberToPositive } from 'ish-ui/dist/utils/numbers/numbersNormalizing';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
@@ -63,8 +71,14 @@ export const HeaderContent = React.memo<HeaderProps>(({ row, shortCurrencySymbol
         </Typography>
       </div>
 
-      <Typography variant="body2" color="textSecondary" className="centeredFlex pl-1 money">
-        {shortCurrencySymbol} {row.total}
+      <Typography variant="body2" color="textSecondary" className="centeredFlex pl-1">
+        <EditInPlaceMoneyField
+          inline
+          currencySymbol={shortCurrencySymbol}
+          input={{ value: row.total, onChange: stubFunction, onBlur: stubFunction } as any}
+          meta={{} as any}
+          disabled
+        />
       </Typography>
     </div>
   );

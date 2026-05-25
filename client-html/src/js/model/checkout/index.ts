@@ -116,7 +116,7 @@ export interface CheckoutState {
   contactEditRecord?: any;
   relatedContacts?: any[];
   courseClasses?: CheckoutCourseClass[];
-  checkCourseClassEmpty?: boolean;
+  checkCourseClassLoaded?: boolean;
   itemEditRecord?: any;
   payment?: CheckoutPayment;
   hasErrors?: boolean;

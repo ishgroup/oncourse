@@ -46,6 +46,7 @@ public class AuditCommitListener implements CommitLogListener {
                 .forEach(entityChange -> {
                     Set<String> fieldNames = entityChange.getValue().getAttributeChanges().keySet();
                     fieldNames.remove("modifiedOn");
+                    fieldNames.remove("lastAccess");
 
                     if(!fieldNames.isEmpty()) {
                         Long id = (Long) entityChange.getKey().getIdSnapshot().get("id");

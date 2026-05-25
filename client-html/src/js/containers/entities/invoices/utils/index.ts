@@ -7,11 +7,8 @@ import { Invoice, InvoicePaymentPlan } from '@api/model';
 import { min } from 'date-fns';
 import { decimalMinus, decimalMul, decimalPlus } from 'ish-ui';
 import EntityService from '../../../../common/services/EntityService';
-import { getCustomColumnsMap } from '../../../../common/utils/common';
 import { getTotalAndDeductionsByPrice } from '../../../../common/utils/financial';
 import { InvoiceWithTotalLine } from '../../../../model/entities/Invoice';
-import { plainDiscountToAPIModel } from '../../discounts/utils';
-import { INVOICE_LINE_DISCOUNT_AQL, INVOICE_LINE_DISCOUNT_COLUMNS } from '../constants';
 
 export const preformatInvoice = (value: InvoiceWithTotalLine): Invoice => {
   if (value && value.invoiceLines) {
@@ -25,14 +22,6 @@ export const preformatInvoice = (value: InvoiceWithTotalLine): Invoice => {
 export const setInvoiceLinesTotal = async (value: InvoiceWithTotalLine): Promise<Invoice> => {
   if (value && value.invoiceLines) {
     for (const line of value.invoiceLines) {
-      const discount = line.discountId && await EntityService.getPlainRecords(
-        'Discount',
-        INVOICE_LINE_DISCOUNT_COLUMNS,
-        `id is ${line.discountId} and ${INVOICE_LINE_DISCOUNT_AQL}`,
-        1,
-        0,
-      ).then(({ rows }) => rows.length ? plainDiscountToAPIModel(rows.map(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS))[0]) : null);
-
       const taxRate = await EntityService.getPlainRecords(
         'Tax',
         'rate',
@@ -41,7 +30,7 @@ export const setInvoiceLinesTotal = async (value: InvoiceWithTotalLine): Promise
         0,
       ).then(({ rows }) => parseFloat(rows.map(r => r.values[0])[0]));
       
-      const { total } = getTotalAndDeductionsByPrice(line.priceEachExTax, taxRate, discount || line.discountEachExTax);
+      const { total } = getTotalAndDeductionsByPrice(line.priceEachExTax, taxRate, line.discountEachExTax);
       
       line.total = decimalMul(total, line.quantity);
     }
