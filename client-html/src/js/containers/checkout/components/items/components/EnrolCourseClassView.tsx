@@ -10,7 +10,6 @@ import EnrolClassListView from './EnrolClassListView';
 const EnrolCourseClassView =  props => {
   const {
     course,
-    courseClasses,
     onClose,
     onClassSelect,
     selectedItems
@@ -33,7 +32,6 @@ const EnrolCourseClassView =  props => {
       >
         <EnrolClassListView
           course={course}
-          courseClasses={courseClasses}
           onSelect={onClassSelect}
           selectedItems={selectedItems}
         />
