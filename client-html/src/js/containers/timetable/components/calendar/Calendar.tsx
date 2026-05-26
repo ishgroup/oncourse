@@ -359,7 +359,7 @@ const Calendar = React.memo<Props>(props => {
           params.delete("filter");
         }
         updateHistory(params, url);
-        loadNextMonths(selectedMonth, true);
+        loadNextMonths(new Date(params.get('selectedDate')), true);
       }
     }
   }, [filters]);
