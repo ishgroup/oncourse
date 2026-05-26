@@ -211,7 +211,7 @@
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="sessionId" type="VARCHAR" length="256" isMandatory="true"/>
 		<db-attribute name="createdByUserId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="value" type="LONGVARCHAR" length="32000" isMandatory="true"/>
+		<db-attribute name="value" type="LONGVARCHAR" length="65500" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="CheckoutContactRelation">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
