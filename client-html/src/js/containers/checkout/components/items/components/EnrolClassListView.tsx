@@ -2,9 +2,7 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import { Button, Grid, List, ListItemButton, Radio, Typography } from '@mui/material';
-import $t from '@t';
 import clsx from 'clsx';
 import { isBefore } from 'date-fns';
 import { appendTimezone, AppTheme, formatCurrency } from 'ish-ui';
@@ -20,34 +18,34 @@ import { checkoutClearCourseClassList, checkoutGetCourseClassList } from '../../
 import { filterPastClasses, getCourseClassSearch } from '../../../utils';
 
 const styles = (theme: AppTheme, p, classes) => ({
-    list: {
-      padding: 0
-    },
-    showPastRoot: {
-      paddingBottom: 5
-    },
-    showPastButtonPressed: {
-      [`& .${classes.showPastShevron}`]: {
-        transform: "rotate(180deg)"
-      }
-    },
-    showPastShevron: {
-      transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`,
-    },
-    sessionButton: {
-      textTransform: "initial",
-      "& > span": {
-        display: "block"
-      }
-    },
-    disabledSessionButton: {
-      color: `${theme.palette.text.disabled}`,
-      [`& .${classes.disabledWarningColor}`]: {
-        color: "#fdc5c1"
-      }
-    },
-    disabledWarningColor: {}
-  });
+  list: {
+    padding: 0
+  },
+  showPastRoot: {
+    paddingBottom: 5
+  },
+  showPastButtonPressed: {
+    [`& .${classes.showPastShevron}`]: {
+      transform: "rotate(180deg)"
+    }
+  },
+  showPastShevron: {
+    transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`,
+  },
+  sessionButton: {
+    textTransform: "initial",
+    "& > span": {
+      display: "block"
+    }
+  },
+  disabledSessionButton: {
+    color: `${theme.palette.text.disabled}`,
+    [`& .${classes.disabledWarningColor}`]: {
+      color: "#fdc5c1"
+    }
+  },
+  disabledWarningColor: {}
+});
 
 const isSelectedPassedClass = course => {
   const today = new Date();
@@ -56,14 +54,15 @@ const isSelectedPassedClass = course => {
 };
 
 const EnrolClassListView = React.memo<{
-  course, courseClasses, classes?, onSelect, selectedItems
+  course, classes?, onSelect, selectedItems
 } >(props => {
   const {
-   course, courseClasses, classes, onSelect, selectedItems
+    course, classes, onSelect, selectedItems
   } = props;
 
   const currencySymbol = useAppSelector(state => state.location.currency && state.location.currency.shortCurrencySymbol);
   const checkCourseClassLoaded = useAppSelector(state => state.checkout.checkCourseClassLoaded);
+  const courseClasses = useAppSelector(state => state.checkout.courseClasses);
   const dispatch = useAppDispatch();
   const resetClasses = () => dispatch(checkoutClearCourseClassList());
 
@@ -136,26 +135,17 @@ const EnrolClassListView = React.memo<{
         <Grid item sm={12} className={clsx("text-center", classes.showPastRoot)}>
           <Button
             color="primary"
-            classes={{
-            root: clsx(!showPastClasses && classes.showPastButtonPressed),
-            endIcon: classes.showPastShevron
-          }}
             onClick={togglePastClasses}
-            endIcon={<KeyboardArrowDown />}
             disabled={hidePassedClassesDisabled}
           >
-            {showPastClasses ? "Hide finished classes" : "Show finished classes"}
+            {showPastClasses ? "Hide" : "Show"} finished classes
           </Button>
         </Grid>
-
-        {!months.length && checkCourseClassLoaded &&  <div className={clsx("p-2 overflow-auto", classes.root)}>
-          <ListItemButton alignItems="flex-start" className="justify-content-space-between p-0-5" disabled>
-            <Typography component="div" variant="body1">
-              {$t('there_are_no_classes_available_for_this_course')}
-            </Typography>
-          </ListItemButton>
-        </div>}
-
+        {checkCourseClassLoaded && courseClasses.length === 0 && <ListItemButton alignItems="center" className="justify-content-center p-0-5" disabled>
+          <Typography component="div" variant="body1">
+            There are no {showPastClasses ? 'finished' : 'current'} classes available for this course.
+          </Typography>
+        </ListItemButton>}
         {months.map((m, i) => (
           <CalendarMonthBase key={i} fullWidth {...m} showYear>
             {m.days.map(d => {
@@ -222,7 +212,7 @@ const EnrolClassListView = React.memo<{
         <div ref={ref} />
       </List>
     </div>
-  )
+  );
 });
 
 export default withStyles(EnrolClassListView, styles);

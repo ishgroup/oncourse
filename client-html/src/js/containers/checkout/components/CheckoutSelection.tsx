@@ -189,7 +189,6 @@ interface Props extends Partial<EditViewProps> {
   removeItem?: (itemId: number, itemType: string) => void;
   onChangeStep?: (step: CheckoutCurrentStepType) => void;
   checkoutStep?: number;
-  courseClasses?: any[];
   itemEditRecord?: any;
   getMemberShipRecord?: (item: any) => void;
   getProductRecord?: (id: string) => void;
@@ -282,7 +281,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     removeItem,
     onChangeStep,
     checkoutStep,
-    courseClasses,
     contactsLoading,
     itemEditRecord,
     getMemberShipRecord,
@@ -1215,7 +1213,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 onClose={onCloseClassList}
                 onClassSelect={onClassSelect}
                 selectedItems={selectedItems}
-                courseClasses={courseClasses}
               />
             )}
 
@@ -1272,7 +1269,6 @@ const mapStateToProps = (state: State) => ({
   membershipProducts: state.plainSearchRecords["MembershipProduct"].items,
   selectedContacts: state.checkout.contacts,
   selectedItems: state.checkout.items,
-  courseClasses: state.checkout.courseClasses,
   relatedContacts: state.checkout.relatedContacts,
   paymentProcessStatus: state.checkout.payment.process.status,
   summary: state.checkout.summary,
