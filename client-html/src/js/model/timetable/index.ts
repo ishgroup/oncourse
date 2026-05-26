@@ -6,9 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Session } from "@api/model";
-import { AnyArgFunction, DateArgFunction } from "ish-ui";
-import { CoreFilter, SavingFilterState } from "../common/ListView";
+import { Session } from '@api/model';
+import { AnyArgFunction, DateArgFunction, StringArgFunction } from 'ish-ui';
+import { CoreFilter, SavingFilterState } from '../common/ListView';
 
 export type CalendarMode = "Compact" | "Gap(Days)" | "Gap(Hours)";
 
@@ -25,10 +25,11 @@ export interface CalendarGrouping {
 
 export interface TimetableState {
   months: TimetableMonth[];
-  selectedMonthSessionDays: string[];
+  selectedMonthSessionDays: number[];
   sessionsLoading: boolean;
   search: string;
   searchError?: boolean;
+  scrollToDay?: string;
   filters: CoreFilter[];
   filtersLoading: boolean;
   savingFilter: SavingFilterState;
@@ -53,14 +54,18 @@ export interface TimetableDay {
   timezone?: string;
 }
 
-export interface TimetableContextState {
+export interface TimetableProps {
   calendarMode: CalendarMode;
   calendarGrouping: CalendarGroupingState;
   tagsState: CalendarTagsState;
-  targetDay: Date;
+  targetDay: string;
   selectedMonth: Date;
   selectedWeekDays: boolean[];
   selectedDayPeriods: boolean[];
+  scrolledDayNode?: Element;
+}
+
+export interface TimetableContextState extends TimetableProps {
   setSelectedWeekDays?: (arg: boolean[]) => void;
   setSelectedDayPeriods?: (arg: boolean[]) => void;
   setCalendarMode?: AnyArgFunction<CalendarMode>;
@@ -68,6 +73,11 @@ export interface TimetableContextState {
   setTagsState?: AnyArgFunction<CalendarGroupingState>;
   setPrevious?: AnyArgFunction;
   setNext?: AnyArgFunction;
-  setTargetDay?: DateArgFunction;
+  setTargetDay?: StringArgFunction;
   setSelectedMonth?: DateArgFunction;
+}
+
+export interface TimetableAction {
+  type: keyof TimetableProps;
+  payload: any;
 }

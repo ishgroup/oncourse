@@ -8,6 +8,7 @@
 
 import CircularProgress from '@mui/material/CircularProgress';
 import { isSameMonth, parse, setDate, startOfMonth } from 'date-fns';
+import { format } from 'date-fns-tz';
 import { DD_MMM_YYYY_MINUSED } from 'ish-ui';
 import React, { createContext, useEffect, useReducer } from 'react';
 import { withStyles } from 'tss-react/mui';
@@ -16,6 +17,7 @@ import { LSGetItem, LSSetItem } from '../../common/utils/storage';
 import { TimetableContextState } from '../../model/timetable';
 import { getTimetableFilters } from './actions';
 import Calendar from './components/calendar/Calendar';
+import UrlSync from './components/calendar/components/UrlSync';
 import SearchBar from './components/search-bar/SearchBar';
 import TimetableSideBar from './components/timetable-side-bar/TimetableSideBar';
 import { LS_TIMETABLE_CALENDAR_MODE, LS_TIMETABLE_GROUPING_MODE, LS_TIMETABLE_TAGS_MODE } from './constants';
@@ -37,11 +39,13 @@ export const TimetableContext = createContext<TimetableContextState>(null);
 const todayInitial = new Date();
 todayInitial.setHours(0, 0, 0, 0);
 
+const parseTimetableDay = (dayId: string) => parse(dayId, DD_MMM_YYYY_MINUSED, new Date());
+
 export const timetableContextStateInitial: TimetableContextState = {
   calendarGrouping: "No grouping",
   calendarMode: "Compact",
   tagsState: "Tag names",
-  targetDay: todayInitial,
+  targetDay: format(todayInitial, DD_MMM_YYYY_MINUSED),
   selectedMonth: setDate(todayInitial, 1),
   selectedWeekDays: Array(7).fill(false),
   selectedDayPeriods: Array(3).fill(false)
@@ -50,31 +54,29 @@ export const timetableContextStateInitial: TimetableContextState = {
 const initContext = (initial: TimetableContextState) => {
   const params = new URLSearchParams(window.location.search);
 
-  let targetDay = todayInitial;
   const paramsDate = params.get("selectedDate");
-  
-  if (paramsDate) {
-    targetDay = parse(paramsDate, DD_MMM_YYYY_MINUSED, new Date());
-  }
-  
+  const targetDay = paramsDate || format(todayInitial, DD_MMM_YYYY_MINUSED);
+
   return {
     ...initial,
     calendarMode: params.get("calendarMode") || LSGetItem(LS_TIMETABLE_CALENDAR_MODE) || "Compact",
     calendarGrouping: LSGetItem(LS_TIMETABLE_GROUPING_MODE) || "No grouping",
     tagsState: LSGetItem(LS_TIMETABLE_TAGS_MODE) || "Tag names",
     targetDay,
-    selectedMonth: setDate(targetDay, 1),
+    selectedMonth: setDate(parseTimetableDay(targetDay), 1),
   };
 };
 
 const timetableReducer: React.Reducer<TimetableContextState, any> = (state, action) => {
   switch (action.type) {
     case "targetDay":
+      const targetDate = parseTimetableDay(action.payload);
+
       return {
         ...state,
-        selectedMonth: isSameMonth(action.payload, state.selectedMonth)
+        selectedMonth: isSameMonth(targetDate, state.selectedMonth)
           ? state.selectedMonth
-          : startOfMonth(action.payload),
+          : startOfMonth(targetDate),
         targetDay: action.payload
       };
     case "tagsState": {
@@ -130,7 +132,13 @@ const Timetable = ({ classes }: { classes? }) => {
           {!filtersLoading && <TimetableSideBar />}
         </div>
         <div className={classes.calendar}>
-          {filtersLoading ? <div className="w-100 h-100 centeredFlex justify-content-center"><CircularProgress size={40} thickness={5} /></div> : <Calendar />}
+          {filtersLoading
+            ? <div className="w-100 h-100 centeredFlex justify-content-center"><CircularProgress size={40} thickness={5} /></div>
+            : <>
+              <UrlSync/>
+              <Calendar />
+            </>
+          }
           <SearchBar />
         </div>
       </div>

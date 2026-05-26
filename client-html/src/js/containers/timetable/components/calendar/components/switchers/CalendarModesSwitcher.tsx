@@ -12,8 +12,9 @@ import Select from '@mui/material/Select';
 import $t from '@t';
 import React, { useCallback, useContext } from 'react';
 import { TimetableContextState } from '../../../../../../model/timetable';
+import { TimetableContext } from '../../../../Timetable';
 
-const CalendarModesSwitcher = ({ className = null, TimetableContext }) => {
+const CalendarModesSwitcher = ({ className = null }) => {
   const {
  calendarMode, calendarGrouping, setCalendarMode, setCalendarGrouping 
 } = useContext<TimetableContextState>(TimetableContext);
