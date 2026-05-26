@@ -69,13 +69,14 @@ export const getAllMonthsWithSessions = (sessions: TimetableSession[], startDate
   return months;
 };
 
-export const getMonthsWithinYear = (sessions: Session[], startDate: Date) => {
+export const getMonthsWithinYear = (sessions: Session[], startDate: Date): TimetableMonth[] => {
   const startDateMonth = startDate.getMonth();
 
   const months = [
     {
       month: startOfMonth(startDate),
-      days: getFormattedMonthDays(startDate)
+      days: getFormattedMonthDays(startDate),
+      hasSessions: false
     }
   ];
 
@@ -114,7 +115,8 @@ export const getMonthsWithinYear = (sessions: Session[], startDate: Date) => {
       if (!months[monthOffset]) {
         months.push({
           month: startOfMonth(sessionStartDate),
-          days: getFormattedMonthDays(sessionStartDate)
+          days: getFormattedMonthDays(sessionStartDate),
+          hasSessions: false
         });
       }
 
@@ -129,7 +131,7 @@ export const getMonthsWithinYear = (sessions: Session[], startDate: Date) => {
   });
 
   months.forEach(m => {
-    m["hasSessions"] = m.days.some(d => d.sessions.length);
+    m.hasSessions = m.days.some(d => d.sessions.length);
   });
 
   return months;

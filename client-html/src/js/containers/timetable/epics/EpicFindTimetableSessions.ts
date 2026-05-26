@@ -7,21 +7,22 @@
  */
 
 import { SearchRequest, Session } from "@api/model";
-import { parseISO } from "date-fns";
-import { Epic } from "redux-observable";
+import { isAfter, isSameDay, isSameMonth, parseISO } from 'date-fns';
+import { format } from 'date-fns-tz';
+import { DD_MMM_YYYY_MINUSED } from 'ish-ui';
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { getFiltersString } from "../../../common/components/list-view/utils/listFiltersUtils";
-import * as EpicUtils from "../../../common/epics/EpicUtils";
+import { Create, Request } from "../../../common/epics/EpicUtils";
 import { TimetableMonth } from "../../../model/timetable";
 import {
   FIND_TIMETABLE_SESSIONS,
-  findTimetableSessionsFulfilled,
+  findTimetableSessionsFulfilled, setTimetableScrollDay,
   setTimetableSearchError
-} from "../actions";
+} from '../actions';
 import TimetableService from "../services/TimetableService";
 import { getMonthsWithinYear } from "../utils";
 
-const appendMonths = (updatedMonths: TimetableMonth[], stateMonths: TimetableMonth[]) => {
+const appendMonths = (updatedMonths: TimetableMonth[], stateMonths: TimetableMonth[]): TimetableMonth[] => {
   const updated = [];
   
   for (let i = 0; i < 12; i++) {
@@ -36,7 +37,7 @@ const appendMonths = (updatedMonths: TimetableMonth[], stateMonths: TimetableMon
   return updated.filter(u => u);
 };
 
-const request: EpicUtils.Request<Session[], { request: SearchRequest, reset: boolean }> = {
+const request: Request<Session[], { request: SearchRequest, reset: boolean }> = {
   type: FIND_TIMETABLE_SESSIONS,
   getData: ({ request }, { timetable: { search, filters } }) => {
     request.search = search;
@@ -47,10 +48,26 @@ const request: EpicUtils.Request<Session[], { request: SearchRequest, reset: boo
 
     const updatedMonths = getMonthsWithinYear(sessions, parseISO(from));
 
-    const months = reset ? updatedMonths : appendMonths(updatedMonths as any, s.timetable.months);
+    const months = reset ? updatedMonths : appendMonths(updatedMonths, s.timetable.months);
 
+    let scrollDay;
+    
+    if (reset) {
+      const today = new Date();
+      const targetMonth = months.find(m => isSameMonth(today, m.month) && m.hasSessions) 
+        || months.find(m => isAfter( m.month, today) && m.hasSessions);
+      if (targetMonth) {
+        const targetDay = targetMonth.days.find(d => isSameDay(today, d.day) && d.sessions.length)
+          || targetMonth.days.find(d => isAfter(d.day, today) && d.sessions.length);
+        if (targetDay) {
+          scrollDay = format(targetDay.day, DD_MMM_YYYY_MINUSED);
+        }
+      }
+    }
+    
     return [
       findTimetableSessionsFulfilled(months),
+      ...scrollDay ? [setTimetableScrollDay(scrollDay)] : [],
       ...(s.timetable.searchError ? [setTimetableSearchError(false)] : [])
     ];
   },
@@ -65,4 +82,4 @@ const request: EpicUtils.Request<Session[], { request: SearchRequest, reset: boo
   }
 };
 
-export const EpicFindTimetableSessions: Epic<any, any> = EpicUtils.Create(request);
+export const EpicFindTimetableSessions = Create(request);

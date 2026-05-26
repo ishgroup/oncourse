@@ -30,7 +30,8 @@ import {
   findTimetableSessions,
   getTimetableSessionsDays,
   setTimetableMonths,
-  setTimetableSearch
+  setTimetableSearch,
+  setTimetableScrollDay
 } from '../../actions';
 import { TimetableContext } from '../../Timetable';
 import { attachDayNodesObserver, getFormattedMonthDays } from '../../utils';
@@ -107,25 +108,6 @@ const MonthRenderer = React.memo<{ index, isScrolling, dayNodesObserver, month }
   />
 ));
 
-const onRendered = ({
-  visibleStartIndex,
-  visibleStopIndex,
-  months,
-  loadNextMonths
-}) => {
-  if (visibleStopIndex >= visibleStartIndex && months.length < 12 && months[months.length - 1]) {
-    const currentMonth = months[months.length - 1].month;
-
-    const nextMonthsStart = addMonths(currentMonth, 1);
-
-    if (nextMonthsStart.getFullYear() !== currentMonth.getFullYear()) {
-      return;
-    }
-
-    loadNextMonths(nextMonthsStart);
-  }
-};
-
 const getScrollDayAnchor = (dayId: string) => document.querySelector(`[data-day-anchor="${dayId}"]`) as HTMLElement;
 
 const getScrollDayDelta = (dayNode: HTMLElement, scroller: HTMLElement) => (
@@ -134,7 +116,7 @@ const getScrollDayDelta = (dayNode: HTMLElement, scroller: HTMLElement) => (
 
 const parseTimetableDay = (dayId: string) => parse(dayId, DD_MMM_YYYY_MINUSED, new Date());
 
-const initDateAsync = async (searchString, setTargetDay) => {
+const initDateAsync = async (searchString, setScrollToDay) => {
   const firstSession = await EntityService.getPlainRecords(
     "Session",
     "startDatetime",
@@ -157,10 +139,10 @@ const initDateAsync = async (searchString, setTargetDay) => {
   
   if (firstSession.rows.length && lastSession.rows.length) {
     const endDate = new Date(lastSession.rows[0].values[0]);
-    const firstDate = firstSession.rows[0].values[0];
+    const firstDate = new Date(firstSession.rows[0].values[0]);
 
-    if (isAfter(new Date(), endDate) || isAfter(new Date(firstDate), new Date())) {
-      setTargetDay(firstDate);
+    if (isAfter(new Date(), endDate) || isAfter(firstDate, new Date())) {
+      setScrollToDay(format(firstDate, DD_MMM_YYYY_MINUSED));
     }
   }
 };
@@ -194,7 +176,6 @@ const Calendar = React.memo<Props>(props => {
   const listEl = useRef<VirtuosoHandle>(null);
   const scrollerEl = useRef<HTMLElement>(null);
   const isScrollingRef = useRef(false);
-  const renderedArgs = useRef<any>(null);
   const pendingScrollDayRef = useRef<string>(null);
   const scrollSettleTimeoutRef = useRef<number>(null);
   const scrollAnimationFrameRef = useRef<number>(null);
@@ -203,6 +184,10 @@ const Calendar = React.memo<Props>(props => {
   const prevSearch = usePrevious(search, "");
 
   const params = new URLSearchParams(location.search);
+  
+  const setScrollToDay = (day: string) => {
+    dispatch(setTimetableScrollDay(day));
+  };
 
   const clearPendingScrollDay = useCallback(() => {
     pendingScrollDayRef.current = null;
@@ -312,13 +297,6 @@ const Calendar = React.memo<Props>(props => {
     dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endOfMonth(endMonth).toISOString() }, reset));
   }, 100), []);
 
-  const onRangeChanged = range => {
-    renderedArgs.current = {
-      visibleStartIndex: range.startIndex,
-      visibleStopIndex: range.endIndex
-    };
-  };
-
   const onIsScrolling = scrolling => {
     isScrollingRef.current = scrolling;
     setIsScrolling(scrolling);
@@ -329,12 +307,18 @@ const Calendar = React.memo<Props>(props => {
       scrollerEl.current = ref;
     }
   };
-  
-  useEffect(() => {
-    if (!sessionsLoading && renderedArgs.current) {
-      onRendered({ ...renderedArgs.current, months, loadNextMonths });
+
+  const loadMoreMonths = () => {
+    const currentMonth = months[months.length - 1].month;
+
+    const nextMonthsStart = addMonths(currentMonth, 1);
+
+    if (nextMonthsStart.getFullYear() !== currentMonth.getFullYear()) {
+      return;
     }
-  }, [sessionsLoading]);
+
+    loadNextMonths(nextMonthsStart);
+  };
 
   // Search effects
   useEffect(() => {
@@ -351,7 +335,7 @@ const Calendar = React.memo<Props>(props => {
 
     if (searchString && !selectedDate) {
       try {
-        initDateAsync(searchString, setTargetDay);
+        initDateAsync(searchString, setScrollToDay);
       } catch (e) {
         instantFetchErrorHandler(dispatch, e);
       }
@@ -427,6 +411,7 @@ const Calendar = React.memo<Props>(props => {
         if (requestedScrollMonthRef.current !== scrollMonth) {
           requestedScrollMonthRef.current = scrollMonth;
           loadNextMonths(scrollDay, true);
+          setTargetDay(scrollToDay);
         }
       }
     }
@@ -468,15 +453,15 @@ const Calendar = React.memo<Props>(props => {
         computeItemKey={computeMonthKey}
         defaultItemHeight={1000}
         overscan={0}
-        rangeChanged={onRangeChanged}
         isScrolling={onIsScrolling}
         totalListHeightChanged={() => scheduleScrollDayAlignment("auto", !sessionsLoading, SCROLL_DAY_SETTLE_DELAY)}
         itemContent={renderMonth}
+        endReached={loadMoreMonths}
       />
       <div className={classes.modesSwitcher}>
-        <CalendarModesSwitcher TimetableContext={TimetableContext} />
-        <CalendarTagsSwitcher className="mt-2" TimetableContext={TimetableContext} />
-        <CalendarGroupingsSwitcher className="mt-2" TimetableContext={TimetableContext} />
+        <CalendarModesSwitcher />
+        <CalendarTagsSwitcher className="mt-2" />
+        <CalendarGroupingsSwitcher className="mt-2" />
       </div>
     </div>
   );
