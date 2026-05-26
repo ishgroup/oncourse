@@ -8,6 +8,9 @@
 
 package ish.oncourse.server.jetty.server;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.inject.Inject;
+import io.bootique.annotation.BQConfigProperty;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedListener;
 import io.bootique.jetty.MappedServlet;
@@ -16,6 +19,8 @@ import io.bootique.jetty.server.ConnectorDescriptor;
 import io.bootique.jetty.server.ServerFactory;
 import io.bootique.jetty.server.ServerLifecycleLogger;
 import io.bootique.jetty.server.ServletContextHandlerExtender;
+import ish.oncourse.server.license.LicenseService;
+import ish.oncourse.server.modules.AngelHttpsConnectorFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.NetworkConnector;
@@ -64,6 +69,7 @@ public class AngelServerFactory extends ServerFactory {
         createRequestLog(server);
 
         Collection<ConnectorFactory> connectorFactories = connectorFactories(server);
+       // connectorFactories.add(new AngelHttpsConnectorFactory());
 
         Collection<ConnectorDescriptor> connectorDescriptors = new ArrayList<>(2);
 

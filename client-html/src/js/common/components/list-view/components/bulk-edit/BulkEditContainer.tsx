@@ -8,9 +8,8 @@
 
 import { FundingSource, SearchQuery, Sorting, Tag } from '@api/model';
 import { Help } from '@mui/icons-material';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Grid, ListItemButton, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
+import Button from '@mui/material/Button'
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
@@ -377,7 +376,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
                 <Button className={classes.closeButton} onClick={onClose} variant="text">
                   {$t('cancel')}
                 </Button>
-                <LoadingButton
+                <Button
                   variant="contained"
                   disabled={invalid || validating || !selectedKeyCode}
                   className={classes.shareButton}
@@ -385,7 +384,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
                   loading={submitting || validating}
                 >
                   {$t('make_changes')}
-                </LoadingButton>
+                </Button>
               </Grid>
             </form>
           </Grid>

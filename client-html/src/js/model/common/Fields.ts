@@ -26,6 +26,7 @@ export interface EditInPlaceRemoteDataSelectFieldProps extends EditInPlaceSearch
   onLoadMoreRows?: any;
   getCustomSearch?: (search: string) => string;
   getDefaultColumns?: (entity: string) => string;
+  customColumnsMap?: (column: string) => void;
   entity: EntityName;
   aqlFilter?: string;
   aqlColumns?: string;

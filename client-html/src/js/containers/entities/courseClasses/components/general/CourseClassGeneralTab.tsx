@@ -161,11 +161,15 @@ const CourseClassGeneralTab = React.memo<Props>(
     ]);
 
     const actualEnrolmentsToProfit = useMemo(() => {
-      if (values.successAndQueuedEnrolmentsCount < 1) {
+      if (values.successAndQueuedEnrolmentsCount < 1 ) {
         return 0;
       }
-
-      const actualEnrolment = decimalDivide(netValues.income.actual, values.successAndQueuedEnrolmentsCount);
+      
+      const [incomeActual, enrolmentsCount] = [Number(netValues.income.actual), Number(values.successAndQueuedEnrolmentsCount)];
+      
+      const actualEnrolment = !Number.isNaN(incomeActual) && !Number.isNaN(enrolmentsCount)
+        ? decimalDivide(incomeActual, enrolmentsCount)
+        : 0;
 
       if (actualEnrolment <= 0) {
         return 0;

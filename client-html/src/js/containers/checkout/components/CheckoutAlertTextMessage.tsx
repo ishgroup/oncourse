@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Alert from '@mui/lab/Alert';
+import Alert from '@mui/material/Alert';
 import Tooltip from '@mui/material/Tooltip';
 import { makeAppStyles } from 'ish-ui';
 import React from 'react';

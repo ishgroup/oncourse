@@ -6,6 +6,7 @@ import ish.TestWithDatabase
 import ish.common.types.PayslipPayType
 import ish.oncourse.entity.services.SessionService
 import ish.oncourse.server.cayenne.Payslip
+import ish.oncourse.server.concurrent.ExecutorManager
 import ish.payroll.PayrollGenerationRequest
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
@@ -26,7 +27,8 @@ class PayrollGenerationTest extends TestWithDatabase {
             request
         }
 
-        new PayrollService(cayenneService, injector.getInstance(SessionService.class)).generatePayslips(request)
+        def manager = new ExecutorManager()
+        new PayrollService(cayenneService, injector.getInstance(SessionService.class), manager).generatePayslips(request)
 
         List<Payslip> payslips = ObjectSelect.query(Payslip).select(cayenneContext)
         Assertions.assertEquals(payslips.size(), 1)
@@ -46,7 +48,8 @@ class PayrollGenerationTest extends TestWithDatabase {
             request
         }
 
-        new PayrollService(cayenneService, injector.getInstance(SessionService.class)).generatePayslips(request)
+        def manager = new ExecutorManager()
+        new PayrollService(cayenneService, injector.getInstance(SessionService.class), manager).generatePayslips(request)
 
         List<Payslip> payslips = ObjectSelect.query(Payslip).select(cayenneContext)
         Assertions.assertEquals(payslips.size(), 0, "There are no payslips should be created for tutor without pay type")

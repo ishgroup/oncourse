@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.AttendanceType
+import ish.common.types.CourseClassType
 import ish.oncourse.API
 import ish.oncourse.cayenne.AttendanceInterface
 import ish.oncourse.cayenne.QueueableEntity
@@ -31,135 +32,140 @@ import javax.annotation.Nullable
 @QueueableEntity
 class Attendance extends _Attendance implements AttendanceInterface, Queueable {
 
-	@Override
-	void preUpdate() {
-		List<Outcome> classOutcomes = session.courseClass.enrolments*.outcomes.flatten() as List<Outcome>
-		classOutcomes.findAll { !it.startDateOverridden }.each {o ->
-			o.startDate = o.actualStartDate
-		}
-		classOutcomes.findAll { !it.endDateOverridden }.each {o ->
-			o.endDate = o.actualEndDate
-		}
-	}
+    @Override
+    void preUpdate() {
+        List<Outcome> classOutcomes = session.courseClass.enrolments*.outcomes.flatten() as List<Outcome>
+        classOutcomes.findAll { !it.startDateOverridden }.each { o ->
+            o.startDate = o.actualStartDate
+        }
+        classOutcomes.findAll { !it.endDateOverridden }.each { o ->
+            o.endDate = o.actualEndDate
+        }
 
-	/**
-	 * Attendance types represent the result of particular attendance marking.
-	 * @return the attendance type
-	 */
-	@Nonnull
-	@API
-	@Override
-	AttendanceType getAttendanceType() {
-		return super.getAttendanceType()
-	}
+        if (session.courseClass.type == CourseClassType.HYBRID) {
+            session.courseClass.enrolments.findAll { it.student.equals(student) }
+                    .each { it.updateHybridCompleted() }
+        }
+    }
 
-	/**
-	 * If null, then assume the attendance started when the session started.
-	 * @return the time that this attendance started
-	 */
-	@API
-	@Override
-	Date getAttendedFrom() {
-		return super.getAttendedFrom()
-	}
+    /**
+     * Attendance types represent the result of particular attendance marking.
+     * @return the attendance type
+     */
+    @Nonnull
+    @API
+    @Override
+    AttendanceType getAttendanceType() {
+        return super.getAttendanceType()
+    }
 
-	/**
-	 * If null, then assume the attendance ended when the session ended.
-	 * @return the time this attendance ended
-	 */
-	@API
-	@Override
-	Date getAttendedUntil() {
-		return super.getAttendedUntil()
-	}
+    /**
+     * If null, then assume the attendance started when the session started.
+     * @return the time that this attendance started
+     */
+    @API
+    @Override
+    Date getAttendedFrom() {
+        return super.getAttendedFrom()
+    }
 
-	/**
-	 * @return the date and time this record was created
-	 */
-	@API
-	@Override
-	Date getCreatedOn() {
-		return super.getCreatedOn()
-	}
+    /**
+     * If null, then assume the attendance ended when the session ended.
+     * @return the time this attendance ended
+     */
+    @API
+    @Override
+    Date getAttendedUntil() {
+        return super.getAttendedUntil()
+    }
 
-	/**
-	 * @return the duration in minutes of the attendance
-	 */
-	@API
-	@Override
-	Integer getDurationMinutes() {
-		return super.getDurationMinutes()
-	}
+    /**
+     * @return the date and time this record was created
+     */
+    @API
+    @Override
+    Date getCreatedOn() {
+        return super.getCreatedOn()
+    }
 
-	BigDecimal getDurationInHours() {
-		if (getAttendedFrom() == null || getAttendedUntil()  == null) {
-			return BigDecimal.ZERO
-		}
-		return DurationFormatter.durationInHoursBetween(attendedFrom, attendedUntil)
-	}
+    /**
+     * @return the duration in minutes of the attendance
+     */
+    @API
+    @Override
+    Integer getDurationMinutes() {
+        return super.getDurationMinutes()
+    }
+
+    BigDecimal getDurationInHours() {
+        if (getAttendedFrom() == null || getAttendedUntil() == null) {
+            return BigDecimal.ZERO
+        }
+        return DurationFormatter.durationInHoursBetween(attendedFrom, attendedUntil)
+    }
 
 
-	/**
-	 * @return the date and time this record was modified
-	 */
-	@API
-	@Override
-	Date getModifiedOn() {
-		return super.getModifiedOn()
-	}
+    /**
+     * @return the date and time this record was modified
+     */
+    @API
+    @Override
+    Date getModifiedOn() {
+        return super.getModifiedOn()
+    }
 
-	/**
-	 * @return any additional notes entered by the tutor
-	 */
-	@API
-	@Override
-	String getNote() {
-		return super.getNote()
-	}
+    /**
+     * @return any additional notes entered by the tutor
+     */
+    @API
+    @Override
+    String getNote() {
+        return super.getNote()
+    }
 
-	/**
-	 * Tutors can login and mark student attendances for their classes in onCourse portal
-	 *
-	 * @return the ID of a tutor who marked student's attendance
-	 */
-	@Nonnull
-	@API
-	@Override
-	Tutor getMarkedByTutor() {
-		return super.getMarkedByTutor()
-	}
+    /**
+     * Tutors can login and mark student attendances for their classes in onCourse portal
+     *
+     * @return the ID of a tutor who marked student's attendance
+     */
+    @Nonnull
+    @API
+    @Override
+    Tutor getMarkedByTutor() {
+        return super.getMarkedByTutor()
+    }
 
-	/**
-	 * @return the session this attendance is linked to
-	 */
-	@Nonnull
-	@API
-	@Override
+    /**
+     * @return the session this attendance is linked to
+     */
+    @Nonnull
+    @API
+    @Override
     Session getSession() {
-		return super.getSession()
-	}
+        return super.getSession()
+    }
 
-	/**
-	 * @return which student the attendance is for
-	 */
-	@Nonnull
-	@API
-	@Override
-	Student getStudent() {
-		return super.getStudent()
-	}
+    /**
+     * @return which student the attendance is for
+     */
+    @Nonnull
+    @API
+    @Override
+    Student getStudent() {
+        return super.getStudent()
+    }
 
-	@Override
-	boolean isAbsent() {
-		return AttendanceType.STATUSES_ABSENCE.contains(this.attendanceType)
-	}
+    @Override
+    boolean isAbsent() {
+        return AttendanceType.STATUSES_ABSENCE.contains(this.attendanceType)
+    }
 /**
-	 * @return date and time when attendance was marked by a tutor
-	 */
-	@Nullable
-	@API
-	@Override
-	Date getMarkedByTutorDate() {
-		return super.getMarkedByTutorDate()
-	}
+ * @return date and time when attendance was marked by a tutor
+ */
+    @Nullable
+    @API
+    @Override
+    Date getMarkedByTutorDate() {
+        return super.getMarkedByTutorDate()
+    }
 }

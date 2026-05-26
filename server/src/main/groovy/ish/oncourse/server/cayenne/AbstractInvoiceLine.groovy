@@ -332,7 +332,11 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
     @API
     @Override
     Money getTaxEach() {
-        return super.getTaxEach()
+        return Money.of(super.getTaxEachPrecised())
+    }
+
+    void setTaxEach(Money value) {
+        super.setTaxEachPrecised(value.toPrecisedBigDecimal())
     }
 
     /**

@@ -12,6 +12,8 @@
 package ish.oncourse.server.modules;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.google.inject.Binder;
+import com.google.inject.Inject;
 import io.bootique.annotation.BQConfig;
 import io.bootique.jetty.connector.ConnectorFactory;
 import org.apache.logging.log4j.LogManager;

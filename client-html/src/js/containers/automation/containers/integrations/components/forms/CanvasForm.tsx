@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import LoadingButton from '@mui/lab/LoadingButton';
+import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import * as React from 'react';
@@ -113,14 +113,14 @@ class CanvasBaseForm extends React.Component<any, any> {
                     {$t('press_configure_to_proceed_with_authorising_oncour')}
                   </Typography>
                   <div>
-                    <LoadingButton
+                    <Button
                       loading={loading}
                       variant="contained"
                       className="mt-1"
                       onClick={this.configure}
                     >
                       {$t('configure')}
-                    </LoadingButton>
+                    </Button>
                   </div>
                 </>
               )

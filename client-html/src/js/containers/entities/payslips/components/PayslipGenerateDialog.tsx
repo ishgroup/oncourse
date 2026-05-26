@@ -5,8 +5,7 @@
 
 import { PayrollRequest, WagesToProcess } from '@api/model';
 import OpenInNew from '@mui/icons-material/OpenInNew';
-import LoadingButton from '@mui/lab/LoadingButton';
-import Button from '@mui/material/Button';
+import Button from '@mui/material/Button'
 import Collapse from '@mui/material/Collapse';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -135,7 +134,7 @@ const PayslipGenerateDialog: React.FC<Props> = ({
             {$t('cancel')}
           </Button>
 
-          <LoadingButton
+          <Button
             variant="contained"
             color="primary"
             className="payslipButton"
@@ -144,7 +143,7 @@ const PayslipGenerateDialog: React.FC<Props> = ({
             disabled={invalid || !preparedWages.totalWagesCount}
           >
             {$t('generate')}
-          </LoadingButton>
+          </Button>
         </DialogActions>
       </form>
     </Dialog>

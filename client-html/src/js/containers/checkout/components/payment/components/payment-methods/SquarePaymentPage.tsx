@@ -5,7 +5,7 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import LoadingButton from '@mui/lab/LoadingButton';
+import Button from '@mui/material/Button'
 import clsx from 'clsx';
 import { makeAppStyles } from 'ish-ui';
 import React, { useEffect, useState } from 'react';
@@ -149,7 +149,7 @@ const SquarePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
         <div id="payment-form" className="flex-column">
           <img alt="SquareLogo" src={theme.palette.mode === 'light' ? square : squareLight} className={classes.logo} />
           <div id="card-container"></div>
-          <LoadingButton
+          <Button
             variant="contained"
             color="primary"
             size="large"
@@ -158,7 +158,7 @@ const SquarePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
             onClick={processSquarePayment}
           >
             Finalize checkout
-          </LoadingButton>
+          </Button>
         </div>
       }
 
