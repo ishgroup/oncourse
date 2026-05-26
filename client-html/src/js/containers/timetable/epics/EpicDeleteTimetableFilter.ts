@@ -29,7 +29,7 @@ const getActionsForUpdate = (filters, id, currentMonth) => {
   return [
     setTimetableSearch(search),
     clearTimetableMonths(),
-    findTimetableSessions({ from: startMonth.toISOString(), to: endMonth.toISOString(), search }),
+    findTimetableSessions({ request: { from: startMonth.toISOString(), to: endMonth.toISOString(), search } }),
     getTimetableSessionsDays(currentMonth.getMonth(), currentMonth.getFullYear())
   ];
 };

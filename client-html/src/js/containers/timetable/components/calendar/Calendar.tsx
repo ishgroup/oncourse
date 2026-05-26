@@ -30,8 +30,8 @@ import {
   findTimetableSessions,
   getTimetableSessionsDays,
   setTimetableMonths,
-  setTimetableSearch,
-  setTimetableScrollDay
+  setTimetableScrollDay,
+  setTimetableSearch
 } from '../../actions';
 import { TimetableContext } from '../../Timetable';
 import { attachDayNodesObserver, getFormattedMonthDays } from '../../utils';
@@ -294,7 +294,11 @@ const Calendar = React.memo<Props>(props => {
       }
     ], !reset));
     
-    dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endOfMonth(endMonth).toISOString() }, reset));
+    dispatch(findTimetableSessions({
+      request: { from: startMonth.toISOString(), to: endOfMonth(endMonth).toISOString() },
+      targetDateString: format(baseDate, DD_MMM_YYYY_MINUSED),
+      reset
+    }));
   }, 100), []);
 
   const onIsScrolling = scrolling => {

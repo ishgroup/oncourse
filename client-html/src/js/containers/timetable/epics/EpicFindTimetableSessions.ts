@@ -6,21 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { SearchRequest, Session } from "@api/model";
+import { SearchRequest, Session } from '@api/model';
 import { isAfter, isSameDay, isSameMonth, parseISO } from 'date-fns';
 import { format } from 'date-fns-tz';
 import { DD_MMM_YYYY_MINUSED } from 'ish-ui';
-import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { getFiltersString } from "../../../common/components/list-view/utils/listFiltersUtils";
-import { Create, Request } from "../../../common/epics/EpicUtils";
-import { TimetableMonth } from "../../../model/timetable";
+import FetchErrorHandler from '../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import { getFiltersString } from '../../../common/components/list-view/utils/listFiltersUtils';
+import { Create, Request } from '../../../common/epics/EpicUtils';
+import { TimetableMonth } from '../../../model/timetable';
 import {
   FIND_TIMETABLE_SESSIONS,
-  findTimetableSessionsFulfilled, setTimetableScrollDay,
+  findTimetableSessionsFulfilled,
+  setTimetableScrollDay,
   setTimetableSearchError
 } from '../actions';
-import TimetableService from "../services/TimetableService";
-import { getMonthsWithinYear } from "../utils";
+import TimetableService from '../services/TimetableService';
+import { getMonthsWithinYear } from '../utils';
 
 const appendMonths = (updatedMonths: TimetableMonth[], stateMonths: TimetableMonth[]): TimetableMonth[] => {
   const updated = [];
@@ -37,14 +38,14 @@ const appendMonths = (updatedMonths: TimetableMonth[], stateMonths: TimetableMon
   return updated.filter(u => u);
 };
 
-const request: Request<Session[], { request: SearchRequest, reset: boolean }> = {
+const request: Request<Session[], { request: SearchRequest, reset: boolean, targetDateString?: string }> = {
   type: FIND_TIMETABLE_SESSIONS,
   getData: ({ request }, { timetable: { search, filters } }) => {
     request.search = search;
     request.filter = getFiltersString([{ filters }]);
     return TimetableService.findTimetableSessions(request);
   },
-  processData: (sessions, s, { request: { from }, reset }) => {
+  processData: (sessions, s, { request: { from }, reset, targetDateString }) => {
 
     const updatedMonths = getMonthsWithinYear(sessions, parseISO(from));
 
@@ -52,13 +53,13 @@ const request: Request<Session[], { request: SearchRequest, reset: boolean }> = 
 
     let scrollDay;
     
-    if (reset) {
-      const today = new Date();
-      const targetMonth = months.find(m => isSameMonth(today, m.month) && m.hasSessions) 
-        || months.find(m => isAfter( m.month, today) && m.hasSessions);
+    if (reset && targetDateString) {
+      const toDate = new Date(targetDateString);
+      const targetMonth = months.find(m => isSameMonth(toDate, m.month) && m.hasSessions) 
+        || months.find(m => isAfter( m.month, toDate) && m.hasSessions);
       if (targetMonth) {
-        const targetDay = targetMonth.days.find(d => isSameDay(today, d.day) && d.sessions.length)
-          || targetMonth.days.find(d => isAfter(d.day, today) && d.sessions.length);
+        const targetDay = targetMonth.days.find(d => isSameDay(toDate, d.day) && d.sessions.length)
+          || targetMonth.days.find(d => isAfter(d.day, toDate) && d.sessions.length);
         if (targetDay) {
           scrollDay = format(targetDay.day, DD_MMM_YYYY_MINUSED);
         }

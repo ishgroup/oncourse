@@ -95,9 +95,9 @@ export const setTimetableSearch = (search: string) => ({
   payload: { search }
 });
 
-export const findTimetableSessions = (request: SearchRequest, reset?: boolean) => ({
+export const findTimetableSessions = ({request, targetDateString, reset}:{ request: SearchRequest,  targetDateString?: string, reset?: boolean }) => ({
   type: FIND_TIMETABLE_SESSIONS,
-  payload: { request, reset }
+  payload: { request, targetDateString, reset }
 });
 
 export const findTimetableSessionsFulfilled = months => ({
