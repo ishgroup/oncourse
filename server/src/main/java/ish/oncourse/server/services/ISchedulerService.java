@@ -22,6 +22,7 @@ public interface ISchedulerService {
 	String TRIGGER_POSTFIX = "Trigger";
 
 	String AUDIT_PURGE_JOB = "auditPurgeJob";
+	String ARCHIVE_MESSAGES_JOB_ID = "archiveMessagesJob";
 	String EMAIL_DEQUEUEING_JOB_ID = "emailDequeueingJob";
 	String CHARGEBEE_JOB_ID = "chargebeeJob";
 	String REMOVE_SESSIONS_JOB_ID = "removeSessionsJob";
@@ -45,6 +46,7 @@ public interface ISchedulerService {
 	String VOUCHER_EXPIRY_JOB_CRON_SCHEDULE = "0 45 0am * * ?";
 	String INVOICE_OVERDUE_UPDATE_JOB_CRON_SCHEDULE_TEMPLATE = "0 %d 1am * * ?";
 	String AUDIT_PURGE_JOB_CRON_SCHEDULE_TEMPLATE = "0 %d 2am * * ?";
+	String ARCHIVE_MESSAGES_JOB_CRON_SCHEDULE_INTERVAL = "0 0 1 * */6 ?";
 	String USER_DISAIBLE_JOB_TEMPLATE = "0 %d 3 ? * MON *";
 
 	String FUNDING_CONTRACT_JOB_ID = "fundingContractJob";

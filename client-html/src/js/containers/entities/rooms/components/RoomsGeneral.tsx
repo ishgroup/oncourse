@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import { LinkAdornment, openInternalLink, TimetableButton } from 'ish-ui';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { change, FieldArray } from 'redux-form';

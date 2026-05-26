@@ -32,7 +32,7 @@ class WindcavePaymentService implements SessionPaymentServiceInterface {
 
     @Override
     SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard, Contact contact) {
-        return windcavePaymentAPI.createSession(origin, amount, merchantReference, storeCard)
+        return windcavePaymentAPI.createSession(origin, amount, merchantReference, storeCard, contact.email)
     }
 
     @Override

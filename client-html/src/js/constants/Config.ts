@@ -30,6 +30,8 @@ export const APP_BAR_HEIGHT = 64;
 
 export const LIST_PAGE_SIZE = 50;
 
+export const NESTED_LIST_PAGE_SIZE = 20;
+
 export const PLAIN_LIST_MAX_PAGE_SIZE = 65000;
 
 export const PASSWORD_PASS_SCORE = 2;
@@ -51,10 +53,6 @@ export const DASHBOARD_ACTIVITY_STORAGE_NAME = "dashboardActivityState";
 export const ENTITY_AQL_STORAGE_NAME = "entityAqlState";
 
 // // Google constants
-
-// Google Maps
-
-export const GOOGLE_MAPS_API_KEY = "QUl6YVN5Q1lnMlIzMnc4TVhtNXBwNEJjalNlLTRuUDFHYTNaa0p3";
 
 // Google tag manager
 export const GOOGLE_TAG_MANAGER = "GTM-PQ23P93";

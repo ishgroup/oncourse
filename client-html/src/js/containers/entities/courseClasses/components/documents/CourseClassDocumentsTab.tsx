@@ -33,7 +33,6 @@ const CourseClassDocumentsTab: React.FC<EditViewProps<CourseClassExtended>> = ({
   }, [values.type, values.startDateTime, values.endDateTime]);
 
   return <div className="pl-3 pr-3 pb-2">
-    <Divider className='mb-2' />
     <FieldArray
       name="documents"
       label={$t('documents')}

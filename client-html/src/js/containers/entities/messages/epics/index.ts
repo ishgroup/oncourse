@@ -1,4 +1,6 @@
-import { combineEpics } from "redux-observable";
-import { EpicSendMessage } from "./EpicSendMessage";
+import { combineEpics } from 'redux-observable';
+import { EpicSendMessage } from './EpicSendMessage';
 
-export const EpicMessage = combineEpics(EpicSendMessage);
+export const EpicMessage = combineEpics(
+  EpicSendMessage
+);

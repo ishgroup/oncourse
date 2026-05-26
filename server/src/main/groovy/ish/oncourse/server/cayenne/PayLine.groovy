@@ -217,7 +217,7 @@ class PayLine extends _PayLine {
 	}
 
 	Money getAmount(int scale) {
-		return this.getAmount(scale, RoundingMode.HALF_UP)
+		return this.getAmount(scale, RoundingMode.HALF_EVEN)
 	}
 
 	Money getAmount(int scale, RoundingMode mode) {

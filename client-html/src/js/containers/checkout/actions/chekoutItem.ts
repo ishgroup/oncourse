@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
-import { CheckoutCourse, CheckoutItem } from "../../../model/checkout";
+import { _toRequestType, FULFILLED } from '../../../common/actions/ActionUtils';
+import { CheckoutCourse, CheckoutCourseClass, CheckoutItem } from '../../../model/checkout';
 
 export const CHECKOUT_GET_ITEM_PRODUCT = _toRequestType("checkout/get/product");
 export const CHECKOUT_GET_ITEM_PRODUCT_FULFILLED = FULFILLED(CHECKOUT_GET_ITEM_PRODUCT);
@@ -43,9 +43,14 @@ export const clearCheckoutItemRecord = () => ({
   type: CLEAR_CHECKOUT_ITEM_RECORD
 });
 
-export const checkoutGetCourseClassList = (search: string) => ({
+export const checkoutGetCourseClassList = (search: string, offset = 0) => ({
   type: CHECKOUT_GET_COURSE_CLASS_LIST,
-  payload: { search }
+  payload: { search, offset }
+});
+
+export const checkoutGetCourseClassListFulfilled = (courseClasses: CheckoutCourseClass[]) => ({
+  type: CHECKOUT_GET_COURSE_CLASS_LIST_FULFILLED,
+  payload: { courseClasses }
 });
 
 export const checkoutClearCourseClassList = () => ({

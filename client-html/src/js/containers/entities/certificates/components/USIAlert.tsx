@@ -2,7 +2,7 @@ import { CertificateValidationRequest, SearchQuery, Sorting } from '@api/model';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import { BooleanArgFunction } from 'ish-ui';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import React, { Dispatch, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setPrintValidatingStatus } from '../../../../common/components/list-view/components/share/actions';

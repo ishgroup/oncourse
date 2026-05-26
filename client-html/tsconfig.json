@@ -22,7 +22,7 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "noImplicitAny": false,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "strictNullChecks": false,
     "resolveJsonModule": true,
     "module": "esnext",

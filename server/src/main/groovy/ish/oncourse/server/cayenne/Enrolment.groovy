@@ -114,6 +114,8 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Override
 	void prePersist() {
 		updateOverriddenFields()
+		if(isHybridCompleted == null || courseClass.type == CourseClassType.HYBRID)
+			updateHybridCompleted()
 	}
 
 	@Override
@@ -137,10 +139,22 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		def applicationRelations =  checkouts
 				.findAll {it instanceof CheckoutApplicationRelation && it.relatedObjectId == courseClass.id}
 
-		context.deleteObjects(waitingCoursesRelations.collect {it.checkout}.unique())
-		context.deleteObjects(courseClassRelations.collect {it.checkout}.unique())
-		context.deleteObjects(applicationRelations.collect {it.checkout}.unique())
+		def checkoutsToRemove = new ArrayList<Checkout>();
+		checkoutsToRemove.addAll(waitingCoursesRelations.collect {it.checkout})
+		checkoutsToRemove.addAll(courseClassRelations.collect {it.checkout})
+		checkoutsToRemove.addAll(applicationRelations.collect {it.checkout})
+		checkoutsToRemove = checkoutsToRemove.findAll {it}.unique()
+		context.deleteObjects(checkoutsToRemove)
 		context.commitChanges()
+	}
+
+	void updateHybridCompleted(){
+		int attendancesSize = attendances
+				.findAll{attendance -> attendance.getAttendanceType() == AttendanceType.ATTENDED}
+				.size()
+
+		Integer minSessionsToComplete = getCourseClass().getMinimumSessionsToComplete()
+		setIsHybridCompleted(minSessionsToComplete != null && attendancesSize >= minSessionsToComplete)
 	}
 
 	/**
@@ -165,6 +179,9 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 
 	@Override
 	void preUpdate() {
+		if(isHybridCompleted == null || courseClass.type == CourseClassType.HYBRID)
+			updateHybridCompleted()
+
 		super.preUpdate()
 	}
 

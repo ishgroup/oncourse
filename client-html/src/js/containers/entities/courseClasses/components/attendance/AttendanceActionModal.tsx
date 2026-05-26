@@ -3,9 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Grid, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
+import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -261,7 +260,7 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
           {$t('cancel')}
         </Button>
 
-        <LoadingButton
+        <Button
           onClick={handleSubmit}
           disabled={invalid || hasError}
           loading={fetching}
@@ -269,7 +268,7 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
           color="primary"
         >
           {$t('ok')}
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

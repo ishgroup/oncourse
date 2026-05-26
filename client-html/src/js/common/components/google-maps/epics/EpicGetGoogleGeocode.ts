@@ -3,22 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { FETCH_FAIL } from "../../../actions";
-import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
+import { Epic } from 'redux-observable';
+import { GoogleMapsCoordinates } from '../../../../model/google';
+import { FETCH_FAIL } from '../../../actions';
+import FetchErrorHandler from '../../../api/fetch-errors-handlers/FetchErrorHandler';
 
-import * as EpicUtils from "../../../epics/EpicUtils";
-import { GET_GOOGLE_GEOCODE_DETAILS, GET_GOOGLE_GEOCODE_DETAILS_FULFILLED } from "../actions";
-import GoogleApiService from "../services/GoogleApiService";
+import * as EpicUtils from '../../../epics/EpicUtils';
+import { GET_GOOGLE_GEOCODE_DETAILS, GET_GOOGLE_GEOCODE_DETAILS_FULFILLED } from '../actions';
+import GoogleApiService from '../services/GoogleApiService';
 
-const request: EpicUtils.Request<any, { address: string }> = {
+const request: EpicUtils.Request<GoogleMapsCoordinates, { address: string }> = {
   type: GET_GOOGLE_GEOCODE_DETAILS,
   getData: ({ address }) => GoogleApiService.getGeocodeDetails(address),
-  processData: (response: any) => (response.status === "OK"
+  processData: response => (response
       ? [
           {
             type: GET_GOOGLE_GEOCODE_DETAILS_FULFILLED,
-            payload: { responseJSON: response.results[0].geometry.location }
+            payload: response
           }
         ]
       : [

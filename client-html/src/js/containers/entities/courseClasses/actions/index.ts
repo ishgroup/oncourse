@@ -58,7 +58,7 @@ export const setDuplicateCourseClassesSessions = (sessions: Session[], earliest,
   payload: { sessions, earliest, hasZeroWages }
 });
 
-export const getCourseClass = (id: string) => ({
+export const getCourseClass = (id: number) => ({
   type: GET_COURSE_CLASS,
   payload: id
 });

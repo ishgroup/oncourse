@@ -17,9 +17,8 @@ import { Help, Publish } from '@mui/icons-material';
 import Delete from '@mui/icons-material/Delete';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import PlayArrow from '@mui/icons-material/PlayArrow';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Checkbox, CircularProgress, Grid, ListItemButton, MenuItem, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
+import Button from '@mui/material/Button'
 import Drawer from '@mui/material/Drawer';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
@@ -963,7 +962,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   {templateSelected
                     && ["Excel", "Text", "XML"].includes(exportTemplateTypesArr[selectedPrimary - 1])
                     && (
-                      <LoadingButton
+                      <Button
                         disabled={invalid || validating}
                         className={classes.closeButton}
                         classes={{
@@ -976,9 +975,9 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                         loading={submitting || validating || exportTemplatesFetching || pdfReportsFetching}
                       >
                         {$t('copy_to_clipboard')}
-                      </LoadingButton>
+                      </Button>
                     )}
-                  <LoadingButton
+                  <Button
                     disabled={invalid || validating || Boolean(emailError)}
                     className={classes.shareButton}
                     classes={{
@@ -991,7 +990,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     loading={submitting || validating || exportTemplatesFetching || pdfReportsFetching}
                   >
                     {$t('share')}
-                  </LoadingButton>
+                  </Button>
                 </Grid>
               </form>
             </Grid>

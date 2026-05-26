@@ -11,6 +11,7 @@
 package ish.util;
 
 import ish.math.Money;
+import ish.math.MoneyRounding;
 
 import java.math.BigDecimal;
 
@@ -54,6 +55,10 @@ public final class MoneyUtil {
 	 * @return calculated Money value
 	 */
 	public static Money getPriceIncTax(Money price, BigDecimal taxRate, Money taxAdjustment) {
+		return getPriceIncTaxRounded(price, taxRate, taxAdjustment, false);
+	}
+
+	public static Money getPriceIncTaxRounded(Money price, BigDecimal taxRate, Money taxAdjustment, boolean roundRequired) {
 
 		if (price == null) {
 			return Money.ZERO;
@@ -64,6 +69,9 @@ public final class MoneyUtil {
 		}
 
 		Money result = price.multiply(taxRate.add(BigDecimal.ONE));
+
+		if(roundRequired)
+			result = Money.of(result.toBigDecimal());
 
 		if (taxAdjustment == null) {
 			return result;
@@ -116,7 +124,7 @@ public final class MoneyUtil {
 			return Money.ZERO;
 		}
 
-		return priceInc.subtract(priceEx.multiply(taxRate.add(BigDecimal.ONE)));
+		return priceInc.subtract(priceEx.multiply(taxRate.add(BigDecimal.ONE)).toBigDecimal());
 	}
 
 }

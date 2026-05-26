@@ -78,7 +78,7 @@ Feature: Main feature for all GET requests with path 'list/entity/contact'
             ],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -134,7 +134,7 @@ Feature: Main feature for all GET requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """

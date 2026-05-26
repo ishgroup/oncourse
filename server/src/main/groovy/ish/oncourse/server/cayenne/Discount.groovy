@@ -144,7 +144,7 @@ class Discount extends _Discount implements DiscountTrait, DiscountInterface, Qu
 		if (emailsString == null || emailsString.length() == 0) {
 			return result
 		}
-		Pattern pattern = Pattern.compile(",")
+		Pattern pattern = Pattern.compile("\\s*,\\s*")
 		String[] emails = pattern.split(emailsString)
 
 		for (String email : emails) {

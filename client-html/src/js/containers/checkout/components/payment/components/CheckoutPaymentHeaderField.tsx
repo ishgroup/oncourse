@@ -7,11 +7,12 @@
  */
 import { CheckoutPaymentPlan, PaymentMethod } from '@api/model';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import { FormControlLabel, Typography, Tooltip } from '@mui/material';
+import { FormControlLabel, Tooltip, Typography } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { addDays, compareAsc, isSameDay } from 'date-fns';
 import { format } from 'date-fns-tz';
+import { debounce } from 'es-toolkit/compat';
 import {
   BooleanArgFunction,
   D_MMM_YYYY,
@@ -23,7 +24,6 @@ import {
   StyledCheckbox,
   YYYY_MM_DD_MINUSED
 } from 'ish-ui';
-import debounce from 'lodash.debounce';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -485,6 +485,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     const plansFinal = [
       {
         amount: checkoutSummary.payNowTotal,
+        payDate: checkoutSummary.paymentDate
       },
       ...[
         ...updatedPaymentPlans,

@@ -2,7 +2,7 @@ import { Tax } from '@api/model';
 import Grid from '@mui/material/Grid';
 import $t from '@t';
 import { idsToString, ShowConfirmCaller } from 'ish-ui';
-import isEqual from 'lodash.isequal';
+import { isEqual } from 'es-toolkit/compat';
 import * as React from 'react';
 import { withRouter } from 'react-router';
 import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from 'redux-form';

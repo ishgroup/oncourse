@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 150-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: InvoiceLine
+            columnName: taxEach
+      changes:
+        - modifyDataType:
+            tableName: InvoiceLine
+            columnName: taxEach
+            newDataType: decimal(16, 8)

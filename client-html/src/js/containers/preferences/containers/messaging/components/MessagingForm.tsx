@@ -11,7 +11,7 @@ import Hidden from '@mui/material/Hidden';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import { openInternalLink } from 'ish-ui';
-import isEmpty from 'lodash.isempty';
+import { isEmpty } from 'es-toolkit/compat'
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Form, getFormValues, initialize, reduxForm } from 'redux-form';

@@ -6,11 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Session } from "@api/model";
-import { format, getDaysInMonth, parse, setDate, setHours, startOfMonth } from "date-fns";
-import { AfternoonIcon, appendTimezone, DD_MMM_YYYY_MINUSED, EveningIcon, HA, MorningIcon } from "ish-ui";
-import { CalendarGrouping, CalendarGroupingState, TimetableMonth, TimetableSession } from "../../../model/timetable";
-import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from "../constants";
+import { Session } from '@api/model';
+import { format, getDaysInMonth, isSameYear, parse, setDate, setHours, startOfMonth } from 'date-fns';
+import { AfternoonIcon, appendTimezone, DD_MMM_YYYY_MINUSED, EveningIcon, HA, MorningIcon } from 'ish-ui';
+import { CalendarGrouping, CalendarGroupingState, TimetableMonth, TimetableSession } from '../../../model/timetable';
+import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from '../constants';
 
 export const getFormattedMonthDays = (startDate: Date) => Array.from(Array(getDaysInMonth(startDate)), (v, i) => i + 1).map(d => ({
   day: setDate(startDate, d),
@@ -82,7 +82,7 @@ export const getMonthsWithinYear = (sessions: Session[], startDate: Date) => {
   sessions.forEach(s => {
     const sessionStartDate = new Date(s.start);
 
-    if (startDate.getFullYear() !== sessionStartDate.getFullYear()) {
+    if (!isSameYear(startDate, sessionStartDate)) {
       return;
     }
 

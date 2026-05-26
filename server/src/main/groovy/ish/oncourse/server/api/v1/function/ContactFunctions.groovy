@@ -20,7 +20,6 @@ import ish.oncourse.server.api.dao.ContactRelationDao
 import ish.oncourse.server.api.dao.ContactRelationTypeDao
 import ish.oncourse.server.api.v1.model.CartDTO
 import ish.oncourse.server.api.v1.model.ContactDTO
-import ish.oncourse.server.api.v1.model.MessagePersonDTO
 import ish.oncourse.server.api.v1.model.MessageStatusDTO
 import ish.oncourse.server.api.v1.model.MessageTypeDTO
 import ish.oncourse.server.api.v1.model.StudentConcessionDTO
@@ -263,19 +262,6 @@ class ContactFunctions {
             rel.relationType = getRecordById(context, ContactRelationType, dto.relationId)
         }
 
-    }
-
-    static MessagePersonDTO toRestMessagePerson(Message message) {
-        new MessagePersonDTO().with { m ->
-            m.messageId = message.id
-            m.createdOn = LocalDateUtils.dateToTimeValue(message.createdOn)
-            m.sentOn = LocalDateUtils.dateToTimeValue(message.timeOfDelivery)
-            m.creatorKey = message.creatorKey
-            m.subject = message.emailSubject
-            m.status = MessageStatusDTO.values()[0].fromDbType(message.status)
-            m.type = MessageTypeDTO.values()[0].fromDbType(message.type)
-            m
-        }
     }
 
     static void updateAbandonedCarts(ObjectContext context, Contact contact, List<CartDTO> carts){

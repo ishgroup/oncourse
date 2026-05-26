@@ -321,7 +321,7 @@ class ClassCost extends _ClassCost implements ClassCostTrait {
 	/**
 	 * @return contact linked to this class cost (e.g. tutor for wage cost types)
 	 */
-	@Nonnull
+	@Nullable
 	@API
 	@Override
 	Contact getContact() {

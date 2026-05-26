@@ -1,0 +1,20 @@
+get:
+  operationId: getLastRunsStatistic
+  description: get a statistic for last executed scripts
+  tags:
+  - Script
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/script/ScriptStatistic.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SCRIPT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to view scripts. Please contact your administrator

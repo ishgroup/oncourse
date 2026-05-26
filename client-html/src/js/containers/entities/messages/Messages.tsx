@@ -5,15 +5,16 @@
 
 import React, { Dispatch, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getFilters, } from '../../../common/components/list-view/actions';
+import { clearListState, getFilters } from '../../../common/components/list-view/actions';
 import ListView from '../../../common/components/list-view/ListView';
 import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
 import MessageEditView from './components/MessageEditView';
-import QuedMessagesBulkDelete from './components/QuedMessagesBulkDelete';
+import MessagesCogwheelActions from './components/MessagesCogwheelActions';
 
 interface MessagesProps {
   onInit?: () => void;
   getFilters?: () => void;
+  clearListState?: () => void;
   onDelete?: (id: string) => void;
 }
 
@@ -44,11 +45,15 @@ const primaryColumnCondition = row => row["recipientsString"] || "No recipients"
 
 const Messages: React.FC<MessagesProps> = props => {
   const {
-    getFilters
+    getFilters,
+    clearListState
   } = props;
 
   useEffect(() => {
     getFilters();
+    return () => {
+      clearListState();
+    };
   }, []);
 
   return (
@@ -62,7 +67,7 @@ const Messages: React.FC<MessagesProps> = props => {
         nameCondition: values => (values ? values.subject : "")
       }}
       EditViewContent={MessageEditView}
-      CogwheelAdornment={QuedMessagesBulkDelete}
+      CogwheelAdornment={MessagesCogwheelActions}
       rootEntity="Message"
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
@@ -73,7 +78,8 @@ const Messages: React.FC<MessagesProps> = props => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getFilters: () => dispatch(getFilters("Message"))
+  getFilters: () => dispatch(getFilters("Message")),
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Messages);

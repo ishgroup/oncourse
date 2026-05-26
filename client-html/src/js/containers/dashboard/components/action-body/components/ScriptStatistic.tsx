@@ -6,17 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { ScriptStatistic } from '@api/model';
 import { Check, Clear } from '@mui/icons-material';
 import { Grid, Link, List, ListItem, Tooltip, Typography } from '@mui/material';
 import $t from '@t';
-import clsx from 'clsx';
-import { differenceInHours, differenceInMinutes, format } from 'date-fns';
-import { III_DD_MMM_YYYY_HH_MM, openInternalLink } from 'ish-ui';
+import { format, formatDistanceStrict } from 'date-fns';
+import { III_DD_MMM_YYYY_HH_MM, makeAppStyles } from 'ish-ui';
 import React, { createRef, useEffect, useState } from 'react';
-import { withStyles } from 'tss-react/mui';
 import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
-import EntityService from '../../../../../common/services/EntityService';
 import AnimateList from '../../../../../common/utils/animation/AnimateList';
+import ScriptsService from '../../../../automation/containers/scripts/services/ScriptsService';
 
 const styles = theme => ({
   icon: {
@@ -28,70 +27,22 @@ const styles = theme => ({
     display: "flex",
     padding: "0",
     height: "18px",
-  },
-  smallScriptText: {
-    fontSize: "12px",
-    marginRight: "12px",
-    minWidth: "50%",
-  },
-  lastRunText: {
-    width: "70px",
-    minWidth: "70px",
-    fontSize: "12px",
-    marginLeft: theme.spacing(1),
+    fontSize: '12px'
   }
 });
 
-const ScriptStatistic = ({ dispatch, classes }: { dispatch, classes? }) => {
-  const [scripts, setScripts] = useState([]);
+const useStyles = makeAppStyles()(styles);
+
+const ScriptStatistic = ({ dispatch }) => {
+  const [scripts, setScripts] = useState<ScriptStatistic[]>([]);
+  const { classes, cx } = useStyles();
+  const today = new Date();
 
   const getScriptsData = async () => {
-    const today = new Date();
-    
     try {
-      const scriptRes = await EntityService.getPlainRecords(
-        "Script",
-        "name",
-        'automationStatus == ENABLED',
-        null,
-        null,
-        "name",
-        true
-      );
-
-      if (!Array.isArray(scriptRes?.rows)) return;
-
-      const resultForRender = [];
-
-      for (const scriptRow of scriptRes.rows) {
-        const auditRes = await EntityService.getPlainRecords(
-          "Audit",
-          "entityId,created,action",
-          `entityIdentifier is "Script" and entityId is ${scriptRow.id}
-            and ( action is SCRIPT_FAILED or action is SCRIPT_EXECUTED) `,
-          7,
-          0,
-          'created',
-          false
-        );
-
-        if (auditRes.rows.length && auditRes.rows.some(r => differenceInHours(today, new Date(r.values[1])) <= 24)) {
-          const result = []; 
-          auditRes.rows.forEach(row => {
-            if (row.values[1]) {
-              result.push({
-                id: row.values[0],
-                date: row.values[1],
-                status: row.values[2],
-              });
-            }
-          });
-          resultForRender.push({ name: scriptRow.values[0], result });
-        }
-      }
-
-      resultForRender.sort((a, b) => (new Date(a.result[0].date) < new Date(b.result[0].date) ? 1 : -1));
-      setScripts(resultForRender);
+      const statistics = await ScriptsService.getLastRunsStatistic();
+      statistics.sort((a, b) => (new Date(a.lastRuns[0]?.date) < new Date(b.lastRuns[0]?.date) ? 1 : -1));
+      if (statistics) setScripts(statistics);
     } catch (e) {
       instantFetchErrorHandler(dispatch, e, "Failed to get automation status");
     }
@@ -106,14 +57,7 @@ const ScriptStatistic = ({ dispatch, classes }: { dispatch, classes? }) => {
   }, []);
 
   const getTime = (date: any) => {
-    const currentDate = new Date();
-
-    const minutes = differenceInMinutes(currentDate, new Date(date));
-
-    if (minutes < 60) {
-      return minutes + 'm ago';
-    }
-    return Math.floor(minutes / 60) + 'h ago';
+    return formatDistanceStrict(today, new Date(date)) + ' ago ';
   };
 
   return (
@@ -121,46 +65,53 @@ const ScriptStatistic = ({ dispatch, classes }: { dispatch, classes? }) => {
       <AnimateList>
         {scripts.map(script => (
           <ListItem ref={createRef() as any} key={script.name} className={classes.smallScriptGroup} dense disableGutters>
-            <Grid container columnSpacing={3} wrap="nowrap">
-              <Grid item xs className="overflow-hidden">
-                <Typography
-                  onClick={() => openInternalLink(`/automation/script/${script.result[0].id}`)}
-                  className={clsx(classes.smallText, "linkDecoration", classes.leftColumn, classes.smallScriptText)}
+            <Grid container columnSpacing={3} className={classes.smallScriptGroup} wrap="nowrap">
+              <Grid item xs={6} className="overflow-hidden">
+                <Link
+                  href={`/automation/script/${script.id}`}
+                  target="_blank"
+                  underline='hover'
+                  fontSize="inherit"
+                  color="textPrimary"
+                  className="linkDecoration d-block"
                   noWrap
                 >
                   {script.name}
+                </Link>
+              </Grid>
+              <Grid item className={cx(classes.smallScriptGroup, "overflow-hidden")} xs={2}>
+                <Typography noWrap color="textSecondary" fontSize="inherit">
+                  {getTime(script.lastRuns[0]?.date)}
                 </Typography>
               </Grid>
-              <Grid item className={classes.smallScriptGroup} xs={6}>
-                <Typography className={classes.lastRunText} color="textSecondary">
-                  {getTime(script.result[0].date)}
-                </Typography>
-                {script.result.map((elem, index) => (
-                  elem.status === "SCRIPT_EXECUTED"
-                    ? (
-                      <Tooltip key={script.name + index} title={`Succeeded at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
-                        <Check className={clsx(classes.icon, "successColor")} />
-                      </Tooltip>
-                    )
-                    : (
-                      <Tooltip key={script.name + index} title={`Failed at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
-                        <Clear className={clsx(classes.icon, "errorColor")} />
-                      </Tooltip>
-                    )
-                ))}
+              <Grid item xs={4} display='flex' flexWrap='nowrap'>
+                <span className="overflow-hidden">
+                  {script.lastRuns.map((elem, index) => (
+                    elem.status === "Script executed"
+                      ? (
+                        <Tooltip key={script.name + index} title={`Succeeded at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
+                          <Check className={cx(classes.icon, "successColor")} />
+                        </Tooltip>
+                      )
+                      : (
+                        <Tooltip key={script.name + index} title={`Failed at ${format(new Date(elem.date), III_DD_MMM_YYYY_HH_MM)}`}>
+                          <Clear className={cx(classes.icon, "errorColor")} />
+                        </Tooltip>
+                      )
+                  ))}
+                </span>
                 <Link
-                  href={`${window.location.origin}/audit?search=entityId is ${script.result[0].id} and entityIdentifier is "Script"`}
+                  href={`${window.location.origin}/audit?search=entityId is ${script.id} and entityIdentifier is "Script"`}
                   target="_blank"
                   color="textSecondary"
                   underline="none"
                 >
                   <Tooltip title={$t('more2')}>
-                    <span> ...</span>
+                    <strong> ...</strong>
                   </Tooltip>
                 </Link>
               </Grid>
             </Grid>
-
           </ListItem>
         ))}
       </AnimateList>
@@ -168,4 +119,4 @@ const ScriptStatistic = ({ dispatch, classes }: { dispatch, classes? }) => {
   );
 };
 
-export default withStyles(ScriptStatistic, styles);
+export default ScriptStatistic;

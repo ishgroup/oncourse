@@ -8,8 +8,7 @@
 
 import { Column, DataResponse, TableModel } from '@api/model';
 import DragIndicator from '@mui/icons-material/DragIndicator';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Typography from '@mui/material/Typography';
+import { TableSortLabel, Typography } from '@mui/material';
 import $t from '@t';
 import {
   ColumnDef,
@@ -22,8 +21,8 @@ import {
   useReactTable,
   VisibilityState
 } from '@tanstack/react-table';
+import { debounce } from 'es-toolkit/compat';
 import { AnyArgFunction, StringKeyObject, StyledCheckbox } from 'ish-ui';
-import debounce from 'lodash.debounce';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd-next';
 import { makeStyles } from 'tss-react/mui';

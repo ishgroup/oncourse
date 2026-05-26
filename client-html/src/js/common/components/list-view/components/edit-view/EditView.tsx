@@ -77,6 +77,7 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
       syncErrors,
       toogleFullScreenEditView,
       asyncValidating,
+      asyncValidate,
       disabledSubmitCondition
     } = this.props;
 
@@ -103,6 +104,7 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
             <div className={clsx("flex-fill", noTabList && "overflow-y-auto")}>
               <EditViewContent
                 asyncValidating={asyncValidating}
+                asyncValidate={asyncValidate}
                 syncErrors={syncErrors}
                 submitSucceeded={submitSucceeded}
                 manualLink={manualLink}

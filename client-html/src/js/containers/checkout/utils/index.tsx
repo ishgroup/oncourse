@@ -16,7 +16,7 @@ import {
   InvoicePaymentPlan,
   ProductType
 } from '@api/model';
-import { differenceInMinutes, format, isBefore } from 'date-fns';
+import { differenceInMinutes, format, isAfter, isBefore, isSameDay } from 'date-fns';
 import { decimalMinus, decimalPlus, YYYY_MM_DD_MINUSED } from 'ish-ui';
 import { getFormValues } from 'redux-form';
 import { LSRemoveItem } from '../../../common/utils/storage';
@@ -46,10 +46,13 @@ import {
 } from '../constants';
 import { getFundingInvoices } from './fundingInvoice';
 
-export const filterPastClasses = courseClasses => {
+export const filterPastClasses = (courseClasses: CheckoutCourseClass[], out: boolean) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  return courseClasses.filter(c => c.startDateTime === null || isBefore(today, new Date(c.endDateTime)));
+  return courseClasses.filter(c => {
+    const endDate = new Date(c.endDateTime);
+    return c.startDateTime === null || ( out ? isBefore(today, endDate) : ( isAfter(today, endDate) || isSameDay(today, endDate)));
+  });
 };
 
 export const isPromotionalCodeExist = (code, checkout) => {
@@ -639,5 +642,7 @@ export const clearStoredPaymentsState = () => {
     }
   }
 };
+
+export const getCourseClassSearch = courseId => `course.id is ${courseId} and isCancelled is false and isActive is true`;
 
 export * from "./asyncActions";

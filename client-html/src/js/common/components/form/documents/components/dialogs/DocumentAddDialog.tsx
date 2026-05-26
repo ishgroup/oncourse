@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
+import { debounce } from 'es-toolkit/compat';
 import {
   AnyArgFunction,
   EditInPlaceSearchSelect,
@@ -22,7 +23,6 @@ import {
   NoArgFunction,
   stubFunction
 } from 'ish-ui';
-import debounce from 'lodash.debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
