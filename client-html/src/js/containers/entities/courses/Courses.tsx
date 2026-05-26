@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { initialize } from 'redux-form';
 import { checkPermissions } from '../../../common/actions';
 import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
-import { clearListState, getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
 import ListView from '../../../common/components/list-view/ListView';
 import { getManualLink } from '../../../common/utils/getManualLink';
@@ -33,7 +33,6 @@ interface CoursesProps {
   onInit?: () => void;
   getFilters?: () => void;
   getPermissions?: () => void;
-  clearListState?: () => void;
   getTags?: () => void;
   values?: CourseExtended;
   getRelationTypes?: () => void;
@@ -185,7 +184,6 @@ const Courses: React.FC<CoursesProps> = props => {
   const {
     getDataCollectionRules,
     getFilters,
-    clearListState,
     onInit,
     getTags,
     getPermissions,
@@ -198,9 +196,6 @@ const Courses: React.FC<CoursesProps> = props => {
     getTags();
     getPermissions();
     getRelationTypes();
-    return () => {
-      clearListState();
-    };
   }, []);
 
   return (
@@ -242,7 +237,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getDataCollectionRules: () => dispatch(getDataCollectionRules()),
   getFilters: () => dispatch(getFilters(ENTITY_NAME)),
-  clearListState: () => dispatch(clearListState()),
   getRelationTypes: () => dispatch(getEntityRelationTypes())
 });
 

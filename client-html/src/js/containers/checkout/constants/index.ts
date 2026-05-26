@@ -3,8 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { createStringEnum } from '@api/model';
 import $t from '@t';
-import { createStringEnum } from "@api/model";
+
+export const CHECKOUT_ITEMS_PER_PAGE = 8;
 
 export const CHECKOUT_CONTACT_COLUMNS = "firstName,lastName,middleName,email,birthDate,isCompany,invoiceTerms,message";
 

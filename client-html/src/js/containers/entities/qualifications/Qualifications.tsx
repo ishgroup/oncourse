@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Qualification } from "@api/model";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize } from "redux-form";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import QualificationsEditView from "./components/QualificationsEditView";
+import { Qualification } from '@api/model';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import { getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import QualificationsEditView from './components/QualificationsEditView';
 
 const filterGroups: FilterGroup[] = [
   {
@@ -98,10 +98,6 @@ class Qualifications extends React.Component<any, any> {
     this.props.getFilters();
   }
 
-  componentWillUnmount() {
-    this.props.clearListState();
-  }
-
   shouldComponentUpdate() {
     return false;
   }
@@ -137,8 +133,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => {
     dispatch(getFilters("Qualification"));
-  },
-  clearListState: () => dispatch(clearListState()),
+  }
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Qualifications);

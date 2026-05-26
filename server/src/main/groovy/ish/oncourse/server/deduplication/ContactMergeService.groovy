@@ -93,6 +93,13 @@ class ContactMergeService {
                 throw new Exception("The selected students are currently enrolled in the same class (${classSameForBothContacts.uniqueCode}), " +
                         "please cancel or refund the appropriate enrolment prior to merging of those contacts.")
             }
+
+            def contactBWaitingListsCourses = contactB.student.waitingLists.course
+            def sameWaitingListCourse = contactA.student.waitingLists.course.find {contactBWaitingListsCourses.find {it}}
+            if(sameWaitingListCourse) {
+                throw new Exception("The selected students have waiting lists for the same course (${sameWaitingListCourse.code}), " +
+                        "please remove appropriate waiting list prior to merging of those contacts.")
+            }
         }
     }
 

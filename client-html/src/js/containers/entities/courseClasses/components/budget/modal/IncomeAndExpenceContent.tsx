@@ -7,20 +7,18 @@ import { ClassCostRepetitionType } from '@api/model';
 import { Divider, FormControlLabel, Grid } from '@mui/material';
 import Collapse from '@mui/material/Collapse';
 import $t from '@t';
-import { decimalDivide, decimalMul, decimalPlus, normalizeNumberToZero } from 'ish-ui';
+import { normalizeNumberToZero } from 'ish-ui';
 import React, { useCallback, useMemo } from 'react';
 import { change } from 'redux-form';
 import { ContactLinkAdornment } from '../../../../../../common/components/form/formFields/FieldAdornments';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { getCurrentTax, getFeeExTaxByFeeIncTax, getTotalByFeeExTax } from '../../../../../../common/utils/hooks';
 import { greaterThanNullValidation } from '../../../../../../common/utils/validation';
 import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
 import ContactSelectItemRenderer from '../../../../contacts/components/ContactSelectItemRenderer';
 import { getContactFullName } from '../../../../contacts/utils';
-import { getCurrentTax } from '../../../../taxes/utils';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
 import { PayRateTypes, validatePayRateTypes } from './BudgetCostModal';
-
-const getFeeIncTax = (exTax, taxes, taxId) => decimalMul(exTax, decimalPlus(1, getCurrentTax(taxes, taxId)?.rate));
 
 const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
   taxes,
@@ -41,7 +39,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           change(
             COURSE_CLASS_COST_DIALOG_FORM,
             "perUnitAmountExTax",
-            decimalDivide(value, decimalPlus(1, currentTax?.rate))
+            getFeeExTaxByFeeIncTax( currentTax?.rate, value)
           )
         );
       }
@@ -56,7 +54,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           change(
             COURSE_CLASS_COST_DIALOG_FORM,
             "perUnitAmountIncTax",
-            decimalMul(value, decimalPlus(1, currentTax?.rate))
+            getTotalByFeeExTax(currentTax?.rate, value)
           )
         );
       }
@@ -67,7 +65,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
   const onTaxIdChange = useCallback(
     id => {
       dispatch(
-        change(COURSE_CLASS_COST_DIALOG_FORM, "perUnitAmountIncTax", getFeeIncTax(values.perUnitAmountExTax, taxes, id))
+        change(COURSE_CLASS_COST_DIALOG_FORM, "perUnitAmountIncTax", getTotalByFeeExTax(getCurrentTax(taxes, id)?.rate, values.perUnitAmountExTax))
       );
     },
     [values.perUnitAmountExTax, taxes]

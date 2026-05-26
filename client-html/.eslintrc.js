@@ -25,6 +25,7 @@ module.exports = {
         "import/prefer-default-export": "off",
         "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/indent": "off",
+        "@typescript-eslint/no-shadow": "off",
         "@typescript-eslint/comma-dangle": "off",
         "@typescript-eslint/member-delimiter-style": [
             "off",
@@ -127,6 +128,7 @@ module.exports = {
         "react/jsx-props-no-spreading": "off",
         "react/jsx-boolean-value": "off",
         "react/jsx-props-no-multi-spaces": "off",
+        "react/jsx-filename-extension": "off",
         "semi": "error",
         "space-before-function-paren": "off",
         "space-in-parens": [

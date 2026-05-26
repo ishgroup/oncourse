@@ -11,10 +11,10 @@ import Grid from '@mui/material/Grid';
 import $t from '@t';
 import { addMinutes, differenceInMinutes } from 'date-fns';
 import { EditInPlaceDurationField, ErrorMessage, LinkAdornment, NoWrapOption, stubFunction } from 'ish-ui';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { arrayPush, arrayRemove, change, Field, formValueSelector } from 'redux-form';
+import { change, Field, formValueSelector } from 'redux-form';
 import { IAction } from '../../../../../common/actions/IshAction';
 import FormField from '../../../../../common/components/form/formFields/FormField';
 import { greaterThanNullValidation } from '../../../../../common/utils/validation';
@@ -30,11 +30,13 @@ interface Props {
   index: number;
   dispatch: Dispatch<IAction>
   tutors: CourseClassTutorExtended[];
-  session?: TimetableSession;
+  session: TimetableSession;
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
   budget: ClassCostExtended[];
   addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
+  asyncValidate: (field: string, value: any, trigger: "change" | "blur") => any;
+  sessions?: TimetableSession[];
 }
 
 const roomLabel = room => {
@@ -58,28 +60,12 @@ const CourseClassSessionFields: React.FC<Props> = ({
   dispatch,
   session,
   tutors,
-  triggerDebounseUpdate,
   warnings,
   budget,
-  addTutorWage
+  addTutorWage,
+  asyncValidate,
+  sessions
 }) => {
-  const isMounted = useRef(false);
-
-  useEffect(() => {
-    if (isMounted.current && session.start) {
-      triggerDebounseUpdate(session);
-    } else {
-      isMounted.current = true;
-    }
-  }, [
-    session.siteId,
-    session.roomId,
-    session.start,
-    session.end,
-    session.tutorAttendances,
-    session.privateNotes,
-    session.publicNotes
-  ]);
 
   const warningTypes = useMemo<{ [P in ClashType]: SessionWarning[] }>(() => {
     const types = {
@@ -98,26 +84,15 @@ const CourseClassSessionFields: React.FC<Props> = ({
   const shiftSessionDates = (durationMinutes: number, sessionStart: string) => {
     const startDate = new Date(sessionStart);
     const endDate = addMinutes(startDate, durationMinutes);
-
-    dispatch(
-      change(
-        form,
-        `sessions[${session.index}].end`,
-        endDate.toISOString()
-      )
-    );
+    const end = endDate.toISOString();
 
     const updatedSession = {
       ...session,
       start: startDate.toISOString(),
-      end: endDate.toISOString()
+      end
     };
-
     setShiftedTutorAttendances(session, updatedSession);
-
-    dispatch(
-      change(form, `sessions[${session.index}].tutorAttendances`, updatedSession.tutorAttendances)
-    );
+    return updatedSession;
   };
 
   const durationValue = useMemo(() => {
@@ -135,50 +110,84 @@ const CourseClassSessionFields: React.FC<Props> = ({
   ]);
 
   const validateSessionEnd = useCallback(() => durationError, [durationError]);
+  
+  const applyChangesAndAsyncValidate = (updatedSession: TimetableSession) => {
+    const updatedSessions = [...(sessions || [])];
+    updatedSessions[session.index] = updatedSession;
+    asyncValidate("sessions", updatedSessions, "change");
+    dispatch(change(form, 'sessions', updatedSessions));
+  };
 
   const onDurationChange = (durationMinutes: number) => {
-    shiftSessionDates(durationMinutes, session.start);
+    const updatedSession = shiftSessionDates(durationMinutes, session.start);
+    if (!greaterThanNullValidation(durationMinutes) && !validateDuration(durationMinutes)) {
+      applyChangesAndAsyncValidate(updatedSession);
+    }
   };
 
   const onStartDateChange = (e, newStart) => {
     if (newStart) {
-      shiftSessionDates(durationValue, newStart);
+      const updatedSession = shiftSessionDates(durationValue, newStart);
+      applyChangesAndAsyncValidate(updatedSession);
     }
   };
 
   const onEndDateChange = (e, newEnd) => {
-    shiftSessionDates(differenceInMinutes(new Date(newEnd), new Date(session.start)), session.start);
+    const updatedSession = shiftSessionDates(differenceInMinutes(new Date(newEnd), new Date(session.start)), session.start);
+    applyChangesAndAsyncValidate(updatedSession);
   };
 
-  const onRoomIdChange = useCallback(
-    room => {
-      dispatch(change(form, `sessions[${session.index}].room`, room ? room.name : null));
-      dispatch(change(form, `sessions[${session.index}].site`, room ? room["site.name"] : null));
-      dispatch(change(form, `sessions[${session.index}].siteId`, room ? room["site.id"] : null));
-      dispatch(change(form, `sessions[${session.index}].siteTimezone`, room ? room["site.localTimezone"] : null));
-    },
-    [form, session.index]
-  );
+  const onRoomIdChange = room => {
+    const updatedSession: TimetableSession = {
+      ...session,
+      ...room
+        ? {
+          room: room.name,
+          site: room["site.name"],
+          siteId: room["site.id"],
+          siteTimezone: room["site.localTimezone"]
+        } : {
+          room: null,
+          site: null,
+          siteId: null,
+          siteTimezone: null
+        }
+    };
+    applyChangesAndAsyncValidate(updatedSession);
+  };
 
   const onDeleteTutor = (index: number) => {
-    dispatch(arrayRemove(form, `sessions[${session.index}].tutorAttendances`, index));
+    const tutorAttendances = [...session.tutorAttendances];
+    tutorAttendances.splice(index, 1);
+    const updatedSession = {
+      ...session,
+      tutorAttendances
+    };
+    applyChangesAndAsyncValidate(updatedSession);
   };
 
   const onAddTutor = (tutor: CourseClassTutorExtended) => {
-    dispatch(arrayPush(form, `sessions[${session.index}].tutorAttendances`, {
-      id: null,
-      courseClassTutorId: tutor.id,
-      temporaryTutorId: tutor.temporaryId,
-      contactName: tutor.tutorName,
-      attendanceType: 'Not confirmed for payroll',
-      note: null,
-      actualPayableDurationMinutes: durationValue,
-      hasPayslip: false,
-      start: session.start,
-      end: session.end,
-      contactId: tutor.contactId,
-      payslipIds: []
-    } as TutorAttendance));
+    const updatedSession = {
+      ...session,
+      tutorAttendances: [
+        ...session.tutorAttendances,
+        {
+          id: null,
+          courseClassTutorId: tutor.id,
+          temporaryTutorId: tutor.temporaryId,
+          contactName: tutor.tutorName,
+          attendanceType: 'Not confirmed for payroll',
+          note: null,
+          actualPayableDurationMinutes: durationValue,
+          hasPayslip: false,
+          start: session.start,
+          end: session.end,
+          contactId: tutor.contactId,
+          payslipIds: []
+        } as TutorAttendance
+      ]
+    };
+    applyChangesAndAsyncValidate(updatedSession);
   };
 
   return (
@@ -298,6 +307,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
 
 const mapStateToProps = (state: State, ownProps: Props) => ({
   session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {},
+  sessions: formValueSelector(ownProps.form)(state, "sessions") || [],
   timezones: state.timezones,
 });
 

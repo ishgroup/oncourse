@@ -1,4 +1,4 @@
-import { PasswordComplexity } from "@api/model";
+import { PasswordComplexity } from '@api/model';
 
 export interface LoginState {
   isTOTP?: boolean;
@@ -14,6 +14,7 @@ export interface LoginState {
   totpUrl?: string;
   passwordChangeMessage?: string;
   passwordComplexity?: PasswordComplexity;
+  submittingSSOType?: string;
   email?: string;
   eulaUrl?: string;
 }

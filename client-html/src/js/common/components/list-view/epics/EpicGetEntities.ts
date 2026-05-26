@@ -3,19 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { GetRecordsArgs } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
-import { Create, Request } from "../../../epics/EpicUtils";
-import EntityService from "../../../services/EntityService";
+import { Epic } from 'redux-observable';
+import { GetRecordsArgs } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import FetchErrorHandler from '../../../api/fetch-errors-handlers/FetchErrorHandler';
+import { Create, Request } from '../../../epics/EpicUtils';
+import EntityService from '../../../services/EntityService';
 import {
   GET_RECORDS_FULFILLED,
   GET_RECORDS_FULFILLED_RESOLVE,
   GET_RECORDS_REQUEST,
   setListSearchError,
   setListSelection
-} from "../actions";
+} from '../actions';
 
 const request: Request<any, GetRecordsArgs> = {
   type: GET_RECORDS_REQUEST,

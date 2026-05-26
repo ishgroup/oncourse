@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account } from "@api/model";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize } from "redux-form";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { getTaxTypes } from "../../preferences/actions";
-import AccountsEditView from "./components/AccountsEditView";
+import { Account } from '@api/model';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import { getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { getTaxTypes } from '../../preferences/actions';
+import AccountsEditView from './components/AccountsEditView';
 
 const Initial: Account = {
   accountCode: null,
@@ -59,10 +59,6 @@ class Accounts extends React.Component<any, any> {
     this.props.getTaxTypes();
   }
 
-  componentWillUnmount() {
-    this.props.clearListState();
-  }
-
   shouldComponentUpdate() {
     return false;
   }
@@ -102,8 +98,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTaxTypes: () => dispatch(getTaxTypes()),
   getFilters: () => {
     dispatch(getFilters("Account"));
-  },
-  clearListState: () => dispatch(clearListState())
+  }
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Accounts);

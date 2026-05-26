@@ -6,24 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Lead } from "@api/model";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize } from "redux-form";
-import { checkPermissions } from "../../../common/actions";
+import { Lead } from '@api/model';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import { checkPermissions } from '../../../common/actions';
 import { IAction } from '../../../common/actions/IshAction';
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { State } from "../../../reducers/state";
-import { getActiveUsers } from "../../security/actions";
-import { getEntityTags, getListTags } from "../../tags/actions";
-import LeadCogWheel from "./components/LeadCogWheel";
-import LeadEditView from "./components/LeadEditView";
+import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
+import { getFilters, setListEditRecord, } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
+import { getActiveUsers } from '../../security/actions';
+import { getEntityTags, getListTags } from '../../tags/actions';
+import LeadCogWheel from './components/LeadCogWheel';
+import LeadEditView from './components/LeadEditView';
 
 const Initial: Lead = {
   id: null,
@@ -95,8 +95,6 @@ const Leads = props => {
     props.getQePermissions();
     props.getTagsForSitesSearch();
     props.getActiveUsers();
-
-    return () => props.clearListState();
   }, []);
 
   const preformatBeforeSubmit = (value: Lead): Lead => {
@@ -154,7 +152,6 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   getActiveUsers: () => dispatch(getActiveUsers()),
   getFilters: () => dispatch(getFilters("Lead")),
   getTags: () => dispatch(getListTags("Lead")),
-  clearListState: () => dispatch(clearListState())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Leads);

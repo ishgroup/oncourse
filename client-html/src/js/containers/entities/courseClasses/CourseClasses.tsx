@@ -20,31 +20,18 @@ import {
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from '@mui/material';
 import $t from '@t';
 import { format } from 'date-fns';
-import {
-  appendTimezone,
-  BooleanArgFunction,
-  III_DD_MMM_YYYY_HH_MM,
-  NoArgFunction,
-  normalizeNumberToZero,
-  StyledCheckbox
-} from 'ish-ui';
+import { appendTimezone, III_DD_MMM_YYYY_HH_MM, NoArgFunction, normalizeNumberToZero, StyledCheckbox } from 'ish-ui';
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { FormErrors, getFormInitialValues, getFormValues, initialize } from 'redux-form';
-import { checkPermissions, getUserPreferences } from '../../../common/actions';
+import { addActionToQueue, checkPermissions, getUserPreferences } from '../../../common/actions';
 import { getCommonPlainRecords } from '../../../common/actions/CommonPlainRecordsActions';
 import { IAction } from '../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import { postNoteItem, putNoteItem } from '../../../common/components/form/notes/actions';
 import { validateNoteCreate, validateNoteUpdate } from '../../../common/components/form/notes/utils';
-import {
-  clearListState,
-  getFilters,
-  setListCreatingNew,
-  setListEditRecord,
-  setListSelection,
-} from '../../../common/components/list-view/actions';
+import { getFilters, setListEditRecord, setListSelection, } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
 import ListView from '../../../common/components/list-view/ListView';
 import { UserPreferencesState } from '../../../common/reducers/userPreferencesReducer';
@@ -52,6 +39,7 @@ import EntityService from '../../../common/services/EntityService';
 import { fieldUpdateHandler } from '../../../common/utils/actionsQueue';
 import { getManualLink } from '../../../common/utils/getManualLink';
 import uniqid from '../../../common/utils/uniqid';
+import { instantAsyncValidateFieldArrayItemCallback } from '../../../common/utils/validation';
 import { courseClassCancelPath, courseClassTimetablePath } from '../../../constants/Api';
 import {
   DEFAULT_DELIVERY_MODE_KEY,
@@ -63,6 +51,7 @@ import {
 import history from '../../../constants/History';
 import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
 import { CourseClassExtended } from '../../../model/entities/CourseClass';
+import { TimetableSession } from '../../../model/timetable';
 import { State } from '../../../reducers/state';
 import { getActiveFundingContracts } from '../../avetmiss-export/actions';
 import { getGradingTypes, getTutorRoles } from '../../preferences/actions';
@@ -71,11 +60,13 @@ import { getEntitySpecialTags } from '../../tags/actions';
 import { getPlainAccounts } from '../accounts/actions';
 import { getVirtualSites } from '../sites/actions';
 import { getPlainTaxes } from '../taxes/actions';
-import { getCourseClassTags, updateCourseClass } from './actions';
+import { getCourseClassTags, setCourseClassSessionsWarnings, updateCourseClass } from './actions';
 import { createCourseClassAssessment, updateCourseClassAssessment } from './components/assessments/actions';
 import { validateAssesmentCreate, validateAssesmentUpdate } from './components/assessments/utils';
 import CourseClassCogWheel from './components/CourseClassCogWheel';
 import CourseClassEditView from './components/CourseClassEditView';
+import { postCourseClassSessions } from './components/timetable/actions';
+import CourseClassTimetableService from './components/timetable/services/CourseClassTimetableService';
 import { postCourseClassTutor, putCourseClassTutor } from './components/tutors/actions';
 import { validateTutorCreate, validateTutorUpdate } from './components/tutors/utils';
 
@@ -87,13 +78,11 @@ interface CourseClassesProps {
   onFirstRender?: NoArgFunction;
   onInit?: NoArgFunction;
   onUpdate?: (id: number, courseClass: CourseClass) => void;
-  clearListState?: NoArgFunction;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   dispatch?: Dispatch<IAction>;
   values?: CourseClass;
   initialValues?: CourseClass;
   userPreferences?: UserPreferencesState;
-  setListCreatingNew?: BooleanArgFunction;
   updateSelection?: (selection: string[]) => void;
 }
 
@@ -292,8 +281,37 @@ const preformatBeforeSubmit = (value: CourseClassExtended): CourseClass => {
 };
 
 const asyncValidate = (values: CourseClassExtended, dispatch, props, blurredField) => {
+  const validateSessionUpdate = (id: number, sessions: TimetableSession[], dispatch) => {
+    const updatedForValidate = (sessions || []).map(({ index, ...rest }) => ({ ...rest }));
+
+    let bindedActionId;
+
+    for (const s of sessions || []) {
+      const temp = s.tutorAttendances?.find(ta => ta.temporaryTutorId);
+      if (temp) {
+        bindedActionId = temp.temporaryTutorId;
+        break;
+      }
+    }
+
+    return CourseClassTimetableService.validateUpdate(id || -1, updatedForValidate)
+      .then(sessionWarnings => {
+        dispatch(
+          addActionToQueue(postCourseClassSessions(id, updatedForValidate), "POST", "Session", id, bindedActionId)
+        );
+        dispatch(setCourseClassSessionsWarnings(sessionWarnings));
+      })
+      .catch(res => {
+        instantFetchErrorHandler(dispatch, res);
+        throw instantAsyncValidateFieldArrayItemCallback("sessions", 0, res) || { sessions: { _error: "Something went wrong" } };
+      });
+  };
+
   if (blurredField) {
     switch (true) {
+      case blurredField.startsWith("sessions"):
+        return validateSessionUpdate(values.id, values.sessions, dispatch);
+
       case blurredField.startsWith("notes"):
         return fieldUpdateHandler(
           values,
@@ -338,6 +356,7 @@ const asyncValidate = (values: CourseClassExtended, dispatch, props, blurredFiel
         );
     }
   }
+
   return Promise.resolve();
 };
 
@@ -462,7 +481,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
     onFirstRender,
     onUpdate,
     userPreferences,
-    setListCreatingNew,
     updateSelection,
     values,
     initialValues,
@@ -537,7 +555,6 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
               reportableHours: res.rows[0].values[3] ? Number(res.rows[0].values[3]) : 0
             };
 
-            setListCreatingNew(true);
             updateSelection(["new"]);
             onInit(updatedInitial);
 
@@ -589,7 +606,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
 
     if (values) {
       if (outcomeFieldsToUpdate.length) {
-        EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values.id}`)
+        EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values?.id}`)
           .then(res => {
             const ids = res.rows.map(r => Number(r.id));
             return EntityService.bulkChange('Outcome', {
@@ -604,7 +621,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
       }
 
       if (enrolmentFieldsToUpdate.length) {
-        EntityService.getPlainRecords("Enrolment", "id", `courseClass.id is ${values.id}`)
+        EntityService.getPlainRecords("Enrolment", "id", `courseClass.id is ${values?.id}`)
           .then(res => {
             const ids = res.rows.map(r => Number(r.id));
 
@@ -648,6 +665,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
             "assessments[].releaseDate"
           ],
           asyncChangeFields: [
+            'sessions',
             "tutors[].isInPublicity",
             "assessments[].contactIds",
             "assessments[].submissions",
@@ -786,8 +804,6 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
     dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone,isVirtual", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
   },
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
-  clearListState: () => dispatch(clearListState()),
-  setListCreatingNew: creatingNew => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: selection => dispatch(setListSelection(selection)),
 });
 

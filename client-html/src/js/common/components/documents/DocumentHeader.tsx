@@ -19,9 +19,8 @@ import {
   faFileWord
 } from '@fortawesome/free-solid-svg-icons';
 import { Directions, Language, Link, MoreVert } from '@mui/icons-material';
-import { AlertTitle } from '@mui/lab';
-import Alert from '@mui/lab/Alert';
-import { Grid, Popover, Typography } from '@mui/material';
+import { AlertTitle, Grid, Popover, Typography } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';

@@ -5,7 +5,7 @@
 
 import DragHandleRounded from '@mui/icons-material/DragIndicatorRounded';
 import Slider from '@mui/material/Slider';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import React, { useCallback, useMemo } from 'react';
 import { withStyles } from 'tss-react/mui';
 import { AttandanceStepItem } from '../../../../../model/entities/CourseClass';

@@ -1,4 +1,12 @@
-import { AuthenticationApi, LoginRequest, LoginResponse, PasswordComplexity, User, UserApi } from "@api/model";
+import {
+  AuthenticationApi,
+  InvitationResponse,
+  LoginRequest,
+  LoginResponse,
+  PasswordComplexity,
+  User,
+  UserApi
+} from '@api/model';
 import axios from "axios";
 import { CONTEXT } from "../../../common/api/Constants";
 import { DefaultHttpService } from "../../../common/services/HttpService";
@@ -40,7 +48,7 @@ class LoginService {
     return this.createCustomAPI("user").updatePassword(encodeURIComponent(value));
   }
 
-  public getEmailByToken(token: string): Promise<LoginResponse> {
+  public getEmailByToken(token: string): Promise<InvitationResponse> {
     return this.createCustomAPI("user").getUserEmailByInvitation(token);
   }
 
@@ -52,12 +60,12 @@ class LoginService {
     return this.createCustomAPI("login").getUser();
   }
 
-  public getSsoLink(type: string): Promise<string> {
-    return this.createCustomAPI("login").getSsoLink(type);
+  public getSsoLink(type: string,  kickOut?: boolean): Promise<string> {
+    return this.createCustomAPI("login").getSsoLink(type, kickOut);
   }
 
-  public loginSso(ssoType: string, code: string): Promise<LoginResponse> {
-    return this.createCustomAPI("login").loginSso(ssoType, code);
+  public loginSso(ssoType: string, code: string, kickOut: boolean): Promise<LoginResponse> {
+    return this.createCustomAPI("login").loginSso(ssoType, code, kickOut);
   }
 }
 

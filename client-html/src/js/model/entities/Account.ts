@@ -8,3 +8,9 @@ import { Account } from "@api/model";
 export interface AccountExtended extends Account {
   taxId?: string;
 }
+
+export interface AccountTypes {
+  income: Account[];
+  cos: Account[];
+  all: Account[]
+}

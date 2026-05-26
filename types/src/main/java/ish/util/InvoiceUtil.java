@@ -13,6 +13,7 @@ package ish.util;
 import ish.common.payable.IInvoiceLineInterface;
 import ish.common.payable.PayableLineInterface;
 import ish.math.Money;
+import ish.math.MoneyRounding;
 import ish.oncourse.cayenne.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
@@ -489,19 +490,10 @@ public final class InvoiceUtil {
 	 */
 	public static Money calculateTaxEachForInvoiceLine(Money priceEachEx, Money discountEachEx, BigDecimal taxRate, Money taxAdjustment) {
 		// calculate final total value ex tax
-		Money finalPriceEachEx = priceEachEx.subtract(discountEachEx);
-		// calculate final total value inc tax
-		Money priceEachInc = MoneyUtil.getPriceIncTax(priceEachEx, taxRate, taxAdjustment);
-		Money discountEachInc = MoneyUtil.getPriceIncTax(discountEachEx, taxRate, Money.ZERO);
-		Money finalPriceEachInc = priceEachInc.subtract(discountEachInc);
-		// and finally taxEach
-		Money taxEach = finalPriceEachInc.subtract(finalPriceEachEx);
-		// and start to calculate the taxAdjustment
-		final Money originalTax = priceEachInc.subtract(priceEachEx);
-		final Money calculatedTaxAdjustment = originalTax.subtract(taxEach).subtract(discountEachEx.multiply(taxRate));
-		if (!calculatedTaxAdjustment.isZero()) {
-			taxEach = taxEach.add(calculatedTaxAdjustment);
-		}
-		return taxEach;
+		return calculateTaxEachForInvoiceLine(priceEachEx, discountEachEx, taxRate);
+	}
+	public static Money calculateTaxEachForInvoiceLine(Money priceEachEx, Money discountEachEx, BigDecimal taxRate) {
+		// calculate final total value ex tax
+		return priceEachEx.subtract(discountEachEx).multiply(taxRate);
 	}
 }

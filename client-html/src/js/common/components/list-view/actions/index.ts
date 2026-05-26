@@ -6,14 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from "@api/model";
-import { AnyArgFunction } from "ish-ui";
-import { GetRecordsArgs, SavingFilterState } from "../../../../model/common/ListView";
-import { MessageData } from "../../../../model/common/Message";
-import { CustomTableModelName, EntityName } from "../../../../model/entities/common";
-import { FormMenuTag } from "../../../../model/tags";
-import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
-import { IAction } from "../../../actions/IshAction";
+import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from '@api/model';
+import { AnyArgFunction } from 'ish-ui';
+import { GetRecordsArgs, SavingFilterState } from '../../../../model/common/ListView';
+import { MessageData } from '../../../../model/common/Message';
+import { CustomTableModelName, EntityName } from '../../../../model/entities/common';
+import { FormMenuTag } from '../../../../model/tags';
+import { _toRequestType, FULFILLED } from '../../../actions/ActionUtils';
+import { IAction } from '../../../actions/IshAction';
 
 // Common list actions
 export const GET_RECORDS_REQUEST = _toRequestType("get/records");

@@ -7,11 +7,12 @@
  */
 import { CheckoutPaymentPlan, PaymentMethod } from '@api/model';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import { FormControlLabel, Typography, Tooltip } from '@mui/material';
+import { FormControlLabel, Tooltip, Typography } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { addDays, compareAsc, isSameDay } from 'date-fns';
 import { format } from 'date-fns-tz';
+import { debounce } from 'es-toolkit/compat';
 import {
   BooleanArgFunction,
   D_MMM_YYYY,
@@ -23,7 +24,6 @@ import {
   StyledCheckbox,
   YYYY_MM_DD_MINUSED
 } from 'ish-ui';
-import debounce from 'lodash.debounce';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -88,6 +88,7 @@ interface PaymentHeaderFieldProps {
   paymentProcessStatus?: any;
   paymentMethod?: string;
   formInvalid?: boolean;
+  isProcessing?: boolean;
   getVoucher?: StringArgFunction;
   removeVoucher?: NumberArgFunction;
   setDisablePayment?: BooleanArgFunction;
@@ -139,7 +140,8 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     setDisablePayment,
     setPaymentPlans,
     values,
-    paymentGateway
+    paymentGateway,
+    isProcessing
   } = props;
   
   const payerContact = useMemo(() => checkoutSummary.list.find(l => l.payer).contact, [checkoutSummary.list]);
@@ -483,6 +485,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     const plansFinal = [
       {
         amount: checkoutSummary.payNowTotal,
+        payDate: checkoutSummary.paymentDate
       },
       ...[
         ...updatedPaymentPlans,
@@ -623,7 +626,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           placeholder={$t('payment_method')}
           items={isZeroPayment ? noPaymentItems : paymentTypes}
           onChange={hendelMethodChange}
-          disabled={paymentProcessStatus === "success" || isZeroPayment || formInvalid}
+          disabled={isProcessing || paymentProcessStatus === "success" || isZeroPayment || formInvalid}
         />
         {!['STRIPE', 'STRIPE_TEST'].includes(paymentGateway) && selectedPaymentMethod && selectedPaymentMethod.type === "Credit card" && (
           <Tooltip title={$t('retain_a_secure_link_to_the_bank_which_allows_this')}>
@@ -672,6 +675,7 @@ const mapStateToProps = (state: State, ownProps) => ({
   defaultTerms: state.invoices.defaultTerms,
   paymentProcessStatus: state.checkout.payment.process.status,
   paymentMethod: state.checkout.payment.selectedPaymentType,
+  isProcessing: state.checkout.payment.isFetchingDetails || state.checkout.payment.isProcessing,
   lockedDate: state.lockedDate,
   canChangePaymentDate: state.access["/a/v1/preference/lockedDate"] && state.access["/a/v1/preference/lockedDate"]["GET"]
 });

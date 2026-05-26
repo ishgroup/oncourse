@@ -20,10 +20,10 @@ class TranslationServiceBase {
       .catch(e => console.error(e));
   }
 
-  public translate = (key: keyof typeof translationSourceDefault, variables?: string[] | number[]): typeof translationSourceDefault[keyof typeof translationSourceDefault] => {
+  public translate = (key: keyof typeof translationSourceDefault, variables?: (string | number)[]): typeof translationSourceDefault[keyof typeof translationSourceDefault] => {
    let translated = this.translationSource[key];
 
-   if (translated && variables?.length) {
+   if (translated && Array.isArray(variables)) {
      variables.forEach(v => {
        translated = translated.replace(/{{.+}}/, v?.toString());
      });

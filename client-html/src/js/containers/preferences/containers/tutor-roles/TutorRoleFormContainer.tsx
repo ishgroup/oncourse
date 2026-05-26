@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { DefinedTutorRole } from "@api/model";
-import { usePrevious } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { Dispatch } from "redux";
-import { getFormValues, initialize, isDirty } from "redux-form";
-import { showConfirm } from "../../../../common/actions";
-import { State } from "../../../../reducers/state";
-import { createTutorRole, getTutorRole, removeTutorRole, updateTutorRole } from "../../actions";
-import TutorRolesForm from "./components/TutorRolesForm";
+import { DefinedTutorRole } from '@api/model';
+import { usePrevious } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import { getFormValues, initialize, isDirty } from 'redux-form';
+import { showConfirm } from '../../../../common/actions';
+import { State } from '../../../../reducers/state';
+import { createTutorRole, getTutorRole, removeTutorRole, updateTutorRole } from '../../actions';
+import TutorRolesForm from './components/TutorRolesForm';
 
 export const TUTOR_ROLES_FORM_NAME: string = "TutorRolesForm";
 
@@ -106,4 +106,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   showConfirm: props => dispatch(showConfirm(props))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(TutorRoleFormContainer));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TutorRoleFormContainer));

@@ -3,19 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import React from 'react';
-import { connect } from 'react-redux';
 import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
-import { State } from '../../../../../reducers/state';
 import CheckoutAppBar from '../../CheckoutAppBar';
 import EnrolClassListView from './EnrolClassListView';
 
-const EnrolCourseClassView = React.memo<any>(props => {
+const EnrolCourseClassView =  props => {
   const {
     course,
-    courseClasses,
     onClose,
-    isClassesEmpty,
-    currencySymbol,
     onClassSelect,
     selectedItems
   } = props;
@@ -37,20 +32,12 @@ const EnrolCourseClassView = React.memo<any>(props => {
       >
         <EnrolClassListView
           course={course}
-          courseClasses={courseClasses}
           onSelect={onClassSelect}
-          isClassesEmpty={isClassesEmpty}
-          currencySymbol={currencySymbol}
           selectedItems={selectedItems}
         />
       </AppBarContainer>
     </>
   );
-});
+};
 
-const mapStateToProps = (state: State) => ({
-  isClassesEmpty: state.checkout.checkCourseClassEmpty,
-  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol
-});
-
-export default connect<any, any, any>(mapStateToProps, null)(EnrolCourseClassView);
+export default EnrolCourseClassView;

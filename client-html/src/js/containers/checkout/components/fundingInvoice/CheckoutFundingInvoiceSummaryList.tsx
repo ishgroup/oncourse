@@ -7,7 +7,6 @@ import { Grid, Typography } from '@mui/material';
 import $t from '@t';
 import { AppTheme } from 'ish-ui';
 import React from 'react';
-import { connect } from 'react-redux';
 import { change, FieldArray } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import { ContactLinkAdornment } from '../../../../common/components/form/formFields/FieldAdornments';
@@ -16,7 +15,6 @@ import NestedTable from '../../../../common/components/list-view/components/list
 import { validateVetPurchasingContractIdentifier } from '../../../../common/utils/validation';
 import { CheckoutFundingInvoice } from '../../../../model/checkout/fundingInvoice';
 import { NestedTableColumn } from '../../../../model/common/NestedTable';
-import { State } from '../../../../reducers/state';
 import ContactSelectItemRenderer from '../../../entities/contacts/components/ContactSelectItemRenderer';
 import { getContactFullName } from '../../../entities/contacts/utils';
 import { summaryListStyles } from '../../styles/summaryListStyles';
@@ -51,7 +49,6 @@ const trainingPlansColumns: NestedTableColumn[] = [
 interface Props {
   classes?: any;
   dispatch?: any;
-  syncErrors?: any;
   fundingInvoice?: CheckoutFundingInvoice;
   currency?: any;
   form?: string;
@@ -62,7 +59,6 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
   const {
     classes,
     dispatch,
-    syncErrors,
     currency,
     fundingInvoice,
     selectedItemIndex,
@@ -116,11 +112,10 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
       </Grid>
       <Grid item xs={12} container>
         {fundingInvoice && fundingInvoice.paymentPlans && (
-          <Grid item sm={6} className="pr-2">
+          <Grid item sm={4} className="pr-2">
             <CheckoutFundingInvoicePaymentPlans
               name={`fundingInvoices[${selectedItemIndex}].paymentPlans`}
               currency={currency}
-              syncErrors={syncErrors}
               form={CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM}
               dispatch={dispatch}
               total={fundingInvoice ? fundingInvoice.total : 0}
@@ -128,7 +123,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           </Grid>
         )}
         {fundingInvoice && fundingInvoice.trainingPlans && fundingInvoice.trainingPlans.length > 0 && (
-          <Grid item sm={6}>
+          <Grid item sm={8}>
             <div className="centeredFlex">
               <Typography className="heading pt-1 pb-1">
                 {$t('training_plan2')}
@@ -149,13 +144,8 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
   );
 });
 
-const mapStateToProps = (state: State) => ({
-  currency: state.location.currency
-});
 
-export default connect<any, any, any>(
-  mapStateToProps
-)(withStyles(
+export default withStyles(
   CheckoutFundingInvoiceSummaryList,
   (theme: AppTheme, p, classes) => ({ ...summaryListStyles(theme, p, classes), ...styles(theme) })
-));
+);

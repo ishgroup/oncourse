@@ -18,6 +18,7 @@ import ish.math.Money;
 import ish.oncourse.entity.services.SessionService;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.concurrent.ExecutorManager;
 import ish.oncourse.server.payroll.filters.ClassCostConfirmed;
 import ish.payroll.PayrollGenerationRequest;
 import ish.payroll.WagesSummaryResponse;
@@ -50,14 +51,16 @@ public class PayrollService {
 
     private ICayenneService cayenneService;
     private SessionService sessionService;
+    private ExecutorManager executorManager;
 
     private static final String COURSE_CLASS_ENTITY_NAME = "CourseClass";
     private static final String CONTACT_ENTITY_NAME = "Contact";
 
     @Inject
-    public PayrollService(ICayenneService cayenneService, SessionService sessionService) {
+    public PayrollService(ICayenneService cayenneService, SessionService sessionService, ExecutorManager executorManager) {
         this.cayenneService = cayenneService;
         this.sessionService = sessionService;
+        this.executorManager = executorManager;
     }
 
     /**
@@ -69,18 +72,16 @@ public class PayrollService {
     public void generatePayslips(PayrollGenerationRequest request) {
         ObjectContext context = cayenneService.getNewContext();
         List<ClassCost> classCosts;
-        classCosts = getEligibleClassCosts(context, request.getUntil());
 
+        Expression additionalFilter = null;
         if (request.getIds() != null && request.getIds().size() > 0) {
             switch (request.getEntityName()) {
                 case COURSE_CLASS_ENTITY_NAME: {
-                    var courseClasses = EntityUtil.getObjectsByIds(context, CourseClass.class, request.getIds());
-                    classCosts = ClassCost.COURSE_CLASS.in(courseClasses).filterObjects(classCosts);
+                    additionalFilter = ClassCost.COURSE_CLASS.dot(CourseClass.ID).in(request.getIds());
                     break;
                 }
                 case CONTACT_ENTITY_NAME: {
-                    var contacts = EntityUtil.getObjectsByIds(context, Contact.class, request.getIds());
-                    classCosts = ClassCost.CONTACT.in(contacts).filterObjects(classCosts);
+                    additionalFilter = ClassCost.CONTACT.dot(Contact.ID).in(request.getIds());
                     break;
                 }
                 default:
@@ -88,6 +89,7 @@ public class PayrollService {
             }
         }
 
+        classCosts = getEligibleClassCosts(context, request.getUntil(), additionalFilter);
         generatePayslipsForClassCosts(context, classCosts, request.getUntil(), request.isConfirm());
 
         context.commitChanges();
@@ -153,9 +155,13 @@ public class PayrollService {
      * @param until
      * @return
      */
-    public List<ClassCost> getEligibleClassCosts(ObjectContext context, Date until) {
+    public List<ClassCost> getEligibleClassCosts(ObjectContext context, Date until, Expression additionalFilter) {
+        Expression classCostsExpression = getEligibleClassCostsExpression(until);
+        if (additionalFilter != null)
+            classCostsExpression = classCostsExpression.andExp(additionalFilter);
+
         return ObjectSelect.query(ClassCost.class)
-                .where(getEligibleClassCostsExpression(until))
+                .where(classCostsExpression)
                 .prefetch(ClassCost.TUTOR_ROLE.disjoint())
                 .prefetch(ClassCost.TUTOR_ROLE.dot(CourseClassTutor.SESSIONS_TUTORS).disjoint())
                 .prefetch(ClassCost.TUTOR_ROLE.dot(CourseClassTutor.DEFINED_TUTOR_ROLE).disjoint())
@@ -253,7 +259,15 @@ public class PayrollService {
         return false;
     }
 
-    public WagesSummaryResponse getWagesSummary(PayrollGenerationRequest request) {
+    public String startWagesPreparation(PayrollGenerationRequest request) {
+        return executorManager.submit(() -> getWagesSummary(request));
+    }
+
+    public WagesSummaryResponse getPreparationResult(String processId) {
+        return (WagesSummaryResponse) executorManager.getResult(processId);
+    }
+
+    private WagesSummaryResponse getWagesSummary(PayrollGenerationRequest request) {
         var response = new WagesSummaryResponse();
         ObjectContext context = cayenneService.getNewContext();
 
@@ -298,7 +312,7 @@ public class PayrollService {
                     .filter(cost -> cost.getTutorRole() != null)
                     .collect(Collectors.toList());
         }
-        return getEligibleClassCosts(context, request.getUntil());
+        return getEligibleClassCosts(context, request.getUntil(), null);
     }
 
 
@@ -394,7 +408,7 @@ public class PayrollService {
     private boolean hasValidEnrolments(CourseClass courseClass) {
         return courseClass.getValidEnrolmentCount() > 0;
     }
-    
+
     private boolean hasZeroOrMoreUnits(ClassCost classCost){
         return BigDecimal.ZERO.compareTo(classCost.getUnitCount()) >= 0;
     }

@@ -7,8 +7,8 @@
  */
 
 import { User } from '@api/model';
-import { AlertTitle } from '@mui/lab';
-import Alert from '@mui/lab/Alert';
+import { AlertTitle } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
 import $t from '@t';
 import React from 'react';

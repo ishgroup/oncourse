@@ -19,7 +19,7 @@ class ProductMixin {
 
     static Money getPrice_with_tax(Product self) {
         if (self.getTax() != null) {
-            return MoneyUtil.getPriceIncTax(self.getPriceExTax(), self.getTax().getRate(), self.getTaxAdjustment())
+            return MoneyUtil.getPriceIncTaxRounded(self.getPriceExTax(), self.getTax().getRate(), self.getTaxAdjustment(), true)
         }
         return MoneyUtil.getPriceIncTax(self.getPriceExTax(), null, self.getTaxAdjustment())
     }

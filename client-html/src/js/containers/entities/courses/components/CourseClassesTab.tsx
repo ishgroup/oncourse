@@ -63,7 +63,7 @@ const CourseClassesTab: React.FC<any> = ({
           entityName="Classes"
           goToLink="/class"
           entityTypes={classesTypes}
-          addLink={`/class/new?courseId=${values.id}`}
+          addLink={`/class/new?courseId=${values?.id}`}
           dirty={dirty}
           showConfirm={showConfirm}
           twoColumn={twoColumn}

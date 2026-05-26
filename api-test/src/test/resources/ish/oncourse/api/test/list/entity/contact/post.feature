@@ -186,7 +186,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[{"id":"#ignore","description":"test","startDate":null,"endDate":null,"startDateTime":"2020-02-01T00:00:00.000Z","endDateTime":"2020-02-29T00:00:00.000Z","repeat":"week","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]
         }
         """
@@ -318,7 +318,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -482,7 +482,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -614,7 +614,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -734,7 +734,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         "financialData":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "messages":[],
+        "messagesCount":0,
         "rules":[]
         }
         """
@@ -3191,7 +3191,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
             "financialData":[],
             "createdOn":null,
             "modifiedOn":null,
-            "messages":[],
+            "messagesCount":0,
             "rules":[{"id":"#ignore","description":"test","startDate":"2020-02-11","endDate":"2020-02-11","startDateTime":null,"endDateTime":null,"repeat":"hour","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2020-02-11","created":"#ignore","modified":"#ignore"}]
         }
         """

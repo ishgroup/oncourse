@@ -45,7 +45,7 @@ export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
 export const CATEGORY_SIDEBAR_WIDTH: number = 850;
 
-const styles = (theme: AppTheme) =>
+const styles = (theme: AppTheme, p, classes) =>
   ({
     drawerRoot: {
       zIndex: theme.zIndex.modal + 2,
@@ -104,11 +104,12 @@ const styles = (theme: AppTheme) =>
       background: theme.palette.background.default,
       transition: "transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms",
       left: `${SWIPEABLE_SIDEBAR_WIDTH}px`,
-      transform: "translateX(-100%)"
+      transform: "translateX(-100%)",
+      [`&.${classes.categoryVisible}`]: {
+        transform: "translateX(1px)"
+      }
     },
-    categoryVisible: {
-      transform: "translateX(1px)"
-    },
+    categoryVisible: {},
     paperBorder: {
       borderRight: `1px solid ${theme.palette.divider}`
     },

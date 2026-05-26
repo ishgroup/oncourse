@@ -8,8 +8,7 @@
 
 import { ReportOverlay } from '@api/model';
 import DeleteForever from '@mui/icons-material/DeleteForever';
-import LoadingButton from '@mui/lab/LoadingButton';
-import Button from '@mui/material/Button';
+import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid';
 import $t from '@t';
 import { FilePreview, usePrevious } from 'ish-ui';
@@ -212,14 +211,14 @@ const PdfBackgroundsForm = React.memo<Props>(
               </Grid>
               {Boolean(values.preview) && (
                 <Grid item xs={12}>
-                  <LoadingButton
+                  <Button
                     loading={loading}
                     variant="outlined"
                     color="secondary"
                     onClick={handleDownloadClick}
                   >
                     {$t('download_copy')}
-                  </LoadingButton>
+                  </Button>
                 </Grid>
               )}
             </Grid>

@@ -9,7 +9,7 @@ import { Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
 import { AddButton, EditInPlaceField, stubFunction, useHoverShowStyles } from 'ish-ui';
-import debounce from 'lodash.debounce';
+import { debounce } from 'es-toolkit/compat';
 import React, { useCallback, useState } from 'react';
 import { WrappedFieldProps } from 'redux-form';
 import { validateSingleMandatoryField } from '../../../../../common/utils/validation';

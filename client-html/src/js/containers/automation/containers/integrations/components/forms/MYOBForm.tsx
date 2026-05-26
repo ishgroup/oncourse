@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import LoadingButton from '@mui/lab/LoadingButton';
+import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import * as React from 'react';
@@ -167,13 +167,13 @@ class MYOBBaseForm extends React.Component<any, any> {
               <Typography variant="caption" component="div">
                 {$t('you_are_connected_to_myob')}
               </Typography>
-              <LoadingButton
+              <Button
                 variant="contained"
                 className="mt-1"
                 onClick={this.onDisconnect}
               >
                 {$t('disconnect_from_myob')}
-              </LoadingButton>
+              </Button>
             </>
           ) : (
             <>
@@ -194,7 +194,7 @@ class MYOBBaseForm extends React.Component<any, any> {
               </Typography>
 
               {!hideConfig && (
-                <LoadingButton
+                <Button
                   variant="contained"
                   className="mt-1"
                   disabled={!values.name}
@@ -202,7 +202,7 @@ class MYOBBaseForm extends React.Component<any, any> {
                   onClick={this.showTokenField}
                 >
                   {$t('connect_to_myob')}
-                </LoadingButton>
+                </Button>
               )}
             </>
           )}

@@ -17,9 +17,9 @@ put:
         $ref: './def/entity/payroll/PayrollRequest.yaml'
   responses:
     '200':
-      description: Success response.
+      description: Success response. Process id to fetch
       schema:
-        $ref: './def/entity/payroll/WagesToProcess.yaml'
+        type: string
     default:
       description: Unexpected error
   x-permission:

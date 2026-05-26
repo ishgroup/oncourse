@@ -120,12 +120,12 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       showConfirm({
         onConfirm: () => {
           reset();
-          toogleFullScreenEditView();
+          toogleFullScreenEditView(false);
           this.resetScroll();
         }
       });
     } else {
-      toogleFullScreenEditView();
+      toogleFullScreenEditView(false);
       this.resetScroll();
     }
   };
@@ -154,7 +154,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       creatingNew,
       values,
       updateDeleteCondition,
-      hasSelected,
       dispatch,
       rootEntity,
       isNested,
@@ -163,11 +162,10 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       manualLink,
       submitSucceeded,
       syncErrors,
-      threeColumn,
-      alwaysFullScreenCreateView,
       toogleFullScreenEditView,
       form,
       asyncValidating,
+      asyncValidate,
       disabledSubmitCondition,
       hideTitle,
     } = this.props;
@@ -185,9 +183,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     return (
       <Dialog
         fullScreen
-        open={Boolean(
-          hasSelected && (fullScreenEditView || ((!threeColumn || alwaysFullScreenCreateView) && creatingNew))
-        )}
+        open={fullScreenEditView}
         TransitionComponent={Transition}
         classes={{
           paper: classes.fullEditViewBackground
@@ -239,6 +235,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               twoColumn
               onScroll={this.onScroll}
               asyncValidating={asyncValidating}
+              asyncValidate={asyncValidate}
               syncErrors={syncErrors}
               submitSucceeded={submitSucceeded}
               invalid={invalid}
@@ -268,6 +265,8 @@ const mapStateToProps = (state: State, props) => ({
   pending: state.fetch.pending
 });
 
-export default reduxForm<any, EditViewContainerProps>({})(
+export default reduxForm<any, EditViewContainerProps>({
+  destroyOnUnmount: false
+})(
   connect(mapStateToProps, null)(withStyles(withRouter(FullScreenEditViewBase as any), styles))
 );

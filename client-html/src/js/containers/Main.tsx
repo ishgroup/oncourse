@@ -98,12 +98,6 @@ interface Props {
   isAnyFormDirty: boolean;
   isLoggedIn: AnyArgFunction;
   displayAUSReporting: boolean;
-  match: any;
-}
-
-interface MainState {
-  themeName: string;
-  theme: AppTheme;
 }
 
 function MainBase(
@@ -117,13 +111,12 @@ function MainBase(
     isAnyFormDirty,
     isLoggedIn,
     displayAUSReporting,
-    match,
     getLogo
   }: Props) {
     const theme = getTheme();
     
     const [themeName, setThemeName] = useState(DefaultThemeKey);
-    const [currentTtheme, setTheme] = useState({
+    const [currentTtheme, setTheme] = useState<AppTheme>({
       ...theme,
       palette: {
         ...theme.palette,
@@ -151,7 +144,7 @@ function MainBase(
   };
   
   useEffect(() => {
-    getLogo()
+    getLogo();
   }, []);
   
   useEffect(() => {
@@ -184,15 +177,21 @@ function MainBase(
   ]);
   
   useEffect(() => {
-    window.addEventListener("storage", updateStateFromStorage);
     window.addEventListener("beforeunload", onWindowClose, true);
+
+    return () => {
+      window.removeEventListener("beforeunload", onWindowClose);
+    };
+  }, [isAnyFormDirty]);
+
+  useEffect(() => {
+    window.addEventListener("storage", updateStateFromStorage);
 
     return () => {
       LSRemoveItem(APPLICATION_THEME_STORAGE_NAME);
       window.removeEventListener("storage", updateStateFromStorage);
-      window.removeEventListener("beforeunload", onWindowClose);
     };
-  }, [isAnyFormDirty]);
+  }, []);
 
   useEffect(() => {
     if (isLogged) {
@@ -232,7 +231,7 @@ function MainBase(
               themeName
             }}
           >
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={currentTtheme}>
               <CssBaseline />
               <GlobalStylesProvider>
                 <BrowserWarning />

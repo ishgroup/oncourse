@@ -2,7 +2,6 @@ import Typography from '@mui/material/Typography';
 import $t from '@t';
 import * as React from 'react';
 import { withStyles } from 'tss-react/mui';
-import { GOOGLE_MAPS_API_KEY } from '../../../constants/Config';
 
 const styles = theme => ({
   noAddressContainer: {
@@ -32,7 +31,7 @@ const StaticGoogleMap = (props: Props) => {
     <img
       style={{ maxWidth: size[0], width: "100%" }}
       src={`https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=${size[0]}x${size[1]}&scale=2&maptype=roadmap
-&markers=color:green%7Clabel:${markerLetter}%7C${latitude},${longitude}&key=${atob(GOOGLE_MAPS_API_KEY)}`}
+&markers=color:green%7Clabel:${markerLetter}%7C${latitude},${longitude}&key=${atob(process.env.GOOGLE_MAPS_API_KEY)}`}
     />
   ) : (
     <div className={classes.noAddressContainer}>

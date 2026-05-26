@@ -21,7 +21,7 @@ import tutor from '../../../../images/tutor.png';
 import { checkPermissions } from '../../../common/actions';
 import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
-import { clearListState, getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
 import ListView from '../../../common/components/list-view/ListView';
 import EntityService from '../../../common/services/EntityService';
@@ -44,7 +44,6 @@ export interface ContactsProps {
   getRecords?: () => void;
   getFilters?: () => void;
   setCustomTableModel?: () => void;
-  clearListState?: () => void;
   getTags?: () => void;
   getCountries?: () => void;
   getLanguages?: () => void;
@@ -232,7 +231,6 @@ const Contacts: React.FC<ContactsProps> = props => {
   const {
     dispatch,
     getFilters,
-    clearListState,
     onInit,
     getTags,
     getCountries,
@@ -304,10 +302,6 @@ const Contacts: React.FC<ContactsProps> = props => {
     getDefaultTerms();
     getPermissions();
     getContactRelationTypes();
-
-    return () => {
-      clearListState();
-    };
   }, []);
 
   const getContactFullNameWithTitle = (values: Contact) =>
@@ -388,8 +382,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
   getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  clearListState: () => dispatch(clearListState()),
-  getPermissions: () => {
+    getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Enrolment", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PriorLearning", method: "GET" }));

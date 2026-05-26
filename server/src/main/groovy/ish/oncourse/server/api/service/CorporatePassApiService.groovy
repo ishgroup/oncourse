@@ -11,7 +11,10 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CorporatePassDao
+import ish.oncourse.server.api.traits.CorporatePassDTOTrait
+import ish.oncourse.server.api.traits.CorporatePassPaymentTypeDTOTrait
 import ish.oncourse.server.api.v1.model.CorporatePassDTO
+import ish.oncourse.server.api.v1.model.CorporatePassPaymentTypeDTO
 import ish.oncourse.server.api.v1.model.DiscountDTO
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
@@ -50,6 +53,7 @@ class CorporatePassApiService extends EntityApiService<CorporatePassDTO, Corpora
                     dbCorporatePass.corporatePassProduct.collect{ it.product }.collect { toRestSale(it) }).sort { it.name.toLowerCase() }
             cc.createdOn = LocalDateUtils.dateToTimeValue(dbCorporatePass.createdOn)
             cc.modifiedOn = LocalDateUtils.dateToTimeValue(dbCorporatePass.modifiedOn)
+            cc.paymentType = CorporatePassPaymentTypeDTO.values()[0].fromDbType(dbCorporatePass.paymentType)
             cc
         }
     }
@@ -60,6 +64,7 @@ class CorporatePassApiService extends EntityApiService<CorporatePassDTO, Corpora
         dbCorporatePass.password = trimToNull(corporatePassDTO.password)
         dbCorporatePass.invoiceEmail = trimToNull(corporatePassDTO.invoiceEmail)
         dbCorporatePass.expiryDate = LocalDateUtils.valueToDate(corporatePassDTO.expiryDate, true)
+        dbCorporatePass.paymentType = corporatePassDTO.paymentType.getDbType()
         updateCorporatePassDiscounts(dbCorporatePass.context, dbCorporatePass, corporatePassDTO.linkedDiscounts)
 
         updateCorporatePassCourseClasses(dbCorporatePass.context, dbCorporatePass, corporatePassDTO.linkedSalables.findAll { it.type == SaleTypeDTO.CLASS })
@@ -114,6 +119,9 @@ class CorporatePassApiService extends EntityApiService<CorporatePassDTO, Corpora
                 }
             }
         }
+
+        if(corporatePassDTO.paymentType == null)
+            validator.throwClientErrorException(corporatePassDTO?.paymentType, "paymentType", "payment type is not set")
     }
 
     @Override

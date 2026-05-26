@@ -6,21 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ProductItem, ProductItemStatus } from "@api/model";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import { clearListState, getFilters } from "../../../common/components/list-view/actions";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { getEntityTags } from "../../tags/actions";
-import { getPlainAccounts } from "../accounts/actions";
-import { getPlainTaxes } from "../taxes/actions";
-import { getSalesManuTags } from "./actions";
-import SalesCogwheel from "./components/cogwheel/SalesCogwheel";
-import SalesEditView from "./components/SalesEditView";
+import { ProductItemStatus } from '@api/model';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
+import { getFilters } from '../../../common/components/list-view/actions';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { getEntityTags } from '../../tags/actions';
+import { getPlainAccounts } from '../accounts/actions';
+import { getPlainTaxes } from '../taxes/actions';
+import { getSalesManuTags } from './actions';
+import SalesCogwheel from './components/cogwheel/SalesCogwheel';
+import SalesEditView from './components/SalesEditView';
 
 interface SalesProps {
   getSaleRecord?: () => void;
@@ -29,7 +29,6 @@ interface SalesProps {
   getTaxes?: () => void;
   getTags?: () => void;
   getAccounts?: () => void;
-  clearListState?: () => void;
 }
 
 const filterGroups: FilterGroup[] = [
@@ -121,9 +120,6 @@ const Sales: React.FC<SalesProps> = props => {
     getTags();
     getAccounts();
     getTaxes();
-    return () => {
-      clearListState();
-    };
   }, []);
 
   return (
@@ -161,8 +157,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getEntityTags("Voucher"));
     dispatch(getEntityTags("Membership"));
   },
-  getFilters: () => dispatch(getFilters("ProductItem")),
-  clearListState: () => dispatch(clearListState())
+  getFilters: () => dispatch(getFilters("ProductItem"))
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Sales);

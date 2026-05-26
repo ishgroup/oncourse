@@ -35,6 +35,8 @@ import ish.scripting.ScriptResult
 import ish.util.DateFormatter
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
+import org.apache.cayenne.query.SortOrder
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -206,17 +208,27 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
             st
         }
 
-        List<LastRunDTO> lastRunList = ObjectSelect.columnQuery(Audit, Audit.CREATED, Audit.ACTION)
-                .where(Audit.ENTITY_IDENTIFIER.eq(dbScript.class.simpleName))
-                .and(Audit.ENTITY_ID.eq(dbScript.id))
+        scriptDTO.lastRun = lastRunsForScript(dbScript.id)
+        scriptDTO
+    }
+
+    private ScriptStatisticDTO toRestStatistic(Script script) {
+        def statisticDto = new ScriptStatisticDTO()
+        statisticDto.setName(script.getName())
+        statisticDto.setLastRuns(lastRunsForScript(script.getId()))
+        statisticDto.setId(script.getId())
+        return statisticDto
+    }
+
+    private List<LastRunDTO> lastRunsForScript(Long scriptId) {
+        return ObjectSelect.columnQuery(Audit, Audit.CREATED, Audit.ACTION)
+                .where(Audit.ENTITY_IDENTIFIER.eq(Script.class.simpleName))
+                .and(Audit.ENTITY_ID.eq(scriptId))
                 .and(Audit.ACTION.in(AuditAction.SCRIPT_EXECUTED, AuditAction.SCRIPT_FAILED))
                 .orderBy(Audit.CREATED.desc())
                 .limit(LAST_RUN_FETCH_LIMIT)
                 .select(cayenneService.newContext)
                 .collect { convertArray(it) }
-        
-        scriptDTO.lastRun = lastRunList
-        scriptDTO
     }
 
     private static LastRunDTO convertArray(Object[]arr){
@@ -449,5 +461,21 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
         Script dbScript = super.updateInternal(dto) as Script
         updateTrigger(dto, dbScript)
         dbScript.getContext().commitChanges()
+    }
+
+    List<ScriptStatisticDTO> getLastRunsStatistic(){
+        def context = cayenneService.getNewReadonlyContext();
+        def lastScriptIds = ObjectSelect.columnQuery(Audit.class, Audit.ENTITY_ID)
+                .where(Audit.ACTION.in(AuditAction.SCRIPT_EXECUTED, AuditAction.SCRIPT_FAILED))
+                .orderBy(Audit.CREATED.desc())
+                .distinct()
+                .limit(10)
+                .select(context)
+
+        def scripts = ObjectSelect.query(Script)
+                .where(Script.ID.in(lastScriptIds))
+                .select(context)
+
+        return scripts.collect {toRestStatistic(it)}
     }
 }

@@ -438,6 +438,9 @@ public interface Preferences {
 	String USI_SOFTWARE_ID = "usi.softwareid";
 	String USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS = "use.offered.qualifications.only";
 	String MYOB_LAST_EXPORT_DATE = "myob.last.export.date";
+	String DATE_MESSAGE_BEFORE_ARCHIVED = "ish.message.date.archived";
+	String DATE_MESSAGE_EXPECTED_BEFORE_ARCHIVED = "ish.message.date.expected.archived";
+	String DAYS_MESSAGE_EXPIRES = "ish.message.days.expires";
 
 
 	String FEATURE_CONCESSIONS_IN_ENROLMENT = "feature.concessionsInEnrolment";

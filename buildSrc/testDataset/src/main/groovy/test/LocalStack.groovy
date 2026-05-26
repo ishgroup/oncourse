@@ -49,7 +49,13 @@ class LocalStack {
         void run() {
             try {
                 logger.lifecycle("Starting Localstack container...")
-                container = new LocalStackContainer(DockerImageName.parse("localstack/localstack:latest")).withServices(S3)
+                DockerImageName image = DockerImageName.parse("localstack/localstack:3.8.1")
+                        .asCompatibleSubstituteFor("localstack/localstack")
+
+                container = new LocalStackContainer(image)
+                        .withServices(S3)
+                        .withEnv("USE_LIGHT_IMAGE", "true")  // Используем легковесную версию
+                        .withEnv("SKIP_SSL_CERT_DOWNLOAD", "true")
                 container.start()
 
                 logger.lifecycle("Localstack container started at ${container.getEndpoint()}")

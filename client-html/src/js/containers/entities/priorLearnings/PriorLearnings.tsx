@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PriorLearning, TableModel } from "@api/model";
-import React, { Dispatch, useEffect } from "react";
-import { connect } from "react-redux";
-import { initialize } from "redux-form";
-import { checkPermissions } from "../../../common/actions";
-import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { fundingUploadsPath } from "../../../constants/Api";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import PriorLearningEditView from "./components/PriorLearningEditView";
+import { PriorLearning, TableModel } from '@api/model';
+import React, { Dispatch, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { initialize } from 'redux-form';
+import { checkPermissions } from '../../../common/actions';
+import { getFilters, setListEditRecord, } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { fundingUploadsPath } from '../../../constants/Api';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import PriorLearningEditView from './components/PriorLearningEditView';
 
 const nameCondition = (val: PriorLearning) => val.title;
 
@@ -22,7 +22,6 @@ interface PriorLearningsProps {
   onInit?: () => void;
   onCreate?: (priorLearning: PriorLearning) => void;
   getFilters?: () => void;
-  clearListState?: () => void;
   checkPermissions?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
 }
@@ -58,16 +57,12 @@ const PriorLearnings: React.FC<PriorLearningsProps> = props => {
   const {
     onInit,
     getFilters,
-    clearListState,
     checkPermissions
   } = props;
 
   useEffect(() => {
     getFilters();
     checkPermissions();
-    return () => {
-      clearListState();
-    };
   }, []);
 
   return (
@@ -98,7 +93,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
   getFilters: () => dispatch(getFilters("PriorLearning")),
-  clearListState: () => dispatch(clearListState()),
   checkPermissions: () => dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
 });
 

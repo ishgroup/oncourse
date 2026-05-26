@@ -256,6 +256,24 @@ Feature: Main feature for all POST requests with path 'list/option/payroll'
         And request getWages
         When method PUT
         Then status 200
+
+        * def processId = $
+
+        * def sleep =
+             """
+             function(seconds){
+               for(i = 0; i <= seconds; i++)
+               {
+                 java.lang.Thread.sleep(1*1000);
+                 karate.log(i);
+               }
+             }
+             """
+        * call sleep 1
+
+        Given path ishPath + "/result?entity=Course&processId="+ processId
+        When method GET
+        Then status 200
         And match response == {"totalWagesCount":"#number","unprocessedWagesCount":"#number","unconfirmedWagesCount":"#number","unconfirmedClassesIds":"#notnull"}
 
         * def newTutorPay = {"untilDate":"2021-01-01","entityName":null,"recordIds":null}

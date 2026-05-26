@@ -13,6 +13,10 @@ get:
       in: query
       required: true
       type: string
+    - name: kickOut
+      in: query
+      required: false
+      type: boolean
   responses:
     '200':
       description: Success response.

@@ -17,3 +17,10 @@ document:
   bucket: ${document.bucket}
   region: ${document.region}
   endpoint: ${document.endpoint}
+
+archives:
+  accessKeyId: ${document.accessKeyId}
+  accessSecretKey: ${document.accessSecretKey}
+  bucket: ${document.bucket}
+  region: ${document.region}
+  endpoint: ${document.endpoint}

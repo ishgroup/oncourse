@@ -3,14 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Message } from "@api/model";
-import React, { Dispatch, useEffect } from "react";
-import { connect } from "react-redux";
-import { clearListState, getFilters, } from "../../../common/components/list-view/actions";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import MessageEditView from "./components/MessageEditView";
-import QuedMessagesBulkDelete from "./components/QuedMessagesBulkDelete";
+import React, { Dispatch, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { clearListState, getFilters } from '../../../common/components/list-view/actions';
+import ListView from '../../../common/components/list-view/ListView';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import MessageEditView from './components/MessageEditView';
+import MessagesCogwheelActions from './components/MessagesCogwheelActions';
 
 interface MessagesProps {
   onInit?: () => void;
@@ -68,7 +67,7 @@ const Messages: React.FC<MessagesProps> = props => {
         nameCondition: values => (values ? values.subject : "")
       }}
       EditViewContent={MessageEditView}
-      CogwheelAdornment={QuedMessagesBulkDelete}
+      CogwheelAdornment={MessagesCogwheelActions}
       rootEntity="Message"
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}

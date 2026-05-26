@@ -23,6 +23,6 @@ records.each { Invoice i ->
         "Payment Due Date"			: i.dateDue,
         "Days Overdue"				: i.overdue > Money.ZERO ? dateDiff(i.dateDue, today) : "0" ,
         "Overdue Amount"			: i.overdue.toPlainString(),
-        "Percent Overdue of Owing"	: i.overdue > Money.ZERO ? moneyPercentage(i.amountOwing.toBigDecimal(), i.overdue.toBigDecimal()) + "%" : "0%"
+        "Percent Overdue of Owing"	: i.overdue > Money.ZERO && i.amountOwing > Money.ZERO ? moneyPercentage(i.amountOwing.toBigDecimal(), i.overdue.toBigDecimal()) + "%" : "0%"
     ]
 }

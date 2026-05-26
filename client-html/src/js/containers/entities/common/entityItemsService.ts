@@ -6,56 +6,57 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { formatToDateOnly } from "ish-ui";
-import { initialize } from "redux-form";
-import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import EntityService from "../../../common/services/EntityService";
-import { EntityName } from "../../../model/entities/common";
-import { EnrolmentExtended } from "../../../model/entities/Enrolment";
-import { PayLineWithDefer } from "../../../model/entities/Payslip";
-import AuditsService from "../../audits/services/AuditsService";
-import ImportTemplatesService from "../../automation/containers/import-templates/services/ImportTemplatesService";
-import AccountService from "../accounts/services/AccountService";
-import ApplicationService from "../applications/service/ApplicationService";
-import ArticleProductService from "../articleProducts/service/ArticleProductService";
-import AssessmentService from "../assessments/services/AssessmentService";
-import AssessmentSubmissionService from "../assessmentSubmissions/service/AssessmentSubmissionService";
-import BankingService from "../bankings/services/BankingService";
-import CertificateService from "../certificates/services/CertificateService";
-import { formatRelationsBeforeSave } from "../contacts/Contacts";
-import ContactsService from "../contacts/services/ContactsService";
-import { getContactFullName } from "../contacts/utils";
-import CorporatePassService from "../corporatePasses/services/CorporatePassService";
-import CourseClassService from "../courseClasses/services/CourseClassService";
-import CourseService from "../courses/services/CourseService";
-import { processCustomFields } from "../customFieldTypes/utils";
-import DiscountService from "../discounts/services/DiscountService";
-import EnrolmentService from "../enrolments/services/EnrolmentService";
-import FacultyService from "../faculties/services/FacultyService";
-import InvoiceService from "../invoices/services/InvoiceService";
-import { preformatInvoice, processInvoicePaymentPlans, setInvoiceLinesTotal } from "../invoices/utils";
-import LeadService from "../leads/services/LeadService";
-import MembershipProductService from "../membershipProducts/services/MembershipProductService";
-import membershipProductService from "../membershipProducts/services/MembershipProductService";
-import MessageService from "../messages/services/MessageService";
-import ModuleService from "../modules/services/ModuleService";
-import OutcomeService from "../outcomes/services/OutcomeService";
-import PaymentInService from "../paymentsIn/services/PaymentInService";
-import PaymentOutService from "../paymentsOut/services/PaymentOutService";
-import { getPaymentOutFromModel } from "../paymentsOut/utils";
-import PayslipService from "../payslips/services/PayslipService";
-import PriorLearningService from "../priorLearnings/services/PriorLearningService";
-import QualificationService from "../qualifications/services/QualificationService";
-import RoomService from "../rooms/services/RoomService";
-import SaleService from "../sales/services/SaleService";
-import SiteService from "../sites/services/SiteService";
-import SurveyService from "../survey/services/SurveyService";
-import TransactionService from "../transactions/services/TransactionService";
-import VoucherProductService from "../voucherProducts/services/VoucherProductService";
-import WaitingListService from "../waitingLists/services/WaitingListService";
-import { mapEntityDisplayName } from "./utils";
+import { formatToDateOnly } from 'ish-ui';
+import { initialize } from 'redux-form';
+import FetchErrorHandler from '../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import DocumentsService from '../../../common/components/form/documents/services/DocumentsService';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import EntityService from '../../../common/services/EntityService';
+import history from '../../../constants/History';
+import { EntityName } from '../../../model/entities/common';
+import { EnrolmentExtended } from '../../../model/entities/Enrolment';
+import { PayLineWithDefer } from '../../../model/entities/Payslip';
+import AuditsService from '../../audits/services/AuditsService';
+import ImportTemplatesService from '../../automation/containers/import-templates/services/ImportTemplatesService';
+import AccountService from '../accounts/services/AccountService';
+import ApplicationService from '../applications/service/ApplicationService';
+import ArticleProductService from '../articleProducts/service/ArticleProductService';
+import AssessmentService from '../assessments/services/AssessmentService';
+import AssessmentSubmissionService from '../assessmentSubmissions/service/AssessmentSubmissionService';
+import BankingService from '../bankings/services/BankingService';
+import CertificateService from '../certificates/services/CertificateService';
+import { formatRelationsBeforeSave } from '../contacts/Contacts';
+import ContactsService from '../contacts/services/ContactsService';
+import { getContactFullName } from '../contacts/utils';
+import CorporatePassService from '../corporatePasses/services/CorporatePassService';
+import CourseClassService from '../courseClasses/services/CourseClassService';
+import CourseService from '../courses/services/CourseService';
+import { processCustomFields } from '../customFieldTypes/utils';
+import DiscountService from '../discounts/services/DiscountService';
+import EnrolmentService from '../enrolments/services/EnrolmentService';
+import FacultyService from '../faculties/services/FacultyService';
+import InvoiceService from '../invoices/services/InvoiceService';
+import { preformatInvoice, processInvoicePaymentPlans, setInvoiceLinesTotal } from '../invoices/utils';
+import LeadService from '../leads/services/LeadService';
+import MembershipProductService from '../membershipProducts/services/MembershipProductService';
+import membershipProductService from '../membershipProducts/services/MembershipProductService';
+import MessageService from '../messages/services/MessageService';
+import ModuleService from '../modules/services/ModuleService';
+import OutcomeService from '../outcomes/services/OutcomeService';
+import PaymentInService from '../paymentsIn/services/PaymentInService';
+import PaymentOutService from '../paymentsOut/services/PaymentOutService';
+import { getPaymentOutFromModel } from '../paymentsOut/utils';
+import PayslipService from '../payslips/services/PayslipService';
+import PriorLearningService from '../priorLearnings/services/PriorLearningService';
+import QualificationService from '../qualifications/services/QualificationService';
+import RoomService from '../rooms/services/RoomService';
+import SaleService from '../sales/services/SaleService';
+import SiteService from '../sites/services/SiteService';
+import SurveyService from '../survey/services/SurveyService';
+import TransactionService from '../transactions/services/TransactionService';
+import VoucherProductService from '../voucherProducts/services/VoucherProductService';
+import WaitingListService from '../waitingLists/services/WaitingListService';
+import { mapEntityDisplayName } from './utils';
 
 const defaultUnknown = () => {
   console.error("Unknown entity name");
@@ -218,7 +219,7 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
         delete itemToSave.student.education;
       }
 
-      itemToSave.relations = [...formatRelationsBeforeSave(itemToSave.relations)];
+      itemToSave.relations = [...formatRelationsBeforeSave(itemToSave?.relations || [])];
 
       if (itemToSave.isCompany) delete item.firstName;
 
@@ -364,8 +365,17 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
       return WaitingListService.createWaitingList(item);
     case "Course":
       return CourseService.create(item);
-    case "PaymentOut":
+    case "PaymentOut": {
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.delete("invoiceId");
+
+      history.replace({
+        pathname: history.location.pathname,
+        search: decodeURIComponent(urlParams.toString())
+      });
+
       return PaymentOutService.postPaymentOut(getPaymentOutFromModel(item));
+    }
 
     case "Document": {
       const {

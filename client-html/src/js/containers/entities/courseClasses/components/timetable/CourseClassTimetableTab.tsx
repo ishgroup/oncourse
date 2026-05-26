@@ -23,14 +23,13 @@ import {
 } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from 'redux-form';
+import { arrayRemove, change, initialize } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import { addActionToQueue, removeActionsFromQueue } from '../../../../../common/actions';
 import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import FormField from '../../../../../common/components/form/formFields/FormField';
 import ExpandableContainer from '../../../../../common/components/layout/expandable/ExpandableContainer';
 import uniqid from '../../../../../common/utils/uniqid';
-import { instantAsyncValidateFieldArrayItemCallback } from '../../../../../common/utils/validation';
 import history from '../../../../../constants/History';
 import { EditViewProps } from '../../../../../model/common/ListView';
 import { ClassCostExtended, CourseClassExtended, SessionRepeatTypes } from '../../../../../model/entities/CourseClass';
@@ -120,8 +119,6 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
 }
 
-let pendingSessionActionArgs = null;
-
 const validateStartDate = (value, allValues: CourseClassExtended) => {
   if (allValues.type === 'Distant Learning') {
     return (allValues.endDateTime && !value && $t("start_date_is_required_is_end_date_is_set")) || validateMinMaxDate(value, '', allValues.endDateTime, '', $t("start_date_cannot_be_set_after_the_end_date"));
@@ -134,40 +131,6 @@ const validateEndDate = (value, allValues: CourseClassExtended) => {
     return (allValues.startDateTime && !value && $t("end_date_is_required_is_start_date_is_set")) || validateMinMaxDate(value, allValues.startDateTime, '', $t("end_date_cannot_be_set_before_the_start_date"));
   }
   return validateMinMaxDate(value, allValues?.sessions && allValues.sessions[allValues.sessions.length - 1]?.start, '', 'End date cannot be before the last session');
-};
-
-const validateSessionUpdate = (id: number, sessions: TimetableSession[], dispatch, form) => {
-  const updatedForValidate = sessions.map(({ index, ...rest }) => ({ ...rest }));
-
-  let bindedActionId;
-
-  for (const s of sessions) {
-    const temp = s.tutorAttendances.find(ta => ta.temporaryTutorId);
-    if (temp) {
-      bindedActionId = temp.temporaryTutorId;
-      break;
-    }
-  }
-
-  dispatch(startAsyncValidation(form));
-
-  CourseClassTimetableService.validateUpdate(id || -1, updatedForValidate)
-    .then(sessionWarnings => {
-      if (pendingSessionActionArgs) {
-        const validateArgs: [any, any, any, any] = pendingSessionActionArgs;
-        pendingSessionActionArgs = null;
-        return validateSessionUpdate(...validateArgs);
-      }
-      dispatch(
-        addActionToQueue(postCourseClassSessions(id, updatedForValidate), "POST", "Session", id, bindedActionId)
-      );
-      dispatch(setCourseClassSessionsWarnings(sessionWarnings));
-      dispatch(stopAsyncValidation(form, null));
-    })
-    .catch(res => {
-      instantFetchErrorHandler(dispatch, res);
-      dispatch(stopAsyncValidation(form, instantAsyncValidateFieldArrayItemCallback("sessions", 0, res)));
-    });
 };
 
 const sessionInitial: TimetableSession = {
@@ -202,6 +165,7 @@ const CourseClassTimetableTab = ({
   sessionSelection,
   bulkSessionModalOpened,
   addTutorWage,
+  asyncValidate,
   syncErrors
 }: Props) => {
   const [expandedSession, setExpandedSession] = useState(null);
@@ -266,8 +230,9 @@ const CourseClassTimetableTab = ({
             : new Date(values.sessions[0].start)
         )
       );
+      asyncValidate?.("sessions", values.sessions, "change");
     }
-  }, [expandedSession, values.sessions && values.sessions.length, values.courseName]);
+  }, [expandedSession, values.sessions, values.courseName]);
 
   useEffect(() => {
     if (!twoColumn && expanded.includes(tabIndex)) {
@@ -282,7 +247,7 @@ const CourseClassTimetableTab = ({
     [expandedSession]
   );
 
-  const addSession = useCallback(() => {
+  const addSession = () => {
     if (!expanded.includes(tabIndex)) {
       setExpanded(prev => [...prev, tabIndex]);
     }
@@ -362,56 +327,46 @@ const CourseClassTimetableTab = ({
 
     setExpandedSession(updated[0].temporaryId);
     dispatch(change(form, "sessions", updated));
+  };
 
-    validateSessionUpdate(values.id, updated, dispatch, form);
-  }, [values.id, values.sessions, values.tutors, values.courseName, values.startDateTime, values.courseId, expanded, tabIndex]);
+  const onDeleteHandler = (e, index) => {
+    e.stopPropagation();
+    showConfirm({
+      onConfirm: () => {
+      const updated: TimetableSession[] = [...values.sessions];
 
-  const onDeleteHandler = useCallback(
-    (e, index) => {
-      e.stopPropagation();
-      showConfirm({
-        onConfirm: () => {
-        const updated: TimetableSession[] = [...values.sessions];
+      updated.splice(index, 1);
 
-        updated.splice(index, 1);
+      dispatch(arrayRemove(form, "sessions", index));
 
-        dispatch(arrayRemove(form, "sessions", index));
+      if (!updated.length) {
+        dispatch(change(form, "startDateTime", null));
+        dispatch(change(form, "endDateTime", null));
 
-        if (!updated.length) {
-          dispatch(change(form, "startDateTime", null));
-          dispatch(change(form, "endDateTime", null));
-
-          if (!values.id) {
-            dispatch(removeActionsFromQueue([{ entity: "Session" }]));
-            return;
-          }
+        if (!values.id) {
+          dispatch(removeActionsFromQueue([{ entity: "Session" }]));
+          return;
         }
-
-        validateSessionUpdate(values.id, updated, dispatch, form);
-      },
-        confirmMessage: "Session will be deleted permanently",
-        confirmButtonText: "Delete"
-      });
+      }
     },
-    [form, values.sessions]
-  );
+      confirmMessage: "Session will be deleted permanently",
+      confirmButtonText: "Delete"
+    });
+  };
 
-  const onCopyHandler = useCallback(
-    (e, session) => {
-      e.stopPropagation();
-      dispatch(
-        initialize("CopySessionForm", {
-          session,
-          repeatTimes: 1,
-          repeatType: "day (excluding weekends)"
-        })
-      );
-      setCopyDialogAnchor(e.currentTarget);
-    },
-    [form]
-  );
+  const onCopyHandler = (e, session) => {
+    e.stopPropagation();
+    dispatch(
+      initialize("CopySessionForm", {
+        session,
+        repeatTimes: 1,
+        repeatType: "day (excluding weekends)"
+      })
+    );
+    setCopyDialogAnchor(e.currentTarget);
+  };
 
-  const closeCopyDialog = useCallback(e => {
+  const closeCopyDialog = e => {
     const role = e && e.target && e.target.getAttribute("role");
     // prevent close on select menu item click
     if (role === "option") {
@@ -419,33 +374,27 @@ const CourseClassTimetableTab = ({
     }
     setCopyDialogAnchor(null);
     setOpenCopyDialog({ open: false, session: { id: -1 } });
-  }, []);
+  };
 
-  const onSaveRepeatHandler = useCallback(
-    (val: { repeatType: SessionRepeatTypes; repeatTimes: number; session: TimetableSession }) => {
-      const sessions = getSessionsWithRepeated(
-        values.sessions[val.session.index],
-        val.repeatType,
-        val.repeatTimes,
-        values.sessions
-      );
+  const onSaveRepeatHandler = (val: { repeatType: SessionRepeatTypes; repeatTimes: number; session: TimetableSession }) => {
+    const sessions = getSessionsWithRepeated(
+      values.sessions[val.session.index],
+      val.repeatType,
+      val.repeatTimes,
+      values.sessions
+    );
 
-      sessions.forEach((s, index) => {
-        s.index = index;
-      });
+    sessions.forEach((s, index) => {
+      s.index = index;
+    });
 
-      dispatch(change(form, "sessions", sessions));
+    dispatch(change(form, "sessions", sessions));
+    asyncValidate?.("sessions", sessions, "change");
+    closeCopyDialog(null);
+    setOpenCopyDialog({ open: false, session: { id: -1 } });
+  };
 
-      validateSessionUpdate(values.id, sessions, dispatch, form);
-
-      closeCopyDialog(null);
-      setOpenCopyDialog({ open: false, session: { id: -1 } });
-    },
-    [form, values.sessions, values.id]
-  );
-
-  const onExpand = useCallback(
-    (e, expanded) => {
+  const onExpand = (e, expanded) => {
       if (!twoColumn && expanded.includes(6)) {
         e?.preventDefault();
 
@@ -456,28 +405,15 @@ const CourseClassTimetableTab = ({
           search: decodeURIComponent(search.toString())
         });
 
-        toogleFullScreenEditView();
+        toogleFullScreenEditView(true);
       }
-    },
-    [twoColumn, expanded, tabIndex]
-  );
-
-  const triggerDebounseUpdate = session => {
-    const updated = [...values.sessions];
-    updated.splice(session.index, 1, session);
-    validateSessionUpdate(values.id, updated, dispatch, form);
   };
 
-  const handleSessionMenu = useCallback(e => {
-    setSessionMenu(e.currentTarget);
-  }, []);
+  const handleSessionMenu = e => setSessionMenu(e.currentTarget);
 
-  const handleSessionMenuClose = useCallback(() => {
-    setSessionMenu(null);
-  }, []);
-
-  const onDeleteTimetableEvents = useCallback(() => {
-    showConfirm({
+  const handleSessionMenuClose = () => setSessionMenu(null);
+ 
+  const onDeleteTimetableEvents = () => showConfirm({
       onConfirm: () => {
         const updated: TimetableSession[] = [...values.sessions];
         sessionSelection.forEach(session => {
@@ -500,15 +436,14 @@ const CourseClassTimetableTab = ({
             return;
           }
         }
-        validateSessionUpdate(values.id, updated, dispatch, form);
+        asyncValidate?.("sessions", updated, "change");
       },
       confirmMessage: `${sessionSelection.length} Session${sessionSelection.length > 1 ? "s" : ""} will be deleted permanently`,
       confirmButtonText: "Delete"
-    });
-  }, [form, values.sessions, sessionSelection]);
+});
 
  // Bulk update
-  const onBulkSessionUpdate = bulkValue => {
+const onBulkSessionUpdate = bulkValue => {
     const updated = [...values.sessions];
 
     sessionSelection.forEach(sid => {
@@ -677,11 +612,10 @@ const CourseClassTimetableTab = ({
         )
       );
     }
-
-    validateSessionUpdate(values.id, updated, dispatch, form);
     dispatch(change(form, "sessions", updated));
     dispatch(courseClassSelectAllSession([]));
     dispatch(courseClassCloseBulkUpdateModal());
+    asyncValidate?.("sessions", updated, "change");
   };
 
   const onChangeTimetableEvents = () => {
@@ -724,7 +658,6 @@ const CourseClassTimetableTab = ({
                       expanded={expandedSession}
                       session={s}
                       onChange={onChange}
-                      triggerDebounseUpdate={triggerDebounseUpdate}
                       onDeleteHandler={onDeleteHandler}
                       onCopyHandler={onCopyHandler}
                       classes={classes}
@@ -737,6 +670,7 @@ const CourseClassTimetableTab = ({
                       openCopyDialog={openCopyDialog}
                       budget={values.budget}
                       addTutorWage={addTutorWage}
+                      asyncValidate={asyncValidate}
                     />
                   );
                 })}
@@ -969,4 +903,4 @@ const mapStateToProps = (state: State) => ({
   bulkSessionModalOpened: state.courseClassesBulkSession.modalOpened
 });
 
-export default connect<any, any, any>(mapStateToProps)(withStyles(CourseClassTimetableTab, styles));
+export default connect(mapStateToProps)(withStyles(CourseClassTimetableTab, styles));

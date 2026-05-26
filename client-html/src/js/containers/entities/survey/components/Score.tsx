@@ -1,4 +1,4 @@
-import Rating from '@mui/lab/Rating';
+import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import { AppTheme } from 'ish-ui';
 import React, { useCallback, useMemo } from 'react';

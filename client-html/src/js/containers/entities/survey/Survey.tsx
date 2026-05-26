@@ -6,19 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { CustomFieldType, SurveyItem, TableModel } from "@api/model";
-import React, { Dispatch, useEffect } from "react";
-import { connect } from "react-redux";
-import { clearListState, getFilters } from "../../../common/components/list-view/actions";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import BulkDeleteCogwheelOption from "../common/components/BulkDeleteCogwheelOption";
-import SurveyEditView from "./components/SurveyEditView";
+import { CustomFieldType, SurveyItem, TableModel } from '@api/model';
+import React, { Dispatch, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getFilters } from '../../../common/components/list-view/actions';
+import ListView from '../../../common/components/list-view/ListView';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import BulkDeleteCogwheelOption from '../common/components/BulkDeleteCogwheelOption';
+import SurveyEditView from './components/SurveyEditView';
 
 interface StudentFeedbackProps {
   onInit?: (initial: SurveyItem) => void;
   getFilters?: () => void;
-  clearListState?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   customFieldTypesUpdating?: boolean;
   customFieldTypes?: CustomFieldType[];
@@ -69,9 +68,6 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
 
   useEffect(() => {
     getFilters();
-    return () => {
-      clearListState();
-    };
   }, []);
 
   return (
@@ -97,8 +93,7 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getFilters: () => dispatch(getFilters("Survey")),
-  clearListState: () => dispatch(clearListState())
+  getFilters: () => dispatch(getFilters("Survey"))
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(StudentFeedbackComp);

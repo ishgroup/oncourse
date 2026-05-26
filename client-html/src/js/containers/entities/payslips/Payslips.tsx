@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { initialize } from 'redux-form';
 import { checkPermissions } from '../../../common/actions';
-import { clearListState, getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
 import ListView from '../../../common/components/list-view/ListView';
 import { getManualLink } from '../../../common/utils/getManualLink';
@@ -74,10 +74,6 @@ class Payslips extends React.Component<any, any> {
     this.props.getConfirmAccess();
   }
 
-  componentWillUnmount() {
-    this.props.clearListState();
-  }
-
   shouldComponentUpdate() {
     return false;
   }
@@ -120,7 +116,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("Payslip")),
   getTags: () => dispatch(getListTags("Payslip")),
-  clearListState: () => dispatch(clearListState()),
   getGenerateAccess: () => dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Payslip", method: "PUT" })),
   getConfirmAccess: () => dispatch(
     checkPermissions({ path: "/a/v1/list/option/payroll?entity=Payslip&bulkConfirmTutorWages=true", method: "POST" })
