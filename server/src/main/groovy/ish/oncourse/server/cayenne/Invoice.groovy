@@ -282,26 +282,6 @@ class Invoice extends _Invoice implements InvoiceInterface, ExpandableTrait {
         } else {
             createDueDate(totalIncTax, dateDue)
         }
-
-        balancePaymentDueDates()
-    }
-
-    private void balancePaymentDueDates(){
-        def dueDates = invoiceDueDates.sort {it.getDueDate()}
-        def amountToPayRemained = totalIncTax
-        def dueDatesToRemove = new ArrayList<InvoiceDueDate>()
-        dueDates.each {
-            if(amountToPayRemained.isGreaterThan(it.amount))
-                amountToPayRemained = amountToPayRemained.subtract(it.amount)
-            else if(amountToPayRemained.equals(Money.ZERO))
-                dueDatesToRemove.add(it)
-            else {
-                it.setAmount(amountToPayRemained)
-                amountToPayRemained = Money.ZERO
-            }
-        }
-
-        context.deleteObjects(dueDatesToRemove)
     }
 
     private InvoiceDueDate createDueDate(Money amount, LocalDate date) {
