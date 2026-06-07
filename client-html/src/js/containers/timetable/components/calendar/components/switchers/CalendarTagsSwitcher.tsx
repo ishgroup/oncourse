@@ -12,8 +12,9 @@ import Select from '@mui/material/Select';
 import $t from '@t';
 import React, { useCallback, useContext } from 'react';
 import { TimetableContextState } from '../../../../../../model/timetable';
+import { TimetableContext } from '../../../../Timetable';
 
-const CalendarTagsSwitcher = ({ className = null, TimetableContext }) => {
+const CalendarTagsSwitcher = ({ className = null }) => {
   const { tagsState, setTagsState } = useContext<TimetableContextState>(TimetableContext);
 
   const onChange = useCallback(e => setTagsState(e.target.value), [setTagsState]);
