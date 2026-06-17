@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import $t from '@t';
 import { addDays, format } from 'date-fns';
 import Decimal from 'decimal.js-light';
+import { debounce } from 'es-toolkit/compat';
 import {
   D_MMM_YYYY,
   formatCurrency,
@@ -20,7 +21,6 @@ import {
   parseFieldPercent,
   preventNegativeOrLogEnter
 } from 'ish-ui';
-import { debounce } from 'es-toolkit/compat';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Dispatch } from 'redux';
 import { change } from 'redux-form';
@@ -180,7 +180,6 @@ const DiscountContent: React.FC<Props> = ({
 
   const discountTotalFee = useMemo(() => {
     const decimal = new Decimal(classFee).minus(values.perUnitAmountExTax || 0).minus(taxOnDiscount);
-
     return getRoundingByType(values.courseClassDiscount.discount.rounding, decimal);
   }, [classFee, taxOnDiscount, values.courseClassDiscount.discount.rounding]);
 

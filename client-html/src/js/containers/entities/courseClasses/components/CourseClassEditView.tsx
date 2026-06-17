@@ -32,13 +32,13 @@ import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
 import EntityService from '../../../../common/services/EntityService';
 import { getCustomColumnsMap } from '../../../../common/utils/common';
-import { getCurrentTax, useAppSelector } from '../../../../common/utils/hooks';
+import { getCurrentTax, getTaxAmountByFeeExTax, useAppSelector } from '../../../../common/utils/hooks';
 import { getLabelWithCount } from '../../../../common/utils/strings';
 import history from '../../../../constants/History';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from '../../../../model/entities/CourseClass';
 import { State } from '../../../../reducers/state';
-import { getDiscountAmountByFee } from '../../discounts/utils';
+import { getRoundingByType } from '../../discounts/utils';
 import { setCourseClassBudgetModalOpened, setCourseClassLatestSession } from '../actions';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../constants';
 import { getClassCostTypes } from '../utils';
@@ -201,9 +201,10 @@ const useBudgetAdornmentStyles = makeAppStyles()(theme => ({
   }
 }));
 
-const getDiscountedFee = (discount, currentTax, classFee) => {
-  const discountAmount = getDiscountAmountByFee(discount.courseClassDiscount?.discount, new Decimal(1).plus(currentTax.rate), classFee);
-  return new Decimal(classFee).minus(discountAmount)?.toNumber()
+const getDiscountedFee = (discount: ClassCostExtended, currentTax, classFee) => {
+  const taxOnDiscount = getTaxAmountByFeeExTax( currentTax.rate, discount.courseClassDiscount.discountOverride || discount.perUnitAmountExTax || 0);
+  const decimal = new Decimal(classFee).minus(discount.perUnitAmountExTax || 0).minus(taxOnDiscount);
+  return getRoundingByType(discount.courseClassDiscount.discount.rounding, decimal);
 };
 
 interface BudgetAdornmentProps {
@@ -242,7 +243,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
       && (!b.courseClassDiscount.discount.code && b.courseClassDiscount.discount.relationDiscount));
     discountsRelations.sort(discountsSort);
 
-    const mapDiscount = d => {
+    const mapDiscount = (d: ClassCostExtended) => {
       return <Fragment key={d.id}>
         <div>
           {d.courseClassDiscount.discount.name}
