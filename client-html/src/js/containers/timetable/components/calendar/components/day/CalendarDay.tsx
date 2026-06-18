@@ -282,11 +282,11 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
     if (dayNodesObserver && dayNodeRef.current) {
       dayNodeRef.current.setInView = setInView;
       dayNodeRef.current.isInView = inView;
-      dayNodesObserver.observer.observe(dayNodeRef.current);
+      dayNodesObserver.observe(dayNodeRef.current);
     }
 
     return () => {
-      if (dayNodeRef.current && dayNodesObserver) dayNodesObserver.observer.unobserve(dayNodeRef.current);
+      if (dayNodeRef.current && dayNodesObserver) dayNodesObserver.unobserve(dayNodeRef.current);
     };
   }, [dayNodesObserver, dayNodeRef.current]);
 

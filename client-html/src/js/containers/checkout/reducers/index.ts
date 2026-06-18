@@ -1033,7 +1033,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       return {
         ...state,
         courseClasses,
-        checkCourseClassLoaded: state.courseClasses.length && action.payload.courseClasses.length <= 0
+        checkCourseClassLoaded: action.payload.courseClasses.length <= 0
       };
     }
 
