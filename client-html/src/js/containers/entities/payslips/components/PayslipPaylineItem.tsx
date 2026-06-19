@@ -4,9 +4,7 @@
  */
 
 import { Currency } from '@api/model';
-import { Grid, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
+import { Typography, Button, Card, Grid } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -48,15 +46,16 @@ const PayslipPaylineItem = (props: Props) => {
 
   return (
     <Card className={clsx(threeColumn ? classes.threeColumnCard : "card", "relative")}>
-      <Grid container>
+      <Grid container rowSpacing={2}>
         <Grid item xs={paylineLayout[1].xs} className="d-flex">
-          <Grid container>
+          <Grid container >
             {field.type && (
-              <Typography variant="body1" color="textSecondary" className={threeColumn ? "flex-fill" : undefined}>
-                {field.type}
-              </Typography>
+              <Grid item xs={paylineLayout[3].xs} className={threeColumn ? undefined : "centeredFlex"}>
+                <Typography variant="body1" color="textSecondary" className={threeColumn ? "flex-fill" : undefined}>
+                  {field.tutorRoleType}, {field.type}
+                </Typography>
+              </Grid>
             )}
-
             <Grid item xs={paylineLayout[3].xs} className={threeColumn ? undefined : "centeredFlex"}>
               {field.className ? (
                 <div className={threeColumn ? "flex-column text-end" : "centeredFlex"}>
