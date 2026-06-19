@@ -12,13 +12,15 @@ import clsx from 'clsx';
 import { AnyArgFunction, ShowConfirmCaller } from 'ish-ui';
 import React, { memo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../common/utils/hooks';
+import { ListState } from '../../../../model/common/ListView';
 import { ListActionEntity } from '../../../../model/entities/common';
+import { checkContactsDelete } from '../../contacts/actions';
 import { bulkDeleteEntityRecordsRequest } from '../actions';
 
 interface BulkDeleteCogwheelOptionProps {
   menuItemClass: string;
   closeMenu: AnyArgFunction;
-  selection: number[];
+  selection: ListState['selection'];
   showConfirm: ShowConfirmCaller;
   entity: ListActionEntity;
 }
@@ -32,28 +34,29 @@ const BulkDeleteCogwheelOption = memo<BulkDeleteCogwheelOptionProps>(({
 }) => {
   const hasAql = useAppSelector(state => state.list.searchQuery
     && (state.list.searchQuery.search || state.list.searchQuery.filter || state.list.searchQuery.tagGroups.length));
-
   const { search, filter, tagGroups } = useAppSelector(state => state.list.searchQuery);
-
   const dispatch = useAppDispatch();
 
   const onBulkEditClick = () => {
+    if (entity === 'Contact') {
+      dispatch(checkContactsDelete(selection));
+      return;
+    }
     showConfirm({
       onConfirm: () => {
         dispatch(bulkDeleteEntityRecordsRequest(
           entity,
           {
-            ids: selection,
+            ids: selection.map(parseInt),
             search,
             filter,
             tagGroups
           }));
         closeMenu();
       },
-      confirmMessage: "Records will be permanently deleted. This action can not be undone",
+      confirmMessage: "Records will be deleted permanently. This action can not be undone",
       confirmButtonText: "Delete anyway"
     });
-
   };
 
   return hasAql || selection.length > 1 ? (

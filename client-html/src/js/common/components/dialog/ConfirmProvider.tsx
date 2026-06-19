@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { AnyArgFunction, ConfirmBase, ConfirmState } from "ish-ui";
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { State } from "../../../reducers/state";
-import { closeConfirm } from "../../actions";
+import { AnyArgFunction, ConfirmBase, ConfirmState } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { State } from '../../../reducers/state';
+import { closeConfirm } from '../../actions';
 
 interface Props {
   stateProps: ConfirmState;
@@ -68,4 +68,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   closeConfirm: () => dispatch(closeConfirm())
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ConfirmProvider);
+export default connect(mapStateToProps, mapDispatchToProps)(ConfirmProvider);
