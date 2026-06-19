@@ -544,7 +544,6 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         if (cayenneModel?.student?.priorLearnings != null && cayenneModel.student.priorLearnings.size() > 0) {
             validator.throwClientErrorException(Student.PRIOR_LEARNINGS.name, 'There are prior learnings for this student.')
         }
-
         if (cayenneModel?.student?.waitingLists != null && cayenneModel.student.waitingLists.size() > 0) {
             validator.throwClientErrorException(Student.WAITING_LISTS.name, 'This student is on a waiting list.')
         }
@@ -736,26 +735,18 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
     }
 
     GroupedContactsDTO checkIfCanBeDeleted(List<Long> contactIds) {
+        def contacts = ObjectSelect.query(Contact)
+                    .where(Contact.ID.in(contactIds))
+        .select(cayenneService.newContext)
+
         List<Long> canBeDeleted = new ArrayList<>()
         List<Long> cannotBeDeleted = new ArrayList<>()
-        Long lastId = -1L
-
-        while(canBeDeleted.isEmpty()) {
-            def contacts = ObjectSelect.query(Contact)
-                    .where(Contact.ID.gt(lastId))
-                    .limit(2500)
-                    .select(cayenneService.newContext)
-
-            //List<Long> canBeDeleted = new ArrayList<>()
-            //List<Long> cannotBeDeleted = new ArrayList<>()
-            contacts.each { contact ->
-                try {
-                    lastId = contact.id
-                    validateModelBeforeRemove(contact)
-                    canBeDeleted.add(contact.id)
-                } catch (ClientErrorException ignored) {
-                   // cannotBeDeleted.add(contact.id)
-                }
+        contacts.each { contact ->
+            try {
+                validateModelBeforeRemove(contact)
+                canBeDeleted.add(contact.id)
+            } catch (ClientErrorException ignored) {
+                cannotBeDeleted.add(contact.id)
             }
         }
 
