@@ -12,13 +12,14 @@ import {
   ContactInsightApi,
   ContactMergeApi,
   ContactRelationType,
+  GroupedContacts,
   MergeData,
   MergeRequest,
   Tax,
   TaxApi,
   UsiVerificationResult
-} from "@api/model";
-import { DefaultHttpService } from "../../../../common/services/HttpService";
+} from '@api/model';
+import { DefaultHttpService } from '../../../../common/services/HttpService';
 
 class ContactsService {
   readonly contactMergeApi = new ContactMergeApi(new DefaultHttpService());
@@ -30,6 +31,10 @@ class ContactsService {
   readonly concessionApi = new ConcessionApi(new DefaultHttpService());
 
   readonly taxApi = new TaxApi(new DefaultHttpService());
+
+  public checkIfCanBeDeleted(ids): Promise<GroupedContacts> {
+    return this.contactApi.checkIfCanBeDeleted(ids);
+  }
 
   public getContact(id: number): Promise<Contact> {
     return this.contactApi.getContact(id);
