@@ -38,8 +38,22 @@ const PayslipPaylineItem = (props: Props) => {
   ]);
 
   const hasQuantityAndTotal = useMemo(
-    () => field.className && !(field.type === "Per session" || field.type === "Fixed" || field.type === "Per unit"),
+    () => field.className && !(field.type === "Per session" || field.type === "Fixed"),
     [field.className, field.type]
+  );
+
+  const unit = useMemo(
+    () => {
+      switch (field?.type) {
+        case 'Per unit':
+          return 'Units';
+        case 'Per enrolment':
+          return 'Enrolments';
+        default:
+          return 'Hours';
+      }
+    },
+    [field?.type]
   );
 
   const shortCurrencySymbol = useMemo(() => (currency != null ? currency.shortCurrencySymbol : "$"), [currency]);
@@ -123,7 +137,7 @@ const PayslipPaylineItem = (props: Props) => {
                 </Grid>
 
                 <Grid item xs={3} className="centeredFlex">
-                  <Typography variant="caption">{field.type === "Per enrolment" ? "Enrolments" : "Hours"}</Typography>
+                  <Typography variant="caption">{unit}</Typography>
                 </Grid>
 
                 <Grid item xs={4} className="text-nowrap d-flex justify-content-end">
