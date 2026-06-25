@@ -1,4 +1,4 @@
-Dear ${student.getName(true)},
+Dear ${record.getName(true)},
 
 As you previously attended a course with ${tutor.getName(true)} we thought you might like to know about a future class they are teaching.
 
