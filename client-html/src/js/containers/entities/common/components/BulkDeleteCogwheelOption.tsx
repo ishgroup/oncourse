@@ -47,7 +47,7 @@ const BulkDeleteCogwheelOption = memo<BulkDeleteCogwheelOptionProps>(({
         dispatch(bulkDeleteEntityRecordsRequest(
           entity,
           {
-            ids: selection.map(parseInt),
+            ids: selection as any,
             search,
             filter,
             tagGroups
