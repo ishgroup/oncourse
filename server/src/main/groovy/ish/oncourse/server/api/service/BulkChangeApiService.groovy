@@ -11,7 +11,6 @@ package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
-import ish.common.types.MessageStatus
 import ish.common.types.OutcomeStatus
 import ish.oncourse.aql.AqlService
 import ish.oncourse.cayenne.PersistentObjectI
@@ -34,7 +33,6 @@ import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 class BulkChangeApiService {
 
     private static final List<Class<? extends CayenneDataObject>> ALLOWED_BULK_DELETE_ENTITIES = List.of(WaitingList, Message, Outcome, Survey, Contact)
-    private static final String MESSAGE_BULK_DELETE_AQL = "status is QUEUED"
 
     @Inject
     private Set<EntityApiService> entityApiServices
@@ -90,9 +88,6 @@ class BulkChangeApiService {
 
         if(!ALLOWED_BULK_DELETE_ENTITIES.contains(clzz))
             validator.throwClientErrorException("diff", "Bulk remove of ${entity} is not allowed")
-
-        if(clzz.equals(Message) && !dto.search?.contains(MESSAGE_BULK_DELETE_AQL))
-            validator.throwClientErrorException("diff", "Bulk remove of messages that are not queued is not allowed")
 
         List<? extends PersistentObjectI> entities = getBulkEntities(clzz, dto, context)
 
