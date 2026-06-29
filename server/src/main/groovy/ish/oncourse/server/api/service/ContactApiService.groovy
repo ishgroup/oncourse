@@ -33,6 +33,7 @@ import ish.oncourse.server.services.ISystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.PrefetchTreeNode
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -528,9 +529,18 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             validator.throwClientErrorException(Contact.MESSAGES.name, 'There are messages waiting to be sent to this contact.')
         }
 
+        if (cayenneModel.contactDuplicate != null && cayenneModel.contactDuplicate.size() > 0) {
+            validator.throwClientErrorException(Contact.MESSAGES.name, 'There are contact duplicates for this contact.')
+        }
+
         if (cayenneModel?.student?.enrolments != null && cayenneModel.student.enrolments.size() > 0) {
             validator.throwClientErrorException(Student.ENROLMENTS.name, 'There are enrolments for this student.')
         }
+
+        if (cayenneModel?.student?.applications != null && cayenneModel.student.applications.size() > 0) {
+            validator.throwClientErrorException(Student.ENROLMENTS.name, 'There are applications for this student.')
+        }
+
         if (cayenneModel?.student?.priorLearnings != null && cayenneModel.student.priorLearnings.size() > 0) {
             validator.throwClientErrorException(Student.PRIOR_LEARNINGS.name, 'There are prior learnings for this student.')
         }
@@ -722,5 +732,28 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
                 validator.throwClientErrorException(key, "Unsupported attribute")
         }
         action
+    }
+
+    GroupedContactsDTO checkIfCanBeDeleted(List<Long> contactIds) {
+        def contacts = ObjectSelect.query(Contact)
+                    .where(Contact.ID.in(contactIds))
+        .select(cayenneService.newContext)
+
+        List<Long> canBeDeleted = new ArrayList<>()
+        List<Long> cannotBeDeleted = new ArrayList<>()
+        contacts.each { contact ->
+            try {
+                validateModelBeforeRemove(contact)
+                canBeDeleted.add(contact.id)
+            } catch (ClientErrorException ignored) {
+                cannotBeDeleted.add(contact.id)
+            }
+        }
+
+        return new GroupedContactsDTO().with {
+            it.canBeRemoved = canBeDeleted
+            it.cannotBeRemoved = cannotBeDeleted
+            it
+        }
     }
 }

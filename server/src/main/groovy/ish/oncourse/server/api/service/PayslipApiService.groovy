@@ -11,6 +11,8 @@
 
 package ish.oncourse.server.api.service
 
+import ish.common.types.ClassCostRepetitionType
+import ish.common.types.PayslipPayType
 import ish.common.types.PayslipStatus
 import ish.oncourse.server.api.dao.PayslipDao
 import ish.oncourse.server.api.v1.function.PayLineFunctions
@@ -54,6 +56,8 @@ class PayslipApiService extends TaggableApiService<PayslipDTO, Payslip, PayslipD
             payslip.tags = dbModel.allTags.collect { it.id }
             payslip.paylines = dbModel.paylines.collect { toRestPayLine(it) }
                     .sort { a, b -> (!a.className ? !b.className ? 0 : 1 : !b.className ? -1 : a.className <=> b.className) ?: a.type <=> b.type ?: a.dateFor <=> b.dateFor }
+            if(dbModel.paylines.any {it.classCost == null || it.classCost.repetitionType == ClassCostRepetitionType.PER_UNIT})
+                payslip.setUnitsNumber(dbModel.unitsCount)
             payslip.createdOn = dbModel.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             payslip.modifiedOn = dbModel.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             payslip

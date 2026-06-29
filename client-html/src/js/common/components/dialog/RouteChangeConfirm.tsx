@@ -135,6 +135,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(RouteChangeConfirm)) as React.ComponentType<
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RouteChangeConfirm)) as React.ComponentType<
   Props
 >;

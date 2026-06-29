@@ -106,7 +106,7 @@ class LoadingIndicator extends React.PureComponent<Props, CompState> {
   }
 
   checkLoadingTime() {
-    const {hideIndicator, pending} = this.props.fetch;
+    const { hideIndicator, pending } = this.props.fetch;
 
     this.timeout = setTimeout(() => {
       if (this._isMounted) {
@@ -122,7 +122,7 @@ class LoadingIndicator extends React.PureComponent<Props, CompState> {
       classes, appBarOffset, transparentBackdrop, position = "absolute", allowInteractions, customLoading
     } = this.props;
 
-    const {showLoading} = this.state;
+    const { showLoading } = this.state;
 
     return (
       <div
@@ -136,7 +136,7 @@ class LoadingIndicator extends React.PureComponent<Props, CompState> {
           "fixed": position === "fixed"
         })}
       >
-        <CircularProgress classes={{root: customLoading || showLoading ? undefined : "d-none"}} size={40}
+        <CircularProgress classes={{ root: customLoading || showLoading ? undefined : "d-none" }} size={40}
                           thickness={5}/>
       </div>
     );
@@ -148,6 +148,5 @@ const mapStateToProps = (state: State) => ({
 });
 
 export default connect(
-  mapStateToProps,
-  null
+  mapStateToProps
 )(withStyles(LoadingIndicator, styles));

@@ -34,3 +34,5 @@ properties:
   modifiedOn:
     type: string
     format: date-time
+  unitsNumber:
+    type: integer

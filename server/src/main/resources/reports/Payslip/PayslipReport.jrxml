@@ -6,6 +6,7 @@
 	<property name="ish.oncourse.filePrefix" value="PayslipReport"/>
 	<property name="ish.oncourse.pdfFileName" value="PayslipReport.pdf"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
+	<import value="ish.common.types.ClassCostRepetitionType"/>
 	<import value="java.util.*"/>
 	<import value="ish.math.Money"/>
 	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
@@ -54,6 +55,7 @@
 	<field name="payLine" class="java.lang.Object"/>
 	<field name="payslip.contact.lastName" class="java.lang.String"/>
 	<field name="payslip.contact.firstName" class="java.lang.String"/>
+	<field name="payslip.unitsCount" class="java.lang.Integer"/>
 	<field name="classCost.courseClass.startDateTime" class="java.util.Date"/>
 	<field name="dateFor" class="java.util.Date"/>
 	<field name="image.poweredby" class="java.io.InputStream"/>
@@ -163,7 +165,7 @@
 			<textField isStretchWithOverflow="true" pattern="#0.##" isBlankWhenNull="true">
 				<reportElement x="104" y="0" width="25" height="20" uuid="0de7340e-9276-43c9-9f5f-c17a08aeb17a"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{payLine}.classCost != null ? " hrs" : " units"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{payLine}.classCost != null && $F{payLine}.classCost.repetitionType != ClassCostRepetitionType.PER_UNIT ? " hrs" : " units"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -188,6 +190,16 @@
 	</pageFooter>
 	<lastPageFooter>
 		<band height="25">
+			<staticText>
+				<reportElement style="header 2" x="20" y="0" width="60" height="25"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Total units]]></text>
+			</staticText>
+			<textField evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement style="header 2" x="70" y="0" width="78" height="25"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{payslip.unitsCount}]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement style="header 2" x="263" y="0" width="97" height="25"/>
 				<textElement textAlignment="Right"/>

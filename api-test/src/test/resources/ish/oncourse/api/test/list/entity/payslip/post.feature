@@ -52,7 +52,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         "tutorId":5,
         "tutorFullName":"tutor2",
         "tags":[218],
-        "paylines":[{"id":"#number","dateFor":"#ignore","description":"someDescription","className":null,"type":null,"budgetedQuantity":null,"budgetedValue":null,"quantity":1.0000,"value":33.00}],
+        "paylines":[{"id":"#number","dateFor":"#ignore","description":"someDescription","className":null,"type":null,"budgetedQuantity":null,"budgetedValue":null,"quantity":1.0000,"value":33.00,"tutorRoleType":null}],
         }
         """
 
@@ -110,7 +110,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         "tutorId":5,
         "tutorFullName":"tutor2",
         "tags":[218],
-        "paylines":[{"id":"#number","dateFor":"#ignore","description":"someDescription2","className":null,"type":null,"budgetedQuantity":null,"budgetedValue":null,"quantity":1.0000,"value":66.00}],
+        "paylines":[{"id":"#number","dateFor":"#ignore","description":"someDescription2","className":null,"type":null,"budgetedQuantity":null,"budgetedValue":null,"quantity":1.0000,"value":66.00,"tutorRoleType":null}],
         }
         """
 

@@ -11,13 +11,13 @@ package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
-import ish.common.types.MessageStatus
 import ish.common.types.OutcomeStatus
 import ish.oncourse.aql.AqlService
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.validation.EntityValidator
+import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.cayenne.WaitingList
@@ -32,8 +32,7 @@ import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 @CompileDynamic
 class BulkChangeApiService {
 
-    private static final List<Class<? extends CayenneDataObject>> ALLOWED_BULK_DELETE_ENTITIES = List.of(WaitingList, Message, Outcome, Survey)
-    private static final String MESSAGE_BULK_DELETE_AQL = "status is QUEUED"
+    private static final List<Class<? extends CayenneDataObject>> ALLOWED_BULK_DELETE_ENTITIES = List.of(WaitingList, Message, Outcome, Survey, Contact)
 
     @Inject
     private Set<EntityApiService> entityApiServices
@@ -90,18 +89,10 @@ class BulkChangeApiService {
         if(!ALLOWED_BULK_DELETE_ENTITIES.contains(clzz))
             validator.throwClientErrorException("diff", "Bulk remove of ${entity} is not allowed")
 
-        if(clzz.equals(Message) && !dto.search?.contains(MESSAGE_BULK_DELETE_AQL))
-            validator.throwClientErrorException("diff", "Bulk remove of messages that are not queued is not allowed")
-
         List<? extends PersistentObjectI> entities = getBulkEntities(clzz, dto, context)
 
         if (entities.empty) {
             validator.throwClientErrorException("diff", "Records for bulk delete are not found")
-        }
-
-        if(clzz.equals(Message)){
-            if(entities.find {(it as Message).status != MessageStatus.QUEUED})
-                validator.throwClientErrorException("diff", "Request returned messages with disallowed status. Bulk remove of messages that are not queued is not allowed")
         }
 
         if(clzz.equals(Outcome)) {

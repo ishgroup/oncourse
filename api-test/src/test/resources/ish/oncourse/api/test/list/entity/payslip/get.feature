@@ -58,16 +58,16 @@ Feature: Main feature for all GET requests with path 'list/entity/payslip'
         And match $.paylines contains only
         """
             [
-            {"id":1006,"dateFor":"2017-05-01","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00},
-            {"id":1009,"dateFor":"2017-05-02","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00},
-            {"id":1001,"dateFor":"2017-05-03","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00},
-            {"id":1008,"dateFor":"2017-05-04","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00},
-            {"id":1010,"dateFor":"2017-05-05","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00},
-            {"id":1004,"dateFor":"2017-05-06","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00},
-            {"id":1002,"dateFor":"2017-05-07","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00},
-            {"id":1007,"dateFor":"2017-05-08","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00},
-            {"id":1003,"dateFor":"2017-05-09","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00},
-            {"id":1005,"dateFor":"2017-05-10","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00}
+            {"id":1006,"dateFor":"2017-05-01","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00,"tutorRoleType":"Coordinator"},
+            {"id":1009,"dateFor":"2017-05-02","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00,"tutorRoleType":"Coordinator"},
+            {"id":1001,"dateFor":"2017-05-03","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00,"tutorRoleType":"Coordinator"},
+            {"id":1008,"dateFor":"2017-05-04","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00,"tutorRoleType":"Coordinator"},
+            {"id":1010,"dateFor":"2017-05-05","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00,"tutorRoleType":"Coordinator"},
+            {"id":1004,"dateFor":"2017-05-06","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00,"tutorRoleType":"Coordinator"},
+            {"id":1002,"dateFor":"2017-05-07","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00,"tutorRoleType":"Coordinator"},
+            {"id":1007,"dateFor":"2017-05-08","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00,"tutorRoleType":"Coordinator"},
+            {"id":1003,"dateFor":"2017-05-09","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00,"tutorRoleType":"Coordinator"},
+            {"id":1005,"dateFor":"2017-05-10","description":"Wage for tutor1","className":"course1-1 Course1","type":"Per timetabled hour","budgetedQuantity":1.0000,"budgetedValue":10.00,"quantity":1.0000,"value":10.00,"tutorRoleType":"Coordinator"}
             ]
         """
 

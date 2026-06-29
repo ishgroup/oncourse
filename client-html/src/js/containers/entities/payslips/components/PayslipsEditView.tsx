@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Contact, PayslipPayType, PayslipStatus } from '@api/model';
-import { Typography } from '@mui/material';
+import { Contact, PayslipPayType } from '@api/model';
 import Grid, { GridSize } from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import $t from '@t';
 import clsx from 'clsx';
-import { AddButton, formatCurrency, mapSelectItems } from 'ish-ui';
+import { formatCurrency, mapSelectItems } from 'ish-ui';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { arrayInsert, arrayRemove, change, FieldArray } from 'redux-form';
@@ -29,39 +29,39 @@ import ContactSelectItemRenderer from '../../contacts/components/ContactSelectIt
 import { getContactFullName } from '../../contacts/utils';
 import PayslipPaylineRenderrer from './PayslipPaylineRenderrer';
 
-const getLayoutArray = (threeColumn: boolean): { [key: string]: boolean | GridSize }[] => (threeColumn
-    ? [
-        { md: 12 },
-        { xs: 12 },
-        { xs: 6 },
-        { xs: 6 },
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 4 },
-        { xs: 8 },
-        { xs: false },
-        { xs: 12 },
-        { xs: 12 }
-      ]
-    : [
-        { md: 9 },
-        { xs: 4 },
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 4 },
-        { xs: 4 },
-        { xs: 4 },
-        { xs: 3 },
-        { xs: 8 },
-        { xs: 4 },
-        { xs: 4 },
-        { xs: 4 },
-        { xs: 6 }
-      ]);
-
 const payslipPayTypes = Object.keys(PayslipPayType).map(mapSelectItems);
+
+const getLayoutArray = (threeColumn: boolean): { [key: string]: boolean | GridSize }[] => (threeColumn
+  ? [
+    { md: 12 },
+    { xs: 12 },
+    { xs: 6 },
+    { xs: 6 },
+    { xs: 12 },
+    { xs: 12 },
+    { xs: 12 },
+    { xs: 12 },
+    { xs: 4 },
+    { xs: 8 },
+    { xs: false },
+    { xs: 12 },
+    { xs: 12 }
+  ]
+  : [
+    { md: 9 },
+    { xs: 4 },
+    { xs: 12 },
+    { xs: 12 },
+    { xs: 4 },
+    { xs: 4 },
+    { xs: 4 },
+    { xs: 3 },
+    { xs: 8 },
+    { xs: 4 },
+    { xs: 4 },
+    { xs: 4 },
+    { xs: 6 }
+  ]);
 
 class PayslipsEditView extends React.PureComponent<any, any> {
   calculateTotal = (accumulator: number, current: PayLineWithDefer): number => accumulator + (current.deferred ? current.quantity * current.value : 0);
@@ -118,9 +118,9 @@ class PayslipsEditView extends React.PureComponent<any, any> {
 
     const totalBudget = values && values.paylines.reduce(this.calculateTotalBudget, 0);
 
-    const paislipsLayout = getLayoutArray(!twoColumn);
-
     const shortCurrencySymbol = currency != null ? currency.shortCurrencySymbol : "$";
+
+    const paislipsLayout = getLayoutArray(!twoColumn);
 
     return values ? (
       <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
@@ -156,107 +156,91 @@ class PayslipsEditView extends React.PureComponent<any, any> {
             )}
           />
         </Grid>
-        <Grid item xs={12}>
-          <FormField
-            type="select"
-            name="payType"
-            label={$t('pay_type')}
-            items={payslipPayTypes}
-            disabled={values && values.status === "Paid/Exported"}
-            required
-          />
+
+        <Grid item sx={{ order: twoColumn ? { xs: 2, lg: 1 } : { xs: 2 } }} container columnSpacing={3} rowSpacing={2} xs={12} lg={twoColumn ? 8 : 12}  >
+          <Grid item xs={12}>
+            <FormField
+              type="select"
+              name="payType"
+              className="mb-2"
+              label={$t('pay_type')}
+              items={payslipPayTypes}
+              disabled={values && values.status === "Paid/Exported"}
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormField
+              type="tags"
+              name="tags"
+              label="Tags"
+              tags={tags}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <FieldArray
+              name="paylines"
+              component={PayslipPaylineRenderrer}
+              onDelete={this.removeCustomPayLine}
+              paylineLayout={paislipsLayout}
+              threeColumn={!twoColumn}
+              currency={currency}
+              values={values}
+              addCustomPayLine={this.addCustomPayLine}
+            />
+          </Grid>
+
+          <Grid item xs={12} container columnSpacing={3} className="centeredFlex mt-2">
+            <Grid item xs={paislipsLayout[8].xs} className="centeredFlex">
+              <span className="heading flex-fill money">{$t('payrun_total')}</span>
+            </Grid>
+            <Grid item xs={paislipsLayout[9].xs}>
+              <Grid container columnSpacing={3}>
+                <Grid item xs={twoColumn ? paislipsLayout[10].xs : false} />
+                <Grid item xs={paislipsLayout[11].xs} className="centeredFlex justify-content-end">
+                  <Typography
+                    component="span"
+                    className={clsx(
+                      "heading",
+                      "money",
+                      twoColumn ? "pr-6" : "pr-4"
+                    )}
+                  >
+                    {formatCurrency(total, shortCurrencySymbol)}
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={paislipsLayout[11].xs} className="centeredFlex justify-content-end">
+                  <Typography
+                    component="span"
+                    variant="body1"
+                    color="textSecondary"
+                    className="pr-4 money"
+                  >
+                    {formatCurrency(totalBudget, shortCurrencySymbol)}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={paislipsLayout[12].xs}>
+            <FormField type="multilineText" name="publicNotes" label={$t('public_notes')}  />
+          </Grid>
+
+          <Grid item xs={paislipsLayout[12].xs}>
+            <FormField type="multilineText" name="privateNotes" label={$t('private_notes')}  />
+          </Grid>
         </Grid>
 
-        <Grid item xs={twoColumn ? 8 : 12}>
-          <FormField
-            type="tags"
-            name="tags"
-            tags={tags}
-          />
-        </Grid>
-
-        <Grid item xs={twoColumn ? 4 : 12}>
+        <Grid item sx={{ order: twoColumn ? { xs: 1, lg: 2 } : { xs: 1 } }} lg={twoColumn ? 4 : 12}>
           <EntityChecklists
             entity="Payslip"
             form={form}
             entityId={values.id}
             checked={values.tags}
           />
-        </Grid>
-
-        <Grid item xs={12} className="mw-800">
-          <FieldArray
-            name="paylines"
-            component={PayslipPaylineRenderrer}
-            onDelete={this.removeCustomPayLine}
-            paylineLayout={paislipsLayout}
-            threeColumn={!twoColumn}
-            currency={currency}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <div
-            className={clsx("centeredFlex mt-2", {
-              "mw-800": twoColumn
-            })}
-          >
-            <Grid container columnSpacing={3}>
-              <Grid item xs={paislipsLayout[8].xs} className="centeredFlex">
-                <span className="heading flex-fill money">{$t('payrun_total')}</span>
-              </Grid>
-              <Grid item xs={paislipsLayout[9].xs}>
-                <Grid container columnSpacing={3}>
-                  <Grid item xs={twoColumn ? paislipsLayout[10].xs : false} />
-
-                  <Grid item xs={paislipsLayout[11].xs} className="centeredFlex justify-content-end">
-                    <Typography
-                      component="span"
-                      className={clsx(
-                        "heading",
-                        "money",
-                        twoColumn ? "pr-6" : "pr-4"
-                      )}
-                    >
-                      {formatCurrency(total, shortCurrencySymbol)}
-                    </Typography>
-                  </Grid>
-
-                  <Grid item xs={paislipsLayout[11].xs} className="centeredFlex justify-content-end">
-                    <Typography
-                      component="span"
-                      variant="body1"
-                      color="textSecondary"
-                      className="pr-4 money"
-                    >
-                      {formatCurrency(totalBudget, shortCurrencySymbol)}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </div>
-        </Grid>
-
-        <Grid item xs={12}>
-          <div className="centeredFlex">
-            <Typography component="span" variant="body1" color="textSecondary">
-              {$t('add_new_custom_pay_item')}
-            </Typography>
-            <AddButton
-              onClick={this.addCustomPayLine}
-              disabled={values && values.status === PayslipStatus["Paid/Exported"]}
-              className="addButtonColor"
-            />
-          </div>
-        </Grid>
-
-        <Grid item xs={paislipsLayout[12].xs}>
-          <FormField type="multilineText" name="publicNotes" label={$t('public_notes')}  />
-        </Grid>
-
-        <Grid item xs={paislipsLayout[12].xs}>
-          <FormField type="multilineText" name="privateNotes" label={$t('private_notes')}  />
         </Grid>
       </Grid>
     ) : null;
