@@ -5745,8 +5745,6 @@
 	<obj-relationship name="invoiceDueDates" source="AbstractInvoice" target="InvoiceDueDate" deleteRule="Deny" db-relationship-path="invoiceDueDates"/>
 	<obj-relationship name="lead" source="AbstractInvoice" target="Lead" deleteRule="Nullify" db-relationship-path="lead"/>
 	<obj-relationship name="taggingRelations" source="AbstractInvoice" target="AbstractInvoiceTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
-	<obj-relationship name="abstractInvoiceLines" source="AbstractInvoice" target="AbstractInvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
-	<obj-relationship name="abstractInvoice" source="AbstractInvoiceLine" target="AbstractInvoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="contact" source="AbstractInvoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 
 	<obj-relationship name="taggedVoucherProduct" source="VoucherProductTagRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="taggedProduct"/>
