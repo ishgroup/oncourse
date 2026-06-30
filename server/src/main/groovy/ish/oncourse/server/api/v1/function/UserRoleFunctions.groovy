@@ -43,7 +43,7 @@ class UserRoleFunctions {
             SPECIAL_EXPORT_XML,
             SPECIAL_CERTIFICATE,
             SPECIAL_DE_DUPE,
-            SPECIAL_CANCEL_TRANSFER_ENROLMENTS,
+            SPECIAL_CANCEL_ENROLMENTS,
             SPECIAL_AVETMISS_EXPORT,
             SPECIAL_IMPORT,
             SPECIAL_OVERRIDE_TUTOR_PAYRATE,
