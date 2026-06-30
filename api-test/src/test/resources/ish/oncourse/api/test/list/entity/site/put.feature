@@ -47,7 +47,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/site'
 
         Given path ishPathList
         And param entity = 'Site'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["[]",null,"someSite100","Adelaide","5000","false"])].id

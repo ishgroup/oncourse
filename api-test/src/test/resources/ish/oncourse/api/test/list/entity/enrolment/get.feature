@@ -15,7 +15,8 @@ Feature: Main feature for all GET requests with path 'list/entity/enrolment'
 
         Given path ishPathList
         And param entity = 'Enrolment'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["1","2","3","4","5","6","101","102","103","104","105","106","107"]
 
@@ -31,7 +32,8 @@ Feature: Main feature for all GET requests with path 'list/entity/enrolment'
 
         Given path ishPathList
         And param entity = 'Enrolment'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["1","2","3","4","5","6","101","102","103","104","105","106","107"]
 
@@ -187,7 +189,8 @@ Feature: Main feature for all GET requests with path 'list/entity/enrolment'
 
         Given path ishPathList
         And param entity = 'Enrolment'
-        When method GET
+        And request {}
+        When method POST
         Then status 403
         And match $.errorMessage == "Sorry, you have no permissions to view this entity. Please contact your administrator"
 
