@@ -41,6 +41,17 @@ export const getDocumentShareSummary = (
         : ', all tutors in skillsOnCourse portal';
       break;
     }
+    case 'Students only': {
+      if (isSingleContactAttachment(attachmentRelations)) {
+        label += ', ' + attachmentRelations.map(r =>
+          r.relatedContacts.map(c => c.name));
+        break;
+      }
+      if (attachmentRelations.length) {
+        label += ', some students in skillsOnCourse portal';
+      }
+      break;
+    }
     case 'Tutors and enrolled students': {
       if (isSingleContactAttachment(attachmentRelations)) {
         label += ', ' + attachmentRelations.map(r =>
