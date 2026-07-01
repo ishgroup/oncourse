@@ -18,6 +18,7 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.cayenne.WaitingList
@@ -32,7 +33,7 @@ import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 @CompileDynamic
 class BulkChangeApiService {
 
-    private static final List<Class<? extends CayenneDataObject>> ALLOWED_BULK_DELETE_ENTITIES = List.of(WaitingList, Message, Outcome, Survey, Contact)
+    private static final List<Class<? extends CayenneDataObject>> ALLOWED_BULK_DELETE_ENTITIES = List.of(WaitingList, Message, Outcome, Survey, Contact, Lead)
 
     @Inject
     private Set<EntityApiService> entityApiServices
