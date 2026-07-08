@@ -18,6 +18,7 @@ import ish.oncourse.server.cayenne.Attendance
 import ish.util.DurationFormatter
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 
 
 class AttendanceApiService  extends EntityApiService<StudentAttendanceDTO, Attendance, AttendanceDao> {
@@ -44,6 +45,12 @@ class AttendanceApiService  extends EntityApiService<StudentAttendanceDTO, Atten
 
     void updateList(List<StudentAttendanceDTO> attendances) {
         ObjectContext context = cayenneService.newContext
+        Collection<Long> ids = attendances.id
+        ObjectSelect.query(Attendance)
+                .where(Attendance.ID.in(ids))
+                .prefetch(Attendance.SESSION.joint())
+                .select(context) // результат оседает в identity map контекста
+
         attendances.each { dto ->
             validateModelBeforeSave(dto, context, dto.id)
             Attendance attendance = getEntityAndValidateExistence(context, dto.id)
