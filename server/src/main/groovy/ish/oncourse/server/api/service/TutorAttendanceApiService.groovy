@@ -23,6 +23,7 @@ import ish.oncourse.server.cayenne.TutorAttendance
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang.time.DateUtils
 
 import java.util.concurrent.TimeUnit
@@ -117,6 +118,13 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
         List<TutorAttendance> attendancesToDelete = session.sessionTutors.findAll {!(it.id in attendanceDTOList*.id) }
         attendancesToDelete.each {validateModelBeforeRemove(it)}
         context.deleteObjects(attendancesToDelete)
+
+        List<Long> existingIds = attendanceDTOList*.id.findAll { it != null }
+        if (existingIds) {
+            ObjectSelect.query(TutorAttendance)
+                    .where(TutorAttendance.ID.in(existingIds))
+                    .select(context) //add all existed attendances to context map in 1 query
+        }
         
         attendanceDTOList.each { dto ->
             TutorAttendance attendance
