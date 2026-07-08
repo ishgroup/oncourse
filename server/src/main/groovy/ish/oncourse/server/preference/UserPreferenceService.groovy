@@ -28,6 +28,7 @@ import ish.persistence.Preferences
 import ish.util.AccountUtil
 import org.apache.cayenne.CayenneRuntimeException
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
@@ -90,17 +91,28 @@ class UserPreferenceService {
     }
 
     private Preference getUserPref(String name) {
-        return userService.currentUser.preferences.find {it.name == name}
+        SystemUser user = userService.currentUser
+        return ObjectSelect.query(Preference)
+                .where(Preference.NAME.eq(name)
+                        .andExp(Preference.USER.dot(SystemUser.ID).eq(user.id)))
+                .selectOne(cayenneService.newContext)
     }
 
     private Preference getUserPrefByUniqueKey(String uniqueKey) {
-        return userService.currentUser.preferences.find {it.uniqueKey == uniqueKey}
+        SystemUser user = userService.currentUser
+        return ObjectSelect.query(Preference)
+                .where(Preference.UNIQUE_KEY.eq(uniqueKey)
+                        .andExp(Preference.USER.dot(SystemUser.ID).eq(user.id)))
+                .selectOne(cayenneService.newContext)
     }
 
     private String getReadNews() {
-        List<Preference> preferenceList = userService.currentUser.preferences.findAll { it.name == NEWS}
-        return preferenceList.stream().map({ preference -> preference.valueString })
-                .toArray()
+        SystemUser user = userService.currentUser
+        return ObjectSelect.query(Preference)
+                .where(Preference.NAME.eq(NEWS)
+                        .andExp(Preference.USER.dot(SystemUser.ID).eq(user.id)))
+                .select(cayenneService.newReadonlyContext)
+                .collect { it.valueString }
                 .join(JOIN_DELIMETER)
     }
 
