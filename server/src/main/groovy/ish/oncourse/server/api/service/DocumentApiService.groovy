@@ -14,22 +14,19 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.api.dao.DocumentDao
+import ish.oncourse.server.api.v1.model.DocumentDTO
 import ish.oncourse.server.api.v1.model.DocumentVisibilityDTO
-import ish.oncourse.server.cayenne.DocumentVersion
+import ish.oncourse.server.cayenne.Document
+import ish.oncourse.server.cayenne.DocumentTagRelation
 import ish.oncourse.server.document.DocumentService
 import ish.s3.AmazonS3Service
 import ish.util.LocalDateUtils
+import org.apache.cayenne.ObjectContext
 
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocumentAttachmentRelations
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocumentVersion
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
-import ish.oncourse.server.api.v1.model.DocumentDTO
-import ish.oncourse.server.cayenne.Document
-import ish.oncourse.server.cayenne.DocumentTagRelation
-import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.trimToEmpty
-import static org.apache.commons.lang3.StringUtils.trimToNull
+import static org.apache.commons.lang3.StringUtils.*
 
 @CompileStatic
 class DocumentApiService extends TaggableApiService<DocumentDTO, Document, DocumentDao> {
@@ -136,7 +133,15 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
             switch (key) {
                 case Document.IS_REMOVED.name:
                     action = { Document d ->
-                        d.isRemoved = Boolean.valueOf(value)
+                        def booleanValue = Boolean.valueOf(value)
+                        def amazonS3Service = new AmazonS3Service(documentService)
+                        if(booleanValue) {
+                            amazonS3Service.makeFilePrivate(d.getFileUUID(), d.getCurrentVersion().getVersionId())
+                            d.context.deleteObjects(d.attachmentRelations)
+                        } else {
+                            amazonS3Service.changeVisibility(d.getFileUUID(), d.getCurrentVersion().getVersionId(), d.webVisibility)
+                        }
+                        d.isRemoved = booleanValue
                     }
                     break
                 default:
