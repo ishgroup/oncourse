@@ -107,14 +107,17 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
             }
         }
 
-        List<Session> existingSessions = ObjectSelect.query(Session)
+        // disjoint() prefetches fire separate IN-queries per relationship instead of one big JOIN,
+        // so the result set never multiplies (no Cartesian product).
+        // For Session.ATTENDANCE this is critical: joint() would produce sessions × students rows.
+        ObjectSelect.query(Session)
                 .where(Session.COURSE_CLASS.dot(CourseClass.ID).eq(classId))
-                .prefetch(Session.SESSION_TUTORS.joint())
-                .prefetch(Session.PAY_LINES.joint())
-                .prefetch(Session.SESSION_MODULES.joint())
-                .prefetch(Session.ATTENDANCE.joint())
-                .prefetch(Session.SESSION_TUTORS.dot(TutorAttendance.COURSE_CLASS_TUTOR).dot(CourseClassTutor.CLASS_COSTS).dot(ClassCost.PAYLINES).joint())
-                .select(context) //load sessions with all prefetches to context map
+                .prefetch(Session.SESSION_TUTORS.disjoint())
+                .prefetch(Session.PAY_LINES.disjoint())
+                .prefetch(Session.SESSION_MODULES.disjoint())
+                .prefetch(Session.ATTENDANCE.disjoint())
+                .prefetch(Session.SESSION_TUTORS.dot(TutorAttendance.COURSE_CLASS_TUTOR).dot(CourseClassTutor.CLASS_COSTS).dot(ClassCost.PAYLINES).disjoint())
+                .select(context) // warm the context identity map; result list not needed
 
         if (courseClass) {
             //delete
@@ -147,6 +150,7 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
                 throw new RuntimeException("Can not save sessions: $dtoList", e)
             }
         }
+
         //        collect all Clash warnings
         if (validateOnly.get() && !dtoList.empty && ((courseClass != null && !courseClass.isCancelled) || courseClass == null)) {
             responce = sessionValidator.validate(dtoList, classId)
