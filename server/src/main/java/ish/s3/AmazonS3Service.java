@@ -144,6 +144,14 @@ public class AmazonS3Service {
         s3Client.setObjectAcl(bucketName, uniqueKey, versionId, objectAcl);
     }
 
+
+    public void makeFilePrivate(String uniqueKey, String versionId) {
+        s3Client.setObjectAcl(new SetObjectAclRequest(
+                bucketName, uniqueKey, versionId,
+                CannedAccessControlList.Private
+        ));
+    }
+
     /**
      * Generates URL to access file with specified key.
      *
