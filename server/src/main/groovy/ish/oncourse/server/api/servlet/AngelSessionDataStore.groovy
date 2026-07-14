@@ -85,24 +85,29 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
         if (!user) {
             return  // user already logged out
         }
-        user = context.localObject(user)
+
+        if (isLogin) {
+            data.setAttribute(IS_LOGIN, false)
+        }
 
         Runnable runnable = { ->
             try {
+                ObjectContext localContext = cayenneService.getNewNonReplicatingContext()
+                SystemUser localUser = localContext.localObject(user)
+
                 // this is the first time the user session is being saved to the DB
                 if (isLogin || lastSaveTime == 0L) {
-                    data.setAttribute(IS_LOGIN, false)
-                    user.setSessionId(id)
+                    localUser.setSessionId(id)
                 } else {
                     //check if user was logged out from some other application instance
                     if (!exists(id)) {
                         return
                     }
                 }
-                user.setLastAccess(new Date())
-                context.commitChanges()
+                localUser.setLastAccess(new Date())
+                localContext.commitChanges()
                 if (isLogin) {
-                    eventService.postEvent(SystemEvent.valueOf(SystemEventType.USER_LOGGED_IN, user))
+                    eventService.postEvent(SystemEvent.valueOf(SystemEventType.USER_LOGGED_IN, localUser))
                 }
             } catch (Exception e) {
                 logger.catching(e)

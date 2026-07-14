@@ -43,13 +43,15 @@ class AttendanceDao implements ClassRelatedDao<Attendance> {
     }
 
     List<Attendance> getByClassId(ObjectContext context, Long courseClassId) {
-        List<Long> studentIds = ObjectSelect.columnQuery(Enrolment, Enrolment.STUDENT.dot(Student.ID)).where(Enrolment.COURSE_CLASS.dot(CourseClass.ID).eq(courseClassId))
+        List<Long> studentIds = ObjectSelect.columnQuery(Enrolment, Enrolment.STUDENT.dot(Student.ID))
+                .where(Enrolment.COURSE_CLASS.dot(CourseClass.ID).eq(courseClassId))
                 .and(Enrolment.STATUS.in(EnrolmentStatus.IN_TRANSACTION, EnrolmentStatus.SUCCESS)).select(context)
 
         return ObjectSelect.query(Attendance)
                 .where(Attendance.SESSION.dot(Session.COURSE_CLASS).dot(CourseClass.ID).eq(courseClassId))
                 .and(Attendance.STUDENT.dot(Student.ID).in(studentIds))
                 .prefetch(Attendance.STUDENT.dot(Student.CONTACT).joint())
+                .prefetch(Attendance.SESSION.joint())
                 .orderBy(Attendance.ID.asc())
                 .select(context)
     }
