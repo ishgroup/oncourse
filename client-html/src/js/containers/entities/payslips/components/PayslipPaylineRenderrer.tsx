@@ -1,6 +1,7 @@
+import { PayslipStatus } from '@api/model';
 import { Grid } from '@mui/material';
 import $t from '@t';
-import { formatCurrency } from 'ish-ui';
+import { AddButton, formatCurrency } from 'ish-ui';
 import * as React from 'react';
 import { withStyles } from 'tss-react/mui';
 import { PayLineWithDefer } from '../../../../model/entities/Payslip';
@@ -46,7 +47,7 @@ const styles = theme =>
 class PayslipPaylineRenderrer extends React.PureComponent<any, any> {
   render() {
     const {
- fields, classes, threeColumn, onDelete, paylineLayout, currency
+ fields, classes, threeColumn, onDelete, paylineLayout, currency, addCustomPayLine, values
 } = this.props;
 
     const classGroups = {};
@@ -94,32 +95,32 @@ class PayslipPaylineRenderrer extends React.PureComponent<any, any> {
     });
 
     return (
-      <Grid container columnSpacing={3}>
-        <Grid item xs={12} className="pt-3">
-          {Object.keys(classGroups).map((g, i) => (
-            <React.Fragment key={g + i}>
-              <div className="heading mb-1 money">
-                {g}
-                {' '}
-                (
-                {formatCurrency(classGroupsTotal[g], shortCurrencySymbol)}
-                )
-              </div>
-              {classGroups[g].map((t, n) => (
-                <React.Fragment key={i + n}>{t}</React.Fragment>
-              ))}
-            </React.Fragment>
-          ))}
+      <Grid item xs={12}>
+        {Object.keys(classGroups).map((g, i) => (
+          <React.Fragment key={g + i}>
+            <div className="heading mb-1 money">
+              {g}
+              {' '}
+              (
+              {formatCurrency(classGroupsTotal[g], shortCurrencySymbol)}
+              )
+            </div>
+            {classGroups[g].map((t, n) => (
+              <React.Fragment key={i + n}>{t}</React.Fragment>
+            ))}
+          </React.Fragment>
+        ))}
 
-          {customLines.length ? (
-            <>
-              <div className="heading mb-1 money">
-                {$t('custom_lines', [formatCurrency(classGroupsTotal["Custom Lines"], shortCurrencySymbol)])}
-              </div>
-              {customLines}
-            </>
-          ) : null}
-        </Grid>
+        {(values?.status !== PayslipStatus["Paid/Exported"] || Boolean(customLines.length)) && <div className="centeredFlex mb-2">
+          <div className="heading money">
+            {$t('custom_lines', [formatCurrency(classGroupsTotal["Custom Lines"], shortCurrencySymbol)])}
+          </div>
+          {values?.status !== PayslipStatus["Paid/Exported"] && <AddButton
+            onClick={addCustomPayLine}
+            className="addButtonColor"
+          />}
+        </div>}
+        {customLines}
       </Grid>
     );
   }

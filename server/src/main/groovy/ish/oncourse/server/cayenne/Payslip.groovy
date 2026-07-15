@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.ClassCostRepetitionType
 import ish.common.types.PayslipPayType
 import ish.common.types.PayslipStatus
 import ish.math.Money
@@ -73,6 +74,11 @@ class Payslip extends _Payslip implements ContactActivityTrait{
 	@Nullable @API @Override
 	String getNotes() {
 		return super.getNotes()
+	}
+
+	Integer getUnitsCount() {
+		return (Integer) paylines.findAll {it.classCost == null || it.classCost.repetitionType == ClassCostRepetitionType.PER_UNIT}
+		.collect{it.quantity}.sum()
 	}
 
 	/**

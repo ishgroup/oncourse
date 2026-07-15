@@ -1,0 +1,28 @@
+post:
+  operationId: checkIfCanBeDeleted
+  description: Return contact records lists
+  tags:
+    - Contact
+  parameters:
+    - name: ids
+      in: body
+      schema:
+        type: array
+        items:
+          type: integer
+          format: int64
+      required: true
+      description: Unique identifier of contact records to check
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/contact/GroupedContacts.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: CONTACT
+    errorMessage: Sorry, you have no permissions to get contact. Please contact your administrator

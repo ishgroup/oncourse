@@ -253,6 +253,8 @@ paths:
     $ref: './path/list/entity/waitingList/api.yaml'
   /list/entity/contact:
     $ref: './path/list/entity/contact/api.yaml'
+  /list/entity/contact/group:
+    $ref: './path/list/entity/contact/group/api.yaml'
   /list/entity/contact/insight:
     $ref: './path/list/entity/contact/insight/api.yaml'
   /list/entity/contact/merge:

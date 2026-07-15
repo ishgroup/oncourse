@@ -72,7 +72,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/payslip'
         "tutorId":5,
         "tutorFullName":"tutor2",
         "tags":[218],
-        "paylines":[{"id":"#number","dateFor":"#ignore","description":"someDescription_upd","className":null,"type":null,"budgetedQuantity":null,"budgetedValue":null,"quantity":1.0000,"value":120.00}],
+        "paylines":[{"id":"#number","dateFor":"#ignore","description":"someDescription_upd","className":null,"type":null,"budgetedQuantity":null,"budgetedValue":null,"quantity":1.0000,"value":120.00,"tutorRoleType":null}],
         }
         """
 

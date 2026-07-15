@@ -12,10 +12,11 @@ import { getFormValues } from 'redux-form';
 import { IAction } from '../../../../common/actions/IshAction';
 import { getPluralSuffix } from '../../../../common/utils/strings';
 import { State } from '../../../../reducers/state';
+import BulkDeleteCogwheelOption from '../../common/components/BulkDeleteCogwheelOption';
 import BulkEditCogwheelOption from '../../common/components/BulkEditCogwheelOption';
 import PayslipGenerateCogwheelAction from '../../payslips/components/PayslipGenerateCogwheelAction';
 import { closeMergeContactsSuccess, getMergeContacts } from '../actions';
-import MergeContactsModal from './MergeContactsModal';
+import MergeContactsModal from './merge-contacts/MergeContactsModal';
 
 const ContactCogWheel = props => {
   const {
@@ -68,6 +69,7 @@ const ContactCogWheel = props => {
         {$t('merge', [contactsCountLabel])}
       </MenuItem>
       <BulkEditCogwheelOption {...props} />
+      <BulkDeleteCogwheelOption {...props} />
     </>
   );
 };
@@ -82,4 +84,4 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   closeMergeContactsSuccess: () => dispatch(closeMergeContactsSuccess())
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ContactCogWheel);
+export default connect(mapStateToProps, mapDispatchToProps)(ContactCogWheel);

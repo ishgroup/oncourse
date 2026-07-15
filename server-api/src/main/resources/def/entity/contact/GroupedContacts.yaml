@@ -1,0 +1,14 @@
+type: object
+properties:
+  canBeRemoved:
+    type: array
+    items:
+      type: integer
+      format: int64
+    required: true
+  cannotBeRemoved:
+    type: array
+    items:
+      type: integer
+      format: int64
+    required: true

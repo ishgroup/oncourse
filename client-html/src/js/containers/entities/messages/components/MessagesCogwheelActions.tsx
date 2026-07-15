@@ -9,9 +9,10 @@
 import MenuItem from '@mui/material/MenuItem';
 import clsx from 'clsx';
 import { AnyArgFunction, ShowConfirmCaller } from 'ish-ui';
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { useAppDispatch } from '../../../../common/utils/hooks';
 import { bulkDeleteEntityRecordsRequest } from '../../common/actions';
+import BulkDeleteCogwheelOption from '../../common/components/BulkDeleteCogwheelOption';
 
 interface QuedMessagesBulkDeleteProps {
   menuItemClass: string;
@@ -20,13 +21,12 @@ interface QuedMessagesBulkDeleteProps {
   showConfirm: ShowConfirmCaller;
 }
 
-const MessagesCogwheelActions = memo<QuedMessagesBulkDeleteProps>(({
-  menuItemClass,
-  closeMenu,
-  showConfirm
-}) => {
-  const [openArchive, setOpenArchive] = useState(false);
-
+const MessagesCogwheelActions = memo<QuedMessagesBulkDeleteProps & any>(props => {
+  const {
+    menuItemClass,
+    closeMenu,
+    showConfirm
+  } = props;
   const dispatch = useAppDispatch();
 
   const onBulkEditClick = () => {
@@ -51,6 +51,7 @@ const MessagesCogwheelActions = memo<QuedMessagesBulkDeleteProps>(({
     <MenuItem className={clsx(menuItemClass, "errorColor")} onClick={onBulkEditClick}>
       Bulk delete queued messages
     </MenuItem>
+    <BulkDeleteCogwheelOption {...props} />
   </>;
 });
 

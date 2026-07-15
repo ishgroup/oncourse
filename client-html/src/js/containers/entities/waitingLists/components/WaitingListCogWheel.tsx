@@ -43,4 +43,4 @@ const mapStateToProps = (state: State) => ({
   hasQePermissions: state.access["ENROLMENT_CREATE"]
 });
 
-export default connect<any, any, any>(mapStateToProps)(WaitingListCogWheel);
+export default connect(mapStateToProps)(WaitingListCogWheel);

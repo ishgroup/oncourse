@@ -453,7 +453,7 @@ class CheckoutController {
                     line.invoice.updateAmountOwing()
 
                     def dueDatesAmountSum = Money.ZERO
-                    line.invoice.invoiceDueDates.each {dueDatesAmountSum.add(it.amount)}
+                    line.invoice.invoiceDueDates.each {dueDatesAmountSum = dueDatesAmountSum.add(it.amount)}
 
                     if (!dueDatesAmountSum || dueDatesAmountSum == Money.ZERO) {
                         line.invoice.createPaymentDues(payAmount, paymentIn.paymentDate)

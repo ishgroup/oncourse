@@ -41,6 +41,7 @@ class PayLineFunctions {
             payLine.quantity = dbPayLine.quantity
             payLine.budgetedValue = dbPayLine.budgetedValue?.toBigDecimal()
             payLine.value = dbPayLine.value?.toBigDecimal()
+            payLine.tutorRoleType = dbPayLine.classCost?.tutorRole?.definedTutorRole?.name
             payLine
         }
     }

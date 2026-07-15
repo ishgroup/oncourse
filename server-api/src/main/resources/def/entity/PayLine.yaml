@@ -27,3 +27,5 @@ properties:
   value:
     type: number
     required: true
+  tutorRoleType:
+    type: string

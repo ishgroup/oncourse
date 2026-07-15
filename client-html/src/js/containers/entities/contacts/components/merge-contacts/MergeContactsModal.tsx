@@ -1,6 +1,6 @@
-import Dialog from "@mui/material/Dialog";
-import React from "react";
-import MergeContacts from "./merge-contacts/MergeContacts";
+import Dialog from '@mui/material/Dialog';
+import React from 'react';
+import MergeContacts from './MergeContacts';
 
 const MergeContactsModal: React.FC<any> = props => {
   const { opened, onClose } = props;
