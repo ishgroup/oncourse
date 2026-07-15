@@ -17,5 +17,5 @@ post:
       description: Unexpected error
   x-permission:
     mask: edit
-    keyCode: SPECIAL_CANCEL_TRANSFER_ENROLMENTS
+    keyCode: SPECIAL_CANCEL_ENROLMENTS
     errorMessage: Sorry, you have no permissions to cancel enrolment. Please contact your administrator
