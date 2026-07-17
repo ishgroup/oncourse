@@ -225,7 +225,7 @@ public class SMTPMessage {
 			var getSubject = GetSubject.valueOf(subject);
 			var getContent = getContentFunction();
 
-			var mailDeliveryParam = MailDeliveryParam.valueOf(getFrom, getEnvelopeFrom, getAddressesTO, getAddressesCC, getAddressesBCC, getSubject, getContent);
+			var mailDeliveryParam = MailDeliveryParam.valueOf(getFrom, getEnvelopeFrom, getAddressesTO, getAddressesCC, getAddressesBCC, getSubject, getContent, GetAddresses.empty());
 
 			mailDeliveryService.sendEmail(mailDeliveryParam);
 
