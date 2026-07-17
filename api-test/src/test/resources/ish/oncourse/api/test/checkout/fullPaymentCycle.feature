@@ -106,15 +106,15 @@ Feature: re-usable feature to performance of full payment cycle and delete all o
 
     Given path ishPathList
     And param entity = 'Outcome'
-    And param search = 'enrolment.id == ' + enrolmentId
-    When method GET
+    And request {search: '#("enrolment.id == " +enrolmentId)'}
+    When method POST
     Then status 200
     And match karate.sizeOf(response.rows) == outcomesCount
 
     Given path ishPathList
     And param entity = 'Course'
-    And param search = 'courseClasses.id == ' + classId
-    When method GET
+    And request {search: '#("courseClasses.id == " +classId)'}
+    When method POST
     Then status 200
     And def courseId = response.rows[0].id
 
