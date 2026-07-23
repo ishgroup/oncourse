@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 153-1
+      author: dmitriy
+      validCheckSum: ANY
+      preConditions:
+        onFail: HALT
+        sqlCheck:
+          expectedResult: '0'
+          sql: SELECT COUNT(*) FROM Tutor WHERE contactId IS NULL
+      changes:
+        - addNotNullConstraint:
+            columnDataType: BIGINT
+            columnName: contactId
+            tableName: Tutor
