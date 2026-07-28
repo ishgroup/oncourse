@@ -33,7 +33,7 @@ class CXFApplication extends Application{
         classes.add(JacksonJsonProvider.class)
         classes.add(JacksonJaxbJsonProvider.class)
         classes.add(ObjectMapperContextResolver.class)
-        props.putAll(props)
+        this.props.putAll(props)
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.google.inject.Inject
 import ish.common.types.AccountTransactionType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.accounting.builder.JournalTransactionsBuilder
+import org.apache.cayenne.ObjectContext
 import ish.oncourse.server.accounting.builder.TransactionsBuilder
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
@@ -43,13 +44,17 @@ class AccountTransactionService {
             lock.lock()
             try {
                 if (hasNoInitialTransactions(settings.details[0].tableName, settings.details[0].foreignRecordId)) {
-                    settings.details.each { CreateAccountTransactions.valueOf(cayenneService.newContext, it).create() }
+                    ObjectContext context = cayenneService.newContext
+                    settings.details.each { CreateAccountTransactions.valueOf(context, it).create() }
+                    context.commitChanges()
                 }
             } finally {
                 lock.unlock()
             }
         } else {
-            settings.details.each { CreateAccountTransactions.valueOf(cayenneService.newContext, it).create() }
+            ObjectContext context = cayenneService.newContext
+            settings.details.each { CreateAccountTransactions.valueOf(context, it).create() }
+            context.commitChanges()
         }
     }
 

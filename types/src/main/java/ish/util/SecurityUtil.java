@@ -114,7 +114,7 @@ public final class SecurityUtil {
 			StringBuilder result = new StringBuilder();
 			for (byte aHash : hash) {
 				// the mask 0xFF is used to ensure we don't get a signed integer (which then adds 2^32 to the hex value)
-				result.append(Integer.toHexString(aHash & 0xFF));
+				result.append(String.format("%02x", aHash & 0xFF));
 			}
 			return result.toString();
 		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {

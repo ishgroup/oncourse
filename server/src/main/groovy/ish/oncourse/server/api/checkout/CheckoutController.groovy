@@ -620,6 +620,8 @@ class CheckoutController {
             Money payAmount = Money.of(amount)
             if (payAmount != Money.ZERO) {
                 Voucher voucher = getRedeemedVoucherAndValidate(id)
+                if (voucher == null)
+                    return
 
                 if (voucher.voucherProduct.maxCoursesRedemption != null) {
                     processCourseVoucher(voucher, payAmount)
@@ -646,6 +648,7 @@ class CheckoutController {
 
         if (!voucher) {
             result << new CheckoutValidationErrorDTO(itemId: Long.valueOf(id), propertyName: "redeemedVouchers",  error:  "Voucher is not available")
+            return null
         }
 
         if (voucher.contact && payer.id != voucher.contact.id) {

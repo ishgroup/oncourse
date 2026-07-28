@@ -329,7 +329,7 @@ class TagFunctions {
     static List<Tag> getAllLeafTags(Tag tag) {
         List<Tag> result = new ArrayList<>()
         if (tag.childTags != null && tag.childTags.size() > 0) {
-            result.addAll(tag.childTags.each { t -> getAllLeafTags(t) })
+            tag.childTags.each { t -> result.addAll(getAllLeafTags(t)) }
         } else {
             result.add(tag)
         }

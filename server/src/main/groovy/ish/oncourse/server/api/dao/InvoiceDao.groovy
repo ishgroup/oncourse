@@ -24,7 +24,7 @@ class InvoiceDao implements CayenneLayer<AbstractInvoice> {
 
     @Override
     AbstractInvoice newObject(ObjectContext context) {
-        return null
+        throw new UnsupportedOperationException("Use newObject(context, invoiceType) instead")
     }
 
     AbstractInvoice newObject(ObjectContext context, InvoiceType invoiceType) {

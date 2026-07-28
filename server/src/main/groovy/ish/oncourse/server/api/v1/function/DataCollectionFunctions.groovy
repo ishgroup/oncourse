@@ -213,17 +213,17 @@ class DataCollectionFunctions {
         List<String> relatedFieldKeys = (form.fields.collect{it.relatedFieldKey} + (form.headings.fields.relatedFieldKey.flatten() as List<String>)).findAll{it}
         List<String> fieldKeys = form.fields.collect{it.type.uniqueKey}
         fieldKeys.addAll((form.headings.collect {it.fields}.flatten() as List<FieldDTO>).collect{it.type.uniqueKey})
-        relatedFieldKeys.each {fieldKey ->
-            if(!fieldKeys.contains(fieldKey))
+        for (def fieldKey : relatedFieldKeys) {
+            if (!fieldKeys.contains(fieldKey))
                 return new ValidationErrorDTO(null, 'relatedFieldId', "Field with key: ${fieldKey} not found on this form")
         }
 
         def fieldsWithValidationTypes = allFields.findAll {it.validationType}
-        fieldsWithValidationTypes.each {fieldDto ->
-            if(!ALLOWED_VALIDATION_TYPES.containsKey(fieldDto.validationType))
+        for (def fieldDto : fieldsWithValidationTypes) {
+            if (!ALLOWED_VALIDATION_TYPES.containsKey(fieldDto.validationType))
                 return new ValidationErrorDTO(null, 'validationType', "Validation type ${fieldDto.validationType} of field ${fieldDto.type.uniqueKey} not supported. Contact Ish support")
 
-            if(!ALLOWED_VALIDATION_TYPES.get(fieldDto.validationType).contains(form.type))
+            if (!ALLOWED_VALIDATION_TYPES.get(fieldDto.validationType).contains(form.type))
                 return new ValidationErrorDTO(null, 'validationType', "Validation type ${fieldDto.validationType} not allowed for form with type ${form.type}")
         }
         return null
@@ -415,15 +415,15 @@ class DataCollectionFunctions {
             rule.created =  dbRule.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             rule.modified =  dbRule.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             rule.name = dbRule.name
-            rule.applicationFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.APPLICATION}.fieldConfiguration.name
-            rule.enrolmentFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.ENROLMENT}.fieldConfiguration.name
-            rule.waitingListFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.WAITING_LIST}.fieldConfiguration.name
+            rule.applicationFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.APPLICATION}?.fieldConfiguration?.name
+            rule.enrolmentFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.ENROLMENT}?.fieldConfiguration?.name
+            rule.waitingListFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.WAITING_LIST}?.fieldConfiguration?.name
             rule.payerFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.PAYER}?.fieldConfiguration?.name
             rule.parentFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.PARENT}?.fieldConfiguration?.name
             rule.surveyForms = dbRule.fieldConfigurationLinks.findAll {it.fieldConfiguration.type == FieldConfigurationType.SURVEY}.collect {it.fieldConfiguration.name}
-            rule.productFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.ARTICLE}.fieldConfiguration.name
-            rule.membershipFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.MEMBERSHIP}.fieldConfiguration.name
-            rule.voucherFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.VOUCHER}.fieldConfiguration.name
+            rule.productFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.ARTICLE}?.fieldConfiguration?.name
+            rule.membershipFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.MEMBERSHIP}?.fieldConfiguration?.name
+            rule.voucherFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.VOUCHER}?.fieldConfiguration?.name
             rule
         }
     }

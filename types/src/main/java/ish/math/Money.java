@@ -765,7 +765,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	 * <p>If the provided amount is {@code null} or less than or equal to this instance,
 	 * the current instance will be returned. Otherwise, the specified amount.</p>
 	 *
-	 * @return the maximum {@code Money} instance between this instance and the specified amount.
+	 * @return the minimum {@code Money} instance between this instance and the specified amount.
 	 */
 	@API
 	public Money min(@Nullable MonetaryAmount amount) {
@@ -816,24 +816,26 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 						RoundingQueryBuilder.of().setScale(1).set(RoundingMode.HALF_UP).build()))
 				);
 			case ROUNDING_50C:
-				double cents = toMoneta().remainder(1).getNumber().doubleValue(); // get minor part (coins, cents, etc.)
+				BigDecimal cents = toMoneta().remainder(1).getNumber().numberValue(BigDecimal.class); // get minor part (coins, cents, etc.)
 				MonetaryAmount roundedAmount = toMoneta().with(Monetary.getRounding(
 						RoundingQueryBuilder.of().setScale(0).set(RoundingMode.DOWN).build())
 				);
 
-				if (cents == 0.0 || cents == 0.50 || cents == -0.50) {
+				if (cents.compareTo(BigDecimal.ZERO) == 0
+						|| cents.compareTo(new BigDecimal("0.50")) == 0
+						|| cents.compareTo(new BigDecimal("-0.50")) == 0) {
 					return toInstance(toMoneta());
 				}
-				if (cents > -0.25 && cents < 0.25) {
+				if (cents.compareTo(new BigDecimal("-0.25")) > 0 && cents.compareTo(new BigDecimal("0.25")) < 0) {
 					return toInstance(roundedAmount); // Rounding down
 				}
-				if (cents >= 0.25 && cents < 0.75) {
+				if (cents.compareTo(new BigDecimal("0.25")) >= 0 && cents.compareTo(new BigDecimal("0.75")) < 0) {
 					MonetaryAmount half = toMoneta().getFactory().setNumber(0.5)
 							.setContext(toMoneta().getContext()).create();
 
 					return toInstance(roundedAmount.add(half)); // Add 0.5
 				}
-				if (cents <= -0.25 && cents > -0.75) {
+				if (cents.compareTo(new BigDecimal("-0.25")) <= 0 && cents.compareTo(new BigDecimal("-0.75")) > 0) {
 					MonetaryAmount half = toMoneta().getFactory().setNumber(0.5)
 							.setContext(toMoneta().getContext()).create();
 

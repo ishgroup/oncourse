@@ -23,12 +23,14 @@ import org.apache.cayenne.tx.TransactionPropagation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.annotation.PreDestroy
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.Timestamp
 import java.sql.Types
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 @CompileStatic
 class AuditService {
@@ -82,18 +84,18 @@ class AuditService {
                 Connection connection
                 try {
                     connection = cayenneService.dataSource.connection
-                    PreparedStatement stmt = connection.prepareStatement(INSERT_AUDIT_PATTERN)
-                    stmt.setTimestamp(1, created)
+                    connection.prepareStatement(INSERT_AUDIT_PATTERN).withCloseable { stmt ->
+                        stmt.setTimestamp(1, created)
 
-                    setLong(stmt, 2, userId)
-                    setLong(stmt, 3, entityId)
-                    setString(stmt, 4, entityName)
-                    setString(stmt, 5, action.databaseValue)
-                    setString(stmt, 6, message)
+                        setLong(stmt, 2, userId)
+                        setLong(stmt, 3, entityId)
+                        setString(stmt, 4, entityName)
+                        setString(stmt, 5, action.databaseValue)
+                        setString(stmt, 6, message)
 
-                    stmt.executeUpdate()
-                    connection.commit()
-                    stmt.close()
+                        stmt.executeUpdate()
+                        connection.commit()
+                    }
                 } catch (Exception e) {
                     logger.warn("Fail to submit audit entry for ${entityId}, action:${action.name()}", e)
                 } finally {
@@ -123,7 +125,20 @@ class AuditService {
         if (value != null) {
             stmt.setLong(index, value)
         } else {
-            stmt.setNull(index, Types.VARCHAR)
+            stmt.setNull(index, Types.BIGINT)
+        }
+    }
+
+    @PreDestroy
+    void shutdown() {
+        executorService.shutdown()
+        try {
+            if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
+                executorService.shutdownNow()
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow()
+            Thread.currentThread().interrupt()
         }
     }
 }

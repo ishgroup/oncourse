@@ -92,4 +92,13 @@ class TagFunctionsTest {
         assertEquals(1, notValidNames.size())
         assertEquals("Test \"days\" \\course #tag", notValidNames[0])
     }
+
+    // TODO: Add unit tests for getAllLeafTags(Tag) once a lightweight mock/stub for
+    // the Cayenne Tag entity (with childTags relationship) is available.
+    // The fix (Issue 5) changes:
+    //   result.addAll(tag.childTags.each { t -> getAllLeafTags(t) })
+    // to:
+    //   tag.childTags.each { t -> result.addAll(getAllLeafTags(t)) }
+    // The old code added the raw childTags list instead of recursively collected leaf tags.
+    // Integration test via @DatabaseSetup would be required to verify recursive leaf collection.
 }

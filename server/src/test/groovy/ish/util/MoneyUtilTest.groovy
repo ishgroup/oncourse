@@ -5,13 +5,22 @@
 package ish.util
 
 import groovy.transform.CompileStatic
+import ish.math.Country
 import ish.math.Money
+import ish.math.MoneyContextFactory
+import ish.math.MoneyManager
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 
 @CompileStatic
 class MoneyUtilTest {
+
+    @BeforeAll
+    static void setupEnvironment() {
+        MoneyManager.updateSystemContext(MoneyContextFactory.create(Country.AUSTRALIA))
+    }
     private static HashMap<Money, Money> listOne = new HashMap<>()
     private static HashMap<Money, Money> listTwo = new HashMap<>()
 
@@ -114,6 +123,47 @@ class MoneyUtilTest {
 
             Assertions.assertEquals(taxajd, output)
         }
+    }
+
+    @Test
+    void testCalculatePriceExFromPriceInc() {
+        // 110 inc 10% tax -> 100 ex
+        Money priceInc = Money.of(110)
+        BigDecimal taxRate = new BigDecimal("0.10")
+        Money result = MoneyUtil.calculatePriceExFromPriceInc(priceInc, taxRate)
+        Assertions.assertEquals(Money.of(100), result, "110 / 1.10 should equal 100.00")
+    }
+
+    @Test
+    void testRoundingInTaxCalculation() {
+        // 11 / 1.10 = 10.00 exactly
+        Money priceInc = Money.of(11)
+        BigDecimal taxRate = new BigDecimal("0.10")
+        Money result = MoneyUtil.calculatePriceExFromPriceInc(priceInc, taxRate)
+        Assertions.assertNotNull(result)
+        Assertions.assertEquals(Money.of(10), result, "11 / 1.10 should equal 10.00")
+    }
+
+    @Test
+    void testCalculatePriceExWithNullPrice() {
+        Money result = MoneyUtil.calculatePriceExFromPriceInc(null, new BigDecimal("0.10"))
+        Assertions.assertEquals(Money.ZERO, result, "null price should return Money.ZERO")
+    }
+
+    @Test
+    void testCalculatePriceExWithNullTaxRate() {
+        Money priceInc = Money.of(110)
+        Money result = MoneyUtil.calculatePriceExFromPriceInc(priceInc, null)
+        Assertions.assertEquals(priceInc, result, "null taxRate should return the price unchanged")
+    }
+
+    @Test
+    void testCalculatePriceExWithZeroTaxRate() {
+        // 0% tax: ex-tax == inc-tax
+        Money priceInc = Money.of(50)
+        BigDecimal taxRate = BigDecimal.ZERO
+        Money result = MoneyUtil.calculatePriceExFromPriceInc(priceInc, taxRate)
+        Assertions.assertEquals(priceInc, result, "0% tax: ex-tax price must equal inc-tax price")
     }
 
 }
