@@ -68,7 +68,7 @@ class ResourcesUtilTest {
         try {
             File f = new File(this.getClass().getResource("/resources/text_doc.txt").getFile())
             Assertions.assertTrue(f.exists(), "File " + f.getAbsolutePath() + " does not exist")
-            Assertions.assertEquals( "37aa63c77398d954473262e1a057c1e632eda77", ResourcesUtil.hashFile(f))
+            Assertions.assertEquals( "37aa63c77398d954473262e1a0057c1e632eda77", ResourcesUtil.hashFile(f))
         } catch (IOException e) {
             Assertions.fail(e.getMessage())
         }

@@ -192,7 +192,7 @@ class DataCollectionFunctions {
             return new ValidationErrorDTO(null, 'name', "Header name should be unique: ${headerDuplicates.join(', ')}")
         }
 
-        List<FieldDTO> allFields = form.fields + form.headings*.fields as List<FieldDTO>
+        List<FieldDTO> allFields = (form.fields + (form.headings*.fields.flatten() as List<FieldDTO>)) as List<FieldDTO>
 
         List<String>  allFieldKeys = allFields*.type*.uniqueKey.flatten()  as List<String>
         List<String> duplicates = allFieldKeys.findAll{allFieldKeys.count(it) > 1}.unique()

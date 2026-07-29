@@ -78,6 +78,7 @@ class CreateAccountTransactions {
             at2.account = secondaryAccount
             at2.description = details.description
 
+            context.commitChanges()
             return [at1.id, at2.id]
         }
         return []
