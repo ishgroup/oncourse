@@ -44,6 +44,7 @@ class CreateAccountTransactionsTest extends TestWithDatabase {
         AccountTransactionDetail detail = AccountTransactionDetail.valueOf(primaryAccount, secondaryAccount, amount, AccountTransactionType.JOURNAL, 0L, transactionDate)
 
         CreateAccountTransactions.valueOf(cayenneContext, detail).create()
+        cayenneContext.commitChanges()
 
         List<AccountTransaction> after = ObjectSelect.query(AccountTransaction)
                 .select(cayenneContext)
@@ -65,6 +66,7 @@ class CreateAccountTransactionsTest extends TestWithDatabase {
         Money amount2 = Money.of(50 as BigDecimal)
         detail = AccountTransactionDetail.valueOf(primaryAccount, liabilityAccount, amount2, AccountTransactionType.INVOICE_LINE, 11L, transactionDate)
         CreateAccountTransactions.valueOf(cayenneContext, detail).create()
+        cayenneContext.commitChanges()
 
         after = ObjectSelect.query(AccountTransaction)
                 .select(cayenneContext)
