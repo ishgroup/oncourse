@@ -489,7 +489,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
     }
 
     private void checkEmail(String email) {
-        if (!isValidEmailAddress(email)) {
+        if (!StringUtils.isBlank(email) && !isValidEmailAddress(email)) {
             validator.throwClientErrorException(Contact.EMAIL.name, 'Please enter an email address in the correct format.')
         }
     }
