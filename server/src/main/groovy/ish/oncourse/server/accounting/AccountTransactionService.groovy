@@ -19,6 +19,7 @@ import ish.oncourse.server.accounting.builder.TransactionsBuilder
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
 import ish.request.AccountTransactionRequest
+import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
 import java.util.concurrent.locks.ReentrantLock
@@ -38,18 +39,28 @@ class AccountTransactionService {
     }
 
     void createTransactions(TransactionsBuilder transactionsBuilder) {
+        createTransactions(transactionsBuilder, null)
+    }
+
+    /**
+     * Create account transactions in the provided context so that the resulting QueuedRecords
+     * share the same QueuedTransaction as the calling lifecycle listener's business entity.
+     * When entityContext is null a fresh context is used (legacy behaviour, creates a separate QueuedTransaction).
+     */
+    void createTransactions(TransactionsBuilder transactionsBuilder, ObjectContext entityContext) {
         TransactionSettings settings = transactionsBuilder.build()
+        def ctx = entityContext ?: cayenneService.newContext
         if (settings.isInitialTransaction) {
             lock.lock()
             try {
                 if (hasNoInitialTransactions(settings.details[0].tableName, settings.details[0].foreignRecordId)) {
-                    settings.details.each { CreateAccountTransactions.valueOf(cayenneService.newContext, it).create() }
+                    settings.details.each { CreateAccountTransactions.valueOf(ctx, it).create() }
                 }
             } finally {
                 lock.unlock()
             }
         } else {
-            settings.details.each { CreateAccountTransactions.valueOf(cayenneService.newContext, it).create() }
+            settings.details.each { CreateAccountTransactions.valueOf(ctx, it).create() }
         }
     }
 
