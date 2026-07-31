@@ -14,10 +14,8 @@ package ish.oncourse.server.lifecycle;
 import ish.common.types.ExpiryType;
 import ish.common.types.PaymentSource;
 import ish.common.types.ProductStatus;
-import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.api.v1.function.MembershipFunctions;
 import ish.oncourse.server.cayenne.Membership;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.annotation.PostPersist;
 import org.apache.cayenne.annotation.PostUpdate;
 import org.apache.cayenne.annotation.PrePersist;
@@ -29,11 +27,9 @@ import java.util.Set;
 
 public class MembershipLifecycleListener {
 
-    private ICayenneService cayenneService;
     private Set<Membership> toProcess = new HashSet<>();
 
-    public MembershipLifecycleListener(ICayenneService cayenneService) {
-        this.cayenneService = cayenneService;
+    public MembershipLifecycleListener() {
     }
 
 
@@ -68,10 +64,8 @@ public class MembershipLifecycleListener {
         toProcess.remove(membership);
         Date renewalDate = MembershipFunctions.getRenwevalExpiryDate(membership.getContact(), membership);
         if (renewalDate != null) {
-            DataContext context = cayenneService.getNewContext();
-            var localMembership = context.localObject(membership);
-            localMembership.setExpiryDate(renewalDate);
-            context.commitChanges();
+            membership.setExpiryDate(renewalDate);
+            membership.getObjectContext().commitChanges();
         }
     }
 }
