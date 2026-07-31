@@ -38,6 +38,8 @@ public class InvoiceLineLifecycleListener {
 
 	@PostPersist(value = InvoiceLine.class)
 	public void postPersist(InvoiceLine invoiceLine) {
-		accountTransactionService.createTransactions(InvoiceLineTransactionsBuilder.valueOf(invoiceLine));
+		// C-NEW-1: pass the entity's own context so AccountTransaction QueuedRecords share the
+		// same QueuedTransaction as InvoiceLine, preventing FK violations on willow side.
+		accountTransactionService.createTransactions(InvoiceLineTransactionsBuilder.valueOf(invoiceLine), invoiceLine.getObjectContext());
 	}
 }

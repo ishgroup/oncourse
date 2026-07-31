@@ -41,14 +41,18 @@ public class BankingLifecycleListener {
 
 
 	private void createTransactions(Banking banking, LocalDate oldSettlementDate, LocalDate newSettlementDate) {
+		// H-2: pass banking's own context so DepositAccountTransaction QueuedRecords share the same
+		// QueuedTransaction as the Banking UPDATE, preventing desync of settlementDate on willow.
+		var ctx = banking.getObjectContext();
+
 		banking.getPaymentsIn().stream()
 				.map(PaymentIn::getPaymentInLines)
 				.flatMap(Collection::stream)
-				.forEach(line -> accountTransactionService.createTransactions(DepositTransactionsBuilder.valueOf(line, oldSettlementDate, newSettlementDate)));
+				.forEach(line -> accountTransactionService.createTransactions(DepositTransactionsBuilder.valueOf(line, oldSettlementDate, newSettlementDate), ctx));
 
 		banking.getPaymentsOut().stream()
 				.map(PaymentOut::getPaymentOutLines)
 				.flatMap(Collection::stream)
-				.forEach(line -> accountTransactionService.createTransactions(DepositTransactionsBuilder.valueOf(line, oldSettlementDate, newSettlementDate)));
+				.forEach(line -> accountTransactionService.createTransactions(DepositTransactionsBuilder.valueOf(line, oldSettlementDate, newSettlementDate), ctx));
 	}
 }
