@@ -49,18 +49,21 @@ class AccountTransactionService {
      */
     void createTransactions(TransactionsBuilder transactionsBuilder, ObjectContext entityContext) {
         TransactionSettings settings = transactionsBuilder.build()
+        boolean ownContext = (entityContext == null)
         def ctx = entityContext ?: cayenneService.newContext
         if (settings.isInitialTransaction) {
             lock.lock()
             try {
                 if (hasNoInitialTransactions(settings.details[0].tableName, settings.details[0].foreignRecordId)) {
                     settings.details.each { CreateAccountTransactions.valueOf(ctx, it).create() }
+                    ctx.commitChanges()   // always commit inside lock, regardless of ownContext
                 }
             } finally {
                 lock.unlock()
             }
         } else {
             settings.details.each { CreateAccountTransactions.valueOf(ctx, it).create() }
+            if (ownContext) ctx.commitChanges()
         }
     }
 

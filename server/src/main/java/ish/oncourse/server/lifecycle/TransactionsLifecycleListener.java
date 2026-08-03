@@ -73,9 +73,9 @@ public class TransactionsLifecycleListener {
 		var statusChange = getAtrAttributeChange(objectContext, paymentIn.getObjectId(),PaymentIn.STATUS.getName());
 
 		if (statusChange != null && PaymentStatus.SUCCESS.equals(statusChange.getNewValue())) {
-			// H-1: pass entity context so AccountTransaction QueuedRecords share the same
-			// QueuedTransaction as the PaymentIn status UPDATE, preventing semantic desync on willow.
-			paymentIn.getPaymentInLines().forEach(line -> createInitialTransactions(line, objectContext));
+			// ONC-N4: pass null instead of objectContext to avoid re-entrant commit during @PreUpdate;
+			// AccountTransactionService will commit inside the lock for isInitialTransaction=true.
+			paymentIn.getPaymentInLines().forEach(line -> createInitialTransactions(line, null));
 		} else if (getAtrAttributeChange(objectContext, paymentIn.getObjectId(),PaymentIn.BANKING.getName()) != null) {
 
 			var changeHelper = new BankingChangeHandler(paymentIn.getContext());
@@ -103,9 +103,9 @@ public class TransactionsLifecycleListener {
 		var statusChange = getAtrAttributeChange(objectContext, paymentOut.getObjectId(),PaymentIn.STATUS.getName());
 
 		if (statusChange != null && PaymentStatus.SUCCESS.equals(statusChange.getNewValue())) {
-			// H-1: pass entity context so AccountTransaction QueuedRecords share the same
-			// QueuedTransaction as the PaymentOut status UPDATE, preventing semantic desync on willow.
-			paymentOut.getPaymentOutLines().forEach(line -> createInitialTransactions(line, objectContext));
+			// ONC-N4: pass null instead of objectContext to avoid re-entrant commit during @PreUpdate;
+			// AccountTransactionService will commit inside the lock for isInitialTransaction=true.
+			paymentOut.getPaymentOutLines().forEach(line -> createInitialTransactions(line, null));
 		} else if (getAtrAttributeChange(objectContext, paymentOut.getObjectId(),PaymentIn.BANKING.getName()) != null) {
 
 			var changeHalper = new BankingChangeHandler(paymentOut.getContext());
