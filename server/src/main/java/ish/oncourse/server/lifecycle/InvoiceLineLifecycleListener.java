@@ -40,6 +40,9 @@ public class InvoiceLineLifecycleListener {
 	public void postPersist(InvoiceLine invoiceLine) {
 		// C-NEW-1: pass the entity's own context so AccountTransaction QueuedRecords share the
 		// same QueuedTransaction as InvoiceLine, preventing FK violations on willow side.
+		// @PostPersist fires after the main flush, so AccountTransactions registered here will NOT
+		// be auto-flushed by the outer commit — an explicit commitChanges() is required.
 		accountTransactionService.createTransactions(InvoiceLineTransactionsBuilder.valueOf(invoiceLine), invoiceLine.getObjectContext());
+		invoiceLine.getObjectContext().commitChanges();
 	}
 }
