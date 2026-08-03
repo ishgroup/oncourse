@@ -17,7 +17,7 @@ const request: EpicUtils.Request = {
     return [
       {
         type: GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED,
-        payload: records
+        payload: records.flat()
       }
     ];
   },
