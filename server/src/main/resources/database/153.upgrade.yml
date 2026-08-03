@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 153-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: AutomationBinding
+                columnName: listOrder
+      changes:
+        - addColumn:
+            tableName: AutomationBinding
+            columns:
+              - column:
+                  name: listOrder
+                  type: TINYINT
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
