@@ -1,0 +1,78 @@
+# Validation harness for the ARC runner scale set `kurrajong` — ephemeral
+# self-hosted runners in the prod EKS cluster (ns arc-runners).
+#
+# Context: no workflow in this repo uses a self-hosted runner today; everything
+# runs on ubuntu-latest, and build-snapshot/release run on macos-latest and can
+# never move (ARC runs Linux pods). `kurrajong` exists so that moving a Linux job
+# here later is a one-line `runs-on:` change rather than a new stack.
+#
+# Run this manually to confirm the pool is healthy before migrating anything.
+name: ARC smoke test (kurrajong)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: kurrajong
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Runner facts
+        run: |
+          set -eux
+          hostname
+          whoami
+          uname -a
+          df -h "$GITHUB_WORKSPACE" /home/runner/_work || true
+          nproc
+          free -h || true
+
+      - name: Tool inventory
+        run: |
+          # Informational, never fails. The base actions-runner image is lean —
+          # this records what a migrated job can rely on being preinstalled.
+          # oncourse CI needs a JDK and gradle, neither of which ships in the
+          # runner image: a migrated job must set them up with actions/setup-java.
+          for t in git docker jq curl python3 java javac gradle node npm; do
+            printf '%-10s %s\n' "$t" "$(command -v "$t" || echo MISSING)"
+          done
+
+      - name: dind daemon is up
+        run: |
+          set -eux
+          docker version
+          docker info
+
+      - name: Container actions work
+        run: |
+          set -eux
+          docker run --rm alpine:3 sh -c 'echo dind-ok'
+
+      - name: OIDC id-token is obtainable
+        run: |
+          set -euo pipefail
+          # Proves the host-dependent half of any future OIDC-federated AWS step.
+          # No jq: the base image may not ship it (see the inventory step).
+          resp="$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")"
+          token="$(printf '%s' "$resp" | grep -o '"value":"[^"]*"' | cut -d'"' -f4)"
+          if [ -z "$token" ]; then
+            echo "::error::no id-token returned"
+            exit 1
+          fi
+          echo "id-token acquired, length=${#token}"
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### ARC smoke test — kurrajong"
+            echo "- runner: \`$RUNNER_NAME\` on \`$(hostname)\`"
+            echo "- job status: ${{ job.status }}"
+          } >> "$GITHUB_STEP_SUMMARY"
