@@ -16,6 +16,7 @@ import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.TagRelation
+import ish.oncourse.server.lifecycle.PostSyncHooks
 import ish.persistence.Preferences
 import ish.scripting.ScriptResult
 import org.apache.cayenne.DataChannelSyncFilter
@@ -69,8 +70,24 @@ class ScriptTriggeringListener implements DataChannelSyncFilter {
 				// if commit is coming from inside a groovy script,
 				// do not execute any entity scripts at all to avoid callback cycles
 				if (!Boolean.TRUE.equals(originatingContext.getUserProperty(GroovyScriptService.SCRIPT_CONTEXT_PROPERTY))) {
-					eventMappings.each { mapping ->
-						triggerEntityEvent(mapping.getEvent(), mapping.getRecord())
+					// ONC-A2: this finally unwinds while the replication plugin's outer frame is still
+					// open, so its QueuedRecord/QueuedTransaction rows exist only in memory. Scripts run
+					// on their own thread and commit their own QueuedTransaction, which could therefore
+					// be assigned a LOWER auto-increment id than the business transaction that triggered
+					// it. willow processes transactions in ascending id order, so it would try to insert
+					// the script's records (TagRelation, CustomField, Note...) before the entity they
+					// reference exists — FK violation, 3 retries, then permanently skipped.
+					// Defer the dispatch until the frame has been committed. PostSyncHooks.defer()
+					// returns false when nothing has opted in to drain (replication disabled or a build
+					// without the plugin), in which case we dispatch inline exactly as before.
+					def dispatch = { ->
+						eventMappings.each { mapping ->
+							triggerEntityEvent(mapping.getEvent(), mapping.getRecord())
+						}
+					} as Runnable
+
+					if (!PostSyncHooks.defer(dispatch)) {
+						dispatch.run()
 					}
 				}
 			}
