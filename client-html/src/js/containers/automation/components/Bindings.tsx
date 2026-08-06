@@ -5,12 +5,14 @@
 
 import { Binding } from '@api/model';
 import Delete from '@mui/icons-material/Delete';
+import DragIndicator from '@mui/icons-material/DragIndicator';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Grid, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import $t from '@t';
 import { AddButton, AppTheme, SelectItemDefault, useHoverShowStyles, YYYY_MM_DD_MINUSED } from 'ish-ui';
 import React, { useCallback, useMemo } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd-next';
 import { Dispatch } from 'redux';
 import { arrayPush, arrayRemove, Field, FieldArray } from 'redux-form';
 import { makeStyles } from 'tss-react/mui';
@@ -35,10 +37,11 @@ interface BindingsItemProps {
   gridProps?: any;
   highlightable?: boolean;
   noLabel?: boolean;
+  dragHandleProps?: any;
 }
 
 // @ts-ignore
-const useStyles = makeStyles<void, 'highlightable'>()((theme: AppTheme, _params, classes) => ({
+const useStyles = makeStyles<void, 'highlightable' | 'dragHandle'>()((theme: AppTheme, _params, classes) => ({
   labelTypeWrapper: {
     fontWeight: 400,
     paddingTop: theme.spacing(1),
@@ -60,6 +63,24 @@ const useStyles = makeStyles<void, 'highlightable'>()((theme: AppTheme, _params,
   },
   dateDelete: {
     marginBottom: theme.spacing(1.25)
+  },
+  dragHandle: {
+    cursor: "grab",
+    visibility: "hidden",
+    position: "absolute",
+    top: theme.spacing(2),
+    transform: "translateX(-60px)",
+  },
+  container: {
+    position: 'relative',
+    transition: "all 0.2s ease-in-out",
+    "&:hover": {
+      paddingLeft: "30px",
+      [`.${classes.dragHandle}`]: {
+        transform: "translateX(-30px)",
+        visibility: "visible"
+      }
+    },
   },
   highlightable: {}
 }));
@@ -98,10 +119,11 @@ const showOnForm = (item, field) => {
 };
 
 const BindingsItem = React.memo<BindingsItemProps>(({
-    item, index, onDelete, infoLink, type, field, emailTemplateItems, highlightable, noLabel, gridProps = {}
+    item, index, onDelete, infoLink, type, field, emailTemplateItems, highlightable, noLabel, dragHandleProps, gridProps = {}
   }) => {
-  const { classes, cx } = useStyles();
+
   const { classes: hoverClasses } = useHoverShowStyles();
+  const { classes, cx } = useStyles();
 
   const fieldProps: any = useMemo(() => {
     const props = {};
@@ -124,7 +146,12 @@ const BindingsItem = React.memo<BindingsItemProps>(({
   }, [item, emailTemplateItems]);
 
   return type === "label" ? (
-    <Grid item xs={12} className={cx("centeredFlex", hoverClasses.container)}>
+    <Grid item xs={12} className={cx("centeredFlex", dragHandleProps && classes.container, hoverClasses.container)}>
+      {dragHandleProps && (
+        <div className={classes.dragHandle} {...dragHandleProps}>
+          <DragIndicator className="mr-1" />
+        </div>
+      )}
       <div className="flex-fill w-100">
         {!noLabel && item.label && (
           <Typography
@@ -179,7 +206,7 @@ const BindingsItem = React.memo<BindingsItemProps>(({
 
 export const BindingsRenderer = props => {
     const {
-     fields, disabled, handleDelete, itemsType, emailTemplates, highlightable, noLabel
+     fields, disabled, handleDelete, itemsType, emailTemplates, highlightable, noLabel, reorderable
     } = props;
 
   const emailTemplateItems = useMemo(
@@ -189,6 +216,45 @@ export const BindingsRenderer = props => {
       }))
       : []), [emailTemplates],
   );
+
+  const onDragEnd = useCallback(({ destination, source }) => {
+    if (destination && destination.index !== source.index) {
+      fields.move(source.index, destination.index);
+    }
+  }, [fields]);
+
+  if (reorderable) {
+    return (
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId={`droppable-${fields.name}`}>
+          {provided => (
+            <div ref={provided.innerRef} className="w-100">
+              {fields.map((i, n) => (
+                <Draggable key={n} draggableId={`${fields.name}-${n}`} index={n} isDragDisabled={disabled}>
+                  {dragProvided => (
+                    <div ref={dragProvided.innerRef} {...dragProvided.draggableProps}>
+                      <BindingsItem
+                        type={itemsType}
+                        field={i}
+                        item={fields.get(n)}
+                        index={String(n)}
+                        onDelete={!disabled && handleDelete}
+                        emailTemplateItems={emailTemplateItems}
+                        highlightable={highlightable}
+                        noLabel={noLabel}
+                        dragHandleProps={dragProvided.dragHandleProps}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    );
+  }
 
   return fields.map((i, n) => (
     <BindingsItem
@@ -297,7 +363,8 @@ const Bindings = React.memo<BindingsProps>( props => {
           emailTemplates={emailTemplates}
           highlightable={isOptionsBindingType}
           noLabel={isOptionsBindingType}
-          rerenderOnEveryChange 
+          reorderable={isVariablesBindingType}
+          rerenderOnEveryChange
         />
       </Grid>
     </div>

@@ -140,6 +140,7 @@
 		<db-attribute name="entityRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="lable" type="VARCHAR" length="200"/>
+		<db-attribute name="listOrder" type="TINYINT" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
 		<db-attribute name="value" type="CLOB" length="32000"/>
@@ -1910,6 +1911,7 @@
 		<obj-attribute name="entityIdentifier" type="java.lang.String" db-attribute-path="entityIdentifier"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="lable" type="java.lang.String" db-attribute-path="lable"/>
+		<obj-attribute name="listOrder" type="java.lang.Integer" db-attribute-path="listOrder"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
