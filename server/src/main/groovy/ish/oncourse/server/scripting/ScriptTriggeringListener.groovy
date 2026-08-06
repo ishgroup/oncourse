@@ -16,7 +16,6 @@ import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.TagRelation
-import ish.oncourse.server.lifecycle.PostSyncHooks
 import ish.persistence.Preferences
 import ish.scripting.ScriptResult
 import org.apache.cayenne.DataChannelSyncFilter
@@ -69,25 +68,16 @@ class ScriptTriggeringListener implements DataChannelSyncFilter {
 			if (stack.isEmpty()) {
 				// if commit is coming from inside a groovy script,
 				// do not execute any entity scripts at all to avoid callback cycles
+				//
+				// NOTE (ONC-A2, investigated and dismissed): it was once suspected that dispatching
+				// here races the replication plugin's frame commit, letting a script's QueuedTransaction
+				// take a lower auto-increment id than the business transaction that triggered it.
+				// It does not. QueueableLifecycleListener is the INNERMOST sync filter, not the
+				// outermost — verified against a captured production stack trace — so its finally has
+				// already committed the frame by the time this one runs. Dispatching inline is correct.
 				if (!Boolean.TRUE.equals(originatingContext.getUserProperty(GroovyScriptService.SCRIPT_CONTEXT_PROPERTY))) {
-					// ONC-A2: this finally unwinds while the replication plugin's outer frame is still
-					// open, so its QueuedRecord/QueuedTransaction rows exist only in memory. Scripts run
-					// on their own thread and commit their own QueuedTransaction, which could therefore
-					// be assigned a LOWER auto-increment id than the business transaction that triggered
-					// it. willow processes transactions in ascending id order, so it would try to insert
-					// the script's records (TagRelation, CustomField, Note...) before the entity they
-					// reference exists — FK violation, 3 retries, then permanently skipped.
-					// Defer the dispatch until the frame has been committed. PostSyncHooks.defer()
-					// returns false when nothing has opted in to drain (replication disabled or a build
-					// without the plugin), in which case we dispatch inline exactly as before.
-					def dispatch = { ->
-						eventMappings.each { mapping ->
-							triggerEntityEvent(mapping.getEvent(), mapping.getRecord())
-						}
-					} as Runnable
-
-					if (!PostSyncHooks.defer(dispatch)) {
-						dispatch.run()
+					eventMappings.each { mapping ->
+						triggerEntityEvent(mapping.getEvent(), mapping.getRecord())
 					}
 				}
 			}
