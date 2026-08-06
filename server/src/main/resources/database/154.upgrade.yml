@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 153-1
+      id: 154-1
       author: dmitriy
       validCheckSum: ANY
       preConditions:
