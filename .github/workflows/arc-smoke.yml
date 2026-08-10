@@ -6,10 +6,17 @@
 # never move (ARC runs Linux pods). `kurrajong` exists so that moving a Linux job
 # here later is a one-line `runs-on:` change rather than a new stack.
 #
-# Run this manually to confirm the pool is healthy before migrating anything.
+# Runs on every push to the smoke branch, to confirm the pool is healthy before
+# migrating anything. Push-triggered rather than dispatch-only on purpose:
+# `workflow_dispatch` only registers when the file is on the default branch, and
+# this repo does not merge to `main`, so a dispatch-only workflow here would be
+# unrunnable.
 name: ARC smoke test (kurrajong)
 
 on:
+  push:
+    branches:
+      - 'arc/smoke-test-kurrajong'
   workflow_dispatch:
 
 permissions:
