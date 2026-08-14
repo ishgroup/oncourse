@@ -13,6 +13,7 @@ package ish.oncourse.server.services
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.function.Executable
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import static org.mockito.Mockito.mock
@@ -27,7 +28,10 @@ class AuditServiceTest {
 
         AuditService service = new AuditService(cayenneService, systemUserService)
 
-        assertDoesNotThrow({ -> service.shutdown() })
+        // Явный каст к Executable обязателен: под @CompileStatic Groovy не может выбрать между
+        // перегрузками assertDoesNotThrow(Executable) и assertDoesNotThrow(ThrowingSupplier<T>),
+        // потому что замыкание приводимо к обеим.
+        assertDoesNotThrow({ service.shutdown() } as Executable)
     }
 
     @Test
@@ -37,9 +41,9 @@ class AuditServiceTest {
 
         AuditService service = new AuditService(cayenneService, systemUserService)
 
-        assertDoesNotThrow({ ->
+        assertDoesNotThrow({
             service.shutdown()
             service.shutdown()
-        })
+        } as Executable)
     }
 }
