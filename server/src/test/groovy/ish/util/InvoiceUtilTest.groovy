@@ -9,6 +9,8 @@ import ish.TestWithDatabase
 import ish.common.payable.PayableLineInterface
 import ish.common.types.*
 import ish.math.Money
+import ish.oncourse.cayenne.ContactInterface
+import ish.oncourse.cayenne.InvoiceInterface
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PaymentLineInterface
 import ish.oncourse.entity.services.SetPaymentMethod
@@ -25,6 +27,8 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
 
 @CompileStatic
 class InvoiceUtilTest extends TestWithDatabase {
@@ -1043,6 +1047,64 @@ class InvoiceUtilTest extends TestWithDatabase {
         }
         assertEquals(Money.ZERO, payment2.getAmount(), "Checking payment total")
         assertEquals(Money.ZERO, InvoiceUtil.amountOwingForPayer(contact), "Checking the amount owing")
+    }
+
+    @Test
+    void testAllocateMoneyToInvoicesEmptyList() {
+        PaymentInterface payment = mock(PaymentInterface)
+        ContactInterface contact = mock(ContactInterface)
+        when(payment.getContact()).thenReturn(contact)
+        when(contact.getOwingInvoices()).thenReturn(Collections.emptyList())
+
+        Money spendingMoney = Money.of(100)
+        List<PaymentLineInterface> paymentLines = new ArrayList<>()
+
+        Money remaining = InvoiceUtil.allocateMoneyToInvoices(
+                spendingMoney, Collections.emptyList(), payment, paymentLines)
+
+        Assertions.assertEquals(spendingMoney, remaining,
+                "No invoices: full spending amount must be returned unchanged")
+        Assertions.assertTrue(paymentLines.isEmpty(), "No invoices: payment lines list must stay empty")
+    }
+
+    @Test
+    void testAllocateMoneyToInvoicesZeroOwingSkipsAllocation() {
+        PaymentInterface payment = mock(PaymentInterface)
+        ContactInterface contact = mock(ContactInterface)
+        InvoiceInterface invoice = mock(InvoiceInterface)
+
+        when(payment.getContact()).thenReturn(contact)
+        when(payment.getTypeOfPayment()).thenReturn(PaymentInterface.TYPE_IN)
+        when(contact.getOwingInvoices()).thenReturn(Collections.emptyList())
+        when(invoice.getAmountOwing()).thenReturn(Money.ZERO)
+
+        Money spendingMoney = Money.of(200)
+        List<PaymentLineInterface> paymentLines = new ArrayList<>()
+
+        Money remaining = InvoiceUtil.allocateMoneyToInvoices(
+                spendingMoney, [invoice], payment, paymentLines)
+
+        Assertions.assertEquals(spendingMoney, remaining,
+                "Zero-owing invoice: spending money must not change")
+        Assertions.assertTrue(paymentLines.isEmpty(),
+                "Zero-owing invoice: no payment lines should be created")
+    }
+
+    @Test
+    void testSumInvoices() {
+        InvoiceInterface inv1 = mock(InvoiceInterface)
+        InvoiceInterface inv2 = mock(InvoiceInterface)
+        when(inv1.getAmountOwing()).thenReturn(Money.of(50))
+        when(inv2.getAmountOwing()).thenReturn(Money.of(75))
+
+        Money total = InvoiceUtil.sumInvoices([inv1, inv2])
+        Assertions.assertEquals(Money.of(125), total, "sumInvoices must total all amountOwing values")
+    }
+
+    @Test
+    void testSumInvoicesEmpty() {
+        Money total = InvoiceUtil.sumInvoices(Collections.emptyList())
+        Assertions.assertEquals(Money.ZERO, total, "sumInvoices of empty list must return ZERO")
     }
 
     private static Enrolment createEnrolment(ObjectContext cayenneContext, Account account, Tax tax) {

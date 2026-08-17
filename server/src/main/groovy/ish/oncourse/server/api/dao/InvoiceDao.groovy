@@ -24,7 +24,8 @@ class InvoiceDao implements CayenneLayer<AbstractInvoice> {
 
     @Override
     AbstractInvoice newObject(ObjectContext context) {
-        return null
+        // Default to Invoice; prefer newObject(context, invoiceType) for explicit type control
+        return context.newObject(Invoice.class)
     }
 
     AbstractInvoice newObject(ObjectContext context, InvoiceType invoiceType) {

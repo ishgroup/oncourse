@@ -131,7 +131,7 @@ class ContactFunctions {
     }
 
     static boolean isValidEmailAddress(String email) {
-        !StringUtils.isBlank(email) && !ValidationUtil.isValidEmailAddress(email)
+        !StringUtils.isBlank(email) && ValidationUtil.isValidEmailAddress(email)
     }
 
     static void updateProfilePicture(Contact contact, DocumentDTO pictureDocument) {
@@ -267,7 +267,6 @@ class ContactFunctions {
     static void updateAbandonedCarts(ObjectContext context, Contact contact, List<CartDTO> carts){
         def removedCarts = contact.abandonedCarts.findAll { !(it.id in carts*.id) }
         context.deleteObjects(removedCarts)
-        context.commitChanges()
     }
 
     static void validateContactRelations(ObjectContext context, ContactDao contactDao, ContactRelationTypeDao contactRelationTypeDao, ContactRelationDao contactRelationDao, EntityValidator validator, ContactDTO contact) {
@@ -341,9 +340,9 @@ class ContactFunctions {
 
             final int givenYear = student.yearSchoolCompleted
             if (givenYear > Calendar.getInstance().get(Calendar.YEAR)) {
-                validator.throwClientErrorException("student.yearSchollCompleted", 'Year school completed cannot be in the future if supplied.')
+                validator.throwClientErrorException("student.yearSchoolCompleted", 'Year school completed cannot be in the future if supplied.')
             } else if (givenYear < 1940) {
-                validator.throwClientErrorException("student.yearSchollCompleted", "Year school completed if supplied should be within not earlier than ${givenYear}.".toString())
+                validator.throwClientErrorException("student.yearSchoolCompleted", "Year school completed if supplied should be within not earlier than ${givenYear}.".toString())
             }
         }
     }

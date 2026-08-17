@@ -16,6 +16,25 @@ import org.junit.jupiter.api.Test
 class SecurityUtilTest {
 
     @Test
+    void testHashByteArrayProducesValidHexLength() {
+        // SHA-1 always produces 20 bytes = exactly 40 lowercase hex characters
+        byte[] input = "test-password-123".bytes
+        String hash = SecurityUtil.hashByteArray(input)
+        Assertions.assertNotNull(hash)
+        Assertions.assertEquals(40, hash.length(), "SHA-1 hash must be 40 hex chars")
+        Assertions.assertTrue(hash ==~ /[0-9a-f]+/, "Hash must contain only lowercase hex characters")
+    }
+
+    @Test
+    void testHashByteArrayDifferentInputsDifferentHashes() {
+        String hash1 = SecurityUtil.hashByteArray("password1".bytes)
+        String hash2 = SecurityUtil.hashByteArray("password2".bytes)
+        Assertions.assertNotNull(hash1)
+        Assertions.assertNotNull(hash2)
+        Assertions.assertNotEquals(hash1, hash2, "Different inputs must produce different hashes")
+    }
+
+    @Test
     void generateUSISoftwareId() {
         String id = SecurityUtil.generateUSISoftwareId()
         Assertions.assertEquals(id.length(), 10)

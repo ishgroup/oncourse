@@ -38,9 +38,8 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @CompileStatic
 class SessionValidator {
@@ -60,7 +59,8 @@ class SessionValidator {
     @Inject
     UnavailableRuleDao unavailableRuleDao
 
-    private DateFormat format = new SimpleDateFormat("E d MMM H:mm")
+    // Thread-safe replacement for SimpleDateFormat (Issue 16)
+    private static final DateTimeFormatter SESSION_DATE_FORMATTER = DateTimeFormatter.ofPattern("E d MMM H:mm")
 
 
     List<SessionWarningDTO> validate(List<SessionDTO> sessions, Long classId) {
@@ -152,7 +152,7 @@ class SessionValidator {
             Contact contact = contactDao.getById(context, ta.contactId)
             Date rosterStart = LocalDateUtils.timeValueToDate(ta.start)
             Date rosterEnd = LocalDateUtils.timeValueToDate(ta.end)
-            
+
             List<TutorAttendance> rosterClashes = getTutorSessionClashes(rosterStart,rosterEnd, ta.contactId, classId)
             if (!rosterClashes.empty) {
                 SessionWarningDTO warning = new SessionWarningDTO()
@@ -163,7 +163,6 @@ class SessionValidator {
                 warning.type = TUTOR
                 warning.message = "Clash for $warning.label with class "
                 rosterClashes.each {
-                    format.setTimeZone(it.session.timeZone)
                     warning.message += "$it.session.courseClass.uniqueCode \n"
                 }
 
@@ -201,7 +200,6 @@ class SessionValidator {
                 warning.message = "Clash for Room $warning.label with class "
 
                 roomClashes.each {
-                    format.setTimeZone(it.timeZone)
                     warning.message += "$it.courseClass.uniqueCode \n"
                 }
 

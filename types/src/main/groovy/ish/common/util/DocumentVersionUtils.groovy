@@ -46,7 +46,7 @@ class DocumentVersionUtils {
                         version.thumbnail = generatePdfPreview(content)
                 }
             } catch (NotActiveException e) {
-                logger.warn("Attempted to process document with name $documentName failed. Angel can not generate privew")
+                logger.warn("Attempted to process document with name $documentName failed. Cannot generate preview")
                 logger.catching(e)
                 throw new DocumentUploadException(e.message)
             }

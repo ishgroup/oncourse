@@ -258,6 +258,30 @@ class MoneyTest {
     }
 
     @Test
+    void testMinReturnsSmaller() {
+        Money a = Money.of(10)
+        Money b = Money.of(20)
+        Assertions.assertEquals(a, a.min(b), "min(a,b) should return a when a < b")
+        Assertions.assertEquals(a, b.min(a), "min(b,a) should return a when a < b")
+    }
+
+    @Test
+    void testMaxReturnsLarger() {
+        Money a = Money.of(10)
+        Money b = Money.of(20)
+        Assertions.assertEquals(b, a.max(b), "max(a,b) should return b when b > a")
+        Assertions.assertEquals(b, b.max(a), "max(b,a) should return b when b > a")
+    }
+
+    @Test
+    void testMinWithEqualValues() {
+        Money a = Money.of(10)
+        Money b = Money.of(10)
+        // both are equal, either may be returned — just verify the result equals the expected value
+        Assertions.assertEquals(Money.of(10), a.min(b), "min of equal values must equal that value")
+    }
+
+    @Test
     void testMoneyInCustomContext() {
         MoneyContext usContext = MoneyContextFactory.create(Country.US)
         Money usMoney = Money.of(1, usContext)

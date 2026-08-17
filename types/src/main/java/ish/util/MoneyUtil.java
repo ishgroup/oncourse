@@ -25,11 +25,11 @@ public final class MoneyUtil {
 	private MoneyUtil() {}
 
 	/**
-	 * returns the price value including the tax
+	 * returns the price value excluding the tax (ex-tax) calculated from a price that includes the tax
 	 *
-	 * @param price
-	 * @param taxRate
-	 * @return calculated Money value
+	 * @param price the price including tax
+	 * @param taxRate the tax rate (e.g. 0.10 for 10%)
+	 * @return calculated Money value excluding tax
 	 */
 	public static Money calculatePriceExFromPriceInc(Money price, BigDecimal taxRate) {
 

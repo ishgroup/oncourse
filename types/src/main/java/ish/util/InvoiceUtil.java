@@ -99,7 +99,7 @@ public final class InvoiceUtil {
 	public static Money sumPaymentLines(List<? extends PaymentLineInterface> paymentLines, String ofPaymentType, boolean onlySuccessfulPayments) {
 		Money result = Money.ZERO;
 		if (!ofPaymentType.equals(PaymentInterface.TYPE_IN) && !ofPaymentType.equals(PaymentInterface.TYPE_OUT)) {
-			throw new RuntimeException("the payment type is defined :" + ofPaymentType);
+			throw new RuntimeException("the payment type is not defined: " + ofPaymentType);
 		}
 
 		if (paymentLines != null) {
@@ -325,11 +325,11 @@ public final class InvoiceUtil {
 			for (InvoiceInterface anInvoice : invoices) {
 				if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_IN) && anInvoice.getAmountOwing().compareTo(Money.ZERO) > 0) {
 					Money allocatedAmount = invoiceAllocate(anInvoice, spendingMoney, payment, paymentLines, allowOverpayment &&
-							invoices.indexOf(anInvoice) == invoices.size());
+							invoices.indexOf(anInvoice) == invoices.size() - 1);
 					spendingMoney = spendingMoney.subtract(allocatedAmount);
 				} else if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_OUT) && anInvoice.getAmountOwing().compareTo(Money.ZERO) < 0) {
 					Money allocatedAmount = invoiceAllocate(anInvoice, spendingMoney, payment, paymentLines, allowOverpayment &&
-							invoices.indexOf(anInvoice) == invoices.size());
+							invoices.indexOf(anInvoice) == invoices.size() - 1);
 					spendingMoney = spendingMoney.subtract(allocatedAmount);
 				}
 			}
@@ -426,9 +426,9 @@ public final class InvoiceUtil {
 	public static List<InvoiceInterface> getUnbalancedInvoices(ObjectContext oc, Class<? extends InvoiceInterface> aClass, Expression optionalQualifier) {
 		Expression qualifier = ExpressionFactory.greaterExp(InvoiceInterface.AMOUNT_OWING_PROPERTY, Money.ZERO);
 		if (optionalQualifier != null) {
-			optionalQualifier.andExp(qualifier);
+			qualifier = optionalQualifier.andExp(qualifier);
 		}
-		SelectQuery query = new SelectQuery(aClass, optionalQualifier);
+		SelectQuery query = new SelectQuery(aClass, qualifier);
 		query.addOrdering(InvoiceInterface.INVOICES_DUE_ORDERING);
 		return oc.performQuery(query);
 	}
