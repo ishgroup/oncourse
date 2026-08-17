@@ -40,15 +40,11 @@ public class UpdateWaitingListSubscription {
 	public void update() {
 		try {
 			if (isValid()) {
-
 				deleteWaitingLists();
-
 				context.commitChanges();
 			}
 		} catch (Exception e) {
 			logger.catching(e);
-		} finally {
-			context.rollbackChanges();
 		}
 	}
 
