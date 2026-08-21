@@ -48,10 +48,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 
   const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
 
-  const gridItemProps = {
-    xs: twoColumn ? 6 : 12,
-    lg: twoColumn ? 4 : 12
-  } as any;
+  const gridItemProps = { size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } } as any;
 
   const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts]);
 
@@ -59,7 +56,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
-      <Grid item container xs={12}>
+      <Grid container size={12}>
         <FullScreenStickyHeader
           opened={isNew || Object.keys(syncErrors).includes("name")}
           twoColumn={twoColumn}
@@ -84,7 +81,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           )}
           fields={(
             <Grid container columnSpacing={3} rowSpacing={2}>
-              <Grid item xs={twoColumn ? 2 : 12}>
+              <Grid size={twoColumn ? 2 : 12}>
                 <FormField
                   type="text"
                   label={$t('sku')}
@@ -92,7 +89,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
                   required
                 />
               </Grid>
-              <Grid item xs={twoColumn ? 4 : 12}>
+              <Grid size={twoColumn ? 4 : 12}>
                 <FormField
                   type="text"
                   label={$t('name')}
@@ -105,7 +102,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 8 : 12}>
+      <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 8 : 12 }}>
         <FormField
           type="tags"
           name="tags"
@@ -116,7 +113,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         {subjectsField}
       </Grid>
 
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <EntityChecklists
           entity="ArticleProduct"
           form={form}
@@ -125,7 +122,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField
           type="select"
           name="incomeAccountId"
@@ -139,7 +136,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField
           type="money"
           name="feeExTax"
@@ -150,7 +147,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           required
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField
           type="money"
           name="totalFee"
@@ -160,7 +157,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           debounced={false}
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField
           type="select"
           label={$t('tax')}
@@ -174,7 +171,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField
           type="select"
           name="status"
@@ -183,7 +180,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           selectLabelMark="value"
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField
           type="select"
           name="dataCollectionRuleId"
@@ -205,11 +202,11 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         gridItemProps={gridItemProps}
       />
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormEditorField name="description" label={$t('description')} />
       </Grid>
 
-      <Grid item xs={12} className="mb-3">
+      <Grid size={12} className="mb-3">
         <FieldArray
           name="documents"
           label={$t('documents')}
@@ -225,7 +222,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <RelationsCommon
           values={values}
           dispatch={dispatch}

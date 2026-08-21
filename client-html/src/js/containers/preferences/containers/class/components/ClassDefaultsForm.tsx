@@ -64,8 +64,8 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
           modifiedOn={values => values.modified}
         >
           <Grid container columnSpacing={3} rowSpacing={2}>
-            <Grid container item columnSpacing={3} rowSpacing={2}>
-              <Grid item xs={12} sm={3}>
+            <Grid container columnSpacing={3} rowSpacing={2}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <FormField
                   type="number"
                   name={this.formModel.ClassMinPlaces.uniqueKey}
@@ -75,7 +75,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={4}>
+              <Grid size={{ xs: 12, sm: 4 }}>
                 <FormField
                   type="select"
                   name={this.formModel.ClassDeliveryMode.uniqueKey}
@@ -85,8 +85,8 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
               </Grid>
             </Grid>
 
-            <Grid container item columnSpacing={3} rowSpacing={2}>
-              <Grid item xs={12} sm={3}>
+            <Grid container columnSpacing={3} rowSpacing={2}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <FormField
                   type="number"
                   name={this.formModel.ClassMaxPlaces.uniqueKey}
@@ -96,7 +96,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={4}>
+              <Grid size={{ xs: 12, sm: 4 }}>
                 <FormField
                   type="select"
                   name={this.formModel.ClassFundingSourcePreference.uniqueKey}

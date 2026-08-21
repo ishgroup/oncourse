@@ -25,16 +25,16 @@ export const PriorLearningsContentLine: React.FunctionComponent<any> = React.mem
 
   return (
     <Grid container columnSpacing={3}>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <Uneditable value={row.externalRef} label={$t('external_reference')} />
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <Uneditable value={row.qualName} label={$t('qual_name')} />
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <Uneditable value={row.qualNationalCode} label={$t('qual_national_code')} />
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <Uneditable value={row.qualLevel} label={$t('qual_level')} />
       </Grid>
     </Grid>

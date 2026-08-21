@@ -39,12 +39,12 @@ const QualificationsEditView = (props: EditViewProps<Qualification>) => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pt-2 pl-3 pr-3">
-      <Grid item xs={12} className="d-flex">
+      <Grid size={12} className="d-flex">
         <div className="heading mt-2 mb-1">{$t('avetmiss_data')}</div>
       </Grid>
 
-      <Grid item container columnSpacing={3} rowSpacing={2} xs={twoColumn ? 6 : 12}>
-        <Grid item xs={12}>
+      <Grid container columnSpacing={3} rowSpacing={2} size={twoColumn ? 6 : 12}>
+        <Grid size={12}>
           <FormField
             type="select"
             disabled={isDisabled}
@@ -54,7 +54,7 @@ const QualificationsEditView = (props: EditViewProps<Qualification>) => {
             required={isNew || values.isCustom}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="text"
             disabled={isDisabled}
@@ -63,7 +63,7 @@ const QualificationsEditView = (props: EditViewProps<Qualification>) => {
             required={!['Skill set', 'Local skill set'].includes(values.type) && (isNew || values.isCustom)}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="multilineText"
             disabled={isDisabled}
@@ -72,7 +72,7 @@ const QualificationsEditView = (props: EditViewProps<Qualification>) => {
             required={isNew || values.isCustom}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="text"
             disabled={!isNew}
@@ -83,11 +83,11 @@ const QualificationsEditView = (props: EditViewProps<Qualification>) => {
         </Grid>
       </Grid>
 
-      <Grid item container columnSpacing={3} rowSpacing={2} xs={twoColumn ? 6 : 12}>
-        <Grid item xs={12}>
+      <Grid container columnSpacing={3} rowSpacing={2} size={twoColumn ? 6 : 12}>
+        <Grid size={12}>
           <FormField type="text" disabled={isDisabled} name="anzsco" label={$t('anzsco')} />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="text"
             disabled={isDisabled}
@@ -95,7 +95,7 @@ const QualificationsEditView = (props: EditViewProps<Qualification>) => {
             label={$t('field_of_education')}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="text"
             name="specialization"
@@ -103,7 +103,7 @@ const QualificationsEditView = (props: EditViewProps<Qualification>) => {
             maxLength={128}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="number"
             normalize={normalizeNumber}
@@ -114,7 +114,7 @@ const QualificationsEditView = (props: EditViewProps<Qualification>) => {
         </Grid>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <div className="heading mb-2 mt-2">{$t('internal_options')}</div>
         <FormControlLabel
           className="checkbox"

@@ -162,8 +162,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
         style={Avatar ? { minHeight: "60px" } : null}
       >
         <Grid
-          item
-          xs={12}
+          size={12}
           columnSpacing={3}
           className={clsx(
             "centeredFlex",
@@ -183,13 +182,11 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
           <Grid
             columnSpacing={3}
             container
-            item
-            xs={Avatar ? 10 : 12}
+            size={Avatar ? 10 : 12}
             className="relative overflow-hidden align-items-center"
           >
             <Grid
-              item
-              xs={12}
+              size={12}
             >
               <Collapse in={titleExpanded}>
                 <Typography
@@ -211,8 +208,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
               </Collapse>
             </Grid>
             <Grid
-              item
-              xs={12}
+              size={12}
               className={classes.titleFields}
             >
               <Collapse in={opened || isEditing}>

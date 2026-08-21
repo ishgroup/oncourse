@@ -70,7 +70,7 @@ class MaintenanceBaseForm extends React.Component<any, any> {
           </Typography>
 
           <Grid container columnSpacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <FormField
                 type="number"
                 name={this.formModel.LogoutTimeout.uniqueKey}

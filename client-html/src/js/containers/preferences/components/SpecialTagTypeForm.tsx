@@ -109,7 +109,7 @@ function SpecialTagTypeForm(
         disableInteraction
         onAddMenu={!disabled && onAddNew}
       >
-        {values?.types?.length ? <Grid container item xs={12} lg={10} className="mt-2">
+        {values?.types?.length ? <Grid container size={{ xs: 12, lg: 10 }} className="mt-2">
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="droppableCustomFields">
               {provided => (

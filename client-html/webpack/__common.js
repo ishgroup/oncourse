@@ -16,7 +16,6 @@ const path = require("path");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { ReactLoadablePlugin }  = require('@react-loadable/revised/webpack');
 const { writeFile } = require('fs/promises')
-const { styles } = require('@ckeditor/ckeditor5-dev-utils')
 
 const _info = (NODE_ENV, BUILD_NUMBER) => {
   console.log(`
@@ -137,16 +136,10 @@ const _styleModule = dirname => [
           name: '[name].[ext]',
         },
       }],
-      exclude: [
-        /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-      ],
     },
     {
       test: /\.s?css$/,
       use: [MiniCssExtractPlugin.loader, 'css-loader'],
-      exclude: [
-        /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-      ],
     },
     {
       enforce: "pre",
@@ -157,36 +150,6 @@ const _styleModule = dirname => [
         path.resolve(dirname, "node_modules/ace-builds"),
       ],
     },
-  {
-    test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-    use: [ 'raw-loader' ]
-  },
-  {
-    test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-    use: [
-      {
-        loader: 'style-loader',
-        options: {
-          injectType: 'singletonStyleTag',
-          attributes: {
-            'data-cke': true
-          }
-        }
-      },
-      'css-loader',
-      {
-        loader: 'postcss-loader',
-        options: {
-          postcssOptions: styles.getPostCssConfig( {
-            themeImporter: {
-              themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
-            },
-            minify: true
-          } )
-        }
-      }
-    ]
-  }
   ];
 
 /**

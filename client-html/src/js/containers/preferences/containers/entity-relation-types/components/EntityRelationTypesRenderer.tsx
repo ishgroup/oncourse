@@ -25,14 +25,14 @@ const renderEntityRelationTypes = props => {
   } = props;
 
   return (
-    <Grid item xs={12}>
+    <Grid size={12}>
       {fields.map((item: EntityRelationType, index) => {
         const field = fields.get(index);
 
         return (
           <Card id={`entity-relation-type-${index}`} className="card" key={index}>
             <Grid container spacing={3}>
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <FormField
                   type="text"
                   name={`${item}.name`}
@@ -43,7 +43,7 @@ const renderEntityRelationTypes = props => {
                 />
               </Grid>
 
-              <Grid item xs={7}>
+              <Grid size={7}>
                 <FormField
                   type="text"
                   name={`${item}.description`}
@@ -53,7 +53,7 @@ const renderEntityRelationTypes = props => {
                 />
               </Grid>
 
-              <Grid item xs={1}>
+              <Grid size={1}>
                 <div className="relative">
                   {!field.systemType && (
                     <Button
@@ -68,7 +68,7 @@ const renderEntityRelationTypes = props => {
                 </div>
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <FormField
                   type="text"
                   name={`${item}.fromName`}
@@ -78,12 +78,12 @@ const renderEntityRelationTypes = props => {
                 />
               </Grid>
 
-              <Grid item xs={4} container>
-                <Grid item xs={12} container columnSpacing={3} rowSpacing={2} className={classes.shoppingCartActionBox}>
-                  <Grid item xs={12}>
+              <Grid size={4} container>
+                <Grid size={12} container columnSpacing={3} rowSpacing={2} className={classes.shoppingCartActionBox}>
+                  <Grid size={12}>
                     <Subtitle label={$t('shopping_cart_action')} />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <FormField
                       type="select"
                       name={`${item}.shoppingCart`}
@@ -93,7 +93,7 @@ const renderEntityRelationTypes = props => {
                       hideLabel
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <FormField
                       type="select"
                       name={`${item}.discountId`}
@@ -102,7 +102,7 @@ const renderEntityRelationTypes = props => {
                       allowEmpty
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <FormControlLabel
                       className={classes.checkbox}
                       control={(
@@ -118,7 +118,7 @@ const renderEntityRelationTypes = props => {
                 </Grid>
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <FormField
                   type="text"
                   name={`${item}.toName`}
@@ -129,7 +129,7 @@ const renderEntityRelationTypes = props => {
                 />
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <FormControlLabel
                   className={classes.checkbox}
                   control={(

@@ -32,18 +32,18 @@ const ModulesEditView = (props: any) => {
 
   const isDisabled = isNew ? false : !isCustom;
 
-  const gridSpacing = { xs: twoColumn ? 6 : 12 };
+  const gridSpacing = { size: { xs: twoColumn ? 6 : 12 } };
 
   return (
     <Grid container rowSpacing={2} columnSpacing={3} className="pt-2 pl-3 pr-3">
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FullScreenStickyHeader
           opened={isNew || Object.keys(syncErrors).includes("title")}
           disableInteraction={!isNew}
           twoColumn={twoColumn}
           title={values?.title}
           fields={(
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormField
                 type="text"
                 disabled={isDisabled}
@@ -56,11 +56,11 @@ const ModulesEditView = (props: any) => {
         />
       </Grid>
 
-      <Grid item xs={12} className="d-flex">
+      <Grid size={12} className="d-flex">
         <div className="heading mt-1 mb-1">{$t('avetmiss_data')}</div>
       </Grid>
 
-      <Grid item {...gridSpacing}>
+      <Grid {...gridSpacing}>
         <FormField
           type="text"
           disabled={!isNew}
@@ -70,7 +70,7 @@ const ModulesEditView = (props: any) => {
         />
       </Grid>
 
-      <Grid item {...gridSpacing}>
+      <Grid {...gridSpacing}>
         <FormField
           type="select"
           disabled={isDisabled}
@@ -81,7 +81,7 @@ const ModulesEditView = (props: any) => {
         />
       </Grid>
 
-      <Grid item {...gridSpacing}>
+      <Grid {...gridSpacing}>
         <FormField
           type="text"
           disabled={isDisabled}
@@ -90,7 +90,7 @@ const ModulesEditView = (props: any) => {
         />
       </Grid>
 
-      <Grid item {...gridSpacing}>
+      <Grid {...gridSpacing}>
         <FormField
           type="text"
           name="specialization"
@@ -99,7 +99,7 @@ const ModulesEditView = (props: any) => {
         />
       </Grid>
 
-      <Grid item {...gridSpacing}>
+      <Grid {...gridSpacing}>
         <FormField
           type="number"
           normalize={normalizeNumberToPositive}
@@ -110,7 +110,7 @@ const ModulesEditView = (props: any) => {
         />
       </Grid>
 
-      <Grid item {...gridSpacing}>
+      <Grid {...gridSpacing}>
         <FormField
           type="select"
           name="creditPointsStatus"
@@ -119,7 +119,7 @@ const ModulesEditView = (props: any) => {
         />
       </Grid>
 
-      <Grid item {...gridSpacing}>
+      <Grid {...gridSpacing}>
         <FormField
           type="number"
           normalize={normalizeNumberToPositive}
@@ -129,7 +129,7 @@ const ModulesEditView = (props: any) => {
         />
       </Grid>
 
-      <Grid item {...gridSpacing}>
+      <Grid {...gridSpacing}>
         <FormField
           type="number"
           normalize={normalizeNumberToPositive}
@@ -144,7 +144,7 @@ const ModulesEditView = (props: any) => {
         />
       </Grid>
 
-      <Grid item {...gridSpacing}>
+      <Grid {...gridSpacing}>
         <div className="heading mb-2 mt-2">{$t('internal_options')}</div>
         <FormControlLabel
           className="checkbox"

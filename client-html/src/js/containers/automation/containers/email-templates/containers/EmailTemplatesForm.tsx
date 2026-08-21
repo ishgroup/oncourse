@@ -194,7 +194,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           disableInteraction={isInternal}
           opened={isNew || Object.keys(syncErrors).includes("name")}
           fields={(
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormField
                 type="text"
                 name="name"
@@ -235,7 +235,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           )}
         >
           <Grid container>
-            <Grid item xs={12} sm={9}>
+            <Grid size={{ xs: 12, sm: 9 }}>
               <FormField
                 type="multilineText"
                 name="shortDescription"
@@ -243,7 +243,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 className="overflow-hidden mb-1"
                 placeholder={$t('short_description')}
               />
-              <Typography variant="caption" fontSize="13px">
+              <Typography variant="caption" sx={{ fontSize: '13px' }}>
                 <FormField
                   type="multilineText"
                   name="description"
@@ -256,9 +256,9 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 />
               </Typography>
             </Grid>
-            <Grid item xs={9} className="pr-3">
+            <Grid size={9} className="pr-3">
               <Grid container columnSpacing={3} rowSpacing={2} className="mb-3">
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <div className="heading">{$t('type')}</div>
                   <FormField
                     type="select"
@@ -268,7 +268,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                     allowEmpty
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <FormField
                     type="select"
                     label={$t('message_type')}
@@ -289,7 +289,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
 
               {values.type === 'Email' && (
                 <Grid container>
-                  <Grid item xs={6}>
+                  <Grid size={6}>
                     <div className="heading">{$t('subject')}</div>
                     <FormField
                       type="text"
@@ -345,7 +345,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 required
               />
             </Grid>
-            <Grid item xs={3}>
+            <Grid size={3}>
               <div>
                 <FormField
                   label={$t('enabled')}

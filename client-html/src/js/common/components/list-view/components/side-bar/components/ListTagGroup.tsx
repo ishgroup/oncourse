@@ -7,12 +7,14 @@
  */
 
 import DragIndicator from '@mui/icons-material/DragIndicator';
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
+import IconButton from '@mui/material/IconButton';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { makeAppStyles } from 'ish-ui';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd-next';
 import { FormMenuTag } from '../../../../../../model/tags';
-import { getUpdated, updateIndeterminateState } from '../../../utils/listFiltersUtils';
+import { getTagsUpdatedByIds, setIndeterminate } from '../../../utils/listFiltersUtils';
 import styles from '../../list/styles';
 import ListTagItem from './ListTagItem';
 
@@ -20,6 +22,7 @@ const useStyles = makeAppStyles()(styles);
 
 interface Props {
   rootTag: FormMenuTag;
+  activeTags: string[];
   classes: any;
   showColoredDots: boolean;
   updateActive: (updated: FormMenuTag) => void;
@@ -27,8 +30,15 @@ interface Props {
   dndEnabled?: boolean;
 }
 
+const ExpandIcon = props => <IconButton
+  {...props}
+>
+  <KeyboardArrowUp />
+</IconButton>;
+
 const ListTagGroup: React.FC<Props> = (
-  { 
+  {
+    activeTags,
     rootTag, 
     classes, 
     updateActive, 
@@ -41,41 +51,20 @@ const ListTagGroup: React.FC<Props> = (
 
   const { classes: customStyles, cx } = useStyles();
 
-  const hasOffset = useMemo(() => !rootTag.children.some(c => Boolean(c.children.length)), [rootTag.children]);
-
-  const handleExpand = useCallback(event => {
-    const nodeId = event.currentTarget.getAttribute("role");
-
-    setExpanded(prev => {
-      const prevIndex = prev.findIndex(p => p === nodeId);
-
-      const updated = [...prev];
-
-      if (prevIndex !== -1) {
-        updated.splice(prevIndex, 1);
-      } else {
-        updated.push(nodeId);
-      }
-
-      return updated;
-    });
-  }, []);
-
-  const toggleActive = useCallback(
-    (e, checked) => {
-      const id = e.currentTarget.value;
-
-      const children = getUpdated(rootTag.children, id, checked);
-      updateIndeterminateState(children, id);
-      updateActive({ ...rootTag, children });
-    },
-    [rootTag.children]
-  );
-
   const getItemStyle = (isDragging, draggableStyle) => ({
     userSelect: "none",
     ...draggableStyle,
   });
+
+  const toggleActive = useCallback(
+    (e, active: string[]) => {
+      const children = getTagsUpdatedByIds(rootTag.children, active.map(n => Number(n)));
+      const updatedRoot = { ...rootTag, children };
+      setIndeterminate(updatedRoot);
+      updateActive(updatedRoot);
+    },
+    [rootTag.children]
+  );
   
   const heading = (
     <div className={cx("heading", classes.listHeaderOffset)}>
@@ -84,21 +73,27 @@ const ListTagGroup: React.FC<Props> = (
   );
 
   const tree = (
-    <SimpleTreeView expandedItems={expanded}>
-      {rootTag.children.map(c => {
-      const key = c.prefix + c.tagBody.id.toString();
-      return (
-        <ListTagItem
-          hasOffset={hasOffset}
-          handleExpand={handleExpand}
-          itemId={key}
-          item={c}
-          key={key}
-          toggleActive={toggleActive}
-          showColoredDots={showColoredDots}
-        />
-      );
-    })}
+    <SimpleTreeView
+      multiSelect
+      checkboxSelection
+      expandedItems={expanded}
+      selectedItems={activeTags}
+      slots={{
+        expandIcon: ExpandIcon,
+        collapseIcon: ExpandIcon
+      }}
+      selectionPropagation={{
+        descendants: true
+      }}
+      onSelectedItemsChange={toggleActive}
+      onExpandedItemsChange={(e, items) => setExpanded(items)}
+    >
+      {rootTag.children.map(t => <ListTagItem
+        itemId={t.tagBody.id.toString()}
+        item={t}
+        key={t.prefix + t.tagBody.id.toString()}
+        showColoredDots={showColoredDots}
+      />)}
     </SimpleTreeView>
   );
 

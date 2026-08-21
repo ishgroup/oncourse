@@ -307,20 +307,22 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
       open={showBulkEditDrawer}
       onClose={onClose}
       classes={{ paper: classes.exportContainer }}
-      PaperProps={{
-        style: {
-          left: window.innerWidth >= 1024 ? sidebarWidth : 0
+      slotProps={{
+        paper: {
+          style: {
+            left: window.innerWidth >= 1024 ? sidebarWidth : 0
+          }
         }
       }}
     >
       <Grid container className={classes.content}>
-        <Grid container className={classes.header} wrap="nowrap" alignItems="center">
-          <Grid item xs={2}>
+        <Grid container className={classes.header} wrap="nowrap" sx={{ alignItems: 'center' }}>
+          <Grid size={2}>
             <Typography variant="body2" className={classes.headerText}>
               {$t('bulk_edit')}
             </Typography>
           </Grid>
-          <Grid item xs className="centeredFlex">
+          <Grid size="grow" className="centeredFlex">
             <SelectionSwitcher
               selectedRecords={selection.length}
               allRecords={count}
@@ -337,7 +339,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           </Grid>
         </Grid>
         <Grid container className={classes.body} wrap="nowrap" spacing={3}>
-          <Grid item zeroMinWidth className={classes.menuColumn}>
+          <Grid className={classes.menuColumn}>
             <List disablePadding className={classes.list}>
               {bulkEditFields
                 && bulkEditFields.map(field => {
@@ -364,15 +366,15 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
                 })}
             </List>
           </Grid>
-          <Grid item xs className={classes.menuColumn}>
+          <Grid size="grow" className={classes.menuColumn}>
             <form autoComplete="off" onSubmit={handleSubmit(onSave)} className={classes.form}>
               <Grid container className={classes.formContent}>
-                <Grid item xs={12} xl={6}>
+                <Grid size={{ xs: 12, xl: 6 }}>
                   {BulkEditFieldRendered}
                 </Grid>
               </Grid>
 
-              <Grid item xs={12} className={classes.closeShareButtons}>
+              <Grid size={12} className={classes.closeShareButtons}>
                 <Button className={classes.closeButton} onClick={onClose} variant="text">
                   {$t('cancel')}
                 </Button>

@@ -31,7 +31,7 @@ import PayslipPaylineRenderrer from './PayslipPaylineRenderrer';
 
 const payslipPayTypes = Object.keys(PayslipPayType).map(mapSelectItems);
 
-const getLayoutArray = (threeColumn: boolean): { [key: string]: boolean | GridSize }[] => (threeColumn
+const getLayoutArray = (threeColumn: boolean): { [key: string]: GridSize }[] => (threeColumn
   ? [
     { md: 12 },
     { xs: 12 },
@@ -124,7 +124,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
 
     return values ? (
       <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FullScreenStickyHeader
             opened={isNew || Object.keys(syncErrors).includes("contactId")}
             disableInteraction={!isNew}
@@ -133,7 +133,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
               <HeaderContactTitle name={values?.tutorFullName} id={values?.tutorId} />
             )}
             fields={(
-              <Grid item xs={twoColumn ? 6 : 12}>
+              <Grid size={twoColumn ? 6 : 12}>
                 <FormField
                   type="remoteDataSelect"
                   entity="Contact"
@@ -157,8 +157,8 @@ class PayslipsEditView extends React.PureComponent<any, any> {
           />
         </Grid>
 
-        <Grid item sx={{ order: twoColumn ? { xs: 2, lg: 1 } : { xs: 2 } }} container columnSpacing={3} rowSpacing={2} xs={12} lg={twoColumn ? 8 : 12}  >
-          <Grid item xs={12}>
+        <Grid sx={{ order: twoColumn ? { xs: 2, lg: 1 } : { xs: 2 } }} container columnSpacing={3} rowSpacing={2} size={{ xs: 12, lg: twoColumn ? 8 : 12 }}  >
+          <Grid size={12}>
             <FormField
               type="select"
               name="payType"
@@ -169,7 +169,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
               required
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField
               type="tags"
               name="tags"
@@ -178,7 +178,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FieldArray
               name="paylines"
               component={PayslipPaylineRenderrer}
@@ -191,14 +191,14 @@ class PayslipsEditView extends React.PureComponent<any, any> {
             />
           </Grid>
 
-          <Grid item xs={12} container columnSpacing={3} className="centeredFlex mt-2">
-            <Grid item xs={paislipsLayout[8].xs} className="centeredFlex">
+          <Grid size={12} container columnSpacing={3} className="centeredFlex mt-2">
+            <Grid size={paislipsLayout[8].xs} className="centeredFlex">
               <span className="heading flex-fill money">{$t('payrun_total')}</span>
             </Grid>
-            <Grid item xs={paislipsLayout[9].xs}>
+            <Grid size={paislipsLayout[9].xs}>
               <Grid container columnSpacing={3}>
-                <Grid item xs={twoColumn ? paislipsLayout[10].xs : false} />
-                <Grid item xs={paislipsLayout[11].xs} className="centeredFlex justify-content-end">
+                <Grid size={twoColumn ? paislipsLayout[10].xs : false} />
+                <Grid size={paislipsLayout[11].xs} className="centeredFlex justify-content-end">
                   <Typography
                     component="span"
                     className={clsx(
@@ -211,7 +211,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
                   </Typography>
                 </Grid>
 
-                <Grid item xs={paislipsLayout[11].xs} className="centeredFlex justify-content-end">
+                <Grid size={paislipsLayout[11].xs} className="centeredFlex justify-content-end">
                   <Typography
                     component="span"
                     variant="body1"
@@ -225,16 +225,16 @@ class PayslipsEditView extends React.PureComponent<any, any> {
             </Grid>
           </Grid>
 
-          <Grid item xs={paislipsLayout[12].xs}>
+          <Grid size={paislipsLayout[12].xs}>
             <FormField type="multilineText" name="publicNotes" label={$t('public_notes')}  />
           </Grid>
 
-          <Grid item xs={paislipsLayout[12].xs}>
+          <Grid size={paislipsLayout[12].xs}>
             <FormField type="multilineText" name="privateNotes" label={$t('private_notes')}  />
           </Grid>
         </Grid>
 
-        <Grid item sx={{ order: twoColumn ? { xs: 1, lg: 2 } : { xs: 1 } }} lg={twoColumn ? 4 : 12}>
+        <Grid sx={{ order: twoColumn ? { xs: 1, lg: 2 } : { xs: 1 } }} size={{ lg: twoColumn ? 4 : 12 }}>
           <EntityChecklists
             entity="Payslip"
             form={form}

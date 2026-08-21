@@ -114,17 +114,17 @@ const RoosterStatuses = ({
     )}
   >
     <MenuItem value="Confirmed for payroll">
-      <Typography variant="button" display="block" color="textPrimary" noWrap>
+      <Typography variant="button" sx={{ display: 'block' }} color="textPrimary" noWrap>
         {$t('pay_confirmed')}
       </Typography>
     </MenuItem>
     <MenuItem value="Rejected for payroll">
-      <Typography variant="button" display="block" color="error" noWrap>
+      <Typography variant="button" sx={{ display: 'block' }} color="error" noWrap>
         {$t('dont_pay')}
       </Typography>
     </MenuItem>
     <MenuItem value="Not confirmed for payroll">
-      <Typography variant="button" display="block" color="textSecondary" noWrap>
+      <Typography variant="button" sx={{ display: 'block' }} color="textSecondary" noWrap>
         {$t('pay_not_confirmed')}
         {" "}
         {payableTime}
@@ -209,17 +209,17 @@ const CourseClassTutorRoosterItem = (
   return (
     (<Card elevation={isExpanded ? 3 : 0} className={classes.tutorItem}>
       <Grid container columnSpacing={3}>
-        <Grid item xs={6} className="centeredFlex">
+        <Grid size={6} className="centeredFlex">
           <Typography variant="body1" className={classes.tutorItemLabel} noWrap>
             {`${tutorAttendance.contactName}${tutor ? ` (${tutor.roleName})` : ""}`}
           </Typography>
         </Grid>
 
-        <Grid item xs={6} className="centeredFlex">
+        <Grid size={6} className="centeredFlex">
           <div>
             {
               tutorAttendance.hasPayslip && (
-                <Typography variant="button" display="block" className="successColor centeredFlex" noWrap>
+                <Typography variant="button" sx={{ display: 'block' }} className="successColor centeredFlex" noWrap>
                   {$t('paid')}
                   <IconButton className="ml-05" size="small" onClick={() => openInternalLink(`/payslip?search=id in (${tutorAttendance.payslipIds.toString()})`)}>
                     <OpenInNew fontSize="inherit" color="secondary" />
@@ -263,7 +263,7 @@ const CourseClassTutorRoosterItem = (
 
         { !isExpanded
         && (
-          <Grid item xs={6} className="centeredFlex">
+          <Grid size={6} className="centeredFlex">
             <Typography variant="body2" color="textSecondary">
               {diffLabel}
             </Typography>
@@ -271,7 +271,7 @@ const CourseClassTutorRoosterItem = (
         )}
 
         {!isExpanded && tutorAttendance.note && (
-          <Grid item xs={6} className="centeredFlex">
+          <Grid size={6} className="centeredFlex">
             <Typography variant="body2" color="textSecondary" noWrap>
               <ChatIcon fontSize="inherit" className={classes.noteIcon} />
               {tutorAttendance.note}
@@ -282,7 +282,7 @@ const CourseClassTutorRoosterItem = (
       </Grid>
       <Collapse in={isExpanded}>
         <Grid container columnSpacing={3} className="mt-1">
-          <Grid item xs={2}>
+          <Grid size={2}>
             <FormField
               name={`${fieldsName}.start`}
               type="time"
@@ -292,7 +292,7 @@ const CourseClassTutorRoosterItem = (
               debounced={false}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid size={2}>
             <FormField
               name={`${fieldsName}.end`}
               type="time"
@@ -302,14 +302,14 @@ const CourseClassTutorRoosterItem = (
               debounced={false}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid size={2}>
             <FormField
               name={`${fieldsName}.actualPayableDurationMinutes`}
               type="duration"
               label={$t('payable_time')}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={6}>
             <FormField
               name={`${fieldsName}.note`}
               type="multilineText"

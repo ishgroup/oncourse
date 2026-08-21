@@ -73,7 +73,7 @@ class LeadSites extends React.PureComponent<any, any> {
 
     return (
       <Grid container columnSpacing={3} className="pl-3 pr-3">
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <NestedList
             formId={values && values.id}
             title={$t('sites')}

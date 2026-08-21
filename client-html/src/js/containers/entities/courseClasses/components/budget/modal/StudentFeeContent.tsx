@@ -40,7 +40,7 @@ const StudentFeePaymentPlan: React.FC<any> = ({
 
   return (
     <>
-      <Grid item xs={8}>
+      <Grid size={8}>
         <FormField
           type="number"
           name={`${name}.dayOffset`}
@@ -50,11 +50,11 @@ const StudentFeePaymentPlan: React.FC<any> = ({
           debounced={false}
         />
       </Grid>
-      <Grid item xs={3}>
+      <Grid size={3}>
         <FormField type="money" name={`${name}.amount`} label={$t('amount')} required {...fieldAmountProps}  />
       </Grid>
 
-      <Grid item xs={1}>
+      <Grid size={1}>
         <IconButton onClick={onDeleteClick}>
           <DeleteIcon />
         </IconButton>
@@ -130,10 +130,10 @@ const StudentFeeContent: React.FC<Props> = ({
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2}>
-      <Grid item xs={8}>
+      <Grid size={8}>
         <FormField type="text" name="description" label={$t('invoice_line_title')}  />
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <FormField
           type="select"
           name="taxId"
@@ -146,7 +146,7 @@ const StudentFeeContent: React.FC<Props> = ({
           required
         />
       </Grid>
-      <Grid item xs={8}>
+      <Grid size={8}>
         <FormField
           type="select"
           name="accountId"
@@ -158,7 +158,7 @@ const StudentFeeContent: React.FC<Props> = ({
           items={accounts}
         />
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <FormField
           type="money"
           name="perUnitAmountIncTax"
@@ -168,11 +168,11 @@ const StudentFeeContent: React.FC<Props> = ({
         />
       </Grid>
 
-      <Grid item xs={12} className="centeredFlex">
+      <Grid size={12} className="centeredFlex">
         <div className="heading">{$t('payment_plans')}</div>
         <AddButton onClick={addPaymentPlan} />
       </Grid>
-      <Grid container columnSpacing={3} item xs={12}>
+      <Grid container columnSpacing={3} size={12}>
         {values.paymentPlan.map((item, index) => <StudentFeePaymentPlan
           key={index}
           index={index}
@@ -183,12 +183,12 @@ const StudentFeeContent: React.FC<Props> = ({
         />)}
       </Grid>
 
-      <Grid container columnSpacing={3} item xs={12} className="pt-2">
-        <Grid item xs={4} />
-        <Grid item xs={4} className="centeredFlex pt-1 summaryTopBorder" justifyContent="flex-end">
+      <Grid container columnSpacing={3} size={12} className="pt-2">
+        <Grid size={4} />
+        <Grid size={4} className="centeredFlex pt-1 summaryTopBorder" sx={{ justifyContent: 'flex-end' }}>
           <Typography variant="subtitle2">{totalLabel}</Typography>
         </Grid>
-        <Grid item xs={4} className="centeredFlex pt-1 summaryTopBorder money">
+        <Grid size={4} className="centeredFlex pt-1 summaryTopBorder money">
           <Typography variant="body2" color="textSecondary">
             {classTotalFeeLabel}
           </Typography>

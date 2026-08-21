@@ -62,14 +62,14 @@ const DocumentSearchItem = React.memo<{
 
   return (
     <div {...parentProps}>
-      <Grid item xs={4} className={clsx("text-truncate text-nowrap", classes.searchItemPartWrapper)}>
+      <Grid size={4} className={clsx("text-truncate text-nowrap", classes.searchItemPartWrapper)}>
         <Tooltip title={content}>
           <Typography variant="body2" component="span" className="text-truncate">
             {content}
           </Typography>
         </Tooltip>
       </Grid>
-      <Grid item xs={4} className={clsx("text-truncate text-nowrap", classes.searchItemPartWrapper)}>
+      <Grid size={4} className={clsx("text-truncate text-nowrap", classes.searchItemPartWrapper)}>
         <Tooltip title={`${data.name} - ${data.byteSize}`}>
           <Typography variant="body2" component="span" color="textSecondary" className="text-truncate">
             {data.fileName}
@@ -79,7 +79,7 @@ const DocumentSearchItem = React.memo<{
           </Typography>
         </Tooltip>
       </Grid>
-      <Grid item xs={4} className={clsx("text-truncate text-nowrap", classes.searchItemPartWrapper)}>
+      <Grid size={4} className={clsx("text-truncate text-nowrap", classes.searchItemPartWrapper)}>
         <Tooltip title={formattedDate}>
           <Typography variant="body2" component="span" color="textSecondary" className="text-truncate">
             {formattedDate}

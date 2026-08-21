@@ -63,7 +63,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
     return (
       <div>
         <Grid container rowSpacing={2} className="mt-0 mb-2 centeredFlex">
-          <Grid item xs={12} className="d-flex">
+          <Grid size={12} className="d-flex">
             <Tooltip title={$t('open_document_url')} disableHoverListener={!validUrl}>
               <div>
                 <ButtonBase disabled={!validUrl} onClick={(e: any) => this.openDocumentURL(e, validUrl)}>
@@ -85,7 +85,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
               />
             </div>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField
               type="tags"
               name={`${itemPath}.tags`}

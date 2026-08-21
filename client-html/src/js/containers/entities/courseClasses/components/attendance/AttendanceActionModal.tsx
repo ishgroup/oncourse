@@ -120,7 +120,7 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
 
   return (
     <Grid container>
-      <Grid item xs={12} className="centeredFlex mt-2 mb-2">
+      <Grid size={12} className="centeredFlex mt-2 mb-2">
         <SvgIcon fontSize="small">
           <AttendanceIcon type={values.attendanceType} />
         </SvgIcon>
@@ -131,8 +131,8 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
         />
         <Typography variant="body1">{getStudentAttendanceLabel(values.attendanceType)}</Typography>
       </Grid>
-      <Grid item container columnSpacing={3} rowSpacing={2} xs={12} className="pb-2">
-        <Grid item xs={6}>
+      <Grid container columnSpacing={3} rowSpacing={2} size={12} className="pb-2">
+        <Grid size={6}>
           {values.attendanceType === "Partial" ? (
             <FormField
               type="dateTime"
@@ -146,7 +146,7 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
             <Uneditable label={$t('attended_from')} value={attendedFromLabel} />
           )}
         </Grid>
-        <Grid item xs={6}>
+        <Grid size={6}>
           {values.attendanceType === "Partial" ? (
             <FormField
               type="dateTime"
@@ -160,7 +160,7 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
             <Uneditable label={$t('attended_until')} value={attendedUntilLabel} />
           )}
         </Grid>
-        <Grid item xs={6}>
+        <Grid size={6}>
           <EditInPlaceField
             label={$t('attendance_duration')}
             input={{
@@ -176,10 +176,10 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
             disabled
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid size={6}>
           <Uneditable value={sessionDurationLabel} label={$t('session_duration')} />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="multilineText"
             name="note"

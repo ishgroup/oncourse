@@ -16,7 +16,7 @@ import clsx from 'clsx';
 import { AddButton, AnyArgFunction, DynamicSizeList, makeAppStyles } from 'ish-ui';
 import React, { memo, useMemo, useState } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { areEqual } from 'react-window';
+import areEqual from '../../../utils/react-window/areEqual';
 import { CatalogData, CatalogItemType } from '../../../../model/common/Catalog';
 import NewsRender from '../../news/NewsRender';
 import ExpandableContainer from '../expandable/ExpandableContainer';
@@ -179,7 +179,7 @@ const CatalogWithSearch = React.memo<Props>((
           >
             <AddIcon/>
           </Fab>
-          <Typography className={classes.fabTip} variant="overline" color="primary" fontWeight="bold">{$t('close')}</Typography>
+          <Typography className={classes.fabTip} variant="overline" color="primary" sx={{ fontWeight: 'bold' }}>{$t('close')}</Typography>
         </div>
         <div className="flex-fill"/>
         <UserSearch getSearchResults={setSearch} placeholder={$t('filter_items')}/>

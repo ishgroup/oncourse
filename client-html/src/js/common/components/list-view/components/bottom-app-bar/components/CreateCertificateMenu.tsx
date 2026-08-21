@@ -211,7 +211,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
         <DialogContent>
           <Grid container columnSpacing={3}>
             {!loading && Boolean(enrolments.vet.length) && Boolean(enrolments.noCertificate.length) && (
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <ul className="m-0">
                   {Boolean(enrolments.nonSufficient.length) && (
                     <li>
@@ -238,7 +238,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
                 </ul>
               </Grid>
             )}
-            <Grid container columnSpacing={3} item xs={12}>
+            <Grid container columnSpacing={3} size={12}>
               <CircularProgress classes={{ root: loading ? undefined : "d-none" }} size={40} thickness={5} />
             </Grid>
           </Grid>

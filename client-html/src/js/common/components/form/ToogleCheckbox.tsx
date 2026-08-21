@@ -61,7 +61,7 @@ export const ToogleCheckbox = ({
         }}
         onClick={onClick}
       >
-        <Typography variant="body2" fontWeight="inherit">
+        <Typography variant="body2" sx={{ fontWeight: 'inherit' }}>
           {uncheckedLabel}
         </Typography>
       </Button>
@@ -71,7 +71,7 @@ export const ToogleCheckbox = ({
         }}
         onClick={onClick}
       >
-        <Typography variant="body2" noWrap fontWeight="inherit">
+        <Typography variant="body2" noWrap sx={{ fontWeight: 'inherit' }}>
           {chackedLabel}
         </Typography>
       </Button>

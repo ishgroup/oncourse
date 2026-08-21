@@ -6,7 +6,7 @@
 import { Binding } from '@api/model';
 import Delete from '@mui/icons-material/Delete';
 import DragIndicator from '@mui/icons-material/DragIndicator';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlineOutlined';
 import { Grid, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import $t from '@t';
@@ -146,7 +146,7 @@ const BindingsItem = React.memo<BindingsItemProps>(({
   }, [item, emailTemplateItems]);
 
   return type === "label" ? (
-    <Grid item xs={12} className={cx("centeredFlex", dragHandleProps && classes.container, hoverClasses.container)}>
+    <Grid size={12} className={cx("centeredFlex", dragHandleProps && classes.container, hoverClasses.container)}>
       {dragHandleProps && (
         <div className={classes.dragHandle} {...dragHandleProps}>
           <DragIndicator className="mr-1" />
@@ -192,7 +192,7 @@ const BindingsItem = React.memo<BindingsItemProps>(({
       )}
     </Grid>
   ) : (
-    <Grid item xs={6} {...gridProps}>
+    <Grid size={6} {...gridProps}>
       <Field
         label={item.label || item.name}
         name={`${field}.value`}
@@ -343,12 +343,12 @@ const Bindings = React.memo<BindingsProps>( props => {
 
       <Grid container>
         {defaultVariables && (
-          <Grid item xs={12} className="mb-3">
+          <Grid size={12} className="mb-3">
             <Typography variant="caption">{$t('built_in_variables')}</Typography>
             {defaultVariables.map((i, n) => <BindingsItem key={n} item={i as Binding} type="label" infoLink={getInfoLink(i.type)} />)}
           </Grid>
         )}
-        <Grid item xs={12} className="centeredFlex pb-1">
+        <Grid size={12} className="centeredFlex pb-1">
           <Typography variant="caption">{label}</Typography>
           {!disabled && (
             <AddButton className="p-0 ml-1" onClick={handleClick} />

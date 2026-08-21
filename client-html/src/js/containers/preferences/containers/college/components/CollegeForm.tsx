@@ -65,7 +65,7 @@ class CollegeBaseForm extends React.Component<any, any> {
           modifiedOn={values => values.modified}
         >
           <Grid container columnSpacing={3}>
-            <Grid item xs={12} sm={6} lg={4}>
+            <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.CollegeName.uniqueKey}
@@ -91,7 +91,7 @@ class CollegeBaseForm extends React.Component<any, any> {
                 </>
               )}
             </Grid>
-            <Grid item xs={12} sm={4} lg={3}>
+            <Grid size={{ xs: 12, sm: 4, lg: 3 }}>
               <FormField
                 type="text"
                 name={this.formModel.CollegeABN.uniqueKey}

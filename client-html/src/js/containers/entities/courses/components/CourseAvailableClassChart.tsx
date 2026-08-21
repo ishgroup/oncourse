@@ -258,7 +258,7 @@ const CourseAvailableClassChart = (props: any) => {
   }
 
   return (
-    <Grid item xs={12} className={classes.chartWrapper}>
+    <Grid size={12} className={classes.chartWrapper}>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           width={500}

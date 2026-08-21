@@ -84,10 +84,10 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
 
   return (
     <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
-      <Grid item xs={4} className="d-inline-flex-center pl-1">
+      <Grid size={4} className="d-inline-flex-center pl-1">
         {elem.studentName}
       </Grid>
-      <Grid item xs={Boolean(gradeType) ? 2 : 4} className={classes.center}>
+      <Grid size={Boolean(gradeType) ? 2 : 4} className={classes.center}>
         {elem.submittedValue === "Submitted"
           ? (
             <EditInPlaceDateTimeField
@@ -109,7 +109,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
 
       {Boolean(gradeType) && (
       <>
-        <Grid item xs={2} className={classes.center}>
+        <Grid size={2} className={classes.center}>
           {elem.markedValue === "Submitted" ? (
             <div className="pt-0-5">
               <div>
@@ -147,7 +147,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
             </div>
           ) : markedContent}
         </Grid>
-        <Grid item xs={2} className={classes.center}>
+        <Grid size={2} className={classes.center}>
           <GradeContent
             handleGradeMenuOpen={handleGradeMenuOpen}
             onToggleGrade={onToggleGrade}

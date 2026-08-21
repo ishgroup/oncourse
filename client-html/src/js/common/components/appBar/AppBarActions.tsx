@@ -93,12 +93,16 @@ const AppBarActions = React.memo<Props>(({ actions, showConfirm }) => {
       >
         {actions.map(item => (
           <SpeedDialAction
-            tooltipPlacement="bottom"
             key={item.tooltip}
             icon={item.icon}
-            tooltipTitle={item.tooltip}
-            FabProps={{
-              disabled: item.disabled
+            slotProps={{
+              tooltip: {
+                placement: "bottom",
+                title: item.tooltip
+              },
+              fab: {
+                disabled: item.disabled
+              }
             }}
             onClick={() => onClickAction(item.action, item.confirmText, item.confirmButtonText)}
           />

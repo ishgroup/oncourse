@@ -192,7 +192,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2}>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <FormField type="stub" name={`sessions[${session.index}].end`} validate={validateSessionEnd} />
         <FormField
           type="dateTime"
@@ -210,7 +210,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
         />
       </Grid>
 
-      <Grid item xs={2}>
+      <Grid size={2}>
         <EditInPlaceDurationField
           label={$t('duration')}
           meta={{
@@ -226,7 +226,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
         />
       </Grid>
 
-      <Grid item xs={2}>
+      <Grid size={2}>
         <FormField
           name={`sessions[${session.index}].end`}
           timezone={session.siteTimezone}
@@ -237,7 +237,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
         />
       </Grid>
       {Boolean(warningTypes.Session.length || warningTypes.UnavailableRule.length) && (
-        <Grid item xs={12}>
+        <Grid size={12}>
           {warningTypes.Session
             .map(w => <ErrorMessage message={w.message} /> )}
           {warningTypes.UnavailableRule
@@ -245,7 +245,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
         </Grid>
       ) }
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField
           type="remoteDataSelect"
           entity="Room"
@@ -265,12 +265,12 @@ const CourseClassSessionFields: React.FC<Props> = ({
       </Grid>
       {Boolean(warningTypes.Room.length)
         && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             {warningTypes.Room
               .map(w => <ErrorMessage message={w.message} /> )}
           </Grid>
       )}
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Field
           name={`sessions[${session.index}].tutorAttendances`}
           component={CourseClassTutorRooster}
@@ -284,17 +284,17 @@ const CourseClassSessionFields: React.FC<Props> = ({
           addTutorWage={addTutorWage}
         />
       </Grid>
-      <Grid item xs={12} className="secondaryHeading">
+      <Grid size={12} className="secondaryHeading">
         {$t('notes')}
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <FormField
           type="multilineText"
           name={`sessions[${session.index}].publicNotes`}
           label={$t('public_notes')}
                   />
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <FormField
           type="multilineText"
           name={`sessions[${session.index}].privateNotes`}

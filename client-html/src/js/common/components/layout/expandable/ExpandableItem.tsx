@@ -88,7 +88,7 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
   return (
     <Accordion
       expanded={expanded}
-      TransitionProps={{ unmountOnExit: true, mountOnEnter: true }}
+      slotProps={{ transition: { unmountOnExit: true, mountOnEnter: true } }}
       classes={{
         root: clsx(classes.expansionPanelRoot,
           !expanded

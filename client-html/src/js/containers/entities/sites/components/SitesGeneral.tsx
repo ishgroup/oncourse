@@ -55,7 +55,7 @@ const SitesRoomFields = ({
   isParenSiteVirtual: boolean;
 }) => (
   <Grid container columnSpacing={3} rowSpacing={2}>
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FormField
         type="text"
         name={`${item}.name`}
@@ -66,7 +66,7 @@ const SitesRoomFields = ({
       />
     </Grid>
 
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FormField
         type="number"
         name={`${item}.seatedCapacity`}
@@ -78,7 +78,7 @@ const SitesRoomFields = ({
     </Grid>
 
     {isParenSiteVirtual && (
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField
           type="text"
           label={$t('virtual_room_url')}
@@ -184,13 +184,13 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
     <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
 
       {/* --- Sticky Header --- */}
-      <Grid item xs={layoutArray[2].xs}>
+      <Grid size={layoutArray[2].xs}>
         <FullScreenStickyHeader
           opened={!values.id || Object.keys(syncErrors).includes('name')}
           twoColumn={twoColumn}
           title={values?.name}
           fields={
-            <Grid item xs={twoColumn ? 4 : 12}>
+            <Grid size={twoColumn ? 4 : 12}>
               <FormField type="text" name="name" label={$t('name')} required />
             </Grid>
           }
@@ -198,12 +198,12 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
       </Grid>
 
       {/* --- TAGS + CHECKLISTS --- */}
-      <Grid item container xs={layoutArray[0].xs} columnSpacing={3} rowSpacing={2}>
-        <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid container size={layoutArray[0].xs} columnSpacing={3} rowSpacing={2}>
+        <Grid size={twoColumn ? 8 : 12}>
           <FormField type="tags" name="tags" tags={tags} />
         </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
+        <Grid size={twoColumn ? 4 : 12}>
           <div className="centeredFlex">
             <EntityChecklists
               className="flex-fill"
@@ -224,12 +224,12 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
       </Grid>
 
       {/* --- Timetable Button --- */}
-      <Grid item xs={12} className="mb-2">
+      <Grid size={12} className="mb-2">
         <TimetableButton onClick={onCalendarClick} />
       </Grid>
 
       {/* --- CHECKBOXES --- */}
-      <Grid item xs={layoutArray[1].xs}>
+      <Grid size={layoutArray[1].xs}>
         <div className="container centeredFlex mb-2">
           <FormControlLabel
             className="checkbox pr-3"
@@ -253,7 +253,7 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
 
       {/* --- TIMEZONES --- */}
       {timezones && (
-        <Grid item xs={layoutArray[2].xs} className="mb-2">
+        <Grid size={layoutArray[2].xs} className="mb-2">
           <FormField
             type="select"
             name="timezone"
@@ -274,8 +274,8 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
       {/* --- ADDRESS BLOCK --- */}
       <Collapse in={!values.isVirtual}>
         <Grid container columnSpacing={3} className="pr-3 pl-3">
-          <Grid container item xs={layoutArray[2].xs} columnSpacing={3} rowSpacing={2}>
-            <Grid item xs={12}>
+          <Grid container size={layoutArray[2].xs} columnSpacing={3} rowSpacing={2}>
+            <Grid size={12}>
               <FormField
                 type="text"
                 name="street"
@@ -284,19 +284,19 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormField type="text" name="suburb" label={$t('suburb')} />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormField type="text" name="state" label={$t('state')} />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormField type="text" name="postcode" label={$t('postcode')}/>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
               {Boolean(countries?.length) && (
                 <FormField
                   type="select"
@@ -312,7 +312,7 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
             </Grid>
           </Grid>
 
-          <Grid item xs={layoutArray[7].xs}>
+          <Grid size={layoutArray[7].xs}>
             <StaticGoogleMap
               markerLetter={values.name && values.name[0].toUpperCase()}
               latitude={values.latitude}
@@ -329,11 +329,11 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
         fieldName="customFields"
         entityValues={values}
         form={form}
-        gridItemProps={{ xs: twoColumn ? 6 : 12 }}
+        gridItemProps={{ size: { xs: twoColumn ? 6 : 12 } }}
       />
 
       {/* --- ROOMS --- */}
-      <Grid item xs={layoutArray[8].xs}>
+      <Grid size={layoutArray[8].xs}>
         <MinifiedEntitiesList
           name="rooms"
           header="Rooms"

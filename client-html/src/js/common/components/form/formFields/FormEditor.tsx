@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { MarkdownToHtml } from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html';
+import { MarkdownGfmMdToHtml } from '@ckeditor/ckeditor5-markdown-gfm';
 import Edit from '@mui/icons-material/Edit';
 import { ButtonBase, FormControl, FormHelperText, Input, InputLabel } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -245,7 +245,7 @@ interface Props {
   className?: string;
 }
 
-const parser = new MarkdownToHtml();
+const parser = new MarkdownGfmMdToHtml();
 
 const FormEditor: React.FC<Props & WrappedFieldProps> = (
   {

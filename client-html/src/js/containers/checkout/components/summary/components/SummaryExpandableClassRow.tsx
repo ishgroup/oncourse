@@ -144,7 +144,7 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
         expandIcon={<ExpandMoreIcon />}
       >
         <Grid container className="centeredFlex">
-          <Grid item xs={6}>
+          <Grid size={6}>
             <div className={clsx("centeredFlex", classes.itemTitle)}>
               <StyledCheckbox
                 checked={item.checked}
@@ -158,13 +158,13 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
             </div>
           </Grid>
 
-          <Grid item xs={3} className="money text-end">
+          <Grid size={3} className="money text-end">
             {item.checked && !expanded && item.discount && (
               <span className={classes.originalPrice}>{formatCurrency(itemOriginalPrice, currencySymbol)}</span>
             )}
           </Grid>
 
-          <Grid item xs={3} className={clsx("money text-end", !item.checked && "disabled")}>
+          <Grid size={3} className={clsx("money text-end", !item.checked && "disabled")}>
             {!expanded && formatCurrency(item.price ? item.price : "0.00", currencySymbol)}
           </Grid>
         </Grid>
@@ -172,7 +172,7 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
       <AccordionDetails>
         <Grid container columnSpacing={3} rowSpacing={2}>
           {item.class.isVet && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormField
                 type="select"
                 name={`${item.id}_${listIndex}_studyReason`}
@@ -184,7 +184,7 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
             </Grid>
           )}
 
-          <Grid item xs={12} lg={4}>
+          <Grid size={{ xs: 12, lg: 4 }}>
             <FormField
               type="select"
               name={`${item.id}_${listIndex}_discount`}
@@ -199,17 +199,17 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
               allowEmpty
             />
           </Grid>
-          <Grid item container columnSpacing={3} rowSpacing={2} xs={12} lg={8}>
-            <Grid item sm={3}>
+          <Grid container columnSpacing={3} rowSpacing={2} size={{ xs: 12, lg: 8 }}>
+            <Grid size={{ sm: 3 }}>
               <Uneditable label={$t('price_ex_tax')} className="text-end" value={item.priceExTax} money />
             </Grid>
-            <Grid item sm={3}>
+            <Grid size={{ sm: 3 }}>
               <Uneditable label={$t('discount_ex_tax')} className="text-end" value={item.discountExTax} money />
             </Grid>
-            <Grid item sm={3}>
+            <Grid size={{ sm: 3 }}>
               <Uneditable label={$t('tax')} className="text-end" value={item.taxAmount} money />
             </Grid>
-            <Grid item sm={3}>
+            <Grid size={{ sm: 3 }}>
               {priceLocked ? <Uneditable label={$t('total')} className="text-end" labelAdornment={priceAdormnet} value={item.price} money rightAligned />
               : (
                 <FormField

@@ -231,7 +231,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
           containerClass="p-3"
           opened={isNew || Object.keys(syncErrors).includes("email")}
           fields={(
-            <Grid item xs={8}>
+            <Grid size={8}>
               <FormField
                 type="text"
                 name="email"
@@ -253,7 +253,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
           />
 
           <Grid container>
-            <Grid item xs={12} sm={5} lg={5} xl={3}>
+            <Grid size={{ xs: 12, sm: 5, lg: 5, xl: 3 }}>
               <FormField
                 type="text"
                 name="firstName"
@@ -329,8 +329,8 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                 </div>
               )}
             </Grid>
-            <Grid item sm={false} md={1} lg={1} xl={false} />
-            <Grid item xs={12} sm={5} lg={5} xl={3}>
+            <Grid size={{ sm: false, md: 1, lg: 1, xl: false }} />
+            <Grid size={{ xs: 12, sm: 5, lg: 5, xl: 3 }}>
               <Paper className={clsx(classes.paperPadding, classes.paperBottomMargin)}>
                 <FormGroup>
                   <FormControlLabel
@@ -382,7 +382,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                 </FormGroup>
               </Paper>
             </Grid>
-            <Grid item sm={false} md={false} lg={1} xl={6} />
+            <Grid size={{ sm: false, md: false, lg: 1, xl: 6 }} />
           </Grid>
         </AppBarContainer>
       </Form>

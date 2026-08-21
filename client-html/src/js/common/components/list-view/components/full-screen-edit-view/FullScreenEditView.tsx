@@ -184,7 +184,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       <Dialog
         fullScreen
         open={fullScreenEditView}
-        TransitionComponent={Transition}
+        slots={{ transition: Transition }}
         classes={{
           paper: classes.fullEditViewBackground
         }}

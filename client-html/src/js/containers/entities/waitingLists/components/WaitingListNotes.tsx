@@ -11,12 +11,12 @@ import { EditViewProps } from '../../../../model/common/ListView';
 
 const WaitingListNotes: React.FunctionComponent<EditViewProps> = ({ twoColumn }) => (
   <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 saveButtonTableOffset">
-    <Grid item xs={12}>
+    <Grid size={12}>
       <div className="centeredFlex">
         <div className="heading pb-1">{$t('notes')}</div>
       </div>
     </Grid>
-    <Grid item xs={twoColumn ? 6 : 12}>
+    <Grid size={twoColumn ? 6 : 12}>
       <FormField
         type="multilineText"
         name="studentNotes"
@@ -24,7 +24,7 @@ const WaitingListNotes: React.FunctionComponent<EditViewProps> = ({ twoColumn })
         label={$t('student_notes')}
       />
     </Grid>
-    <Grid item xs={twoColumn ? 6 : 12}>
+    <Grid size={twoColumn ? 6 : 12}>
       <FormField type="multilineText" name="privateNotes" label={$t('private_notes')} />
     </Grid>
   </Grid>

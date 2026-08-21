@@ -136,16 +136,16 @@ const Favorites: React.FC<Props> = props => {
   )), [groupedSortedItems, scripts, favoriteScripts, favorites, hoverClasses]);
 
   return (
-    <Grid container alignItems="center">
-      <Grid item xs={12} className={classes.topBar}>
+    <Grid container sx={{ alignItems: 'center' }}>
+      <Grid size={12} className={classes.topBar}>
         <Typography className="heading">{$t('favourites')}</Typography>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <List classes={{ root: classes.root }}>{renderFavorites}</List>
       </Grid>
 
-      <Grid item xs={12} className="mt-1 mb-2">
+      <Grid size={12} className="mt-1 mb-2">
         <Divider variant="middle" />
       </Grid>
     </Grid>

@@ -55,6 +55,7 @@ const ChecklistsFilters = (
 
   const checkedChecklists = useAppSelector(state => state.list.checkedChecklists);
   const uncheckedChecklists = useAppSelector(state => state.list.uncheckedChecklists);
+  const activeTags = checkedChecklists.map(c => c.tagBody.id.toString());
   
   const onUpdateChecked = active => {
     updateChecked(checkedChecklists.map(cl => ({
@@ -92,6 +93,7 @@ const ChecklistsFilters = (
           }
           return (
             <ListTagGroup
+              activeTags={activeTags}
               key={t.prefix + t.tagBody.id.toString()}
               dndKey={index}
               rootTag={t}
@@ -122,6 +124,7 @@ const ChecklistsFilters = (
           }
           return (
             <ListTagGroup
+              activeTags={activeTags}
               key={t.prefix + t.tagBody.id.toString()}
               dndKey={index}
               rootTag={t}

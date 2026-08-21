@@ -10,7 +10,7 @@ import Help from '@mui/icons-material/Help';
 import Divider from '@mui/material/Divider';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
-import Hidden from '@mui/material/Hidden';
+import Hidden from '../../../../../common/components/layout/Hidden';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
@@ -76,7 +76,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
           modifiedOn={values => values.modified}
         >
           <Grid container columnSpacing={3} rowSpacing={2}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormControlLabel
                 classes={{
                   root: "checkbox"
@@ -93,13 +93,13 @@ class AvetmissBaseForm extends React.Component<any, any> {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography variant="subtitle1" className="heading mb-2 mt-2">
                 {$t('training_organisation')}
               </Typography>
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.AvetmissCollegeName.uniqueKey}
@@ -107,7 +107,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="select"
                 name={this.formModel.Jurisdiction.uniqueKey}
@@ -117,10 +117,10 @@ class AvetmissBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden smDown>
-              <Grid item md={4} />
+              <Grid size={{ md: 4 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.Id.uniqueKey}
@@ -141,7 +141,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="select"
                 name={this.formModel.Type.uniqueKey}
@@ -151,34 +151,34 @@ class AvetmissBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden smDown>
-              <Grid item md={4} />
+              <Grid size={{ md: 4 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField type="text" name={this.formModel.Address1.uniqueKey} label={$t('address_1')}  />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField type="text" name={this.formModel.Suburb.uniqueKey} label={$t('suburb')}  />
             </Grid>
 
             <Hidden smDown>
-              <Grid item md={4} />
+              <Grid size={{ md: 4 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField type="text" name={this.formModel.Address2.uniqueKey} label={$t('address_2')} />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField type="text" name={this.formModel.Postcode.uniqueKey} label={$t('postcode')} />
             </Grid>
 
             <Hidden smDown>
-              <Grid item md={4} />
+              <Grid size={{ md: 4 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="select"
                 name={this.formModel.State.uniqueKey}
@@ -188,20 +188,20 @@ class AvetmissBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden smDown>
-              <Grid item md={8} />
+              <Grid size={{ md: 8 }} />
             </Hidden>
 
-            <Grid item xs={12} md={8} className="mb-2">
+            <Grid size={{ xs: 12, md: 8 }} className="mb-2">
               <Divider />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography variant="subtitle1" className="heading mb-2 mt-2">
                 {$t('optional')}
               </Typography>
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.ContactName.uniqueKey}
@@ -209,7 +209,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.Email.uniqueKey}
@@ -219,22 +219,22 @@ class AvetmissBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden smDown>
-              <Grid item md={4} />
+              <Grid size={{ md: 4 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField type="text" name={this.formModel.Phone.uniqueKey} label={$t('telephone')} />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField type="text" name={this.formModel.Fax.uniqueKey} label={$t('fax2')} />
             </Grid>
 
             <Hidden smDown>
-              <Grid item md={4} />
+              <Grid size={{ md: 4 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.CertSignatoryName.uniqueKey}
@@ -242,7 +242,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormControlLabel
                 classes={{
                   root: "overflow-initial checkbox"
@@ -260,10 +260,10 @@ class AvetmissBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden smDown>
-              <Grid item md={4} />
+              <Grid size={{ md: 4 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.QldIdentifier.uniqueKey}
@@ -271,7 +271,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.FeeHelpProviderCode.uniqueKey}

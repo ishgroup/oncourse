@@ -10,10 +10,10 @@ import Typography from "@mui/material/Typography";
 import { flexRender } from '@tanstack/react-table';
 import clsx from "clsx";
 import { stubFunction } from "ish-ui";
-import React, { createContext, forwardRef, memo, useMemo, useState } from "react";
+import React, { memo, useMemo, useState } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { areEqual, FixedSizeList } from "react-window";
-import InfiniteLoader from "react-window-infinite-loader";
+import { List } from "react-window";
+import { useInfiniteLoader } from "react-window-infinite-loader";
 import {
   APP_BAR_HEIGHT,
   HEADER_ROWS_COUNT,
@@ -21,6 +21,7 @@ import {
   LIST_PAGE_SIZE,
   LIST_TWO_COLUMN_ROW_HEIGHT
 } from "../../../../../../constants/Config";
+import areEqual from "../../../../../utils/react-window/areEqual";
 import StaticProgress from "../../../../progress/StaticProgress";
 import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../constants";
 import TagDotRenderer from "./TagDotRenderer";
@@ -59,15 +60,15 @@ const TwoColumnCell = ({ cell, classes }) => (<div
   {flexRender(cell.column.columnDef.cell, cell.getContext())}
 </div>);
 
-const ListRow = memo<any>(({ data, index, style }) => {
-  const {
-    rows,
-    classes,
-    onRowSelect,
-    threeColumn,
-    onRowDoubleClick
-  } = data;
-
+const ListRow = memo<any>(({
+  index,
+  style,
+  rows,
+  classes,
+  onRowSelect,
+  threeColumn,
+  onRowDoubleClick
+}) => {
   if (!threeColumn && HEADER_ROWS_INDICES.includes(index)) {
     return null;
   }
@@ -103,20 +104,6 @@ const ListRow = memo<any>(({ data, index, style }) => {
   );
 }, areEqual);
 
-const StickyListContext = createContext(null);
-StickyListContext.displayName = "StickyListContext";
-
-const innerElementType = forwardRef<any, { children?: React.ReactNode }>(({ children, ...rest }, ref) => (
-  <StickyListContext.Consumer>
-    {({ header }) => (
-      <div ref={ref} {...rest}>
-        {header}
-        {children}
-      </div>
-    )}
-  </StickyListContext.Consumer>
-));
-
 export default ({
                   table,
                   classes,
@@ -149,7 +136,7 @@ export default ({
 
   const itemCount = (itemCountBase < recordsCount ? itemCountBase : recordsCount) + (threeColumn ? 0 : HEADER_ROWS_COUNT);
 
-  const itemData = useMemo(
+  const rowProps = useMemo(
     () => ({
       rows,
       classes,
@@ -160,41 +147,41 @@ export default ({
     [rows, classes, onRowSelect, onRowDoubleClick, totalColumnsWidth, threeColumn]
   );
 
+  const onRowsRendered = useInfiniteLoader({
+    threshold: 0,
+    minimumBatchSize: LIST_PAGE_SIZE,
+    isRowLoaded: isItemLoaded,
+    rowCount: itemCount,
+    loadMoreRows: loadMoreItems
+  });
+
   return (
-    <StickyListContext.Provider value={{ header }}>
-      <InfiniteLoader
-        threshold={0}
-        minimumBatchSize={LIST_PAGE_SIZE}
-        isItemLoaded={isItemLoaded}
-        itemCount={itemCount}
-        loadMoreItems={loadMoreItems}
-      >
-        {({ onItemsRendered, ref }) => (
-          <AutoSizer>
-            {({ height, width }) => (
-              <FixedSizeList
-                itemCount={itemCount}
-                itemData={itemData}
-                itemSize={threeColumn ? APP_BAR_HEIGHT : LIST_TWO_COLUMN_ROW_HEIGHT}
-                height={height}
-                width={threeColumn ? mainContentWidth : (totalColumnsWidth > width ? totalColumnsWidth : width)}
-                onItemsRendered={onItemsRendered}
-                innerElementType={innerElementType}
-                ref={r => {
-                  if (r) {
-                    // eslint-disable-next-line no-param-reassign
-                    ref.current = r;
-                    // eslint-disable-next-line no-param-reassign
-                    listRef.current = r;
-                  }
-                }}
-              >
-                {ListRow}
-              </FixedSizeList>
-            )}
-          </AutoSizer>
-        )}
-      </InfiniteLoader>
-    </StickyListContext.Provider>
+    <AutoSizer>
+      {({ height, width }) => (
+        <List
+          rowComponent={ListRow as any}
+          rowCount={itemCount}
+          rowProps={rowProps}
+          rowHeight={threeColumn ? APP_BAR_HEIGHT : LIST_TWO_COLUMN_ROW_HEIGHT}
+          onRowsRendered={onRowsRendered}
+          listRef={listRef}
+          style={{
+            height,
+            width: threeColumn ? mainContentWidth : (totalColumnsWidth > width ? totalColumnsWidth : width)
+          }}
+        >
+          {header && (
+            // v2 renders `children` inside the scroll container, so the header still
+            // scrolls horizontally with the rows while sticking to the top. The wrapper
+            // is sticky and zero-height so it pins to the top without adding its own
+            // height to the scrollable content — the first HEADER_ROWS_COUNT rows are
+            // already reserved for it and render as null.
+            <div style={{ position: "sticky", top: 0, height: 0, zIndex: 2 }}>
+              {header}
+            </div>
+          )}
+        </List>
+      )}
+    </AutoSizer>
   );
 };

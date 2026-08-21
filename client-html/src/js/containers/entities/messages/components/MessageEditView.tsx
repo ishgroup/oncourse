@@ -53,8 +53,8 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
   return (
     <div className="p-3 saveButtonTableOffset">
       <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
-        {!twoColumn && (<Grid item xs={12}><Uneditable value={values.subject} label={$t('subject')} /></Grid>)}
-        <Grid item xs={twoColumn ? 2 : 6}>
+        {!twoColumn && (<Grid size={12}><Uneditable value={values.subject} label={$t('subject')} /></Grid>)}
+        <Grid size={twoColumn ? 2 : 6}>
           <Uneditable
             value={values.sentToContactFullname}
             label={$t('sent_to')}
@@ -63,13 +63,13 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
             )}
           />
         </Grid>
-        <Grid item xs={twoColumn ? 2 : 6}>
+        <Grid size={twoColumn ? 2 : 6}>
           <Uneditable value={createdOn} label={$t('created_on')} />
         </Grid>
       </Grid>
       <Grid container columnSpacing={3} rowSpacing={2}>
         {values.message && (
-          <Grid item xs={twoColumn ? 6 : 12}>
+          <Grid size={twoColumn ? 6 : 12}>
             <Typography variant="caption" color="textSecondary">
               {$t('message')}
             </Typography>
@@ -85,7 +85,7 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
           </Grid>
         )}
 
-        <Grid item xs={twoColumn ? 6 : 12} className={values.htmlMessage ? undefined : "d-none"}>
+        <Grid size={twoColumn ? 6 : 12} className={values.htmlMessage ? undefined : "d-none"}>
           <Typography variant="caption" color="textSecondary">
             {$t('html_message')}
           </Typography>
@@ -96,15 +96,15 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
           </Card>
         </Grid>
 
-        <Grid item xs={12} className={values.sms ? undefined : "d-none"}>
+        <Grid size={12} className={values.sms ? undefined : "d-none"}>
           <Uneditable value={values.sms} label={$t('SMS')} />
         </Grid>
 
-        <Grid item xs={12} className={values.postDescription ? undefined : "d-none"}>
+        <Grid size={12} className={values.postDescription ? undefined : "d-none"}>
           <Uneditable value={values.postDescription} label={$t('post_description')} />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Uneditable value={values.creatorKey} label={$t('creator_key')} />
         </Grid>
       </Grid>

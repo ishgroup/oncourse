@@ -150,7 +150,7 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
           opened={isNew || Object.keys(syncErrors).includes("name")}
           containerClass="p-3"
           fields={(
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormField
                 type="text"
                 name="name"
@@ -175,7 +175,7 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
           )}
         >
           <Grid container>
-            <Grid item md={12} lg={11} className="ml-2">
+            <Grid size={{ md: 12, lg: 11 }} className="ml-2">
               {values
                 && Categories.map((item, index) => (
                   <UserRolePreference key={index} item={item} values={values} dispatch={dispatch} initial={rights} />

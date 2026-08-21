@@ -80,8 +80,8 @@ export const SummaryItemRow = React.memo<
   const isProduct = item.type === "product";
 
   const headerContent = (
-    <Grid item xs={12} container alignItems="center" direction="row" className={clsx(isProduct && classes.tableTab)}>
-      <Grid item xs={9}>
+    <Grid size={12} container sx={{ alignItems: 'center' }} direction="row" className={clsx(isProduct && classes.tableTab)}>
+      <Grid size={9}>
         <div className={clsx("centeredFlex", classes.itemTitle)}>
           <StyledCheckbox
             onClick={e => e.stopPropagation()}
@@ -111,8 +111,7 @@ export const SummaryItemRow = React.memo<
         </div>
       </Grid>
       <Grid
-        item
-        xs={3}
+        size={3}
         className={clsx("money text-end", !item.checked && "disabled", isProduct && classes.summaryItemPrice)}
       >
 
@@ -141,7 +140,7 @@ export const SummaryItemRow = React.memo<
     if (item.type === "voucher") {
       return (
         <>
-          <Grid item xs={4}>
+          <Grid size={4}>
             <FormField
               type="date"
               name={`${item.id}_${listIndex}_validTo`}
@@ -150,7 +149,7 @@ export const SummaryItemRow = React.memo<
               required
             />
           </Grid>
-          <Grid item xs={8}>
+          <Grid size={8}>
             <FormControlLabel
               classes={{
               root: "checkbox"
@@ -171,7 +170,7 @@ export const SummaryItemRow = React.memo<
     }
     if (item.type === "membership") {
       return (
-        <Grid item xs={12}>
+        <Grid size={12}>
           {item.expiryType === "Never (Lifetime)" ? (
             <Uneditable value="lifetime" label={$t('valid_to')} />
           ) : (
@@ -424,11 +423,10 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
                     />
                   );
                 })}
-            <Grid item xs={12} container direction="row" className="mt-1">
-              <Grid item xs={8} />
+            <Grid size={12} container direction="row" className="mt-1">
+              <Grid size={8} />
               <Grid
-                item
-                xs={4}
+                size={4}
                 container
                 direction="row-reverse"
                 className={clsx("money pt-1 summaryTopBorder", classes.summaryItemPrice)}

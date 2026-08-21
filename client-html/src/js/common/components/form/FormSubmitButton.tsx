@@ -6,7 +6,7 @@
 *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 */
 
-import ErrorOutline from '@mui/icons-material/ErrorOutline';
+import ErrorOutline from '@mui/icons-material/ErrorOutlineOutlined';
 import { Collapse } from '@mui/material';
 import Button from '@mui/material/Button';
 import React, { useEffect, useRef } from 'react';

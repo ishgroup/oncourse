@@ -124,7 +124,7 @@ function Subjects(
         <div className={cx(classes.legend, classes.legendPadding, 'mt-3')}>
           <Typography variant="caption" color="textSecondary">{$t('name')}</Typography>
           <Typography variant="caption" color="textSecondary">{$t('url_path')}</Typography>
-          <Typography variant="caption" color="textSecondary" textAlign="center">{$t('website_visibility')}</Typography>
+          <Typography variant="caption" color="textSecondary" sx={{ textAlign: 'center' }}>{$t('website_visibility')}</Typography>
         </div>
 
         {values && (

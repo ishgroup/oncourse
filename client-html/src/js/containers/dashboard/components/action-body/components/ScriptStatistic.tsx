@@ -66,12 +66,12 @@ const ScriptStatistic = ({ dispatch }) => {
         {scripts.map(script => (
           <ListItem ref={createRef() as any} key={script.name} className={classes.smallScriptGroup} dense disableGutters>
             <Grid container columnSpacing={3} className={classes.smallScriptGroup} wrap="nowrap">
-              <Grid item xs={6} className="overflow-hidden">
+              <Grid size={6} className="overflow-hidden">
                 <Link
                   href={`/automation/script/${script.id}`}
                   target="_blank"
                   underline='hover'
-                  fontSize="inherit"
+                  sx={{ fontSize: 'inherit' }}
                   color="textPrimary"
                   className="linkDecoration d-block"
                   noWrap
@@ -79,12 +79,12 @@ const ScriptStatistic = ({ dispatch }) => {
                   {script.name}
                 </Link>
               </Grid>
-              <Grid item className={cx(classes.smallScriptGroup, "overflow-hidden")} xs={2}>
-                <Typography noWrap color="textSecondary" fontSize="inherit">
+              <Grid className={cx(classes.smallScriptGroup, "overflow-hidden")} size={2}>
+                <Typography noWrap color="textSecondary" sx={{ fontSize: 'inherit' }}>
                   {getTime(script.lastRuns[0]?.date)}
                 </Typography>
               </Grid>
-              <Grid item xs={4} display='flex' flexWrap='nowrap'>
+              <Grid size={4} sx={{ display: 'flex', flexWrap: 'nowrap' }}>
                 <span className="overflow-hidden">
                   {script.lastRuns.map((elem, index) => (
                     elem.status === "Script executed"

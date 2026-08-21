@@ -117,7 +117,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
-      <Grid item container xs={12}>
+      <Grid container size={12}>
         <FullScreenStickyHeader
           opened={isNew || Object.keys(syncErrors).some(k => ['code', 'name'].includes(k))}
           twoColumn={twoColumn}
@@ -142,7 +142,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           )}
           fields={(
             <Grid container columnSpacing={3} rowSpacing={2}>
-              <Grid item xs={twoColumn ? 2 : 12}>
+              <Grid size={twoColumn ? 2 : 12}>
                 <FormField
                   type="text"
                   label={$t('sku')}
@@ -150,7 +150,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
                   required
                 />
               </Grid>
-              <Grid item xs={twoColumn ? 4 : 12}>
+              <Grid size={twoColumn ? 4 : 12}>
                 <FormField
                   type="text"
                   label={$t('name')}
@@ -163,7 +163,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid size={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
@@ -174,7 +174,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         {subjectsField}
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <EntityChecklists
           entity="MembershipProduct"
           form={form}
@@ -183,7 +183,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="select"
           name="incomeAccountId"
@@ -197,7 +197,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormEditorField name="description" label={$t('description')} />
       </Grid>
 
@@ -206,12 +206,10 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         fieldName="customFields"
         entityValues={values}
         form={form}
-        gridItemProps={{
-          xs: twoColumn ? 6 : 12
-        }}
+        gridItemProps={{ size: { xs: twoColumn ? 6 : 12 } }}
       />
       
-      <Grid item xs={twoColumn ? 2 : 4}>
+      <Grid size={twoColumn ? 2 : 4}>
         <FormField
           type="money"
           name="feeExTax"
@@ -221,7 +219,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           label={$t('fee_ex_tax')}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 2 : 4}>
+      <Grid size={twoColumn ? 2 : 4}>
         <FormField
           type="money"
           name="totalFee"
@@ -231,7 +229,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           label={$t('total_fee')}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 2 : 4}>
+      <Grid size={twoColumn ? 2 : 4}>
         <FormField
           type="select"
           name="taxId"
@@ -245,7 +243,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="select"
           name="status"
@@ -254,7 +252,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           selectLabelMark="value"
         />
       </Grid>
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="select"
           name="dataCollectionRuleId"
@@ -269,7 +267,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <CustomSelector
           caption="Expires"
           options={expiryOptions}

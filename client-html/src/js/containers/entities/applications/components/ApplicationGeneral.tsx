@@ -104,14 +104,11 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
     }
   }, []);
 
-  const gridItemProps = {
-    xs: twoColumn ? 6 : 12,
-    lg: twoColumn ? 4 : 12
-  } as any;
+  const gridItemProps = { size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } } as any;
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FullScreenStickyHeader
           opened={isNew || Object.keys(syncErrors).includes("contactId")}
           disableInteraction={!isNew}
@@ -120,7 +117,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
             <HeaderContactTitle name={values?.studentName} id={values?.contactId} />
           )}
           fields={(
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <FormField
                 type="remoteDataSelect"
                 entity="Contact"
@@ -142,14 +139,14 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           )}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 8 : 12}>
+      <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 8 : 12 }}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+      <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
         <EntityChecklists
           entity="Application"
           form={form}
@@ -157,7 +154,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           checked={values.tags}
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField
           type="remoteDataSelect"
           entity="Course"
@@ -182,7 +179,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           required
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField
           type="date"
           name="applicationDate"
@@ -190,17 +187,17 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           disabled
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.source} label={$t('source')} />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         {values && values.status !== ApplicationStatus.Accepted ? (
           <FormField type="select" name="status" label={$t('status')} items={statusItems} />
           ) : (
             <Uneditable value={values.status} label={$t('status')} />
           )}
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField
           type="money"
           name="feeOverride"
@@ -208,13 +205,13 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           validate={validateNonNegative}
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField name="enrolBy" label={$t('enrol_by')} type="date" />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         {!isNew && <FormField type="text" name="createdBy" label={$t('created_by2')} disabled />}
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField
           type="text"
           name="reason"
@@ -227,10 +224,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
         fieldName="customFields"
         entityValues={values}
         form={form}
-        gridItemProps={{
-          xs: twoColumn ? 6 : 12,
-          lg: twoColumn ? 4 : 12
-        }}
+        gridItemProps={{ size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } }}
       />
     </Grid>
   );
