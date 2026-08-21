@@ -26,7 +26,7 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
   const { classes }: any = useStyles();
   return (
     <Grid container columnSpacing={3} id={`special-tag-type-${index}`} className="relative">
-      <Grid item xs={6}>
+      <Grid size={6}>
         <FormField
           type="text"
           name={`types.${index}.name`}
@@ -38,7 +38,7 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid size={6}>
         <div className="d-flex">
           <FormControlLabel
             className={classes.checkbox}

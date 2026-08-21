@@ -226,7 +226,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
     <div className="pl-3 pr-3">
       {values.student && (
         <>
-          <Grid item xs={12} className="pb-1">
+          <Grid size={12} className="pb-1">
             <Divider className="mb-1" />
             <MinifiedEntitiesList
               name="student.concessions"
@@ -243,7 +243,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
           </Grid>
         </>
       )}
-      <Grid item xs={12} className="pb-1">
+      <Grid size={12} className="pb-1">
         <Divider className="mb-1" />
         <MinifiedEntitiesList
           name="memberships"
@@ -257,7 +257,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
           accordion
         />
       </Grid>
-      <Grid item xs={12} className="pb-1">
+      <Grid size={12} className="pb-1">
         <Divider className="mb-1" />
         <MinifiedEntitiesList
           name="relations"
@@ -275,7 +275,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
 
       <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Financial">
         <Grid container columnSpacing={3} rowSpacing={2} className="pb-3">
-          <Grid item xs={twoColumn ? 3 : 12}>
+          <Grid size={twoColumn ? 3 : 12}>
             <FormField
               type="number"
               name="invoiceTerms"
@@ -292,7 +292,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               )}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 3 : 12}>
+          <Grid size={twoColumn ? 3 : 12}>
             <FormField
               type="select"
               name="taxId"
@@ -303,7 +303,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
           </Grid>
           {paymentInPermissions && storedCard && !values.removeCChistory
           && (
-            <Grid item xs={12} className="centeredFlex mb-3 mt-2">
+            <Grid size={12} className="centeredFlex mb-3 mt-2">
               <Alert severity="info">
                 <Typography variant="body2">
                   <div>
@@ -327,8 +327,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
             </Grid>
           )}
           <Grid
-            item
-            xs={12}
+            size={12}
             className="flex-column"
           >
             <FieldArray
@@ -343,8 +342,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
           </Grid>
 
           <Grid
-            item
-            xs={12}
+            size={12}
             className="flex-column"
           >
             <FieldArray

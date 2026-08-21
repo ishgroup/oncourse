@@ -83,7 +83,7 @@ const QueryCardContent = props => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2}>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField
           type="select"
           name={`${name}.entity`}
@@ -95,7 +95,7 @@ const QueryCardContent = props => {
         />
       </Grid>  
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Collapse
           in={queryAvailable}
           classes={{
@@ -116,8 +116,8 @@ const QueryCardContent = props => {
         </Collapse>
       </Grid>
 
-      <Grid item container xs={12} className="mb-2">
-        <Grid item xs={6}>
+      <Grid container size={12} className="mb-2">
+        <Grid size={6}>
           <FormField
             name={`${name}.queryClosureReturnValue`}
             type="text"
@@ -126,7 +126,7 @@ const QueryCardContent = props => {
           />
         </Grid>
 
-        <Grid item xs={6} className="d-flex p-2" alignItems="flex-end">
+        <Grid size={6} className="d-flex p-2" sx={{ alignItems: 'flex-end' }}>
           {queryResultsPending && !hideQueryResults && <CircularProgress size={24} thickness={4} />}
           {!queryResultsPending && !hideQueryResults && (
           <Typography variant="caption" color="textSecondary">

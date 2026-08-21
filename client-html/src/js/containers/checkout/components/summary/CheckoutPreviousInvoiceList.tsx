@@ -48,7 +48,7 @@ const InvoiceItemRow: React.FC<InvoiceItemRowProps> = (
     payDueAmounts
   }
 ) => (
-  <Grid item xs={12} container alignItems="center" direction="row" className={classes.tableTab}>
+  <Grid size={12} container sx={{ alignItems: 'center' }} direction="row" className={classes.tableTab}>
     <div className={clsx("centeredFlex flex-fill", classes.itemTitle)}>
       <StyledCheckbox name={`previousInvoiceCheckbox[${item.id}]`} checked={item.checked} onChange={toggleInvoiceItem} />
       <Typography variant="body1" className={clsx("mr-1", !item.checked && "disabled")}>
@@ -152,11 +152,10 @@ const CheckoutPreviousInvoiceList: React.FC<Props> = props => {
                   payDueAmounts={previousInvoices.payDueAmounts}
                 />
               ))}
-              <Grid item xs={12} container direction="row" className={classes.tableTab}>
-                <Grid item xs={8} />
+              <Grid size={12} container direction="row" className={classes.tableTab}>
+                <Grid size={8} />
                 <Grid
-                  item
-                  xs={4}
+                  size={4}
                   container
                   direction="row-reverse"
                   className={clsx("pt-1", "summaryTopBorder", classes.summaryItemPrice)}

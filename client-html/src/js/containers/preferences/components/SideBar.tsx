@@ -1,6 +1,6 @@
 import { DataCollectionType } from '@api/model';
 import { MenuItem } from '@mui/material';
-import Menu from '@mui/material/Menu/Menu';
+import Menu from '@mui/material/Menu';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';

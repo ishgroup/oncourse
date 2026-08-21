@@ -79,7 +79,7 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
   const error = useMemo(
     () =>
       syncErrors[fields.name] && (
-        <Typography color="error" variant="body2" className="text-pre-wrap" paragraph>
+        <Typography color="error" variant="body2" className="text-pre-wrap" sx={{ marginBottom: '16px' }} component="p">
           {syncErrors[fields.name]._error}
         </Typography>
       ),

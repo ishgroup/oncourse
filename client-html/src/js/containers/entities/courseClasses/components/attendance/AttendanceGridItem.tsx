@@ -187,7 +187,7 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
       selectedItems.map((s, index) => {
         if (type === "Training plan") {
           return (
-            <Grid key={index} item xs={2} className={classes.sessionItem}>
+            <Grid key={index} size={2} className={classes.sessionItem}>
               <TrainingPlanIconButton
                 attended={
                   item.attendances[0].sessionIds.includes(s.id) || item.attendances[0].assessmentIds.includes(s.id)
@@ -203,8 +203,7 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
         return attendance ? (
           <Grid
             key={attendance.id}
-            item
-            xs={2}
+            size={2}
             className={classes.sessionItem}
           >
             <span>
@@ -227,7 +226,7 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
             </span>
           </Grid>
         ) : (
-          <Grid key={index} item xs={2} className={classes.sessionItem} />
+          <Grid key={index} size={2} className={classes.sessionItem} />
         );
       }),
     [selectedItems, item]
@@ -353,21 +352,21 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
 
   return (
     <Grid container className="align-items-center">
-      <Grid item xs={3}>
+      <Grid size={3}>
         <div className={clsx("pt-0-5 pb-0-5 pl-1 pr-1 d-inline-flex-center", classes.name)}>
           {attendanceLeftLabel}
 
           <AttendanceActionsMenu className="invisible" onChange={changeGridRow} label={actionsMenuLabel} type={type} />
         </div>
       </Grid>
-      <Grid item xs={9}>
+      <Grid size={9}>
         <Grid container>
-          <Grid item xs={10} className="overflow-hidden">
+          <Grid size={10} className="overflow-hidden">
             <Grid container className={clsx(checkAnimationClass())}>
               {renderedItems}
             </Grid>
           </Grid>
-          <Grid item xs={2} />
+          <Grid size={2} />
         </Grid>
       </Grid>
     </Grid>

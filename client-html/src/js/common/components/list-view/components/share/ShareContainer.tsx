@@ -566,17 +566,17 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     return (
       <>
         <Grid container>
-          <Grid item xs={preview ? 8 : 12}>
+          <Grid size={preview ? 8 : 12}>
             {pdfActive && pdfActive.description && (
-              <Grid item xs={12} className="mb-2">
+              <Grid size={12} className="mb-2">
                 <Typography variant="body2" color="inherit">
                   {pdfActive.description}
                 </Typography>
               </Grid>
             )}
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Grid container columnSpacing={3} rowSpacing={2}>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <FormField
                     type="select"
                     name="backgroundId"
@@ -602,7 +602,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     allowEmpty
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   
                   <EditInPlaceField
                     label={$t('send_result_on_email')}
@@ -629,7 +629,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
           {loadingPreview && <CircularProgress />}
 
           {!loadingPreview && preview && (
-            <Grid item xs={4} className={classes.previewWrapper}>
+            <Grid size={4} className={classes.previewWrapper}>
               <FilePreview
                 data={preview}
                 actions={[
@@ -651,7 +651,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
         {!loadingPreview && !preview && (
           <>
-            <Grid item xs={12} container className="mt-2">
+            <Grid size={12} container className="mt-2">
               <FormControlLabel
                 control={(
                   <Checkbox
@@ -664,7 +664,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                 label={$t('create_preview')}
               />
             </Grid>
-            <Grid item xs={12} container className={classes.label}>
+            <Grid size={12} container className={classes.label}>
               <Typography variant="caption" color="inherit">
                 {$t('there_is_no_preview_for_this_report_yet_choose_thi')}
               </Typography>
@@ -700,7 +700,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
         };
 
       return (
-        <Grid item xs={6} key={index}>
+        <Grid size={6} key={index}>
           <Field
             label={item.label}
             name={`${f}.value`}
@@ -721,18 +721,18 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
     return (
       <>
-        <Grid item container xs={12}>
-          <Grid xs={preview ? 8 : 12}>
+        <Grid container size={12}>
+          <Grid size={preview ? 8 : 12}>
             <Typography variant="body2" color="inherit">
               {values && values.description}
             </Typography>
-            <Grid item container rowSpacing={2} columnSpacing={3} xs={12}>
+            <Grid container rowSpacing={2} columnSpacing={3} size={12}>
               <FieldArray name="variables" component={this.templatesRenderer as any}/>
             </Grid>
           </Grid>
           {loadingPreview && <CircularProgress />}
           {!loadingPreview && preview && (
-            <Grid item xs={4} className={classes.previewWrapper}>
+            <Grid size={4} className={classes.previewWrapper}>
               <FilePreview
                 data={preview}
                 actions={[
@@ -753,7 +753,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
         </Grid>
         {!loadingPreview && !preview && (
           <>
-            <Grid item xs={12} container className="mt-2">
+            <Grid size={12} container className="mt-2">
               <FormControlLabel
                 control={(
                   <Checkbox
@@ -766,7 +766,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                 label={$t('create_preview')}
               />
             </Grid>
-            <Grid item xs={12} container className={classes.label}>
+            <Grid size={12} container className={classes.label}>
               <Typography variant="caption" color="inherit">
                 {$t('there_is_no_preview_for_this_report_yet_choose_thi')}
               </Typography>
@@ -815,9 +815,11 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
         open={showExportDrawer}
         onClose={toggleExportDrawer}
         classes={{ paper: classes.exportContainer }}
-        PaperProps={{
-          style: {
-            left: window.innerWidth >= 1024 ? sidebarWidth : 0,
+        slotProps={{
+          paper: {
+            style: {
+              left: window.innerWidth >= 1024 ? sidebarWidth : 0,
+            },
           },
         }}
       >
@@ -828,13 +830,13 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
           onChange={this.handleBackgroundUpload}
         />
         <Grid container className={classes.content}>
-          <Grid container className={classes.header} wrap="nowrap" alignItems="center">
-            <Grid item xs={2}>
+          <Grid container className={classes.header} wrap="nowrap" sx={{ alignItems: 'center' }}>
+            <Grid size={2}>
               <Typography variant="body2" className={classes.headerText}>
                 {$t('share')}
               </Typography>
             </Grid>
-            <Grid item xs className="centeredFlex">
+            <Grid size="grow" className="centeredFlex">
               <SelectionSwitcher
                 selectedRecords={selection.length}
                 allRecords={count}
@@ -852,7 +854,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
           </Grid>
 
           <Grid container className={classes.body} wrap="nowrap" spacing={3}>
-            <Grid item zeroMinWidth className={classes.menuColumn}>
+            <Grid className={classes.menuColumn}>
               <List disablePadding className={classes.list}>
                 {Boolean(pdfReports.length) && (
                   <ListItemButton
@@ -890,7 +892,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                 ))}
               </List>
             </Grid>
-            <Grid item zeroMinWidth className={classes.menuColumn}>
+            <Grid className={classes.menuColumn}>
               <List disablePadding className={classes.list}>
                 {pdfSelected
                   && pdfReports.map((i, index) => (
@@ -936,11 +938,11 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   ))}
               </List>
             </Grid>
-            <Grid item xs className={classes.menuColumn}>
+            <Grid size="grow" className={classes.menuColumn}>
               <form autoComplete="off" onSubmit={handleSubmit(this.onSave)} className={classes.form}>
                 <Grid container className={classes.formContent}>
                   {AlertComponent && (
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                       <AlertComponent
                         selection={selection}
                         validating={validating}
@@ -955,7 +957,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   {templateSelected && this.renderTemplateFields()}
                 </Grid>
 
-                <Grid item xs={12} className={classes.closeShareButtons}>
+                <Grid size={12} className={classes.closeShareButtons}>
                   <Button className={classes.closeButton} onClick={this.onClose} variant="text">
                     {$t('close')}
                   </Button>

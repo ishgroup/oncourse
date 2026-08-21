@@ -27,7 +27,7 @@ import {
   stubComponent,
   useSelectStyles
 } from 'ish-ui';
-import getCaretCoordinates from 'ish-ui/dist/utils/DOM/getCaretCoordinates';
+import getCaretCoordinates from '../../../utils/DOM/getCaretCoordinates';
 import React, { createRef, RefObject } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -1112,7 +1112,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
             renderOption={this.renderOption}
             filterOptions={this.filterOptionsInner}
             getOptionLabel={this.getOptionLabel}
-            PopperComponent={inline ? this.popperAdapter as any : undefined}
+            slots={inline ? { popper: this.popperAdapter as any } : undefined}
             classes={inline ? {
               root: classes.root,
               paper: classes.menuShadow,
@@ -1126,21 +1126,24 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
                 {...params}
                 variant="standard"
                 onKeyDown={this.onKeyDown}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                InputProps={{
-                  ...params.InputProps,
-                  disableUnderline,
-                  classes: {
-                    root: fieldClasses.text,
-                    underline: fieldClasses.underline
+                slotProps={{
+                  inputLabel: {
+                    ...params.slotProps.inputLabel,
+                    shrink: true
                   },
-                  endAdornment
-                }}
-                inputProps={{
-                  ...params.inputProps,
-                  value: inputValue || ""
+                  input: {
+                    ...params.slotProps.input,
+                    disableUnderline,
+                    classes: {
+                      root: fieldClasses.text,
+                      underline: fieldClasses.underline
+                    },
+                    endAdornment
+                  },
+                  htmlInput: {
+                    ...params.slotProps.htmlInput,
+                    value: inputValue || ""
+                  }
                 }}
                 error={meta?.invalid}
                 helperText={(

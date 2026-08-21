@@ -10,7 +10,7 @@ import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { AnyArgFunction, III_DD_MMM_YYYY, LinkAdornment, NumberArgFunction, StringArgFunction } from 'ish-ui';
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas as QRCode } from 'qrcode.react';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -256,7 +256,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
       container
       className="pt-3 pr-3 pb-0 pl-3 relative h-100 align-content-start"
     >
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FullScreenStickyHeader
           opened={isNew || Object.keys(syncErrors).includes("studentContactId")}
           disableInteraction={!isNew}
@@ -265,7 +265,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
             <HeaderContactTitle name={values?.studentName} id={values?.studentContactId} />
           )}
           fields={(
-            <Grid item xs={twoColumn ? 6 : 12}>
+            <Grid size={twoColumn ? 6 : 12}>
               <FormField
                 type="remoteDataSelect"
                 entity="Contact"
@@ -290,8 +290,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
       </Grid>
 
       <Grid
-        item
-        xs={12}
+        size={12}
         container
         columnSpacing={3}
         rowSpacing={2}
@@ -302,11 +301,11 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           <div className={clsx("backgroundText errorColorFade-0-2", { "fs19": twoColumn })}>{$t('revoked')}</div>
         )}
 
-        <Grid item xs={12} className={clsx(classes.switch, "centeredFlex")}>
+        <Grid size={12} className={clsx(classes.switch, "centeredFlex")}>
           <FormControlLabel
             control={<FormField type="switch" name="isQualification" color="primary" />}
             label={(
-              <Typography display="inline" variant="body2">
+              <Typography sx={{ display: 'inline' }} variant="body2">
                 {$t('full_qualification_or_skillset')}
               </Typography>
             )}
@@ -315,23 +314,23 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography className="heading">
             {values.isQualification ? "This is to certify that" : "This is a statement that"}
           </Typography>
         </Grid>
 
-        <Grid item xs={twoColumn ? 12 : 6} className={classes.select1}>
+        <Grid size={twoColumn ? 12 : 6} className={classes.select1}>
           {values.studentName}
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography className="heading">
             {values.isQualification ? "Has fulfilled the requirements for the" : "With competencies from"}
           </Typography>
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12} className={classes.select2}>
+        <Grid size={twoColumn ? 3 : 12} className={classes.select2}>
           <FormField
             type="remoteDataSelect"
             entity="Qualification"
@@ -353,7 +352,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12} className={classes.select3}>
+        <Grid size={twoColumn ? 3 : 12} className={classes.select3}>
           <FormField
             type="remoteDataSelect"
             entity="Qualification"
@@ -375,17 +374,17 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12}>
+        <Grid size={twoColumn ? 3 : 12}>
           <Uneditable
             label={$t('level')}
             value={values.level}
           />
         </Grid>
 
-        {twoColumn && <Grid item xs={3} />}
+        {twoColumn && <Grid size={3} />}
 
-        <Grid item container xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
-          <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid container size={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
+          <Grid size={twoColumn ? 6 : 12}>
             <FormField
               type="multilineText"
               name="publicNotes"
@@ -394,7 +393,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           </Grid>
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12}>
+        <Grid size={twoColumn ? 3 : 12}>
           <FormField
             type="date"
             name="awardedOn"
@@ -403,7 +402,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12}>
+        <Grid size={twoColumn ? 3 : 12}>
           <Uneditable
             label={$t('printed')}
             value={printedValue}
@@ -411,24 +410,24 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12}>
+        <Grid size={twoColumn ? 3 : 12}>
           <Uneditable
             label={$t('certificate_number')}
             value={certificateNumber}
           />
         </Grid>
 
-        {twoColumn && <Grid item xs={3} />}
+        {twoColumn && <Grid size={3} />}
 
-        <Grid item xs={twoColumn ? 3 : 12}>
+        <Grid size={twoColumn ? 3 : 12}>
           <FormField type="date" name="issuedOn" label={$t('issued')} />
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12}>
+        <Grid size={twoColumn ? 3 : 12}>
           <FormField type="date" name="expiryDate" label={$t('expiry')} />
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12} className={clsx({ "d-none": isNew })}>
+        <Grid size={twoColumn ? 3 : 12} className={clsx({ "d-none": isNew })}>
           <Uneditable
             label={$t('revoked')}
             value={revokedValue}
@@ -436,15 +435,15 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           />
         </Grid>
 
-        {twoColumn && <Grid item xs={3} />}
+        {twoColumn && <Grid size={3} />}
 
-        <Grid item container xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
-          <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid container size={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
+          <Grid size={twoColumn ? 6 : 12}>
             <FormField type="multilineText" name="privateNotes" label={$t('private_notes')} />
           </Grid>
         </Grid>
 
-        <Grid item xs={twoColumn ? 8 : 12} className={clsx({ "saveButtonTableOffset": twoColumn })}>
+        <Grid size={twoColumn ? 8 : 12} className={clsx({ "saveButtonTableOffset": twoColumn })}>
           <NestedList
             formId={values.id}
             name="outcomes"
@@ -467,8 +466,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
         </Grid>
 
         <Grid
-          item
-          xs={twoColumn ? 4 : 12}
+          size={twoColumn ? 4 : 12}
           className={clsx("saveButtonTableOffset", {
             "d-flex align-items-end justify-content-end": twoColumn
           })}

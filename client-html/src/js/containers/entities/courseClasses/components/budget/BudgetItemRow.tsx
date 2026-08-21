@@ -83,33 +83,32 @@ const BudgetItemRow = React.memo<BudgetItemRowProps>(
 
     return (
       <Grid
-        item
-        xs={12}
+        size={12}
         container
-        alignItems="center"
+        sx={{ alignItems: 'center' }}
         direction="row"
         className={classes.tableTab}
         onDoubleClick={onEditClick}
       >
-        <Grid item xs={3}>
+        <Grid size={3}>
           <Typography variant="body2">{description}</Typography>
         </Grid>
-        <Grid item xs={2} className={classes.rowItemCol1}>
+        <Grid size={2} className={classes.rowItemCol1}>
           <Typography variant="body2" className="money text-end">
             {amountLabel}
           </Typography>
         </Grid>
-        <Grid item xs={2} className={classes.rowItemCol2}>
+        <Grid size={2} className={classes.rowItemCol2}>
           <Typography variant="body2" className="money text-end">
             {maxBasedLabel}
           </Typography>
         </Grid>
-        <Grid item xs={2} className={classes.rowItemCol3}>
+        <Grid size={2} className={classes.rowItemCol3}>
           <Typography variant="body2" className="money text-end">
             {projectedBasedLabel}
           </Typography>
         </Grid>
-        <Grid item xs={2} container alignItems="center" className={classes.rowItemCol4}>
+        <Grid size={2} container sx={{ alignItems: 'center' }} className={classes.rowItemCol4}>
           <Typography variant="body2" className="disabled">
             (
             {percentOfProjectedValue}
@@ -119,7 +118,7 @@ const BudgetItemRow = React.memo<BudgetItemRowProps>(
             {actualBasedLabel}
           </Typography>
         </Grid>
-        <Grid item xs={1} container alignItems="center">
+        <Grid size={1} container sx={{ alignItems: 'center' }}>
           <div className="flex-fill" />
 
           <div className={classes.tableTabButtons}>

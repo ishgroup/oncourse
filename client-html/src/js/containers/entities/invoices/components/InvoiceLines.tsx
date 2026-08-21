@@ -358,7 +358,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="relative">
       <LoadingIndicator customLoading={loading}/>
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="text"
           name={`${item}.title`}
@@ -367,7 +367,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
           required
         />
       </Grid>
-      <Grid item xs={twoColumn ? 4 : 6}>
+      <Grid size={twoColumn ? 4 : 6}>
         <FormField
           type="number"
           name={`${item}.quantity`}
@@ -379,11 +379,11 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 6}>
+      <Grid size={twoColumn ? 4 : 6}>
         <FormField type="text" name={`${item}.unit`} label={$t('unit_egkg')} disabled={disableFinanceFileds} />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="select"
           name={`${item}.incomeAccountId`}
@@ -399,7 +399,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid size={twoColumn ? 8 : 12}>
         <FormField
           type="multilineText"
           name={`${item}.description`}
@@ -408,13 +408,13 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <Grid container columnSpacing={3} rowSpacing={2}>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <div className="heading">{$t('assign_to_budget')}</div>
           </Grid>
 
-          <Grid item xs={twoColumn ? 6 : 12}>
+          <Grid size={twoColumn ? 6 : 12}>
             <FormField
               type="remoteDataSelect"
               entity="Course"
@@ -435,7 +435,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 6 : 12}>
+          <Grid size={twoColumn ? 6 : 12}>
             <FormField
               type="remoteDataSelect"
               entity="Discount"
@@ -459,7 +459,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 6 : 12}>
+          <Grid size={twoColumn ? 6 : 12}>
             <FormField
               type="select"
               name={`${item}.courseClassId`}
@@ -474,7 +474,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 6 : 12}>
+          <Grid size={twoColumn ? 6 : 12}>
             <FormField
               type="select"
               name={`${item}.enrolmentId`}
@@ -490,12 +490,12 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
         </Grid>
       </Grid>
 
-      <Grid item container xs={twoColumn ? 6 : 12} columnSpacing={3} rowSpacing={2} className={twoColumn ? undefined : "pt-2"}>
-        <Grid item xs={12}>
+      <Grid container size={twoColumn ? 6 : 12} columnSpacing={3} rowSpacing={2} className={twoColumn ? undefined : "pt-2"}>
+        <Grid size={12}>
           <div className="heading">{$t('amount')}</div>
         </Grid>
 
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField
             type="money"
             name={`${item}.priceEachExTax`}
@@ -506,7 +506,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField
             type="money"
             name={`${item}.discountEachExTax`}
@@ -519,7 +519,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField
             type="select"
             name={`${item}.taxId`}
@@ -533,7 +533,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <Uneditable
             label={$t('tax_amount')}
             value={taxDisplayedAmount}
@@ -542,7 +542,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
         </Grid>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <div className="centeredFlex justify-content-end pr-0-5 mb-1">
           <Typography variant="subtitle2" noWrap>
             {$t('total')}

@@ -26,35 +26,34 @@ const BudgetInvoiceItemRow = React.memo<{ value, currencySymbol, classes? }>(({ 
 
   return (
     <Grid
-      item
-      xs={12}
+      size={12}
       container
-      alignItems="center"
+      sx={{ alignItems: 'center' }}
       direction="row"
       className={classes.tableTab}
       onDoubleClick={openEnrolment}
     >
-      <Grid item xs={3} className="centeredFlex">
+      <Grid size={3} className="centeredFlex">
         <Typography variant="body2">{value.description}</Typography>
 
         <IconButton className="lightGrayIconButton" onClick={openEnrolment}>
           <Launch color="secondary" fontSize="inherit" />
         </IconButton>
       </Grid>
-      <Grid item xs={2} className={classes.rowItemCol1}>
+      <Grid size={2} className={classes.rowItemCol1}>
         <Typography variant="body2" className="money text-end">{amountValue}</Typography>
       </Grid>
-      <Grid item xs={2} className={classes.rowItemCol2}>
+      <Grid size={2} className={classes.rowItemCol2}>
         <Typography variant="body2" className="money text-end">{amountValue}</Typography>
       </Grid>
-      <Grid item xs={2} className={classes.rowItemCol3}>
+      <Grid size={2} className={classes.rowItemCol3}>
         <Typography variant="body2" className="money text-end">{amountValue}</Typography>
       </Grid>
-      <Grid item xs={2} container alignItems="center" className={classes.rowItemCol4}>
+      <Grid size={2} container sx={{ alignItems: 'center' }} className={classes.rowItemCol4}>
         <div className="flex-fill" />
         <Typography variant="body2" className="money text-end">{amountValue}</Typography>
       </Grid>
-      <Grid item xs={1} />
+      <Grid size={1} />
     </Grid>
   );
 });
@@ -77,25 +76,25 @@ const BudgetInvoiceItemRenderer = React.memo<Partial<BudgetExpandableProps>>(
           expanded={expanded}
           onChange={handleChange}
           className={classes.panel}
-          TransitionProps={{
+          slotProps={{ transition: {
             unmountOnExit: true,
             mountOnEnter: true
-          }}
+          } }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Grid container direction="row">
-              <Grid item xs={5}>
+              <Grid size={5}>
                 <div className="secondaryHeading">{header}</div>
               </Grid>
               {!expanded && (
                 <>
-                  <Grid item xs={2} className={classes.headerItem}>
+                  <Grid size={2} className={classes.headerItem}>
                     <Typography variant="body2">{totalLabel}</Typography>
                   </Grid>
-                  <Grid item xs={2} className={classes.headerItem}>
+                  <Grid size={2} className={classes.headerItem}>
                     <Typography variant="body2">{totalLabel}</Typography>
                   </Grid>
-                  <Grid item xs={2} className={classes.headerItem}>
+                  <Grid size={2} className={classes.headerItem}>
                     <Typography variant="body2">{totalLabel}</Typography>
                   </Grid>
                 </>
@@ -107,18 +106,18 @@ const BudgetInvoiceItemRenderer = React.memo<Partial<BudgetExpandableProps>>(
               {rowsValues.items.map((item, i) => (
                 <BudgetInvoiceItemRow key={i} value={item.value} currencySymbol={currencySymbol} classes={classes} />
               ))}
-              <Grid item xs={12} container direction="row" className={classes.tableTab}>
-                <Grid item xs={5} />
-                <Grid item xs={2} className={clsx("pt-1 summaryTopBorder", classes.rowItemCol2)}>
+              <Grid size={12} container direction="row" className={classes.tableTab}>
+                <Grid size={5} />
+                <Grid size={2} className={clsx("pt-1 summaryTopBorder", classes.rowItemCol2)}>
                   <Typography variant="body2" className="money text-end">{totalLabel}</Typography>
                 </Grid>
-                <Grid item xs={2} className={clsx("pt-1 summaryTopBorder", classes.rowItemCol3)}>
+                <Grid size={2} className={clsx("pt-1 summaryTopBorder", classes.rowItemCol3)}>
                   <Typography variant="body2" className="money text-end">{totalLabel}</Typography>
                 </Grid>
-                <Grid item xs={2} className={clsx("pt-1 summaryTopBorder", classes.rowItemCol4)}>
+                <Grid size={2} className={clsx("pt-1 summaryTopBorder", classes.rowItemCol4)}>
                   <Typography variant="body2" className="money text-end">{totalLabel}</Typography>
                 </Grid>
-                <Grid item xs={1} className="pt-1 summaryTopBorder" />
+                <Grid size={1} className="pt-1 summaryTopBorder" />
               </Grid>
             </Grid>
           </AccordionDetails>

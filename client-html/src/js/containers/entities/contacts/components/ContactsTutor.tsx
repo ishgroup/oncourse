@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import $t from '@t';
 import { makeAppStyles, mapSelectItems, Switch } from 'ish-ui';
 import React, { useEffect, useState } from 'react';
-import NumberFormat from 'react-number-format';
+import { PatternFormat } from 'react-number-format';
 import { change } from 'redux-form';
 import FormField from '../../../../common/components/form/formFields/FormField';
 import ExpandableContainer from '../../../../common/components/layout/expandable/ExpandableContainer';
@@ -31,7 +31,7 @@ const workingWithChildrenStatusItems = Object.keys(WorkingWithChildrenStatus).ma
 const payslipPayTypes = Object.keys(PayslipPayType).map(mapSelectItems);
 
 export const TFNInputMask = React.forwardRef<any, any>((props, ref) => (
-  <NumberFormat
+  <PatternFormat
     {...props}
     getInputRef={ref}
     format="###-###-###"
@@ -75,7 +75,7 @@ const ContactsTutor: React.FC<EditViewProps<Contact>> = props => {
       header="Tutor"
     >
       <Grid container columnSpacing={3} rowSpacing={2}>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField
             type="text"
             name="tutor.givenNameLegal"
@@ -83,7 +83,7 @@ const ContactsTutor: React.FC<EditViewProps<Contact>> = props => {
             placeholder={values.firstName}
           />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField
             type="text"
             name="tutor.familyNameLegal"
@@ -91,7 +91,7 @@ const ContactsTutor: React.FC<EditViewProps<Contact>> = props => {
             placeholder={values.lastName}
           />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField
             type="text"
             name="tfn"
@@ -106,13 +106,13 @@ const ContactsTutor: React.FC<EditViewProps<Contact>> = props => {
             debounced={false}
           />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField type="text" name="tutor.payrollRef" label={$t('payroll_reference_number')} />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField type="date" name="tutor.dateStarted" label={$t('date_started')} />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField type="date" name="tutor.dateFinished" label={$t('date_finished')} />
         </Grid>
         {values.tutor && (
@@ -122,14 +122,12 @@ const ContactsTutor: React.FC<EditViewProps<Contact>> = props => {
               fieldName="tutor.customFields"
               entityValues={values}
               form={form}
-              gridItemProps={{
-                xs: twoColumn ? 6 : 12
-              }}
+              gridItemProps={{ size: { xs: twoColumn ? 6 : 12 } }}
             />
           </>
         )}
 
-        <Grid item xs={twoColumn ? 6 : 12} className={classes.switchWrapper}>
+        <Grid size={twoColumn ? 6 : 12} className={classes.switchWrapper}>
           <Typography variant="caption" color="textSecondary">
             {$t('enable_tutor_pay_generation')}
           </Typography>
@@ -140,7 +138,7 @@ const ContactsTutor: React.FC<EditViewProps<Contact>> = props => {
         </Grid>
 
         {switchValue && (
-          <Grid item xs={twoColumn ? 6 : 12}>
+          <Grid size={twoColumn ? 6 : 12}>
             <FormField
               type="select"
               name="tutor.defaultPayType"
@@ -151,19 +149,19 @@ const ContactsTutor: React.FC<EditViewProps<Contact>> = props => {
           </Grid>
         )}
 
-        <Grid item xs={12} className="mt-2 pb-2">
+        <Grid size={12} className="mt-2 pb-2">
           <div className="secondaryHeading">{$t('working_with_children_check_wwcc')}</div>
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField type="text" name="tutor.wwChildrenRef" label={$t('wwcc_number')} />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField type="select" name="tutor.wwChildrenStatus" label={$t('wwcc_status')} items={workingWithChildrenStatusItems} />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField type="date" name="tutor.wwChildrenExpiry" label={$t('wwcc_expiry_date')} />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField type="date" name="tutor.wwChildrenCheckedOn" label={$t('wwcc_check_date')} />
         </Grid>
         {isNew && <div className="p-3" />}

@@ -174,7 +174,7 @@ const ExportTemplatesForm = React.memo<Props>(
             disableInteraction={isInternal}
             opened={isNew || Object.keys(syncErrors).includes("name")}
             fields={(
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <FormField
                   type="text"
                   name="name"
@@ -215,7 +215,7 @@ const ExportTemplatesForm = React.memo<Props>(
             )}
           >
             <Grid container columnSpacing={3}>
-              <Grid item xs={12} sm={9}>
+              <Grid size={{ xs: 12, sm: 9 }}>
                 <FormField
                   type="multilineText"
                   name="shortDescription"
@@ -223,7 +223,7 @@ const ExportTemplatesForm = React.memo<Props>(
                   className="overflow-hidden mb-1"
                   placeholder={$t('short_description')}
                 />
-                <Typography variant="caption" fontSize="13px">
+                <Typography variant="caption" sx={{ fontSize: '13px' }}>
                   <FormField
                     type="multilineText"
                     name="description"
@@ -236,9 +236,9 @@ const ExportTemplatesForm = React.memo<Props>(
                   />
                 </Typography>
               </Grid>
-              <Grid item xs={9} className="pr-3">
+              <Grid size={9} className="pr-3">
                 <Grid container columnSpacing={3} rowSpacing={2}>
-                  <Grid item xs={6}>
+                  <Grid size={6}>
                     <div className="heading">{$t('type')}</div>
                     <FormField
                       type="select"
@@ -248,7 +248,7 @@ const ExportTemplatesForm = React.memo<Props>(
                       required
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid size={6}>
                     <FormField
                       type="select"
                       label={$t('output')}
@@ -293,7 +293,7 @@ const ExportTemplatesForm = React.memo<Props>(
                   required
                 />
               </Grid>
-              <Grid item xs={3}>
+              <Grid size={3}>
                 <div>
                   <FormField
                     label={$t('enabled')}

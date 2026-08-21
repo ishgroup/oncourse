@@ -79,21 +79,21 @@ const ProfileHeading = (props: Props) => {
         </>
       )}
       fields={(
-        <Grid container item xs={12} rowSpacing={2} columnSpacing={3}>
+        <Grid container size={12} rowSpacing={2} columnSpacing={3}>
           {!isCompany && (
             <>
-              <Grid item xs={twoColumn ? 2 : 6}>
+              <Grid size={twoColumn ? 2 : 6}>
                 <FormField type="text" name="title" label={$t('title')} />
               </Grid>
-              <Grid item xs={twoColumn ? 2 : 6}>
+              <Grid size={twoColumn ? 2 : 6}>
                 <FormField type="text" name="firstName" label={$t('first_name')} disabled={usiLocked} required />
               </Grid>
-              <Grid item xs={twoColumn ? 2 : 6}>
+              <Grid size={twoColumn ? 2 : 6}>
                 <FormField type="text" name="middleName" label={$t('middle_name')} />
               </Grid>
             </>
           )}
-          <Grid item xs={isCompany ? 12 : twoColumn ? 2 : 6}>
+          <Grid size={isCompany ? 12 : twoColumn ? 2 : 6}>
             <FormField type="text" name="lastName" label={isCompany ? "Company name" : "Last name"} disabled={usiLocked} required />
           </Grid>
         </Grid>

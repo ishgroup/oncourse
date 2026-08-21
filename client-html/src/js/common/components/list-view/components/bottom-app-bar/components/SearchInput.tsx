@@ -7,7 +7,7 @@ import { CustomFieldType, ProductType } from '@api/model';
 import BookmarkBorder from '@mui/icons-material/BookmarkBorder';
 import BookmarkTwoTone from '@mui/icons-material/BookmarkTwoTone';
 import Clear from '@mui/icons-material/Clear';
-import HelpOutline from '@mui/icons-material/HelpOutline';
+import HelpOutline from '@mui/icons-material/HelpOutlineOutlined';
 import { green } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import { darken } from '@mui/material/styles';

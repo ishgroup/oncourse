@@ -75,7 +75,7 @@ const CheckoutSectionExpandableRenderer = React.memo<Props>(props => {
     <Accordion
       expanded={expanded || false}
       onChange={handleExpanded}
-      TransitionProps={{ mountOnEnter: true }}
+      slotProps={{ transition: { mountOnEnter: true } }}
       elevation={0}
       classes={{ root: classes.expansionPanelRoot }}
       disabled={disabled}

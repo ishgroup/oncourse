@@ -37,7 +37,7 @@ const Integrations = React.memo<any>(({
     >
       <Grid container spacing={5}>
         {Object.keys(IntegrationTypes).map(key => (
-          <Grid item xs={12} lg={6} key={key}>
+          <Grid size={{ xs: 12, lg: 6 }} key={key}>
             <Card className="flex-row h-100">
               <CardMedia
                 component="img"

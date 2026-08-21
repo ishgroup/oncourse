@@ -90,7 +90,7 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
   // @ts-ignore
   return (
     <Grid container columnSpacing={3} rowSpacing={2}>
-      <Grid item xs={12} className={classes.select1}>
+      <Grid size={12} className={classes.select1}>
         <FormField
           type="remoteDataSelect"
           entity="Contact"
@@ -109,7 +109,7 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField
           type="select"
           name={`${item}.relationId`}
@@ -118,7 +118,7 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
           required
         />
       </Grid>
-      <Grid item xs={12} className="mb-2">
+      <Grid size={12} className="mb-2">
         <Typography variant="caption" color="textSecondary">{`of ${contactFullName}`}</Typography>
       </Grid>
     </Grid>

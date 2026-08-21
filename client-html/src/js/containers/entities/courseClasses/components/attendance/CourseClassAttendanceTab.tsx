@@ -647,7 +647,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
     const renderedDays = useCallback(
       (attendanceType?: string) => (
         <Grid container columnSpacing={3}>
-          <Grid item xs={10} className={classes.attendanceDayBase}>
+          <Grid size={10} className={classes.attendanceDayBase}>
             <Grid container columnSpacing={3} className={clsx(checkAnimationClass())}>
               {selectedItems.map((sd, si) => (
                 <AttendanceDayBase
@@ -669,7 +669,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
           {selectedItems.length
             && stepItems.length
             && selectedItems[selectedItems.length - 1].id !== stepItems[stepItems.length - 1].id && (
-              <Grid item xs={2} className={clsx(classes.dayItem, "centeredFlex")}>
+              <Grid size={2} className={clsx(classes.dayItem, "centeredFlex")}>
                 <IconButton onClick={scrollSessionsRight}>
                   <ChevronRight />
                 </IconButton>
@@ -833,15 +833,15 @@ const CourseClassAttendanceTab = React.memo<Props>(
     const daysScroller = (type?: string) => (
       <>
         <Grid container columnSpacing={3} className={clsx("sticky top-0 pt-1 zIndex1", classes.timeline)}>
-          <Grid item xs={3}>
+          <Grid size={3}>
             &nbsp;
           </Grid>
-          <Grid item xs={9} />
+          <Grid size={9} />
 
-          <Grid item container xs={3} alignItems="center" className="pr-2">
+          <Grid container size={3} sx={{ alignItems: 'center' }} className="pr-2">
             {sessionsLeftScroller}
           </Grid>
-          <Grid item xs={9} className="centeredFlex">
+          <Grid size={9} className="centeredFlex">
             {renderedDays(type)}
           </Grid>
         </Grid>
@@ -856,7 +856,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
             <div className="heading">{$t('training_plan')}</div>
             {daysScroller("Training plan")}
             <Grid container className={classes.sessionsLine}>
-              <Grid item xs={12} className={classes.items}>
+              <Grid size={12} className={classes.items}>
                 {renderedTrainingPlans}
               </Grid>
             </Grid>
@@ -884,7 +884,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
               <>
                 {daysScroller("")}
                 <Grid container className={classes.sessionsLine}>
-                  <Grid item xs={12} className={classes.items}>
+                  <Grid size={12} className={classes.items}>
                     {renderedStudentAttendances}
                   </Grid>
                 </Grid>

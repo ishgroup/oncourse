@@ -47,7 +47,7 @@ const CourseClassDocumentsTab: React.FC<EditViewProps<CourseClassExtended>> = ({
       rerenderOnEveryChange
     />
     <Grid container rowSpacing={2} columnSpacing={3} className="mt-2">
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="dateTime"
           name="portalDocAccessStart"
@@ -55,7 +55,7 @@ const CourseClassDocumentsTab: React.FC<EditViewProps<CourseClassExtended>> = ({
           placeholder={portalDocsPlaceholders[0]}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="dateTime"
           name="portalDocAccessEnd"

@@ -23,16 +23,16 @@ const renderPaymentTypes = props => {
   } = props;
 
   return (
-    <Grid item xs={12}>
+    <Grid size={12}>
       {fields.map((item: PaymentType, index) => {
         const field = fields.get(index);
 
         return (
           <Card id={`payment-type-item-${index}`} className="card" key={index}>
             <Grid container spacing={2} className="relative">
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Grid container columnSpacing={3} rowSpacing={2}>
-                  <Grid item xs={10} md={11}>
+                  <Grid size={{ xs: 10, md: 11 }}>
                     <FormField
                       type="text"
                       name={`${item}.name`}
@@ -42,7 +42,7 @@ const renderPaymentTypes = props => {
                     />
                   </Grid>
 
-                  <Grid item xs={2} md={1}>
+                  <Grid size={{ xs: 2, md: 1 }}>
                     {!field.systemType && (
                       <div className="d-flex">
                         <div className="flex-fill" />
@@ -58,7 +58,7 @@ const renderPaymentTypes = props => {
                     )}
                   </Grid>
 
-                  <Grid item xs={4} className={classes.checkbox}>
+                  <Grid size={4} className={classes.checkbox}>
                     <FormControlLabel
                       control={(
                         <FormField
@@ -72,7 +72,7 @@ const renderPaymentTypes = props => {
                     />
                   </Grid>
 
-                  <Grid item xs={4} className={classes.checkbox}>
+                  <Grid size={4} className={classes.checkbox}>
                     <FormControlLabel
                       control={(
                         <FormField
@@ -86,7 +86,7 @@ const renderPaymentTypes = props => {
                     />
                   </Grid>
 
-                  <Grid item xs={4} className={classes.checkbox}>
+                  <Grid size={4} className={classes.checkbox}>
                     <FormControlLabel
                       control={(
                         <FormField
@@ -102,7 +102,7 @@ const renderPaymentTypes = props => {
 
                   {!field.systemType && (
                     <>
-                      <Grid item xs={4}>
+                      <Grid size={4}>
                         <FormField
                           type="select"
                           name={`${item}.type`}
@@ -113,7 +113,7 @@ const renderPaymentTypes = props => {
                         />
                       </Grid>
 
-                      <Grid item xs={4}>
+                      <Grid size={4}>
                         <FormField
                           type="select"
                           name={`${item}.undepositAccountId`}
@@ -124,7 +124,7 @@ const renderPaymentTypes = props => {
                         />
                       </Grid>
 
-                      <Grid item xs={4}>
+                      <Grid size={4}>
                         <FormField
                           type="select"
                           name={`${item}.accountId`}

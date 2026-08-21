@@ -90,7 +90,7 @@ const AttendanceDayBase: React.FC<DayBaseProps> = ({
   }, [index]);
 
   return (
-    <Grid item xs={2} className={clsx("relative", classes.dayItem)}>
+    <Grid size={2} className={clsx("relative", classes.dayItem)}>
       <div className={clsx("mb-3 relative", classes.sessionDay)}>
         <Typography variant="body2" className={classes.day}>
           {format(

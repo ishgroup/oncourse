@@ -21,19 +21,19 @@ const VoucherEditView: React.FC<any> = ({ values, summaryVoucher }) => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="ml-0">
-      <Grid item sm={2}>
+      <Grid size={{ sm: 2 }}>
         <Uneditable value={values.code} label={$t('sku')} />
       </Grid>
-      <Grid item sm={2}>
+      <Grid size={{ sm: 2 }}>
         <Uneditable value={values.feeExTax || 0} label={$t('sale_price')} money />
       </Grid>
-      <Grid item sm={3}>
+      <Grid size={{ sm: 3 }}>
         <Uneditable value={value} label={$t('value')} money={!isClassVoucher} />
       </Grid>
       {
         isClassVoucher
         && (
-        <Grid item sm={12} className="pt-2 pb-1">
+        <Grid size={{ sm: 12 }} className="pt-2 pb-1">
           <div>
             <div className="heading">
               {$t('courses')}
@@ -54,7 +54,7 @@ const VoucherEditView: React.FC<any> = ({ values, summaryVoucher }) => {
         </Grid>
         )
       }
-      <Grid item sm={12}>
+      <Grid size={{ sm: 12 }}>
         <Uneditable value={values.description} label={$t('description')} multiline />
       </Grid>
     </Grid>

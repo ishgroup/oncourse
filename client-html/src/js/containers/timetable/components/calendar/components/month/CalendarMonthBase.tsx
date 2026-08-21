@@ -43,18 +43,18 @@ const CalendarMonthBase: React.FC<MonthBaseProps> = props => {
 
   return (
     <Grid container columnSpacing={3} style={style} ref={parentRef}>
-      <Grid item xs={1}>
+      <Grid size={1}>
         <div className={classes.month}>
           {
             notNullDate && (
             <div>
-              <Typography variant="h5" display="block">{format(month, "MMM")}</Typography>
+              <Typography variant="h5" sx={{ display: 'block' }}>{format(month, "MMM")}</Typography>
               {showYear
               && (
                 <Typography
                   variant="caption"
                   color="textSecondary"
-                  display="block"
+                  sx={{ display: 'block' }}
                   align="right"
                 >
                   {format(month, "yyyy")}
@@ -67,7 +67,7 @@ const CalendarMonthBase: React.FC<MonthBaseProps> = props => {
         </div>
       </Grid>
 
-      <Grid item xs={fullWidth ? 11 : 9} className={classes.manyDaysWrapper}>
+      <Grid size={fullWidth ? 11 : 9} className={classes.manyDaysWrapper}>
         {children}
       </Grid>
     </Grid>

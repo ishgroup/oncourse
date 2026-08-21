@@ -50,7 +50,7 @@ const EnrolmentDetails = (
   return (
     <>
       {contracts && (
-        <Grid item xs={twoColumn ? 4 : 12}>
+        <Grid size={twoColumn ? 4 : 12}>
           <FormField
             type="select"
             selectValueMark="id"
@@ -63,7 +63,7 @@ const EnrolmentDetails = (
         </Grid>
       )}
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="select"
           name="studyReason"
@@ -72,7 +72,7 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="select"
           name="vetFeeExemptionType"
@@ -81,7 +81,7 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="select"
           name="fundingSource"
@@ -90,7 +90,7 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="text"
           name="vetFundingSourceStateID"
@@ -99,7 +99,7 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="vetIsFullTime" />}
@@ -107,18 +107,18 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={12} className="pt-2 pb-3">
+      <Grid size={12} className="pt-2 pb-3">
         <Divider />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="vetInSchools" />}
           label={$t('vet_in_schools_enrolment')}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 8 : 12} className="mb-2">
+      <Grid size={twoColumn ? 8 : 12} className="mb-2">
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="suppressAvetmissExport" />}
@@ -126,7 +126,7 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="text"
           name="associatedCourseIdentifier"
@@ -135,7 +135,7 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="text"
           name="vetPurchasingContractID"
@@ -144,7 +144,7 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="text"
           name="vetPurchasingContractScheduleID"
@@ -153,7 +153,7 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="text"
           name="outcomeIdTrainingOrg"
@@ -162,7 +162,7 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="text"
           name="vetClientID"
@@ -171,7 +171,7 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="text"
           name="vetTrainingContractID"
@@ -180,7 +180,7 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12} className="mb-2">
+      <Grid size={twoColumn ? 4 : 12} className="mb-2">
         <FormField
           type="text"
           name="cricosConfirmation"
@@ -189,7 +189,7 @@ const EnrolmentDetails = (
         />
       </Grid>
 
-      <Grid item xs={12} className="mb-2">
+      <Grid size={12} className="mb-2">
         <FormGroup>
           <FormControlLabel
             className="checkbox"

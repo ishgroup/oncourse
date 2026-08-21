@@ -190,8 +190,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
   return (
     <Grid container className={clsx("overflow-hidden", itemProps.twoColumn ? "h-100" : "fullHeightWithoutAppBar")}>
       <Grid
-        item
-        xs={layoutArray[0].xs}
+        size={layoutArray[0].xs}
         className="overflow-y-auto overflow-x-hidden h-100"
         onScroll={onScroll}
         id={TAB_LIST_SCROLL_TARGET_ID}
@@ -212,7 +211,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
         ))}
       </Grid>
       {itemProps.twoColumn && (
-        <Grid item xs={layoutArray[1].xs} className="root">
+        <Grid size={layoutArray[1].xs} className="root">
           <div className={classes.listContainer}>
             <div className={classes.listContainerInner}>
               {items.map((i, index) => (

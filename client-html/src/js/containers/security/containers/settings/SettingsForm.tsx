@@ -125,7 +125,7 @@ class SettingsForm extends React.Component<any, any> {
           containerClass="p-3"
         >
           <Grid container>
-            <Grid item xs={12} sm={8} className="d-flex">
+            <Grid size={{ xs: 12, sm: 8 }} className="d-flex">
               <FormGroup>
                 <FormControlLabel
                   classes={{
@@ -238,7 +238,7 @@ class SettingsForm extends React.Component<any, any> {
               </FormGroup>
             </Grid>
 
-            <Grid item xs={12} sm={8} className="mt-3">
+            <Grid size={{ xs: 12, sm: 8 }} className="mt-3">
               <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
                 {$t('disable_account_after')}
                 {" "}
@@ -265,7 +265,7 @@ class SettingsForm extends React.Component<any, any> {
               </Typography>
             </Grid>
 
-            <Grid item xs={12} sm={8} className="mt-3">
+            <Grid size={{ xs: 12, sm: 8 }} className="mt-3">
               <Typography className="heading">{$t('two_factor_authentication')}</Typography>
 
               <Field

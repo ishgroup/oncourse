@@ -82,7 +82,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
 
   return (
     <Grid container columnSpacing={3}>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <FormField
           type="multilineText"
           name="description"
@@ -90,7 +90,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           required
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <FormField
           type="remoteDataSelect"
           entity="Contact"
@@ -107,8 +107,8 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           allowEmpty
         />
       </Grid>
-      <Grid container columnSpacing={3} item xs={12}>
-        <Grid item xs={hasCountField ? 2 : 3}>
+      <Grid container columnSpacing={3} size={12}>
+        <Grid size={hasCountField ? 2 : 3}>
           <FormField
             type="select"
             name="repetitionType"
@@ -120,7 +120,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           />
         </Grid>
         {hasCountField && (
-          <Grid item xs={2}>
+          <Grid size={2}>
             <FormField
               type="number"
               name="unitCount"
@@ -129,7 +129,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             />
           </Grid>
         )}
-        <Grid item xs={hasCountField ? 2 : 3}>
+        <Grid size={hasCountField ? 2 : 3}>
           <FormField
             type="money"
             name="perUnitAmountExTax"
@@ -138,7 +138,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             debounced={false}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid size={3}>
           <FormField
             type="select"
             name="taxId"
@@ -150,7 +150,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
             items={taxes}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid size={3}>
           <FormField
             type="money"
             name="perUnitAmountIncTax"
@@ -163,7 +163,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
       </Grid>
 
       {!isIncome && (
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormControlLabel
             className="checkbox"
             control={<FormField type="checkbox" name="isSunk" color="secondary" />}
@@ -172,19 +172,19 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
         </Grid>
       )}
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Collapse in={hasMinMaxFields}>
           <Grid container columnSpacing={3}>
-            <Grid item xs={12} className="pt-2">
+            <Grid size={12} className="pt-2">
               <Divider />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <div className="heading pt-2 pb-2">{$t('total_amount_for_this_class')}</div>
             </Grid>
-            <Grid item xs={3}>
+            <Grid size={3}>
               <FormField type="money" name="minimumCost" label={$t('at_least')} />
             </Grid>
-            <Grid item xs={3}>
+            <Grid size={3}>
               <FormField type="money" name="maximumCost" label={$t('limited_to')} />
             </Grid>
           </Grid>

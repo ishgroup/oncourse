@@ -179,7 +179,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
           onAddMenu={() => this.onAddNew()}
         >
           <Grid container className="mt-2">
-            <Grid item sm={12} lg={10}>
+            <Grid size={{ sm: 12, lg: 10 }}>
               <Grid container columnSpacing={3}>
                 {data && (
                   <FieldArray

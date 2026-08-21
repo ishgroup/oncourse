@@ -65,7 +65,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3 mb-2">
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FullScreenStickyHeader
           disableInteraction
           twoColumn={twoColumn}
@@ -74,7 +74,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           )}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           label={$t('class_name')}
           name="courseClassName"
@@ -83,7 +83,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           disabled
         />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           label={$t('assessmment_name')}
           name="assessment"
@@ -92,7 +92,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           disabled
         />
       </Grid>
-      <Grid item xs={twoColumn ? 4 : 12} className="d-flex align-items-center">
+      <Grid size={twoColumn ? 4 : 12} className="d-flex align-items-center">
         <FormControlLabel
           className="checkbox"
           control={<StyledCheckbox checked={values.submittedOn} />}
@@ -100,14 +100,14 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           disabled
         />
       </Grid>
-      <Grid item xs={twoColumn ? 4 : 12} className={clsx("d-flex align-items-center", !twoColumn && "mb-2")}>
+      <Grid size={twoColumn ? 4 : 12} className={clsx("d-flex align-items-center", !twoColumn && "mb-2")}>
         <FormControlLabel
           className="checkbox"
           label={$t('marked')}
           control={<StyledCheckbox checked={values.markedOn} onChange={onChangeMarked} />}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           type="select"
           selectValueMark="contactId"
@@ -120,7 +120,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           allowEmpty
         />
       </Grid>
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField
           label={$t('submitted_on')}
           name="submittedOn"
@@ -129,7 +129,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           required
         />
       </Grid>
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         {values.markedOn && (
           <FormField
             label={$t('marked_on')}

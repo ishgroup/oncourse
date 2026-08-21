@@ -192,7 +192,7 @@ const CourseClassGeneralTab = React.memo<Props>(
     return (
       <>
         <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3 relative">
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FullScreenStickyHeader
               opened={isNew || Object.keys(syncErrors).some(k => ['courseId', 'courseCode', 'code'].includes(k))}
               twoColumn={twoColumn}
@@ -208,7 +208,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 </div>
             ) : (
               <Grid container columnSpacing={3} rowSpacing={2}>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <div className="centeredFlex">
                     {values.courseName}
                     <IconButton disabled={!values.courseId} size="small" color="primary" onClick={() => openCourseLink(values.courseId)}>
@@ -216,14 +216,14 @@ const CourseClassGeneralTab = React.memo<Props>(
                     </IconButton>
                   </div>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   {values.courseCode ? `${values.courseCode}-${values.code || ""}` : null}
                 </Grid>
               </Grid>
               )}
               fields={(
                 <Grid container columnSpacing={3} rowSpacing={2}>
-                  <Grid item xs={twoColumn ? 6 : 12}>
+                  <Grid size={twoColumn ? 6 : 12}>
                     <FormField
                       type="remoteDataSelect"
                       label={$t('course')}
@@ -242,7 +242,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                       required
                     />
                   </Grid>
-                  <Grid item xs={twoColumn ? 4 : 12}>
+                  <Grid size={twoColumn ? 4 : 12}>
                     <FormField
                       type="text"
                       label={$t('class_code')}
@@ -270,7 +270,7 @@ const CourseClassGeneralTab = React.memo<Props>(
           columnSpacing={3}
           rowSpacing={2}
         >
-          <Grid item xs={twoColumn ? 8 : 12}>
+          <Grid size={twoColumn ? 8 : 12}>
             <FormField type="tags" name="tags" className="mb-2" tags={tags} />
 
             <FormField
@@ -340,7 +340,7 @@ const CourseClassGeneralTab = React.memo<Props>(
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <EntityChecklists
               className={twoColumn ? "mr-4" : null}
               entity="CourseClass"
@@ -350,7 +350,7 @@ const CourseClassGeneralTab = React.memo<Props>(
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={12}>
             <CourseClassEnrolmentsChart
               classId={values.id}
               classStart={values.startDateTime}
@@ -368,9 +368,7 @@ const CourseClassGeneralTab = React.memo<Props>(
             fieldName="customFields"
             entityValues={values}
             form={form}
-            gridItemProps={{
-              xs: twoColumn ? 6 : 12
-            }}
+            gridItemProps={{ size: { xs: twoColumn ? 6 : 12 } }}
           />
         </Grid>
       </>

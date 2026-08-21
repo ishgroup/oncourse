@@ -156,7 +156,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
 
         <DialogContent className="overflow-hidden">
           <Grid container columnSpacing={3}>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <FormField
                 type="text"
                 name="contactName"
@@ -168,7 +168,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
               />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid size={6}>
               <div>
                 <Typography variant="caption" color="textSecondary">
                   {$t('amount_left_to_allocate')}
@@ -177,7 +177,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
               </div>
             </Grid>
 
-            <Grid item xs={12} className="pr-3 pb-1">
+            <Grid size={12} className="pr-3 pb-1">
               <Typography variant="caption">
                 {$t('please_choose_one_or_more_invoices_to_contra_again')}
                 <Typography variant="caption" component="span" className="money ">
@@ -188,8 +188,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
             </Grid>
 
             <Grid
-              item
-              xs={12}
+              size={12}
               className="d-flex"
               style={{
                 height: values.contraInvoices.length > 10 ? 300 : "auto"

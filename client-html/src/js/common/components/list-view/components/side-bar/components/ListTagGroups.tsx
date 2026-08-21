@@ -33,8 +33,13 @@ interface Props {
 }
 
 const ListTagGroups = ({
- tags, classes, onChangeTagGroups, updateTableModel, records 
+ tags, classes, onChangeTagGroups, updateTableModel, records
 }: Props) => {
+
+  const currentUrlSearch = new URLSearchParams(location.search);
+  const tagsUrlString = currentUrlSearch.get("tags");
+  const activeTags = tagsUrlString ? tagsUrlString.split(',') : [];
+
   const specialTypesEnabled = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true');
 
   const showColoredDots = records.columns.find(c => c.attribute === COLUMN_WITH_COLORS)?.visible;
@@ -100,6 +105,7 @@ const ListTagGroups = ({
     <>
       {specialTypesEnabled && subjects &&
         <ListTagGroup
+          activeTags={activeTags}
           key={subjects.prefix + subjects.tagBody.id.toString()}
           rootTag={subjects}
           classes={classes}
@@ -123,6 +129,7 @@ const ListTagGroups = ({
                 }
                 return (
                   <ListTagGroup
+                    activeTags={activeTags}
                     key={t.prefix + t.tagBody.id.toString()}
                     dndKey={index}
                     rootTag={t}

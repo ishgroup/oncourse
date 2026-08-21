@@ -7,7 +7,7 @@
  */
 
 import { Currency, ExportTemplate, LayoutType, Report, TableModel } from '@api/model';
-import ErrorOutline from '@mui/icons-material/ErrorOutline';
+import ErrorOutline from '@mui/icons-material/ErrorOutlineOutlined';
 import { Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import $t from '@t';

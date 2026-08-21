@@ -38,7 +38,7 @@ const EnrolItemListView = React.memo<{
 
   return (
     <Grid container columnSpacing={3}>
-      <Grid item xs={12} md={hasSalesRelations ? 6 : 12}>
+      <Grid size={{ xs: 12, md: hasSalesRelations ? 6 : 12 }}>
         <EnrolItemListRenderer
           type="course"
           title={`${courses.length > 1 ? "Courses" : "Course"}`}
@@ -106,7 +106,7 @@ const EnrolItemListView = React.memo<{
       </Grid>
       {hasSalesRelations
         && (
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <SaleRelations
             relations={salesRelations}
             cartItems={selectedItems}

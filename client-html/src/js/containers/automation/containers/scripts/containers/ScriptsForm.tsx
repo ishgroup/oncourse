@@ -519,7 +519,7 @@ const ScriptsForm = React.memo<Props>(props => {
         opened={!values.name || Object.keys(syncErrors).includes("name")}
         noDrawer
         fields={(
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField
               type="text"
               name="name"
@@ -572,7 +572,7 @@ const ScriptsForm = React.memo<Props>(props => {
         {values && (
           <>
             <Grid container className="mb-4" rowSpacing={2} columnSpacing={3}>
-              <Grid item xs={12} sm={9}>
+              <Grid size={{ xs: 12, sm: 9 }}>
                 <FormField
                   type="multilineText"
                   name="shortDescription"
@@ -580,7 +580,7 @@ const ScriptsForm = React.memo<Props>(props => {
                   className="overflow-hidden mb-1"
                   placeholder={$t('short_description')}
                 />
-                <Typography variant="caption" fontSize="13px">
+                <Typography variant="caption" sx={{ fontSize: '13px' }}>
                   <FormField
                     type="multilineText"
                     name="description"
@@ -603,7 +603,7 @@ const ScriptsForm = React.memo<Props>(props => {
             </Grid>
             <Divider className="mb-5" />
             <Grid container className={classes.root}>
-              <Grid item xs={9} className={classes.cardsBox}>
+              <Grid size={9} className={classes.cardsBox}>
                 <div
                   className={clsx(classes.cardsItem,
                     { [classes.cardCodeView]: (viewMode === "Code" || isInternal) })}
@@ -723,9 +723,9 @@ const ScriptsForm = React.memo<Props>(props => {
                 </div>
               </Grid>
 
-              <Grid item xs={3}>
+              <Grid size={3}>
                 <Grid container columnSpacing={3} className="mb-5">
-                  <Grid item xs className="d-flex">
+                  <Grid size="grow" className="d-flex">
                     <div className="flex-fill">
                       <Typography variant="caption" color="textSecondary">
                         {$t('last_run')}

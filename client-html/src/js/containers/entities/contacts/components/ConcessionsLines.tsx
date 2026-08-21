@@ -26,7 +26,7 @@ export const ConcessionsHeader = ConcessionsHeaderBase;
 
 export const ConcessionsContent = React.memo<any>(({ item, row, concessionTypes }) => (
   <Grid container columnSpacing={3} rowSpacing={2}>
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FormField
         type="select"
         name={`${item}.type`}
@@ -38,7 +38,7 @@ export const ConcessionsContent = React.memo<any>(({ item, row, concessionTypes 
         validate={validateSingleMandatoryField}
       />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FormField
         type="text"
         name={`${item}.number`}
@@ -46,7 +46,7 @@ export const ConcessionsContent = React.memo<any>(({ item, row, concessionTypes 
         validate={row.type && row.type.requireNumber ? validateSingleMandatoryField : undefined}
       />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FormField
         type="date"
         name={`${item}.expiresOn`}

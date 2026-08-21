@@ -59,15 +59,15 @@ export default (props: WrappedFieldArrayProps & Props) => {
   };
 
   return (
-    <Grid item xs={12} lg={10}>
+    <Grid size={{ xs: 12, lg: 10 }}>
       {fields.map((item, index) => {
         const field: GradingType = fields.get(index);
         return (
           <Card className="card" key={`${field.id}${index}`} id={`grading-type-${index}`}>
             <Grid container columnSpacing={3}>
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <Grid container rowSpacing={2} columnSpacing={3}>
-                  <Grid item xs={6}>
+                  <Grid size={6}>
                     <FormField
                       type="text"
                       name={`${item}.name`}
@@ -76,7 +76,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                                             required
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid size={6}>
                     <FormField
                       type="select"
                       name={`${item}.entryType`}
@@ -87,10 +87,10 @@ export default (props: WrappedFieldArrayProps & Props) => {
                                           />
                   </Grid>
 
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <Collapse in={field.entryType === "number"}>
                       <Grid container columnSpacing={3}>
-                        <Grid item xs={6}>
+                        <Grid size={6}>
                           <FormField
                             type="number"
                             name={`${item}.minValue`}
@@ -100,7 +100,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                             required={field.entryType === "number"}
                                                       />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={6}>
                           <FormField
                             type="number"
                             name={`${item}.maxValue`}
@@ -115,7 +115,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={6} className="relative">
+              <Grid size={6} className="relative">
                 <FieldArray
                   name={`${item}.gradingItems` as string}
                   component={GradingItemsRenderer}

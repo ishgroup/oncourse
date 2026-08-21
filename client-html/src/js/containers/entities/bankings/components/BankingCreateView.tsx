@@ -201,8 +201,8 @@ class BankingCreateView extends React.PureComponent<any, any> {
     return (
       <div className="flex-column p-3 h-100">
         <Grid container columnSpacing={3} rowSpacing={2}>
-          <Grid item xs={12}>
-            <Grid item xs={6}>
+          <Grid size={12}>
+            <Grid size={6}>
               <FormField
                 type="select"
                 name="administrationCenterId"
@@ -226,7 +226,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
               />
             </Grid>
           </Grid>
-          <Grid item xs={4}>
+          <Grid size={4}>
             <EditInPlaceSearchSelect
               items={accounts || []}
               label={$t('account')}
@@ -237,7 +237,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
               disabled={hasNoAccounts}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid size={4}>
             <FormField
               name="settlementDate"
               label={$t('date_banked')}
@@ -248,8 +248,8 @@ class BankingCreateView extends React.PureComponent<any, any> {
               debounced={false}
             />
           </Grid>
-          <Grid item xs={4} />
-          <Grid item xs={4}>
+          <Grid size={4} />
+          <Grid size={4}>
             <FormControlLabel
               classes={{
                 root: "pr-3 checkbox"

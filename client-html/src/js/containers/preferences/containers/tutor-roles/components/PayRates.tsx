@@ -58,8 +58,8 @@ class PayRates extends React.Component<Props, any> {
     const { classes } = this.props;
 
     return (
-      <Grid container className="h-100 overflow-hidden justify-content-center" alignContent="flex-start">
-        <Grid item xs={12}>
+      <Grid container className="h-100 overflow-hidden justify-content-center" sx={{ alignContent: 'flex-start' }}>
+        <Grid size={12}>
           <div className="centeredFlex">
             <div className="heading">{$t('pay_rate')}</div>
             <AddButton onClick={this.addPayRate} />

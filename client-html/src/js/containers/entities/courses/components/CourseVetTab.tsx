@@ -139,11 +139,11 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3 mt-1">
-      <Grid item xs={12}>
+      <Grid size={12}>
         <div className="heading">{$t('vet')}</div>
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="remoteDataSelect"
           entity="Qualification"
@@ -161,11 +161,11 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <Uneditable value={values.qualNationalCode} label={$t('national_code')} />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="text"
           name="fieldOfEducation"
@@ -174,11 +174,11 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <Uneditable value={values.qualLevel} label={$t('level')} />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="number"
           normalize={normalizeNumberToZero}
@@ -192,7 +192,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="text"
           name="attainmentText"
@@ -200,7 +200,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormControlLabel
           control={<FormField type="checkbox" name="isSufficientForQualification" />}
           label={$t('satisfies_complete_qualification_or_skill_set')}
@@ -208,7 +208,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormControlLabel
           control={<FormField type="checkbox" name="isVET" />}
           label={$t('vet_course')}
@@ -216,24 +216,24 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <div className="heading mt-2">{$t('vet_student_loans')}</div>
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="feeHelpClass" />}
           label={$t('this_is_a_vet_student_loan_eligible_course')}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <Collapse in={values.feeHelpClass}>
           <FormField type="text" name="fullTimeLoad" label={$t('equivalent_fulltime_student_load')} />
         </Collapse>
       </Grid>
 
-      <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid size={twoColumn ? 8 : 12}>
         <NestedList
           formId={values.id}
           title={$t('modules_units_of_competency')}

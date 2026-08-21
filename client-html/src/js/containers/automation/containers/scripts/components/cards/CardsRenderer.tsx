@@ -5,7 +5,7 @@
 
 import { Binding } from '@api/model';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlineOutlined';
 import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
 import { FormControlLabel } from '@mui/material';
 import Grid from '@mui/material/Grid';
@@ -97,7 +97,7 @@ const ScriptCardItem = React.memo<ScriptItemProps & WrappedFieldArrayProps>(prop
     <>
       {variables.map(elem => (
         elem.type === "Checkbox" ? (
-          <Grid key={getType(elem.type) + elem.label} item xs={12}>
+          <Grid key={getType(elem.type) + elem.label} size={12}>
             <FormControlLabel
               control={(
                 <FormField
@@ -111,7 +111,7 @@ const ScriptCardItem = React.memo<ScriptItemProps & WrappedFieldArrayProps>(prop
             />
           </Grid>
         ) : (
-          <Grid key={getType(elem.type) + elem.label} item xs={12}>
+          <Grid key={getType(elem.type) + elem.label} size={12}>
             <FormField
               type={getType(elem.type) as any}
               name={`${name}.${elem.name}`}

@@ -14,16 +14,16 @@ const renderContactRelationTypes = props => {
   const { fields, classes, onDelete } = props;
 
   return (
-    <Grid item xs={12}>
+    <Grid size={12}>
       {fields.map((item: ContactRelationType, index) => {
         const field = fields.get(index);
 
         return (
           <Card id={`contact-relation-type-${index}`} className="card" key={index}>
             <Grid container columnSpacing={3} spacing={2} className="relative">
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Grid container columnSpacing={3}>
-                  <Grid item xs={6}>
+                  <Grid size={6}>
                     <FormField
                       type="text"
                       name={`${item}.relationName`}
@@ -34,7 +34,7 @@ const renderContactRelationTypes = props => {
                     />
                   </Grid>
 
-                  <Grid item xs={6}>
+                  <Grid size={6}>
                     <div className="d-flex">
                       <FormField
                         type="text"
@@ -59,7 +59,7 @@ const renderContactRelationTypes = props => {
                     </div>
                   </Grid>
 
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <FormControlLabel
                       className={classes.checkbox}
                       control={(

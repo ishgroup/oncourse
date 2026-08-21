@@ -58,7 +58,7 @@ const templatesRenderer: React.FC<any> = React.memo<any>(({ fields }) => fields.
   }, [item, item.type]);
 
   return (
-    <Grid item xs={6} key={`${item.name}_${item.value}`}>
+    <Grid size={6} key={`${item.name}_${item.value}`}>
       <Field
         label={item.label}
         name={`${f}.value`}
@@ -157,7 +157,7 @@ const ExecuteImportModal = React.memo<Props & InjectedFormProps>(props => {
         <DialogContent>
           <Grid container columnSpacing={3} rowSpacing={2}>
             {values.description && (
-              <Grid item xs={12} className="mb-2">
+              <Grid size={12} className="mb-2">
                 <Typography variant="body2" color="textSecondary" className="pb-2">
                   {`${values.description}`}
                 </Typography>

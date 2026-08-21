@@ -95,7 +95,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
         <DialogTitle>{$t('you_are_about_to_cancel_this_sale')}</DialogTitle>
         <DialogContent className="overflow-hidden">
           <Grid container columnSpacing={3} rowSpacing={2}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormControlLabel
                 classes={{
                   root: "checkbox"
@@ -127,7 +127,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
               />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid size={6}>
               <FormField
                 type="money"
                 name="feeAmount"
@@ -136,7 +136,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
                 disabled={feeValuesDisabled}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <FormField
                 type="select"
                 name="feeTaxId"
@@ -148,7 +148,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
                 disabled={feeValuesDisabled}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormField
                 type="select"
                 name="retainAccountId"

@@ -49,7 +49,7 @@ const styles = (({ spacing }: AppTheme) => ({
 const InfoLine = ({ label, data }: InfoLineProps) => (
   <Typography variant="body2" component="div">
     {label && (
-      <Typography variant="body2" color="textSecondary" display="inline">
+      <Typography variant="body2" color="textSecondary" sx={{ display: 'inline' }}>
         {label}
         {" "}
       </Typography>
@@ -108,7 +108,7 @@ const InfoCard = React.memo<Props>(
       <Paper className={classes.root}>
         <div>
           <div className="centeredFlex">
-            <Typography className="heading" display="inline">
+            <Typography className="heading" sx={{ display: 'inline' }}>
               {contactNames.a}
             </Typography>
 
@@ -131,7 +131,7 @@ const InfoCard = React.memo<Props>(
           </div>
 
           <div className="centeredFlex">
-            <Typography className="heading" display="inline">
+            <Typography className="heading" sx={{ display: 'inline' }}>
               {contactNames.b}
             </Typography>
 

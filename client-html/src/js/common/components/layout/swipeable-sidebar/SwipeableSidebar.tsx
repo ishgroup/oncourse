@@ -420,9 +420,11 @@ const SwipeableSidebar: React.FC<Props> = props => {
           paper: classes.drawerPaper,
           root: classes.drawerRoot,
         }}
-        PaperProps={{
-          classes: {
-            root: variant === "temporary" && opened && selected !== null && classes.paperBorder
+        slotProps={{
+          paper: {
+            classes: {
+              root: variant === "temporary" && opened && selected !== null && classes.paperBorder
+            }
           }
         }}
       >
