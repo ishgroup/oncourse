@@ -9,8 +9,8 @@ import Grid, { GridSize } from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
-import { LinkAdornment, openInternalLink, TimetableButton } from 'ish-ui';
 import { debounce } from 'es-toolkit/compat';
+import { LinkAdornment, openInternalLink, TimetableButton } from 'ish-ui';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { change, FieldArray } from 'redux-form';
@@ -104,6 +104,8 @@ function RoomsGeneral({
             name="tags"
             tags={tags}
             className="mb-2"
+            placeholder='Tags'
+            trackCarretPosition={twoColumn}
           />
           {isParenSiteVirtual && <FormField
             type="text"

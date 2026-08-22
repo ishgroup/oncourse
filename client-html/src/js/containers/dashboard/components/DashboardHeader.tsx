@@ -108,7 +108,7 @@ const DashboardHeader = (
         {!drawerOpened && (
           <HamburgerMenu variant={VARIANTS.persistent} />
         )}
-        <Grid container className="justify-content-end" sx={{ alignContent: 'center' }}>
+        <Grid container sx={{ alignContent: 'center', justifyContent: 'end', flex: 1 }}>
           <Grid size={6} container sx={{ justifyContent: 'start', alignContent: 'center' }}>
             <Typography variant="subtitle2" color="textSecondary" noWrap>
               {$t('welcome_back')}

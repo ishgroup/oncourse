@@ -200,7 +200,8 @@ const SitesGeneral: React.FC<EditViewProps<Site>> = props => {
       {/* --- TAGS + CHECKLISTS --- */}
       <Grid container size={layoutArray[0].xs} columnSpacing={3} rowSpacing={2}>
         <Grid size={twoColumn ? 8 : 12}>
-          <FormField type="tags" name="tags" tags={tags} />
+          <FormField type="tags" name="tags" tags={tags} placeholder='Tags'
+                     trackCarretPosition={twoColumn} />
         </Grid>
 
         <Grid size={twoColumn ? 4 : 12}>

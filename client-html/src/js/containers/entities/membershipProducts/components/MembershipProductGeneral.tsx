@@ -169,6 +169,8 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           name="tags"
           tags={tagsGrouped.tags}
           className="mb-2"
+          placeholder='Tags'
+          trackCarretPosition={twoColumn}
         />
 
         {subjectsField}

@@ -366,6 +366,8 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
               type="tags"
               name="tags"
               tags={tags}
+              placeholder='Tags'
+              trackCarretPosition={twoColumn}
             />
           </Grid>
           <Grid size={12}>

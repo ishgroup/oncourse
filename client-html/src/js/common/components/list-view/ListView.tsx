@@ -535,7 +535,7 @@ function ListView(props: ListCompProps) {
         uncheckedChecklists,
         ...{ [type]: filters as FormMenuTag[] }
       });
-      const tagsString = getActiveTags(filters as FormMenuTag[]).map(t => t.tagBody.id).toString();
+      const tagsString = Array.from(new Set(getActiveTags(filters as FormMenuTag[]).map(t => t.tagBody.id))).toString();
       if (tagsString) {
         searchParams.set(type, tagsString);
       } else {
@@ -1095,6 +1095,7 @@ function ListView(props: ListCompProps) {
                 updateDeleteCondition={updateDeleteCondition}
                 showConfirm={showConfirm}
                 toogleFullScreenEditView={toggleFullWidthView}
+                threeColumn={threeColumn}
               />
             </div>
           )}

@@ -175,6 +175,8 @@ class PayslipsEditView extends React.PureComponent<any, any> {
               name="tags"
               label="Tags"
               tags={tags}
+              placeholder='Tags'
+              trackCarretPosition={twoColumn}
             />
           </Grid>
 

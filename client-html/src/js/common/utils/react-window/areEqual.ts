@@ -10,6 +10,12 @@
  * `style` prop, which react-window rebuilds on every scroll — extended to also
  * look into v2's `ariaAttributes`, which is likewise a fresh object each render
  * and would otherwise defeat the memo entirely.
+ *
+ * This is for components rendered *inside* a row, which get handed a fresh
+ * `style` object but otherwise stable props. Do not use it on the component
+ * passed as `rowComponent`: react-window v2 already wraps that one in its own
+ * React.memo using an equivalent comparator, so a second memo there is dead
+ * weight.
  */
 
 const shallowDiffers = (prev: any, next: any): boolean => {

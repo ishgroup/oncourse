@@ -84,27 +84,25 @@ const filterCompanyTags = (tag: Tag) => {
   return true;
 };
 
-const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
-  const {
-    twoColumn,
-    values,
-    initialValues,
-    form,
-    dispatch,
-    isStudent,
-    isTutor,
-    isCompany,
-    setIsStudent,
-    setIsTutor,
-    setIsCompany,
-    tags,
-    isNew,
-    syncErrors,
-    showConfirm,
-    usiLocked,
-    leftOffset
-  } = props;
-
+const ContactsGeneral: React.FC<ContactsGeneralProps> = ({
+  twoColumn,
+  values,
+  initialValues,
+  form,
+  dispatch,
+  isStudent,
+  isTutor,
+  isCompany,
+  setIsStudent,
+  setIsTutor,
+  setIsCompany,
+  tags,
+  isNew,
+  syncErrors,
+  showConfirm,
+  usiLocked,
+  leftOffset
+}) => {
   const isInitiallyStudent = initialValues && !!initialValues.student;
   const isInitiallyTutor = initialValues && !!initialValues.tutor;
   const isInitiallyCompany = initialValues && !!initialValues.isCompany;
@@ -176,9 +174,6 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     return [];
   }, [tags, isStudent, isTutor, isCompany]);
 
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
   return (
     <div className={clsx("pl-3 pr-3", !twoColumn && "pt-3")}>
       <ProfileHeading
@@ -233,6 +228,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             name="tags"
             tags={filteredTags}
             placeholder='Tags'
+            trackCarretPosition={twoColumn}
           />
         </Grid>
         <Grid size={twoColumn ? 4 : 12}>

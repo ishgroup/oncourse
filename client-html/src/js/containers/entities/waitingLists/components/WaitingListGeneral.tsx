@@ -84,6 +84,8 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             type="tags"
             name="tags"
             tags={tags}
+            placeholder='Tags'
+            trackCarretPosition={twoColumn}
           />
         </Grid>
         <Grid size={twoColumn ? 4 : 12}>

@@ -211,7 +211,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
         ))}
       </Grid>
       {itemProps.twoColumn && (
-        <Grid size={layoutArray[1].xs} className="root">
+        <Grid size={layoutArray[1].xs} className="d-flex">
           <div className={classes.listContainer}>
             <div className={classes.listContainerInner}>
               {items.map((i, index) => (

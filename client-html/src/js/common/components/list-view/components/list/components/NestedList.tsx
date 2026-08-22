@@ -8,13 +8,12 @@ import { flexRender } from '@tanstack/react-table';
 import { Row } from '@tanstack/table-core/src/types';
 import clsx from 'clsx';
 import { stubFunction } from 'ish-ui';
-import React, { memo } from 'react';
+import React, { useCallback } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { List } from 'react-window';
 import { useInfiniteLoader } from 'react-window-infinite-loader';
 import { NESTED_LIST_PAGE_SIZE } from '../../../../../../constants/Config';
 import { NestedTableColumnsTypes } from '../../../../../../model/common/NestedTable';
-import areEqual from '../../../../../utils/react-window/areEqual';
 import NestedTableCheckboxCell from './NestedTableCheckboxCell';
 import NestedTableDeleteCell from './NestedTableDeleteCell';
 import NestedTableLinkCell from './NestedTableLinkCell';
@@ -65,7 +64,8 @@ const ListCell = React.memo<{
   }
 });
 
-const ListRow = memo<any>(({
+// see InfiniteLoaderList: react-window v2 memoises `rowComponent` itself
+const ListRow = ({
   index,
   style,
   rows,
@@ -74,7 +74,7 @@ const ListRow = memo<any>(({
   onRowDelete,
   onRowDoubleClick,
   onCheckboxChange
-}) => {
+}: any) => {
   const row = rows[index];
   const rowClasses = clsx(
     "d-flex",
@@ -116,7 +116,7 @@ const ListRow = memo<any>(({
       ))}
     </div>
   );
-}, areEqual);
+};
 
 interface StaticListProps {
   rows: Row<any>[];
@@ -136,7 +136,8 @@ export default function NestedList(props: StaticListProps)  {
     onLoadMore = stubFunction
   } = props;
 
-  const isRowLoaded = index => Boolean(rows[index]);
+  // stable identity: useInfiniteLoader keys its already-requested set on it
+  const isRowLoaded = useCallback(index => Boolean(rows[index]), [rows]);
 
   const onRowsRendered = useInfiniteLoader({
     minimumBatchSize: NESTED_LIST_PAGE_SIZE,
@@ -152,9 +153,12 @@ export default function NestedList(props: StaticListProps)  {
           style={{
             overflow: "hidden auto",
             height: isNaN(height) ? 0 : height,
+            // see InfiniteLoaderList: AutoSizer's height:0 wrapper turns
+            // react-window v2's default `maxHeight: 100%` into zero
+            maxHeight: 'none',
             width: totalColumnsWidth > width ? totalColumnsWidth : (isNaN(width) ? 0 : width)
           }}
-          rowComponent={ListRow as any}
+          rowComponent={ListRow}
           rowCount={rows.length}
           rowProps={props as any}
           rowHeight={27}

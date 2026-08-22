@@ -274,6 +274,8 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           type="tags"
           name="tags"
           tags={tags}
+          placeholder='Tags'
+          trackCarretPosition={twoColumn}
         />
       </Grid>
 

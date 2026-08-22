@@ -199,6 +199,8 @@ const LeadGeneral = (props: Props) => {
             type="tags"
             name="tags"
             tags={tags}
+            placeholder='Tags'
+            trackCarretPosition={twoColumn}
           />
         </Grid>
         {!isNew

@@ -6,44 +6,9 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import $t from '@t';
 import clsx from 'clsx';
-import { AppTheme } from 'ish-ui';
 import * as React from 'react';
 import { withStyles } from 'tss-react/mui';
-
-const styles = (theme: AppTheme, p, classes) =>
-  ({
-    checkbox: {
-      height: "1em",
-      width: "1em",
-      marginLeft: ".6em",
-      marginRight: theme.spacing(0.5),
-    },
-    checkboxFontSize: {
-      fontSize: "18px"
-    },
-    labelRoot: {
-      [`& .${classes.checkboxLabel}`]: {
-        fontSize: "12px",
-      }
-    },
-    checkboxLabel: {},
-    root: {
-      display: "flex",
-      alignItems: "center",
-      [`&:hover .${classes.deleteButton}`]: {
-        visibility: "visible"
-      },
-      height: theme.spacing(3),
-      maxHeight: theme.spacing(3),
-    },
-    deleteButton: {
-      visibility: "hidden",
-      fontSize: "20px",
-      height: "30px",
-      width: "30px",
-      padding: `${theme.spacing(0.5)}`
-    }
-  });
+import styles from './FilterComponentStyles';
 
 const FilterItem = props => {
   const {
