@@ -144,6 +144,8 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           type="tags"
           name="tags"
           tags={tags}
+          placeholder='Tags'
+          trackCarretPosition={twoColumn}
         />
       </Grid>
       <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>

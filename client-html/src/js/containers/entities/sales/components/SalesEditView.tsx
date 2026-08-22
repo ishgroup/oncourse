@@ -121,6 +121,8 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
           type="tags"
           name="tags"
           tags={tags}
+          placeholder='Tags'
+          trackCarretPosition={twoColumn}
         />
       </Grid>
 

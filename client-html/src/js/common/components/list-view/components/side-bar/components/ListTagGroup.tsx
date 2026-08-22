@@ -32,6 +32,7 @@ interface Props {
 
 const ExpandIcon = props => <IconButton
   {...props}
+  className='p-0'
 >
   <KeyboardArrowUp />
 </IconButton>;
@@ -76,6 +77,7 @@ const ListTagGroup: React.FC<Props> = (
     <SimpleTreeView
       multiSelect
       checkboxSelection
+      expansionTrigger="iconContainer"
       expandedItems={expanded}
       selectedItems={activeTags}
       slots={{
@@ -83,7 +85,8 @@ const ListTagGroup: React.FC<Props> = (
         collapseIcon: ExpandIcon
       }}
       selectionPropagation={{
-        descendants: true
+        descendants: true,
+        parents: true
       }}
       onSelectedItemsChange={toggleActive}
       onExpandedItemsChange={(e, items) => setExpanded(items)}

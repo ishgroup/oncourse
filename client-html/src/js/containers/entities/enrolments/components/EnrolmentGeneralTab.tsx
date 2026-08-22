@@ -121,6 +121,8 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           type="tags"
           name="tags"
           tags={tags}
+          placeholder='Tags'
+          trackCarretPosition={twoColumn}
         />
       </Grid>
 

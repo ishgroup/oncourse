@@ -271,7 +271,8 @@ const CourseClassGeneralTab = React.memo<Props>(
           rowSpacing={2}
         >
           <Grid size={twoColumn ? 8 : 12}>
-            <FormField type="tags" name="tags" className="mb-2" tags={tags} />
+            <FormField type="tags" name="tags" className="mb-2" tags={tags} placeholder='Tags'
+                       trackCarretPosition={twoColumn} />
 
             <FormField
               type="select"

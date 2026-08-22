@@ -108,6 +108,8 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           name="tags"
           tags={tagsGrouped.tags}
           className="mb-2"
+          placeholder='Tags'
+          trackCarretPosition={twoColumn}
         />
 
         {subjectsField}

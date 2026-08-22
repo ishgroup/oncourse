@@ -4,9 +4,16 @@
  */
 
 import { Contact } from '@api/model';
+import { IconProp, library } from '@fortawesome/fontawesome-svg-core';
+import { faBuilding, faPersonChalkboard, faUser, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import $t from '@t';
 import { EntityType, openInternalLink } from 'ish-ui';
+import React from 'react';
 import { CourseClassStatus } from '../../../../model/entities/CourseClass';
+import { ContactType } from '../Contacts';
+
+library.add(faUserGraduate, faPersonChalkboard, faUser, faBuilding);
 
 const getContactName = item => {
   const firstName = item.firstName || "";
@@ -86,4 +93,27 @@ export const getNestedTutorClassItem = (status: CourseClassStatus, count: number
       return null;
     }
   }
+};
+
+const getContactTypeImage = (type: ContactType): IconProp => {
+  switch (type) {
+    case "STUDENT": {
+      return 'user-graduate';
+    }
+    case "TUTOR":
+    case "TUTOR_STUDENT":{
+      return 'person-chalkboard';
+    }
+    case "COMPANY": {
+      return 'building';
+    }
+
+    default: {
+      return 'user';
+    }
+  }
+};
+
+export const contactColumnFormats = {
+  contactType: v => (v ? <FontAwesomeIcon color="inherit" icon={getContactTypeImage(v)} /> : null)
 };

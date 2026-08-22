@@ -134,6 +134,8 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             name="tags"
             tags={tagsGrouped.tags}
             className="mb-2"
+            placeholder='Tags'
+            trackCarretPosition={twoColumn}
           />
 
           <FormField

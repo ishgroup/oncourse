@@ -169,9 +169,6 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
             twoColumn && !opened && (isStuck || customStuck) && classes.fullScreenTitleItem,
             !opened && isFixed && twoColumn && classes.isFixed,
           )}
-          style={{
-            width: `calc(100% - 250px - ${leftOffset || 0}px)`
-          }}
         >
           {Avatar && (
             <Avatar

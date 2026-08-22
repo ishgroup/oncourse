@@ -89,7 +89,7 @@
     "es-toolkit": "^1.42.0",
     "eslint-import-resolver-webpack": "0.*",
     "history": "^4.10.1",
-    "ish-ui": "^1.3.1",
+    "ish-ui": "^1.3.2",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.8",
     "react-awesome-gravatar": "2.*",

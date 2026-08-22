@@ -88,6 +88,8 @@ const AssessmentGeneralTab = React.memo<Props>(
         type="tags"
         name="tags"
         tags={tags}
+        placeholder='Tags'
+        trackCarretPosition={twoColumn}
       />
     </Grid>
 
