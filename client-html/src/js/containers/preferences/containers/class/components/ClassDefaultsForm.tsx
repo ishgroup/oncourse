@@ -5,7 +5,7 @@
 
 import Grid from '@mui/material/Grid';
 import $t from '@t';
-import { isEmpty } from 'es-toolkit/compat'
+import { isEmpty } from 'es-toolkit/compat';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Form, initialize, reduxForm } from 'redux-form';
@@ -63,50 +63,44 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
           createdOn={values => values.created}
           modifiedOn={values => values.modified}
         >
-          <Grid container columnSpacing={3} rowSpacing={2}>
-            <Grid container columnSpacing={3} rowSpacing={2}>
-              <Grid size={{ xs: 12, sm: 3 }}>
-                <FormField
-                  type="number"
-                  name={this.formModel.ClassMinPlaces.uniqueKey}
-                  label={$t('minimum_places')}
-                  parse={val => val || "0"}
-                  debounced={false}
-                />
-              </Grid>
-
-              <Grid size={{ xs: 12, sm: 4 }}>
-                <FormField
-                  type="select"
-                  name={this.formModel.ClassDeliveryMode.uniqueKey}
-                  label={$t('delivery_mode')}
-                  items={enums.DeliveryMode}
-                />
-              </Grid>
-            </Grid>
-
-            <Grid container columnSpacing={3} rowSpacing={2}>
-              <Grid size={{ xs: 12, sm: 3 }}>
-                <FormField
-                  type="number"
-                  name={this.formModel.ClassMaxPlaces.uniqueKey}
-                  label={$t('maximum_places')}
-                  parse={val => val || "0"}
-                  debounced={false}
-                />
-              </Grid>
-
-              <Grid size={{ xs: 12, sm: 4 }}>
-                <FormField
-                  type="select"
-                  name={this.formModel.ClassFundingSourcePreference.uniqueKey}
-                  label={$t('funding_source')}
-                  items={enums.ClassFundingSource}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-
+         <Grid container>
+           <Grid container size={{ xs: 12, lg: 8 }} columnSpacing={3} rowSpacing={2}>
+             <Grid size={6}>
+               <FormField
+                 type="number"
+                 name={this.formModel.ClassMinPlaces.uniqueKey}
+                 label={$t('minimum_places')}
+                 parse={val => val || "0"}
+                 debounced={false}
+               />
+             </Grid>
+             <Grid size={6}>
+               <FormField
+                 type="select"
+                 name={this.formModel.ClassDeliveryMode.uniqueKey}
+                 label={$t('delivery_mode')}
+                 items={enums.DeliveryMode}
+               />
+             </Grid>
+             <Grid size={6}>
+               <FormField
+                 type="number"
+                 name={this.formModel.ClassMaxPlaces.uniqueKey}
+                 label={$t('maximum_places')}
+                 parse={val => val || "0"}
+                 debounced={false}
+               />
+             </Grid>
+             <Grid size={6}>
+               <FormField
+                 type="select"
+                 name={this.formModel.ClassFundingSourcePreference.uniqueKey}
+                 label={$t('funding_source')}
+                 items={enums.ClassFundingSource}
+               />
+             </Grid>
+           </Grid>
+         </Grid>
         </AppBarContainer>
       </Form>
     );
