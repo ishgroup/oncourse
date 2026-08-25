@@ -24,7 +24,7 @@ const styles = theme => ({
     fontSize: "1.2rem",
   },
   smallScriptGroup: {
-    display: "flex",
+    flex: 1,
     padding: "0",
     height: "18px",
     fontSize: '12px'

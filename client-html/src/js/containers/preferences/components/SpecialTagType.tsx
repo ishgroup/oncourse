@@ -16,20 +16,26 @@ import { cardsFormStyles } from '../styles/formCommonStyles';
 
 interface SpecialTagTypeProps {
   index: number;
+  field: string;
   onDelete: NumberArgFunction;
   disabled?: boolean;
 }
 
 const useStyles = makeAppStyles()(cardsFormStyles as any);
 
-function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
-  const { classes }: any = useStyles();
+const formatStatus = v => v === "Show on website";
+
+const parseStatus = v => v ? "Show on website" : "Private";
+
+function SpecialTagType({ index, field, onDelete, disabled }: SpecialTagTypeProps) {
+  const { classes } = useStyles();
+
   return (
-    <Grid container columnSpacing={3} id={`special-tag-type-${index}`} className="relative">
+    <Grid container columnSpacing={3} id={`special-tag-type-${index}`} className="relative flex-fill">
       <Grid size={6}>
         <FormField
           type="text"
-          name={`types.${index}.name`}
+          name={`${field}.name`}
           label={$t('name')}
           className={classes.field}
           disabled={disabled}
@@ -45,10 +51,9 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
             disabled={disabled}
             control={<FormField
               type="switch"
-              name={`types.${index}.status`}
-              format={v => v === "Show on website"}
-              parse={v => (v ? "Show on website" : "Private")}
-              debounced={false}
+              name={`${field}.status`}
+              format={formatStatus}
+              parse={parseStatus}
             />}
             label={$t('visible_on_web')}
             labelPlacement="start"
