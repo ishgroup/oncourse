@@ -43,7 +43,6 @@ library.add(faAdjust, faCheck, faTimes, faCircle);
 
 const styles = (theme: AppTheme) => ({
     timeline: {
-      marginLeft: theme.spacing(-1),
       background: theme.palette.background.default,
       height: "156px"
     },
@@ -645,37 +644,19 @@ const CourseClassAttendanceTab = React.memo<Props>(
     );
 
     const renderedDays = useCallback(
-      (attendanceType?: string) => (
-        <Grid container columnSpacing={3}>
-          <Grid size={10} className={classes.attendanceDayBase}>
-            <Grid container columnSpacing={3} className={clsx(checkAnimationClass())}>
-              {selectedItems.map((sd, si) => (
-                <AttendanceDayBase
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={si}
-                  {...sd}
-                  changeSessionRow={type => (
-                    attendanceType === "Training plan"
-                      ? onChangeAllTrainingPlansSessionRow(type, sd.id)
-                      : changeSessionRow(type, sd.id)
-                  )}
-                  hasStudentAttendance={Boolean(values.studentAttendance.length)}
-                  type={attendanceType}
-                />
-              ))}
-            </Grid>
-          </Grid>
-
-          {selectedItems.length
-            && stepItems.length
-            && selectedItems[selectedItems.length - 1].id !== stepItems[stepItems.length - 1].id && (
-              <Grid size={2} className={clsx(classes.dayItem, "centeredFlex")}>
-                <IconButton onClick={scrollSessionsRight}>
-                  <ChevronRight />
-                </IconButton>
-              </Grid>
-            )}
-        </Grid>
+      (attendanceType?: string) => (selectedItems.map((sd, si) => (
+        <AttendanceDayBase
+          key={si}
+          {...sd}
+          changeSessionRow={type => (
+            attendanceType === "Training plan"
+              ? onChangeAllTrainingPlansSessionRow(type, sd.id)
+              : changeSessionRow(type, sd.id)
+          )}
+          hasStudentAttendance={Boolean(values.studentAttendance.length)}
+          type={attendanceType}
+        />
+      ))
       ),
       [
         checkAnimationClass,
@@ -833,16 +814,20 @@ const CourseClassAttendanceTab = React.memo<Props>(
     const daysScroller = (type?: string) => (
       <>
         <Grid container columnSpacing={3} className={clsx("sticky top-0 pt-1 zIndex1", classes.timeline)}>
-          <Grid size={3}>
-            &nbsp;
-          </Grid>
-          <Grid size={9} />
-
           <Grid container size={3} sx={{ alignItems: 'center' }} className="pr-2">
             {sessionsLeftScroller}
           </Grid>
-          <Grid size={9} className="centeredFlex">
+          <Grid container columns={16} size={8} className="centeredFlex">
             {renderedDays(type)}
+          </Grid>
+          <Grid size={1} className="centeredFlex">
+            {selectedItems.length
+              && stepItems.length
+              && selectedItems[selectedItems.length - 1].id !== stepItems[stepItems.length - 1].id && (
+                <IconButton onClick={scrollSessionsRight}>
+                  <ChevronRight />
+                </IconButton>
+              )}
           </Grid>
         </Grid>
         <div className={clsx("sticky", classes.timelineShadow)} />

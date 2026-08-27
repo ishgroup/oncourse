@@ -24,6 +24,7 @@ import {
 } from 'ish-ui';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { getFormSyncErrors, initialize, isDirty, isInvalid, reset, submit } from 'redux-form';
@@ -147,9 +148,6 @@ interface OwnProps {
 }
 
 interface Props {
-  history: History;
-  location: Location;
-  match: any;
   listProps: TableListProps;
   rootEntity: EntityName;
   onBeforeSave?: any;
@@ -202,7 +200,7 @@ interface ComponentState {
   newSelection: string[] | null;
 }
 
-type ListCompProps = Props & OwnProps & State["list"] & State["share"];
+type ListCompProps = Props & OwnProps & State["list"] & State["share"] & RouteComponentProps<any>;
 
 function ListView(props: ListCompProps) {
   const {
@@ -1017,7 +1015,6 @@ function ListView(props: ListCompProps) {
         onSubmitFail={onSubmitFail}
         hasSelected={Boolean(selection.length)}
         creatingNew={creatingNew}
-        updateDeleteCondition={updateDeleteCondition}
         showConfirm={showConfirm}
         threeColumn={threeColumn}
       />
@@ -1092,7 +1089,6 @@ function ListView(props: ListCompProps) {
                 onSubmit={onSave}
                 hasSelected={Boolean(selection.length)}
                 creatingNew={creatingNew}
-                updateDeleteCondition={updateDeleteCondition}
                 showConfirm={showConfirm}
                 toogleFullScreenEditView={toggleFullWidthView}
                 threeColumn={threeColumn}
@@ -1212,4 +1208,4 @@ export default connect(
     height: "100vh",
     overflow: "hidden"
   }
-}));
+})) as React.FC<Props>;

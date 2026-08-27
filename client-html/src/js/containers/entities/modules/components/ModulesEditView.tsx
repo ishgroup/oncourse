@@ -19,16 +19,10 @@ moduleTypes.sort(sortDefaultSelectItems);
 
 const ModulesEditView = (props: any) => {
   const {
-    isNew, values, updateDeleteCondition, twoColumn, syncErrors
+    isNew, values, twoColumn, syncErrors
   } = props;
 
   const isCustom = values?.isCustom === true;
-
-  React.useEffect(() => {
-    if (updateDeleteCondition) {
-      updateDeleteCondition(values?.isCustom);
-    }
-  }, [values?.isCustom, updateDeleteCondition]);
 
   const isDisabled = isNew ? false : !isCustom;
 

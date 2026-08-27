@@ -22,6 +22,7 @@ export default (theme: AppTheme, p, classes) => ({
     height: "calc(100% - 64px)"
   },
   header: {
+    flex: 1,
     height: "50px",
     marginBottom: theme.spacing(3)
   },

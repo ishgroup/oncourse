@@ -794,7 +794,7 @@ const BudgetNetRow: React.FC<CommonRowProps> = ({
 
   return (
     <div className="centeredFlex">
-      <Grid container>
+      <Grid container className="flex-fill">
         <Grid size={5} className="centeredFlex pl-2">
           <div className="secondaryHeading">{header}</div>
           {headerAdornment && (

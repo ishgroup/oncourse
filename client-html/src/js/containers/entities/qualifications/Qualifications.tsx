@@ -13,6 +13,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/c
 import ListView from '../../../common/components/list-view/ListView';
 import { getManualLink } from '../../../common/utils/getManualLink';
 import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { deleteDisabledCondition } from '../modules/utils';
 import QualificationsEditView from './components/QualificationsEditView';
 
 const filterGroups: FilterGroup[] = [
@@ -115,6 +116,8 @@ class Qualifications extends React.Component<any, any> {
           manualLink,
           nameCondition
         }}
+        defaultDeleteDisabled
+        deleteDisabledCondition={deleteDisabledCondition}
         EditViewContent={QualificationsEditView}
         rootEntity="Qualification"
         onInit={onInit}

@@ -92,7 +92,7 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
           }}
           expandIcon={<ExpandMoreIcon />}
         >
-          <Grid container direction="row">
+          <Grid container direction="row" className="flex-fill">
             <Grid size={5}>
               {headerComponent || <div className="secondaryHeading">{header}</div>}
             </Grid>

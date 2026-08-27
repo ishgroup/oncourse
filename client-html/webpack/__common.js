@@ -114,7 +114,7 @@ const _common = (dirname, options) => {
       }),
       new webpack.SourceMapDevToolPlugin({
         filename: "[file].map",
-        test: /^[a-zA-Z-]*.js/,
+        test: /\.js($|\?)/,
         exclude: [/vendor/, /hot-update/],
       }),
     ],
@@ -143,12 +143,16 @@ const _styleModule = dirname => [
     },
     {
       enforce: "pre",
-      test: /\.js$/,
+      test: /\.m?js$/,
       loader: "source-map-loader",
-      exclude: [
-        path.resolve(dirname, "node_modules/antlr4ts"),
-        path.resolve(dirname, "node_modules/ace-builds"),
-      ],
+      options: {
+        // antlr4ts and ace-builds ship sourceMappingURL comments we do not want to follow,
+        // so drop the reference instead of leaving a dangling one in the bundle for the
+        // browser to request.
+        filterSourceMappingUrl: (url, resourcePath) => (
+          /node_modules[/\\](antlr4ts|ace-builds)[/\\]/.test(resourcePath) ? "remove" : "consume"
+        ),
+      },
     },
   ];
 

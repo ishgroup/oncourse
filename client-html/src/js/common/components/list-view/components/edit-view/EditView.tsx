@@ -67,7 +67,6 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
       hasSelected,
       creatingNew,
       values,
-      updateDeleteCondition,
       dispatch,
       rootEntity,
       form,
@@ -114,7 +113,6 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
                 rootEntity={rootEntity}
                 isNew={creatingNew}
                 values={values}
-                updateDeleteCondition={updateDeleteCondition}
                 dirty={dirty}
                 dispatch={dispatch}
                 showConfirm={showConfirm}

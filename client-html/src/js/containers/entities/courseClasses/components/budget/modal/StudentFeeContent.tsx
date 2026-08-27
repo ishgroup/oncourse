@@ -185,13 +185,15 @@ const StudentFeeContent: React.FC<Props> = ({
 
       <Grid container columnSpacing={3} size={12} className="pt-2">
         <Grid size={4} />
-        <Grid size={4} className="centeredFlex pt-1 summaryTopBorder" sx={{ justifyContent: 'flex-end' }}>
-          <Typography variant="subtitle2">{totalLabel}</Typography>
-        </Grid>
-        <Grid size={4} className="centeredFlex pt-1 summaryTopBorder money">
-          <Typography variant="body2" color="textSecondary">
-            {classTotalFeeLabel}
-          </Typography>
+        <Grid container className="summaryTopBorder" size={8} >
+          <Grid size={6} className="centeredFlex pt-1" sx={{ justifyContent: 'flex-end' }}>
+            <Typography variant="subtitle2">{totalLabel}</Typography>
+          </Grid>
+          <Grid size={6} className="centeredFlex pt-1 money">
+            <Typography variant="body2" color="textSecondary">
+              {classTotalFeeLabel}
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
