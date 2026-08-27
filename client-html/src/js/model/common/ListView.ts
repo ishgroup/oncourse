@@ -88,7 +88,6 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   customTableModel: CustomTableModelName;
   pending?: boolean;
   values?: E;
-  updateDeleteCondition?: any;
   fullScreenEditView?: any;
   toogleFullScreenEditView: BooleanArgFunction;
   dispatch?: Dispatch<any>;
@@ -111,7 +110,6 @@ export interface EditViewProps<V = any> extends Omit<Partial<InjectedFormProps<V
   isNew: boolean;
   values: V;
   dispatch: any;
-  updateDeleteCondition: AnyArgFunction;
   showConfirm: ShowConfirmCaller;
   onScroll?: AnyArgFunction;
   twoColumn?: boolean;

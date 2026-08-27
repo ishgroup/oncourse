@@ -79,43 +79,45 @@ const renderEntityRelationTypes = props => {
               </Grid>
 
               <Grid size={4} container>
-                <Grid size={12} container columnSpacing={3} rowSpacing={2} className={classes.shoppingCartActionBox}>
-                  <Grid size={12}>
-                    <Subtitle label={$t('shopping_cart_action')} />
+                <Card className={classes.shoppingCartActionBox} elevation={0}>
+                  <Grid size={12} container columnSpacing={3} rowSpacing={2}>
+                    <Grid size={12}>
+                      <Subtitle label={$t('shopping_cart_action')} />
+                    </Grid>
+                    <Grid size={12}>
+                      <FormField
+                        type="select"
+                        name={`${item}.shoppingCart`}
+                        label={$t('cart_action')}
+                        items={CartActions}
+                        required
+                        hideLabel
+                      />
+                    </Grid>
+                    <Grid size={12}>
+                      <FormField
+                        type="select"
+                        name={`${item}.discountId`}
+                        label={$t('apply_discount_to_item_on_right')}
+                        items={discounts}
+                        allowEmpty
+                      />
+                    </Grid>
+                    <Grid size={12}>
+                      <FormControlLabel
+                        className={classes.checkbox}
+                        control={(
+                          <FormField
+                            type="checkbox"
+                            name={`${item}.considerHistory`}
+                            color="primary"
+                          />
+                        )}
+                        label={$t('consider_history')}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid size={12}>
-                    <FormField
-                      type="select"
-                      name={`${item}.shoppingCart`}
-                      label={$t('cart_action')}
-                      items={CartActions}
-                      required
-                      hideLabel
-                    />
-                  </Grid>
-                  <Grid size={12}>
-                    <FormField
-                      type="select"
-                      name={`${item}.discountId`}
-                      label={$t('apply_discount_to_item_on_right')}
-                      items={discounts}
-                      allowEmpty
-                    />
-                  </Grid>
-                  <Grid size={12}>
-                    <FormControlLabel
-                      className={classes.checkbox}
-                      control={(
-                        <FormField
-                          type="checkbox"
-                          name={`${item}.considerHistory`}
-                          color="primary"
-                        />
-                      )}
-                      label={$t('consider_history')}
-                    />
-                  </Grid>
-                </Grid>
+                </Card>
               </Grid>
 
               <Grid size={4}>

@@ -13,7 +13,8 @@ const useStyles = makeAppStyles<void, 'fullScreenTitleItem' | 'disableInteractio
       top: 0,
       zIndex: theme.zIndex.appBar + 1,
       marginTop: 0,
-      height: APP_BAR_HEIGHT
+      height: APP_BAR_HEIGHT,
+      width: 'calc(100vw - 300px)'
     }
   },
   fullScreenTitleItem: {},

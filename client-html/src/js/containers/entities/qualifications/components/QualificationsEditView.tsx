@@ -22,19 +22,12 @@ qualificationTypes.sort(sortDefaultSelectItems);
 
 const QualificationsEditView = (props: EditViewProps<Qualification>) => {
   const {
-    isNew, values, updateDeleteCondition, twoColumn
+    isNew, values, twoColumn
   } = props;
 
   if (!values) {
     return null;
   }
-
-  React.useEffect(() => {
-    if (updateDeleteCondition) {
-      updateDeleteCondition(values.isCustom);
-    }
-  }, [values.isCustom, updateDeleteCondition]);
-
   const isDisabled = isNew ? false : !values.isCustom;
 
   return (

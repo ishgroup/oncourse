@@ -143,7 +143,7 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
         }}
         expandIcon={<ExpandMoreIcon />}
       >
-        <Grid container className="centeredFlex">
+        <Grid container className="centeredFlex flex-fill">
           <Grid size={6}>
             <div className={clsx("centeredFlex", classes.itemTitle)}>
               <StyledCheckbox

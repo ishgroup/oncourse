@@ -80,7 +80,7 @@ export const SummaryItemRow = React.memo<
   const isProduct = item.type === "product";
 
   const headerContent = (
-    <Grid size={12} container sx={{ alignItems: 'center' }} direction="row" className={clsx(isProduct && classes.tableTab)}>
+    <Grid size={12} container sx={{ alignItems: 'center', flex: 1 }} direction="row" className={clsx(isProduct && classes.tableTab)}>
       <Grid size={9}>
         <div className={clsx("centeredFlex", classes.itemTitle)}>
           <StyledCheckbox

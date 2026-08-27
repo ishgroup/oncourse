@@ -5,6 +5,7 @@
 
 import { Module } from '@api/model';
 import * as React from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { initialize } from 'redux-form';
@@ -14,6 +15,7 @@ import ListView from '../../../common/components/list-view/ListView';
 import { getManualLink } from '../../../common/utils/getManualLink';
 import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
 import ModulesEditView from './components/ModulesEditView';
+import { deleteDisabledCondition } from './utils';
 
 const nameCondition = (values: Module) => values.title;
 
@@ -60,40 +62,32 @@ const findRelatedGroup: FindRelatedItem[] = [
 
 const manualLink = getManualLink("cpd-and-oncourse-modules");
 
-class Modules extends React.Component<any, any> {
-  componentDidMount() {
-    this.props.getFilters();
-  }
-
-  shouldComponentUpdate() {
-    return false;
-  }
-
-  render() {
-    const {
-      onInit
-    } = this.props;
-
-    return (
-      <ListView
-        listProps={{
-          primaryColumn: "title",
-          secondaryColumn: "nationalCode"
-        }}
-        editViewProps={{
-          nameCondition,
-          manualLink,
-        }}
-        EditViewContent={ModulesEditView}
-        rootEntity="Module"
-        onInit={onInit}
-        findRelated={findRelatedGroup}
-        filterGroupsInitial={filterGroups}
-        noListTags
-      />
-    );
-  }
-}
+const Modules = ({ getFilters, onInit }) => {
+  useEffect(() => {
+    getFilters();
+  });
+  
+  return (
+    <ListView
+      listProps={{
+        primaryColumn: "title",
+        secondaryColumn: "nationalCode"
+      }}
+      editViewProps={{
+        nameCondition,
+        manualLink,
+      }}
+      defaultDeleteDisabled
+      deleteDisabledCondition={deleteDisabledCondition}
+      EditViewContent={ModulesEditView}
+      rootEntity="Module"
+      onInit={onInit}
+      findRelated={findRelatedGroup}
+      filterGroupsInitial={filterGroups}
+      noListTags
+    />
+  );
+};
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
@@ -105,4 +99,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   }
 });
 
-export default connect<any, any, any>(null, mapDispatchToProps)(Modules);
+export default connect(null, mapDispatchToProps)(Modules);

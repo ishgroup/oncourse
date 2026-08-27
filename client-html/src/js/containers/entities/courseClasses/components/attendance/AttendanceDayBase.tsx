@@ -25,7 +25,6 @@ const styles = (theme: AppTheme) =>
       left: -26
     },
     dayItem: {
-      maxWidth: "12.3%",
       minHeight: theme.spacing(15),
       "&:hover .invisible": {
         visibility: "visible"

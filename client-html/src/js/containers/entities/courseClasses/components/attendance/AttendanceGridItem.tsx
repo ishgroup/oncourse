@@ -30,7 +30,6 @@ import { StudentAttendanceIconButton, TrainingPlanIconButton } from './Attendanc
 const styles = () =>
   ({
     sessionItem: {
-      maxWidth: "12.3%",
       "& > span:hover .invisible": {
         visibility: "visible"
       }
@@ -355,19 +354,11 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
       <Grid size={3}>
         <div className={clsx("pt-0-5 pb-0-5 pl-1 pr-1 d-inline-flex-center", classes.name)}>
           {attendanceLeftLabel}
-
           <AttendanceActionsMenu className="invisible" onChange={changeGridRow} label={actionsMenuLabel} type={type} />
         </div>
       </Grid>
-      <Grid size={9}>
-        <Grid container>
-          <Grid size={10} className="overflow-hidden">
-            <Grid container className={clsx(checkAnimationClass())}>
-              {renderedItems}
-            </Grid>
-          </Grid>
-          <Grid size={2} />
-        </Grid>
+      <Grid container columns={16} size={8} className={clsx(checkAnimationClass())}>
+        {renderedItems}
       </Grid>
     </Grid>
   );

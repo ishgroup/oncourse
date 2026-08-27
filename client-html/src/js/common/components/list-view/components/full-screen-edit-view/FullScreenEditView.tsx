@@ -153,7 +153,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       invalid,
       creatingNew,
       values,
-      updateDeleteCondition,
       dispatch,
       rootEntity,
       isNested,
@@ -246,7 +245,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               form={form}
               isNew={creatingNew}
               values={values}
-              updateDeleteCondition={updateDeleteCondition}
               dispatch={dispatch}
               dirty={dirty}
               showConfirm={showConfirm}
