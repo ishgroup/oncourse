@@ -67,14 +67,7 @@ const _common = (dirname, options) => {
       fallback: { 'process/browser': require.resolve('process/browser') }
     },
     module: {
-      // See webpack.config.js: webpack >=5.110 errors on unreferenced import
-      // specifiers in strict ESM (.mjs) modules, which false-positives on MUI's
-      // side-effect-free re-export barrels.
-      parser: {
-        javascript: {
-          exportsPresence: "warn",
-        },
-      },
+      parser: _exportsPresenceParser(),
       rules: [
         {
           test: /\.ts(x?)$/,
@@ -137,6 +130,26 @@ const _common = (dirname, options) => {
   _main.module.rules = [..._main.module.rules, ..._styleModule(dirname)];
   return _main;
 };
+
+/**
+ * webpack >= 5.110 reports an imported binding that is never referenced as a linking error,
+ * and for strict ESM (.mjs) importers it raises that at "error" level. Side-effect-free
+ * re-export barrels - @mui/utils/<name>/index.mjs and friends, one line of
+ * `export { default } from "./<name>.mjs"` in packages flagged `sideEffects: false` - are
+ * elided by SideEffectsFlagPlugin before the check runs, so their exports read as empty and
+ * MUI's own .mjs files are reported as importing from a module with "no exports". Nothing we
+ * import is actually missing.
+ *
+ * This has to be set at the top level: webpack ignores `parser.javascript.exportsPresence`
+ * when it is given on a `module.rules` entry, so it cannot be scoped to node_modules. Losing
+ * the check on our own code costs us nothing - src is TypeScript, and a bad import there is
+ * already an error from ForkTsCheckerWebpackPlugin.
+ */
+const _exportsPresenceParser = () => ({
+  javascript: {
+    exportsPresence: false,
+  },
+});
 
 const _styleModule = dirname => [
     {
@@ -224,6 +237,7 @@ module.exports = {
   info: _info,
   common: _common,
   styleModule: _styleModule,
+  exportsPresenceParser: _exportsPresenceParser,
   DefinePlugin: _DefinePlugin,
   CompressionPlugin: _CompressionPlugin,
   PwaManifestPlugin: _PwaManifestPlugin,

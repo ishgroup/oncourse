@@ -316,7 +316,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
       }}
     >
       <Grid container className={classes.content}>
-        <Grid container className={classes.header} wrap="nowrap" sx={{ alignItems: 'center' }}>
+        <Grid size={12} container className={classes.header} wrap="nowrap" sx={{ alignItems: 'center' }}>
           <Grid size={2}>
             <Typography variant="body2" className={classes.headerText}>
               {$t('bulk_edit')}
@@ -338,7 +338,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
             </IconButton>
           </Grid>
         </Grid>
-        <Grid container className={classes.body} wrap="nowrap" spacing={3}>
+        <Grid size={12} container className={classes.body} wrap="nowrap" spacing={3}>
           <Grid className={classes.menuColumn}>
             <List disablePadding className={classes.list}>
               {bulkEditFields

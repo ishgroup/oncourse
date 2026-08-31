@@ -77,16 +77,7 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
       fallback: { 'process/browser': require.resolve('process/browser') }
     },
     module: {
-      // webpack >=5.110 turns "imported binding is never referenced" into a hard
-      // error for strict ESM (.mjs) importers. Side-effect-free re-export barrels
-      // such as @mui/utils/<name>/index.mjs get elided before that check runs, so
-      // MUI's own .mjs files are reported as importing from a module with "no
-      // exports". Downgrade the check to a warning.
-      parser: {
-        javascript: {
-          exportsPresence: "warn",
-        },
-      },
+      parser: __common.exportsPresenceParser(),
       rules: [
         {
           test: /\.ts(x?)$/,

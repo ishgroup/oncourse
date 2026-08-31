@@ -394,7 +394,7 @@ export function LoginPageBase(
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <Grid container columnSpacing={3} sx={{ alignItems: 'center' }}>
+      <Grid container columnSpacing={0} sx={{ alignItems: 'center' }}>
         <Grid size={{ xs: 1, md: 6 }} />
         <Grid size={{ xs: 12, md: 6 }} className={classes.loginFormRight}>
           <Slide direction="right" in timeout={300}>
@@ -703,7 +703,7 @@ export function LoginPageBase(
                 </Grid>
                 <SSOProviders providers={ssoTypes}/>
                 <div className="flex-fill" />
-                <Grid container columnSpacing={3} sx={{ alignItems: 'center' }}>
+                <Grid container size={12} columnSpacing={3} sx={{ alignItems: 'center' }}>
                   <div className="flex-fill">
                     <div>
                       <IconButton
