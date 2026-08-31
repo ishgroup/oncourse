@@ -267,7 +267,14 @@ class ContactFunctions {
     static void updateAbandonedCarts(ObjectContext context, Contact contact, List<CartDTO> carts){
         def removedCarts = contact.abandonedCarts.findAll { !(it.id in carts*.id) }
         context.deleteObjects(removedCarts)
-        context.commitChanges()
+        // ONC-A3: do NOT commit here. This is a DTO→Cayenne mapper called from the middle of
+        // ContactApiService.toCayenneModel(), between updateContactRelations() and
+        // updateAvailabilityRules()/removeCChistory(). Committing flushed the whole half-built graph,
+        // which (a) split every contact write into two QueuedTransactions plus a redundant UPDATE
+        // stub, and (b) made the operation non-atomic: a later failure left the first transaction
+        // already committed and already queued for replication, so the API returned an error while a
+        // partially-populated contact propagated to willow.
+        // The deletions are flushed by EntityApiService.save(context) together with everything else.
     }
 
     static void validateContactRelations(ObjectContext context, ContactDao contactDao, ContactRelationTypeDao contactRelationTypeDao, ContactRelationDao contactRelationDao, EntityValidator validator, ContactDTO contact) {

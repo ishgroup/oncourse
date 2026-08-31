@@ -14,10 +14,8 @@ package ish.oncourse.server.lifecycle;
 import ish.common.types.ExpiryType;
 import ish.common.types.PaymentSource;
 import ish.common.types.ProductStatus;
-import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.api.v1.function.MembershipFunctions;
 import ish.oncourse.server.cayenne.Membership;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.annotation.PostPersist;
 import org.apache.cayenne.annotation.PostUpdate;
 import org.apache.cayenne.annotation.PrePersist;
@@ -29,11 +27,25 @@ import java.util.Set;
 
 public class MembershipLifecycleListener {
 
-    private ICayenneService cayenneService;
-    private Set<Membership> toProcess = new HashSet<>();
+    /**
+     * ONC-A4: this listener is registered once, process-wide (see CayenneListenersService), so the
+     * hand-off set between the @Pre* and @Post* callbacks was a plain HashSet mutated concurrently by
+     * every thread touching a Membership. Two consequences:
+     * <ul>
+     *   <li>concurrent add/remove on HashMap's table can lose entries or corrupt a bucket chain, so
+     *       updateRenweval() was skipped and Membership.expiryDate never set — the CREATE stub then
+     *       replicated to willow with the wrong expiry and no follow-up UPDATE record was ever
+     *       queued, leaving a silent permanent angel/willow divergence;</li>
+     *   <li>an entry whose @Post* callback never fired (flush aborted after applyPreCommit()) was
+     *       never removed, and Membership holds a strong reference to its ObjectContext — pinning
+     *       that request's entire ObjectStore forever.</li>
+     * </ul>
+     * The hand-off only ever needs to live within a single thread's commit, so a ThreadLocal is both
+     * correct and leak-free.
+     */
+    private static final ThreadLocal<Set<Membership>> TO_PROCESS = ThreadLocal.withInitial(HashSet::new);
 
-    public MembershipLifecycleListener(ICayenneService cayenneService) {
-        this.cayenneService = cayenneService;
+    public MembershipLifecycleListener() {
     }
 
 
@@ -45,11 +57,11 @@ public class MembershipLifecycleListener {
                 && !ExpiryType.LIFETIME.equals(membership.getProduct().getExpiryType())) {
 
             if (membership.isNewRecord()) {
-                toProcess.add(membership);
+                TO_PROCESS.get().add(membership);
             } else {
                 var change = ChangeFilter.getAtrAttributeChange(membership.getObjectContext(), membership.getObjectId(), Membership.STATUS.getName());
                 if (change != null && (change.getOldValue() == null || ProductStatus.NEW.equals(change.getOldValue()))) {
-                    toProcess.add(membership);
+                    TO_PROCESS.get().add(membership);
                 }
             }
         }
@@ -58,20 +70,24 @@ public class MembershipLifecycleListener {
     @PostPersist(value = Membership.class)
     @PostUpdate(value = Membership.class)
     public void postUpdate(Membership membership) {
-       if (toProcess.contains(membership)) {
-           updateRenweval(membership);
-       }
+        Set<Membership> toProcess = TO_PROCESS.get();
+        if (toProcess.contains(membership)) {
+            updateRenweval(membership);
+        }
+        // ONC-A4: release the ThreadLocal as soon as the hand-off is drained so a callback that
+        // never fires (aborted flush) cannot pin this request's ObjectStore on a pooled thread.
+        if (toProcess.isEmpty()) {
+            TO_PROCESS.remove();
+        }
     }
 
 
     private void updateRenweval(final Membership membership) {
-        toProcess.remove(membership);
+        TO_PROCESS.get().remove(membership);
         Date renewalDate = MembershipFunctions.getRenwevalExpiryDate(membership.getContact(), membership);
         if (renewalDate != null) {
-            DataContext context = cayenneService.getNewContext();
-            var localMembership = context.localObject(membership);
-            localMembership.setExpiryDate(renewalDate);
-            context.commitChanges();
+            membership.setExpiryDate(renewalDate);
+            membership.getObjectContext().commitChanges();
         }
     }
 }
