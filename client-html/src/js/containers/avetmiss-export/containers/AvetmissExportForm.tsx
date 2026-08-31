@@ -722,7 +722,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                           })}
                         >
                           {showEnrolmentsCount ? (
-                            <div>
+                            <div className="flex-fill">
                               {flavourField}
                               <Typography gutterBottom variant="caption">
                                 {" "}

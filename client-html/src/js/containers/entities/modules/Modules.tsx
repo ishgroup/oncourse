@@ -65,7 +65,7 @@ const manualLink = getManualLink("cpd-and-oncourse-modules");
 const Modules = ({ getFilters, onInit }) => {
   useEffect(() => {
     getFilters();
-  });
+  }, []);
   
   return (
     <ListView
