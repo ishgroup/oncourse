@@ -42,7 +42,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["someCode"]
 
-        * def id = get[0] response.rows[?(@.values == ["someCode","someTitle","false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'someCode')].id
 #       <--->
 
         * def moduleToUpdate =
@@ -126,7 +126,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["someCode"]
 
-        * def id = get[0] response.rows[?(@.values == ["someCode","someTitle","false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'someCode')].id
 
 #       <--->
 
@@ -210,7 +210,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["someCode"]
 
-        * def id = get[0] response.rows[?(@.values == ["someCode","someTitle","false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'someCode')].id
 #       <--->
 
         * def moduleToUpdate =
@@ -293,7 +293,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["someCode"]
 
-        * def id = get[0] response.rows[?(@.values == ["someCode","someTitle","false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'someCode')].id
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsEdit'}
@@ -433,7 +433,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["someCode"]
 
-        * def id = get[0] response.rows[?(@.values == ["someCode","someTitle","false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'someCode')].id
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsPrint'}
@@ -503,7 +503,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["someCode"]
 
-        * def id = get[0] response.rows[?(@.values == ["someCode","someTitle","false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'someCode')].id
 
 #       <--->  Update custom Module to empty Title:
         * def moduleToUpdate =
@@ -567,7 +567,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["code123"]
 
-        * def id = get[0] response.rows[?(@.values == ["code123","someTitle_123","false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'code123')].id
 
 #       <--->  Update custom module National Code:
         * def moduleToUpdate =
@@ -631,7 +631,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["someCode1"]
 
-        * def id = get[0] response.rows[?(@.values == ["someCode1","someTitle","false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'someCode1')].id
 
 #       <--->  Update Title to >200 symbols:
         * def moduleToUpdate =
@@ -748,7 +748,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["YYY"]
 
-        * def id = get[0] response.rows[?(@.values == ["YYY","someTitle456","false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'YYY')].id
 #       <--->
 
         * def moduleToUpdate =
@@ -812,7 +812,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["XXX"]
 
-        * def id = get[0] response.rows[?(@.values == ["XXX","someTitle567","false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'XXX')].id
 
 #       <--->
         * def moduleToUpdate =
@@ -876,7 +876,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["XHX"]
 
-        * def id = get[0] response.rows[?(@.values == ["XHX","Updatable Custom Module","false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'XHX')].id
 
 #       <--->
         * def moduleToUpdate =

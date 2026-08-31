@@ -27,7 +27,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["CODE01","someTitle","someLevel",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'CODE01')].id
         * print "id = " + id
 
         Given path ishPath + '/' + id
@@ -64,7 +64,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["CODE01","someTitle","someLevel",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'CODE01')].id
         * print "id = " + id
 
         Given path ishPath + '/' + id
@@ -106,7 +106,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["CODE01","someTitle","someLevel",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'CODE01')].id
         * print "id = " + id
 
         Given path ishPath + '/' + id

@@ -35,7 +35,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["CODE02","someTitle","someLevel",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'CODE02')].id
 
 #       <--->
         * def qualificationToUpdate =
@@ -109,7 +109,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["CODE02","someTitle","someLevel",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'CODE02')].id
 
 #       <--->
         * def qualificationToUpdate =
@@ -183,7 +183,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["CODE02","someTitle","someLevel",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'CODE02')].id
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsEdit'}
@@ -328,7 +328,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["CODE02","someTitle","someLevel",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'CODE02')].id
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsView'}
@@ -389,7 +389,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["CODE02","someTitle","someLevel",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'CODE02')].id
 
 #       <--->  Update custom Qualification to empty Title:
         * def qualificationToUpdate =
@@ -458,7 +458,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["CODE82","someTitle","someLevel",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'CODE82')].id
 
 #       <--->  Update custom Qualification to not unique National Code:
         * def qualificationToUpdate =
@@ -511,7 +511,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["CODE02","someTitle","someLevel",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'CODE02')].id
 
 #       <--->  Update Title to >255 symbols:
         * def qualificationToUpdate =
