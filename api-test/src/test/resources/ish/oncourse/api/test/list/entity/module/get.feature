@@ -32,15 +32,16 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
                         {"title":"Is offered","attribute":"isOffered","type":"Boolean","sortable":true,"visible":true,"system":null,"width":100, "sortFields":[], "prefetches":[]},
                         {"title":"Credit points","attribute":"creditPoints","type":null,"sortable":true,"visible":false,"system":null,"width":100,"sortFields":[],"prefetches":[]},
                         {"title":"Expiry days","attribute":"expiryDays","type":null,"sortable":true,"visible":false,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Custom","attribute":"isCustom","type":"Boolean","sortable":false,"visible":false,"system":true,"width":100,"sortFields":[],"prefetches":[]},
                     ],
                 "rows":
                     [
-                        {"id":"3","values":["AUM1001A","Manage personal career goals","true"]},
-                        {"id":"4","values":["AUM1002A","Select and use tools and equipment in an automotive manufacturing environment","true"]},
-                        {"id":"2","values":["AUM1503A","Create new product designs","true"]},
-                        {"id":"1","values":["AUM1602A","Install plant, equipment or systems - Advanced","true"]},
-                        {"id":"6","values":["VU21318","Identify community options","false"]},
-                        {"id":"5","values":["VU21349","Identify the Australian electoral system","false"]}
+                        {"id":"3","values":["AUM1001A","Manage personal career goals","true","false"]},
+                        {"id":"4","values":["AUM1002A","Select and use tools and equipment in an automotive manufacturing environment","true","false"]},
+                        {"id":"2","values":["AUM1503A","Create new product designs","true","false"]},
+                        {"id":"1","values":["AUM1602A","Install plant, equipment or systems - Advanced","true","false"]},
+                        {"id":"6","values":["VU21318","Identify community options","false","false"]},
+                        {"id":"5","values":["VU21349","Identify the Australian electoral system","false","false"]}
                     ],
                 "filteredCount":6,
                 "layout":"Three column",
@@ -79,15 +80,16 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
                         {"title":"Is offered","attribute":"isOffered","type":"Boolean","sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]},
                         {"title":"Credit points","attribute":"creditPoints","type":null,"sortable":true,"visible":false,"system":null,"width":100,"sortFields":[],"prefetches":[]},
                         {"title":"Expiry days","attribute":"expiryDays","type":null,"sortable":true,"visible":false,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Custom","attribute":"isCustom","type":"Boolean","sortable":false,"visible":false,"system":true,"width":100,"sortFields":[],"prefetches":[]},
                     ],
                 "rows":
                     [
-                        {"id":"3","values":["AUM1001A","Manage personal career goals","true"]},
-                        {"id":"4","values":["AUM1002A","Select and use tools and equipment in an automotive manufacturing environment","true"]},
-                        {"id":"2","values":["AUM1503A","Create new product designs","true"]},
-                        {"id":"1","values":["AUM1602A","Install plant, equipment or systems - Advanced","true"]},
-                        {"id":"6","values":["VU21318","Identify community options","false"]},
-                        {"id":"5","values":["VU21349","Identify the Australian electoral system","false"]}
+                        {"id":"3","values":["AUM1001A","Manage personal career goals","true","false"]},
+                        {"id":"4","values":["AUM1002A","Select and use tools and equipment in an automotive manufacturing environment","true","false"]},
+                        {"id":"2","values":["AUM1503A","Create new product designs","true","false"]},
+                        {"id":"1","values":["AUM1602A","Install plant, equipment or systems - Advanced","true","false"]},
+                        {"id":"6","values":["VU21318","Identify community options","false","false"]},
+                        {"id":"5","values":["VU21349","Identify the Australian electoral system","false","false"]}
                     ],
                 "filteredCount":6,
                 "layout":"Three column",

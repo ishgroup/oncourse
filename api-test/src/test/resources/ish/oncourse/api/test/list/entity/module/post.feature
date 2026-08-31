@@ -26,7 +26,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["2"]
 
-        * def id = get[0] response.rows[?(@.values == ["2","1","true"])].id
+        * def id = get[0] response.rows[?(@.values[0] == '2')].id
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
         * print "Scenario have been finished. Now find and remove created object from DB"
@@ -52,7 +52,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["123456789012"]
 
-        * def id = get[0] response.rows[?(@.values == ["123456789012","A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A152A156A160A164A168A172A176A180A184A188A192A196A200A","true"])].id
+        * def id = get[0] response.rows[?(@.values[0] == '123456789012')].id
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
         Given path ishPath + '/' + id
@@ -81,7 +81,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["notadmin_title1"]
 
-        * def id = get[0] response.rows[?(@.values == ["2","notadmin_title1","true"])].id
+        * def id = get[0] response.rows[?(@.values[0] == '2')].id
 
 #       <---->  Scenario have been finished. Now delete created entity from db:
         * configure headers = { Authorization: 'admin'}
@@ -237,7 +237,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["HJK1"]
 
-        * def id = get[0] response.rows[?(@.values == ["HJK1","Custom module with Active credit points","true"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'HJK1')].id
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB
         Given path ishPath + '/' + id
@@ -261,7 +261,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["HJK2"]
 
-        * def id = get[0] response.rows[?(@.values == ["HJK2","Custom module with Active but not visible online credit points","true"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'HJK2')].id
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB
         Given path ishPath + '/' + id
@@ -285,7 +285,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
         Then status 200
         And match $.rows[*].values[*] contains ["HJK3"]
 
-        * def id = get[0] response.rows[?(@.values == ["HJK3","Custom module with Disabled but not visible online credit points","true"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'HJK3')].id
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB
         Given path ishPath + '/' + id
