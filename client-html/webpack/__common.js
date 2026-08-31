@@ -67,6 +67,14 @@ const _common = (dirname, options) => {
       fallback: { 'process/browser': require.resolve('process/browser') }
     },
     module: {
+      // See webpack.config.js: webpack >=5.110 errors on unreferenced import
+      // specifiers in strict ESM (.mjs) modules, which false-positives on MUI's
+      // side-effect-free re-export barrels.
+      parser: {
+        javascript: {
+          exportsPresence: "warn",
+        },
+      },
       rules: [
         {
           test: /\.ts(x?)$/,
@@ -119,7 +127,10 @@ const _common = (dirname, options) => {
       }),
     ],
     devServer: {
-      port: 8100
+      port: 8100,
+      client: {
+        overlay: false
+      }
     },
     devtool: false,
   };
@@ -150,7 +161,9 @@ const _styleModule = dirname => [
         // so drop the reference instead of leaving a dangling one in the bundle for the
         // browser to request.
         filterSourceMappingUrl: (url, resourcePath) => (
-          /node_modules[/\\](antlr4ts|ace-builds)[/\\]/.test(resourcePath) ? "remove" : "consume"
+          /node_modules[/\\](antlr4ts|ace-builds|@react-loadable[/\\]revised)[/\\]/.test(resourcePath)
+            ? "remove"
+            : "consume"
         ),
       },
     },
