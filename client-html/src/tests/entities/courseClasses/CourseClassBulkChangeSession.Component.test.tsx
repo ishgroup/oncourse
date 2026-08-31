@@ -29,8 +29,7 @@ describe("Virtual rendered CourseClassBulkChangeSession of Class edit view", () 
         payableDuration: 2,
         duration: 3,
         siteTimezone: "Australia/West",
-        start: "2021-11-25T17:05:00.000Z",
-        moveForward: "2",
+        start: "2021-11-25T17:05:00.000Z"
       },
       rooms: [],
     }),

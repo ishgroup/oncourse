@@ -25,7 +25,7 @@ describe("Virtual rendered GradingTypesForm", () => {
 
         type.gradingItems.forEach((gradingItem, gKey) => {
           gradingTypes[`types[${key}].gradingItems[${gKey}].name`] = gradingItem.name;
-          gradingTypes[`types[${key}].gradingItems[${gKey}].lowerBound`] = gradingItem.lowerBound;
+          gradingTypes[`types[${key}].gradingItems[${gKey}].lowerBound`] = gradingItem.lowerBound.toString();
         });
       });
 
