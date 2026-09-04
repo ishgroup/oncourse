@@ -97,7 +97,7 @@ trait EnrolmentTrait {
                     } else if (AttendanceType.PARTIAL.equals(a.getAttendanceType())) {
                         Integer partialDuration = a.getDurationMinutes();
                         if (partialDuration != null) {
-                            minutesPresent += Math.min(sessionDuration, partialDuration.doubleValue());
+                            minutesPresent += partialDuration.doubleValue();
                         }
                     }
                 }
