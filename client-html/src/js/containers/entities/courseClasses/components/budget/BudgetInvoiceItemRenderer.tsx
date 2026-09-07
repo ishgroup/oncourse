@@ -82,7 +82,7 @@ const BudgetInvoiceItemRenderer = React.memo<Partial<BudgetExpandableProps>>(
           } }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Grid container direction="row">
+            <Grid container direction="row" className="flex-fill">
               <Grid size={5}>
                 <div className="secondaryHeading">{header}</div>
               </Grid>
