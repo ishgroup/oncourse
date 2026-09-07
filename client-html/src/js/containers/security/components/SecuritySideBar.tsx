@@ -3,7 +3,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ScreenLockPortrait from '@mui/icons-material/ScreenLockPortrait';
-import MenuItem from '@mui/material/MenuItem';
+import { ListItemButton } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import React, { useMemo } from 'react';
@@ -60,19 +60,19 @@ const SecuritySideBar = React.memo<any>(
     return (
       <div className={`mt-2 ${className}`}>
         <NavLink to="/security/settings" className="link">
-          <MenuItem disableGutters className="heading" selected={pathname === "/security/settings"}>
+          <ListItemButton disableGutters className="heading" selected={pathname === "/security/settings"}>
             <Typography className="heading pl-3 pr-2" variant="h6" color="primary">
               {$t('settings')}
             </Typography>
-          </MenuItem>
+          </ListItemButton>
         </NavLink>
 
         <NavLink to="/security/api-tokens" className="link">
-          <MenuItem disableGutters className="heading mt-1" selected={pathname === "/security/api-tokens"}>
+          <ListItemButton disableGutters className="heading mt-1" selected={pathname === "/security/api-tokens"}>
             <Typography className="heading pl-3 pr-2" variant="h6" color="primary">
               {$t('api_tokens')}
             </Typography>
-          </MenuItem>
+          </ListItemButton>
         </NavLink>
 
         <CollapseMenuList
