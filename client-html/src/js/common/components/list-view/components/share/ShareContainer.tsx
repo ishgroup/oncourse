@@ -13,16 +13,8 @@ import {
   SearchQuery,
   Sorting,
 } from '@api/model';
-import { Help, Publish } from '@mui/icons-material';
-import Delete from '@mui/icons-material/Delete';
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import PlayArrow from '@mui/icons-material/PlayArrow';
-import { Checkbox, CircularProgress, Grid, ListItemButton, MenuItem, Typography } from '@mui/material';
-import Button from '@mui/material/Button'
-import Drawer from '@mui/material/Drawer';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
+import { Help, Publish, Delete, Fullscreen, PlayArrow } from '@mui/icons-material';
+import { Checkbox, CircularProgress, Grid, IconButton, List,  MenuItem, Button, Drawer, FormControlLabel, ListItemButton, Tooltip, Typography } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { ConfirmBase, EditInPlaceField, FilePreview, getDocumentContent, YYYY_MM_DD_MINUSED } from 'ish-ui';
@@ -582,18 +574,19 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     name="backgroundId"
                     label={$t('background')}
                     placeholder={$t('blank')}
-                    selectAdornment={{
-                      position: "end",
-                      content: (
-                        <MenuItem className="relative w-100" key="upload" onClick={this.handleUploadBackgroundClick}>
-                          <div className="heading centeredFlex">
-                            <Publish/>
-                            {' '}
-                            <span className="ml-1">{$t('Upload from disk')}</span>
-                          </div>
-                        </MenuItem>
-                      ),
-                    }}
+                    labelAdornment={
+                      <Tooltip title={$t('Upload from disk')}>
+                        <IconButton
+                          onClick={this.handleUploadBackgroundClick}
+                          color="primary"
+                          sx={{
+                            padding: '2px'
+                          }}
+                        >
+                          <Publish className="inputAdornmentIcon" color="inherit"/>
+                        </IconButton>
+                      </Tooltip>
+                    }
                     fieldClasses={{
                       text: classes.text,
                       label: classes.customLabel,
@@ -636,7 +629,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   {
                     actionLabel: "Full size preview",
                     onAction: this.handleFullScreenPreview,
-                    icon: <FullscreenIcon/>
+                    icon: <Fullscreen/>
                   },
                   {
                     actionLabel: "Delete preview",
@@ -739,7 +732,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   {
                     actionLabel: "Full size preview",
                     onAction: this.handleFullScreenPreview,
-                    icon: <FullscreenIcon/>
+                    icon: <Fullscreen/>
                   },
                   {
                     actionLabel: "Delete preview",
