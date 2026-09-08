@@ -15,7 +15,8 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
 
         Given path ishPathList
         And param entity = 'Site'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["site1","Default site"]
 
@@ -31,7 +32,8 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
 
         Given path ishPathList
         And param entity = 'Site'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["site1","Default site"]
 
@@ -41,7 +43,8 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
 
         Given path ishPathList
         And param entity = 'Site'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["site1"]
 
@@ -94,7 +97,8 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
 #       <--->
         Given path ishPathList
         And param entity = 'Site'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["site1"]
 

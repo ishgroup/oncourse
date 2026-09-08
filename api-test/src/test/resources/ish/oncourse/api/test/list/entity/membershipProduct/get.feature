@@ -15,7 +15,8 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
 
         Given path ishPathList
         And param entity = 'MembershipProduct'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["1003"]
 
@@ -31,7 +32,8 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
 
         Given path ishPathList
         And param entity = 'MembershipProduct'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["1003"]
 
