@@ -519,6 +519,18 @@ class Student extends _Student implements StudentTrait, Queueable, Taggable, Att
 		return super.getWaitingLists()
 	}
 
+	/**
+	 * Get all checklists related to contact, that is related to this student, which are designed for student type.
+	 * Note: this method will return only tasks, that were marked for this record, not all allowed
+	 * @return List of related checklists
+	 */
+	@Nonnull
+	@API
+	List<? extends Tag> getChecklists() {
+		def contactChecklists = contact.getChecklists()
+		return contactChecklists.findAll {it.getTagRequirement(Student.class) != null }
+	}
+
 
 	/**
 	 * @return a list of all the tags for this student

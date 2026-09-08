@@ -868,6 +868,18 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	}
 
 	/**
+	 * Get all checklists related to this contact.
+	 * Note: this method will return only tasks, that were marked for this record, not all allowed
+	 * @return List of related checklists
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<? extends Tag> getChecklists() {
+		return super.getChecklists()
+  }
+  
+  /**
 	 * @return Total paid amount for all contact invoices
 	 */
 	@Nonnull
