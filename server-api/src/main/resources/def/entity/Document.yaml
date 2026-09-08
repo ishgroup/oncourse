@@ -30,6 +30,8 @@ properties:
     type: string
   access:
     $ref: '../enum/DocumentVisibility.yaml'
+  displayAccess:
+    $ref: '../enum/DocumentVisibility.yaml'
   shared:
     type: boolean
   removed:

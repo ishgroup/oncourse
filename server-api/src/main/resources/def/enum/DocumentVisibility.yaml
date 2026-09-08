@@ -5,4 +5,5 @@ enum:
   - Public
   - Tutors and enrolled students
   - Tutors only
+  - Students only
   - Link
