@@ -4,19 +4,20 @@
  */
 
 import LockOutlined from "@mui/icons-material/LockOutlined";
-import MenuItem from "@mui/material/MenuItem";
 import React from "react";
 
 export const validateKeycode = value =>
   (value && value.startsWith("ish.") ? "Custom automation key codes cannot start with 'ish.'" : undefined);
 
-export const renderAutomationItems = ( content, data, search, parentProps ) => <MenuItem {...parentProps || {}}>
-  {data?.hasIcon ? <span>
+export const renderAutomationItems = ( content, data, search, parentProps ) => <div {...parentProps || {}}>
+  {data?.hasIcon
+    ? <span>
         {content}
-    {' '}
-    <LockOutlined className="selectItmeIcon" />
-      </span> : content}
-</MenuItem>;
+        {' '}
+        <LockOutlined className="selectItmeIcon" />
+      </span>
+    : content}
+</div>;
 
 export const validateNameForQuotes = name => {
   if (name.includes("\"")) {
