@@ -28,7 +28,7 @@ import { updateHistory } from '../../../common/utils/common';
 import { getManualLink } from '../../../common/utils/getManualLink';
 import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
 import { State } from '../../../reducers/state';
-import { getEntityTags, getListTags } from '../../tags/actions';
+import { getListTags } from '../../tags/actions';
 import BinCogwheel from './components/BinCogwheel';
 import DocumentEditView from './components/DocumentEditView';
 
@@ -272,10 +272,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, initial));
   },
   getFilters: () => dispatch(getFilters("Document")),
-  getTags: () => {
-    dispatch(getEntityTags("Document"));
-    dispatch(getListTags("Document"));
-  },
+  // getListTags already stores the entity tags it fetches, so a separate getEntityTags for the
+  // same entity is a second identical request
+  getTags: () => dispatch(getListTags("Document")),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   searchExistingDocument: (inputDocument: File, editingFormName: string) =>

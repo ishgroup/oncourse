@@ -9,7 +9,7 @@
 import { FundingSource, SearchQuery, Sorting, Tag } from '@api/model';
 import { Help } from '@mui/icons-material';
 import { Grid, ListItemButton, Typography } from '@mui/material';
-import Button from '@mui/material/Button'
+import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
@@ -102,10 +102,6 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
   };
 
   useEffect(() => {
-    if (rootEntity) {
-      getEntityTags(rootEntity);
-    }
-
     const fields = getBulkEditFields(rootEntity);
     setBulkEditFields(fields);
 
@@ -113,6 +109,14 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
       setSelectedKeyCode(fields[0].keyCode);
     }
   }, [rootEntity]);
+
+  // the drawer is mounted with every list but opened rarely, so its tags are fetched when it is
+  // actually opened rather than on every list load
+  useEffect(() => {
+    if (showBulkEditDrawer && rootEntity) {
+      getEntityTags(rootEntity);
+    }
+  }, [showBulkEditDrawer, rootEntity]);
 
   useEffect(() => {
     if (getCustomBulkEditFields) {

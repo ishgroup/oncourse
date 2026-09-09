@@ -41,8 +41,8 @@ const ListTagGroup: React.FC<Props> = (
   {
     activeTags,
     rootTag, 
-    classes, 
-    updateActive, 
+    classes,
+    updateActive,
     dndKey, 
     showColoredDots,
     dndEnabled = true
@@ -77,9 +77,10 @@ const ListTagGroup: React.FC<Props> = (
     <SimpleTreeView
       multiSelect
       checkboxSelection
-      expansionTrigger="iconContainer"
       expandedItems={expanded}
       selectedItems={activeTags}
+      onSelectedItemsChange={toggleActive}
+      onExpandedItemsChange={(e, items) => setExpanded(items)}
       slots={{
         expandIcon: ExpandIcon,
         collapseIcon: ExpandIcon
@@ -88,8 +89,9 @@ const ListTagGroup: React.FC<Props> = (
         descendants: true,
         parents: true
       }}
-      onSelectedItemsChange={toggleActive}
-      onExpandedItemsChange={(e, items) => setExpanded(items)}
+      sx={{
+        marginLeft: -1
+      }}
     >
       {rootTag.children.map(t => <ListTagItem
         itemId={t.tagBody.id.toString()}
