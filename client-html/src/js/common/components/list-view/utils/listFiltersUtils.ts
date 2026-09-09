@@ -5,9 +5,9 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import { TagGroup } from "@api/model";
-import { FilterGroup } from "../../../../model/common/ListView";
-import { FormMenuTag } from "../../../../model/tags";
+import { TagGroup } from '@api/model';
+import { FilterGroup } from '../../../../model/common/ListView';
+import { FormMenuTag } from '../../../../model/tags';
 
 export const getFiltersNameString = (filterGroups: FilterGroup[]) => filterGroups
   .map(group => group.filters.filter(f => f.active).map(f => "@" + f.name.trim().replace(/\s/g, "_")).toString())
@@ -116,13 +116,30 @@ export const getUpdated = (tags: FormMenuTag[], id: string, active, parent?: For
   return updated;
 });
 
-export const getTagsUpdatedByIds = (tags: FormMenuTag[], activeIds: number[]) => tags.map(t => {
-  const updated = { ...t };
+/**
+ * Rebuilds a tag tree from a flat list of active ids.
+ *
+ * Parent links and the indeterminate flag are derived here so that a selection restored from
+ * the url renders exactly like the same selection made by clicking - `setIndeterminate` is not
+ * usable for that because it walks upwards from an already linked tree.
+ */
+export const getTagsUpdatedByIds = (tags: FormMenuTag[], activeIds: number[], parent?: FormMenuTag): FormMenuTag[] => tags.map(t => {
+  const updated = { ...t, parent };
 
   updated.active = activeIds.includes(updated.tagBody.id);
+  updated.indeterminate = false;
 
   if (updated.children.length) {
-    updated.children = getTagsUpdatedByIds(updated.children, activeIds);
+    updated.children = getTagsUpdatedByIds(updated.children, activeIds, updated);
+
+    const activeChildren = updated.children.filter(c => c.active);
+
+    if (activeChildren.length === updated.children.length) {
+      updated.active = true;
+    } else {
+      updated.active = false;
+      updated.indeterminate = activeChildren.length > 0 || updated.children.some(c => c.indeterminate);
+    }
   }
 
   return updated;

@@ -6,18 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { combineEpics } from "redux-observable";
-import { EpicBulkChangeRecords } from "./EpicBulkChangeRecords";
-import { EpicDeleteCustomFilter } from "./EpicDeleteCustomFilter";
-import { EpicFindRelatedByFilter } from "./EpicFindRelatedByFilter";
-import { EpicGetEntities } from "./EpicGetEntities";
-import { EpicGetEntitiesResolve } from "./EpicGetEntitiesResolve";
-import { EpicGetFilters } from "./EpicGetFilters";
-import { EpicGetPlainEntities } from "./EpicGetPlainEntities";
-import { EpicGetRecepientsMessageData } from "./EpicGetRecepientsMessageData";
-import { EpicGetSearchResults } from "./EpicGetSearchResults";
-import { EpicPostCustomFilter } from "./EpicPostCustomFilter";
-import { EpicUpdateTableModel } from "./EpicUpdateTableModel";
+import { combineEpics } from 'redux-observable';
+import { EpicBulkChangeRecords } from './EpicBulkChangeRecords';
+import { EpicDeleteCustomFilter } from './EpicDeleteCustomFilter';
+import { EpicFindRelatedByFilter } from './EpicFindRelatedByFilter';
+import { EpicGetEntities } from './EpicGetEntities';
+import { EpicGetEntitiesResolve } from './EpicGetEntitiesResolve';
+import { EpicGetFilters } from './EpicGetFilters';
+import { EpicGetPlainEntities } from './EpicGetPlainEntities';
+import { EpicGetRecepientsMessageData } from './EpicGetRecepientsMessageData';
+import { EpicPostCustomFilter } from './EpicPostCustomFilter';
+import { EpicSetListQuery } from './EpicSetListQuery';
+import { EpicUpdateTableModel } from './EpicUpdateTableModel';
 
 export const EpicList = combineEpics(
   EpicFindRelatedByFilter,
@@ -25,7 +25,7 @@ export const EpicList = combineEpics(
   EpicDeleteCustomFilter,
   EpicGetEntities,
   EpicGetFilters,
-  EpicGetSearchResults,
+  EpicSetListQuery,
   EpicGetRecepientsMessageData,
   EpicPostCustomFilter,
   EpicUpdateTableModel,

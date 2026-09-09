@@ -10,6 +10,7 @@ import { State } from '../../../../../../reducers/state';
 import { IAction } from '../../../../../actions/IshAction';
 import { useAppSelector } from '../../../../../utils/hooks';
 import { updateTableModel } from '../../../actions';
+import { getActiveTags } from '../../../utils/listFiltersUtils';
 import { COLUMN_WITH_COLORS } from '../../list/constants';
 import ListTagGroup from './ListTagGroup';
 
@@ -36,9 +37,12 @@ const ListTagGroups = ({
  tags, classes, onChangeTagGroups, updateTableModel, records
 }: Props) => {
 
-  const currentUrlSearch = new URLSearchParams(location.search);
-  const tagsUrlString = currentUrlSearch.get("tags");
-  const activeTags = tagsUrlString ? tagsUrlString.split(',') : [];
+  // the checkboxes read the same state the request is built from, so they can never show a
+  // selection the list is not actually filtered by
+  const activeTags = useMemo(
+    () => tags.flatMap(t => getActiveTags(t.children)).map(t => t.tagBody.id.toString()),
+    [tags]
+  );
 
   const specialTypesEnabled = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true');
 
