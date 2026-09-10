@@ -79,7 +79,11 @@ import ReactTableList, { TableListProps } from './components/list/ReactTableList
 import ShareContainer from './components/share/ShareContainer';
 import SideBar from './components/side-bar/SideBar';
 import { LIST_EDIT_VIEW_FORM_NAME } from './constants';
-import { getTagsUpdatedByIds, setActiveFiltersBySearch } from './utils/listFiltersUtils';
+import {
+  getTagsUpdatedByIds,
+  getTagsUpdatedByIdsWithIndeterminate,
+  setActiveFiltersBySearch
+} from './utils/listFiltersUtils';
 import { shouldAsyncValidate } from './utils/listFormUtils';
 import {
   buildListUrlSearch,
@@ -551,7 +555,7 @@ function ListView(props: ListCompProps) {
     userAQLSearch: urlQuery.search,
     search: expandAqlSearch(urlQuery.search, targetFilters),
     filterGroups: setActiveFiltersBySearch(urlQuery.filter, targetFilters),
-    menuTags: getTagsUpdatedByIds(menuTags, parseTagIds(urlQuery.tags)),
+    menuTags: getTagsUpdatedByIdsWithIndeterminate(menuTags, parseTagIds(urlQuery.tags)),
     checkedChecklists: getTagsUpdatedByIds(checkedChecklists, parseTagIds(urlQuery.checkedChecklists)),
     uncheckedChecklists: getTagsUpdatedByIds(uncheckedChecklists, parseTagIds(urlQuery.uncheckedChecklists))
   });

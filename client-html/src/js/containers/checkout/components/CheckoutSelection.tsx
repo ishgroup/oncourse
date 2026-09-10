@@ -87,7 +87,7 @@ import {
   checkoutCourseMap,
   checkoutProductMap,
   checkoutVoucherMap,
-  getCheckoutCurrentStep, getCourseClassSearch,
+  getCheckoutCurrentStep,
   processCheckoutContactId,
   processCheckoutCourseClassId,
   processCheckoutEnrolmentId,
@@ -1203,7 +1203,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 showConfirm={showConfirm}
                 onSave={onContactSave}
                 onClose={onClose}
-                leftOffset={sidebarWidth}
               />
             )}
 

@@ -87,18 +87,6 @@ export const setIndeterminate = (parentTag: FormMenuTag) => {
   }
 };
 
-export const updateIndeterminateState = (tags: FormMenuTag[], id: string) => {
-  for (let i = 0; i < tags.length; i++) {
-    if (tags[i].prefix + tags[i].tagBody.id.toString() === id) {
-      if (tags[i].parent) {
-        setIndeterminate(tags[i].parent);
-      }
-      break;
-    }
-    updateIndeterminateState(tags[i].children, id);
-  }
-};
-
 export const getUpdated = (tags: FormMenuTag[], id: string, active, parent?: FormMenuTag, allActive?: boolean) => tags.map(t => {
   const updated = { ...t, parent };
   let toggleChildrenActive = false;
@@ -123,24 +111,86 @@ export const getUpdated = (tags: FormMenuTag[], id: string, active, parent?: For
  * the url renders exactly like the same selection made by clicking - `setIndeterminate` is not
  * usable for that because it walks upwards from an already linked tree.
  */
-export const getTagsUpdatedByIds = (tags: FormMenuTag[], activeIds: number[], parent?: FormMenuTag): FormMenuTag[] => tags.map(t => {
-  const updated = { ...t, parent };
+export const getTagsUpdatedByIds = (tags: FormMenuTag[], activeIds: number[]) => tags.map(t => {
+  const updated = { ...t };
 
   updated.active = activeIds.includes(updated.tagBody.id);
-  updated.indeterminate = false;
 
   if (updated.children.length) {
-    updated.children = getTagsUpdatedByIds(updated.children, activeIds, updated);
-
-    const activeChildren = updated.children.filter(c => c.active);
-
-    if (activeChildren.length === updated.children.length) {
-      updated.active = true;
-    } else {
-      updated.active = false;
-      updated.indeterminate = activeChildren.length > 0 || updated.children.some(c => c.indeterminate);
-    }
+    updated.children = getTagsUpdatedByIds(updated.children, activeIds);
   }
 
   return updated;
 });
+
+export const getTagsUpdatedByIdsWithIndeterminate = (
+  tags: FormMenuTag[],
+  activeIds: number[],
+): FormMenuTag[] => {
+  const activeIdsSet = new Set(activeIds);
+
+  const updateTag = (tag: FormMenuTag): FormMenuTag => {
+    const updated = {
+      ...tag,
+      children: tag.children.map(updateTag),
+    };
+
+    updated.active = activeIdsSet.has(updated.tagBody.id);
+
+    const hasActiveChild = updated.children.some(
+      child => child.active || child.indeterminate,
+    );
+
+    const allChildrenActive =
+      updated.children.length > 0 &&
+      updated.children.every(child => child.active);
+
+    updated.indeterminate =
+      !updated.active &&
+      hasActiveChild &&
+      !allChildrenActive;
+
+    return updated;
+  };
+
+  return tags.map(updateTag);
+};
+
+export const getIndeterminateTagIds = (
+  tags: FormMenuTag[],
+  activeIds: string[],
+): string[] => {
+  const activeIdsSet = new Set(activeIds);
+  const indeterminateIds: string[] = [];
+
+  const visit = (
+    tag: FormMenuTag,
+  ): { hasActive: boolean; allActive: boolean } => {
+    const isActive = activeIdsSet.has(tag.tagBody.id.toString());
+
+    if (!tag.children.length) {
+      return {
+        hasActive: isActive,
+        allActive: isActive,
+      };
+    }
+
+    const children = tag.children.map(visit);
+
+    const hasActiveChild = children.some(child => child.hasActive);
+    const allChildrenActive = children.every(child => child.allActive);
+
+    if (!isActive && hasActiveChild && !allChildrenActive) {
+      indeterminateIds.push(tag.tagBody.id.toString());
+    }
+
+    return {
+      hasActive: isActive || hasActiveChild,
+      allActive: isActive || allChildrenActive,
+    };
+  };
+
+  tags.forEach(visit);
+
+  return indeterminateIds;
+};

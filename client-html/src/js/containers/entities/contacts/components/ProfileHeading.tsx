@@ -31,7 +31,6 @@ interface Props {
   syncErrors: any;
   isNew: boolean;
   isFixed?: boolean;
-  leftOffset?: number;
 }
 
 const ProfileHeading = (props: Props) => {
@@ -46,7 +45,6 @@ const ProfileHeading = (props: Props) => {
     syncErrors,
     isNew,
     isFixed,
-    leftOffset
   } = props;
 
   const Avatar = useCallback(aProps => (
@@ -67,7 +65,6 @@ const ProfileHeading = (props: Props) => {
 
   return (
     <FullScreenStickyHeader
-      leftOffset={leftOffset}
       isFixed={isFixed}
       opened={isNew || Object.keys(syncErrors).some(k => ['title', 'firstName', 'middleName', 'lastName'].includes(k))}
       twoColumn={twoColumn}
