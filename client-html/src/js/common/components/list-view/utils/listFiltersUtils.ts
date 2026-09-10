@@ -135,20 +135,13 @@ export const getTagsUpdatedByIdsWithIndeterminate = (
       children: tag.children.map(updateTag),
     };
 
+    // strictly what the url named: deriving a parent from its children here would write that
+    // parent back into the url on the next render, growing the stored selection on every load
     updated.active = activeIdsSet.has(updated.tagBody.id);
-
-    const hasActiveChild = updated.children.some(
-      child => child.active || child.indeterminate,
-    );
-
-    const allChildrenActive =
-      updated.children.length > 0 &&
-      updated.children.every(child => child.active);
 
     updated.indeterminate =
       !updated.active &&
-      hasActiveChild &&
-      !allChildrenActive;
+      updated.children.some(child => child.active || child.indeterminate);
 
     return updated;
   };
@@ -156,41 +149,32 @@ export const getTagsUpdatedByIdsWithIndeterminate = (
   return tags.map(updateTag);
 };
 
-export const getIndeterminateTagIds = (
+/**
+ * Ids of every tag holding a selected tag somewhere below it.
+ *
+ * The tree view derives a parent checkbox from the descendants it currently has mounted, so every
+ * ancestor of a selection has to be expanded - a collapsed parent is read as a childless leaf and
+ * renders unselected until it is opened, then jumps straight to selected.
+ */
+export const getTagIdsWithActiveDescendants = (
   tags: FormMenuTag[],
   activeIds: string[],
 ): string[] => {
   const activeIdsSet = new Set(activeIds);
-  const indeterminateIds: string[] = [];
+  const result: string[] = [];
 
-  const visit = (
-    tag: FormMenuTag,
-  ): { hasActive: boolean; allActive: boolean } => {
-    const isActive = activeIdsSet.has(tag.tagBody.id.toString());
+  // maps before it reduces so that every branch is visited and collected, never short circuited
+  const visit = (tag: FormMenuTag): boolean => {
+    const hasActiveDescendant = tag.children.map(visit).some(Boolean);
 
-    if (!tag.children.length) {
-      return {
-        hasActive: isActive,
-        allActive: isActive,
-      };
+    if (hasActiveDescendant) {
+      result.push(tag.tagBody.id.toString());
     }
 
-    const children = tag.children.map(visit);
-
-    const hasActiveChild = children.some(child => child.hasActive);
-    const allChildrenActive = children.every(child => child.allActive);
-
-    if (!isActive && hasActiveChild && !allChildrenActive) {
-      indeterminateIds.push(tag.tagBody.id.toString());
-    }
-
-    return {
-      hasActive: isActive || hasActiveChild,
-      allActive: isActive || allChildrenActive,
-    };
+    return hasActiveDescendant || activeIdsSet.has(tag.tagBody.id.toString());
   };
 
   tags.forEach(visit);
 
-  return indeterminateIds;
+  return result;
 };
