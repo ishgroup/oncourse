@@ -15,7 +15,7 @@ import { makeAppStyles } from 'ish-ui';
 import React, { memo, useEffect, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd-next';
 import { FormMenuTag } from '../../../../../../model/tags';
-import { getIndeterminateTagIds, getTagsUpdatedByIds, setIndeterminate } from '../../../utils/listFiltersUtils';
+import { getTagIdsWithActiveDescendants, getTagsUpdatedByIds, setIndeterminate } from '../../../utils/listFiltersUtils';
 import styles from '../../list/styles';
 import ListTagItem from './ListTagItem';
 
@@ -68,19 +68,29 @@ const ListTagGroup = memo<Props>((
   const [expanded, setExpanded] = useState([]);
   const { classes: customStyles, cx } = useStyles();
 
-  // expand down to every active or partially selected branch, without re-running on our own
-  // `expanded` updates - the effect settles in a single pass and bails out when nothing changed
+  // every ancestor of a selection has to be open, not just the partially selected ones - the tree
+  // view reads a collapsed parent as a childless leaf and would show it unselected until opened.
+  // Does not re-run on our own `expanded` updates: it settles in one pass and bails out when
+  // nothing changed
   useEffect(() => {
     if (!activeTags.length) {
       return;
     }
     const updateExpanded = Array.from(
-      new Set([...activeTags, ...getIndeterminateTagIds(rootTag.children, activeTags)])
+      new Set([...activeTags, ...getTagIdsWithActiveDescendants(rootTag.children, activeTags)])
     );
     setExpanded(prev => (updateExpanded.some(id => !prev.includes(id)) ? updateExpanded : prev));
   }, [activeTags, rootTag.children]);
 
   const toggleActive = useEventCallback((e, active: string[]) => {
+    // The tree view also reports selection changes while it is mounting, with no event: expanding
+    // a selected branch reports its freshly mounted descendants as newly selected, and once all of
+    // a tag's children are mounted and selected it reports that tag too. Only a real interaction
+    // may be stored - persisting the rest grows the saved selection on every page load.
+    if (!e) {
+      return;
+    }
+
     const children = getTagsUpdatedByIds(rootTag.children, active.map(n => Number(n)));
     const updatedRoot = { ...rootTag, children };
     setIndeterminate(updatedRoot);

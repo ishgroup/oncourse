@@ -51,9 +51,18 @@ const CHECKED_INPUT = { onChange: stubFunction, value: true } as any;
 const UNCHECKED_INPUT = { onChange: stubFunction, value: false } as any;
 const EMPTY_META = {} as any;
 
+const groupKey = (group: FormMenuTag) => group.prefix + group.tagBody.id.toString();
+
+// each checklist keeps its own selection - a shared list would tick a task in every checklist
+// that happens to hold a tag of the same id
+const getActiveTagsByGroup = (checklists: FormMenuTag[]) => new Map(checklists.map(t => [
+  groupKey(t),
+  getActiveTags(t.children).map(c => c.tagBody.id.toString())
+]));
+
 const renderGroups = (
   checklists: FormMenuTag[],
-  activeTags: string[],
+  activeTagsByGroup: Map<string, string[]>,
   updateActive: (updated: FormMenuTag) => void
 ) => checklists.map((t, index) => {
   if (!t.children.length) {
@@ -61,8 +70,8 @@ const renderGroups = (
   }
   return (
     <ListTagGroup
-      activeTags={activeTags}
-      key={t.prefix + t.tagBody.id.toString()}
+      activeTags={activeTagsByGroup.get(groupKey(t))}
+      key={groupKey(t)}
       dndKey={index}
       rootTag={t}
       updateActive={updateActive}
@@ -79,15 +88,9 @@ const ChecklistsFilters = memo<Props>(({ updateChecked, updateUnChecked }) => {
   const checkedChecklists = useAppSelector(state => state.list.checkedChecklists);
   const uncheckedChecklists = useAppSelector(state => state.list.uncheckedChecklists);
 
-  const activeCheckedChecklists = useMemo(
-    () => checkedChecklists.flatMap(t => getActiveTags(t.children)).map(t => t.tagBody.id.toString()),
-    [checkedChecklists]
-  );
+  const activeCheckedChecklists = useMemo(() => getActiveTagsByGroup(checkedChecklists), [checkedChecklists]);
 
-  const activeUncheckedChecklists = useMemo(
-    () => uncheckedChecklists.flatMap(t => getActiveTags(t.children)).map(t => t.tagBody.id.toString()),
-    [uncheckedChecklists]
-  );
+  const activeUncheckedChecklists = useMemo(() => getActiveTagsByGroup(uncheckedChecklists), [uncheckedChecklists]);
 
   // untouched groups keep their identity so the memoized `ListTagGroup`s below can skip re-rendering
   const onUpdateChecked = useEventCallback((active: FormMenuTag) => {

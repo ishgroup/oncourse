@@ -17,6 +17,8 @@ interface Props {
 
 const SUBJECTS = 'Subjects';
 
+const groupKey = (group: FormMenuTag) => group.prefix + group.tagBody.id.toString();
+
 const ListTagGroups = memo<Props>(({ onChangeTagGroups, rootEntity }) => {
   const dispatch = useAppDispatch();
 
@@ -33,9 +35,14 @@ const ListTagGroups = memo<Props>(({ onChangeTagGroups, rootEntity }) => {
   const specialTypesEnabled = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true');
 
   // the checkboxes read the same state the request is built from, so they can never show a
-  // selection the list is not actually filtered by
-  const activeTags = useMemo(
-    () => tags.flatMap(t => getActiveTags(t.children)).map(t => t.tagBody.id.toString()),
+  // selection the list is not actually filtered by.
+  // Kept per group: the same tag tree is published under several prefixes (Enrolled / Teaching
+  // over the same course tags), so one shared list would tick a tag in every group that holds it
+  const activeTagsByGroup = useMemo(
+    () => new Map(tags.map(t => [
+      groupKey(t),
+      getActiveTags(t.children).map(c => c.tagBody.id.toString())
+    ])),
     [tags]
   );
 
@@ -95,8 +102,8 @@ const ListTagGroups = memo<Props>(({ onChangeTagGroups, rootEntity }) => {
     <>
       {specialTypesEnabled && subjects &&
         <ListTagGroup
-          activeTags={activeTags}
-          key={subjects.prefix + subjects.tagBody.id.toString()}
+          activeTags={activeTagsByGroup.get(groupKey(subjects))}
+          key={groupKey(subjects)}
           rootTag={subjects}
           updateActive={updateActive}
           showColoredDots={false}
@@ -112,8 +119,8 @@ const ListTagGroups = memo<Props>(({ onChangeTagGroups, rootEntity }) => {
             >
               {tagsForRender.map((t, index) => (
                 <ListTagGroup
-                  activeTags={activeTags}
-                  key={t.prefix + t.tagBody.id.toString()}
+                  activeTags={activeTagsByGroup.get(groupKey(t))}
+                  key={groupKey(t)}
                   dndKey={index}
                   rootTag={t}
                   updateActive={updateActive}
