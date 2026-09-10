@@ -9,11 +9,14 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ButtonBase, Collapse } from '@mui/material';
 import { alpha } from '@mui/material/styles';
+import useEventCallback from '@mui/utils/useEventCallback';
 import $t from '@t';
 import clsx from 'clsx';
 import { ColoredCheckBox, makeAppStyles, stubFunction } from 'ish-ui';
-import React, { useState } from 'react';
+import React, { memo, useMemo, useState } from 'react';
+import { FormMenuTag } from '../../../../../../model/tags';
 import { useAppSelector } from '../../../../../utils/hooks';
+import { getActiveTags } from '../../../utils/listFiltersUtils';
 import ListTagGroup from './ListTagGroup';
 
 const useStyles = makeAppStyles()(theme => ({
@@ -44,30 +47,59 @@ interface Props {
   updateUnChecked: any;
 }
 
-const ChecklistsFilters = (
-  {
-    updateChecked, 
-    updateUnChecked 
-}: Props
-) => {
+const CHECKED_INPUT = { onChange: stubFunction, value: true } as any;
+const UNCHECKED_INPUT = { onChange: stubFunction, value: false } as any;
+const EMPTY_META = {} as any;
+
+const renderGroups = (
+  checklists: FormMenuTag[],
+  activeTags: string[],
+  updateActive: (updated: FormMenuTag) => void
+) => checklists.map((t, index) => {
+  if (!t.children.length) {
+    return null;
+  }
+  return (
+    <ListTagGroup
+      activeTags={activeTags}
+      key={t.prefix + t.tagBody.id.toString()}
+      dndKey={index}
+      rootTag={t}
+      updateActive={updateActive}
+      showColoredDots={false}
+      dndEnabled={false}
+    />
+  );
+});
+
+const ChecklistsFilters = memo<Props>(({ updateChecked, updateUnChecked }) => {
   const [expanded, setExpanded] = useState(null);
   const { classes } = useStyles();
 
   const checkedChecklists = useAppSelector(state => state.list.checkedChecklists);
   const uncheckedChecklists = useAppSelector(state => state.list.uncheckedChecklists);
-  const activeTags = checkedChecklists.map(c => c.tagBody.id.toString());
-  
-  const onUpdateChecked = active => {
-    updateChecked(checkedChecklists.map(cl => ({
-      ...cl.tagBody.id === active.tagBody.id ? active : cl
-    })));
-  };
 
-  const onUpdateUnChecked = active => {
-    updateUnChecked(uncheckedChecklists.map(cl => ({
-      ...cl.tagBody.id === active.tagBody.id ? active : cl
-    })));
-  };
+  const activeCheckedChecklists = useMemo(
+    () => checkedChecklists.flatMap(t => getActiveTags(t.children)).map(t => t.tagBody.id.toString()),
+    [checkedChecklists]
+  );
+
+  const activeUncheckedChecklists = useMemo(
+    () => uncheckedChecklists.flatMap(t => getActiveTags(t.children)).map(t => t.tagBody.id.toString()),
+    [uncheckedChecklists]
+  );
+
+  // untouched groups keep their identity so the memoized `ListTagGroup`s below can skip re-rendering
+  const onUpdateChecked = useEventCallback((active: FormMenuTag) => {
+    updateChecked(checkedChecklists.map(cl => (cl.tagBody.id === active.tagBody.id ? active : cl)));
+  });
+
+  const onUpdateUnChecked = useEventCallback((active: FormMenuTag) => {
+    updateUnChecked(uncheckedChecklists.map(cl => (cl.tagBody.id === active.tagBody.id ? active : cl)));
+  });
+
+  const toggleChecked = useEventCallback(() => setExpanded(expanded === "1" ? null : "1"));
+  const toggleUnChecked = useEventCallback(() => setExpanded(expanded === "2" ? null : "2"));
 
   return (
     <div className="pr-2">
@@ -75,69 +107,37 @@ const ChecklistsFilters = (
         {$t('select_task_status')}
       </div>
 
-      <ButtonBase className={classes.expandable} onClick={() => setExpanded(expanded === "1" ? null : "1")}>
+      <ButtonBase className={classes.expandable} onClick={toggleChecked}>
         <ColoredCheckBox
           className="flex-fill"
           label={$t('completed2')}
           color="#43a047"
-          input={{ onChange: stubFunction, value: true } as any}
-          meta={{} as any}
+          input={CHECKED_INPUT}
+          meta={EMPTY_META}
         />
         <ExpandMoreIcon color="secondary" className={clsx(classes.expandIcon, expanded === "1" && classes.expandedIcon)} />
       </ButtonBase>
-      
-      <Collapse in={expanded === "1"}>
-        {checkedChecklists.map((t, index) => {
-          if (!t.children.length) {
-            return null;
-          }
-          return (
-            <ListTagGroup
-              activeTags={activeTags}
-              key={t.prefix + t.tagBody.id.toString()}
-              dndKey={index}
-              rootTag={t}
-              classes={{}}
-              updateActive={onUpdateChecked}
-              showColoredDots={false}
-              dndEnabled={false}
-            />
-          );
-        })}
+
+      <Collapse in={expanded === "1"} unmountOnExit>
+        {renderGroups(checkedChecklists, activeCheckedChecklists, onUpdateChecked)}
       </Collapse>
 
-      <ButtonBase className={classes.expandable} onClick={() => setExpanded(expanded === "2" ? null : "2")}>
+      <ButtonBase className={classes.expandable} onClick={toggleUnChecked}>
         <ColoredCheckBox
           className="flex-fill"
           label={$t('incomplete')}
           color="#43a047"
-          input={{ onChange: stubFunction, value: false } as any}
-          meta={{} as any}
+          input={UNCHECKED_INPUT}
+          meta={EMPTY_META}
         />
         <ExpandMoreIcon color="secondary" className={clsx(classes.expandIcon, expanded === "2" && classes.expandedIcon)} />
       </ButtonBase>
 
-      <Collapse in={expanded === "2"}>
-        {uncheckedChecklists.map((t, index) => {
-          if (!t.children.length) {
-            return null;
-          }
-          return (
-            <ListTagGroup
-              activeTags={activeTags}
-              key={t.prefix + t.tagBody.id.toString()}
-              dndKey={index}
-              rootTag={t}
-              classes={{}}
-              updateActive={onUpdateUnChecked}
-              showColoredDots={false}
-              dndEnabled={false}
-            />
-          );
-        })}
+      <Collapse in={expanded === "2"} unmountOnExit>
+        {renderGroups(uncheckedChecklists, activeUncheckedChecklists, onUpdateUnChecked)}
       </Collapse>
     </div>
 );
-};
+});
 
 export default ChecklistsFilters;

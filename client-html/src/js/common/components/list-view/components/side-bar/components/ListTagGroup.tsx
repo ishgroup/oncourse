@@ -9,12 +9,13 @@
 import DragIndicator from '@mui/icons-material/DragIndicator';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
 import IconButton from '@mui/material/IconButton';
+import useEventCallback from '@mui/utils/useEventCallback';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { makeAppStyles } from 'ish-ui';
-import React, { useCallback, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd-next';
 import { FormMenuTag } from '../../../../../../model/tags';
-import { getTagsUpdatedByIds, setIndeterminate } from '../../../utils/listFiltersUtils';
+import { getIndeterminateTagIds, getTagsUpdatedByIds, setIndeterminate } from '../../../utils/listFiltersUtils';
 import styles from '../../list/styles';
 import ListTagItem from './ListTagItem';
 
@@ -23,7 +24,6 @@ const useStyles = makeAppStyles()(styles);
 interface Props {
   rootTag: FormMenuTag;
   activeTags: string[];
-  classes: any;
   showColoredDots: boolean;
   updateActive: (updated: FormMenuTag) => void;
   dndKey?: number;
@@ -37,38 +37,60 @@ const ExpandIcon = props => <IconButton
   <KeyboardArrowUp />
 </IconButton>;
 
-const ListTagGroup: React.FC<Props> = (
+const treeSlots = {
+  expandIcon: ExpandIcon,
+  collapseIcon: ExpandIcon
+};
+
+const treeSelectionPropagation = {
+  descendants: true,
+  parents: true
+};
+
+const treeSx = { marginLeft: -1 };
+
+const getItemStyle = draggableStyle => ({
+  userSelect: "none",
+  ...draggableStyle,
+});
+
+const ListTagGroup = memo<Props>((
   {
     activeTags,
-    rootTag, 
-    classes,
+    rootTag,
     updateActive,
-    dndKey, 
+    dndKey,
     showColoredDots,
     dndEnabled = true
   }
 ) => {
-  const [expanded, setExpanded] = useState([]);
 
+  const [expanded, setExpanded] = useState([]);
   const { classes: customStyles, cx } = useStyles();
 
-  const getItemStyle = (isDragging, draggableStyle) => ({
-    userSelect: "none",
-    ...draggableStyle,
+  // expand down to every active or partially selected branch, without re-running on our own
+  // `expanded` updates - the effect settles in a single pass and bails out when nothing changed
+  useEffect(() => {
+    if (!activeTags.length) {
+      return;
+    }
+    const updateExpanded = Array.from(
+      new Set([...activeTags, ...getIndeterminateTagIds(rootTag.children, activeTags)])
+    );
+    setExpanded(prev => (updateExpanded.some(id => !prev.includes(id)) ? updateExpanded : prev));
+  }, [activeTags, rootTag.children]);
+
+  const toggleActive = useEventCallback((e, active: string[]) => {
+    const children = getTagsUpdatedByIds(rootTag.children, active.map(n => Number(n)));
+    const updatedRoot = { ...rootTag, children };
+    setIndeterminate(updatedRoot);
+    updateActive(updatedRoot);
   });
 
-  const toggleActive = useCallback(
-    (e, active: string[]) => {
-      const children = getTagsUpdatedByIds(rootTag.children, active.map(n => Number(n)));
-      const updatedRoot = { ...rootTag, children };
-      setIndeterminate(updatedRoot);
-      updateActive(updatedRoot);
-    },
-    [rootTag.children]
-  );
-  
+  const onExpandedItemsChange = useEventCallback((e, items: string[]) => setExpanded(items));
+
   const heading = (
-    <div className={cx("heading", classes.listHeaderOffset)}>
+    <div className="heading">
       {rootTag.prefix ? `${rootTag.prefix} (${rootTag.tagBody.name})` : rootTag.tagBody.name}
     </div>
   );
@@ -80,18 +102,10 @@ const ListTagGroup: React.FC<Props> = (
       expandedItems={expanded}
       selectedItems={activeTags}
       onSelectedItemsChange={toggleActive}
-      onExpandedItemsChange={(e, items) => setExpanded(items)}
-      slots={{
-        expandIcon: ExpandIcon,
-        collapseIcon: ExpandIcon
-      }}
-      selectionPropagation={{
-        descendants: true,
-        parents: true
-      }}
-      sx={{
-        marginLeft: -1
-      }}
+      onExpandedItemsChange={onExpandedItemsChange}
+      slots={treeSlots}
+      selectionPropagation={treeSelectionPropagation}
+      sx={treeSx}
     >
       {rootTag.children.map(t => <ListTagItem
         itemId={t.tagBody.id.toString()}
@@ -103,62 +117,57 @@ const ListTagGroup: React.FC<Props> = (
   );
 
   return dndEnabled ? (
-    <>
-      <Draggable
-        key={rootTag.prefix + rootTag.tagBody.id.toString()}
-        draggableId={rootTag.prefix + rootTag.tagBody.id.toString()}
-        index={dndKey}
-      >
-        {(provided, snapshot) => {
-          const isDragging = snapshot.isDragging;
+    <Draggable
+      key={rootTag.prefix + rootTag.tagBody.id.toString()}
+      draggableId={rootTag.prefix + rootTag.tagBody.id.toString()}
+      index={dndKey}
+    >
+      {(provided, snapshot) => {
+        const isDragging = snapshot.isDragging;
 
-          return (
-            (<div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              style={getItemStyle(
-                snapshot.isDragging,
-                provided.draggableProps.style
+        return (
+          (<div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            style={getItemStyle(provided.draggableProps.style)}
+            className={cx("pt-2", { [customStyles.isDragging]: isDragging })}
+          >
+            <div
+              className={cx(
+                "p-0",
+                customStyles.draggableCellItem,
+                { "pl-3": isDragging },
               )}
-              className={cx("pt-2", { [customStyles.isDragging]: isDragging })}
             >
-              <div
-                className={cx(
-                  "p-0",
-                  customStyles.draggableCellItem,
-                  { "pl-3": isDragging },
-                )}
-              >
-                <div className="d-flex">
-                  <span className="relative">
-                    <DragIndicator
-                      className={
-                        cx(
-                          "dndActionIcon",
-                          customStyles.dragIndicator,
-                          {
-                            [customStyles.visibleDragIndicator]: isDragging
-                          },
-                        )
-                      }
-                    />
-                  </span>
-                  {heading}
-                </div>
+              <div className="d-flex">
+                <span className="relative">
+                  <DragIndicator
+                    className={
+                      cx(
+                        "dndActionIcon",
+                        customStyles.dragIndicator,
+                        {
+                          [customStyles.visibleDragIndicator]: isDragging
+                        },
+                      )
+                    }
+                  />
+                </span>
+                {heading}
               </div>
-              {tree}
-            </div>)
-          );
-        }}
-      </Draggable>
-    </>
+            </div>
+            {tree}
+          </div>)
+        );
+      }}
+    </Draggable>
   ) : (
     <div className="mt-2">
       {heading}
       {tree}
     </div>
 );
-};
+});
 
 export default ListTagGroup;
