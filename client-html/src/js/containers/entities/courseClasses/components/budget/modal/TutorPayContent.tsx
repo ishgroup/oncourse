@@ -119,7 +119,7 @@ const TutorPayContent: React.FC<Props> = ({
 
   return (
     <Grid container columnSpacing={3}>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <Uneditable
           label={$t('Contact')}
           value={values.contactName}
@@ -128,28 +128,28 @@ const TutorPayContent: React.FC<Props> = ({
           }
         />
       </Grid>
-      <Grid item xs={6} className="pb-2">
+      <Grid size={6} className="pb-2">
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="isSunk" color="secondary"  />}
           label={$t('sunk_cost_not_recoverable_if_class_cancelled')}
         />
       </Grid>
-      <Grid item xs={12} className="pb-2">
+      <Grid size={12} className="pb-2">
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="isOverriden" disabled={isNaN(rate)} />}
           label={$t('override_assigned_role_pay_rate')}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Collapse in={values.isOverriden}>
           <Grid container columnSpacing={3}>
-            <Grid item xs={4}>
+            <Grid size={4}>
               <Uneditable label={$t('tutor_role')} value={tutor.roleName} url={`/preferences/tutorRoles/${tutor.roleId}`} />
               {isNaN(rate) && <WarningMessage warning="The chosen role has no defined rate for class period" />}
             </Grid>
-            <Grid item xs={4}>
+            <Grid size={4}>
               <FormField
                 type="select"
                 name="repetitionType"
@@ -165,7 +165,7 @@ const TutorPayContent: React.FC<Props> = ({
               )}
             </Grid>
             {hasCountField && (
-              <Grid item xs={2}>
+              <Grid size={2}>
                 <FormField
                   type="number"
                   name="unitCount"
@@ -176,7 +176,7 @@ const TutorPayContent: React.FC<Props> = ({
                 />
               </Grid>
             )}
-            <Grid item xs={hasCountField ? 2 : 4}>
+            <Grid size={hasCountField ? 2 : 4}>
               <FormField
                 type="money"
                 name="perUnitAmountExTax"
@@ -192,11 +192,11 @@ const TutorPayContent: React.FC<Props> = ({
           </Grid>
         </Collapse>
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Divider />
       </Grid>
-      <Grid item container columnSpacing={3} xs={12} className="pt-2">
-        <Grid item xs={6} className="centeredFlex">
+      <Grid container columnSpacing={3} size={12} className="pt-2">
+        <Grid size={6} className="centeredFlex">
           <Typography variant="body1" className="text-nowrap money pt-1">
             {typeAndCostLabel}
           </Typography>
@@ -213,12 +213,12 @@ const TutorPayContent: React.FC<Props> = ({
             </Typography>
           )}
         </Grid>
-        <Grid item xs={6} className="centeredFlex">
+        <Grid size={6} className="centeredFlex">
           <Typography variant="body1" className="money pt-1">
             {budgetedCostLabel}
           </Typography>
         </Grid>
-        <Grid item xs={6} className="centeredFlex">
+        <Grid size={6} className="centeredFlex">
           <Typography variant="body1" className="relative">
             <FormField
               type="number"
@@ -240,30 +240,30 @@ const TutorPayContent: React.FC<Props> = ({
             </span>
           </Typography>
         </Grid>
-        <Grid item xs={6} className="centeredFlex">
+        <Grid size={6} className="centeredFlex">
           <Typography variant="body1" className="money pt-1">
             {onCostTotalLabel}
           </Typography>
         </Grid>
-        <Grid item xs={6} className="centeredFlex">
+        <Grid size={6} className="centeredFlex">
           <Typography variant="body1">{$t('total')}</Typography>
         </Grid>
-        <Grid item xs={6} className="centeredFlex">
+        <Grid size={6} className="centeredFlex">
           <Typography variant="body1" className="money pt-1">
             {budgetedIncOnCostLabel}
           </Typography>
         </Grid>
       </Grid>
-      <Grid item xs={12} className="pt-2 pb-2">
+      <Grid size={12} className="pt-2 pb-2">
         <Divider />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Collapse in={hasMinMaxFields}>
           <Grid container columnSpacing={3}>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <FormField type="money" name="minimumCost" label={$t('minimum_pay_for_this_class')} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <FormField type="money" name="maximumCost" label={$t('maximum_pay_for_this_class')} />
             </Grid>
           </Grid>

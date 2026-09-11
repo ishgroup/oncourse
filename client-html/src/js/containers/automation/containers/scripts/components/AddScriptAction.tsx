@@ -1,9 +1,9 @@
 import AddIcon from '@mui/icons-material/Add';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import CodeIcon from '@mui/icons-material/Code';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlineOutlined';
 import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Button, Collapse } from '@mui/material';
@@ -221,7 +221,7 @@ const AddScriptAction: React.FC<any> = props => {
             </IconButton>
           </div>
           <Grid container className="p-2 pl-1 pr-1">
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <ScriptAction
                 icon={<UploadIcon />}
                 title={$t('import')}
@@ -232,7 +232,7 @@ const AddScriptAction: React.FC<any> = props => {
                 disabled={hasImports || !hasUpdateAccess}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <ScriptAction
                 icon={<HelpOutlineIcon />}
                 title={$t('query')}
@@ -242,7 +242,7 @@ const AddScriptAction: React.FC<any> = props => {
                 addAction={addComponentHandler}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <ScriptAction
                 icon={<CodeIcon />}
                 title={$t('script')}
@@ -252,7 +252,7 @@ const AddScriptAction: React.FC<any> = props => {
                 addAction={addComponentHandler}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <ScriptAction
                 icon={<EmailOutlinedIcon />}
                 title={$t('message')}
@@ -262,7 +262,7 @@ const AddScriptAction: React.FC<any> = props => {
                 addAction={addComponentHandler}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <ScriptAction
                 icon={<StackedLineChartIcon />}
                 title={$t('report')}

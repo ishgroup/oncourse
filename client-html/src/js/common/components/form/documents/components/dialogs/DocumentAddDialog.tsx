@@ -37,12 +37,6 @@ const addDialogStyles = theme => ({
   addDialogMargin: {
     marginBottom: "300px"
   },
-  searchItemPartWrapper: {
-    marginLeft: theme.spacing(2),
-    "&:first-child": {
-      marginLeft: 0
-    }
-  },
   paperWithSearch: {
     height: "46px"
   }
@@ -61,32 +55,32 @@ const DocumentSearchItem = React.memo<{
   const formattedDate = format(new Date(data.added), KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL).replace(/\./g, "");
 
   return (
-    <div {...parentProps}>
-      <Grid item xs={4} className={clsx("text-truncate text-nowrap", classes.searchItemPartWrapper)}>
-        <Tooltip title={content}>
-          <Typography variant="body2" component="span" className="text-truncate">
-            {content}
-          </Typography>
-        </Tooltip>
+      <Grid {...parentProps} container columnSpacing={2}>
+        <Grid size={4} className="text-truncate text-nowrap">
+          <Tooltip title={content}>
+            <Typography variant="body2" component="span" className="text-truncate">
+              {content}
+            </Typography>
+          </Tooltip>
+        </Grid>
+        <Grid size={4} className="text-truncate text-nowrap">
+          <Tooltip title={`${data.name} - ${data.byteSize}`}>
+            <Typography variant="body2" component="span" color="textSecondary" className="text-truncate">
+              {data.fileName}
+              {' '}
+              -
+              {data.byteSize}
+            </Typography>
+          </Tooltip>
+        </Grid>
+        <Grid size={4} className="text-truncate text-nowrap">
+          <Tooltip title={formattedDate}>
+            <Typography variant="body2" component="span" color="textSecondary" className="text-truncate">
+              {formattedDate}
+            </Typography>
+          </Tooltip>
+        </Grid>
       </Grid>
-      <Grid item xs={4} className={clsx("text-truncate text-nowrap", classes.searchItemPartWrapper)}>
-        <Tooltip title={`${data.name} - ${data.byteSize}`}>
-          <Typography variant="body2" component="span" color="textSecondary" className="text-truncate">
-            {data.fileName}
-            {' '}
-            -
-            {data.byteSize}
-          </Typography>
-        </Tooltip>
-      </Grid>
-      <Grid item xs={4} className={clsx("text-truncate text-nowrap", classes.searchItemPartWrapper)}>
-        <Tooltip title={formattedDate}>
-          <Typography variant="body2" component="span" color="textSecondary" className="text-truncate">
-            {formattedDate}
-          </Typography>
-        </Tooltip>
-      </Grid>
-    </div>
   );
 });
 

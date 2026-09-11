@@ -44,10 +44,10 @@ const SidebarLatestActivity: React.FC<any> = props => {
 
   return (
     <Grid container columnSpacing={3} className="p-2">
-      <Grid item>
+      <Grid>
         <Typography className="heading">{$t('latest_activity')}</Typography>
       </Grid>
-      <Grid item xs={12} className={classes.activityStatistic}>
+      <Grid size={12} className={classes.activityStatistic}>
         {activities
           && activities.data.map((v, i) => (
             <div key={i}>

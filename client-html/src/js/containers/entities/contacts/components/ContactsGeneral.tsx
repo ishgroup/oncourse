@@ -39,7 +39,6 @@ interface ContactsGeneralProps extends EditViewProps<Contact> {
   setIsCompany?: any;
   tags?: any;
   usiLocked?: boolean;
-  leftOffset?: number;
 }
 
 export const studentInitial: Student = {
@@ -84,27 +83,24 @@ const filterCompanyTags = (tag: Tag) => {
   return true;
 };
 
-const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
-  const {
-    twoColumn,
-    values,
-    initialValues,
-    form,
-    dispatch,
-    isStudent,
-    isTutor,
-    isCompany,
-    setIsStudent,
-    setIsTutor,
-    setIsCompany,
-    tags,
-    isNew,
-    syncErrors,
-    showConfirm,
-    usiLocked,
-    leftOffset
-  } = props;
-
+const ContactsGeneral: React.FC<ContactsGeneralProps> = ({
+  twoColumn,
+  values,
+  initialValues,
+  form,
+  dispatch,
+  isStudent,
+  isTutor,
+  isCompany,
+  setIsStudent,
+  setIsTutor,
+  setIsCompany,
+  tags,
+  isNew,
+  syncErrors,
+  showConfirm,
+  usiLocked,
+}) => {
   const isInitiallyStudent = initialValues && !!initialValues.student;
   const isInitiallyTutor = initialValues && !!initialValues.tutor;
   const isInitiallyCompany = initialValues && !!initialValues.isCompany;
@@ -176,9 +172,6 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     return [];
   }, [tags, isStudent, isTutor, isCompany]);
 
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
   return (
     <div className={clsx("pl-3 pr-3", !twoColumn && "pt-3")}>
       <ProfileHeading
@@ -192,11 +185,10 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         isCompany={isCompany}
         usiLocked={usiLocked}
         syncErrors={syncErrors}
-        leftOffset={leftOffset}
       />
       <Grid container columnSpacing={3} className="mt-3">
-        <Grid item xs={12} md={twoColumn ? 7 : 12}>
-          <Typography variant="caption" display="block" gutterBottom>
+        <Grid size={{ xs: 12, md: twoColumn ? 7 : 12 }}>
+          <Typography variant="caption" sx={{ display: 'block' }} gutterBottom>
             {$t('type')}
           </Typography>
           <ButtonGroup variant="outlined" className="mb-3 mt-1">
@@ -227,14 +219,16 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         </Grid>
       </Grid>
       <Grid container columnSpacing={3} rowSpacing={2}>
-        <Grid item xs={twoColumn ? 8 : 12}>
+        <Grid size={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={filteredTags}
+            placeholder='Tags'
+            trackCarretPosition={twoColumn}
           />
         </Grid>
-        <Grid item xs={twoColumn ? 4 : 12}>
+        <Grid size={twoColumn ? 4 : 12}>
           <EntityChecklists
             entity="Contact"
             form={form}
@@ -247,7 +241,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         <>
           <Divider className="mt-3 mb-2"/>
           <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TimetableButton onClick={onStudentCalendarClick} title={$t('student_timetable')}/>
             </Grid>
           </Grid>
@@ -257,7 +251,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         <>
           <Divider className="mt-3 mb-2"/>
           <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TimetableButton onClick={onTutorCalendarClick} title={$t('tutor_timetable')}/>
             </Grid>
           </Grid>

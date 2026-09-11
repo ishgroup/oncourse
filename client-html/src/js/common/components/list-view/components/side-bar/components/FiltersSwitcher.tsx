@@ -9,9 +9,10 @@
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
+import useEventCallback from '@mui/utils/useEventCallback';
 import $t from '@t';
 import { makeAppStyles } from 'ish-ui';
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 
 const useStyles = makeAppStyles()(theme => ({
   root: {
@@ -26,32 +27,27 @@ const useStyles = makeAppStyles()(theme => ({
   }
 }));
 
-export default function FiltersSwitcher({ setValue, value }) {
+const FiltersSwitcher = memo<{ setValue: (value: number) => void; value: number }>(({ setValue, value }) => {
   const { classes } = useStyles();
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const tabsClasses = useMemo(() => ({ root: classes.root }), [classes]);
+  const tabClasses = useMemo(() => ({ root: classes.tab }), [classes]);
+
+  const handleChange = useEventCallback((event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-  };
+  });
 
   return (
     <div className="w100 centeredFlex mt-2">
       <Typography variant="caption" className="flex-fill">
         {$t('filter_by')}
       </Typography>
-      <Tabs classes={{ root: classes.root }} value={value} onChange={handleChange}>
-        <Tab
-          classes={{
-            root: classes.tab
-          }}
-          label={$t('filters_tags')}
-        />
-        <Tab
-          classes={{
-            root: classes.tab
-          }}
-          label={$t('checklists')}
-        />
+      <Tabs classes={tabsClasses} value={value} onChange={handleChange}>
+        <Tab classes={tabClasses} label={$t('filters_tags')} />
+        <Tab classes={tabClasses} label={$t('checklists')} />
       </Tabs>
     </div>
   );
-}
+});
+
+export default FiltersSwitcher;

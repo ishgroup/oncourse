@@ -4,7 +4,7 @@
  */
 
 import Drawer from '@mui/material/Drawer';
-import Hidden from '@mui/material/Hidden';
+import Hidden from './Hidden';
 import { AppTheme } from 'ish-ui';
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';

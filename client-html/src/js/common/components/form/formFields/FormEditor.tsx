@@ -6,7 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { MarkdownToHtml } from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html';
+import { MarkdownGfmMdToHtml } from '@ckeditor/ckeditor5-markdown-gfm';
+// CKEditor 5 ships its theme as a prebuilt stylesheet since v42, so it has to be
+// imported explicitly - the editor renders unstyled without it.
+import 'ckeditor5/ckeditor5.css';
 import Edit from '@mui/icons-material/Edit';
 import { ButtonBase, FormControl, FormHelperText, Input, InputLabel } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -30,7 +33,6 @@ import { GlobalStyles } from "tss-react";
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Field, WrappedFieldProps } from 'redux-form';
 import { COMMON_PLACEHOLDER } from '../../../../constants/Forms';
-
 
 const useStyles = makeAppStyles<void, 'hoverIcon'>()((theme, p, classes) => ({
   hoverIcon: {
@@ -245,7 +247,7 @@ interface Props {
   className?: string;
 }
 
-const parser = new MarkdownToHtml();
+const parser = new MarkdownGfmMdToHtml();
 
 const FormEditor: React.FC<Props & WrappedFieldProps> = (
   {

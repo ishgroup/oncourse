@@ -384,9 +384,9 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
 
   return (
     <Grid container>
-      <Grid item={true} xs={12} columnSpacing={3} container className="pb-3">
-        <Grid item columnSpacing={3} rowSpacing={2} xs={twoColumn ? 8 : 12} container>
-          <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={12} columnSpacing={3} container className="pb-3">
+        <Grid columnSpacing={3} rowSpacing={2} size={twoColumn ? 8 : 12} container>
+          <Grid size={twoColumn ? 6 : 12}>
             <GradeModal
               gradeMenuAnchorEl={gradeMenuAnchorEl}
               handleGradeMenuClose={handleGradeMenuClose}
@@ -426,7 +426,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
                             required
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12}>
+          <Grid size={twoColumn ? 6 : 12}>
             <FormField
               type="remoteDataSelect"
               entity="Assessment"
@@ -441,14 +441,14 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
                             required
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12}>
+          <Grid size={twoColumn ? 6 : 12}>
             <FormField
               type="dateTime"
               name={`${item}.releaseDate`}
               label={$t('release_date')}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12}>
+          <Grid size={twoColumn ? 6 : 12}>
             <FormField
               type="dateTime"
               name={`${item}.dueDate`}
@@ -458,8 +458,8 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
           </Grid>
         </Grid>
 
-        <Grid container item xs={twoColumn ? 4 : 12}>
-          <Grid item xs={12}>
+        <Grid container size={twoColumn ? 4 : 12}>
+          <Grid size={12}>
             <div>
               <div className="heading">{$t('assessors')}</div>
               {tutorsCheckboxes}
@@ -469,11 +469,11 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
       </Grid>
 
       {typeof row.id === "number" ? (
-        <Grid item={true} xs={12} container className="pb-3">
+        <Grid size={12} container className="pb-3">
           <div className="heading">{$t('assessment_submission')}</div>
-          <Grid container xs={12} className={classes.tableHeader}>
-            <Grid item xs={4} />
-            <Grid item xs={gradeType ? 2 : 4} className={classes.center}>
+          <Grid container size={12} className={classes.tableHeader}>
+            <Grid size={4} />
+            <Grid size={gradeType ? 2 : 4} className={classes.center}>
               <span className="relative">
                 {$t('submitted')}
                 <IconButton
@@ -490,7 +490,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
 
             {Boolean(gradeType) && (
             <>
-              <Grid xs={2} className={classes.center}>
+              <Grid size={2} className={classes.center}>
                 <span className="relative">
                   {$t('marked')}
                   <IconButton
@@ -504,7 +504,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
                   </IconButton>
                 </span>
               </Grid>
-              <Grid xs={2} className={classes.center}>
+              <Grid size={2} className={classes.center}>
                 <span className="relative">
                   {$t('grade')}
                   <IconButton
@@ -524,7 +524,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
           )}
 
           </Grid>
-          <Grid container xs={12} className={classes.items}>
+          <Grid container size={12} className={classes.items}>
             {studentsForRender.map((elem, index) => (
               <CourseClassAssessmentStudent
                 dispatch={dispatch}

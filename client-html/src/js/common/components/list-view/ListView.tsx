@@ -7,29 +7,26 @@
  */
 
 import { Currency, ExportTemplate, LayoutType, Report, TableModel } from '@api/model';
-import ErrorOutline from '@mui/icons-material/ErrorOutline';
+import ErrorOutline from '@mui/icons-material/ErrorOutlineOutlined';
 import { Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import $t from '@t';
-import { History, Location } from 'history';
 import {
   AnyArgFunction,
   BooleanArgFunction,
   ConfirmProps,
   NoArgFunction,
   ResizableWrapper,
-  ShowConfirmCaller,
-  StringArgFunction,
-  usePrevious
+  ShowConfirmCaller
 } from 'ish-ui';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { getFormSyncErrors, initialize, isDirty, isInvalid, reset, submit } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import {
-  ENTITY_AQL_STORAGE_NAME,
   LIST_MAIN_CONTENT_DEFAULT_WIDTH,
   LIST_SIDE_BAR_DEFAULT_WIDTH,
   LISTVIEW_MAIN_CONTENT_WIDTH
@@ -46,9 +43,11 @@ import {
   EditViewContainerProps,
   FilterGroup,
   FindRelatedItem,
-  ListAqlMenuItemsRenderer
+  ListAqlMenuItemsRenderer,
+  ListQueryPayload,
+  ListUrlQuery
 } from '../../../model/common/ListView';
-import { EntityName, FindEntityState } from '../../../model/entities/common';
+import { EntityName } from '../../../model/entities/common';
 import { FormMenuTag } from '../../../model/tags';
 import { State } from '../../../reducers/state';
 import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from '../../actions';
@@ -56,8 +55,6 @@ import { IAction } from '../../actions/IshAction';
 import { UserPreferencesState } from '../../reducers/userPreferencesReducer';
 import { getEntityDisplayName } from '../../utils/getEntityDisplayName';
 import { onSubmitFail } from '../../utils/highlightFormErrors';
-import { saveCategoryAQLLink } from '../../utils/links';
-import { LSGetItem } from '../../utils/storage';
 import { pushGTMEvent } from '../google-tag-manager/actions';
 import { GAEventTypes } from '../google-tag-manager/services/GoogleAnalyticsService';
 import LoadingIndicator from '../progress/LoadingIndicator';
@@ -65,16 +62,13 @@ import {
   deleteCustomFilter,
   findRelatedByFilter,
   getRecords,
-  setFilterGroups,
   setListEditRecord,
   setListEditRecordFetching,
   setListEntity,
   setListFullScreenEditView,
   setListLayout,
-  setListMenuTags,
+  setListQuery,
   setListSelection,
-  setListUserAQLSearch,
-  setSearch,
   updateTableModel,
 } from './actions';
 import BottomAppBar from './components/bottom-app-bar/BottomAppBar';
@@ -86,12 +80,22 @@ import ShareContainer from './components/share/ShareContainer';
 import SideBar from './components/side-bar/SideBar';
 import { LIST_EDIT_VIEW_FORM_NAME } from './constants';
 import {
-  getActiveTags,
-  getFiltersNameString,
   getTagsUpdatedByIds,
+  getTagsUpdatedByIdsWithIndeterminate,
   setActiveFiltersBySearch
 } from './utils/listFiltersUtils';
 import { shouldAsyncValidate } from './utils/listFormUtils';
+import {
+  buildListUrlSearch,
+  expandAqlSearch,
+  getListUrlQuery,
+  hasListUrlQuery,
+  isSameListUrlQuery,
+  parseListUrlSearch,
+  parseTagIds,
+  removeUrlParams,
+  resolveCustomSearch
+} from './utils/listSearchUtils';
 
 const sideBarTheme = theme => createTheme({
   ...theme,
@@ -116,7 +120,7 @@ interface OwnProps {
   fullScreenEditView?: boolean;
   fetching?: boolean;
   savingFilter?: any;
-  onSearch?: StringArgFunction;
+  setListQuery?: (payload: Omit<ListQueryPayload, 'entity'>) => void;
   getCustomFieldTypes?: (entity: EntityName) => void;
   setEntity?: (entity: EntityName) => void;
   getListViewPreferences?: () => void;
@@ -128,14 +132,11 @@ interface OwnProps {
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
   dispatch?: Dispatch<IAction>;
   fetch?: Fetch;
-  setFilterGroups?: (filterGroups: FilterGroup[]) => void;
-  setListMenuTags?: ({ tags, checkedChecklists, uncheckedChecklists }: { tags: FormMenuTag[], checkedChecklists: FormMenuTag[], uncheckedChecklists: FormMenuTag[] }) => void;
   deleteFilter?: (id: number, entity: string, checked: boolean) => void;
   exportTemplates?: ExportTemplate[];
   pdfReports?: Report[];
   updateLayout?: (layout: LayoutType) => void;
   updateSelection?: (selection: string[]) => void;
-  setListUserAQLSearch?: (userAQLSearch: string) => void;
   getScripts?: NoArgFunction;
   openConfirm?: ShowConfirmCaller;
   resetEditView?: NoArgFunction;
@@ -147,9 +148,6 @@ interface OwnProps {
 }
 
 interface Props {
-  history: History;
-  location: Location;
-  match: any;
   listProps: TableListProps;
   rootEntity: EntityName;
   onBeforeSave?: any;
@@ -202,7 +200,7 @@ interface ComponentState {
   newSelection: string[] | null;
 }
 
-type ListCompProps = Props & OwnProps & State["list"] & State["share"];
+type ListCompProps = Props & OwnProps & State["list"] & State["share"] & RouteComponentProps<any>;
 
 function ListView(props: ListCompProps) {
   const {
@@ -216,7 +214,6 @@ function ListView(props: ListCompProps) {
     setEntity,
     deleteFilter,
     match: { url, params },
-    search,
     location,
     filterGroupsInitial = [],
     selection,
@@ -241,7 +238,6 @@ function ListView(props: ListCompProps) {
     menuTags,
     editRecordFetching,
     setListEditRecordFetching,
-    setListUserAQLSearch,
     deleteDisabledCondition,
     menuTagsLoaded,
     filterGroupsLoaded,
@@ -251,9 +247,7 @@ function ListView(props: ListCompProps) {
     uncheckedChecklists,
     customTabTitle,
     setListviewMainContentWidth,
-    onSearch,
-    setFilterGroups,
-    setListMenuTags,
+    setListQuery,
     getEditRecord,
     onBeforeSave,
     preformatBeforeSubmit,
@@ -290,6 +284,10 @@ function ListView(props: ListCompProps) {
   const containerNode = useRef(null);
 
   const searchComponentNode = useRef(null);
+
+  // whether the next url write records a step the user took, rather than tidying up the url they
+  // are already on. Set by whoever changes the query, read once by the write that follows it.
+  const pushNextUrlUpdate = useRef(false);
 
   const getMainContentWidth = (mainContentWidth, sidebarWidth) =>
     (mainContentWidth ? Number(mainContentWidth) : window.screen.width - sidebarWidth - 368);
@@ -329,14 +327,33 @@ function ListView(props: ListCompProps) {
     }
   };
 
-  const updateHistorySearch = (search: string) => {
-    const newUrl = window.location.origin + window.location.pathname + search;
+  /**
+   * The url is a projection of the list state, not a second copy of it: it is always rebuilt
+   * from the store in one write.
+   *
+   * Filtering, tagging and searching are steps the user took and can come back from, so they
+   * push. Reconciliation writes - the first sync, canonicalising a query read out of the url,
+   * dropping a spent one shot param - describe an url the user is already on and must replace,
+   * or back would land on an url that immediately reconciles itself into a new entry and trap
+   * them on the list.
+   */
+  const updateHistorySearch = (query: ListUrlQuery) => {
+    const push = pushNextUrlUpdate.current;
+    pushNextUrlUpdate.current = false;
 
-    if (newUrl !== window.location.href) {
-      history.push({
-        search,
-        pathname: window.location.pathname
-      });
+    if (isSameListUrlQuery(parseListUrlSearch(window.location.search), query)) {
+      return;
+    }
+
+    const target = {
+      search: buildListUrlSearch(window.location.search, query),
+      pathname: window.location.pathname
+    };
+
+    if (push) {
+      history.push(target);
+    } else {
+      history.replace(target);
     }
   };
 
@@ -472,21 +489,15 @@ function ListView(props: ListCompProps) {
     getScripts();
     getListViewPreferences();
 
-    if (location.search) {
-      const searchParams = new URLSearchParams(location.search);
-      const openShare = searchParams.has("openShare");
-
-      if (openShare) {
-        setTimeout(() => {
-          setState({
-            showExportDrawer: true
-          });
-        }, 1000);
-        searchParams.delete("openShare");
-      }
+    if (new URLSearchParams(window.location.search).has("openShare")) {
+      setTimeout(() => {
+        setState({
+          showExportDrawer: true
+        });
+      }, 1000);
 
       history.replace({
-        search: searchParams.toString(),
+        search: removeUrlParams(window.location.search, ["openShare"]),
         pathname: url
       });
     }
@@ -497,104 +508,92 @@ function ListView(props: ListCompProps) {
     setState({ mounted: true });
   }, []);
 
-  const getUrlSearch = searchParam => {
-    if (searchParam.getAll("customSearch").length) {
-      let customSearch = searchParam.getAll("customSearch")[0];
+  /**
+   * What the url would look like for the current store state. Everything that writes the url
+   * goes through this, so the url can never claim something the request did not use.
+   */
+  const listUrlQuery = useMemo(
+    () => getListUrlQuery({
+      userAQLSearch, filterGroups, menuTags, checkedChecklists, uncheckedChecklists
+    }),
+    [userAQLSearch, filterGroups, menuTags, checkedChecklists, uncheckedChecklists]
+  );
 
-      const entityState = JSON.parse(LSGetItem(ENTITY_AQL_STORAGE_NAME)) as FindEntityState;
-      if (entityState) {
-        for (let i = 0; i < entityState.data.length; i++) {
-          if (entityState.data[i].id === customSearch) {
-            saveCategoryAQLLink({ AQL: "", id: customSearch, action: "remove" });
-            customSearch = entityState.data[i].AQL;
-          }
-        }
-      }
-      return customSearch;
+  /**
+   * `fromUrl` marks a query the user did not trigger from this screen (back/forward, a pasted
+   * link): the record they have open is not theirs to close, and the url it came from is already
+   * in the history, so the write that follows must not add another entry for it.
+   */
+  const applyListQuery = (query: Omit<ListQueryPayload, 'entity'>, fromUrl?: boolean) => {
+    // reset scroll on records filtering
+    if (containerNode.current) {
+      containerNode.current.scrollTop = 0;
     }
-    return searchParam.getAll("search")[0];
+
+    pushNextUrlUpdate.current = !fromUrl;
+
+    setListQuery(query);
+
+    if (!fromUrl) {
+      resetEditView();
+
+      onSelection([]);
+    }
   };
 
   const onChangeFilters = (filters: FilterGroup[] | FormMenuTag[], type: 'filters' | 'tags' | 'checkedChecklists' | 'uncheckedChecklists') => {
-    const searchParams = new URLSearchParams(location.search);
-
-    if (type === "filters") {
-      setFilterGroups(filters as FilterGroup[]);
-      const filtersString = getFiltersNameString(filters as FilterGroup[]);
-      if (filtersString) {
-        searchParams.set("filter", filtersString);
-      } else {
-        searchParams.delete("filter");
-      }
-    }
-
-    if (["tags", "checkedChecklists", "uncheckedChecklists"].includes(type)) {
-      setListMenuTags({
-        tags: menuTags,
-        checkedChecklists,
-        uncheckedChecklists,
-        ...{ [type]: filters as FormMenuTag[] }
-      });
-      const tagsString = getActiveTags(filters as FormMenuTag[]).map(t => t.tagBody.id).toString();
-      if (tagsString) {
-        searchParams.set(type, tagsString);
-      } else {
-        searchParams.delete(type);
-      }
-    }
-    const resultUrlSearchString = decodeURIComponent(searchParams.toString());
-    updateHistorySearch(resultUrlSearchString ? "?" + resultUrlSearchString : "" );
+    applyListQuery(type === "filters"
+      ? { filterGroups: filters as FilterGroup[] }
+      : { [type === "tags" ? "menuTags" : type]: filters as FormMenuTag[] });
   };
 
+  /**
+   * Turns a url query into store state. Used both for the first render and for any later url
+   * change the list did not make itself (back/forward, a pasted link).
+   */
+  const getQueryFromUrl = (urlQuery: ListUrlQuery, targetFilters: FilterGroup[]): Omit<ListQueryPayload, 'entity'> => ({
+    userAQLSearch: urlQuery.search,
+    search: expandAqlSearch(urlQuery.search, targetFilters),
+    filterGroups: setActiveFiltersBySearch(urlQuery.filter, targetFilters),
+    menuTags: getTagsUpdatedByIdsWithIndeterminate(menuTags, parseTagIds(urlQuery.tags)),
+    checkedChecklists: getTagsUpdatedByIds(checkedChecklists, parseTagIds(urlQuery.checkedChecklists)),
+    uncheckedChecklists: getTagsUpdatedByIds(uncheckedChecklists, parseTagIds(urlQuery.uncheckedChecklists))
+  });
+
   const synchronizeAllFilters = () => {
-    const searchParams = new URLSearchParams(location.search);
-    const targetFilters = filterGroups.length ? [...filterGroupsInitial, ...filterGroups] : filterGroupsInitial || [];
+    const searchParams = new URLSearchParams(window.location.search);
+    const targetFilters = filterGroups.length ? [...filterGroupsInitial, ...filterGroups] : [...filterGroupsInitial];
 
-    if (searchParams.size) {
-      const listSearchString = getUrlSearch(searchParams);
-      const tagsSearch = searchParams.get("tags");
-      const filtersSearch = searchParams.get("filter");
-      const checkedChecklistsUrlString = searchParams.get("checkedChecklists");
-      const uncheckedChecklistsUrlString = searchParams.get("uncheckedChecklists");
+    // one shot `customSearch` links are resolved and dropped here, before anything reads the url
+    const hadCustomSearch = searchParams.has("customSearch");
+    const customSearch = resolveCustomSearch(searchParams);
+    const urlQuery = parseListUrlSearch(searchParams);
 
-      onChangeFilters(
-        setActiveFiltersBySearch(filtersSearch, targetFilters),
-        "filters"
-      );
-
-      // Sync tags by search
-      if (tagsSearch && menuTags) {
-        const tagIds = tagsSearch
-          .split(",")
-          .map(f => Number(f));
-        onChangeFilters(getTagsUpdatedByIds(menuTags, tagIds), "tags");
+    if (hadCustomSearch) {
+      if (customSearch) {
+        urlQuery.search = customSearch;
       }
-
-      // Sync checked checklists by search
-      if (checkedChecklistsUrlString && checkedChecklists) {
-        const ids = checkedChecklistsUrlString
-          .split(",")
-          .map(f => Number(f));
-        onChangeFilters(getTagsUpdatedByIds(checkedChecklists, ids), "checkedChecklists");
-      }
-
-      // Sync unchecked checklists by search
-      if (uncheckedChecklistsUrlString && uncheckedChecklists) {
-        const ids = uncheckedChecklistsUrlString
-          .split(",")
-          .map(f =>   Number(f));
-        onChangeFilters(getTagsUpdatedByIds(uncheckedChecklists, ids), "uncheckedChecklists");
-      }
-
-      if (listSearchString) {
-        setListUserAQLSearch(listSearchString);
-      }
-    } else if (targetFilters) {
-      onChangeFilters(
-        targetFilters,
-        "filters"
-      );
+      // the link is spent - put the expression it resolved to in its place straight away
+      history.replace({
+        search: buildListUrlSearch(window.location.search, urlQuery),
+        pathname: window.location.pathname
+      });
     }
+
+    // an url carrying no list params at all is an unfiltered entry point, so the entity defaults
+    // apply; an url carrying any of them describes the query in full, absent params included
+    const query = hasListUrlQuery(searchParams) || customSearch
+      ? getQueryFromUrl(urlQuery, targetFilters)
+      : {
+        userAQLSearch: "",
+        search: "",
+        filterGroups: targetFilters,
+        menuTags,
+        checkedChecklists,
+        uncheckedChecklists
+      };
+
+    setListQuery(query);
 
     setState({
       filtersSynchronized: true
@@ -607,17 +606,15 @@ function ListView(props: ListCompProps) {
     getEditRecord(id);
   };
 
-  const onQuerySearchChange = searchValue => {
-    // reset scroll on records filtering
-    if (containerNode.current) {
-      containerNode.current.scrollTop = 0;
-    }
-
-    onSearch(searchValue);
-
-    resetEditView();
-
-    onSelection([]);
+  /**
+   * `expression` is the AQL actually sent to the server, `value` the text the user typed. Both
+   * are stored, so the url can keep the readable text while the request keeps the expanded one.
+   */
+  const onQuerySearchChange = (expression: string, value?: string) => {
+    applyListQuery({
+      search: expression,
+      userAQLSearch: value === undefined ? expression : value
+    });
   };
 
   const updateDeleteCondition = val => {
@@ -625,14 +622,6 @@ function ListView(props: ListCompProps) {
       deleteEnabled: val
     });
   };
-
-  useEffect(() => {
-    if (state.filtersSynchronized) {
-      onSearch(userAQLSearch);
-    }
-  }, [
-    state.filtersSynchronized
-  ]);
 
   useEffect(() => {
     if (!state.filtersSynchronized && filterGroupsLoaded && (noListTags || menuTagsLoaded)) {
@@ -723,52 +712,38 @@ function ListView(props: ListCompProps) {
     fullScreenEditView
   ]);
 
-  const prevSearch = usePrevious(search);
-
+  // state -> url. The store is the source of truth, the url only mirrors it.
   useEffect(() => {
-    if (state.filtersSynchronized && prevSearch !== search) {
-      const currentUrlSearch = new URLSearchParams(location.search);
-      const prevUrlSearch = new URLSearchParams(prevSearch);
-      const filtersUrlString = currentUrlSearch.get("filter");
-      const tagsUrlString = currentUrlSearch.get("tags");
-
-      // Update AQL search by url
-      if (search) {
-        currentUrlSearch.set("search", search);
-      } else {
-        currentUrlSearch.delete("search");
-      }
-      const resultUrlSearchString = decodeURIComponent(currentUrlSearch.toString());
-      updateHistorySearch(resultUrlSearchString ? "?" + resultUrlSearchString : "" );
-
-      // Update filters by url
-      if (prevUrlSearch.get("filter") !== filtersUrlString) {
-        const filtersString = getFiltersNameString(filterGroups);
-        if (filtersString !== filtersUrlString) {
-          onChangeFilters(setActiveFiltersBySearch(filtersUrlString, filterGroups), "filters");
-        }
-      }
-
-      // Update tags by url
-      if (prevUrlSearch.get("tags") !== tagsUrlString) {
-        const activeString = getActiveTags(menuTags).map(t => t.tagBody.id).toString();
-        if (activeString !== tagsUrlString) {
-          const tagIds = tagsUrlString ? tagsUrlString
-            .split(",")
-            .map(f => Number(f)) : [];
-          onChangeFilters(getTagsUpdatedByIds(menuTags, tagIds), "tags");
-        }
-      }
-    }
-  }, [search, location.search]);
-
-  useEffect(() => {
-    if (state.filtersSynchronized && !fetch.pending) {
-      fullScreenEditView ? onSearch(records.search) : onQuerySearchChange(records.search);
+    if (state.filtersSynchronized) {
+      updateHistorySearch(listUrlQuery);
     }
   }, [
-    menuTags,
-    filterGroups
+    state.filtersSynchronized,
+    listUrlQuery
+  ]);
+
+  // url -> state, for url changes the list did not make itself: back/forward, a pasted link.
+  //
+  // The router `location` only triggers this; the url is read from `window.location`, the same
+  // live value the effect above writes and compares against. Reading the prop instead would put
+  // the two directions one commit out of phase - the prop still holds the pre-write url -
+  // and they would spend forever undoing each other.
+  //
+  // Must stay declared after the effect above: within one commit the store has to reconcile the
+  // url before this reads it, otherwise a store change looks like an external url change.
+  useEffect(() => {
+    if (!state.filtersSynchronized) {
+      return;
+    }
+
+    const urlQuery = parseListUrlSearch(window.location.search);
+
+    if (!isSameListUrlQuery(urlQuery, listUrlQuery)) {
+      applyListQuery(getQueryFromUrl(urlQuery, filterGroups), true);
+    }
+  }, [
+    location.search,
+    state.filtersSynchronized
   ]);
 
   useEffect(() => {
@@ -1017,7 +992,6 @@ function ListView(props: ListCompProps) {
         onSubmitFail={onSubmitFail}
         hasSelected={Boolean(selection.length)}
         creatingNew={creatingNew}
-        updateDeleteCondition={updateDeleteCondition}
         showConfirm={showConfirm}
         threeColumn={threeColumn}
       />
@@ -1092,9 +1066,9 @@ function ListView(props: ListCompProps) {
                 onSubmit={onSave}
                 hasSelected={Boolean(selection.length)}
                 creatingNew={creatingNew}
-                updateDeleteCondition={updateDeleteCondition}
                 showConfirm={showConfirm}
                 toogleFullScreenEditView={toggleFullWidthView}
+                threeColumn={threeColumn}
               />
             </div>
           )}
@@ -1160,9 +1134,6 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>, ownProps) => ({
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   updateLayout: (layout: LayoutType) => dispatch(setListLayout(layout)),
   deleteFilter: (id: number, entity: string, checked: boolean) => dispatch(deleteCustomFilter(id, entity, checked)),
-  setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
-  setListMenuTags: ({ tags, checkedChecklists, uncheckedChecklists }) => dispatch(setListMenuTags(tags, checkedChecklists, uncheckedChecklists)),
-  setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch)),
   getScripts: () => dispatch(getScripts(ownProps.rootEntity)),
   getCustomFieldTypes: (entity: EntityName) => dispatch(getCustomFieldTypes(entity)),
   openConfirm: props => dispatch(showConfirm(props)),
@@ -1173,7 +1144,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>, ownProps) => ({
      entity: ownProps.rootEntity, listUpdate: true, ignoreSelection: false, stopIndex, resolve
     }
   )),
-  onSearch: search => dispatch(setSearch(search, ownProps.rootEntity)),
+  setListQuery: (payload: Omit<ListQueryPayload, 'entity'>) =>
+    dispatch(setListQuery({ entity: ownProps.rootEntity, ...payload })),
   setListEditRecordFetching: () => dispatch(setListEditRecordFetching()),
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
@@ -1211,4 +1183,4 @@ export default connect(
     height: "100vh",
     overflow: "hidden"
   }
-}));
+})) as React.FC<Props>;

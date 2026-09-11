@@ -3,22 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { getMenuTags } from "ish-ui";
-import { Epic } from "redux-observable";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { setListMenuTags } from "../../../../common/components/list-view/actions";
+import { getMenuTags } from 'ish-ui';
+import { Epic } from 'redux-observable';
+import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import { setListMenuTags } from '../../../../common/components/list-view/actions';
 
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../../../tags/actions";
-import TagsService from "../../../tags/services/TagsService";
-import { GET_COURSE_CLASS_TAGS } from "../actions";
+import * as EpicUtils from '../../../../common/epics/EpicUtils';
+import { GET_ENTITY_TAGS_REQUEST_FULFILLED } from '../../../tags/actions';
+import TagsService from '../../../tags/services/TagsService';
+import { GET_COURSE_CLASS_TAGS } from '../actions';
 
 const request: EpicUtils.Request<any, never> = {
   type: GET_COURSE_CLASS_TAGS,
   getData: async () => {
-    const courseClassTags = await TagsService.getTags("CourseClass");
-    const courseTags = await TagsService.getTags("Course");
-    const checklists = await TagsService.getChecklists("CourseClass");
+    const [courseClassTags, courseTags, checklists] = await Promise.all([
+      TagsService.getTags("CourseClass"),
+      TagsService.getTags("Course"),
+      TagsService.getChecklists("CourseClass")
+    ]);
 
     return { courseClassTags, courseTags, checklists };
   },

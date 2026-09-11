@@ -35,18 +35,18 @@ const CourseMarketingTab: React.FC<EditViewProps<Course>> = props => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3">
-      <Grid item xs={12}>
+      <Grid size={12}>
         <div className="heading mt-3">{$t('marketing')}</div>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormEditorField name="webDescription" label={$t('web_description')} />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormEditorField name="shortWebDescription" label={$t('short_web_description')} />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField
           type="multilineText"
           name="brochureDescription"
@@ -54,7 +54,7 @@ const CourseMarketingTab: React.FC<EditViewProps<Course>> = props => {
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FieldArray
           name="documents"
           label={$t('documents')}
@@ -70,7 +70,7 @@ const CourseMarketingTab: React.FC<EditViewProps<Course>> = props => {
         />
       </Grid>
 
-      <Grid item xs={12} className="mt-3">
+      <Grid size={12} className="mt-3">
         <RelationsCommon
           name="relatedSellables"
           values={values}

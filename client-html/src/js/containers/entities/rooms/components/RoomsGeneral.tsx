@@ -9,8 +9,8 @@ import Grid, { GridSize } from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
-import { LinkAdornment, openInternalLink, TimetableButton } from 'ish-ui';
 import { debounce } from 'es-toolkit/compat';
+import { LinkAdornment, openInternalLink, TimetableButton } from 'ish-ui';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { change, FieldArray } from 'redux-form';
@@ -82,7 +82,7 @@ function RoomsGeneral({
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
-      <Grid item xs={layoutArray[2].xs}>
+      <Grid size={layoutArray[2].xs}>
         <FullScreenStickyHeader
           opened={!values.id || Object.keys(syncErrors).includes("name")}
           twoColumn={twoColumn}
@@ -97,13 +97,15 @@ function RoomsGeneral({
           )}
         />
       </Grid>
-      <Grid item container xs={layoutArray[0].xs} columnSpacing={3} rowSpacing={2}>
-        <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid container size={layoutArray[0].xs} columnSpacing={3} rowSpacing={2}>
+        <Grid size={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={tags}
             className="mb-2"
+            placeholder='Tags'
+            trackCarretPosition={twoColumn}
           />
           {isParenSiteVirtual && <FormField
             type="text"
@@ -113,7 +115,7 @@ function RoomsGeneral({
           />}
         </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
+        <Grid size={twoColumn ? 4 : 12}>
           <div className="centeredFlex">
             <EntityChecklists
               className="flex-fill"
@@ -133,11 +135,11 @@ function RoomsGeneral({
         </Grid>
       </Grid>
 
-      <Grid item xs={12} className="mb-2">
+      <Grid size={12} className="mb-2">
         <TimetableButton onClick={onCalendarClick} />
       </Grid>
 
-      <Grid item xs={layoutArray[3].xs}>
+      <Grid size={layoutArray[3].xs}>
         <FormField
           type="text"
           name="seatedCapacity"
@@ -148,7 +150,7 @@ function RoomsGeneral({
         />
       </Grid>
 
-      <Grid item xs={layoutArray[4].xs}>
+      <Grid size={layoutArray[4].xs}>
         {sites && (
           <FormField
             type="select"
@@ -177,20 +179,18 @@ function RoomsGeneral({
         fieldName="customFields"
         entityValues={values}
         form={form}
-        gridItemProps={{
-          xs: twoColumn ? 4 : 12,
-        }}
+        gridItemProps={{ size: { xs: twoColumn ? 4 : 12 } }}
       />
 
-      <Grid item xs={layoutArray[5].xs}>
+      <Grid size={layoutArray[5].xs}>
         <FormEditorField name="facilities" label={$t('facilities')} />
       </Grid>
 
-      <Grid item xs={layoutArray[6].xs}>
+      <Grid size={layoutArray[6].xs}>
         <FormEditorField name="directions" label={$t('directions')} />
       </Grid>
 
-      <Grid item xs={layoutArray[7].xs} className="mb-1">
+      <Grid size={layoutArray[7].xs} className="mb-1">
         <FieldArray
           name="documents"
           label={$t('documents')}

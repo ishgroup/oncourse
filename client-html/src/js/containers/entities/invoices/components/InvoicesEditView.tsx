@@ -269,15 +269,17 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3 saveButtonTableOffset defaultBackgroundColor">
-      <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid size={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
+          placeholder='Tags'
+          trackCarretPosition={twoColumn}
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <EntityChecklists
           entity="AbstractInvoice"
           form={form}
@@ -286,7 +288,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 3 : 12}>
+      <Grid size={twoColumn ? 3 : 12}>
         <FormField
           type="text"
           name="title"
@@ -294,7 +296,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 3 : 12}>
+      <Grid size={twoColumn ? 3 : 12}>
         <FormField
           type="remoteDataSelect"
           entity="Lead"
@@ -314,7 +316,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 3 : 12}>
+      <Grid size={twoColumn ? 3 : 12}>
         <FormField
           type="remoteDataSelect"
           entity="Contact"
@@ -334,12 +336,12 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 3 : 12}>
+      <Grid size={twoColumn ? 3 : 12}>
         <FormField type="text" name="customerReference" label={$t('customer_reference')} />
       </Grid>
 
       {values.type !== "Quote" && (
-        <Grid item xs={twoColumn ? 3 : 12}>
+        <Grid size={twoColumn ? 3 : 12}>
           <Uneditable
             label={$t('overdue')}
             value={values && values.overdue}
@@ -349,12 +351,12 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       )}
 
       {!isNew && values.type === "Invoice" && (
-        <Grid item xs={twoColumn ? 3 : 12}>
+        <Grid size={twoColumn ? 3 : 12}>
           <FormField type="text" name="invoiceNumber" label={$t('invoice_number')} disabled />
         </Grid>
       )}
 
-      <Grid item xs={twoColumn ? 3 : 12}>
+      <Grid size={twoColumn ? 3 : 12}>
         <FormField
           type="date"
           name="invoiceDate"
@@ -365,7 +367,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 3 : 12}>
+      <Grid size={twoColumn ? 3 : 12}>
         <FormField
           type="date"
           name="dateDue"
@@ -375,15 +377,15 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 3 : 12}>
+      <Grid size={twoColumn ? 3 : 12}>
         <FormField type="multilineText" name="billToAddress" label={$t('billing_address')} />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField type="multilineText" name="shippingAddress" label={$t('shipping_address')} />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12} className="pb-2">
+      <Grid size={twoColumn ? 6 : 12} className="pb-2">
         <FormField
           type="multilineText"
           name="description"
@@ -392,7 +394,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <MinifiedEntitiesList
           name="invoiceLines"
           header={values.type === "Quote" ? "Quote Lines" : "Invoice Lines"}
@@ -407,7 +409,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           accordion
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <div className="centeredFlex pt-1 pr-4 justify-content-end">
           <Typography variant="subtitle2" noWrap>
             {$t('total')}
@@ -429,7 +431,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       </Grid>
 
       {values.type === "Invoice" && (
-        <Grid item xs={twoColumn ? 4 : 12} className="pb-2">
+        <Grid size={twoColumn ? 4 : 12} className="pb-2">
           <InvoicePaymentPlans
             name="paymentPlans"
             currency={currency}
@@ -442,11 +444,11 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         </Grid>
       )}
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField type="multilineText" name="publicNotes" label={$t('public_notes')} />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <OwnApiNotes
           {...props}
           notesHeader="Private Note"
@@ -454,7 +456,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       </Grid>
 
       {values.type === "Invoice" && (
-        <Grid item xs={12} className="pb-2">
+        <Grid size={12} className="pb-2">
           <FormControlLabel
             classes={{
               root: "checkbox"
@@ -465,14 +467,14 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         </Grid>
       )}
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Uneditable
           label={$t('source')}
           value={values.source}
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Uneditable
           label={$t('created_by')}
           value={values.createdByUser}
@@ -485,10 +487,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           fieldName="customFields"
           entityValues={values}
           form={form}
-          gridItemProps={{
-            xs: twoColumn ? 6 : 12,
-            lg: twoColumn ? 4 : 12
-          }}
+          gridItemProps={{ size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } }}
         />)}
 
       {values.type === "Quote" && (
@@ -497,10 +496,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           fieldName="customFields"
           entityValues={values}
           form={form}
-          gridItemProps={{
-            xs: twoColumn ? 6 : 12,
-            lg: twoColumn ? 4 : 12
-          }}
+          gridItemProps={{ size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } }}
         />)}
     </Grid>
   );

@@ -273,7 +273,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
         />
         <Collapse in={this.state.limited}>
           <Grid container rowSpacing={2} columnSpacing={3}>
-            <Grid item xs={twoColumn ? 6 : 12}>
+            <Grid size={twoColumn ? 6 : 12}>
               <FormField
                 type="number"
                 name="studentEnrolledWithinDays"
@@ -283,7 +283,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 debounced={false}
               />
             </Grid>
-            <Grid item xs={twoColumn ? 3 : 12}>
+            <Grid size={twoColumn ? 3 : 12}>
               <FormField
                 type="select"
                 name="studentAgeUnder"
@@ -303,7 +303,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               />
             </Grid>
             {typeof values.studentAgeUnder === "boolean" && (
-              <Grid item xs={twoColumn ? 3 : 12}>
+              <Grid size={twoColumn ? 3 : 12}>
                 <FormField
                   type="number"
                   name="studentAge"
@@ -314,7 +314,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 />
               </Grid>
             )}
-            <Grid item xs={twoColumn ? 6 : 12}>
+            <Grid size={twoColumn ? 6 : 12}>
               <FormField
                 type="text"
                 name="studentPostcode"
@@ -322,14 +322,14 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 validate={validatePostcode}
               />
             </Grid>
-            <Grid item xs={twoColumn ? 6 : 12}>
+            <Grid size={twoColumn ? 6 : 12}>
               <FormField
                 type="text"
                 name="studentEmail"
                 label={$t("email")}
               />
             </Grid>
-            <Grid item xs={twoColumn ? 6 : 12}>
+            <Grid size={twoColumn ? 6 : 12}>
               <FormField
                 type="remoteDataSelect"
                 entity="Course"
@@ -354,7 +354,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 allowEmpty
               />
             </Grid>
-            <Grid item xs={twoColumn ? 6 : 12}>
+            <Grid size={twoColumn ? 6 : 12}>
               <FormField
                 type="number"
                 name="minEnrolmentsForAnyCourses"
@@ -364,7 +364,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 debounced={false}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormControlLabel
                 className="checkbox"
                 control={<FormField type="checkbox" name="limitPreviousEnrolment" color="secondary" />}

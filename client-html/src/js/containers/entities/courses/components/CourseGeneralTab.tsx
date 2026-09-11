@@ -80,7 +80,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
 
     return (
       <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FullScreenStickyHeader
             opened={isNew || Object.keys(syncErrors).some(k => ['code', 'name'].includes(k))}
             twoColumn={twoColumn}
@@ -105,7 +105,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             )}
             fields={(
               <Grid container columnSpacing={3} rowSpacing={2}>
-                <Grid item xs={twoColumn ? 2 : 12}>
+                <Grid size={twoColumn ? 2 : 12}>
                   <FormField
                     type="text"
                     label={$t('code')}
@@ -114,7 +114,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
                     required
                   />
                 </Grid>
-                <Grid item xs={twoColumn ? 4 : 12}>
+                <Grid size={twoColumn ? 4 : 12}>
                   <FormField
                     type="text"
                     label={$t('name')}
@@ -128,12 +128,14 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 8 : 12}>
+        <Grid size={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={tagsGrouped.tags}
             className="mb-2"
+            placeholder='Tags'
+            trackCarretPosition={twoColumn}
           />
 
           <FormField
@@ -175,7 +177,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           {subjectsField}
         </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12}>
+        <Grid size={twoColumn ? 4 : 12}>
           <EntityChecklists
             className={twoColumn ? "mr-4" : null}
             entity="Course"
@@ -187,13 +189,13 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
 
         <CourseAvailableClassChart courseId={values.id} isNew={isNew} />
 
-        <Grid item xs={12} className="mb-2">
+        <Grid size={12} className="mb-2">
           <TimetableButton onClick={onCalendarClick} />
         </Grid>
 
         {!values.isTraineeship && (
           <>
-            <Grid item xs={twoColumn ? 4 : 12}>
+            <Grid size={twoColumn ? 4 : 12}>
               <FormField
                 type="select"
                 name="enrolmentType"
@@ -202,7 +204,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
                 disabled={values.isTraineeship}
               />
             </Grid>
-            <Grid item xs={twoColumn ? 4 : 12}>
+            <Grid size={twoColumn ? 4 : 12}>
               <FormField
                 type="select"
                 name="status"
@@ -213,7 +215,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             </Grid>
           </>
         )}
-        <Grid item xs={twoColumn ? 4 : 12}>
+        <Grid size={twoColumn ? 4 : 12}>
           <FormField
             type="select"
             name="dataCollectionRuleId"
@@ -227,7 +229,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           />
         </Grid>
 
-        <Grid item xs={12} className="centeredFlex">
+        <Grid size={12} className="centeredFlex">
           <FormControlLabel
             className="checkbox"
             control={(
@@ -242,7 +244,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           />
         </Grid>
 
-        <Grid item xs={12} className="centeredFlex">
+        <Grid size={12} className="centeredFlex">
           <FormControlLabel
             className="checkbox"
             control={<FormField type="checkbox" name="allowWaitingLists" />}
@@ -251,7 +253,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
         </Grid>
 
         {values.isTraineeship && (
-          <Grid item xs={12} className="centeredFlex">
+          <Grid size={12} className="centeredFlex">
             <FormControlLabel
               className="checkbox"
               control={<FormField type="checkbox" name="currentlyOffered"/>}
@@ -260,7 +262,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           </Grid>
         )}
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <NestedEntity
             entityTypes={waitingListTypes}
             dirty={dirty}
@@ -274,10 +276,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           fieldName="customFields"
           entityValues={values}
           form={form}
-          gridItemProps={{
-            xs: twoColumn ? 6 : 12,
-            lg: twoColumn ? 4 : 12
-          }}
+          gridItemProps={{ size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } }}
         />
       </Grid>
     );

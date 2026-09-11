@@ -555,7 +555,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
             modifiedOn={v => new Date(v.form.modified)}
             opened={Boolean(getDeepValue(syncErrors, "form.name"))}
             fields={(
-              <Grid item xs={8}>
+              <Grid size={8}>
                 <FormField
                   type="text"
                   name="form.name"
@@ -598,9 +598,9 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
             )}
           >
             <Grid container>
-              <Grid item sm={12} lg={10} xl={6}>
+              <Grid size={{ sm: 12, lg: 10, xl: 6 }}>
                 <Grid container columnSpacing={3}>
-                  <Grid item xs={12} className={clsx("centeredFlex", classes.headerControlsContainer)}>
+                  <Grid size={12} className={clsx("centeredFlex", classes.headerControlsContainer)}>
                     <div className="pt-2 pb-2">
                       <Typography variant="caption">{$t('type')}</Typography>
 
@@ -621,11 +621,11 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
                     )}
                   </Grid>
 
-                  <Grid item xs={12} className="mb-1">
+                  <Grid size={12} className="mb-1">
                     <Divider />
                   </Grid>
 
-                  <Grid item xs={12} className="mb-3">
+                  <Grid size={12} className="mb-3">
                     <Tree
                       tree={treeState}
                       renderItem={this.renderCollectionField}

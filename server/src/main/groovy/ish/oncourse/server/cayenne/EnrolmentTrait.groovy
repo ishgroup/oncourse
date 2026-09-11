@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.AttendanceType
+import ish.util.DurationFormatter
 import ish.common.types.CourseClassType
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
@@ -97,13 +98,22 @@ trait EnrolmentTrait {
                     } else if (AttendanceType.PARTIAL.equals(a.getAttendanceType())) {
                         Integer partialDuration = a.getDurationMinutes();
                         if (partialDuration != null) {
-                            minutesPresent += Math.min(sessionDuration, partialDuration.doubleValue());
+                            minutesPresent += partialDuration.doubleValue();
+                        } else if (a.attendedFrom != null && a.attendedUntil != null) {
+                            // fallback for legacy records where durationMinutes was not persisted
+                            Integer computed = DurationFormatter.durationInMinutesBetween(a.attendedFrom, a.attendedUntil);
+                            if (computed != null) {
+                                minutesPresent += computed.doubleValue();
+                            }
                         }
                     }
                 }
             }
         }
 
+        if (minutesPassed == 0d) {
+            return null
+        }
         return (int) (100 * minutesPresent / minutesPassed);
 
     }

@@ -4,13 +4,13 @@
  */
 
 import { FinalisePeriodInfo } from '@api/model';
-import HelpOutline from '@mui/icons-material/HelpOutline';
+import HelpOutline from '@mui/icons-material/HelpOutlineOutlined';
 import Launch from '@mui/icons-material/Launch';
 import { FormControlLabel, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
-import DialogActions from '@mui/material/DialogActions/DialogActions';
-import DialogContent from '@mui/material/DialogContent/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -151,7 +151,7 @@ const Finalise = React.memo<Props>(({
 
         <DialogContent className="overflow-hidden">
           <Grid container columnSpacing={3}>
-            <Grid item xs={8}>
+            <Grid size={8}>
               <FormField
                 type="date"
                 name="targetDate"
@@ -159,7 +159,7 @@ const Finalise = React.memo<Props>(({
                 validate={[validateSingleMandatoryField, validateMinDate]}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <LinkItem label={unreconciledPayments} onClick={onClickUnreconciledPayments} error />
 
               <LinkItem label={unbankedPaymentIns} onClick={onClickUnbankedPaymentIns} error />
@@ -168,8 +168,8 @@ const Finalise = React.memo<Props>(({
 
               <LinkItem label={depositBankings} onClick={onClickDepositBankings} />
             </Grid>
-            <Grid item xs={12} />
-            <Grid item xs={12} />
+            <Grid size={12} />
+            <Grid size={12} />
           </Grid>
 
           <FormControlLabel

@@ -14,6 +14,7 @@ export default (theme: AppTheme, p, classes) =>
       minHeight: "36px",
     },
     items: {
+      flexDirection: 'column',
       marginLeft: -8,
       marginRight: -8,
       "& > div:nth-child(even)": {

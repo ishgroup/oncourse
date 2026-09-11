@@ -62,7 +62,7 @@ const ContactCourseClass = React.memo<{ showConfirm?, twoColumn?, values?, isNew
 
   return (
     <>
-      <Grid item xs={12} className="centeredFlex">
+      <Grid size={12} className="centeredFlex">
         <NestedEntity
           entityName="Classes"
           goToLink="/class"

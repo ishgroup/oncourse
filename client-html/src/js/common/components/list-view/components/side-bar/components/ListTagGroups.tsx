@@ -1,70 +1,72 @@
-import { DataResponse, TableModel } from '@api/model';
-import React, { useEffect, useMemo, useState } from 'react';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd-next';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { withStyles } from 'tss-react/mui';
+import { TableModel } from '@api/model';
+import useEventCallback from '@mui/utils/useEventCallback';
+import React, { memo, useMemo } from 'react';
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd-next';
 import { SPECIAL_TYPES_DISPLAY_KEY } from '../../../../../../constants/Config';
 import { FormMenuTag } from '../../../../../../model/tags';
-import { State } from '../../../../../../reducers/state';
-import { IAction } from '../../../../../actions/IshAction';
-import { useAppSelector } from '../../../../../utils/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../../utils/hooks';
 import { updateTableModel } from '../../../actions';
+import { getActiveTags } from '../../../utils/listFiltersUtils';
 import { COLUMN_WITH_COLORS } from '../../list/constants';
 import ListTagGroup from './ListTagGroup';
 
-const styles = theme =>
-  ({
-    container: {
-      marginLeft: theme.spacing(-0.5)
-    },
-    noTransform: {
-      transform: "none !important"
-    },
-  });
-
 interface Props {
-  tags: FormMenuTag[];
-  classes: any;
-  records: DataResponse;
   onChangeTagGroups: (tags: FormMenuTag[], type: string) => void;
   rootEntity: string;
-  updateTableModel: (model: TableModel, listUpdate?: boolean) => void;
 }
 
-const ListTagGroups = ({
- tags, classes, onChangeTagGroups, updateTableModel, records 
-}: Props) => {
+const SUBJECTS = 'Subjects';
+
+const groupKey = (group: FormMenuTag) => group.prefix + group.tagBody.id.toString();
+
+const ListTagGroups = memo<Props>(({ onChangeTagGroups, rootEntity }) => {
+  const dispatch = useAppDispatch();
+
+  const tags = useAppSelector(state => state.list.menuTags);
+
+  // only the slices of `records` this tree actually depends on, so an unrelated list fetch
+  // does not re-render every tag group
+  const tagsOrder = useAppSelector(state => state.list.records.tagsOrder);
+  const hasColumns = useAppSelector(state => state.list.records.columns.length > 0);
+  const showColoredDots = useAppSelector(
+    state => state.list.records.columns.find(c => c.attribute === COLUMN_WITH_COLORS)?.visible
+  );
+
   const specialTypesEnabled = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true');
 
-  const showColoredDots = records.columns.find(c => c.attribute === COLUMN_WITH_COLORS)?.visible;
-  
-  const [tagsForRender, setTagsForRender] = useState([]);
+  // the checkboxes read the same state the request is built from, so they can never show a
+  // selection the list is not actually filtered by.
+  // Kept per group: the same tag tree is published under several prefixes (Enrolled / Teaching
+  // over the same course tags), so one shared list would tick a tag in every group that holds it
+  const activeTagsByGroup = useMemo(
+    () => new Map(tags.map(t => [
+      groupKey(t),
+      getActiveTags(t.children).map(c => c.tagBody.id.toString())
+    ])),
+    [tags]
+  );
 
-  useEffect(() => {
-    const savedTagsOrder = records.tagsOrder;
+  const tagsForRender = useMemo(() => {
     const filteredTags = tags.filter((tag: FormMenuTag) => tag.children.length && (specialTypesEnabled
-      ? !tag.tagBody.system && tag.tagBody.name !== 'Subjects'
+      ? !tag.tagBody.system && tag.tagBody.name !== SUBJECTS
       : true));
 
     const filteredSortedTags = [];
 
-    if (savedTagsOrder && savedTagsOrder.length) {
-      savedTagsOrder.forEach((tagId: number) => {
-        const tag = filteredTags.find(elem => elem.tagBody.id === tagId);
-        if (tag) {
-          const indexOfTag = filteredTags.indexOf(tag);
-
+    if (tagsOrder && tagsOrder.length) {
+      tagsOrder.forEach((tagId: number) => {
+        const indexOfTag = filteredTags.findIndex(elem => elem.tagBody.id === tagId);
+        if (indexOfTag !== -1) {
           const [foundElement] = filteredTags.splice(indexOfTag, 1);
           filteredSortedTags.push(foundElement);
         }
       });
     }
 
-    setTagsForRender(filteredSortedTags.concat(filteredTags));
-  }, [records, tags]);
-  
-  const updateActive = (updated: FormMenuTag) => {
+    return filteredSortedTags.concat(filteredTags);
+  }, [tags, tagsOrder, specialTypesEnabled]);
+
+  const updateActive = useEventCallback((updated: FormMenuTag) => {
     const updatedTags = tags.map(t => {
       if (t.tagBody.id === updated.tagBody.id && t.prefix === updated.prefix) {
         return updated;
@@ -73,83 +75,64 @@ const ListTagGroups = ({
       return t;
     });
     onChangeTagGroups(updatedTags, "tags");
-  };
+  });
 
-  const onDragEnd = result => {
+  const onDragEnd = useEventCallback((result: DropResult) => {
     if (!result.destination || result.destination.index === result.source.index) {
       return;
     }
 
-    const [removed] = tagsForRender.splice(result.source.index, 1);
-    tagsForRender.splice(result.destination.index, 0, removed);
-    setTagsForRender(tagsForRender);
+    const reordered = [...tagsForRender];
+    const [removed] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, removed);
 
-    const tagsOrder = tagsForRender.map(tag => tag.tagBody.id);
+    const model: TableModel = { tagsOrder: reordered.map(tag => tag.tagBody.id) };
 
-    if (records.columns.length) updateTableModel({ tagsOrder }, true);
-  };
-  
-  const subjects = useMemo(() => {
-    if (specialTypesEnabled) {
-      return tags.filter(tag => tag.tagBody.system && tag.tagBody.name === 'Subjects')[0];
-    }
-    return null;
-  }, [tags, specialTypesEnabled]);
+    if (hasColumns) dispatch(updateTableModel(rootEntity, model, true));
+  });
+
+  const subjects = useMemo(
+    () => (specialTypesEnabled
+      ? tags.find(tag => tag.tagBody.system && tag.tagBody.name === SUBJECTS)
+      : null),
+    [tags, specialTypesEnabled]
+  );
 
   return (
     <>
       {specialTypesEnabled && subjects &&
         <ListTagGroup
-          key={subjects.prefix + subjects.tagBody.id.toString()}
+          activeTags={activeTagsByGroup.get(groupKey(subjects))}
+          key={groupKey(subjects)}
           rootTag={subjects}
-          classes={classes}
           updateActive={updateActive}
           showColoredDots={false}
           dndEnabled={false}
         />
       }
-      <DragDropContext
-        onDragEnd={args => onDragEnd(args)}
-      >
+      <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="ROOT" style={{ transform: "none" }}>
           {provided => (
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {tagsForRender.map((t, index) => {
-                if (!t.children.length) {
-                  return null;
-                }
-                return (
-                  <ListTagGroup
-                    key={t.prefix + t.tagBody.id.toString()}
-                    dndKey={index}
-                    rootTag={t}
-                    classes={classes}
-                    updateActive={updateActive}
-                    showColoredDots={showColoredDots}
-                  />
-                );
-              })}
+              {tagsForRender.map((t, index) => (
+                <ListTagGroup
+                  activeTags={activeTagsByGroup.get(groupKey(t))}
+                  key={groupKey(t)}
+                  dndKey={index}
+                  rootTag={t}
+                  updateActive={updateActive}
+                  showColoredDots={showColoredDots}
+                />
+              ))}
             </div>
           )}
         </Droppable>
       </DragDropContext>
     </>
   );
-};
-
-const mapStateToProps = (state: State) => ({
-  tags: state.list.menuTags,
-  records: state.list.records,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<IAction>, ownProps) => ({
-  updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(ListTagGroups, styles));
+export default ListTagGroups;

@@ -56,7 +56,7 @@ const TransactionsEditView = props => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="select"
           disabled={!isNew || !hasAccounts}
@@ -67,7 +67,7 @@ const TransactionsEditView = props => {
                   />
       </Grid>
       {isNew ? (
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField
             type="select"
             disabled={!hasAccounts}
@@ -78,7 +78,7 @@ const TransactionsEditView = props => {
                       />
         </Grid>
       ) : null}
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="money"
           disabled={!isNew}
@@ -87,7 +87,7 @@ const TransactionsEditView = props => {
           validate={isNew ? validateAmountField : undefined}
                   />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="date"
           disabled={!isNew}

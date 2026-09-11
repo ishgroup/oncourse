@@ -13,7 +13,8 @@ const useStyles = makeAppStyles<void, 'fullScreenTitleItem' | 'disableInteractio
       top: 0,
       zIndex: theme.zIndex.appBar + 1,
       marginTop: 0,
-      height: APP_BAR_HEIGHT
+      height: APP_BAR_HEIGHT,
+      width: 'calc(100vw - 300px)'
     }
   },
   fullScreenTitleItem: {},
@@ -76,6 +77,7 @@ const useStyles = makeAppStyles<void, 'fullScreenTitleItem' | 'disableInteractio
     position: "fixed",
     top: 0,
     zIndex: theme.zIndex.appBar + 1,
+    width: "80%"
   },
   disableInteraction: {}
 }));
@@ -93,7 +95,6 @@ interface Props {
   customStuck?: boolean,
   fields?: any,
   className?: string,
-  leftOffset?: number
 }
 
 const FullScreenStickyHeader = React.memo<Props>(props => {
@@ -105,8 +106,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     twoColumn,
     disableInteraction,
     isFixed =  true,
-    customStuck,
-    leftOffset
+    customStuck
   } = props;
 
   const { classes } = useStyles();
@@ -154,26 +154,16 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
 
   return (
     <ClickAwayListener onClickAway={onClickAway}>
-      <Grid
+      <div
         ref={rootRef}
-        container
-        columnSpacing={3}
         className={clsx("align-items-center", Avatar && opened && "mb-2", classes.root)}
         style={Avatar ? { minHeight: "60px" } : null}
       >
-        <Grid
-          item
-          xs={12}
-          columnSpacing={3}
-          className={clsx(
-            "centeredFlex",
-            twoColumn && !opened && (isStuck || customStuck) && classes.fullScreenTitleItem,
-            !opened && isFixed && twoColumn && classes.isFixed,
-          )}
-          style={{
-            width: `calc(100% - 250px - ${leftOffset || 0}px)`
-          }}
-        >
+        <div className={clsx(
+          "centeredFlex  flex-fill",
+          twoColumn && !opened && (isStuck || customStuck) && classes.fullScreenTitleItem,
+          !opened && isFixed && twoColumn && classes.isFixed,
+        )} >
           {Avatar && (
             <Avatar
               avatarSize={showTitleOnly && !opened ? 40 : 90}
@@ -183,13 +173,11 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
           <Grid
             columnSpacing={3}
             container
-            item
-            xs={Avatar ? 10 : 12}
-            className="relative overflow-hidden align-items-center"
+            size={Avatar ? 10 : 12}
+            className="relative overflow-hidden align-items-center flex-fill"
           >
             <Grid
-              item
-              xs={12}
+              size={12}
             >
               <Collapse in={titleExpanded}>
                 <Typography
@@ -211,8 +199,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
               </Collapse>
             </Grid>
             <Grid
-              item
-              xs={12}
+              size={12}
               className={classes.titleFields}
             >
               <Collapse in={opened || isEditing}>
@@ -220,8 +207,8 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
               </Collapse>
             </Grid>
           </Grid>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
     </ClickAwayListener>
   );
 });

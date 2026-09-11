@@ -240,7 +240,7 @@ const Table = ({
 
   useEffect(() => {
     if (tableRef.current && listRef.current) {
-      listRef.current.scrollTo(0);
+      if (listRef.current.element) listRef.current.element.scrollTop = 0;
       setTimeout(() => {
         if (tableRef.current) {
           tableRef.current.scrollTop = 10;
@@ -275,7 +275,7 @@ const Table = ({
 
   const getItemStyle = (isDragging, draggableStyle) => {
     if (isDragging) {
-      if (listRef.current && listRef.current.scrollTop) listRef.current.scrollTop = 0;
+      if (listRef.current?.element?.scrollTop) listRef.current.element.scrollTop = 0;
       if (tableRef.current && tableRef.current.scrollTop) tableRef.current.scrollTop = 0;
     }
     return {
@@ -354,9 +354,7 @@ const Table = ({
                                 variant="subtitle2"
                                 color="textSecondary"
                                 component="div"
-                                fontSize="inherit"
-                                position="relative"
-                                display="flex"
+                                sx={{ position: 'relative', display: 'flex', fontSize: 'inherit' }}
                                 className={columnDef.cellClass}
                               >
                                 {!disabledCell && (<>

@@ -35,7 +35,7 @@ const AssessmentGeneralTab = React.memo<Props>(
   }
 ) => (
   <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FullScreenStickyHeader
         opened={isNew || Object.keys(syncErrors).some(k => ['code', 'name'].includes(k))}
         twoColumn={twoColumn}
@@ -60,7 +60,7 @@ const AssessmentGeneralTab = React.memo<Props>(
         )}
         fields={(
           <Grid container columnSpacing={3} rowSpacing={2}>
-            <Grid item xs={twoColumn ? 2 : 12}>
+            <Grid size={twoColumn ? 2 : 12}>
               <FormField
                 type="text"
                 label={$t('code')}
@@ -69,7 +69,7 @@ const AssessmentGeneralTab = React.memo<Props>(
                 required
              />
             </Grid>
-            <Grid item xs={twoColumn ? 4 : 12}>
+            <Grid size={twoColumn ? 4 : 12}>
               <FormField
                 type="text"
                 label={$t('name')}
@@ -83,15 +83,17 @@ const AssessmentGeneralTab = React.memo<Props>(
       />
     </Grid>
 
-    <Grid item xs={twoColumn ? 8 : 12}>
+    <Grid size={twoColumn ? 8 : 12}>
       <FormField
         type="tags"
         name="tags"
         tags={tags}
+        placeholder='Tags'
+        trackCarretPosition={twoColumn}
       />
     </Grid>
 
-    <Grid item xs={twoColumn ? 4 : 12}>
+    <Grid size={twoColumn ? 4 : 12}>
       <EntityChecklists
         entity="Assessment"
         form={form}
@@ -100,7 +102,7 @@ const AssessmentGeneralTab = React.memo<Props>(
       />
     </Grid>
 
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FormField
         type="select"
         name="gradingTypeId"
@@ -111,14 +113,14 @@ const AssessmentGeneralTab = React.memo<Props>(
         allowEmpty
       />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FormControlLabel
         className="checkbox mb-2"
         control={<FormField type="checkbox" name="active" color="secondary"  />}
         label={$t('active')}
       />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FormField
         type="multilineText"
         name="description"

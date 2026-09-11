@@ -26,22 +26,22 @@ class Directions extends React.Component<any, any> {
 
     return (
       <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pb-1 pl-3 pr-3">
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div className="heading">{$t('directions')}</div>
         </Grid>
-        <Grid item xs={layoutArray[0].xs}>
+        <Grid size={layoutArray[0].xs}>
           <FormEditorField
             name="drivingDirections"
             label={$t('driving_directions')}
           />
         </Grid>
-        <Grid item xs={layoutArray[1].xs}>
+        <Grid size={layoutArray[1].xs}>
           <FormEditorField
             name="publicTransportDirections"
             label={$t('public_transport_directions')}
           />
         </Grid>
-        <Grid item xs={layoutArray[2].xs} className="mb-3">
+        <Grid size={layoutArray[2].xs} className="mb-3">
           <FormEditorField
             name="specialInstructions"
             label={$t('special_instructions')}

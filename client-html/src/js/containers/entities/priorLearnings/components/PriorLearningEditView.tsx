@@ -114,7 +114,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
   return values ? (
     <div className="p-3">
       <Grid container columnSpacing={3} rowSpacing={2}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FullScreenStickyHeader
             opened={isNew || Object.keys(syncErrors).includes("title")}
             twoColumn={twoColumn}
@@ -124,13 +124,13 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
               </div>
             )}
             fields={(
-              <Grid item xs={twoColumn ? 6 : 12}>
+              <Grid size={twoColumn ? 6 : 12}>
                 <FormField type="text" name="title" label={$t('title')} required />
               </Grid>
             )}
           />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField
             type="remoteDataSelect"
             name="contactId"
@@ -149,7 +149,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12}>
+        <Grid size={twoColumn ? 3 : 12}>
           <FormField
             type="remoteDataSelect"
             name="qualificationName"
@@ -169,7 +169,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12}>
+        <Grid size={twoColumn ? 3 : 12}>
           <FormField
             type="remoteDataSelect"
             name="qualificationNationalCode"
@@ -189,25 +189,25 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField type="text" name="externalReference" label={$t('external_reference')} />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <Uneditable value={values.qualificationLevel} label={$t('level')} />
         </Grid>
 
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField
             type="text"
             name="outcomeIdTrainingOrg"
             label={$t('outcome_identifier_training_organization')}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField type="multilineText" name="notes" label={$t('private_notes')} />
         </Grid>
 
-        <Grid item xs={12} className="pb-2 pt-2">
+        <Grid size={12} className="pb-2 pt-2">
           <MinifiedEntitiesList
             name="outcomes"
             header="Outcomes"
@@ -222,7 +222,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
             accordion
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FieldArray
             name="documents"
             label={$t('documents')}

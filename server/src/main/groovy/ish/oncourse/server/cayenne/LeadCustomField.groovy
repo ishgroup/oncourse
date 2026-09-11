@@ -11,6 +11,12 @@ package ish.oncourse.server.cayenne
 import ish.oncourse.server.cayenne.glue._LeadCustomField
 
 class LeadCustomField extends _LeadCustomField {
+
+    @Override
+    boolean isAsyncReplicationAllowed() {
+        return false
+    }
+
     @Override
     void setRelatedObject(ExpandableTrait relatedObject) {
         super.setRelatedLead((Lead) relatedObject)

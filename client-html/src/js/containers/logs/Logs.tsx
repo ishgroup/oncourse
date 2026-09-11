@@ -41,7 +41,7 @@ const Logs = ({
         title={$t('download_logs')}
       >
         <Grid container rowSpacing={2} columnSpacing={3} className="mt-2">
-          <Grid item xs={4}>
+          <Grid size={4}>
             <FormField
               type="dateTime"
               label={$t('from')}
@@ -49,7 +49,7 @@ const Logs = ({
               required
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid size={4}>
             <FormField
               type="dateTime"
               label={$t('to')}

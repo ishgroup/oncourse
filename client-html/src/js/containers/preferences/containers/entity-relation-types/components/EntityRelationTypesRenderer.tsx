@@ -25,14 +25,14 @@ const renderEntityRelationTypes = props => {
   } = props;
 
   return (
-    <Grid item xs={12}>
+    <Grid size={12}>
       {fields.map((item: EntityRelationType, index) => {
         const field = fields.get(index);
 
         return (
           <Card id={`entity-relation-type-${index}`} className="card" key={index}>
             <Grid container spacing={3}>
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <FormField
                   type="text"
                   name={`${item}.name`}
@@ -43,7 +43,7 @@ const renderEntityRelationTypes = props => {
                 />
               </Grid>
 
-              <Grid item xs={7}>
+              <Grid size={7}>
                 <FormField
                   type="text"
                   name={`${item}.description`}
@@ -53,7 +53,7 @@ const renderEntityRelationTypes = props => {
                 />
               </Grid>
 
-              <Grid item xs={1}>
+              <Grid size={1}>
                 <div className="relative">
                   {!field.systemType && (
                     <Button
@@ -68,7 +68,7 @@ const renderEntityRelationTypes = props => {
                 </div>
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <FormField
                   type="text"
                   name={`${item}.fromName`}
@@ -78,47 +78,49 @@ const renderEntityRelationTypes = props => {
                 />
               </Grid>
 
-              <Grid item xs={4} container>
-                <Grid item xs={12} container columnSpacing={3} rowSpacing={2} className={classes.shoppingCartActionBox}>
-                  <Grid item xs={12}>
-                    <Subtitle label={$t('shopping_cart_action')} />
+              <Grid size={4} container>
+                <Card className={classes.shoppingCartActionBox} elevation={0}>
+                  <Grid size={12} container columnSpacing={3} rowSpacing={2}>
+                    <Grid size={12}>
+                      <Subtitle label={$t('shopping_cart_action')} />
+                    </Grid>
+                    <Grid size={12}>
+                      <FormField
+                        type="select"
+                        name={`${item}.shoppingCart`}
+                        label={$t('cart_action')}
+                        items={CartActions}
+                        required
+                        hideLabel
+                      />
+                    </Grid>
+                    <Grid size={12}>
+                      <FormField
+                        type="select"
+                        name={`${item}.discountId`}
+                        label={$t('apply_discount_to_item_on_right')}
+                        items={discounts}
+                        allowEmpty
+                      />
+                    </Grid>
+                    <Grid size={12}>
+                      <FormControlLabel
+                        className={classes.checkbox}
+                        control={(
+                          <FormField
+                            type="checkbox"
+                            name={`${item}.considerHistory`}
+                            color="primary"
+                          />
+                        )}
+                        label={$t('consider_history')}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <FormField
-                      type="select"
-                      name={`${item}.shoppingCart`}
-                      label={$t('cart_action')}
-                      items={CartActions}
-                      required
-                      hideLabel
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormField
-                      type="select"
-                      name={`${item}.discountId`}
-                      label={$t('apply_discount_to_item_on_right')}
-                      items={discounts}
-                      allowEmpty
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      className={classes.checkbox}
-                      control={(
-                        <FormField
-                          type="checkbox"
-                          name={`${item}.considerHistory`}
-                          color="primary"
-                        />
-                      )}
-                      label={$t('consider_history')}
-                    />
-                  </Grid>
-                </Grid>
+                </Card>
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <FormField
                   type="text"
                   name={`${item}.toName`}
@@ -129,7 +131,7 @@ const renderEntityRelationTypes = props => {
                 />
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid size={6}>
                 <FormControlLabel
                   className={classes.checkbox}
                   control={(

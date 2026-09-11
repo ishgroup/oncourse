@@ -96,16 +96,13 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
     [form]
   );
 
-  const gridItemProps = {
-    xs: twoColumn ? 6 : 12,
-    lg: twoColumn ? 4 : 12
-  } as any;
+  const gridItemProps = { size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } } as any;
 
   const tags = useAppSelector(state => state.tags?.entityTags[getSaleEntityName(values?.productType)] || defaultTags);
 
   return values ? (
     <Grid container columnSpacing={3} rowSpacing={2} className={clsx("p-3", twoColumn && "pt-1")}>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FullScreenStickyHeader
           disableInteraction
           twoColumn={twoColumn}
@@ -119,15 +116,17 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
             )}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid size={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
+          placeholder='Tags'
+          trackCarretPosition={twoColumn}
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <EntityChecklists
           entity={customFieldType}
           form={form}
@@ -136,7 +135,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
         />
       </Grid>
 
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable
           value={values.purchasedByName}
           label={$t('purchased_by')}
@@ -145,11 +144,11 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
           }
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={formatSaleDate(values.purchasedOn)} label={$t('purchased_on')}  />
       </Grid>
 
-      <Grid item container columnSpacing={3} rowSpacing={2} xs={12}>
+      <Grid container columnSpacing={3} rowSpacing={2} size={12}>
         <CustomFields
           entityName={customFieldType}
           fieldName="customFields"
@@ -160,7 +159,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
       </Grid>
 
       {type === ProductType.Voucher && (
-        <Grid item {...gridItemProps}>
+        <Grid {...gridItemProps}>
           <FormField
             type="remoteDataSelect"
             entity="Contact"
@@ -184,12 +183,12 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
         </Grid>
         )}
       {type === ProductType.Membership && (
-        <Grid item {...gridItemProps}>
+        <Grid {...gridItemProps}>
           <Uneditable value={formatSaleDate(values.validFrom)} label={$t('valid_from')} />
         </Grid>
       )}
       {(type === ProductType.Membership || type === ProductType.Voucher) && (
-        <Grid item {...gridItemProps}>
+        <Grid {...gridItemProps}>
           <FormField
             type="date"
             name="expiresOn"
@@ -202,25 +201,25 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
         </Grid>
       )}
 
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.purchasePrice} label={$t('purchase_price')} money />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.status} label={$t('status')} />
       </Grid>
    
       {type === ProductType.Voucher && (
-        <Grid item xs={12} container columnSpacing={3} rowSpacing={2}>
-          <Grid item {...gridItemProps} className="money">
+        <Grid size={12} container columnSpacing={3} rowSpacing={2}>
+          <Grid {...gridItemProps} className="money">
             <Uneditable value={values.valueRemaining} label={$t('value_remaining')} />
           </Grid>
-          <Grid item {...gridItemProps}>
+          <Grid {...gridItemProps}>
             <Uneditable value={values.voucherCode} label={$t('voucher_code')} />
           </Grid>
         </Grid>
       )}
 
-      <Grid item xs={12} className="mb-3">
+      <Grid size={12} className="mb-3">
         <FieldArray
           name="documents"
           label={$t('documents')}
@@ -236,11 +235,11 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <OwnApiNotes {...props}/>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         {type !== ProductType.Product && (
           <FieldArray
             name="payments"

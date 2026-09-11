@@ -37,12 +37,12 @@ public class CayenneListenersService {
         cayenneService.addListener(new AbstractInvoiceLineLifecycleListener());
         cayenneService.addListener(new InvoiceLineLifecycleListener(invoiceLineInitHelper, accountTransactionService));
         cayenneService.addListener(new PaymentOutLifecycleListener());
-        cayenneService.addListener(new EnrolmentLifecycleListener(cayenneService, eventService));
+        cayenneService.addListener(new EnrolmentLifecycleListener(eventService));
         cayenneService.addListener(new TransactionsLifecycleListener(transactionLockedService, accountTransactionService));
         cayenneService.addListener(new EffectiveDateLifecycleListener(transactionLockedService));
         cayenneService.addListener(new BankingLifecycleListener(accountTransactionService));
         cayenneService.addListener(auditListener);
-        cayenneService.addListener(new MembershipLifecycleListener(cayenneService));
+        cayenneService.addListener(new MembershipLifecycleListener());
         cayenneService.addListener(new AttendanceLifecycleListener());
         cayenneService.addListener(new TagLifecycleListener());
 

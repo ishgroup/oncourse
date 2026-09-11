@@ -334,15 +334,11 @@ class ContactMergeService {
         context.deleteObject(b)
         context.commitChanges()
 
-//        Call context.commitChanges() one more time after first context.commitChanges(), because if mergeDeliveryStatusAndAllowMarketing(a, b) will be called in all of changes before first context.commitChanges() deliveryStatusEmail and deliveryStatusSMS could be 0,
-//        because contact B can have messages, then messages will be updated (id), entity message has method preUpdate() where getContact().setDeliveryStatusEmail(0) and getContact().setDeliveryStatusSms(0).
         mergeDeliveryStatusAndAllowMarketing(a, b)
-        context.commitChanges()
-
         if (studentNumber != null) {
             a.student.studentNumber = studentNumber
-            context.commitChanges()
         }
+        context.commitChanges()
     }
 
     List<InfoLineDTO> getInfoLineAttributes(Contact contactA, Contact contactB) {

@@ -1,13 +1,16 @@
+import useEventCallback from '@mui/utils/useEventCallback';
 import $t from '@t';
 import clsx from 'clsx';
 import * as React from 'react';
 import { useState } from 'react';
 import { withStyles } from 'tss-react/mui';
 import { FilterGroup } from '../../../../../model/common/ListView';
+import { FormMenuTag } from '../../../../../model/tags';
 import HamburgerMenu from '../../../layout/swipeable-sidebar/components/HamburgerMenu';
 import { VARIANTS } from '../../../layout/swipeable-sidebar/utils';
 import ChecklistsFilters from './components/ChecklistsFilters';
 import FilterGroupComp from './components/FilterGroup';
+import { DeleteFilterHandler } from './components/FilterItem';
 import FiltersSwitcher from './components/FiltersSwitcher';
 import ListTagGroups from './components/ListTagGroups';
 import StubFilterItem from './components/StubFilterItem';
@@ -51,7 +54,10 @@ const SideBar = (props: Props) => {
 
   const hasCustomFilters = filterGroups.some(i => i.title === "Custom Filters");
 
-  const UpdateFilters = (index, value) => {
+  // `onChangeFilters` and `deleteFilter` are rebuilt on every ListView render, so they are wrapped
+  // here once - the memoized filter, tag and checklist subtrees below then only re-render on data
+  // changes instead of on every keystroke in the list search
+  const UpdateFilters = useEventCallback((index: string, value: boolean) => {
     const groupIndex = Number(index.split("/")[0]);
     const filterIndex = Number(index.split("/")[1]);
 
@@ -63,7 +69,17 @@ const SideBar = (props: Props) => {
       }))
     }));
     onChangeFilters(clone, "filters");
-  };
+  });
+
+  const onDeleteFilter = useEventCallback<DeleteFilterHandler>(
+    (id, entity, checked, isPrivate) => deleteFilter(id, entity, checked, isPrivate)
+  );
+
+  const onChangeTagGroups = useEventCallback((tags: FormMenuTag[], type: string) => onChangeFilters(tags, type));
+
+  const updateCheckedChecklists = useEventCallback((filters: FormMenuTag[]) => onChangeFilters(filters, "checkedChecklists"));
+
+  const updateUncheckedChecklists = useEventCallback((filters: FormMenuTag[]) => onChangeFilters(filters, "uncheckedChecklists"));
 
   return (
     <div>
@@ -79,7 +95,7 @@ const SideBar = (props: Props) => {
             <FilterGroupComp
               key={index}
               groupIndex={index}
-              deleteFilter={deleteFilter}
+              deleteFilter={onDeleteFilter}
               rootEntity={rootEntity}
               onUpdate={UpdateFilters}
               title={i.title}
@@ -91,13 +107,13 @@ const SideBar = (props: Props) => {
 
           {savingFilter && <StubFilterItem rootEntity={rootEntity} savingFilter={savingFilter} filterEntity={filterEntity} />}
 
-          <ListTagGroups onChangeTagGroups={onChangeFilters} rootEntity={rootEntity} />
+          <ListTagGroups onChangeTagGroups={onChangeTagGroups} rootEntity={rootEntity} />
         </div>
 
         <div className={clsx(filterBy !== 1 && "d-none")}>
           <ChecklistsFilters
-            updateChecked={filters => onChangeFilters(filters, "checkedChecklists")}
-            updateUnChecked={filters => onChangeFilters(filters, "uncheckedChecklists")}
+            updateChecked={updateCheckedChecklists}
+            updateUnChecked={updateUncheckedChecklists}
           />
         </div>
       </nav>

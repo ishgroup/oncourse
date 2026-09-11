@@ -7,7 +7,7 @@ import { CustomFieldType, ProductType } from '@api/model';
 import BookmarkBorder from '@mui/icons-material/BookmarkBorder';
 import BookmarkTwoTone from '@mui/icons-material/BookmarkTwoTone';
 import Clear from '@mui/icons-material/Clear';
-import HelpOutline from '@mui/icons-material/HelpOutline';
+import HelpOutline from '@mui/icons-material/HelpOutlineOutlined';
 import { green } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import { darken } from '@mui/material/styles';
@@ -18,7 +18,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { withStyles } from 'tss-react/mui';
-import { FILTER_TAGS_REGEX } from '../../../../../../constants/Config';
 import { getSaleEntityName } from '../../../../../../containers/entities/sales/utils';
 import { QueryFieldSuggestion } from '../../../../../../model/common/Fields';
 import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from '../../../../../../model/common/ListView';
@@ -26,7 +25,7 @@ import { FormMenuTag } from '../../../../../../model/tags';
 import { State } from '../../../../../../reducers/state';
 import EditInPlaceQuerySelect from '../../../../form/formFields/EditInPlaceQuerySelect';
 import { setListSavingFilter, setListUserAQLSearch } from '../../../actions';
-import { setIndeterminate } from '../../../utils/listFiltersUtils';
+import { expandAqlSearch } from '../../../utils/listSearchUtils';
 import QuerySaveMenu from './QuerySaveMenu';
 
 export const styles = (theme: AppTheme) => ({
@@ -91,7 +90,7 @@ interface Props {
   tags: FormMenuTag[];
   filterGroups: FilterGroup[];
   setListUserAQLSearch: StringArgFunction;
-  onQuerySearch: StringArgFunction;
+  onQuerySearch: (expression: string, value?: string) => void;
   setListSavingFilter: (saving: SavingFilterState) => void;
   classes?: any;
   changeQueryView?: any;
@@ -150,16 +149,6 @@ const getTagNamesSuggestions = (tags: FormMenuTag[]): QueryFieldSuggestion[] => 
 };
 
 const getCustomFieldsSuggestions = (customFields: CustomFieldType[]): string[] => customFields.map(f => f.fieldKey);
-
-const mapTags = (tags: FormMenuTag[], parent?: FormMenuTag) => tags.map(t => {
-    const updated = { ...t, parent };
-
-    if (updated.children.length) {
-      updated.children = mapTags(updated.children, updated);
-    }
-
-    return updated;
-  });
 
 class SearchInput extends React.PureComponent<Props, SearchInputState> {
   private inputNode: any;
@@ -274,64 +263,13 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
   };
 
   getAqlExpression = (value: string, setUsersSearch?: boolean) => {
-    const {
-      filterGroups, tags, setListUserAQLSearch
-    } = this.props;
+    const { filterGroups, setListUserAQLSearch } = this.props;
 
     if (setUsersSearch) {
       setListUserAQLSearch(value);
     }
 
-    const updatedGroups = filterGroups.map(f => ({ ...f, filters: f.filters.map(f => ({ ...f })) }));
-
-    const menuTags = mapTags(tags);
-
-    const filters = updatedGroups.flatMap(i => i.filters);
-
-    const activeFilters = filters.filter(i => i.active);
-
-    const activeFiltersMatch = [];
-
-    const listTags = getAllMenuTags(menuTags);
-
-    const activeTags = listTags.filter(t => t.active);
-
-    const activeTagsMatch = [];
-
-    const expression = value
-      .replace(FILTER_TAGS_REGEX, str => {
-        const replaced = str.replace(/@/g, "").replace(/_/g, " ");
-
-        const filter = filters.find(f => f.name === replaced);
-
-        if (filter && filter.active) {
-          activeFiltersMatch.push(filter);
-        }
-
-        if (filter && !filter.active) {
-          activeFiltersMatch.push(filter);
-          filter.active = true;
-        }
-
-        return filter ? `(${filter.expression})` : "";
-      });
-
-    activeFilters.forEach(f => {
-      if (!activeFiltersMatch.find(i => i.name === f.name)) {
-        f.active = false;
-      }
-    });
-
-    activeTags.forEach(t => {
-      if (!activeTagsMatch.find(i => i.tagBody.id === t.tagBody.id)) {
-        t.active = false;
-        if (t.parent) {
-          setIndeterminate(t.parent);
-        }
-      }
-    });
-
-    return expression;
+    return expandAqlSearch(value, filterGroups);
   };
 
   searchByQuery = () => {
@@ -341,9 +279,11 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
       setListSavingFilter(null);
     }
 
-    const expression = this.getAqlExpression(this.inputNode.value, true);
+    const value = this.inputNode.value;
 
-    onQuerySearch(expression);
+    // the typed text goes along with the expression: the list keeps the text for the url and
+    // for this input, and searches with the expression
+    onQuerySearch(this.getAqlExpression(value, true), value);
   };
 
   debounceSearch = debounce(this.searchByQuery, 500);
@@ -403,7 +343,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
     const { onQuerySearch, alwaysExpanded } = this.props;
     const { expanded } = this.state;
 
-    onQuerySearch(this.getAqlExpression("", true));
+    onQuerySearch(this.getAqlExpression("", true), "");
 
     this.queryComponentNode.reset();
 
@@ -419,7 +359,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
       placeholder,
       userAQLSearch,
       startAdornment,
-      alwaysExpanded,
       searchServerError,
       searchMenuItemsRenderer
     } = this.props;

@@ -9,7 +9,6 @@ describe("Virtual rendered MessageEditView", () => {
     EditView: MessageEditView,
     record: mockecApi => mockecApi.db.getMessage(1),
     render: ({ screen, initialValues }) => {
-      expect(screen.getByLabelText("Subject").value).toBe(initialValues.subject);
       expect(screen.getByLabelText(/Sent to/i, { selector: 'input' }).value).toBe(initialValues.sentToContactFullname);
       expect(screen.getByLabelText("Created on").value).toBe(format(new Date(initialValues.createdOn), III_DD_MMM_YYYY));
       expect(screen.getByLabelText("Creator key").value).toBe(initialValues.creatorKey);

@@ -175,6 +175,18 @@ export class MockAdapter {
   }
 }
 
+export const parseJson = data => {
+  let json;
+
+  try {
+    json = JSON.parse(data);
+  } catch (e) {
+    json = data;
+  }
+
+  return json;
+};
+
 // Resolve function with logger
 export const promiseResolve = (config, data = {}, headers = {}) => {
   if (!IS_JEST) {
@@ -207,18 +219,6 @@ export const promiseReject = (config, data = {}, headers = {}) => {
     console.log(`%c request params:`, "color: #bada55");
   }
   return [400, data, headers];
-};
-
-const parseJson = data => {
-  let json;
-
-  try {
-    json = JSON.parse(data);
-  } catch (e) {
-    json = data;
-  }
-
-  return json;
 };
 
 export const initMockDB = () => new MockAdapter();

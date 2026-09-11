@@ -108,7 +108,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
           index="VET Student Loans"
         >
           <Grid container>
-            <Grid item xs={twoColumn ? 6 : 12} className="mb-1 mt-1">
+            <Grid size={twoColumn ? 6 : 12} className="mb-1 mt-1">
               <FormField
                 type="select"
                 name="studentLoanStatus"
@@ -120,7 +120,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
             </Grid>
             <Collapse in={showVSL}>
               <Grid container columnSpacing={3} rowSpacing={2} className="mb-1">
-                <Grid item xs={twoColumn ? 3 : 12}>
+                <Grid size={twoColumn ? 3 : 12}>
                   <FormField
                     type="money"
                     name="feeHelpAmount"
@@ -128,13 +128,13 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
                     disabled={values.studentLoanStatus === "Finalized"}
                   />
                 </Grid>
-                <Grid item xs={twoColumn ? 3 : 12}>
+                <Grid size={twoColumn ? 3 : 12}>
                   <Uneditable label={$t('loan_fee')} value={loanData.loanFee} money />
                 </Grid>
-                <Grid item xs={twoColumn ? 3 : 12}>
+                <Grid size={twoColumn ? 3 : 12}>
                   <Uneditable label={$t('total_loan')} value={loanData.loanTotal} money />
                 </Grid>
-                <Grid item xs={twoColumn ? 6 : 12}>
+                <Grid size={twoColumn ? 6 : 12}>
                   <FormField
                     type="select"
                     name="feeStatus"
@@ -144,7 +144,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
                     allowEmpty
                   />
                 </Grid>
-                <Grid item xs={twoColumn ? 6 : 12}>
+                <Grid size={twoColumn ? 6 : 12}>
                   <FormField
                     type="select"
                     name="attendanceType"
@@ -167,7 +167,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
         index="Credit and rpl"
       >
         <Grid container columnSpacing={3} rowSpacing={2}>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="text"
               name="creditOfferedValue"
@@ -175,7 +175,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
               validate={validateCreditOfferedValue}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="text"
               name="creditUsedValue"
@@ -183,7 +183,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
               validate={validateCreditUsedValue}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="select"
               name="creditTotal"
@@ -192,7 +192,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="text"
               name="creditFOEId"
@@ -200,7 +200,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
               validate={validateCreditFoeId}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="text"
               name="creditProvider"
@@ -208,7 +208,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
               validate={validateCreditOfferedProviderCode}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="select"
               name="creditProviderType"
@@ -217,7 +217,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="select"
               name="creditType"
@@ -225,7 +225,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
               items={enrolmentCreditTypeItems}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="select"
               name="creditLevel"

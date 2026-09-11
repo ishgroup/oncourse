@@ -11,6 +11,7 @@ import { AnyArgFunction, BooleanArgFunction, NoArgFunction, ShowConfirmCaller } 
 import React, { ReactElement } from 'react';
 import { Dispatch } from 'redux';
 import { FormErrors, InjectedFormProps } from 'redux-form';
+import { LIST_URL_QUERY_PARAMS } from '../../common/components/list-view/utils/listSearchUtils';
 import { CustomTableModelName, EntityName } from '../entities/common';
 import { FormMenuTag } from '../tags';
 import { MessageData } from './Message';
@@ -88,7 +89,6 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   customTableModel: CustomTableModelName;
   pending?: boolean;
   values?: E;
-  updateDeleteCondition?: any;
   fullScreenEditView?: any;
   toogleFullScreenEditView: BooleanArgFunction;
   dispatch?: Dispatch<any>;
@@ -111,7 +111,6 @@ export interface EditViewProps<V = any> extends Omit<Partial<InjectedFormProps<V
   isNew: boolean;
   values: V;
   dispatch: any;
-  updateDeleteCondition: AnyArgFunction;
   showConfirm: ShowConfirmCaller;
   onScroll?: AnyArgFunction;
   twoColumn?: boolean;
@@ -136,6 +135,25 @@ export interface GetRecordsArgs {
   stopIndex?: number;
   resolve?: AnyArgFunction;
   tableModel?: string;
+}
+
+/**
+ * Every field is optional: only the parts of the query that actually changed are sent, the rest
+ * is left untouched by the reducer. That is what makes two changes in the same tick safe.
+ */
+
+export type ListUrlQueryParam = typeof LIST_URL_QUERY_PARAMS[number];
+
+export type ListUrlQuery = Record<ListUrlQueryParam, string>;
+
+export interface ListQueryPayload {
+  entity: EntityName;
+  search?: string;
+  userAQLSearch?: string;
+  filterGroups?: FilterGroup[];
+  menuTags?: FormMenuTag[];
+  checkedChecklists?: FormMenuTag[];
+  uncheckedChecklists?: FormMenuTag[];
 }
 
 export interface CustomColumnFormats {

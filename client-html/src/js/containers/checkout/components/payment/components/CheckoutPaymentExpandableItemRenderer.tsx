@@ -55,8 +55,8 @@ const ItemRow = React.memo<{classes?, item, invoiceLine}>(props => {
   const shareLink = line && line[lineKey] ? getShareLink(item, line[lineKey]) : null;
 
   return (
-    <Grid item xs={12} container alignItems="center" direction="row" className={classes.tableTab}>
-      <Grid item xs={9}>
+    <Grid size={12} container sx={{ alignItems: 'center' }} direction="row" className={classes.tableTab}>
+      <Grid size={9}>
         <div className="centeredFlex">
           <Typography variant="body1">
             {item.name}
@@ -123,10 +123,10 @@ const CheckoutPaymentExpandableItemRenderer = React.memo<Props>(props => {
           expanded={expanded}
           onChange={handleChange}
           className="box-shadow-none w-100"
-          TransitionProps={{
+          slotProps={{ transition: {
             unmountOnExit: true,
             mountOnEnter: true
-          }}
+          } }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Grid container className="centeredFlex">
