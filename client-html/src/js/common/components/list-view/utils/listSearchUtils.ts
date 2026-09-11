@@ -12,7 +12,7 @@ import { FindEntityState } from '../../../../model/entities/common';
 import { FormMenuTag } from '../../../../model/tags';
 import { saveCategoryAQLLink } from '../../../utils/links';
 import { LSGetItem } from '../../../utils/storage';
-import { getActiveTags, getFiltersNameString } from './listFiltersUtils';
+import { getActiveTags, getFiltersNameString, getTagGroupKey, TagSelection } from './listFiltersUtils';
 
 /**
  * List view query params owned by the list view. Any other param found in the url
@@ -25,6 +25,9 @@ export const LIST_URL_QUERY_PARAMS = ["search", "filter", "tags", "checkedCheckl
  * from the url so that a reload or a copied link does not replay them.
  */
 export const CONSUMED_URL_PARAMS = ["openShare", "customSearch"];
+
+/** Separates a tag id from the group it was selected in: `Enrolled:941`. */
+const TAG_GROUP_SEPARATOR = ":";
 
 const EMPTY_QUERY: ListUrlQuery = {
   search: "",
@@ -57,8 +60,34 @@ const stringifyUrlSearch = (entries: [string, string][]): string => {
   return result ? `?${result}` : "";
 };
 
-const getActiveTagIdsString = (tags: FormMenuTag[] = []): string =>
-  Array.from(new Set(getActiveTags(tags).map(t => t.tagBody.id))).toString();
+/**
+ * Projects a tag selection onto the url, one entry per selected tag, qualified with the group
+ * it was selected in (`Enrolled:941`) whenever the group has a name of its own.
+ *
+ * The qualifier is what makes a restored selection mean the same thing as the one that was
+ * made: the course tags are published on the contact list under both `Enrolled` and `Teaching`,
+ * so a bare id would come back ticked in both groups, filter the list by both paths, and stay
+ * in the url until it was unticked in every one of them.
+ */
+const getActiveTagIdsString = (tags: FormMenuTag[] = []): string => {
+  const entries: string[] = [];
+  const seen = new Set<string>();
+
+  tags.forEach(group => {
+    const key = getTagGroupKey(group);
+
+    getActiveTags([group]).forEach(tag => {
+      const entry = key ? `${key}${TAG_GROUP_SEPARATOR}${tag.tagBody.id}` : tag.tagBody.id.toString();
+
+      if (!seen.has(entry)) {
+        seen.add(entry);
+        entries.push(entry);
+      }
+    });
+  });
+
+  return entries.toString();
+};
 
 export const parseListUrlSearch = (urlSearch: string | URLSearchParams): ListUrlQuery => {
   const params = typeof urlSearch === "string" ? new URLSearchParams(urlSearch) : urlSearch;
@@ -144,9 +173,33 @@ export const removeUrlParams = (currentUrlSearch: string, remove: string[]): str
   return stringifyUrlSearch(entries);
 };
 
-export const parseTagIds = (idsString: string): number[] => (idsString
-  ? idsString.split(",").map(id => Number(id)).filter(id => !Number.isNaN(id))
-  : []);
+/**
+ * Reads a tag selection back out of the url. Entries of an older url carry no group and are kept
+ * apart so that `getTagsUpdatedByIds*` can place them.
+ */
+export const parseTagSelection = (value: string): TagSelection => {
+  const byGroup = new Map<string, number[]>();
+  const ungrouped: number[] = [];
+
+  (value ? value.split(",") : []).forEach(entry => {
+    const separator = entry.lastIndexOf(TAG_GROUP_SEPARATOR);
+    const key = separator === -1 ? "" : entry.slice(0, separator).trim();
+    const id = Number(entry.slice(separator + 1));
+
+    if (Number.isNaN(id)) {
+      return;
+    }
+
+    if (!key) {
+      ungrouped.push(id);
+      return;
+    }
+
+    byGroup.set(key, (byGroup.get(key) || []).concat(id));
+  });
+
+  return { byGroup, ungrouped };
+};
 
 /**
  * `customSearch` links carry an id of an AQL expression kept in local storage by

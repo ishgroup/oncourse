@@ -105,39 +105,86 @@ export const getUpdated = (tags: FormMenuTag[], id: string, active, parent?: For
 });
 
 /**
- * Rebuilds a tag tree from a flat list of active ids.
+ * Identifies the group a tag tree is published under.
+ *
+ * The same tags are published several times over on some lists - the course tags appear on the
+ * contact list as both `Enrolled` and `Teaching`, the sale checklists once per product entity -
+ * and each publication filters by a path of its own. A selection therefore only means something
+ * together with the group it was made in, so a restored selection has to be matched per group
+ * rather than by tag id alone.
+ */
+export const getTagGroupKey = (tag: FormMenuTag): string => tag.prefix || tag.entity || "";
+
+/**
+ * Identifies one rendered tag group. The sale checklists are published once per product entity
+ * off the same checklist tag, so the root id alone does not tell two of them apart.
+ */
+export const getTagGroupId = (group: FormMenuTag): string =>
+  `${getTagGroupKey(group)}/${group.tagBody.id}`;
+
+/**
+ * A tag selection read out of the url: the ids selected in each group, plus the ids of an older
+ * url that named no group at all.
+ */
+export interface TagSelection {
+  byGroup: Map<string, number[]>;
+  ungrouped: number[];
+}
+
+/**
+ * Ids to activate in one group.
+ *
+ * An url that names no group anywhere was written before the group was recorded: its ids cannot
+ * be placed, so they are offered to every group and only tick where the tag actually exists -
+ * the reading those urls were written under. As soon as a single group is named the url is
+ * authoritative, and bare ids belong to the unnamed group alone.
+ */
+const getGroupActiveIds = (group: FormMenuTag, selection: TagSelection): Set<number> => {
+  const ids = new Set(selection.byGroup.get(getTagGroupKey(group)) || []);
+
+  if (!getTagGroupKey(group) || !selection.byGroup.size) {
+    selection.ungrouped.forEach(id => ids.add(id));
+  }
+
+  return ids;
+};
+
+/**
+ * Rebuilds a tag tree from a selection read out of the url.
  *
  * Parent links and the indeterminate flag are derived here so that a selection restored from
  * the url renders exactly like the same selection made by clicking - `setIndeterminate` is not
  * usable for that because it walks upwards from an already linked tree.
  */
-export const getTagsUpdatedByIds = (tags: FormMenuTag[], activeIds: number[]) => tags.map(t => {
-  const updated = { ...t };
+export const getTagsUpdatedByIds = (tags: FormMenuTag[], selection: TagSelection) => {
+  const updateTag = (tag: FormMenuTag, activeIds: Set<number>): FormMenuTag => {
+    const updated = { ...tag };
 
-  updated.active = activeIds.includes(updated.tagBody.id);
+    updated.active = activeIds.has(updated.tagBody.id);
 
-  if (updated.children.length) {
-    updated.children = getTagsUpdatedByIds(updated.children, activeIds);
-  }
+    if (updated.children.length) {
+      updated.children = updated.children.map(child => updateTag(child, activeIds));
+    }
 
-  return updated;
-});
+    return updated;
+  };
+
+  return tags.map(group => updateTag(group, getGroupActiveIds(group, selection)));
+};
 
 export const getTagsUpdatedByIdsWithIndeterminate = (
   tags: FormMenuTag[],
-  activeIds: number[],
+  selection: TagSelection,
 ): FormMenuTag[] => {
-  const activeIdsSet = new Set(activeIds);
-
-  const updateTag = (tag: FormMenuTag): FormMenuTag => {
+  const updateTag = (tag: FormMenuTag, activeIds: Set<number>): FormMenuTag => {
     const updated = {
       ...tag,
-      children: tag.children.map(updateTag),
+      children: tag.children.map(child => updateTag(child, activeIds)),
     };
 
     // strictly what the url named: deriving a parent from its children here would write that
     // parent back into the url on the next render, growing the stored selection on every load
-    updated.active = activeIdsSet.has(updated.tagBody.id);
+    updated.active = activeIds.has(updated.tagBody.id);
 
     updated.indeterminate =
       !updated.active &&
@@ -146,7 +193,7 @@ export const getTagsUpdatedByIdsWithIndeterminate = (
     return updated;
   };
 
-  return tags.map(updateTag);
+  return tags.map(group => updateTag(group, getGroupActiveIds(group, selection)));
 };
 
 /**

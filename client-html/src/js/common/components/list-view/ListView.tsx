@@ -92,7 +92,7 @@ import {
   hasListUrlQuery,
   isSameListUrlQuery,
   parseListUrlSearch,
-  parseTagIds,
+  parseTagSelection,
   removeUrlParams,
   resolveCustomSearch
 } from './utils/listSearchUtils';
@@ -555,9 +555,9 @@ function ListView(props: ListCompProps) {
     userAQLSearch: urlQuery.search,
     search: expandAqlSearch(urlQuery.search, targetFilters),
     filterGroups: setActiveFiltersBySearch(urlQuery.filter, targetFilters),
-    menuTags: getTagsUpdatedByIdsWithIndeterminate(menuTags, parseTagIds(urlQuery.tags)),
-    checkedChecklists: getTagsUpdatedByIds(checkedChecklists, parseTagIds(urlQuery.checkedChecklists)),
-    uncheckedChecklists: getTagsUpdatedByIds(uncheckedChecklists, parseTagIds(urlQuery.uncheckedChecklists))
+    menuTags: getTagsUpdatedByIdsWithIndeterminate(menuTags, parseTagSelection(urlQuery.tags)),
+    checkedChecklists: getTagsUpdatedByIds(checkedChecklists, parseTagSelection(urlQuery.checkedChecklists)),
+    uncheckedChecklists: getTagsUpdatedByIds(uncheckedChecklists, parseTagSelection(urlQuery.uncheckedChecklists))
   });
 
   const synchronizeAllFilters = () => {

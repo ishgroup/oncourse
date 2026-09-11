@@ -16,7 +16,7 @@ import { ColoredCheckBox, makeAppStyles, stubFunction } from 'ish-ui';
 import React, { memo, useMemo, useState } from 'react';
 import { FormMenuTag } from '../../../../../../model/tags';
 import { useAppSelector } from '../../../../../utils/hooks';
-import { getActiveTags } from '../../../utils/listFiltersUtils';
+import { getActiveTags, getTagGroupId } from '../../../utils/listFiltersUtils';
 import ListTagGroup from './ListTagGroup';
 
 const useStyles = makeAppStyles()(theme => ({
@@ -51,12 +51,10 @@ const CHECKED_INPUT = { onChange: stubFunction, value: true } as any;
 const UNCHECKED_INPUT = { onChange: stubFunction, value: false } as any;
 const EMPTY_META = {} as any;
 
-const groupKey = (group: FormMenuTag) => group.prefix + group.tagBody.id.toString();
-
 // each checklist keeps its own selection - a shared list would tick a task in every checklist
 // that happens to hold a tag of the same id
 const getActiveTagsByGroup = (checklists: FormMenuTag[]) => new Map(checklists.map(t => [
-  groupKey(t),
+  getTagGroupId(t),
   getActiveTags(t.children).map(c => c.tagBody.id.toString())
 ]));
 
@@ -70,8 +68,8 @@ const renderGroups = (
   }
   return (
     <ListTagGroup
-      activeTags={activeTagsByGroup.get(groupKey(t))}
-      key={groupKey(t)}
+      activeTags={activeTagsByGroup.get(getTagGroupId(t))}
+      key={getTagGroupId(t)}
       dndKey={index}
       rootTag={t}
       updateActive={updateActive}
@@ -94,11 +92,15 @@ const ChecklistsFilters = memo<Props>(({ updateChecked, updateUnChecked }) => {
 
   // untouched groups keep their identity so the memoized `ListTagGroup`s below can skip re-rendering
   const onUpdateChecked = useEventCallback((active: FormMenuTag) => {
-    updateChecked(checkedChecklists.map(cl => (cl.tagBody.id === active.tagBody.id ? active : cl)));
+    const activeKey = getTagGroupId(active);
+
+    updateChecked(checkedChecklists.map(cl => (getTagGroupId(cl) === activeKey ? active : cl)));
   });
 
   const onUpdateUnChecked = useEventCallback((active: FormMenuTag) => {
-    updateUnChecked(uncheckedChecklists.map(cl => (cl.tagBody.id === active.tagBody.id ? active : cl)));
+    const activeKey = getTagGroupId(active);
+
+    updateUnChecked(uncheckedChecklists.map(cl => (getTagGroupId(cl) === activeKey ? active : cl)));
   });
 
   const toggleChecked = useEventCallback(() => setExpanded(expanded === "1" ? null : "1"));
