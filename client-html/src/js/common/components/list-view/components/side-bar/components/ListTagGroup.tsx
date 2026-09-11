@@ -15,7 +15,11 @@ import { makeAppStyles } from 'ish-ui';
 import React, { memo, useEffect, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd-next';
 import { FormMenuTag } from '../../../../../../model/tags';
-import { getTagIdsWithActiveDescendants, getTagsUpdatedByIds, setIndeterminate } from '../../../utils/listFiltersUtils';
+import {
+  getTagIdsWithActiveDescendants,
+  getTagsUpdatedBySelection,
+  setIndeterminate
+} from '../../../utils/listFiltersUtils';
 import styles from '../../list/styles';
 import ListTagItem from './ListTagItem';
 
@@ -83,15 +87,15 @@ const ListTagGroup = memo<Props>((
   }, [activeTags, rootTag.children]);
 
   const toggleActive = useEventCallback((e, active: string[]) => {
-    // The tree view also reports selection changes while it is mounting, with no event: expanding
-    // a selected branch reports its freshly mounted descendants as newly selected, and once all of
-    // a tag's children are mounted and selected it reports that tag too. Only a real interaction
-    // may be stored - persisting the rest grows the saved selection on every page load.
+    // The tree view also reports selection changes while it is mounting, with no event, to catch a
+    // collapsed branch up with its parent. `getTagsUpdatedBySelection` already carried the
+    // selection down the whole tree, so there is nothing left to catch up on and storing these
+    // would only grow the saved selection on every page load.
     if (!e) {
       return;
     }
 
-    const children = getTagsUpdatedByIds(rootTag.children, active.map(n => Number(n)));
+    const children = getTagsUpdatedBySelection(rootTag.children, active.map(n => Number(n)));
     const updatedRoot = { ...rootTag, children };
     setIndeterminate(updatedRoot);
     updateActive(updatedRoot);

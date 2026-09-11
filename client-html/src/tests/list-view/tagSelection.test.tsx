@@ -1,12 +1,13 @@
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
-import { act, cleanup, render } from '@testing-library/react';
+import { act, cleanup, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React, { useEffect, useState } from 'react';
 import {
   getActiveTags,
   getTagIdsWithActiveDescendants,
-  getTagsUpdatedByIds,
   getTagsUpdatedByIdsWithIndeterminate,
+  getTagsUpdatedBySelection,
   setIndeterminate
 } from '../../js/common/components/list-view/utils/listFiltersUtils';
 
@@ -65,7 +66,7 @@ const renderRestored = async (build, url) => {
 };
 
 const applyClick = (group, ids) => {
-  const updated = { ...group, children: getTagsUpdatedByIds(group.children, ids) };
+  const updated = { ...group, children: getTagsUpdatedBySelection(group.children, ids) };
   setIndeterminate(updated);
   return updated;
 };
@@ -111,7 +112,7 @@ it('the stored selection does not grow when the tree view reports its own mounti
         activeTags={activeTagsByGroup(tags).get(groupKey(tags[0]))}
         onChange={(e, items) => {
           if (!e) return;
-          const updated = { ...tags[0], children: getTagsUpdatedByIds(tags[0].children, items.map(Number)) };
+          const updated = { ...tags[0], children: getTagsUpdatedBySelection(tags[0].children, items.map(Number)) };
           setIndeterminate(updated);
           store = [updated];
           setTags(store);
@@ -138,4 +139,73 @@ it('a tick in one group is not shown in another group built from the same tags',
 
   expect(live.get('Enrolled1')).toEqual(['101']);
   expect(live.get('Teaching1')).toEqual([]);
+});
+
+it('ticking a collapsed tag selects the children it has not mounted yet', async () => {
+  // P is closed, so the tree view can only report P itself when its checkbox is ticked
+  const build = () => [tag(1, 'Tags', '', [
+    tag(10, 'P', '', [tag(101, 'C1', '', [tag(1001, 'G1', '')]), tag(102, 'C2', '')]),
+    tag(20, 'Q', '')
+  ])];
+
+  let store = build();
+
+  const Harness = () => {
+    const [tags, setTags] = useState(store);
+    return <Group
+      rootTag={tags[0]}
+      activeTags={activeTagsByGroup(tags).get(groupKey(tags[0]))}
+      onChange={(e, items) => {
+        if (!e) return;
+        const updated = { ...tags[0], children: getTagsUpdatedBySelection(tags[0].children, items.map(Number)) };
+        setIndeterminate(updated);
+        store = [updated];
+        setTags(store);
+      }}
+    />;
+  };
+
+  render(<Harness />);
+  const user = userEvent.setup();
+
+  const p = screen.getAllByRole('treeitem').find(li => li.getAttribute('id').endsWith('-10'));
+  expect(p.getAttribute('aria-expanded')).toBe('false');
+  await user.click(p.querySelector('input[type=checkbox]') as any);
+  await act(async () => { await new Promise(r => setTimeout(r, 50)); });
+
+  // the whole subtree is stored, not just the tag that was on screen
+  expect(urlOf(store)).toBe('10,101,1001,102');
+  expect(dump()).toBe(': 10=CHECKED 101=CHECKED 1001=CHECKED 102=CHECKED 20=off');
+});
+
+it('unticking one child clears the parent without clearing its siblings', async () => {
+  const build = () => [tag(1, 'Tags', '', [tag(10, 'P', '', [tag(101, 'C1', ''), tag(102, 'C2', '')])])];
+
+  let store = [{ ...build()[0], children: getTagsUpdatedBySelection(build()[0].children, [10, 101, 102]) }];
+
+  const Harness = () => {
+    const [tags, setTags] = useState(store);
+    return <Group
+      rootTag={tags[0]}
+      activeTags={activeTagsByGroup(tags).get(groupKey(tags[0]))}
+      onChange={(e, items) => {
+        if (!e) return;
+        const updated = { ...tags[0], children: getTagsUpdatedBySelection(tags[0].children, items.map(Number)) };
+        setIndeterminate(updated);
+        store = [updated];
+        setTags(store);
+      }}
+    />;
+  };
+
+  render(<Harness />);
+  await act(async () => { await new Promise(r => setTimeout(r, 50)); });
+
+  const user = userEvent.setup();
+  const c1 = screen.getAllByRole('treeitem').find(li => li.getAttribute('id').endsWith('-101'));
+  await user.click(c1.querySelector('input[type=checkbox]') as any);
+  await act(async () => { await new Promise(r => setTimeout(r, 50)); });
+
+  expect(urlOf(store)).toBe('102');
+  expect(dump()).toBe(': 10=INDET 101=off 102=CHECKED');
 });

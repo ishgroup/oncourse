@@ -150,6 +150,39 @@ export const getTagsUpdatedByIdsWithIndeterminate = (
 };
 
 /**
+ * Applies the tree view's selection to the whole tag tree.
+ *
+ * The tree view can only carry a selection through the items it currently has mounted, so ticking
+ * a collapsed tag leaves its children behind and it catches up only once the branch is opened -
+ * which it then reports as a fresh change, growing the stored selection on every page load.
+ * Resolving the selection against the full tree here makes the stored state complete at the moment
+ * of the click instead, and leaves nothing for the mount to report.
+ */
+export const getTagsUpdatedBySelection = (
+  tags: FormMenuTag[],
+  selectedIds: number[],
+): FormMenuTag[] => {
+  const selected = new Set(selectedIds);
+
+  const visit = (tag: FormMenuTag, inherited: boolean): FormMenuTag => {
+    const active = inherited || selected.has(tag.tagBody.id);
+
+    const updated = {
+      ...tag,
+      children: tag.children.map(child => visit(child, active)),
+    };
+
+    updated.active = active;
+    updated.indeterminate = !active
+      && updated.children.some(child => child.active || child.indeterminate);
+
+    return updated;
+  };
+
+  return tags.map(tag => visit(tag, false));
+};
+
+/**
  * Ids of every tag holding a selected tag somewhere below it.
  *
  * The tree view derives a parent checkbox from the descendants it currently has mounted, so every
