@@ -10,16 +10,18 @@ import {
   getTagsUpdatedBySelection,
   setIndeterminate
 } from '../../js/common/components/list-view/utils/listFiltersUtils';
+import { getListUrlQuery, parseTagSelection } from '../../js/common/components/list-view/utils/listSearchUtils';
 
 const tag = (id, name, prefix, children = []) => ({
   tagBody: { id, name, color: 'ffffff', system: false } as any,
   prefix, children, active: false, indeterminate: false
 }) as any;
 
-const groupKey = g => g.prefix + g.tagBody.id.toString();
+const groupKey = g => (g.prefix || g.entity || '') + '/' + g.tagBody.id.toString();
 const activeTagsByGroup = tags => new Map(tags.map(t =>
   [groupKey(t), getActiveTags(t.children).map(c => c.tagBody.id.toString())]));
-const urlOf = tags => Array.from(new Set(getActiveTags(tags).map(t => t.tagBody.id))).toString();
+const urlOf = tags => getListUrlQuery({ menuTags: tags }).tags;
+const restore = (tags, url) => getTagsUpdatedByIdsWithIndeterminate(tags, parseTagSelection(url));
 
 const Item = ({ item }) => (
   <TreeItem itemId={item.tagBody.id.toString()} label={item.tagBody.name}>
@@ -58,7 +60,7 @@ const dump = () => Array.from(document.querySelectorAll('[data-group]')).map(g =
   }).join(' ')).join('  |  ');
 
 const renderRestored = async (build, url) => {
-  const restored = getTagsUpdatedByIdsWithIndeterminate(build(), url ? url.split(',').map(Number) : []);
+  const restored = restore(build(), url);
   const byGroup = activeTagsByGroup(restored);
   render(<>{restored.map((g, i) => <Group key={i} rootTag={g} activeTags={byGroup.get(groupKey(g))} />)}</>);
   await act(async () => { await new Promise(r => setTimeout(r, 50)); });
@@ -103,7 +105,7 @@ it('the stored selection does not grow when the tree view reports its own mounti
   const seen = [url];
 
   for (let n = 0; n < 3; n++) {
-    let store = getTagsUpdatedByIdsWithIndeterminate(build(), url.split(',').map(Number));
+    let store = restore(build(), url);
 
     const Harness = () => {
       const [tags, setTags] = useState(store);
@@ -130,15 +132,66 @@ it('the stored selection does not grow when the tree view reports its own mounti
   expect(seen).toEqual(['943,944', '943,944', '943,944', '943,944']);
 });
 
+// the contact list publishes the course tags twice over, as "Enrolled" and as "Teaching"
+const buildTwoGroups = () => ['Enrolled', 'Teaching'].map(p =>
+  tag(1, 'Course', p, [tag(941, 'P', p, [tag(943, 'C1', p, [tag(942, 'G1', p)]), tag(944, 'C2', p)])]));
+
 it('a tick in one group is not shown in another group built from the same tags', async () => {
-  const build = () => ['Enrolled', 'Teaching'].map(p =>
-    tag(1, 'Course', p, [tag(10, 'P', p, [tag(101, 'C1', p), tag(102, 'C2', p)])]));
+  const store = buildTwoGroups();
+  const live = activeTagsByGroup([applyClick(store[0], [943]), store[1]]);
 
-  const store = build();
-  const live = activeTagsByGroup([applyClick(store[0], [101]), store[1]]);
+  expect(live.get('Enrolled/1')).toEqual(['943', '942']);
+  expect(live.get('Teaching/1')).toEqual([]);
+});
 
-  expect(live.get('Enrolled1')).toEqual(['101']);
-  expect(live.get('Teaching1')).toEqual([]);
+it('the url names the group a tag was ticked in', () => {
+  const store = buildTwoGroups();
+
+  expect(urlOf([applyClick(store[0], [943]), store[1]]))
+    .toBe('Enrolled:943,Enrolled:942');
+});
+
+it('a reload restores the selection to the group it was made in, not to every group holding it', () => {
+  const restored = restore(buildTwoGroups(), 'Enrolled:941,Enrolled:943,Enrolled:944,Enrolled:942');
+  const live = activeTagsByGroup(restored);
+
+  expect(live.get('Enrolled/1')).toEqual(['941', '943', '942', '944']);
+  expect(live.get('Teaching/1')).toEqual([]);
+});
+
+it('unticking after a reload clears the tags out of the url', () => {
+  const url = 'Enrolled:941,Enrolled:943,Enrolled:944,Enrolled:942';
+  const restored = restore(buildTwoGroups(), url);
+
+  expect(urlOf(restored)).toBe('Enrolled:941,Enrolled:943,Enrolled:942,Enrolled:944');
+
+  const cleared = [applyClick(restored[0], []), restored[1]];
+
+  expect(urlOf(cleared)).toBe('');
+});
+
+it('an url written before the group was recorded still ticks the tags it names', () => {
+  // nothing in it says which group the ids came from, so they go to every group that holds them -
+  // the reading those urls were written under - and are rewritten qualified straight away
+  const restored = restore(buildTwoGroups(), '943,944');
+  const live = activeTagsByGroup(restored);
+
+  expect(live.get('Enrolled/1')).toEqual(['943', '944']);
+  expect(live.get('Teaching/1')).toEqual(['943', '944']);
+  expect(urlOf(restored)).toBe('Enrolled:943,Enrolled:944,Teaching:943,Teaching:944');
+});
+
+it('bare ids belong to the unnamed group once the url names any group at all', () => {
+  const groups = [
+    tag(1, 'Tags', '', [tag(50, 'T', '', [tag(51, 'T1', '')])]),
+    ...buildTwoGroups()
+  ];
+
+  const live = activeTagsByGroup(restore(groups, '51,Teaching:944'));
+
+  expect(live.get('/1')).toEqual(['51']);
+  expect(live.get('Enrolled/1')).toEqual([]);
+  expect(live.get('Teaching/1')).toEqual(['944']);
 });
 
 it('ticking a collapsed tag selects the children it has not mounted yet', async () => {
