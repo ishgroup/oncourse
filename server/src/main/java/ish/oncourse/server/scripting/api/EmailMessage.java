@@ -118,6 +118,7 @@ public class EmailMessage {
 	public boolean send() {
 		var context = template.getObjectContext();
 
+
 		var messages = createMessages(template, bindings, recipients);
 
 		if (!messages.isEmpty()) {
@@ -161,6 +162,7 @@ public class EmailMessage {
 				var message = createMessage(template, bindings);
 
 				message.setNumberOfAttempts(0);
+
 				message.setStatus(MessageStatus.QUEUED);
 				message.setType(MessageType.EMAIL);
 				message.setContact(localContact);
