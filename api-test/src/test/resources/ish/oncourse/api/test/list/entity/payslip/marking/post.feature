@@ -35,7 +35,8 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
 
         Given path ishPathList
         And param entity = 'Payslip'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[7].id
@@ -51,7 +52,8 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
 
         Given path ishPathList
         And param entity = 'Payslip'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[7].values[5] == "Completed"
 
@@ -79,7 +81,8 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
 
         Given path ishPathList
         And param entity = 'Payslip'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[2].values[5] == "Paid/Exported"
 
@@ -102,7 +105,8 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
 
         Given path ishPathList
         And param entity = 'Payslip'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[1].values[5] == "Approved"
 
@@ -119,7 +123,8 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
 
          Given path ishPathList
          And param entity = 'Payslip'
-         When method GET
+         And request {}
+         When method POST
          Then status 200
          And match $.rows[4].values[5] == "New"
 
@@ -136,7 +141,8 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
 
          Given path ishPathList
          And param entity = 'Payslip'
-         When method GET
+         And request {}
+         When method POST
          Then status 200
          And match $.rows[5].values[5] == "Completed"
 
@@ -153,7 +159,8 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
 
         Given path ishPathList
         And param entity = 'Payslip'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[6].values[5] == "Paid/Exported"
 

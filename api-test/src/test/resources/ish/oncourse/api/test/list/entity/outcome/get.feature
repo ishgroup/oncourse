@@ -15,7 +15,8 @@ Feature: Main feature for all GET requests with path 'list/entity/outcome'
 
         Given path ishPathList
         And param entity = 'Outcome'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["1","2","3","4","5","6","101","102","103","104","105","106","107","109"]
 
@@ -31,7 +32,8 @@ Feature: Main feature for all GET requests with path 'list/entity/outcome'
 
         Given path ishPathList
         And param entity = 'Outcome'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["1","2","3","4","5","6","101","102","103","104","105","106","107","109"]
 

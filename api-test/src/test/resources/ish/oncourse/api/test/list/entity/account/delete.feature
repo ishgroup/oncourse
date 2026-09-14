@@ -32,7 +32,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["code100","true","asset","some descriptions"])].id
@@ -71,7 +72,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["code101","true","asset","some descriptions"])].id
@@ -119,7 +121,8 @@ Feature: Main feature for all DELETE requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["code102","true","asset","some descriptions"])].id
