@@ -539,7 +539,7 @@ class Avetmiss120Factory extends AvetmissFactory {
 
             // ------------------
             // hours attended
-            if(OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN == outcome.status || OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN_INCOMPLETE_DUE_TO_RTO == outcome.status)
+            if(OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN == outcome.status || OutcomeStatus.STATUS_NON_ASSESSABLE_NOT_COMPLETED == outcome.status)
                 line.setHoursAttended(outcome.getHoursAttended())
 
             // ------------------
@@ -581,7 +581,7 @@ class Avetmiss120Factory extends AvetmissFactory {
                 case ExportJurisdiction.QLD:
                     // ------------------
                     // hours attended
-                    if (OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN == outcome.getStatus() || OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN_INCOMPLETE_DUE_TO_RTO == outcome.getStatus()) {
+                    if (OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN == outcome.getStatus() || OutcomeStatus.STATUS_NON_ASSESSABLE_NOT_COMPLETED == outcome.getStatus()) {
                         line.setHoursAttended(outcome.getHoursAttended())
                     } else {
                         line.setHoursAttended(null)
@@ -615,7 +615,7 @@ class Avetmiss120Factory extends AvetmissFactory {
                 case ExportJurisdiction.VIC:
                     // ------------------
                     // hours attended
-                    if (OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN == outcome.getStatus() || OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN_INCOMPLETE_DUE_TO_RTO == outcome.getStatus()) {
+                    if (OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN == outcome.getStatus() || OutcomeStatus.STATUS_NON_ASSESSABLE_NOT_COMPLETED == outcome.getStatus()) {
                         line.setHoursAttended(outcome.getHoursAttended())
                     }
 
