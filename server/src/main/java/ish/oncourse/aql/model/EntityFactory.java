@@ -56,6 +56,7 @@ public class EntityFactory {
             CourseClassEnrolmentMin.class,
             CourseClassSessionsCount.class,
             CourseClassIsDistantLearningCourse.class,
+            DocumentDisplayWebVisibility.class,
             EnrolmentIsClassCompleted.class,
             SessionTutor.class,
             PaymentInBanking.class,
@@ -196,4 +197,3 @@ public class EntityFactory {
     }
 
 }
-
