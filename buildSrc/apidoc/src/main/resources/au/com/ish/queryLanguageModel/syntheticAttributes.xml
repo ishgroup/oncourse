@@ -84,6 +84,7 @@ in ish.oncourse.aql.model.EntityFactory in server module.
         <attribute name="isMaxEnrolments" ref="Boolean"/>
         <attribute name="isMinEnrolments" ref="Boolean"/>
         <attribute name="sessionsCount" ref="Number"/>
+        <attribute name="placesLeft" ref="Number"/>
         <attribute name="isDistantLearningCourse" ref="Boolean"/>
     </entity>
     <entity name="Course">
