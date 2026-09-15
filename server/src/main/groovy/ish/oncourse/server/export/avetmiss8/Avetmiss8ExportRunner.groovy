@@ -68,23 +68,28 @@ class Avetmiss8ExportRunner {
                                     ObjectContext context) {
         Set<Outcome> resultOutcomes = []
 
-        // Open AVTEMISS export from class list view
-        if (!classIds.empty) {
-            logger.info("Started AVETMISS export with {} classes.", classIds.size())
-            resultOutcomes += ObjectSelect.query(Outcome)
-                    .where(Outcome.ENROLMENT.dot(Enrolment.COURSE_CLASS).dot(CourseClass.ID).in(classIds))
-                    .select(context)
-            return resultOutcomes
-        }
+    Expression suppressFilter = Outcome.ENROLMENT.dot(Enrolment.SUPPRESS_AVETMISS_EXPORT).isFalse()
+    .andExp(Outcome.ENROLMENT.dot(Enrolment.COURSE_CLASS).dot(CourseClass.SUPPRESS_AVETMISS_EXPORT).isFalse())
 
-        // Open AVTEMISS export from enrolment list view
-        if (!enrolmentIds.empty) {
-            logger.info("Started AVETMISS export with {} enrolments.", enrolmentIds.size())
-            resultOutcomes += ObjectSelect.query(Outcome)
-                    .where(Outcome.ENROLMENT.dot(Enrolment.ID).in(enrolmentIds))
-                    .select(context)
-            return resultOutcomes
-        }
+// Open AVTEMISS export from class list view
+if (!classIds.empty) {
+    logger.info("Started AVETMISS export with {} classes.", classIds.size())
+    resultOutcomes += ObjectSelect.query(Outcome)
+            .where(Outcome.ENROLMENT.dot(Enrolment.COURSE_CLASS).dot(CourseClass.ID).in(classIds))
+            .and(suppressFilter)
+            .select(context)
+    return resultOutcomes
+}
+
+// Open AVTEMISS export from enrolment list view
+if (!enrolmentIds.empty) {
+    logger.info("Started AVETMISS export with {} enrolments.", enrolmentIds.size())
+    resultOutcomes += ObjectSelect.query(Outcome)
+            .where(Outcome.ENROLMENT.dot(Enrolment.ID).in(enrolmentIds))
+            .and(suppressFilter)
+            .select(context)
+    return resultOutcomes
+}
 
         outcomesStart = outcomesStart ?: LocalDate.now()
         outcomesEnd = outcomesEnd ?: LocalDate.now()
