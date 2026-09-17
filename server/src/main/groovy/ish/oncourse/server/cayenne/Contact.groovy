@@ -27,7 +27,9 @@ import ish.validation.AngelContactValidator
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.validation.BeanValidationFailure
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.validation.ValidationResult
+import ish.oncourse.server.cayenne.glue._AbstractInvoice
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -188,7 +190,14 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	@API
 	@Override
 	Money getTotalOwing() {
-		return InvoiceUtil.amountOwingForPayer(this)
+		def context = this.objectContext
+		if (context == null) {
+			return Money.ZERO
+		}
+		List<Money> amounts = ObjectSelect.columnQuery(Invoice, _AbstractInvoice.AMOUNT_OWING)
+				.where(_AbstractInvoice.CONTACT.eq(this))
+				.select(context)
+		return amounts.findAll { it != null }.sum() as Money ?: Money.ZERO
 	}
 
 	/**

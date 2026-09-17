@@ -6,20 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Contact } from "@api/model";
-import { ShowConfirmCaller } from "ish-ui";
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
-import { notesAsyncValidate } from "../../../../common/components/form/notes/utils";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
-import { shouldAsyncValidate } from "../../../../common/components/list-view/utils/listFormUtils";
-import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../reducers/state";
-import ContactEditView from "../../../entities/contacts/components/ContactEditView";
-import { getDisabledSubmitCondition } from "../../../entities/contacts/Contacts";
-import { checkoutCreateContact, checkoutUpdateContact } from "../../actions/checkoutContact";
+import { Contact } from '@api/model';
+import { ShowConfirmCaller } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
+import { notesAsyncValidate } from '../../../../common/components/form/notes/utils';
+import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
+import { shouldAsyncValidate } from '../../../../common/components/list-view/utils/listFormUtils';
+import { onSubmitFail } from '../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../reducers/state';
+import ContactEditView from '../../../entities/contacts/components/ContactEditView';
+import { getDisabledSubmitCondition } from '../../../entities/contacts/Contacts';
+import { checkoutCreateContact, checkoutUpdateContact } from '../../actions/checkoutContact';
 
 export const CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME = "CheckoutContactEditForm";
 
@@ -35,7 +35,6 @@ interface Props extends Partial<InjectedFormProps> {
   onClose?: () => void;
   isVerifyingUSI?: boolean;
   usiVerificationResult?: any;
-  leftOffset?: number;
 }
 
 const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
@@ -56,7 +55,6 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
     onContactCreate,
     isVerifyingUSI,
     usiVerificationResult,
-    leftOffset
   } = props;
 
   const handleContactSave = React.useCallback(contact => {
@@ -107,7 +105,6 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
           dirty={dirty}
           dispatch={dispatch}
           showConfirm={showConfirm}
-          leftOffset={leftOffset}
           toogleFullScreenEditView={() => {}}
         />
       </AppBarContainer>

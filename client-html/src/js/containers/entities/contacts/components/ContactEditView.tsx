@@ -86,7 +86,6 @@ const items: TabsListItem[] = [
 
 interface Props {
   classes?: any;
-  leftOffset?: number;
 }
 
 const ContactEditView = (props: Partial<EditViewProps<Contact>> & Props) => {
@@ -104,8 +103,7 @@ const ContactEditView = (props: Partial<EditViewProps<Contact>> & Props) => {
     manualLink,
     invalid,
     syncErrors,
-    onScroll,
-    leftOffset
+    onScroll
   } = props;
 
   const [isStudent, setIsStudent] = useState(false);
@@ -177,8 +175,7 @@ const ContactEditView = (props: Partial<EditViewProps<Contact>> & Props) => {
         usiLocked,
         setUsiUpdateLocked,
         syncErrors,
-        onScroll,
-        leftOffset
+        onScroll
       }}
     />
   );

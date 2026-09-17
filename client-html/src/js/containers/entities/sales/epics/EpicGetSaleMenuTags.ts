@@ -6,21 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { getMenuTags } from "ish-ui";
-import { Epic } from "redux-observable";
-import { setListMenuTags } from "../../../../common/components/list-view/actions";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import TagsService from "../../../tags/services/TagsService";
-import { GET_SALE_MENU_TAGS } from "../actions";
+import { getMenuTags } from 'ish-ui';
+import { Epic } from 'redux-observable';
+import { setListMenuTags } from '../../../../common/components/list-view/actions';
+import * as EpicUtils from '../../../../common/epics/EpicUtils';
+import TagsService from '../../../tags/services/TagsService';
+import { GET_SALE_MENU_TAGS } from '../actions';
 
 const getTags = async () => {
-  const articleTags = await TagsService.getTags("Article");
-  const voucherTags = await TagsService.getTags("Voucher");
-  const membershipTags = await TagsService.getTags("Membership");
-
-  const articleChecklists = await TagsService.getChecklists("Article");
-  const voucherChecklists = await TagsService.getChecklists("Voucher");
-  const membershipChecklists = await TagsService.getChecklists("Membership");
+  const [
+    articleTags, voucherTags, membershipTags, articleChecklists, voucherChecklists, membershipChecklists
+  ] = await Promise.all([
+    TagsService.getTags("Article"),
+    TagsService.getTags("Voucher"),
+    TagsService.getTags("Membership"),
+    TagsService.getChecklists("Article"),
+    TagsService.getChecklists("Voucher"),
+    TagsService.getChecklists("Membership")
+  ]);
 
   const uniqueChecklists = {};
   
