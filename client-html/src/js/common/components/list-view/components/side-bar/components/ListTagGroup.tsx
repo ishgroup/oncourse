@@ -17,7 +17,9 @@ import { Draggable } from 'react-beautiful-dnd-next';
 import { FormMenuTag } from '../../../../../../model/tags';
 import {
   getTagIdsWithActiveDescendants,
+  getTagNodeId,
   getTagsUpdatedBySelection,
+  parseTagNodeId,
   setIndeterminate
 } from '../../../utils/listFiltersUtils';
 import styles from '../../list/styles';
@@ -95,7 +97,7 @@ const ListTagGroup = memo<Props>((
       return;
     }
 
-    const children = getTagsUpdatedBySelection(rootTag.children, active.map(n => Number(n)));
+    const children = getTagsUpdatedBySelection(rootTag.children, active.map(parseTagNodeId));
     const updatedRoot = { ...rootTag, children };
     setIndeterminate(updatedRoot);
     updateActive(updatedRoot);
@@ -122,9 +124,9 @@ const ListTagGroup = memo<Props>((
       sx={treeSx}
     >
       {rootTag.children.map(t => <ListTagItem
-        itemId={t.tagBody.id.toString()}
+        itemId={getTagNodeId(t)}
         item={t}
-        key={t.prefix + t.tagBody.id.toString()}
+        key={getTagNodeId(t)}
         showColoredDots={showColoredDots}
       />)}
     </SimpleTreeView>
@@ -132,8 +134,8 @@ const ListTagGroup = memo<Props>((
 
   return dndEnabled ? (
     <Draggable
-      key={rootTag.prefix + rootTag.tagBody.id.toString()}
-      draggableId={rootTag.prefix + rootTag.tagBody.id.toString()}
+      key={getTagNodeId(rootTag)}
+      draggableId={getTagNodeId(rootTag)}
       index={dndKey}
     >
       {(provided, snapshot) => {
