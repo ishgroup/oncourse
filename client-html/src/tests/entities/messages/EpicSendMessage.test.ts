@@ -1,5 +1,5 @@
 import { DefaultEpic } from "../../common/Default.Epic";
-import { FETCH_SUCCESS, closeSendMessage } from "../../../js/common/actions";
+import { closeSendMessage, FETCH_SUCCESS, SEND_MESSAGE_FAILED, START_PROCESS, UPDATE_PROCESS } from "../../../js/common/actions";
 import { sendMessage } from "../../../js/containers/entities/messages/actions";
 import { EpicSendMessage } from "../../../js/containers/entities/messages/epics/EpicSendMessage";
 
@@ -38,10 +38,25 @@ describe("Send message epic tests", () => {
     epic: EpicSendMessage,
     processData: () => [
       {
-        type: FETCH_SUCCESS,
-        payload: { message: "All messages sent" }
+        type: UPDATE_PROCESS,
+        payload: { processId: "testing 123" }
       },
-      closeSendMessage()
+      {
+        type: START_PROCESS,
+        payload: {
+          processId: "testing 123",
+          actions: [
+            closeSendMessage(),
+            {
+              type: FETCH_SUCCESS,
+              payload: { message: "All messages sent" }
+            }
+          ],
+          actionsOnFail: [
+            { type: SEND_MESSAGE_FAILED }
+          ]
+        }
+      }
     ]
   }));
 });

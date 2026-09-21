@@ -9,4 +9,5 @@
 
 export interface SendMessageState {
   open: boolean;
+  sending?: boolean;
 }
