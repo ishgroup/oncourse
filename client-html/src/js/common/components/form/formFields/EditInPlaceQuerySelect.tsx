@@ -27,9 +27,7 @@ import {
   stubComponent,
   useSelectStyles
 } from 'ish-ui';
-import getCaretCoordinates from '../../../utils/DOM/getCaretCoordinates';
-import React, { createRef, RefObject } from 'react';
-import { connect } from 'react-redux';
+import React, { useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   FILTER_TAGS_REGEX,
   SIMPLE_SEARCH_QUOTES_AND_NO_WHITESPACE_REGEX,
@@ -39,7 +37,8 @@ import {
 import { COMMON_PLACEHOLDER } from '../../../../constants/Forms';
 import { CustomFieldTypesState } from '../../../../containers/entities/customFieldTypes/reducers/state';
 import { EditInPlaceQueryFieldProps, QueryFieldSuggestion } from '../../../../model/common/Fields';
-import { State } from '../../../../reducers/state';
+import getCaretCoordinates from '../../../utils/DOM/getCaretCoordinates';
+import { useAppSelector } from '../../../utils/hooks';
 
 const useQueryStyles = makeAppStyles()(theme => ({
   inputRoot: {
@@ -246,79 +245,163 @@ interface OwnState {
   caretCoordinates: any;
 }
 
-interface OwnProps {
+interface InnerProps extends EditInPlaceQueryFieldProps {
   customFieldTypes?: CustomFieldTypesState;
 }
 
-class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldProps & OwnProps, OwnState> {
-  private inputNode: any;
+/**
+ * Class-like state container: every update is applied to a ref synchronously, so that the callbacks below always
+ * read the freshest value, and an optional callback is flushed once the update is committed to the DOM.
+ */
+function useStateWithCallback<S extends object>(initialState: S) {
+  const [state, setState] = useState<S>(initialState);
 
-  private pathFilter: string;
+  const stateRef = useRef<S>(initialState);
+  const callbacks = useRef<(() => void)[]>([]);
 
-  private operatorsFilter: string;
+  useLayoutEffect(() => {
+    if (!callbacks.current.length) return;
 
-  private simpleSearchChecked: boolean;
+    const pending = callbacks.current;
+    callbacks.current = [];
+    pending.forEach(cb => cb());
+  });
 
-  private autoQuotesAdded: boolean;
-
-  private dateAnchor: RefObject<any> = createRef();
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      value: [],
-      options: [],
-      menuIsOpen: false,
-      pickerOpened: null,
-      pickerValue: null,
-      inputValue: (props.input && props.input.value) || "",
-      searchValue: "",
-      caretCoordinates: null
+  const updateState = useCallback((patch: Partial<S> | ((prev: S) => Partial<S>), callback?: () => void) => {
+    stateRef.current = {
+      ...stateRef.current,
+      ...(typeof patch === "function" ? patch(stateRef.current) : patch)
     };
-  }
 
-  componentDidMount(): void {
-    this.setState({
-      options: this.getAutocomplete(this.props.input && this.props.input.value ? this.props.input.value : "").filter(this.filterOptions)
+    if (callback) {
+      callbacks.current.push(callback);
+    }
+
+    setState(stateRef.current);
+  }, []);
+
+  return [state, updateState, stateRef] as const;
+}
+
+const EditInPlaceQuerySelect = React.forwardRef<any, EditInPlaceQueryFieldProps>((props, ref) => {
+  const {
+    input,
+    meta,
+    label,
+    disabled,
+    className,
+    inline,
+    placeholder,
+    endAdornment,
+    disableUnderline,
+    disableErrorText,
+    fieldClasses = {},
+    onClick
+  } = props;
+
+  const customFieldTypes = useAppSelector(state => state.customFieldTypes);
+
+  const { classes: selectClasses } = useSelectStyles();
+  const { classes: queryClasses } = useQueryStyles();
+
+  const classes = useMemo(() => ({ ...selectClasses, ...queryClasses }), [selectClasses, queryClasses]);
+
+  const [state, updateState, stateRef] = useStateWithCallback<OwnState>({
+    value: [],
+    options: [],
+    menuIsOpen: false,
+    pickerOpened: null,
+    pickerValue: null,
+    inputValue: (input && input.value) || "",
+    searchValue: "",
+    caretCoordinates: null
+  });
+
+  // always holds the latest props, so that every callback below can stay referentially stable
+  const propsRef = useRef<InnerProps>(null);
+  propsRef.current = { ...props, customFieldTypes, classes };
+
+  const inputNode = useRef<any>(null);
+  const pathFilter = useRef<string>(null);
+  const operatorsFilter = useRef<string>(null);
+  const simpleSearchChecked = useRef<boolean>(false);
+  const autoQuotesAdded = useRef<boolean>(false);
+  const dateAnchor = useRef<any>(null);
+
+  const filterOptions = useCallback((item: QueryFieldSuggestion) => item.label
+    .toLowerCase()
+    .trim()
+    .startsWith(stateRef.current.searchValue.trim().toLowerCase()), []);
+
+  const filterOptionsInner = useCallback(options => options.filter(filterOptions), []);
+
+  const parseInputString = useCallback(val => {
+    if (!val) {
+      val = "";
+    }
+    const simpleSearchQuotesMatch = val.match(SIMPLE_SEARCH_QUOTES_REGEX);
+    const tagMatch = val.match(TAGS_REGEX);
+    const filterMatch = val.match(FILTER_TAGS_REGEX);
+
+    let input = simpleSearchQuotesMatch ? `~${val}` : val;
+
+    if (tagMatch) {
+      input = input.replace(TAGS_REGEX, v => `#"${v.replace("#", "")}"`);
+    }
+
+    if (filterMatch) {
+      input = input.replace(FILTER_TAGS_REGEX, v => `@"${v.replace("@", "")}"`);
+    }
+
+    input = input.length ? input : `#""`;
+
+    const chars = new ANTLRInputStream(input);
+    const lexer = new AqlLexer(chars);
+    const tokens = new CommonTokenStream(lexer);
+    const parser = new AqlParser(tokens);
+    parser.query();
+
+    return { tokens, parser } as any;
+  }, []);
+
+  const setMenuPosition = useCallback(position => {
+    updateState({
+      caretCoordinates: getCaretCoordinates(inputNode.current, position)
     });
-  }
+  }, []);
 
-  componentDidUpdate(prev) {
-    const {
-      input, rootEntity
-    } = this.props;
+  const setCaret = useCallback(() => {
+    const el = inputNode.current;
+    const selectionEnd = el.value.length;
 
-    if (prev.rootEntity !== rootEntity) {
-      this.setState(
-        {
-          value: [],
-          inputValue: input.value || "",
-          searchValue: ""
-        },
-        () => {
-          this.setState({
-            options: this.getAutocomplete(input.value || "").filter(this.filterOptions)
-          });
-        }
-      );
+    const isScrollable = el.scrollWidth > el.clientWidth;
 
-      this.operatorsFilter = "";
-      this.pathFilter = "";
+    if (isScrollable) {
+      el.scrollLeft = el.scrollWidth;
+    }
+    if (el.setSelectionRange) {
+      el.focus();
+      el.setSelectionRange(selectionEnd, selectionEnd);
     }
 
-    if (input && prev.input.value !== input.value) {
-      this.setState({
-        inputValue: input.value
-      });
+    if (propsRef.current.inline) {
+      if (isScrollable) {
+        updateState({
+          caretCoordinates: {
+            left: el.clientWidth
+          }
+        });
+      } else {
+        setMenuPosition(selectionEnd);
+      }
     }
-  }
+  }, []);
 
-  getAutocomplete = (input, position?) => {
-    const { parser } = this.parseInputString(input);
+  const getAutocomplete = useCallback((input, position?) => {
+    const { parser } = parseInputString(input);
     const {
       rootEntity, filterTags, tagSuggestions, customFields
-    } = this.props;
+    } = propsRef.current;
 
     const core = new CodeCompletionCore(parser);
     core.showRuleStack = true;
@@ -328,24 +411,24 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     );
     const keywords: any = [];
 
-    if (this.operatorsFilter === "SEPARATOR" && input[input.length - 1] !== " ") {
-      this.operatorsFilter = null;
+    if (operatorsFilter.current === "SEPARATOR" && input[input.length - 1] !== " ") {
+      operatorsFilter.current = null;
 
-      this.setState(
+      updateState(
         prev => ({
           inputValue: prev.inputValue + "."
         }),
-        this.setCaret
+        setCaret
       );
 
-      return this.getAutocomplete(input + ".", position);
+      return getAutocomplete(input + ".", position);
     }
 
     for (const candidate of candidates.tokens) {
       const suggestions = completeSuggestions(
         parser.vocabulary.getDisplayName(candidate[0]),
-        this.operatorsFilter,
-        this.pathFilter,
+        operatorsFilter.current,
+        pathFilter.current,
         rootEntity,
         filterTags,
         tagSuggestions,
@@ -376,100 +459,276 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     }
 
     return variants;
-  };
+  }, []);
 
-  parseInputString = val => {
-    if (!val) {
-      val = "";
-    }
-    const simpleSearchQuotesMatch = val.match(SIMPLE_SEARCH_QUOTES_REGEX);
-    const tagMatch = val.match(TAGS_REGEX);
-    const filterMatch = val.match(FILTER_TAGS_REGEX);
+  const setIdentifierFilters = useCallback(tokenText => {
+    const { rootEntity, customFields, customFieldTypes } = propsRef.current;
 
-    let input = simpleSearchQuotesMatch ? `~${val}` : val;
+    if (customFields && customFields.includes(tokenText)) {
 
-    if (tagMatch) {
-      input = input.replace(TAGS_REGEX, v => `#"${v.replace("#", "")}"`);
-    }
+      const types = rootEntity === "ProductItem"
+        ? [...(customFieldTypes?.types["Article"] || []), ...(customFieldTypes?.types["Voucher"] || []), ...(customFieldTypes?.types["Membership"] || [])]
+        : customFieldTypes?.types[rootEntity];
 
-    if (filterMatch) {
-      input = input.replace(FILTER_TAGS_REGEX, v => `@"${v.replace("@", "")}"`);
+      const isDateField = types?.some(t => t.fieldKey === tokenText && ["Date time", "Date"].includes(t.dataType));
+      operatorsFilter.current = isDateField ? "Date" : "String";
+      return;
     }
 
-    input = input.length ? input : `#""`;
+    let propType;
 
-    const chars = new ANTLRInputStream(input);
-    const lexer = new AqlLexer(chars);
-    const tokens = new CommonTokenStream(lexer);
-    const parser = new AqlParser(tokens);
-    parser.query();
+    if (Entities[pathFilter.current]) {
+      propType = Entities[pathFilter.current][tokenText] || Entities[pathFilter.current].hasOwnProperty(tokenText);
+    } else {
+      propType = Entities[rootEntity][tokenText];
+    }
 
-    return { tokens, parser } as any;
-  };
+    if (Entities[propType]) {
+      pathFilter.current = propType;
 
-  setInputNode = node => {
-    if (node) {
-      this.inputNode = node;
+      if (Entities[propType].constructor.name === ENUM_CONSTRUCTOR_NAME) {
+        operatorsFilter.current = ENUM_CONSTRUCTOR_NAME;
+        return;
+      }
 
-      this.inputNode.addEventListener("click", this.onInputClick);
+      operatorsFilter.current = "SEPARATOR";
+      return;
+    }
 
-      const { setInputNode, inline } = this.props;
+    if (propType) {
+      operatorsFilter.current = propType;
+    }
+  }, []);
 
-      if (setInputNode && inline) {
-        setInputNode(this.inputNode);
+  const updateAutocomplete = useCallback(value => {
+    const { tokens, parser } = parseInputString(value);
+    const { filterTags, tagSuggestions } = propsRef.current;
+    const { options } = stateRef.current;
+
+    const parsedTokens = tokens.tokens;
+
+    let lastIdentifier = null;
+
+    for (const token of [...parsedTokens].reverse()) {
+      if (token.type === AqlLexer.Identifier && token.text !== stateRef.current.searchValue) {
+        lastIdentifier = token;
+        break;
       }
     }
-  };
 
-  setCaret = () => {
-    const el = this.inputNode;
-    const selectionEnd = this.inputNode.value.length;
-
-    const isScrollable = el.scrollWidth > el.clientWidth;
-
-    if (isScrollable) {
-      el.scrollLeft = el.scrollWidth;
-    }
-    if (el.setSelectionRange) {
-      el.focus();
-      el.setSelectionRange(selectionEnd, selectionEnd);
+    if (lastIdentifier) {
+      setIdentifierFilters(lastIdentifier.text);
     }
 
-    if (this.props.inline) {
+    if (!lastIdentifier && pathFilter.current) {
+      pathFilter.current = "";
+    }
+
+    const lastToken = parsedTokens[parsedTokens.length - 2];
+    const lastTokenType = lastToken && parser.vocabulary.getDisplayName(lastToken._type);
+
+    const preLastToken = parsedTokens[parsedTokens.length - 3];
+    const preLastTokenType = preLastToken && parser.vocabulary.getDisplayName(preLastToken._type);
+
+    const prePreLastToken = parsedTokens[parsedTokens.length - 4];
+    const prePreLastTokenType = prePreLastToken && parser.vocabulary.getDisplayName(prePreLastToken._type);
+
+    if (preLastTokenType === "'@'" || preLastTokenType === "'#'") {
+      updateState({
+        searchValue: stateRef.current.searchValue.replace(/"/g, "")
+      });
+      return;
+    }
+
+    if (lastTokenType === "'@'") {
+      updateState({
+        searchValue: "",
+        options: (filterTags || [])
+      });
+      return;
+    }
+
+    if (lastTokenType === "'#'") {
+      updateState({
+        searchValue: "",
+        options: (tagSuggestions || [])
+      });
+      return;
+    }
+
+    if (
+      ["DoubleQuotedStringLiteral", "SingleQuotedStringLiteral", "RichTextLiteral"].includes(lastTokenType)
+      && value.match(SIMPLE_SEARCH_QUOTES_AND_NO_WHITESPACE_REGEX)
+    ) {
+      simpleSearchChecked.current = false;
+
+      const inputValue = value.replace(/[",']/g, "");
+
+      updateState({
+        inputValue,
+        searchValue: inputValue,
+        options: getAutocomplete("", 0).filter(filterOptions)
+      });
+
+      return;
+    }
+
+    if (preLastTokenType === "AND" || preLastTokenType === "OR") {
+      operatorsFilter.current = "";
+      pathFilter.current = "";
+    }
+
+    if (lastTokenType === "WS") {
+      if (autoQuotesAdded.current && preLastTokenType === "Identifier" && ["String", "RichText"].includes(operatorsFilter.current)) {
+        autoQuotesAdded.current = false;
+      }
+
+      if (
+        !autoQuotesAdded.current
+        && ["String", "RichText"].includes(operatorsFilter.current)
+        && !["Identifier", "DoubleQuotedStringLiteral", "SingleQuotedStringLiteral", "RichTextLiteral"].includes(preLastTokenType)
+      ) {
+        const { inputValue } = stateRef.current;
+
+        autoQuotesAdded.current = true;
+
+        const position = inputValue.length + 1;
+
+        updateState(
+          {
+            inputValue: inputValue + `""`,
+            options: []
+          },
+          () => {
+            inputNode.current.setSelectionRange(position, position);
+            setMenuPosition(position);
+          }
+        );
+
+        return;
+      }
+
+      updateState(
+        {
+          searchValue: ""
+        },
+        () => {
+          updateState({
+            options: getAutocomplete(value, inputNode.current?.selectionStart).filter(filterOptions)
+          });
+        }
+      );
+
+      return;
+    }
+
+    if (lastToken && lastToken.text === ".") {
+      operatorsFilter.current = "";
+      updateState(
+        {
+          searchValue: ""
+        },
+        () => {
+          updateState({
+            options: getAutocomplete(value).filter(filterOptions)
+          });
+        }
+      );
+
+      return;
+    }
+
+    if (lastTokenType === "Identifier") {
+      if (stateRef.current.searchValue !== lastToken.text) {
+        updateState({
+          options: getAutocomplete(value).filter(filterOptions)
+        });
+      } else {
+        if (!lastIdentifier) {
+          operatorsFilter.current = "";
+        }
+
+        if (options.length === 1 && options[0].value === lastToken.text) {
+          setIdentifierFilters(lastToken.text);
+          if (operatorsFilter.current === "SEPARATOR") {
+            updateState({
+              searchValue: "",
+              options: getAutocomplete(lastToken.text).filter(filterOptions)
+            });
+          }
+          return;
+        }
+
+        if (prePreLastTokenType === "AND" || prePreLastTokenType === "OR") {
+          operatorsFilter.current = "";
+          pathFilter.current = "";
+        }
+
+        if (operatorsFilter.current === "SEPARATOR" || preLastTokenType === "'.'") {
+          operatorsFilter.current = "";
+        }
+
+        updateState({
+          options: getAutocomplete(value.replace(new RegExp(lastToken.text + "$"), "")).filter(filterOptions)
+        });
+      }
+    }
+  }, []);
+
+  const performSearch = useCallback(() => {
+    const { performSearch } = propsRef.current;
+
+    if (performSearch) {
+      performSearch();
+    }
+  }, []);
+
+  const onInputClick = useCallback(e => {
+    if (propsRef.current.inline) {
+      const isScrollable = inputNode.current.scrollWidth > inputNode.current.clientWidth;
+
       if (isScrollable) {
-        this.setState({
+        updateState({
           caretCoordinates: {
-            left: this.inputNode.clientWidth
+            left: e.offsetX
           }
         });
       } else {
-        this.setMenuPosition(selectionEnd);
+        setMenuPosition(inputNode.current.selectionEnd);
       }
     }
-  };
+  }, []);
 
-  setMenuPosition = position => {
-    this.setState({
-      caretCoordinates: getCaretCoordinates(this.inputNode, position)
-    });
-  };
+  const setInputNode = useCallback(node => {
+    if (node) {
+      inputNode.current = node;
 
-  onBlur = () => {
-    if (this.state.pickerOpened) return;
+      node.addEventListener("click", onInputClick);
 
-    const { onBlur } = this.props;
+      const { setInputNode, inline } = propsRef.current;
+
+      if (setInputNode && inline) {
+        setInputNode(node);
+      }
+    }
+  }, []);
+
+  const onBlur = useCallback(() => {
+    if (stateRef.current.pickerOpened) return;
+
+    const { onBlur } = propsRef.current;
 
     if (onBlur) {
       onBlur();
     }
 
-    this.setState({
-      menuIsOpen: false,
+    updateState({
+      menuIsOpen: false
     });
-  };
+  }, []);
 
-  onFocus = e => {
-    const { inline, input, onFocus } = this.props;
+  const onFocus = useCallback(e => {
+    const { inline, input, onFocus } = propsRef.current;
 
     if (onFocus) {
       onFocus();
@@ -479,120 +738,69 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
       input.onFocus(e);
     }
 
-    if (this.simpleSearchChecked && !this.inputNode.value) {
-      this.simpleSearchChecked = false;
+    if (simpleSearchChecked.current && !inputNode.current.value) {
+      simpleSearchChecked.current = false;
     }
 
     // expand animation timeout
     setTimeout(() => {
-      this.setState(
+      updateState(
         {
           menuIsOpen: true
         },
         () => {
-          this.setCaret();
-          this.updateAutocomplete(this.inputNode.value || "");
+          setCaret();
+          updateAutocomplete(inputNode.current.value || "");
         }
       );
     }, 300);
-  };
+  }, []);
 
-  onInputClick = e => {
-    if (this.props.inline) {
-      const isScrollable = this.inputNode.scrollWidth > this.inputNode.clientWidth;
-
-      if (isScrollable) {
-        this.setState({
-          caretCoordinates: {
-            left: e.offsetX
-          }
-        });
-      } else {
-        this.setMenuPosition(this.inputNode.selectionEnd);
-      }
-    }
-  };
-
-  getInlineMenuStyles = () => {
-    const { caretCoordinates, menuIsOpen, options } = this.state;
-    const { classes } = this.props;
-
-    const rightAligned = caretCoordinates && caretCoordinates.left >= this.inputNode.clientWidth;
-
-    const isDisplayed = menuIsOpen && Boolean(options.filter(this.filterOptions).length);
-
-    return {
-      className: clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft),
-      style: {
-        display: isDisplayed ? "block" : "none",
-        position: "absolute" as any,
-        marginBottom: "12px",
-        width: "auto",
-        transform: "translateY(calc(-100% - 8px))",
-        top: 0,
-        ...(rightAligned ? {
-            left: this.inputNode.clientWidth,
-          } : {
-            left: caretCoordinates ? caretCoordinates.left : 0,
-          })
-      }
-    };
-  };
-
-  filterOptions = item => item.label
-    .toLowerCase()
-    .trim()
-    .startsWith(this.state.searchValue.trim().toLowerCase());
-
-  filterOptionsInner = options => options.filter(this.filterOptions);
-
-  openPicker = pickerOpened => {
-    this.setState({
+  const openPicker = useCallback(pickerOpened => {
+    updateState({
       pickerOpened
     });
-  };
+  }, []);
 
-  closePicker = () => {
-    this.setState({
+  const closePicker = useCallback(() => {
+    updateState({
       pickerOpened: null,
       pickerValue: null
     });
 
-    this.updateAutocomplete(this.state.inputValue);
-    this.props.performSearch && this.props.performSearch();
-  };
+    updateAutocomplete(stateRef.current.inputValue);
+    propsRef.current.performSearch && propsRef.current.performSearch();
+  }, []);
 
-  handlePickerChange = newPickerValue => {
-    const { pickerOpened, pickerValue } = this.state;
-    
-    this.setState({ pickerValue: newPickerValue });
+  const handlePickerChange = useCallback(newPickerValue => {
+    const { pickerOpened, pickerValue } = stateRef.current;
+
+    updateState({ pickerValue: newPickerValue });
 
     if (!newPickerValue) return;
 
     const dateTimeCurrent = getPickerValue(pickerOpened, newPickerValue);
     const dateTimePrev = pickerValue && getPickerValue(pickerOpened, pickerValue);
 
-    const inputValue = this.state.inputValue.replace(dateTimePrev, '') + dateTimeCurrent;
+    const inputValue = stateRef.current.inputValue.replace(dateTimePrev, '') + dateTimeCurrent;
 
-    this.setState(
-      {
-        inputValue
-      }
-    );
-  };
+    updateState({
+      inputValue
+    });
+  }, []);
 
-  handleChange = (e, value, action) => {
-    const { inline, input } = this.props;
+  const handleChange = useCallback((e, value, action) => {
+    const { inline, input, rootEntity } = propsRef.current;
 
     if (action === "clear" || action === "remove-option") {
-      this.operatorsFilter = "";
-      this.pathFilter = "";
+      operatorsFilter.current = "";
+      pathFilter.current = "";
 
-      this.setState(
+      updateState(
         {
           inputValue: ""
         },
-        this.performSearch
+        performSearch
       );
 
       if (!inline) {
@@ -607,22 +815,24 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     let propType;
 
     if (value[0].label === "DATE" || value[0].label === "TIME") {
-      this.openPicker(value[0].label);
+      openPicker(value[0].label);
       return;
     }
 
     if (value[0].token === "AND" || value[0].token === "OR") {
-      this.operatorsFilter = "";
+      operatorsFilter.current = "";
     }
 
     if (value[0].token === "Identifier") {
-      propType = (Entities[this.pathFilter] && Entities[this.pathFilter][value[0].value])
-        || Entities[this.props.rootEntity][value[0].value];
+      propType = (Entities[pathFilter.current] && Entities[pathFilter.current][value[0].value])
+        || Entities[rootEntity][value[0].value];
     }
 
-    let inputValue = (this.state.inputValue || "").replace(
-        new RegExp((this.state.searchValue.match(/[+*()]/) ? "\\" : "") + this.state.searchValue + "$"),
-        this.state.searchValue.match(/\s/) ? " " : ""
+    const { inputValue: currentValue, searchValue } = stateRef.current;
+
+    let inputValue = (currentValue || "").replace(
+        new RegExp((searchValue.match(/[+*()]/) ? "\\" : "") + searchValue + "$"),
+        searchValue.match(/\s/) ? " " : ""
       )
       + value[0].value
       + (value[0].token === "SEPARATOR" || value[0].token === "'@'" || value[0].token === "'#'"
@@ -636,50 +846,50 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
       inputValue = inputValue.replace(tagStr, `${value[0].queryPrefix} ${tagStr}`);
     }
 
-    if (!this.simpleSearchChecked) {
-      this.simpleSearchChecked = true;
+    if (!simpleSearchChecked.current) {
+      simpleSearchChecked.current = true;
     }
 
-    this.setState(
+    updateState(
       {
         inputValue,
         searchValue: ""
       },
       () => {
-        this.setCaret();
-        this.updateAutocomplete(inputValue);
-        this.performSearch();
+        setCaret();
+        updateAutocomplete(inputValue);
+        performSearch();
         if (!inline) input.onChange(inputValue);
       }
     );
-  };
+  }, []);
 
-  handleInputChange = e => {
-    const { input, inline } = this.props;
+  const handleInputChange = useCallback(e => {
+    const { input, inline } = propsRef.current;
 
     const value = e.target.value;
 
     if (!value && !value.match(/\s/)) {
-      this.simpleSearchChecked = false;
+      simpleSearchChecked.current = false;
     }
 
-    const { tokens: { tokens } } = this.parseInputString(value);
+    const { tokens: { tokens } } = parseInputString(value);
 
     if (!value) {
-      this.setState(
+      updateState(
         {
           inputValue: "",
           searchValue: ""
         },
         () => {
-          this.setMenuPosition(this.inputNode.selectionStart);
-          this.operatorsFilter = "";
-          this.pathFilter = "";
-          this.setState(
+          setMenuPosition(inputNode.current.selectionStart);
+          operatorsFilter.current = "";
+          pathFilter.current = "";
+          updateState(
             {
-              options: this.getAutocomplete("").filter(this.filterOptions)
+              options: getAutocomplete("").filter(filterOptions)
             },
-            this.performSearch
+            performSearch
           );
           if (!inline) input.onChange("");
         }
@@ -689,266 +899,45 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
 
     const lastToken = tokens[tokens.length - 2];
 
-    this.setState(
+    updateState(
       {
         inputValue: value,
         searchValue: lastToken ? lastToken.text : ""
       },
       () => {
-        this.setMenuPosition(this.inputNode.selectionStart);
-        this.updateAutocomplete(value);
-        this.performSearch();
+        setMenuPosition(inputNode.current.selectionStart);
+        updateAutocomplete(value);
+        performSearch();
         if (!inline) input.onChange(value);
       }
     );
-  };
+  }, []);
 
-  updateAutocomplete = value => {
-    const { tokens, parser } = this.parseInputString(value);
-    const { filterTags, tagSuggestions } = this.props;
-    const { options } = this.state;
-
-    const parsedTokens = tokens.tokens;
-
-    let lastIdentifier = null;
-
-    for (const token of [...parsedTokens].reverse()) {
-      if (token.type === AqlLexer.Identifier && token.text !== this.state.searchValue) {
-        lastIdentifier = token;
-        break;
-      }
-    }
-
-    if (lastIdentifier) {
-      this.setIdentifierFilters(lastIdentifier.text);
-    }
-
-    if (!lastIdentifier && this.pathFilter) {
-      this.pathFilter = "";
-    }
-
-    const lastToken = parsedTokens[parsedTokens.length - 2];
-    const lastTokenType = lastToken && parser.vocabulary.getDisplayName(lastToken._type);
-
-    const preLastToken = parsedTokens[parsedTokens.length - 3];
-    const preLastTokenType = preLastToken && parser.vocabulary.getDisplayName(preLastToken._type);
-
-    const prePreLastToken = parsedTokens[parsedTokens.length - 4];
-    const prePreLastTokenType = prePreLastToken && parser.vocabulary.getDisplayName(prePreLastToken._type);
-
-    if (preLastTokenType === "'@'" || preLastTokenType === "'#'") {
-      this.setState({
-        searchValue: this.state.searchValue.replace(/"/g, "")
-      });
-      return;
-    }
-
-    if (lastTokenType === "'@'") {
-      this.setState({
-        searchValue: "",
-        options: (filterTags || [])
-      });
-      return;
-    }
-
-    if (lastTokenType === "'#'") {
-      this.setState({
-        searchValue: "",
-        options: (tagSuggestions || [])
-      });
-      return;
-    }
-
-    if (
-      ["DoubleQuotedStringLiteral", "SingleQuotedStringLiteral", "RichTextLiteral"].includes(lastTokenType)
-      && value.match(SIMPLE_SEARCH_QUOTES_AND_NO_WHITESPACE_REGEX)
-    ) {
-      this.simpleSearchChecked = false;
-
-      const inputValue = value.replace(/[",']/g, "");
-
-      this.setState({
-        inputValue,
-        searchValue: inputValue,
-        options: this.getAutocomplete("", 0).filter(this.filterOptions)
-      });
-
-      return;
-    }
-
-    if (preLastTokenType === "AND" || preLastTokenType === "OR") {
-      this.operatorsFilter = "";
-      this.pathFilter = "";
-    }
-
-    if (lastTokenType === "WS") {
-      if (this.autoQuotesAdded && preLastTokenType === "Identifier" && ["String", "RichText"].includes(this.operatorsFilter)) {
-        this.autoQuotesAdded = false;
-      }
+  // checking if aql starts with simple search
+  const checkSimpleSearch = useCallback((inputValue, options) => {
+    if (inputValue && !simpleSearchChecked.current) {
+      simpleSearchChecked.current = true;
 
       if (
-        !this.autoQuotesAdded
-        && ["String", "RichText"].includes(this.operatorsFilter)
-        && !["Identifier", "DoubleQuotedStringLiteral", "SingleQuotedStringLiteral", "RichTextLiteral"].includes(preLastTokenType)
+        !options.some(o => o.value === inputValue)
+        && !inputValue.match(SIMPLE_SEARCH_QUOTES_REGEX)
+        && !inputValue.match(/[~#@\s.]/)
       ) {
-        const { inputValue } = this.state;
-
-        this.autoQuotesAdded = true;
-
-        const position = inputValue.length + 1;
-
-        this.setState(
+        updateState(
           {
-            inputValue: inputValue + `""`,
+            inputValue: `"${inputValue}"`,
             options: []
           },
           () => {
-            this.inputNode.setSelectionRange(position, position);
-            this.setMenuPosition(position);
+            inputNode.current.setSelectionRange(inputValue.length + 1, inputValue.length + 1);
           }
         );
-
-        return;
-      }
-
-      this.setState(
-        {
-          searchValue: ""
-        },
-        () => {
-          this.setState({
-            options: this.getAutocomplete(value, this.inputNode?.selectionStart).filter(this.filterOptions)
-          });
-        }
-      );
-
-      return;
-    }
-
-    if (lastToken && lastToken.text === ".") {
-      this.operatorsFilter = "";
-      this.setState(
-        {
-          searchValue: ""
-        },
-        () => {
-          this.setState({
-            options: this.getAutocomplete(value).filter(this.filterOptions)
-          });
-        }
-      );
-
-      return;
-    }
-
-    if (lastTokenType === "Identifier") {
-      if (this.state.searchValue !== lastToken.text) {
-        this.setState({
-          options: this.getAutocomplete(value).filter(this.filterOptions)
-        });
-      } else {
-        if (!lastIdentifier) {
-          this.operatorsFilter = "";
-        }
-
-        if (options.length === 1 && options[0].value === lastToken.text) {
-          this.setIdentifierFilters(lastToken.text);
-          if (this.operatorsFilter === "SEPARATOR") {
-            this.setState({
-              searchValue: "",
-              options: this.getAutocomplete(lastToken.text).filter(this.filterOptions)
-            });
-          }
-          return;
-        }
-
-        if (prePreLastTokenType === "AND" || prePreLastTokenType === "OR") {
-          this.operatorsFilter = "";
-          this.pathFilter = "";
-        }
-
-        if (this.operatorsFilter === "SEPARATOR" || preLastTokenType === "'.'") {
-          this.operatorsFilter = "";
-        }
-
-        this.setState({
-          options: this.getAutocomplete(value.replace(new RegExp(lastToken.text + "$"), "")).filter(this.filterOptions)
-        });
       }
     }
-  };
+  }, []);
 
-  setIdentifierFilters = tokenText => {
-    const { rootEntity, customFields, customFieldTypes } = this.props;
-
-    if (customFields && customFields.includes(tokenText)) {
-      
-      const types = rootEntity === "ProductItem" 
-        ? [...(customFieldTypes?.types["Article"] || []), ...(customFieldTypes?.types["Voucher"] || []), ...(customFieldTypes?.types["Membership"] || [])]  
-        : customFieldTypes?.types[rootEntity]; 
-      
-      const isDateField = types?.some(t => t.fieldKey === tokenText && ["Date time", "Date"].includes(t.dataType));
-      this.operatorsFilter = isDateField ? "Date" : "String";
-      return;
-    }
-
-    let propType;
-
-    if (Entities[this.pathFilter]) {
-      propType = Entities[this.pathFilter][tokenText] || Entities[this.pathFilter].hasOwnProperty(tokenText);
-    } else {
-      propType = Entities[rootEntity][tokenText];
-    }
-
-    // if (!propType) {
-    //   const lastPathMatch = value
-    //     .split(" ")
-    //     .reverse()
-    //     .join(" ")
-    //     .match(/[a-z](?:\S+?\.)+\S+[a-z]/);
-    //
-    //   if (!lastPathMatch) {
-    //     return;
-    //   }
-    //
-    //   const entries = lastPathMatch[0].split(".");
-    //   const tokenIndex = entries.findIndex(e => e === tokenText);
-    //
-    //   let ob = Entities[rootEntity];
-    //
-    //   entries.forEach((e, i) => {
-    //     if (tokenIndex !== -1 && tokenIndex + 1 === i) {
-    //       return;
-    //     }
-    //
-    //     if (ob) {
-    //       if (ob[e]) {
-    //         propType = ob[e];
-    //       }
-    //       ob = Entities[ob[e]];
-    //     }
-    //   });
-    // }
-
-    if (Entities[propType]) {
-      this.pathFilter = propType;
-
-      if (Entities[propType].constructor.name === ENUM_CONSTRUCTOR_NAME) {
-        this.operatorsFilter = ENUM_CONSTRUCTOR_NAME;
-        return;
-      }
-
-      this.operatorsFilter = "SEPARATOR";
-      return;
-    }
-
-    if (propType) {
-      this.operatorsFilter = propType;
-    }
-  };
-
-  onKeyDown = e => {
-    const { inputValue, options } = this.state;
+  const onKeyDown = useCallback(e => {
+    const { inputValue, options } = stateRef.current;
 
     switch (e.keyCode) {
       case 32: {
@@ -956,76 +945,71 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
           e.preventDefault();
         }
 
-        this.checkSimpleSearch(inputValue, options);
+        checkSimpleSearch(inputValue, options);
         break;
       }
 
       case 27: {
-        this.inputNode?.blur();
+        inputNode.current?.blur();
       }
     }
-  };
+  }, []);
 
-  // checking if aql starts with simple search
-  checkSimpleSearch = (inputValue, options) => {
-    if (inputValue && !this.simpleSearchChecked) {
-      this.simpleSearchChecked = true;
+  const reset = useCallback(() => {
+    pathFilter.current = null;
+    operatorsFilter.current = null;
+    simpleSearchChecked.current = false;
 
-      if (
-        !options.some(o => o.value === inputValue)
-        && !inputValue.match(SIMPLE_SEARCH_QUOTES_REGEX)
-        && !inputValue.match(/[~#@\s.]/)
-      ) {
-        this.setState(
-          {
-            inputValue: `"${inputValue}"`,
-            options: []
-          },
-          () => {
-            this.inputNode.setSelectionRange(inputValue.length + 1, inputValue.length + 1);
-          }
-        );
-      }
-    }
-  };
-
-  reset = () => {
-    this.pathFilter = null;
-    this.operatorsFilter = null;
-    this.simpleSearchChecked = false;
-
-    this.setState({
+    updateState({
       value: [],
-      options: this.getAutocomplete("", 0).filter(this.filterOptions),
+      options: getAutocomplete("", 0).filter(filterOptions),
       menuIsOpen: false,
       pickerOpened: null,
       inputValue: "",
       searchValue: "",
       caretCoordinates: null
     });
-  };
+  }, []);
 
-  performSearch = () => {
-    const { performSearch } = this.props;
+  const getInlineMenuStyles = useCallback(() => {
+    const { caretCoordinates, menuIsOpen, options } = stateRef.current;
+    const { classes } = propsRef.current;
 
-    if (performSearch) {
-      performSearch();
-    }
-  };
+    const rightAligned = caretCoordinates && caretCoordinates.left >= inputNode.current.clientWidth;
 
-  getOptionLabel = option => option.label;
+    const isDisplayed = menuIsOpen && Boolean(options.filter(filterOptions).length);
 
-  renderOption = (optionProps, data) => {
-    const { itemRenderer } = this.props;
-    const { searchValue } = this.state;
+    return {
+      className: clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft),
+      style: {
+        display: isDisplayed ? "block" : "none",
+        position: "absolute" as any,
+        marginBottom: "12px",
+        width: "auto",
+        transform: "translateY(calc(-100% - 8px))",
+        top: 0,
+        ...(rightAligned ? {
+            left: inputNode.current.clientWidth,
+          } : {
+            left: caretCoordinates ? caretCoordinates.left : 0,
+          })
+      }
+    };
+  }, []);
 
-    const label = this.getOptionLabel(data);
+  const getOptionLabel = useCallback(option => option.label, []);
+
+  const renderOption = useCallback((optionProps, data) => {
+    const { itemRenderer } = propsRef.current;
+    const { searchValue } = stateRef.current;
+
+    const label = getOptionLabel(data);
 
     let option = getHighlightedPartLabel(label, searchValue, optionProps);
 
     if (label === "DATE" || label === "TIME") {
       option = (
-        <ListItemButton {...optionProps} ref={this.dateAnchor} className="heading centeredFlex">
+        <ListItemButton {...optionProps} ref={dateAnchor} className="heading centeredFlex">
           {label}
           {label === "DATE" && <DateRange className="ml-1"/>}
           {label === "TIME" && <QueryBuilder className="ml-1"/>}
@@ -1038,150 +1022,167 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     }
 
     return option as any;
-  };
+  }, []);
 
-  popperAdapter = ({ anchorEl, disablePortal, className, style, ...params }) => (
-    <div {...params} {...this.getInlineMenuStyles()} />);
+  const popperAdapter = useCallback(({ anchorEl, disablePortal, className, style, ...params }) => (
+    <div {...params} {...getInlineMenuStyles()} />), []);
 
-  render() {
-    const {
-      classes,
-      input,
-      meta,
-      label,
-      disabled,
-      className,
-      inline,
-      placeholder,
-      endAdornment,
-      disableUnderline,
-      disableErrorText,
-      fieldClasses = {},
-      onClick
-    } = this.props;
+  useImperativeHandle(ref, () => ({ reset }), []);
 
-    const {
-      pickerValue, menuIsOpen, options, value, inputValue, pickerOpened
-    } = this.state;
+  useEffect(() => {
+    updateState({
+      options: getAutocomplete(input && input.value ? input.value : "").filter(filterOptions)
+    });
+  }, []);
 
-    return (
-      <div className={className} id={input.name}>
-        <div className="d-none">
-          <DatePicker
-            value={pickerValue}
-            closeOnSelect={false}
-            onChange={this.handlePickerChange}
-            onClose={this.closePicker}
-            open={pickerOpened === "DATE"}
-            slots={{
-              field: TextField
-            }}
-            slotProps={{
-              popper: {
-                placement: "top",
-                anchorEl: this.dateAnchor.current
-              }
-            }}
-          />
+  const prevRootEntity = useRef(props.rootEntity);
 
-          <TimePicker
-            value={pickerValue}
-            closeOnSelect={false}
-            onChange={this.handlePickerChange}
-            onClose={this.closePicker}
-            open={pickerOpened === "TIME"}
-            renderInput={props => <TextField {...props} />}
-            PopperProps={{
-              placement: "top",
-              anchorEl: this.dateAnchor.current
-            }}
-          />
-        </div>
+  useEffect(() => {
+    if (prevRootEntity.current === props.rootEntity) return;
 
-        <div
-          className={clsx("relative", {
-            "pointer-events-none": disabled,
-            [classes.bottomPadding]: !inline
-          })}
-        >
-          <Autocomplete
-            value={value}
-            open={menuIsOpen && Boolean(options.length)}
-            options={options}
-            onChange={this.handleChange}
-            renderOption={this.renderOption}
-            filterOptions={this.filterOptionsInner}
-            getOptionLabel={this.getOptionLabel}
-            slots={inline ? { popper: this.popperAdapter as any } : undefined}
-            classes={inline ? {
-              root: classes.root,
-              paper: classes.menuShadow,
-              listbox: "p-0 relative zIndex1 paperBackgroundColor",
-              hasPopupIcon: classes.hasPopup,
-              hasClearIcon: classes.hasClear,
-              inputRoot: classes.inputRoot
-            } : null}
-            renderInput={params => (
-              <TextField
-                {...params}
-                variant="standard"
-                onKeyDown={this.onKeyDown}
-                slotProps={{
-                  inputLabel: {
-                    ...params.slotProps.inputLabel,
-                    shrink: true
-                  },
-                  input: {
-                    ...params.slotProps.input,
-                    disableUnderline,
-                    classes: {
-                      root: fieldClasses.text,
-                      underline: fieldClasses.underline
-                    },
-                    endAdornment
-                  },
-                  htmlInput: {
-                    ...params.slotProps.htmlInput,
-                    value: inputValue || ""
-                  }
-                }}
-                error={meta?.invalid}
-                helperText={(
-                  <span className="d-block shakingError">
-                    {!disableErrorText && (meta?.invalid ? meta.error || "Expression is invalid" : "")}
-                  </span>
-                )}
-                onChange={this.handleInputChange}
-                inputRef={this.setInputNode}
-                onFocus={this.onFocus}
-                onBlur={this.onBlur}
-                onClick={onClick}
-                label={label}
-                placeholder={placeholder || COMMON_PLACEHOLDER}
-              />
-            )}
-            popupIcon={stubComponent()}
-            disableListWrap
-            openOnFocus
-            multiple
-          />
-        </div>
-      </div>
+    prevRootEntity.current = props.rootEntity;
+
+    const { input } = propsRef.current;
+
+    updateState(
+      {
+        value: [],
+        inputValue: input.value || "",
+        searchValue: ""
+      },
+      () => {
+        updateState({
+          options: getAutocomplete(propsRef.current.input.value || "").filter(filterOptions)
+        });
+      }
     );
-  }
-}
 
-const mapStateToProps = (state: State) => ({
-  customFieldTypes: state.customFieldTypes
+    operatorsFilter.current = "";
+    pathFilter.current = "";
+  }, [props.rootEntity]);
+
+  const prevInputValue = useRef(input && input.value);
+
+  useEffect(() => {
+    const { input } = propsRef.current;
+
+    if (!input || prevInputValue.current === input.value) return;
+
+    prevInputValue.current = input.value;
+
+    updateState({
+      inputValue: input.value
+    });
+  }, [input && input.value]);
+
+  const {
+    pickerValue, menuIsOpen, options, value, inputValue, pickerOpened
+  } = state;
+
+  return (
+    <div className={className} id={input.name}>
+      <div className="d-none">
+        <DatePicker
+          value={pickerValue}
+          closeOnSelect={false}
+          onChange={handlePickerChange}
+          onClose={closePicker}
+          open={pickerOpened === "DATE"}
+          slots={{
+            field: TextField
+          }}
+          slotProps={{
+            popper: {
+              placement: "top",
+              anchorEl: dateAnchor.current
+            }
+          }}
+        />
+
+        <TimePicker
+          value={pickerValue}
+          closeOnSelect={false}
+          onChange={handlePickerChange}
+          onClose={closePicker}
+          open={pickerOpened === "TIME"}
+          renderInput={props => <TextField {...props} />}
+          PopperProps={{
+            placement: "top",
+            anchorEl: dateAnchor.current
+          }}
+        />
+      </div>
+
+      <div
+        className={clsx("relative", {
+          "pointer-events-none": disabled,
+          [classes.bottomPadding]: !inline
+        })}
+      >
+        <Autocomplete
+          value={value}
+          open={menuIsOpen && Boolean(options.length)}
+          options={options}
+          onChange={handleChange}
+          renderOption={renderOption}
+          filterOptions={filterOptionsInner}
+          getOptionLabel={getOptionLabel}
+          slots={inline ? { popper: popperAdapter as any } : undefined}
+          classes={inline ? {
+            root: classes.root,
+            paper: classes.menuShadow,
+            listbox: "p-0 relative zIndex1 paperBackgroundColor",
+            hasPopupIcon: classes.hasPopup,
+            hasClearIcon: classes.hasClear,
+            inputRoot: classes.inputRoot
+          } : null}
+          renderInput={params => (
+            <TextField
+              {...params}
+              variant="standard"
+              onKeyDown={onKeyDown}
+              slotProps={{
+                inputLabel: {
+                  ...params.slotProps.inputLabel,
+                  shrink: true
+                },
+                input: {
+                  ...params.slotProps.input,
+                  disableUnderline,
+                  classes: {
+                    root: fieldClasses.text,
+                    underline: fieldClasses.underline
+                  },
+                  endAdornment
+                },
+                htmlInput: {
+                  ...params.slotProps.htmlInput,
+                  value: inputValue || ""
+                }
+              }}
+              error={meta?.invalid}
+              helperText={(
+                <span className="d-block shakingError">
+                  {!disableErrorText && (meta?.invalid ? meta.error || "Expression is invalid" : "")}
+                </span>
+              )}
+              onChange={handleInputChange}
+              inputRef={setInputNode}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              onClick={onClick}
+              label={label}
+              placeholder={placeholder || COMMON_PLACEHOLDER}
+            />
+          )}
+          popupIcon={stubComponent()}
+          disableListWrap
+          openOnFocus
+          multiple
+        />
+      </div>
+    </div>
+  );
 });
 
-const Connected = connect(mapStateToProps, null, null, { forwardRef: true })(EditInPlaceQuerySelect) ;
-
-export default React.forwardRef<any, EditInPlaceQueryFieldProps>((props, ref) => {
-  const { classes: selectClasses } = useSelectStyles();
-  const { classes: queryClasses } = useQueryStyles();
-  
-  const classes = { ...selectClasses, ...queryClasses };
-  
-  return <Connected {...props} ref={ref} classes={classes}/>;
-});
+export default EditInPlaceQuerySelect;
