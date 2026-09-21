@@ -16,7 +16,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { DatePicker, TimePicker as Time } from '@mui/x-date-pickers';
 import { CodeCompletionCore } from 'antlr4-c3';
-import { ANTLRInputStream, CommonTokenStream, Token } from 'antlr4ts';
+import { ANTLRInputStream, CommonTokenStream } from 'antlr4ts';
 import clsx from 'clsx';
 import { format as formatDate } from 'date-fns';
 import {
@@ -315,7 +315,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   }
 
   getAutocomplete = (input, position?) => {
-    const { tokens: tokenStream, parser } = this.parseInputString(input);
+    const { parser } = this.parseInputString(input);
     const {
       rootEntity, filterTags, tagSuggestions, customFields
     } = this.props;
@@ -323,10 +323,9 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     const core = new CodeCompletionCore(parser);
     core.showRuleStack = true;
     core.ignoredTokens = new Set([AqlLexer.EOF, AqlLexer.SEPARATOR, AqlLexer.T__17]);
-    const tokenIndex = typeof position === "number"
-      ? this.getTokenIndexAtCharPosition(tokenStream.tokens, position)
-      : 0;
-    const candidates = core.collectCandidates(tokenIndex);
+    const candidates = core.collectCandidates(
+      typeof position === "number" ? position : 0
+    );
     const keywords: any = [];
 
     if (this.operatorsFilter === "SEPARATOR" && input[input.length - 1] !== " ") {
@@ -377,82 +376,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     }
 
     return variants;
-  };
-
-  handleChange = (e, value, action) => {
-    const { inline, input } = this.props;
-
-    if (action === "clear" || action === "remove-option") {
-      this.operatorsFilter = "";
-      this.pathFilter = "";
-
-      this.setState(
-        {
-          inputValue: ""
-        },
-        this.performSearch
-      );
-
-      if (!inline) {
-        input.onChange("");
-      }
-
-      return;
-    }
-
-    if (!value || (value && !value[0])) return;
-
-    let propType;
-
-    if (value[0].label === "DATE" || value[0].label === "TIME") {
-      this.openPicker(value[0].label);
-      return;
-    }
-
-    if (value[0].token === "AND" || value[0].token === "OR") {
-      this.operatorsFilter = "";
-    }
-
-    if (value[0].token === "Identifier") {
-      propType = (Entities[this.pathFilter] && Entities[this.pathFilter][value[0].value])
-        || Entities[this.props.rootEntity][value[0].value];
-    }
-
-    const escapedSearch = this.state.searchValue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const trailingSuffixRegex = new RegExp(escapedSearch + "$");
-    const prevInputValue = this.state.inputValue || "";
-    let inputValue = (trailingSuffixRegex.test(prevInputValue)
-        ? prevInputValue.replace(trailingSuffixRegex, this.state.searchValue.match(/\s/) ? " " : "")
-        : prevInputValue
-      )
-      + value[0].value
-      + (value[0].token === "SEPARATOR" || value[0].token === "'@'" || value[0].token === "'#'"
-        ? ""
-        : Entities[propType] && Entities[propType].constructor.name !== ENUM_CONSTRUCTOR_NAME
-          ? ""
-          : " ");
-
-    if (value[0].queryPrefix) {
-      const tagStr = "#" + value[0].value;
-      inputValue = inputValue.replace(tagStr, `${value[0].queryPrefix} ${tagStr}`);
-    }
-
-    if (!this.simpleSearchChecked) {
-      this.simpleSearchChecked = true;
-    }
-
-    this.setState(
-      {
-        inputValue,
-        searchValue: ""
-      },
-      () => {
-        this.setCaret();
-        this.updateAutocomplete(inputValue);
-        this.performSearch();
-        if (!inline) input.onChange(inputValue);
-      }
-    );
   };
 
   parseInputString = val => {
@@ -658,21 +581,77 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     );
   };
 
-  private getTokenIndexAtCharPosition = (allTokens: Token[], charPosition: number): number => {
-    let defaultChannelIndex = 0;
-    for (let i = 0; i < allTokens.length; i++) {
-      const tok = allTokens[i];
-      if (tok.type === Token.EOF) {
-        return defaultChannelIndex;
+  handleChange = (e, value, action) => {
+    const { inline, input } = this.props;
+
+    if (action === "clear" || action === "remove-option") {
+      this.operatorsFilter = "";
+      this.pathFilter = "";
+
+      this.setState(
+        {
+          inputValue: ""
+        },
+        this.performSearch
+      );
+
+      if (!inline) {
+        input.onChange("");
       }
-      if (tok.channel === Token.DEFAULT_CHANNEL) {
-        if (tok.stopIndex >= charPosition - 1) {
-          return defaultChannelIndex;
-        }
-        defaultChannelIndex++;
-      }
+
+      return;
     }
-    return Math.max(0, defaultChannelIndex - 1);
+
+    if (!value || (value && !value[0])) return;
+
+    let propType;
+
+    if (value[0].label === "DATE" || value[0].label === "TIME") {
+      this.openPicker(value[0].label);
+      return;
+    }
+
+    if (value[0].token === "AND" || value[0].token === "OR") {
+      this.operatorsFilter = "";
+    }
+
+    if (value[0].token === "Identifier") {
+      propType = (Entities[this.pathFilter] && Entities[this.pathFilter][value[0].value])
+        || Entities[this.props.rootEntity][value[0].value];
+    }
+
+    let inputValue = (this.state.inputValue || "").replace(
+        new RegExp((this.state.searchValue.match(/[+*()]/) ? "\\" : "") + this.state.searchValue + "$"),
+        this.state.searchValue.match(/\s/) ? " " : ""
+      )
+      + value[0].value
+      + (value[0].token === "SEPARATOR" || value[0].token === "'@'" || value[0].token === "'#'"
+        ? ""
+        : Entities[propType] && Entities[propType].constructor.name !== ENUM_CONSTRUCTOR_NAME
+          ? ""
+          : " ");
+
+    if (value[0].queryPrefix) {
+      const tagStr = "#" + value[0].value;
+      inputValue = inputValue.replace(tagStr, `${value[0].queryPrefix} ${tagStr}`);
+    }
+
+    if (!this.simpleSearchChecked) {
+      this.simpleSearchChecked = true;
+    }
+
+    this.setState(
+      {
+        inputValue,
+        searchValue: ""
+      },
+      () => {
+        this.setCaret();
+        this.updateAutocomplete(inputValue);
+        this.performSearch();
+        if (!inline) input.onChange(inputValue);
+      }
+    );
   };
 
   handleInputChange = e => {
