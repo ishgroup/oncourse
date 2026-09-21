@@ -7,6 +7,7 @@ import TimelineDot from '@mui/lab/TimelineDot';
 import { TreeItem, TreeItemLabel, TreeItemProps } from '@mui/x-tree-view/TreeItem';
 import React, { memo, useMemo } from 'react';
 import { FormMenuTag } from '../../../../../../model/tags';
+import { getTagNodeId } from '../../../utils/listFiltersUtils';
 import { useFilterStyles } from './FilterComponentStyles';
 
 interface Props extends TreeItemProps {
@@ -48,9 +49,9 @@ const ListTagItem = memo<Props>(({
     )}
   >
     {item.children.map(t => <ListTagItem
-      itemId={t.tagBody.id.toString()}
+      itemId={getTagNodeId(t)}
       item={t}
-      key={t.prefix + t.tagBody.id.toString()}
+      key={getTagNodeId(t)}
       showColoredDots={showColoredDots}
     />)}
   </TreeItem>;
