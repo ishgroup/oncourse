@@ -115,12 +115,23 @@ export const getUpdated = (tags: FormMenuTag[], id: string, active, parent?: For
  */
 export const getTagGroupKey = (tag: FormMenuTag): string => tag.prefix || tag.entity || "";
 
+const TAG_NODE_SEPARATOR = "/";
+
 /**
- * Identifies one rendered tag group. The sale checklists are published once per product entity
- * off the same checklist tag, so the root id alone does not tell two of them apart.
+ * Addresses one tag node - a rendered group, or an item inside a tree view.
+ *
+ * A tag id on its own is not unique on screen: the course tags are published on the contact list
+ * as both `Enrolled` and `Teaching`, and the sale checklists once per product entity off the same
+ * checklist tag. Two nodes sharing an id collide as react keys, as map keys, and as tree view item
+ * ids - which the tree view resolves to a single item and then selects, expands and focuses in
+ * both places at once. Qualifying the id with the group keeps every node distinct.
  */
-export const getTagGroupId = (group: FormMenuTag): string =>
-  `${getTagGroupKey(group)}/${group.tagBody.id}`;
+export const getTagNodeId = (tag: FormMenuTag): string =>
+  `${getTagGroupKey(tag).replace(/\s/g, "")}${TAG_NODE_SEPARATOR}${tag.tagBody.id}`;
+
+/** The tag id a node id was built from, for reading a tree view selection back. */
+export const parseTagNodeId = (nodeId: string): number =>
+  Number(nodeId.slice(nodeId.lastIndexOf(TAG_NODE_SEPARATOR) + 1));
 
 /**
  * A tag selection read out of the url: the ids selected in each group, plus the ids of an older
@@ -230,7 +241,7 @@ export const getTagsUpdatedBySelection = (
 };
 
 /**
- * Ids of every tag holding a selected tag somewhere below it.
+ * Node ids of every tag holding a selected tag somewhere below it.
  *
  * The tree view derives a parent checkbox from the descendants it currently has mounted, so every
  * ancestor of a selection has to be expanded - a collapsed parent is read as a childless leaf and
@@ -248,10 +259,10 @@ export const getTagIdsWithActiveDescendants = (
     const hasActiveDescendant = tag.children.map(visit).some(Boolean);
 
     if (hasActiveDescendant) {
-      result.push(tag.tagBody.id.toString());
+      result.push(getTagNodeId(tag));
     }
 
-    return hasActiveDescendant || activeIdsSet.has(tag.tagBody.id.toString());
+    return hasActiveDescendant || activeIdsSet.has(getTagNodeId(tag));
   };
 
   tags.forEach(visit);

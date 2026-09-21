@@ -6,8 +6,10 @@ import React, { useEffect, useState } from 'react';
 import {
   getActiveTags,
   getTagIdsWithActiveDescendants,
+  getTagNodeId,
   getTagsUpdatedByIdsWithIndeterminate,
   getTagsUpdatedBySelection,
+  parseTagNodeId,
   setIndeterminate
 } from '../../js/common/components/list-view/utils/listFiltersUtils';
 import { getListUrlQuery, parseTagSelection } from '../../js/common/components/list-view/utils/listSearchUtils';
@@ -17,15 +19,15 @@ const tag = (id, name, prefix, children = []) => ({
   prefix, children, active: false, indeterminate: false
 }) as any;
 
-const groupKey = g => (g.prefix || g.entity || '') + '/' + g.tagBody.id.toString();
+const groupKey = getTagNodeId;
 const activeTagsByGroup = tags => new Map(tags.map(t =>
-  [groupKey(t), getActiveTags(t.children).map(c => c.tagBody.id.toString())]));
+  [groupKey(t), getActiveTags(t.children).map(getTagNodeId)]));
 const urlOf = tags => getListUrlQuery({ menuTags: tags }).tags;
 const restore = (tags, url) => getTagsUpdatedByIdsWithIndeterminate(tags, parseTagSelection(url));
 
 const Item = ({ item }) => (
-  <TreeItem itemId={item.tagBody.id.toString()} label={item.tagBody.name}>
-    {item.children.map(c => <Item key={c.tagBody.id} item={c} />)}
+  <TreeItem itemId={getTagNodeId(item)} label={item.tagBody.name}>
+    {item.children.map(c => <Item key={getTagNodeId(c)} item={c} />)}
   </TreeItem>
 );
 
@@ -46,7 +48,7 @@ const Group = ({ rootTag, activeTags, onChange = null }) => {
         onExpandedItemsChange={(e, items) => setExpanded(items)}
         selectionPropagation={{ descendants: true, parents: true }}
       >
-        {rootTag.children.map(t => <Item key={t.tagBody.id} item={t} />)}
+        {rootTag.children.map(t => <Item key={getTagNodeId(t)} item={t} />)}
       </SimpleTreeView>
     </div>
   );
@@ -81,7 +83,7 @@ it('one child ticked: parent stays indeterminate across a reload', async () => {
   expect(urlOf(store)).toBe('101');
 
   await renderRestored(build, '101');
-  expect(dump()).toBe(': 10=INDET 101=CHECKED 102=off');
+  expect(dump()).toBe(': /10=INDET /101=CHECKED /102=off');
 });
 
 it('every ancestor of a selection is expanded, so no parent is read as a childless leaf', async () => {
@@ -91,7 +93,7 @@ it('every ancestor of a selection is expanded, so no parent is read as a childle
 
   // P and C1 both hold the selection below them, so both are open rather than read as leaves:
   // C1 has only the selected G1 under it, P still has the untouched C2
-  expect(dump()).toBe(': 10=INDET 101=CHECKED 1001=CHECKED 102=off');
+  expect(dump()).toBe(': /10=INDET /101=CHECKED /1001=CHECKED /102=off');
 });
 
 it('the stored selection does not grow when the tree view reports its own mounting', async () => {
@@ -114,7 +116,7 @@ it('the stored selection does not grow when the tree view reports its own mounti
         activeTags={activeTagsByGroup(tags).get(groupKey(tags[0]))}
         onChange={(e, items) => {
           if (!e) return;
-          const updated = { ...tags[0], children: getTagsUpdatedBySelection(tags[0].children, items.map(Number)) };
+          const updated = { ...tags[0], children: getTagsUpdatedBySelection(tags[0].children, items.map(parseTagNodeId)) };
           setIndeterminate(updated);
           store = [updated];
           setTags(store);
@@ -140,8 +142,48 @@ it('a tick in one group is not shown in another group built from the same tags',
   const store = buildTwoGroups();
   const live = activeTagsByGroup([applyClick(store[0], [943]), store[1]]);
 
-  expect(live.get('Enrolled/1')).toEqual(['943', '942']);
+  expect(live.get('Enrolled/1')).toEqual(['Enrolled/943', 'Enrolled/942']);
   expect(live.get('Teaching/1')).toEqual([]);
+});
+
+it('two groups holding the same tags render as separate tree view items', async () => {
+  let store = buildTwoGroups();
+
+  const Harness = () => {
+    const [tags, setTags] = useState(store);
+    const byGroup = activeTagsByGroup(tags);
+
+    return <>{tags.map((g, i) => (
+      <Group
+        key={groupKey(g)}
+        rootTag={g}
+        activeTags={byGroup.get(groupKey(g))}
+        onChange={(e, items) => {
+          if (!e) return;
+          const updated = { ...g, children: getTagsUpdatedBySelection(g.children, items.map(parseTagNodeId)) };
+          setIndeterminate(updated);
+          store = tags.map((t, n) => (n === i ? updated : t));
+          setTags(store);
+        }}
+      />
+    ))}</>;
+  };
+
+  render(<Harness />);
+  const user = userEvent.setup();
+
+  // the same tag id is on screen twice; the item ids are not, so the click lands in one group
+  const items = screen.getAllByRole('treeitem').filter(li => li.getAttribute('id').endsWith('/941'));
+  expect(items.map(li => li.getAttribute('id').replace(/^mui-tree-view-\d+-/, '')))
+    .toEqual(['Enrolled/941', 'Teaching/941']);
+
+  await user.click(items[0].querySelector('input[type=checkbox]') as any);
+  await act(async () => { await new Promise(r => setTimeout(r, 50)); });
+
+  // the group root ticks itself once everything under it is ticked
+  expect(urlOf(store)).toBe('Enrolled:1,Enrolled:941,Enrolled:943,Enrolled:942,Enrolled:944');
+  expect(dump()).toBe('Enrolled: Enrolled/941=CHECKED Enrolled/943=CHECKED Enrolled/942=CHECKED'
+    + ' Enrolled/944=CHECKED  |  Teaching: Teaching/941=off');
 });
 
 it('the url names the group a tag was ticked in', () => {
@@ -155,7 +197,7 @@ it('a reload restores the selection to the group it was made in, not to every gr
   const restored = restore(buildTwoGroups(), 'Enrolled:941,Enrolled:943,Enrolled:944,Enrolled:942');
   const live = activeTagsByGroup(restored);
 
-  expect(live.get('Enrolled/1')).toEqual(['941', '943', '942', '944']);
+  expect(live.get('Enrolled/1')).toEqual(['Enrolled/941', 'Enrolled/943', 'Enrolled/942', 'Enrolled/944']);
   expect(live.get('Teaching/1')).toEqual([]);
 });
 
@@ -176,8 +218,8 @@ it('an url written before the group was recorded still ticks the tags it names',
   const restored = restore(buildTwoGroups(), '943,944');
   const live = activeTagsByGroup(restored);
 
-  expect(live.get('Enrolled/1')).toEqual(['943', '944']);
-  expect(live.get('Teaching/1')).toEqual(['943', '944']);
+  expect(live.get('Enrolled/1')).toEqual(['Enrolled/943', 'Enrolled/944']);
+  expect(live.get('Teaching/1')).toEqual(['Teaching/943', 'Teaching/944']);
   expect(urlOf(restored)).toBe('Enrolled:943,Enrolled:944,Teaching:943,Teaching:944');
 });
 
@@ -189,9 +231,9 @@ it('bare ids belong to the unnamed group once the url names any group at all', (
 
   const live = activeTagsByGroup(restore(groups, '51,Teaching:944'));
 
-  expect(live.get('/1')).toEqual(['51']);
+  expect(live.get('/1')).toEqual(['/51']);
   expect(live.get('Enrolled/1')).toEqual([]);
-  expect(live.get('Teaching/1')).toEqual(['944']);
+  expect(live.get('Teaching/1')).toEqual(['Teaching/944']);
 });
 
 it('ticking a collapsed tag selects the children it has not mounted yet', async () => {
@@ -210,7 +252,7 @@ it('ticking a collapsed tag selects the children it has not mounted yet', async 
       activeTags={activeTagsByGroup(tags).get(groupKey(tags[0]))}
       onChange={(e, items) => {
         if (!e) return;
-        const updated = { ...tags[0], children: getTagsUpdatedBySelection(tags[0].children, items.map(Number)) };
+        const updated = { ...tags[0], children: getTagsUpdatedBySelection(tags[0].children, items.map(parseTagNodeId)) };
         setIndeterminate(updated);
         store = [updated];
         setTags(store);
@@ -221,14 +263,14 @@ it('ticking a collapsed tag selects the children it has not mounted yet', async 
   render(<Harness />);
   const user = userEvent.setup();
 
-  const p = screen.getAllByRole('treeitem').find(li => li.getAttribute('id').endsWith('-10'));
+  const p = screen.getAllByRole('treeitem').find(li => li.getAttribute('id').endsWith('/10'));
   expect(p.getAttribute('aria-expanded')).toBe('false');
   await user.click(p.querySelector('input[type=checkbox]') as any);
   await act(async () => { await new Promise(r => setTimeout(r, 50)); });
 
   // the whole subtree is stored, not just the tag that was on screen
   expect(urlOf(store)).toBe('10,101,1001,102');
-  expect(dump()).toBe(': 10=CHECKED 101=CHECKED 1001=CHECKED 102=CHECKED 20=off');
+  expect(dump()).toBe(': /10=CHECKED /101=CHECKED /1001=CHECKED /102=CHECKED /20=off');
 });
 
 it('unticking one child clears the parent without clearing its siblings', async () => {
@@ -243,7 +285,7 @@ it('unticking one child clears the parent without clearing its siblings', async 
       activeTags={activeTagsByGroup(tags).get(groupKey(tags[0]))}
       onChange={(e, items) => {
         if (!e) return;
-        const updated = { ...tags[0], children: getTagsUpdatedBySelection(tags[0].children, items.map(Number)) };
+        const updated = { ...tags[0], children: getTagsUpdatedBySelection(tags[0].children, items.map(parseTagNodeId)) };
         setIndeterminate(updated);
         store = [updated];
         setTags(store);
@@ -255,10 +297,10 @@ it('unticking one child clears the parent without clearing its siblings', async 
   await act(async () => { await new Promise(r => setTimeout(r, 50)); });
 
   const user = userEvent.setup();
-  const c1 = screen.getAllByRole('treeitem').find(li => li.getAttribute('id').endsWith('-101'));
+  const c1 = screen.getAllByRole('treeitem').find(li => li.getAttribute('id').endsWith('/101'));
   await user.click(c1.querySelector('input[type=checkbox]') as any);
   await act(async () => { await new Promise(r => setTimeout(r, 50)); });
 
   expect(urlOf(store)).toBe('102');
-  expect(dump()).toBe(': 10=INDET 101=off 102=CHECKED');
+  expect(dump()).toBe(': /10=INDET /101=off /102=CHECKED');
 });
