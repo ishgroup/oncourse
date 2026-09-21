@@ -16,14 +16,15 @@ import groovy.text.Template
 import groovy.transform.CompileStatic
 import ish.common.types.EnrolmentStatus
 import ish.common.types.MessageType
+import ish.messaging.MessageSendResult
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.MessageDao
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Payslip
 import ish.oncourse.server.cayenne.Quote
+import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.SMTPService
 import ish.oncourse.server.api.model.RecipientGroupModel
@@ -32,6 +33,8 @@ import ish.oncourse.server.scripting.api.MetaclassCleaner
 import ish.util.AbstractEntitiesUtil
 import org.apache.cayenne.Persistent
 import org.apache.cayenne.validation.ValidationException
+
+import java.util.concurrent.Callable
 
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getEntityTransformationProperty
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getFindContactProperty
@@ -84,12 +87,13 @@ import java.time.ZoneOffset
 @CompileStatic
 class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao> {
     private static final Logger logger = LogManager.logger
-    private static final String CREATED_SUCCESS = "Messages created successfully"
     private static final int BATCH_SIZE = 50
 
     @Inject private AqlService aql
 
     @Inject private ICayenneService cayenneService
+
+    @Inject private ExecutorManager executorManager
 
     @Inject private EmailTemplateApiService templateApiService
 
@@ -481,46 +485,59 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
                 break
         }
 
-        boolean templateForContact = false
-        def iterator = ObjectSelect.query(clazz).where(property.in(entitiesIds)).batchIterator(context, BATCH_SIZE)
-        if (template.entity.equalsIgnoreCase("Contact")) {
-            templateForContact = true
-            iterator = ObjectSelect.query(Contact).where(Contact.ID.in(recipientsToSend)).batchIterator(context, BATCH_SIZE)
-        }
-        iterator.forEach() { batch ->
-            ObjectContext batchContext = cayenneService.newContext
-            batch.each { CayenneDataObject entity ->
-                List<Contact> recipients = getRecipientsListFromEntity(entity)
-
-                recipients.each { recipient ->
-                    if (templateForContact || recipientsToSend.contains(recipient.id)) {
-                        plainBindings.put(templateService.RECORD, entity)
-                        plainBindings.put(entityVarName, entity)
-                        htmlBindings.put(templateService.RECORD, entity)
-                        htmlBindings.put(entityVarName, entity)
-                        plainBindings.put(templateService.TO, recipient)
-                        htmlBindings.put(templateService.TO, recipient)
-                        plainBindings.put(templateService.AUTHOR, user)
-                        htmlBindings.put(templateService.AUTHOR, user)
-
-                        Message message = batchContext.newObject(Message.class)
-                        message.createdBy = batchContext.localObject(user)
-                        fillMessage(message)
-
-                        buildMessage(message, batchContext.localObject(recipient), template.type)
+        return executorManager.submit(new Callable<Object>() {
+            @Override
+            Object call() throws Exception {
+                MessageSendResult result = new MessageSendResult()
+                try {
+                    boolean templateForContact = false
+                    def iterator = ObjectSelect.query(clazz).where(property.in(entitiesIds)).batchIterator(context, BATCH_SIZE)
+                    if (template.entity.equalsIgnoreCase("Contact")) {
+                        templateForContact = true
+                        iterator = ObjectSelect.query(Contact).where(Contact.ID.in(recipientsToSend)).batchIterator(context, BATCH_SIZE)
                     }
+                    boolean sendToAllInBatch = templateForContact
+
+                    iterator.forEach() { batch ->
+                        ObjectContext batchContext = cayenneService.newContext
+                        batch.each { CayenneDataObject entity ->
+                            List<Contact> recipients = getRecipientsListFromEntity(entity)
+
+                            recipients.each { recipient ->
+                                if (sendToAllInBatch || recipientsToSend.contains(recipient.id)) {
+                                    plainBindings.put(templateService.RECORD, entity)
+                                    plainBindings.put(entityVarName, entity)
+                                    htmlBindings.put(templateService.RECORD, entity)
+                                    htmlBindings.put(entityVarName, entity)
+                                    plainBindings.put(templateService.TO, recipient)
+                                    htmlBindings.put(templateService.TO, recipient)
+                                    plainBindings.put(templateService.AUTHOR, user)
+                                    htmlBindings.put(templateService.AUTHOR, user)
+
+                                    Message message = batchContext.newObject(Message.class)
+                                    message.createdBy = batchContext.localObject(user)
+                                    fillMessage(message)
+
+                                    buildMessage(message, batchContext.localObject(recipient), template.type)
+                                }
+                            }
+                        }
+                        batchContext.commitChanges()
+                    }
+
+                    iterator.close()
+                    result.recipientsSent = recipientsToSend.size()
+                } catch (ValidationException e) {
+                    String message = e.validationResult.failures*.error.join('\n')
+                    logger.error("Sending messages failed validation on commit: {}", message)
+                    result.errorMessage = message
+                } catch (Exception e) {
+                    logger.error("Unexpected error while sending messages", e)
+                    result.errorMessage = e.message ?: "Unexpected error while sending messages."
                 }
+                return result
             }
-            try {
-                batchContext.commitChanges()
-            } catch(ValidationException e) {
-                validator.throwClientErrorException(new ValidationErrorDTO().errorMessage(e.validationResult.failures*.error.join('\n')))
-            }
-        }
-
-        iterator.close()
-
-        return CREATED_SUCCESS
+        })
     }
 
 
