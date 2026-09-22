@@ -24,6 +24,15 @@ const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => {
     .plus(cancellationFee));
 };
 
+const normalizeCancellationFee = val => {
+  if (val === "" || val === undefined || val === null) return val;
+  if (typeof val === "string") {
+    const cleaned = val.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+    return cleaned;
+  }
+  return val;
+};
+
 const CancelEnrolmentInvoiceLines: React.FC<any> = ({
     fields, dispatch, incomeAccounts, taxes
   }) => {
@@ -37,9 +46,20 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
   const onCancelFeeChange = useCallback(
     (e, ind) => {
       const field = fields.get(ind);
+      const val = e.target.value;
+
+      if (val === "" || val === undefined || val === null) {
+        dispatch(change(FORM, `invoices[${ind}].chargedFee`, 0));
+        return;
+      }
+
+      const num = Number(val);
+      if (Number.isNaN(num)) {
+        return;
+      }
 
       const cancellationFeeIncTax = addInvoiceLineTax(
-        bankRounding(e.target.value),
+        bankRounding(new Decimal(num)),
         taxes.find(t => t.id === field.taxId).rate
       );
       dispatch(change(FORM, `invoices[${ind}].chargedFee`, cancellationFeeIncTax));
@@ -108,7 +128,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                         <FormField
                           type="number"
                           name={`${item}.cancellationFeeExTax`}
-                          normalize={bankRounding}
+                          normalize={normalizeCancellationFee}
                           onChange={e => onCancelFeeChange(e, index)}
                           debounced={false}
                           disabled={!field.isReverseCreditNotes}
