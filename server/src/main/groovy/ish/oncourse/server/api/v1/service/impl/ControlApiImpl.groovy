@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.imports.ImportResult
+import ish.messaging.MessageSendResult
 import ish.oncourse.server.api.v1.model.ProcessResultDTO
 import ish.oncourse.server.api.v1.model.ProcessStatusDTO
 import static ish.oncourse.server.api.v1.model.ProcessStatusDTO.*
@@ -60,6 +61,14 @@ class ControlApiImpl implements ControlApi {
                         processResult.message = scriptResult.error
                         return processResult
 
+                    }
+                    break
+                case MessageSendResult:
+                    MessageSendResult messageSendResult = result as MessageSendResult
+                    if (isNotBlank(messageSendResult.errorMessage)) {
+                        processResult.status = FAILED
+                        processResult.message = messageSendResult.errorMessage
+                        return processResult
                     }
                     break
             }

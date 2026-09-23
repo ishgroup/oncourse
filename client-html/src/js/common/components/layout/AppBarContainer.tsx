@@ -115,6 +115,7 @@ interface Props {
   onAddMenu?: () => void;
   customAddMenu?: any;
   submitButtonText?: string;
+  submitButtonLoading?: boolean;
   closeButtonText?: string;
   onCloseClick?: () => void;
   hamburgerMenu?: boolean;
@@ -148,6 +149,7 @@ const AppBarContainer = (props: Props) => {
     onAddMenu,
     customAddMenu,
     submitButtonText,
+    submitButtonLoading,
     onCloseClick,
     hamburgerMenu,
     opened,
@@ -252,6 +254,7 @@ const AppBarContainer = (props: Props) => {
               invalid={invalid}
               className={isDarkTheme && classes.submitButtonAlternate}
               text={submitButtonText || "Save"}
+              loading={submitButtonLoading}
               fab
             />
           )}

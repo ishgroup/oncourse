@@ -32,7 +32,13 @@ import { Dispatch } from 'redux';
 import { change, DecoratedFormProps, Field, FieldArray, getFormValues, initialize, reduxForm } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import previewSmsImage from '../../../../../images/preview-sms.png';
-import { closeSendMessage, getEmailTemplatesWithKeyCode, getUserPreferences } from '../../../../common/actions';
+import {
+  closeSendMessage,
+  getEmailTemplatesWithKeyCode,
+  getUserPreferences,
+  interruptProcess,
+  startSendMessage
+} from '../../../../common/actions';
 import { IAction } from '../../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import DataTypeRenderer from '../../../../common/components/form/DataTypeRenderer';
@@ -40,6 +46,7 @@ import FormField from '../../../../common/components/form/formFields/FormField';
 import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
 import { clearRecipientsMessageData, getRecipientsMessageData } from '../../../../common/components/list-view/actions';
 import LoadingIndicator from '../../../../common/components/progress/LoadingIndicator';
+import { ProcessState } from '../../../../common/reducers/processReducer';
 import { getManualLink } from '../../../../common/utils/getManualLink';
 import { saveCategoryAQLLink } from '../../../../common/utils/links';
 import { validateSingleMandatoryField } from '../../../../common/utils/validation';
@@ -124,6 +131,8 @@ interface MessageEditViewProps {
   recipientsMessageData?: MessageData;
   emailFrom?: string;
   submitting?: boolean;
+  sending?: boolean;
+  process?: ProcessState;
   opened?: boolean;
   listSearchQuery?: SearchQuery;
   values?: MessageExtended;
@@ -135,6 +144,8 @@ interface MessageEditViewProps {
   handleSubmit?: any;
   getMessageTemplates?: StringArgFunction;
   getEmailFrom?: NoArgFunction;
+  startSendMessage?: NoArgFunction;
+  interruptProcess?: StringArgFunction;
 }
 
 const initialValues: MessageExtended = {
@@ -252,12 +263,16 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
     selection,
     filteredCount,
     submitting,
+    sending,
+    process,
     invalid,
     close,
     handleSubmit,
     getMessageTemplates,
     getEmailFrom,
-    clearOnClose
+    clearOnClose,
+    startSendMessage,
+    interruptProcess
   } = props;
 
   const htmlRef = useRef<HTMLDivElement>(undefined);
@@ -509,7 +524,30 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
   const filteredTemplatesByVaribleCount = useMemo<EmailTemplate[]>(() =>
     templates?.filter(template => template?.variables.filter(variable => variable.type === DataType.Object).length === 0) || [], [templates]);
 
-  const onSubmit = model => dispatch(sendMessage(model, selection));
+  const onSubmit = model => {
+    startSendMessage();
+    dispatch(sendMessage(model, selection));
+  };
+
+  const sendingRef = useRef(sending);
+  const processIdRef = useRef(process?.processId);
+  useEffect(() => {
+    sendingRef.current = sending;
+    processIdRef.current = process?.processId;
+  }, [sending, process?.processId]);
+
+  useEffect(() => () => {
+    if (sendingRef.current) {
+      interruptProcess(processIdRef.current);
+    }
+  }, []);
+
+  const onCloseClick = () => {
+    if (sending) {
+      interruptProcess(process?.processId);
+    }
+    close();
+  };
 
   return (
     <Dialog
@@ -529,8 +567,9 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
           disableInteraction
           noDrawer
           manualUrl={manualUrl}
-          onCloseClick={close}
+          onCloseClick={onCloseClick}
           submitButtonText="Send"
+          submitButtonLoading={sending}
           title={(
             <div>
               {$t('Send')}
@@ -638,6 +677,8 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues(SEND_MESSAGE_FORM_NAME)(state),
   emailFrom: state.userPreferences[EMAIL_FROM_KEY],
   submitting: state.fetch.pending,
+  sending: state.sendMessage.sending,
+  process: state.process,
   opened: state.sendMessage.open,
   templates: state.list.emailTemplatesWithKeyCode,
   recipientsMessageData: state.list.recepients
@@ -662,6 +703,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   },
   getMessageTemplates: (entitity: string) => dispatch(getEmailTemplatesWithKeyCode(getMessageTemplateEntities(entitity))),
   getEmailFrom: () => dispatch(getUserPreferences([EMAIL_FROM_KEY])),
+  startSendMessage: () => dispatch(startSendMessage()),
+  interruptProcess: (processId: string) => dispatch(interruptProcess(processId)),
 });
 
 export default reduxForm<any, any, any>({
