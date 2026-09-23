@@ -27,6 +27,7 @@ interface Taggable {
 	List<? extends Tag> getTags()
 	List<Long> getTagIds()
 	List<String> getTagColors()
+	List<? extends Tag> getChecklists()
 	String getChecklistsColor()
 
 }
