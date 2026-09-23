@@ -24,15 +24,6 @@ const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => {
     .plus(cancellationFee));
 };
 
-const normalizeCancellationFee = val => {
-  if (val === "" || val === undefined || val === null) return val;
-  if (typeof val === "string") {
-    const cleaned = val.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
-    return cleaned;
-  }
-  return val;
-};
-
 const CancelEnrolmentInvoiceLines: React.FC<any> = ({
     fields, dispatch, incomeAccounts, taxes
   }) => {
@@ -46,20 +37,9 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
   const onCancelFeeChange = useCallback(
     (e, ind) => {
       const field = fields.get(ind);
-      const val = e.target.value;
-
-      if (val === "" || val === undefined || val === null) {
-        dispatch(change(FORM, `invoices[${ind}].chargedFee`, 0));
-        return;
-      }
-
-      const num = Number(val);
-      if (Number.isNaN(num)) {
-        return;
-      }
 
       const cancellationFeeIncTax = addInvoiceLineTax(
-        bankRounding(new Decimal(num)),
+        e,
         taxes.find(t => t.id === field.taxId).rate
       );
       dispatch(change(FORM, `invoices[${ind}].chargedFee`, cancellationFeeIncTax));
@@ -126,14 +106,13 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                         {$t('charge_an_administrative_fee_of', [field && field.contactName])}
                         {" "}
                         <FormField
-                          type="number"
+                          type="money"
                           name={`${item}.cancellationFeeExTax`}
-                          normalize={normalizeCancellationFee}
+                          normalize={bankRounding}
                           onChange={e => onCancelFeeChange(e, index)}
                           debounced={false}
                           disabled={!field.isReverseCreditNotes}
                           inline
-                          step="1"
                         />
                         {" "}
                         <FormField

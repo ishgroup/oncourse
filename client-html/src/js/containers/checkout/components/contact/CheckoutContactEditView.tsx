@@ -35,6 +35,7 @@ interface Props extends Partial<InjectedFormProps> {
   onClose?: () => void;
   isVerifyingUSI?: boolean;
   usiVerificationResult?: any;
+  sidebarWidth?: number;
 }
 
 const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
@@ -55,6 +56,7 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
     onContactCreate,
     isVerifyingUSI,
     usiVerificationResult,
+    sidebarWidth,
   } = props;
 
   const handleContactSave = React.useCallback(contact => {
@@ -105,6 +107,7 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
           dirty={dirty}
           dispatch={dispatch}
           showConfirm={showConfirm}
+          sidebarWidth={sidebarWidth}
           toogleFullScreenEditView={() => {}}
         />
       </AppBarContainer>

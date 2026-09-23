@@ -16,14 +16,8 @@ import { accountLabelCondition } from '../../../accounts/utils';
 const FORM: string = "TRANSFER_ENROLMENT_MODAL_FORM";
 const CANCEL_FEE_AMOUNT_WARNING_MESSAGE = "The cancellation fee is greater than the fee paid";
 
-const roundCancellationFeeExTax = val => {
-  if (val === "" || val === undefined || val === null) return val;
-  if (typeof val === "string") {
-    const cleaned = val.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
-    return cleaned;
-  }
-  return val;
-};
+
+const roundCancellationFeeExTax = val => bankRounding(val || 0);
 
 const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => bankRounding(new Decimal(cancellationFeeExTax || 0)
   .mul(taxRate)
@@ -42,20 +36,9 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
   const onCancelFeeChange = useCallback(
     (e, ind) => {
       const field = fields.get(ind);
-      const val = e.target.value;
-
-      if (val === "" || val === undefined || val === null) {
-        dispatch(change(FORM, `invoices[${ind}].chargedFee`, 0));
-        return;
-      }
-
-      const num = Number(val);
-      if (Number.isNaN(num)) {
-        return;
-      }
 
       const cancellationFeeIncTax = addInvoiceLineTax(
-        bankRounding(new Decimal(num)),
+        roundCancellationFeeExTax(e),
         taxes.find(t => t.id === field.taxId).rate
       );
       dispatch(change(FORM, `invoices[${ind}].chargedFee`, cancellationFeeIncTax));
@@ -120,7 +103,7 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
                   {$t('charge_an_administrative_fee_of', [field && field.contactName])}
                   {" "}
                   <FormField
-                    type="number"
+                    type="money"
                     name={`${item}.cancellationFeeExTax`}
                     normalize={roundCancellationFeeExTax}
                     onChange={e => onCancelFeeChange(e, index)}

@@ -39,6 +39,7 @@ interface ContactsGeneralProps extends EditViewProps<Contact> {
   setIsCompany?: any;
   tags?: any;
   usiLocked?: boolean;
+  sidebarWidth?: number;
 }
 
 export const studentInitial: Student = {
@@ -100,6 +101,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = ({
   syncErrors,
   showConfirm,
   usiLocked,
+  sidebarWidth,
 }) => {
   const isInitiallyStudent = initialValues && !!initialValues.student;
   const isInitiallyTutor = initialValues && !!initialValues.tutor;
@@ -185,6 +187,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = ({
         isCompany={isCompany}
         usiLocked={usiLocked}
         syncErrors={syncErrors}
+        sidebarWidth={sidebarWidth}
       />
       <Grid container columnSpacing={3} className="mt-3">
         <Grid size={{ xs: 12, md: twoColumn ? 7 : 12 }}>
