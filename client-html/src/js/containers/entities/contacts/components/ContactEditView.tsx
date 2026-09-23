@@ -86,6 +86,7 @@ const items: TabsListItem[] = [
 
 interface Props {
   classes?: any;
+  sidebarWidth?: number;
 }
 
 const ContactEditView = (props: Partial<EditViewProps<Contact>> & Props) => {
@@ -103,7 +104,8 @@ const ContactEditView = (props: Partial<EditViewProps<Contact>> & Props) => {
     manualLink,
     invalid,
     syncErrors,
-    onScroll
+    onScroll,
+    sidebarWidth
   } = props;
 
   const [isStudent, setIsStudent] = useState(false);
@@ -175,7 +177,8 @@ const ContactEditView = (props: Partial<EditViewProps<Contact>> & Props) => {
         usiLocked,
         setUsiUpdateLocked,
         syncErrors,
-        onScroll
+        onScroll,
+        sidebarWidth
       }}
     />
   );

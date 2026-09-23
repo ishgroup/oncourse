@@ -14,7 +14,7 @@ const useStyles = makeAppStyles<void, 'fullScreenTitleItem' | 'disableInteractio
       zIndex: theme.zIndex.appBar + 1,
       marginTop: 0,
       height: APP_BAR_HEIGHT,
-      width: 'calc(100vw - 500px)'
+      width: 'calc(100vw - 300px)'
     }
   },
   fullScreenTitleItem: {},
@@ -95,6 +95,7 @@ interface Props {
   customStuck?: boolean,
   fields?: any,
   className?: string,
+  sidebarWidth?: number,
 }
 
 const FullScreenStickyHeader = React.memo<Props>(props => {
@@ -105,8 +106,9 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     fields,
     twoColumn,
     disableInteraction,
-    isFixed =  true,
-    customStuck
+    isFixed = true,
+    customStuck,
+    sidebarWidth
   } = props;
 
   const { classes } = useStyles();
@@ -163,7 +165,11 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
           "centeredFlex  flex-fill",
           twoColumn && !opened && (isStuck || customStuck) && classes.fullScreenTitleItem,
           !opened && isFixed && twoColumn && classes.isFixed,
-        )} >
+        )}
+          style={sidebarWidth
+            ? { width: `calc(100vw - 300px - ${sidebarWidth}px)` }
+            : undefined}
+        >
           {Avatar && (
             <Avatar
               avatarSize={showTitleOnly && !opened ? 40 : 90}
