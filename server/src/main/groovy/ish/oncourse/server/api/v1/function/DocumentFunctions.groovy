@@ -68,6 +68,7 @@ class DocumentFunctions {
 
             document.description = dbDocument.description
             document.access = DocumentVisibilityDTO.values()[0].fromDbType(dbDocument.webVisibility)
+            document.displayAccess = dbDocument.displayWebVisibility
             document.shared = dbDocument.isShared
             document.removed = dbDocument.isRemoved
             document.createdOn = LocalDateUtils.dateToTimeValue(dbDocument.createdOn)
@@ -87,6 +88,7 @@ class DocumentFunctions {
             document.description = dbDocument.description
             document.added = LocalDateUtils.dateToTimeValue(dbDocument.added)
             document.access = DocumentVisibilityDTO.values()[0].fromDbType(dbDocument.webVisibility)
+            document.displayAccess = dbDocument.displayWebVisibility
             document.shared = dbDocument.isShared
             document.removed = dbDocument.isRemoved
             AmazonS3Service s3Service = null
