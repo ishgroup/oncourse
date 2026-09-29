@@ -25,7 +25,11 @@ import javax.annotation.Nonnull
 @QueueableEntity
 abstract class AttachmentRelation extends _AttachmentRelation implements Queueable, ContactActivityTrait {
 
-
+	public static final List<String> TUTOR_RELATED_ENTITIES = List.of(
+			Assessment.class.simpleName,
+			CourseClass.class.simpleName,
+			Course.class.simpleName
+	)
 
 	/**
 	 * @return attached record
