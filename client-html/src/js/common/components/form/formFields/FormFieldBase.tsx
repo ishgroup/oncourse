@@ -27,15 +27,21 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from 'redux-form/lib/Field';
 import { COMMON_PLACEHOLDER } from '../../../../constants/Forms';
 import { AngelFormFieldProps } from '../../../../model/common/Fields';
+import { getAvailableTagIds, removeUnavailableTagIds } from '../../../../containers/tags/utils';
 import { useAppSelector } from '../../../utils/hooks';
 import EditInPlaceQuerySelect from './EditInPlaceQuerySelect';
 import EditInPlaceRemoteDataSearchSelect from './EditInPlaceRemoteDataSearchSelect';
 
 const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null, placeholder: null };
 
+const isSameValue = (a: any, b: any) =>
+  Array.isArray(a) && Array.isArray(b)
+    ? a.length === b.length && a.every((v, i) => v === b[i])
+    : a === b;
+
 const FormFieldBase = (props: AngelFormFieldProps) => {
 
-  const { type, ...rest } = props;
+  const { type, availableTagIds: declaredTagIds, ...rest } = props;
 
   const { input, format, debounced = true } = type !== "stub" && type !== "color" && type !== "radio"
     ? props
@@ -52,7 +58,17 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
 
   const tags = type === "tags" ? props.tags : null;
 
-  const [value, setValue] = useState(input?.value);
+  const availableTagIds = useMemo(() => {
+    if (type !== "tags") return null;
+    return declaredTagIds !== undefined ? declaredTagIds : getAvailableTagIds(tags);
+  }, [type, declaredTagIds, tags]);
+
+  const availableValue = useMemo(
+    () => (availableTagIds ? removeUnavailableTagIds(input?.value, availableTagIds) : input?.value),
+    [input?.value, availableTagIds]
+  );
+
+  const [value, setValue] = useState(availableValue);
 
   const debounceChange = useCallback(debounce(input?.onChange, 600), [input?.onChange]);
 
@@ -63,21 +79,30 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
     value,
     onChange: e => {
       const val = e?.target ? e.target.value : e;
-      setValue(format ? format(val) : val);
-      debounceChange(e);
+      const next = availableTagIds ? removeUnavailableTagIds(val, availableTagIds) : val;
+      setValue(format ? format(next) : next);
+      debounceChange(availableTagIds ? next : e);
     },
     onBlur: e => {
       const val = e?.target ? e.target.value : e;
-      setValue(format ? format(val) : val);
-      debounceBlur(e);
+      const next = availableTagIds ? removeUnavailableTagIds(val, availableTagIds) : val;
+      setValue(format ? format(next) : next);
+      debounceBlur(availableTagIds ? next : e);
     },
-  }), [value, input]);
+  }), [value, input, availableTagIds]);
 
   useEffect(() => {
-    if (input?.value !== value) {
-      setValue(format ? format(input?.value) : input?.value);
+    if (availableTagIds && !isSameValue(input?.value, availableValue)) {
+      setValue(availableValue);
+      input?.onChange?.(availableValue);
     }
-  }, [input?.value]);
+  }, [availableTagIds, input?.value, availableValue]);
+
+  useEffect(() => {
+    if (!isSameValue(availableValue, value)) {
+      setValue(format ? format(availableValue) : availableValue);
+    }
+  }, [availableValue]);
 
   const sharedProps = {
     ...rest,

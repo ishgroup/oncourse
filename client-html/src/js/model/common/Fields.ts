@@ -65,10 +65,12 @@ export interface EditInPlaceQueryFieldProps {
   itemRenderer?: any;
 }
 
-export type AngelFormFieldProps = FormFieldProps | ({
+export type AngelFormFieldProps = (FormFieldProps | ({
   type: "remoteDataSelect"
 } & FormFieldBaseProps & EditInPlaceRemoteDataSelectFieldProps) | ({
   type: "aql"
-} & FormFieldBaseProps & EditInPlaceQueryFieldProps)
+} & FormFieldBaseProps & EditInPlaceQueryFieldProps)) & {
+  availableTagIds?: Set<number>;
+};
 
 export type FormFieldWrapperProps = AngelFormFieldProps & BaseFieldProps<AngelFormFieldProps>;

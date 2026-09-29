@@ -40,7 +40,7 @@ interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
 const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
   ({
     showConfirm,
-    tags = [],
+    tags,
      specialTags = [],
     dataCollectionRules,
     twoColumn,
@@ -51,7 +51,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     dispatch,
     form
   }) => {
-    const { tagsGrouped, subjectsField, specialTypesDisabled } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
+    const { tagsGrouped, subjectsField, specialTypesDisabled, availableTagIds } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
 
     const onCalendarClick = useCallback(() => {
       openInternalLink(`/timetable?search=courseClass.course.id=${values?.id}`);
@@ -133,6 +133,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             type="tags"
             name="tags"
             tags={tagsGrouped.tags}
+            availableTagIds={availableTagIds}
             className="mb-2"
             placeholder='Tags'
             trackCarretPosition={twoColumn}

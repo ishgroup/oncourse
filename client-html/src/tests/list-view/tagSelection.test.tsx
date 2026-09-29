@@ -54,10 +54,19 @@ const Group = ({ rootTag, activeTags, onChange = null }) => {
   );
 };
 
+// the tree view prefixes the item id with the id of its root, which is generated for it
+// (it changed from `mui-tree-view-N` to React's `useId` when the tree view was upgraded),
+// so read the prefix off the rendered root rather than hardcoding a shape
+const itemNameOf = (li: Element) => {
+  const id = li.getAttribute('id') || '';
+  const treeId = li.closest('[role=tree]')?.getAttribute('id');
+  return treeId && id.startsWith(`${treeId}-`) ? id.slice(treeId.length + 1) : id;
+};
+
 const dump = () => Array.from(document.querySelectorAll('[data-group]')).map(g =>
   g.getAttribute('data-group') + ': ' + Array.from(g.querySelectorAll('[role=treeitem]')).map(li => {
     const cb: any = li.querySelector('input[type=checkbox]');
-    const name = li.getAttribute('id').replace(/^mui-tree-view-\d+-/, '');
+    const name = itemNameOf(li);
     return `${name}=${cb?.getAttribute('data-indeterminate') === 'true' ? 'INDET' : (cb?.checked ? 'CHECKED' : 'off')}`;
   }).join(' ')).join('  |  ');
 
@@ -174,8 +183,7 @@ it('two groups holding the same tags render as separate tree view items', async 
 
   // the same tag id is on screen twice; the item ids are not, so the click lands in one group
   const items = screen.getAllByRole('treeitem').filter(li => li.getAttribute('id').endsWith('/941'));
-  expect(items.map(li => li.getAttribute('id').replace(/^mui-tree-view-\d+-/, '')))
-    .toEqual(['Enrolled/941', 'Teaching/941']);
+  expect(items.map(itemNameOf)).toEqual(['Enrolled/941', 'Teaching/941']);
 
   await user.click(items[0].querySelector('input[type=checkbox]') as any);
   await act(async () => { await new Promise(r => setTimeout(r, 50)); });
