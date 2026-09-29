@@ -13,7 +13,7 @@ import $t from '@t';
 import clsx from 'clsx';
 import { compareAsc, format as formatDate, startOfDay } from 'date-fns';
 import { EEE_D_MMM_YYYY, LinkAdornment, openInternalLink } from 'ish-ui';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { change, FieldArray } from 'redux-form';
 import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
 import { ContactLinkAdornment } from '../../../../common/components/form/formFields/FieldAdornments';
@@ -27,6 +27,7 @@ import { useAppSelector } from '../../../../common/utils/hooks';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { NestedTableColumn } from '../../../../model/common/NestedTable';
 import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import { getAvailableTagIds } from '../../../tags/utils';
 import ContactSelectItemRenderer from '../../contacts/components/ContactSelectItemRenderer';
 import { getContactFullName } from '../../contacts/utils';
 import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
@@ -99,6 +100,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
   const gridItemProps = { size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } } as any;
 
   const tags = useAppSelector(state => state.tags?.entityTags[getSaleEntityName(values?.productType)] || defaultTags);
+  const availableTagIds = useMemo(() => getAvailableTagIds(tags), [tags]);
 
   return values ? (
     <Grid container columnSpacing={3} rowSpacing={2} className={clsx("p-3", twoColumn && "pt-1")}>
@@ -121,6 +123,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
           type="tags"
           name="tags"
           tags={tags}
+          availableTagIds={availableTagIds}
           placeholder='Tags'
           trackCarretPosition={twoColumn}
         />
