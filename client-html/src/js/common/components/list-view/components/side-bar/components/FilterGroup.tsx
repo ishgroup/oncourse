@@ -16,6 +16,14 @@ interface Props {
 
 const treeSx = { marginLeft: -1 };
 
+/**
+ * Addresses one filter inside the tree view, and is also its react key.
+ *
+ * The two have to be the same string: the tree view only releases an item id when the component
+ * holding it unmounts, never when its `itemId` changes. Keying by anything else - the filter name -
+ * lets an instance survive a reorder and carry a new id while it still owns the old one, and the
+ * next filter to land on that id is rejected as a duplicate.
+ */
 const getIndex = (groupIndex, index) => groupIndex + "/" + index;
 
 const FilterGroupComp = memo<Props>(({
@@ -49,7 +57,7 @@ const FilterGroupComp = memo<Props>(({
       >
         {filters.map((i, index) => (
           <FilterItem
-            key={i.name}
+            key={getIndex(groupIndex, index)}
             label={i.name}
             customLabel={i.customLabel}
             id={getIndex(groupIndex, index)}

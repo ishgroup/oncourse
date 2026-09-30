@@ -1149,6 +1149,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                     hideHelpMenu
                     hideSubmitButton
                     disableInteraction
+                    sidebarWidth={sidebarWidth}
                     title={(
                       <CheckoutAppBar
                         title={
@@ -1203,6 +1204,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 showConfirm={showConfirm}
                 onSave={onContactSave}
                 onClose={onClose}
+                sidebarWidth={sidebarWidth}
               />
             )}
 

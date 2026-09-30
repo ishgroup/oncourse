@@ -16,6 +16,7 @@ import { accountLabelCondition } from '../../../accounts/utils';
 const FORM: string = "TRANSFER_ENROLMENT_MODAL_FORM";
 const CANCEL_FEE_AMOUNT_WARNING_MESSAGE = "The cancellation fee is greater than the fee paid";
 
+
 const roundCancellationFeeExTax = val => bankRounding(val || 0);
 
 const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => bankRounding(new Decimal(cancellationFeeExTax || 0)
@@ -37,7 +38,7 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
       const field = fields.get(ind);
 
       const cancellationFeeIncTax = addInvoiceLineTax(
-        roundCancellationFeeExTax(e.target.value),
+        roundCancellationFeeExTax(e),
         taxes.find(t => t.id === field.taxId).rate
       );
       dispatch(change(FORM, `invoices[${ind}].chargedFee`, cancellationFeeIncTax));
@@ -102,14 +103,13 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
                   {$t('charge_an_administrative_fee_of', [field && field.contactName])}
                   {" "}
                   <FormField
-                    type="number"
+                    type="money"
                     name={`${item}.cancellationFeeExTax`}
                     normalize={roundCancellationFeeExTax}
                     onChange={e => onCancelFeeChange(e, index)}
                     debounced={false}
                     disabled={!field.isReverseCreditNotes}
                     inline
-                    step="1"
                   />
                   {" "}
                   <FormField

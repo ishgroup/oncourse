@@ -31,6 +31,7 @@ interface Props {
   syncErrors: any;
   isNew: boolean;
   isFixed?: boolean;
+  sidebarWidth?: number;
 }
 
 const ProfileHeading = (props: Props) => {
@@ -45,6 +46,7 @@ const ProfileHeading = (props: Props) => {
     syncErrors,
     isNew,
     isFixed,
+    sidebarWidth,
   } = props;
 
   const Avatar = useCallback(aProps => (
@@ -69,6 +71,7 @@ const ProfileHeading = (props: Props) => {
       opened={isNew || Object.keys(syncErrors).some(k => ['title', 'firstName', 'middleName', 'lastName'].includes(k))}
       twoColumn={twoColumn}
       Avatar={Avatar}
+      sidebarWidth={sidebarWidth}
       title={(
         <>
           {values && !isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}

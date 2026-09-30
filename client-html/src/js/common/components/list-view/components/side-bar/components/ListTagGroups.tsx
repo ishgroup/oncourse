@@ -6,7 +6,7 @@ import { SPECIAL_TYPES_DISPLAY_KEY } from '../../../../../../constants/Config';
 import { FormMenuTag } from '../../../../../../model/tags';
 import { useAppDispatch, useAppSelector } from '../../../../../utils/hooks';
 import { updateTableModel } from '../../../actions';
-import { getActiveTags, getTagGroupId } from '../../../utils/listFiltersUtils';
+import { getActiveTags, getTagNodeId } from '../../../utils/listFiltersUtils';
 import { COLUMN_WITH_COLORS } from '../../list/constants';
 import ListTagGroup from './ListTagGroup';
 
@@ -38,8 +38,8 @@ const ListTagGroups = memo<Props>(({ onChangeTagGroups, rootEntity }) => {
   // over the same course tags), so one shared list would tick a tag in every group that holds it
   const activeTagsByGroup = useMemo(
     () => new Map(tags.map(t => [
-      getTagGroupId(t),
-      getActiveTags(t.children).map(c => c.tagBody.id.toString())
+      getTagNodeId(t),
+      getActiveTags(t.children).map(getTagNodeId)
     ])),
     [tags]
   );
@@ -65,8 +65,8 @@ const ListTagGroups = memo<Props>(({ onChangeTagGroups, rootEntity }) => {
   }, [tags, tagsOrder, specialTypesEnabled]);
 
   const updateActive = useEventCallback((updated: FormMenuTag) => {
-    const updatedKey = getTagGroupId(updated);
-    const updatedTags = tags.map(t => (getTagGroupId(t) === updatedKey ? updated : t));
+    const updatedKey = getTagNodeId(updated);
+    const updatedTags = tags.map(t => (getTagNodeId(t) === updatedKey ? updated : t));
 
     onChangeTagGroups(updatedTags, "tags");
   });
@@ -96,8 +96,8 @@ const ListTagGroups = memo<Props>(({ onChangeTagGroups, rootEntity }) => {
     <>
       {specialTypesEnabled && subjects &&
         <ListTagGroup
-          activeTags={activeTagsByGroup.get(getTagGroupId(subjects))}
-          key={getTagGroupId(subjects)}
+          activeTags={activeTagsByGroup.get(getTagNodeId(subjects))}
+          key={getTagNodeId(subjects)}
           rootTag={subjects}
           updateActive={updateActive}
           showColoredDots={false}
@@ -113,8 +113,8 @@ const ListTagGroups = memo<Props>(({ onChangeTagGroups, rootEntity }) => {
             >
               {tagsForRender.map((t, index) => (
                 <ListTagGroup
-                  activeTags={activeTagsByGroup.get(getTagGroupId(t))}
-                  key={getTagGroupId(t)}
+                  activeTags={activeTagsByGroup.get(getTagNodeId(t))}
+                  key={getTagNodeId(t)}
                   dndKey={index}
                   rootTag={t}
                   updateActive={updateActive}

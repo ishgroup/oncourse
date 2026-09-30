@@ -39,18 +39,20 @@ const EMPTY_QUERY: ListUrlQuery = {
 
 /**
  * Percent encodes only the characters that would otherwise change the meaning of the query
- * string. Everything else (including `@`, `"`, spaces and commas) is left as typed so the
+ * string. Everything else (including `@`, `"` and commas) is left as typed so the
  * url stays readable, and `URLSearchParams` reads every value back exactly as it went in.
  *
  * `%` has to go first, `+` has to be escaped because `URLSearchParams` reads a literal `+`
  * back as a space.
  */
+
 const encodeQueryPart = (value: string): string => value
   .replace(/%/g, "%25")
   .replace(/&/g, "%26")
   .replace(/=/g, "%3D")
   .replace(/#/g, "%23")
-  .replace(/\+/g, "%2B");
+  .replace(/\+/g, "%2B")
+  .replace(/\s/g, "%20");
 
 const stringifyUrlSearch = (entries: [string, string][]): string => {
   const result = entries

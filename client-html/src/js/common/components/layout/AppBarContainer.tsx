@@ -122,7 +122,8 @@ interface Props {
   Avatar?: React.FC<{
     avatarSize: number,
     disabled: boolean
-  }>
+  }>,
+  sidebarWidth?: number;
 }
 
 const AppBarContainer = (props: Props) => {
@@ -154,7 +155,8 @@ const AppBarContainer = (props: Props) => {
     opened,
     containerClass,
     closeButtonText,
-    Avatar
+    Avatar,
+    sidebarWidth
   } = props;
 
   const dispatch = useAppDispatch();
@@ -222,6 +224,7 @@ const AppBarContainer = (props: Props) => {
               disableInteraction={disableInteraction}
               customStuck={hasScrolling}
               twoColumn
+              sidebarWidth={sidebarWidth}
             />
           )
         }

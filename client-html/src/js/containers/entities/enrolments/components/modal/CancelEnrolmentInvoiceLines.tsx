@@ -39,7 +39,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
       const field = fields.get(ind);
 
       const cancellationFeeIncTax = addInvoiceLineTax(
-        bankRounding(e.target.value),
+        e,
         taxes.find(t => t.id === field.taxId).rate
       );
       dispatch(change(FORM, `invoices[${ind}].chargedFee`, cancellationFeeIncTax));
@@ -106,14 +106,13 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                         {$t('charge_an_administrative_fee_of', [field && field.contactName])}
                         {" "}
                         <FormField
-                          type="number"
+                          type="money"
                           name={`${item}.cancellationFeeExTax`}
                           normalize={bankRounding}
                           onChange={e => onCancelFeeChange(e, index)}
                           debounced={false}
                           disabled={!field.isReverseCreditNotes}
                           inline
-                          step="1"
                         />
                         {" "}
                         <FormField
