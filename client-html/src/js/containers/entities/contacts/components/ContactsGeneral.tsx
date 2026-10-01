@@ -22,6 +22,7 @@ import FormField from '../../../../common/components/form/formFields/FormField';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { State } from '../../../../reducers/state';
 import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import { getAvailableTagIds } from '../../../tags/utils';
 import { getContactFullName } from '../utils';
 import ProfileHeading from './ProfileHeading';
 
@@ -174,6 +175,11 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = ({
     return [];
   }, [tags, isStudent, isTutor, isCompany]);
 
+  const availableTagIds = useMemo(
+    () => (Array.isArray(tags) ? getAvailableTagIds(filteredTags) : undefined),
+    [tags, filteredTags]
+  );
+
   return (
     <div className={clsx("pl-3 pr-3", !twoColumn && "pt-3")}>
       <ProfileHeading
@@ -227,6 +233,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = ({
             type="tags"
             name="tags"
             tags={filteredTags}
+            availableTagIds={availableTagIds}
             placeholder='Tags'
             trackCarretPosition={twoColumn}
           />

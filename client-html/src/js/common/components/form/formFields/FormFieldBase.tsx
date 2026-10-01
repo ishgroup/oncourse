@@ -27,15 +27,21 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from 'redux-form/lib/Field';
 import { COMMON_PLACEHOLDER } from '../../../../constants/Forms';
 import { AngelFormFieldProps } from '../../../../model/common/Fields';
+import { applyTagsChange, getAvailableTagIds, removeUnavailableTagIds } from '../../../../containers/tags/utils';
 import { useAppSelector } from '../../../utils/hooks';
 import EditInPlaceQuerySelect from './EditInPlaceQuerySelect';
 import EditInPlaceRemoteDataSearchSelect from './EditInPlaceRemoteDataSearchSelect';
 
 const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null, placeholder: null };
 
+const isSameValue = (a: any, b: any) =>
+  Array.isArray(a) && Array.isArray(b)
+    ? a.length === b.length && a.every((v, i) => v === b[i])
+    : a === b;
+
 const FormFieldBase = (props: AngelFormFieldProps) => {
 
-  const { type, ...rest } = props;
+  const { type, availableTagIds: declaredTagIds, ...rest } = props;
 
   const { input, format, debounced = true } = type !== "stub" && type !== "color" && type !== "radio"
     ? props
@@ -52,32 +58,68 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
 
   const tags = type === "tags" ? props.tags : null;
 
-  const [value, setValue] = useState(input?.value);
+  // the tag input only renders the ids of the tag tree it is given, everything else is shown as an
+  // "Error: Tag not found!" chip. A view can narrow that tree down further (roles, entity types), so
+  // the declared ids are intersected with the ones of the rendered tree instead of replacing them -
+  // a declared id which is not in the tree would produce a chip again
+  const availableTagIds = useMemo(() => {
+    if (type !== "tags") return null;
+
+    const renderedTagIds = getAvailableTagIds(tags);
+    if (declaredTagIds === undefined) return renderedTagIds;
+    if (!renderedTagIds) return declaredTagIds;
+
+    return new Set(Array.from(declaredTagIds).filter(id => renderedTagIds.has(id)));
+  }, [type, declaredTagIds, tags]);
+
+  const availableValue = useMemo(
+    () => (availableTagIds ? removeUnavailableTagIds(input?.value, availableTagIds) : input?.value),
+    [input?.value, availableTagIds]
+  );
+
+  const [value, setValue] = useState(availableValue);
 
   const debounceChange = useCallback(debounce(input?.onChange, 600), [input?.onChange]);
 
   const debounceBlur = useCallback(debounce(input?.onBlur, 600), [input?.onBlur]);
 
+  // the tag input reports back the ids it rendered, so its own value has to stay display only -
+  // handing it the form value puts ids it can not resolve back into its chips. The form value is the
+  // one the input reported, with the ids it can not render merged back in
+  const onTagsValue = useCallback((e, onFormChange) => {
+    const val = e?.target ? e.target.value : e;
+
+    if (!availableTagIds) {
+      setValue(format ? format(val) : val);
+      onFormChange(e);
+      return;
+    }
+
+    const displayed = removeUnavailableTagIds(value, availableTagIds);
+    const next = removeUnavailableTagIds(val, availableTagIds);
+
+    setValue(format ? format(next) : next);
+    onFormChange(applyTagsChange(input?.value, displayed, next));
+  }, [value, input?.value, format, availableTagIds]);
+
   const inputProxy = useMemo(() => ({
     ...input || {},
     value,
-    onChange: e => {
-      const val = e?.target ? e.target.value : e;
-      setValue(format ? format(val) : val);
-      debounceChange(e);
-    },
-    onBlur: e => {
-      const val = e?.target ? e.target.value : e;
-      setValue(format ? format(val) : val);
-      debounceBlur(e);
-    },
-  }), [value, input]);
+    onChange: e => onTagsValue(e, debounceChange),
+    onBlur: e => onTagsValue(e, debounceBlur),
+  }), [value, input, onTagsValue]);
 
+  // only the displayed value is filtered - tag ids that are not in the tag menu are hidden from the
+  // tag input (it renders them as a "Tag not found!" chip), the form value itself is left untouched.
+  // Tag ids which are still valid but belong to another source (completed checklist tasks are kept in
+  // the same form field and have no entry in the tag menu) would be lost by writing the filtered value
+  // back to the form. Those are deliberately not rendered as a chip either - the checklist card next
+  // to the field is what shows their state
   useEffect(() => {
-    if (input?.value !== value) {
-      setValue(format ? format(input?.value) : input?.value);
+    if (!isSameValue(availableValue, value)) {
+      setValue(format ? format(availableValue) : availableValue);
     }
-  }, [input?.value]);
+  }, [availableValue]);
 
   const sharedProps = {
     ...rest,
