@@ -100,6 +100,17 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
   const onInvoiceDateChange = value => {
       dispatch(change(form, "paymentPlans[0].date", formatToDateOnly(value)));
+
+      if (!hasPaymentDues) {
+        const invoiceTerms = Number(selectedContact?.["invoiceTerms"] || defaultTerms);
+        dispatch(
+          change(
+            form,
+            "dateDue",
+            formatToDateOnly(addDays(value, Number.isFinite(invoiceTerms) ? invoiceTerms : 7))
+          )
+        );
+      }
   };
 
   const validateInvoiceLines = (value, allValues) => (allValues.invoiceLines && allValues.invoiceLines.length ? undefined : "Please enter some invoice lines");
@@ -217,11 +228,12 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     );
 
     if (!hasPaymentDues) {
+      const invoiceTerms = Number(value["invoiceTerms"] || defaultTerms);
       dispatch(
         change(
           form,
           "dateDue",
-          formatToDateOnly(addDays(new Date(), value["invoiceTerms"] ? Number(value["invoiceTerms"]) : defaultTerms))
+          formatToDateOnly(addDays(new Date(), Number.isFinite(invoiceTerms) ? invoiceTerms : 0))
         )
       );
     }
