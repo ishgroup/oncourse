@@ -12,11 +12,11 @@ import { Create, Request } from "../../../../common/epics/EpicUtils";
 import { EntityName } from "../../../../model/entities/common";
 import { UPDATE_ENTITY_RECORD_REQUEST } from "../actions";
 import { updateEntityItemById, updateEntityItemByIdErrorHandler } from "../entityItemsService";
-import { getListRecordAfterUpdateActions, getRecordItemBeforeUpdate } from "../utils";
+import { getListRecordAfterUpdateActions } from "../utils";
 
 const request: Request<any, { item: any, entity: EntityName }> = {
   type: UPDATE_ENTITY_RECORD_REQUEST,
-  getData: ({ item, entity }, state) => updateEntityItemById(entity, item.id, getRecordItemBeforeUpdate(item, entity, state)),
+  getData: ({ item, entity }) => updateEntityItemById(entity, item.id, item),
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { item, entity }) => getListRecordAfterUpdateActions(entity, s, item.id),
   processError: (response, { item, entity }) => updateEntityItemByIdErrorHandler(response, entity, item)
