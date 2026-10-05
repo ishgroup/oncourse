@@ -16,7 +16,7 @@ import { IAction } from '../../../common/actions/IshAction';
 import { useAppSelector } from '../../../common/utils/hooks';
 import { SPECIAL_TYPES_DISPLAY_KEY } from '../../../constants/Config';
 import { COMMON_PLACEHOLDER } from '../../../constants/Forms';
-import { getAllFormTags, getAvailableTagIds } from './index';
+import { getAllFormTags } from './index';
 
 interface Props {
   tags: Tag[];
@@ -38,33 +38,18 @@ export function useTagGroups({ tagsValue, tags, form, dispatch }: Props) {
       subjects: [],
       subjectsValue: []
     };
-    const formTagsValue = tagsValue || [];
-
-    if (tags?.length) {
+    if (!specialTypesDisabled && tags?.length) {
+      body.tags = tags.filter(t => !t.system && t.name !== 'Subjects');
+      body.subjects = tags.filter(subjectsFilter)[0]?.childTags || [];
       const allTags = getAllFormTags(tags);
-      const subjects = tags.filter(subjectsFilter)[0]?.childTags || [];
-
-      if (specialTypesDisabled) {
-        body.tags = tags;
-        body.tagsValue = formTagsValue.filter(id => allTags.some(t => t.id === id));
-      } else {
-        const menuTags = tags.filter(t => !t.system && t.name !== 'Subjects');
-        const subjectIds = new Set(getAllFormTags(subjects).map(t => t.id));
-        const menuIds = new Set(getAllFormTags(menuTags).map(t => t.id));
-
-        body.tags = menuTags;
-        body.subjects = subjects;
-        body.subjectsValue = formTagsValue.filter(id => subjectIds.has(id));
-        body.tagsValue = formTagsValue.filter(id => menuIds.has(id) && !subjectIds.has(id));
-      }
+      body.subjectsValue = tagsValue.filter(id => {
+        const tag = allTags.find(t => t.id === id);
+        return tag?.rootTag?.system && tag?.rootTag?.name === 'Subjects';
+      });
+      body.tagsValue = tagsValue.filter(id => !body.subjectsValue.includes(id));
     }
     return body;
   }, [tags, tagsValue, specialTypesDisabled]);
-
-  const availableTagIds = useMemo(
-    () => (tags ? getAvailableTagIds([...(tagsGrouped.tags || []), ...(tagsGrouped.subjects || [])]) : undefined),
-    [tags, tagsGrouped.tags, tagsGrouped.subjects]
-  );
 
   const subjectsField = <TagInputList
     input={{
@@ -84,5 +69,5 @@ export function useTagGroups({ tagsValue, tags, form, dispatch }: Props) {
     hideColor
   />;
   
-  return { tagsGrouped, subjectsField, specialTypesDisabled, availableTagIds };
+  return { tagsGrouped, subjectsField, specialTypesDisabled };
 }

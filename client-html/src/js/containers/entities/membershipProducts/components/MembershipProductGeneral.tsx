@@ -111,7 +111,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
 
   const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts]);
 
-  const { tagsGrouped, subjectsField, availableTagIds } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
+  const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
 
   const taxRate = useMemo(() => taxes.find(t => t.id === values.taxId)?.rate, [taxes, values.taxId]);
 
@@ -168,7 +168,6 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           type="tags"
           name="tags"
           tags={tagsGrouped.tags}
-          availableTagIds={availableTagIds}
           className="mb-2"
           placeholder='Tags'
           trackCarretPosition={twoColumn}

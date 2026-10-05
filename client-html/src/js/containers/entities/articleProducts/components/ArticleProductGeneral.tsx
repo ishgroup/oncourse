@@ -40,12 +40,13 @@ const validateNonNegative = value => (value < 0 ? "Must be non negative" : undef
 
 const productStatusItems = Object.keys(ProductStatus).map(value => ({ value }));
 
+
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
     twoColumn, accounts, isNew, taxes, showConfirm, tags, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
   } = props;
 
-  const { tagsGrouped, subjectsField, availableTagIds } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
+  const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
 
   const gridItemProps = { size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } } as any;
 
@@ -106,7 +107,6 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           type="tags"
           name="tags"
           tags={tagsGrouped.tags}
-          availableTagIds={availableTagIds}
           className="mb-2"
           placeholder='Tags'
           trackCarretPosition={twoColumn}

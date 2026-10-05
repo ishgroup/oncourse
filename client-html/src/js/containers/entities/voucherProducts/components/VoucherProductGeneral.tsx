@@ -219,7 +219,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
 
   const tags = useAppSelector(state => state.tags.entityTags["VoucherProduct"]);
 
-  const { tagsGrouped, subjectsField, availableTagIds } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
+  const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
 
   const courseHandlers = useMemo(() => {
     if (values.soldVouchersCount === 0) {
@@ -296,7 +296,6 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           type="tags"
           name="tags"
           tags={tagsGrouped.tags}
-          availableTagIds={availableTagIds}
           className="mb-2"
           placeholder='Tags'
           trackCarretPosition={twoColumn}
