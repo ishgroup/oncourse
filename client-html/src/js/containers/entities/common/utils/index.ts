@@ -33,7 +33,6 @@ import { NOTE_ENTITIES } from '../../../../constants/Config';
 import { AccessByPath, EntityName, ListActionEntity } from '../../../../model/entities/common';
 import { EntityRelationTypeRendered } from '../../../../model/entities/EntityRelations';
 import { State } from '../../../../reducers/state';
-import { getAssignableTagIds, removeUnavailableEntityTags } from '../../../tags/utils';
 import { getEntityRecord } from '../actions';
 
 export const mapEntityDisplayName = (entity: ListActionEntity) => {
@@ -222,21 +221,6 @@ export const mapRelatedSalables = (s): Sale & { tempId: any } => ({
   entityToId: null,
   relationId: -1
 });
-
-/**
- * A record may still hold tag ids of tag groups which are not available for the entity any more
- * (deleted groups, removed requirements). Those ids are not rendered by the tag input of the record
- * (it shows them as a "Tag not found!" chip), so they are removed before the record is saved.
- * Completed checklist tasks are kept in the same field and are therefore always kept.
- */
-export const getRecordItemBeforeUpdate = <T extends { tags?: number[] }>(item: T, entity: EntityName, state: State): T =>
-  removeUnavailableEntityTags(
-    item,
-    getAssignableTagIds(
-      state.tags.entityTags?.[entity],
-      [...(state.list.checkedChecklists || []), ...(state.list.uncheckedChecklists || [])]
-    )
-  );
 
 export const getListRecordAfterUpdateActions = (entity: EntityName, state: State, id: number) => [
   executeActionsQueue(),

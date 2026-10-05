@@ -8,7 +8,7 @@
 
 import { DataRow, Tag } from "@api/model";
 import { CatalogItemType } from "../../../model/common/Catalog";
-import { FormTag, FormMenuTag } from "../../../model/tags";
+import { FormTag } from "../../../model/tags";
 
 export const getAllTags = (tags: Tag[], res?: Tag[]): Tag[] => {
   const result = res || [];
@@ -42,104 +42,27 @@ export const getAllFormTags = (tags: Tag[], res?: FormTag[], rootTag?: FormTag):
 
 export interface TagTreeNode {
   id?: number;
-  childrenCount?: number;
   childTags?: TagTreeNode[];
 }
 
-// the tag input builds its menu from the given tree and only renders the ids it finds there, every
-// other id is shown as an "Error: Tag not found!" chip. Its first level is filtered by
-// `allowParentSelect || childrenCount > 0`, so a group on the first level is only part of the menu
-// when it holds tags - a group without any can never be picked and is left out here as well
 export const getAvailableTagIds = (tags: TagTreeNode[] | undefined): Set<number> | undefined => {
   if (!Array.isArray(tags) || !tags.length) return undefined;
 
   const ids = new Set<number>();
 
-  const collect = (nodes: TagTreeNode[], isTagGroup = false) => {
+  const collect = (nodes: TagTreeNode[]) => {
     nodes.forEach(node => {
-      if (node?.id !== null && node?.id !== undefined && !(isTagGroup && !node?.childrenCount)) {
-        ids.add(node.id);
-      }
+      if (node?.id !== null && node?.id !== undefined) ids.add(node.id);
       if (node?.childTags?.length) collect(node.childTags);
     });
   };
 
-  collect(tags, true);
+  collect(tags);
   return ids;
 };
 
 export const removeUnavailableTagIds = (value: number[] | undefined, availableTagIds: Set<number>): number[] | undefined =>
   Array.isArray(value) ? value.filter(id => availableTagIds.has(id)) : value;
-
-/**
- * Applies a change of the tag input to the full value of the form field.
- *
- * The tag input only knows the ids of the tag menu it was given, so the value it reports back is the
- * displayed one. Ids which are in the form value but not in the menu are kept: completed checklist
- * tasks are kept in the same field, and dropping them here would silently uncheck them on the next
- * save of the record.
- */
-export const applyTagsChange = (formValue: number[] | undefined, displayed: number[] | undefined, next: number[] | undefined): number[] | undefined => {
-  if (!Array.isArray(formValue) || !Array.isArray(displayed) || !Array.isArray(next)) return next;
-
-  const removed = new Set(displayed.filter(id => !next.includes(id)));
-
-  return [
-    ...formValue.filter(id => !removed.has(id)),
-    ...next.filter(id => !formValue.includes(id))
-  ];
-};
-
-/**
- * Ids of a tag/checklist menu without the entries on the first level - those are the groups which
- * hold the tags/checklist tasks, they are never assigned to a record.
- */
-export const getMenuTagIds = (menuTags: FormMenuTag[] | undefined): Set<number> | undefined => {
-  if (!Array.isArray(menuTags) || !menuTags.length) return undefined;
-
-  const ids = new Set<number>();
-
-  const collect = (nodes: FormMenuTag[]) => {
-    nodes.forEach(node => {
-      if (node?.tagBody?.id !== null && node?.tagBody?.id !== undefined) ids.add(node.tagBody.id);
-      if (node?.children?.length) collect(node.children);
-    });
-  };
-
-  menuTags.forEach(group => {
-    if (group?.children?.length) collect(group.children);
-  });
-
-  return ids;
-};
-
-/**
- * Tag ids which can still be assigned to an entity - the tags of the entity's tag groups plus its
- * checklists, as completed checklist tasks are kept in the same "tags" field of a record.
- * Returns undefined when the tags of the entity have not been loaded yet, so that nothing is
- * removed from records whose tags are unknown.
- */
-export const getAssignableTagIds = (entityTags: TagTreeNode[] | undefined, checklists: FormMenuTag[] | undefined): Set<number> | undefined => {
-  const tagIds = getAvailableTagIds(entityTags);
-  if (!tagIds) return undefined;
-
-  const checklistIds = getMenuTagIds(checklists);
-  if (checklistIds) checklistIds.forEach(id => tagIds.add(id));
-
-  return tagIds;
-};
-
-/**
- * Removes tag ids which are not available for the entity from a record before it is saved, so that
- * tags of deleted/unassigned tag groups are not persisted on the next save of the record.
- */
-export const removeUnavailableEntityTags = <T extends { tags?: number[] }>(item: T, assignableTagIds: Set<number> | undefined): T => {
-  if (!assignableTagIds || !Array.isArray(item?.tags)) return item;
-
-  const tags = removeUnavailableTagIds(item.tags, assignableTagIds);
-
-  return tags.length === item.tags.length ? item : { ...item, tags };
-};
 
 export const getTagNamesSuggestions = (tags: Tag[]) => {
   const allTags = getAllTags(tags);

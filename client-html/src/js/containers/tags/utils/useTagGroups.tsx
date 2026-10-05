@@ -61,11 +61,9 @@ export function useTagGroups({ tagsValue, tags, form, dispatch }: Props) {
     return body;
   }, [tags, tagsValue, specialTypesDisabled]);
 
-  // only the tags of the tag field itself - subjects are rendered in their own field, so they are
-  // not available for the tag field
   const availableTagIds = useMemo(
-    () => (tags ? getAvailableTagIds(tagsGrouped.tags) : undefined),
-    [tags, tagsGrouped.tags]
+    () => (tags ? getAvailableTagIds([...(tagsGrouped.tags || []), ...(tagsGrouped.subjects || [])]) : undefined),
+    [tags, tagsGrouped.tags, tagsGrouped.subjects]
   );
 
   const subjectsField = <TagInputList
