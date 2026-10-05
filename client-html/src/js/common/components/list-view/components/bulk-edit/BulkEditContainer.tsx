@@ -27,7 +27,6 @@ import {
 } from '../../../../../containers/entities/enrolments/constants';
 import { PreferencesState } from '../../../../../containers/preferences/reducers/state';
 import { getEntityTags } from '../../../../../containers/tags/actions';
-import { getAvailableTagIds } from '../../../../../containers/tags/utils';
 import { EntityName } from '../../../../../model/entities/common';
 import { State } from '../../../../../reducers/state';
 import { addActionToQueue } from '../../../../actions';
@@ -201,11 +200,6 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
     return (entityTags && rootEntity && entityTags[rootEntity]) || [];
   }, [entityTags, rootEntity]);
 
-  const availableTagIds = useMemo(
-    () => (entityTags && rootEntity ? getAvailableTagIds(tags) : undefined),
-    [entityTags, rootEntity, tags]
-  );
-
   const BulkEditFieldRendered = useMemo(() => {
     const field = getBulkEditFieldData();
 
@@ -295,7 +289,6 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
             type="tags"
             name={field.keyCode}
             tags={tags}
-            availableTagIds={availableTagIds}
             {...fieldProps}
           />
         </>
@@ -310,7 +303,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           {...fieldProps}
         />
       );
-  }, [tags, availableTagIds, entityTags, rootEntity, bulkEditFields, selectedKeyCode]);
+  }, [tags, entityTags, rootEntity, bulkEditFields, selectedKeyCode]);
 
   return (
     <Drawer

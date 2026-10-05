@@ -40,30 +40,6 @@ export const getAllFormTags = (tags: Tag[], res?: FormTag[], rootTag?: FormTag):
   return result;
 };
 
-export interface TagTreeNode {
-  id?: number;
-  childTags?: TagTreeNode[];
-}
-
-export const getAvailableTagIds = (tags: TagTreeNode[] | undefined): Set<number> | undefined => {
-  if (!Array.isArray(tags) || !tags.length) return undefined;
-
-  const ids = new Set<number>();
-
-  const collect = (nodes: TagTreeNode[]) => {
-    nodes.forEach(node => {
-      if (node?.id !== null && node?.id !== undefined) ids.add(node.id);
-      if (node?.childTags?.length) collect(node.childTags);
-    });
-  };
-
-  collect(tags);
-  return ids;
-};
-
-export const removeUnavailableTagIds = (value: number[] | undefined, availableTagIds: Set<number>): number[] | undefined =>
-  Array.isArray(value) ? value.filter(id => availableTagIds.has(id)) : value;
-
 export const getTagNamesSuggestions = (tags: Tag[]) => {
   const allTags = getAllTags(tags);
 
