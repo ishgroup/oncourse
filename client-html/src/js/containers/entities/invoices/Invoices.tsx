@@ -11,6 +11,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import $t from '@t';
 import { formatToDateOnly } from 'ish-ui';
+import { addDays } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -263,13 +264,13 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onInit: () => {
-    const today = formatToDateOnly(new Date());
-    Initial.invoiceDate = today;
-    Initial.dateDue = today;
-    dispatch(setListEditRecord(Initial));
-    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
-  },
+    onInit: () => {
+      const today = formatToDateOnly(new Date());
+      Initial.invoiceDate = today;
+      Initial.dateDue = formatToDateOnly(addDays(new Date(), 7));
+      dispatch(setListEditRecord(Initial));
+      dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
+    },
   onMount: () => {
     getPlainAccounts(dispatch);
     dispatch(getFilters("Invoice"));
