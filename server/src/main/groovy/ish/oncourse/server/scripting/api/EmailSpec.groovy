@@ -13,6 +13,7 @@ package ish.oncourse.server.scripting.api
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import ish.oncourse.API
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.messaging.DocumentParam
@@ -78,6 +79,14 @@ import org.apache.cayenne.PersistentObject
  *     keyCollision "drop"
  * }
  * ```
+ * You can specify email addresses that recipients will reply to instead of the from address:
+ * ```
+ * email {
+ *     template "Enrolment Confirmation"
+ *     bindings enrolment: e
+ *     to c
+ *     replyTo "first@example.com" "second@example.com"
+ * }
  */
 @Deprecated
 @CompileStatic
@@ -99,6 +108,7 @@ class EmailSpec {
 	List<String> bccList = []
 	String multipartType = SMTPMessage.DEFAULT_MULTIPART_TYPE
 	List<DocumentParam> attachments = []
+	List<String> replyToList = []
 
 
 	/**
@@ -275,5 +285,17 @@ class EmailSpec {
 	 */
 	void attachment(Map<String, Object> attachment) {
 		this.attachments << DocumentParam.valueOf((String) attachment.fileName, (String) attachment.type, attachment.content)
+	}
+
+
+	/**
+	 * Set replyTo emails for the message.
+	 * Using this method means that recipients will reply to these email addresses instead of the from address.
+	 *
+	 * @param remail addresses of the reply recipients
+	 */
+	@API
+	void replyTo(String... replyToEmails) {
+		this.replyToList = replyToEmails.toList()
 	}
 }
