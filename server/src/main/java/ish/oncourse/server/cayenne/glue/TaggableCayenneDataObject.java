@@ -198,7 +198,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 
 	/**
 	 * Get all checklists related to this object.
-	 *
+	 * Note: this method will return only checklsits, that were checked for this record, not all allowed
 	 * @return List of related checklists
 	 */
 	@API
