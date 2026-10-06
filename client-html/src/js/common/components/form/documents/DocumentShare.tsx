@@ -314,8 +314,8 @@ const DocumentShare: React.FC<Props> = ({
 
   const contactRelated = isSingleContactAttachment(documentSource.attachmentRelations);
 
-  const SummaryLabel = useMemo(() => getDocumentShareSummary(documentSource.access, documentSource.attachmentRelations),
-    [documentSource.access, documentSource.attachmentRelations]);
+  const SummaryLabel = useMemo(() => getDocumentShareSummary(documentSource.displayAccess, documentSource.attachmentRelations),
+    [documentSource.displayAccess, documentSource.attachmentRelations]);
 
   const linkOrPublic = ["Link", "Public"].includes(documentSource.access);
 
