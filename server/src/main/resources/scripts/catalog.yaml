@@ -753,6 +753,9 @@
     - name: waitingListReminderTemplate
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.waitingListReminder"
+    - name: numberOfDays
+      dataType: NUMBER
+      value: 180
 
 - name: send weekly finance summary report
   keyCode: ish.script.sendWeeklyFinanceSummaryReport
