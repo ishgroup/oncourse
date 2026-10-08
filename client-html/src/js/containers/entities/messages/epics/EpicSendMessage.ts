@@ -3,51 +3,34 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import {
-  clearProcess,
-  closeSendMessage,
-  FETCH_SUCCESS,
-  SEND_MESSAGE_FAILED,
-  START_PROCESS,
-  UPDATE_PROCESS
-} from "../../../../common/actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { MessageExtended } from "../../../../model/common/Message";
-import { SEND_MESSAGE } from "../actions";
-import MessageService from "../services/MessageService";
-import { getMessageRequestModel } from "../utils";
+import { Epic } from 'redux-observable';
+import { sendMessageFailed, setSendMessageProcess } from '../../../../common/actions';
+import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import * as EpicUtils from '../../../../common/epics/EpicUtils';
+import { MessageExtended } from '../../../../model/common/Message';
+import { interruptSendMessage, pollSendMessageProcess, SEND_MESSAGE } from '../actions';
+import MessageService from '../services/MessageService';
+import { getMessageRequestModel } from '../utils';
 
 const request: EpicUtils.Request<any, { model: MessageExtended, selection: string[] }> = {
   type: SEND_MESSAGE,
   hideLoadIndicator: true,
   getData: ({ model, selection }, s) => MessageService.sendMessage(model.recipientsCount, getMessageRequestModel(model, selection, s.list.searchQuery), model.messageType),
-  processData: (processId: string) => [
-    {
-      type: UPDATE_PROCESS,
-      payload: { processId }
-    },
-    {
-      type: START_PROCESS,
-      payload: {
-        processId,
-        actions: [
-          closeSendMessage(),
-          {
-            type: FETCH_SUCCESS,
-            payload: { message: "All messages sent" }
-          }
-        ],
-        actionsOnFail: [
-          { type: SEND_MESSAGE_FAILED }
-        ]
-      }
+  processData: (processId: string, s) => {
+    const { sending, processId: currentProcessId } = s.sendMessage;
+
+    // Dialog was closed while the request was in flight - nobody waits for this process anymore
+    if (!sending || currentProcessId) {
+      return [interruptSendMessage(processId)];
     }
-  ],
+
+    return [
+      setSendMessageProcess(processId),
+      pollSendMessageProcess(processId)
+    ];
+  },
   processError: response => [
-    { type: SEND_MESSAGE_FAILED },
-    clearProcess(),
+    sendMessageFailed(),
     ...FetchErrorHandler(response, "Messages sending failed")
   ]
 };
