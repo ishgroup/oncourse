@@ -20,6 +20,7 @@ interface Props {
   text?: string;
   errorText?: string;
   className?: any;
+  loading?: boolean;
 }
 
 const FormSubmitButton = React.memo<Props>(({
@@ -28,6 +29,7 @@ const FormSubmitButton = React.memo<Props>(({
                                               fab = false,
                                               text = "Save",
                                               className,
+                                              loading = false,
                                             }) => {
   const ref = useRef<HTMLButtonElement>(undefined);
   const defaultPrevented = useRef(false);
@@ -61,9 +63,11 @@ const FormSubmitButton = React.memo<Props>(({
       classes={{
         root: fab ? "saveButtonEditView" : "whiteAppBarButton",
         disabled: fab ? "saveButtonEditViewDisabled" : "whiteAppBarButtonDisabled",
-        startIcon: !invalid && "m-0"
+        startIcon: !invalid && "m-0",
+        loadingIndicator: "primaryColor"
       }}
       disabled={disabled}
+      loading={loading}
       onClick={onClick}
       variant="contained"
       color="primary"
