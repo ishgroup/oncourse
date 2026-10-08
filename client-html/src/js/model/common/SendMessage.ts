@@ -10,4 +10,6 @@
 export interface SendMessageState {
   open: boolean;
   sending?: boolean;
+  // id of the background process of the current send; polling stops once it no longer matches
+  processId?: string;
 }
