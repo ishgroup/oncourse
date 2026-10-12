@@ -948,3 +948,15 @@ databaseChangeLog:
       changes:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.SetEnrolmentHybridCompleted
+
+  - changeSet:
+      id: 154-0
+      author: yury
+      comment: set correct status to vouchers fully redeemed on web but left active (sub-cent invoice totals)
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: ProductItem
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.SetCorrectStatusToRedeemedVouchers
