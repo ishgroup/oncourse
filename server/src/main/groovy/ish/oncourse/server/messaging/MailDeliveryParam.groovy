@@ -23,6 +23,7 @@ class MailDeliveryParam {
     private GetAddresses getAddressesBCC
     private GetSubject getSubject
     private GetContent getContent
+    private GetAddresses getAddressesReplyTo
     private Date sentDate = new Date()
 
     private MailDeliveryParam() {
@@ -30,7 +31,7 @@ class MailDeliveryParam {
     }
 
     static MailDeliveryParam valueOf(GetFrom getFrom, GetEnvelopeFrom getEnvelopeFrom, GetAddresses getAddressesTO, GetSubject getSubject, GetContent getContent) {
-        valueOf(getFrom, getEnvelopeFrom, getAddressesTO, GetAddresses.empty(), GetAddresses.empty(), getSubject, getContent)
+        valueOf(getFrom, getEnvelopeFrom, getAddressesTO, GetAddresses.empty(), GetAddresses.empty(), getSubject, getContent, GetAddresses.empty())
     }
 
     static MailDeliveryParam valueOf(GetFrom getFrom,
@@ -39,7 +40,8 @@ class MailDeliveryParam {
                                      GetAddresses getAddressesCC,
                                      GetAddresses getAddressesBCC,
                                      GetSubject getSubject,
-                                     GetContent getContent) {
+                                     GetContent getContent,
+                                     GetAddresses getAddressesReplyTo) {
         MailDeliveryParam param = new MailDeliveryParam()
         param.getFrom = getFrom
         param.getEnvelopeFrom = getEnvelopeFrom
@@ -48,6 +50,7 @@ class MailDeliveryParam {
         param.getAddressesBCC = getAddressesBCC
         param.getSubject = getSubject
         param.getContent = getContent
+        param.getAddressesReplyTo = getAddressesReplyTo
         param
     }
 
@@ -81,5 +84,9 @@ class MailDeliveryParam {
 
     GetEnvelopeFrom getGetEnvelopeFrom() {
         return getEnvelopeFrom
+    }
+
+    GetAddresses getGetAddressesReplyTo() {
+        return getAddressesReplyTo
     }
 }
