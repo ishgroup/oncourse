@@ -31,7 +31,8 @@ Feature: Main feature for all POST requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["code1","true","income","some descriptions"])].id
@@ -88,7 +89,8 @@ Feature: Main feature for all POST requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["code2","false","asset","some descriptions"])].id
@@ -139,7 +141,8 @@ Feature: Main feature for all POST requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["A3A5A7A9A12A15A18A21A24A27A30A33A36A39A4","true","asset","A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A152A156A160A164A168A172A176A180A184A188A192A196A200A204A208A212A216A220A224A228A232A236A240A244A248A252A256A260A264A268A272A276A280A284A288A292A296A300A304A308A312A316A320A324A328A332A336A340A344A348A352A356A360A364A368A372A376A380A384A388A392A396A400A404A408A412A416A420A424A428A432A436A440A444A448A452A456A460A464A468A472A476A480A484A488A492A496A500A"])].id

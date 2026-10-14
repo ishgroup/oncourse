@@ -77,11 +77,6 @@ class EntityApiImpl implements EntityApi {
     }
 
     @Override
-    DataResponseDTO get(String entity, String search, BigDecimal pageSize, BigDecimal offset) {
-        return getAll(entity, new SearchQueryDTO(search: search, pageSize: pageSize, offset: offset))
-    }
-
-    @Override
     DataResponseDTO getAll(String entity, SearchQueryDTO request) {
         DataResponseDTO response = createResponse(entity, request)
         ObjectContext context = cayenneService.newReadonlyContext

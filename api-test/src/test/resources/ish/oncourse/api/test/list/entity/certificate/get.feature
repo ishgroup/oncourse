@@ -15,7 +15,8 @@ Feature: Main feature for all GET requests with path 'list/entity/certificate'
 
         Given path ishPathList
         And param entity = 'Certificate'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["1000","1001","1002","1003","1004"]
 
@@ -31,7 +32,8 @@ Feature: Main feature for all GET requests with path 'list/entity/certificate'
 
         Given path ishPathList
         And param entity = 'Certificate'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["1000","1001","1002","1003","1004"]
 
