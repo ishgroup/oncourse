@@ -654,4 +654,12 @@ class PaymentIn extends _PaymentIn implements PaymentInInterface, Queueable, Con
 	boolean isRelatedToReverse() {
 		return getReversalOf() != null || getReversedBy() != null || (PaymentType.CREDIT_CARD == paymentMethod.type && !PaymentOutDao.getReversedFor(this).empty)
 	}
+
+	@Override
+	void validateObject(ObjectContext atomicContext) {
+		def paymentInLines = getPaymentInLines()
+		if (paymentInLines.isEmpty()) {
+			throw new ReplicationException(getClass().simpleName + " has no related " + PAYMENT_IN_LINES.name)
+		}
+	}
 }
