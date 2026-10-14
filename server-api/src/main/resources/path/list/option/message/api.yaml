@@ -1,6 +1,11 @@
 post:
   operationId: sendMessage
-  description: send the message based on template applied fot selected entities and return a response on success/failure
+  description: >
+    Validates the message request for the selected entities and, if valid, starts sending it in the
+    background. When x-validate-only is not set, the response is the id of a background process (not a
+    confirmation that sending has finished) - poll GET /control/{processId} for its status and, once it
+    is Finished or Failed, for the result message. When x-validate-only is set, the response is instead
+    the rendered preview of the message, computed synchronously.
   tags:
     - Message
   parameters:
@@ -19,7 +24,9 @@ post:
       required: true
   responses:
     '200':
-      description: Success response.
+      description: >
+        Success response. Either the rendered message preview (x-validate-only mode), or the id of the
+        background sending process to poll via GET /control/{processId}.
       schema:
         type: string
     '400':
