@@ -552,6 +552,10 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             validator.throwClientErrorException(Tutor.COURSE_CLASS_ROLES.name, 'The tutor cannot be deleted, there are classses for this tutor.');
         }
 
+        if (cayenneModel.leads != null && cayenneModel.leads.size() > 0) {
+            validator.throwClientErrorException(Contact.LEADS.name, 'There are leads linked to this contact.')
+        }
+
         cayenneModel.unavailableRuleRelations*.rule.each { validateForDelete(cayenneModel.context, it.id as String)}
     }
 
