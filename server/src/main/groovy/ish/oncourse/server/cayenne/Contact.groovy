@@ -141,6 +141,9 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 		if (getMessages() != null && getMessages().size() > 0) {
 			result.addFailure(new BeanValidationFailure(this, MESSAGES_PROPERTY, "There are messages waiting to be sent to this contact."))
 		}
+		if (getLeads() != null && getLeads().size() > 0) {
+			result.addFailure(new BeanValidationFailure(this, LEADS_PROPERTY, "There are leads linked to this contact."))
+		}
 	}
 
 	/***
