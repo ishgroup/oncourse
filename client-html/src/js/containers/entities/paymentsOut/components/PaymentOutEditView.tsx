@@ -157,11 +157,11 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
     || ["Contra", "Internal", "Reverse", "Voucher"].includes(values.type)
     || !["Success", "Reversed"].includes(values.status);
 
-  const gridItemProps = { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 };
+  const gridItemProps = { size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } };
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable
           value={values.payeeName}
           label={$t('payment_to')}
@@ -170,7 +170,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
           }
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField
           type="select"
           name="administrationCenterId"
@@ -182,32 +182,32 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
           disabled={!!initialValues.dateBanked}
         />
       </Grid>
-      {!twoColumn && <Grid item {...gridItemProps}>
+      {!twoColumn && <Grid {...gridItemProps}>
         <Uneditable value={values.type} label={$t('payment_method_type')} />
       </Grid>}
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={paymentMethods && getPaymentNameById(paymentMethods, values.paymentMethodId)} label={$t('payment_method_name')} />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.status} label={$t('status')} />
       </Grid>
 
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={getAccountById(accountItems, values.accountOut)} label={$t('account')} />
       </Grid>
    
       {values.chequeSummary && Object.keys(values.chequeSummary).length > 0 && (
-        <Grid item {...gridItemProps}>
+        <Grid {...gridItemProps}>
           {Object.keys(values.chequeSummary).map(item => (
             <Uneditable value={values.chequeSummary[item]} label={item} />
           ))}
         </Grid>
         )}
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.amount} money label={$t('amount')} />
       </Grid>
   
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         {datePayedDisabled
             ? <Uneditable value={values.datePayed} format={v => v && format(new Date(v), III_DD_MMM_YYYY)} label={$t('date_paid')} />
           : (
@@ -219,7 +219,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
             />
           )}
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         {dateBankedDisabled
           ? <Uneditable value={values.dateBanked} format={v => v && format(new Date(v), III_DD_MMM_YYYY)} label={$t('date_banked')} />
           : (
@@ -231,13 +231,13 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
             />
         )}
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField type="multilineText" name="privateNotes" label={$t('private_notes')}  />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.createdBy} label={$t('created_by')} />
       </Grid>
-      <Grid item xs={12} className="saveButtonTableOffset">
+      <Grid size={12} className="saveButtonTableOffset">
         <FieldArray
           name="invoices"
           goToLink={`/invoice?search=paymentOutLines.paymentOut in (${values?.id})`}

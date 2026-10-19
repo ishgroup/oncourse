@@ -78,7 +78,7 @@ const templatesRenderer: React.FC<any> = React.memo<any>(({ fields }) => fields.
   }, [item, item.type]);
 
   return (
-    <Grid item xs={6} key={f}>
+    <Grid size={6} key={f}>
       <Field
         label={item.label}
         name={`${f}.value`}
@@ -249,14 +249,14 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
         <DialogContent>
           <Grid container columnSpacing={3}>
             {values.description && (
-              <Grid item xs={12} className="mb-2">
+              <Grid size={12} className="mb-2">
                 <Typography variant="body2" color="textSecondary" className="pb-2">
                   {`${values.description}`}
                 </Typography>
               </Grid>
             )}
             {(values.trigger.entityName || values.entity) && (
-              <Grid item xs={12} className="centeredFlex mb-2">
+              <Grid size={12} className="centeredFlex mb-2">
                 <RecipientsSelectionSwitcher
                   selectedRecords={filteredSelection?.length || selection.length}
                   allRecords={filteredCount}

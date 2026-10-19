@@ -140,6 +140,7 @@
 		<db-attribute name="entityRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="lable" type="VARCHAR" length="200"/>
+		<db-attribute name="listOrder" type="TINYINT" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
 		<db-attribute name="value" type="CLOB" length="32000"/>
@@ -1578,7 +1579,7 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Tutor">
-		<db-attribute name="contactId" type="BIGINT"/>
+		<db-attribute name="contactId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="dateFinished" type="TIMESTAMP"/>
 		<db-attribute name="dateStarted" type="TIMESTAMP"/>
@@ -1910,6 +1911,7 @@
 		<obj-attribute name="entityIdentifier" type="java.lang.String" db-attribute-path="entityIdentifier"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="lable" type="java.lang.String" db-attribute-path="lable"/>
+		<obj-attribute name="listOrder" type="java.lang.Integer" db-attribute-path="listOrder"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
@@ -5390,7 +5392,7 @@
 	<obj-relationship name="taggingRelations" source="Contact" target="ContactTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="taxOverride" source="Contact" target="Tax" deleteRule="Nullify" db-relationship-path="taxOverride"/>
 	<obj-relationship name="toContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="toContacts"/>
-	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Cascade" db-relationship-path="tutor"/>
+	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Deny" db-relationship-path="tutor"/>
 	<obj-relationship name="unavailableRuleRelations" source="Contact" target="ContactUnavailableRuleRelation" deleteRule="Cascade" db-relationship-path="unavailableRuleRelations"/>
 	<obj-relationship name="attachedContact" source="ContactAttachmentRelation" target="Contact" deleteRule="Nullify" db-relationship-path="attachedContact"/>
 	<obj-relationship name="attachedVoucherProduct" source="VoucherProductAttachmentRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="attachedProduct"/>
@@ -5745,8 +5747,6 @@
 	<obj-relationship name="invoiceDueDates" source="AbstractInvoice" target="InvoiceDueDate" deleteRule="Deny" db-relationship-path="invoiceDueDates"/>
 	<obj-relationship name="lead" source="AbstractInvoice" target="Lead" deleteRule="Nullify" db-relationship-path="lead"/>
 	<obj-relationship name="taggingRelations" source="AbstractInvoice" target="AbstractInvoiceTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
-	<obj-relationship name="abstractInvoiceLines" source="AbstractInvoice" target="AbstractInvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
-	<obj-relationship name="abstractInvoice" source="AbstractInvoiceLine" target="AbstractInvoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="contact" source="AbstractInvoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 
 	<obj-relationship name="taggedVoucherProduct" source="VoucherProductTagRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="taggedProduct"/>

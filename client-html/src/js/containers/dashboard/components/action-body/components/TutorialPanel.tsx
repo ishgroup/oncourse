@@ -89,7 +89,7 @@ const TutorialPanel = ({ tutorial, customLink }: Props) => {
       <div className={clsx("d-flex", classes.content)}>
         <Grid container>
           {tutorial.video && (
-            <Grid item xs={12} lg={4}>
+            <Grid size={{ xs: 12, lg: 4 }}>
               <iframe
                 width="100%"
                 allow="fullscreen"
@@ -99,7 +99,7 @@ const TutorialPanel = ({ tutorial, customLink }: Props) => {
               />
             </Grid>
           )}
-          <Grid item xs={12} lg={true} className={classes.description}>
+          <Grid size={{ xs: 12, lg: 'grow' }} className={classes.description}>
             <Typography variant="body2" color="textSecondary" dangerouslySetInnerHTML={{ __html: tutorial.content }} />
           </Grid>
         </Grid>

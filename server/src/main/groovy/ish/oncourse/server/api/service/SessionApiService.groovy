@@ -14,23 +14,19 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.api.dao.CourseClassDao
-import ish.oncourse.server.api.dao.CourseClassTutorDao
 import ish.oncourse.server.api.dao.RoomDao
 import ish.oncourse.server.api.dao.SessionDao
-import ish.oncourse.server.api.dao.TutorAttendanceDao
-import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
 import ish.oncourse.server.api.v1.function.SessionValidator
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
-import static ish.oncourse.server.api.v1.service.impl.SessionApiImpl.CLASS_TEMP_ID
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.TutorAttendance
+import ish.oncourse.server.cayenne.*
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.validation.ValidationException
+
+import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
+import static ish.oncourse.server.api.v1.service.impl.SessionApiImpl.CLASS_TEMP_ID
 
 @CompileStatic
 class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao> {
@@ -111,6 +107,18 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
             }
         }
 
+        // disjoint() prefetches fire separate IN-queries per relationship instead of one big JOIN,
+        // so the result set never multiplies (no Cartesian product).
+        // For Session.ATTENDANCE this is critical: joint() would produce sessions × students rows.
+        ObjectSelect.query(Session)
+                .where(Session.COURSE_CLASS.dot(CourseClass.ID).eq(classId))
+                .prefetch(Session.SESSION_TUTORS.disjoint())
+                .prefetch(Session.PAY_LINES.disjoint())
+                .prefetch(Session.SESSION_MODULES.disjoint())
+                .prefetch(Session.ATTENDANCE.disjoint())
+                .prefetch(Session.SESSION_TUTORS.dot(TutorAttendance.COURSE_CLASS_TUTOR).dot(CourseClassTutor.CLASS_COSTS).dot(ClassCost.PAYLINES).disjoint())
+                .select(context) // warm the context identity map; result list not needed
+
         if (courseClass) {
             //delete
             List<Session> toDelte = courseClass.sessions.findAll { s -> !(s.id in dtoList*.id) }
@@ -142,6 +150,7 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
                 throw new RuntimeException("Can not save sessions: $dtoList", e)
             }
         }
+
         //        collect all Clash warnings
         if (validateOnly.get() && !dtoList.empty && ((courseClass != null && !courseClass.isCancelled) || courseClass == null)) {
             responce = sessionValidator.validate(dtoList, classId)

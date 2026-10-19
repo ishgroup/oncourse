@@ -16,7 +16,6 @@ const path = require("path");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { ReactLoadablePlugin }  = require('@react-loadable/revised/webpack');
 const { writeFile } = require('fs/promises')
-const { styles } = require('@ckeditor/ckeditor5-dev-utils')
 
 const _info = (NODE_ENV, BUILD_NUMBER) => {
   console.log(`
@@ -68,6 +67,7 @@ const _common = (dirname, options) => {
       fallback: { 'process/browser': require.resolve('process/browser') }
     },
     module: {
+      parser: _exportsPresenceParser(),
       rules: [
         {
           test: /\.ts(x?)$/,
@@ -115,18 +115,41 @@ const _common = (dirname, options) => {
       }),
       new webpack.SourceMapDevToolPlugin({
         filename: "[file].map",
-        test: /^[a-zA-Z-]*.js/,
+        test: /\.js($|\?)/,
         exclude: [/vendor/, /hot-update/],
       }),
     ],
     devServer: {
-      port: 8100
+      port: 8100,
+      client: {
+        overlay: false
+      }
     },
     devtool: false,
   };
   _main.module.rules = [..._main.module.rules, ..._styleModule(dirname)];
   return _main;
 };
+
+/**
+ * webpack >= 5.110 reports an imported binding that is never referenced as a linking error,
+ * and for strict ESM (.mjs) importers it raises that at "error" level. Side-effect-free
+ * re-export barrels - @mui/utils/<name>/index.mjs and friends, one line of
+ * `export { default } from "./<name>.mjs"` in packages flagged `sideEffects: false` - are
+ * elided by SideEffectsFlagPlugin before the check runs, so their exports read as empty and
+ * MUI's own .mjs files are reported as importing from a module with "no exports". Nothing we
+ * import is actually missing.
+ *
+ * This has to be set at the top level: webpack ignores `parser.javascript.exportsPresence`
+ * when it is given on a `module.rules` entry, so it cannot be scoped to node_modules. Losing
+ * the check on our own code costs us nothing - src is TypeScript, and a bad import there is
+ * already an error from ForkTsCheckerWebpackPlugin.
+ */
+const _exportsPresenceParser = () => ({
+  javascript: {
+    exportsPresence: false,
+  },
+});
 
 const _styleModule = dirname => [
     {
@@ -137,56 +160,26 @@ const _styleModule = dirname => [
           name: '[name].[ext]',
         },
       }],
-      exclude: [
-        /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-      ],
     },
     {
       test: /\.s?css$/,
       use: [MiniCssExtractPlugin.loader, 'css-loader'],
-      exclude: [
-        /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-      ],
     },
     {
       enforce: "pre",
-      test: /\.js$/,
+      test: /\.m?js$/,
       loader: "source-map-loader",
-      exclude: [
-        path.resolve(dirname, "node_modules/antlr4ts"),
-        path.resolve(dirname, "node_modules/ace-builds"),
-      ],
-    },
-  {
-    test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-    use: [ 'raw-loader' ]
-  },
-  {
-    test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-    use: [
-      {
-        loader: 'style-loader',
-        options: {
-          injectType: 'singletonStyleTag',
-          attributes: {
-            'data-cke': true
-          }
-        }
+      options: {
+        // antlr4ts and ace-builds ship sourceMappingURL comments we do not want to follow,
+        // so drop the reference instead of leaving a dangling one in the bundle for the
+        // browser to request.
+        filterSourceMappingUrl: (url, resourcePath) => (
+          /node_modules[/\\](antlr4ts|ace-builds|@react-loadable[/\\]revised)[/\\]/.test(resourcePath)
+            ? "remove"
+            : "consume"
+        ),
       },
-      'css-loader',
-      {
-        loader: 'postcss-loader',
-        options: {
-          postcssOptions: styles.getPostCssConfig( {
-            themeImporter: {
-              themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
-            },
-            minify: true
-          } )
-        }
-      }
-    ]
-  }
+    },
   ];
 
 /**
@@ -244,6 +237,7 @@ module.exports = {
   info: _info,
   common: _common,
   styleModule: _styleModule,
+  exportsPresenceParser: _exportsPresenceParser,
   DefinePlugin: _DefinePlugin,
   CompressionPlugin: _CompressionPlugin,
   PwaManifestPlugin: _PwaManifestPlugin,

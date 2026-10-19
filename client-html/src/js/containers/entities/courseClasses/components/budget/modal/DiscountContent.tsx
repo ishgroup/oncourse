@@ -185,7 +185,7 @@ const DiscountContent: React.FC<Props> = ({
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2}>
-      <Grid item xs={4} className="pr-1">
+      <Grid size={4} className="pr-1">
         <Uneditable
           value={
             values.courseClassDiscount.discount.name
@@ -195,13 +195,13 @@ const DiscountContent: React.FC<Props> = ({
           url={`/discount/${values.courseClassDiscount.discount.id}`}
         />
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <Uneditable value={validFrom} label={$t('valid_from')} />
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <Uneditable value={validTo} label={$t('valid_to')} />
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <FormField
           type="number"
           name={
@@ -220,17 +220,17 @@ const DiscountContent: React.FC<Props> = ({
           debounced={false}
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <Uneditable value={values.courseClassDiscount.discount.description} label={$t('description')} />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <div className="heading pb-1 pt-2">{$t('value')}</div>
       </Grid>
 
-      <Grid item xs={12} container>
-        <Grid item container xs={8} columnSpacing={3} rowSpacing={2}>
-          <Grid item xs={6}>
+      <Grid size={12} container>
+        <Grid container size={8} columnSpacing={3} rowSpacing={2}>
+          <Grid size={6}>
             <FormField
               type="money"
               name="perUnitAmountExTax"
@@ -246,20 +246,20 @@ const DiscountContent: React.FC<Props> = ({
               debounced={false}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={6}>
             <Uneditable value={classFee} label={$t('class_fee')} money />
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={6}>
             <Uneditable value={taxOnDiscount} label={$t('tax_on_discount')} money />
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={6}>
             <Uneditable value={values.courseClassDiscount.discount.rounding} label={$t('rounding')} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={6}>
             <Uneditable value={discountTotalFee} label={$t('final_class_fee')} money />
           </Grid>
         </Grid>
-        <Grid item xs={4} />
+        <Grid size={4} />
       </Grid>
     </Grid>
   );

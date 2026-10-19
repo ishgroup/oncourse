@@ -204,7 +204,7 @@ class DocumentHeader extends React.PureComponent<Props, any> {
               ['Link', 'Public'].includes(item.access)
               && (
                 <Avatar className={clsx('activeAvatar', classes.avatar)}>
-                  <Link fontSize="small"/>
+                  <Link sx={{ fontSize: 'small' }}/>
                 </Avatar>
               )
             }

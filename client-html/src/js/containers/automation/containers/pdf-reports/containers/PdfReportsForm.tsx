@@ -267,7 +267,7 @@ const PdfReportsForm = React.memo<Props>(
             disableInteraction={isInternal}
             opened={isNew || Object.keys(syncErrors).includes("name")}
             fields={(
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <FormField
                   type="text"
                   name="name"
@@ -308,7 +308,7 @@ const PdfReportsForm = React.memo<Props>(
             )}
           >
             <Grid container rowSpacing={2}>
-              <Grid item xs={12} sm={9}>
+              <Grid size={{ xs: 12, sm: 9 }}>
                 <FormField
                   type="multilineText"
                   name="shortDescription"
@@ -316,7 +316,7 @@ const PdfReportsForm = React.memo<Props>(
                   className="overflow-hidden mb-1"
                   placeholder={$t('short_description')}
                 />
-                <Typography variant="caption" fontSize="13px">
+                <Typography variant="caption" sx={{ fontSize: '13px' }}>
                   <FormField
                     type="multilineText"
                     name="description"
@@ -329,8 +329,8 @@ const PdfReportsForm = React.memo<Props>(
                   />
                 </Typography>
               </Grid>
-              <Grid item container columnSpacing={3} rowSpacing={2} xs={7} className="pr-3">
-                <Grid item xs={12}>
+              <Grid container columnSpacing={3} rowSpacing={2} size={7} className="pr-3">
+                <Grid size={12}>
                   <div className="heading">{$t('type')}</div>
                   <FormField
                     name="entity"
@@ -349,11 +349,11 @@ const PdfReportsForm = React.memo<Props>(
                   rerenderOnEveryChange
                 />
 
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <FormField label={$t('sort_on')} name="sortOn" type="text" disabled={isInternal} />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <FormField
                     type="select"
                     label={$t('pdf_background')}
@@ -367,7 +367,7 @@ const PdfReportsForm = React.memo<Props>(
                   />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <FormField
                     type="text"
                     label={$t('keycode')}
@@ -378,7 +378,7 @@ const PdfReportsForm = React.memo<Props>(
                   />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={12}>
                   {!isNew && (
                     <Button variant="outlined" color="secondary" onClick={handleEdit} disabled={isInternal}>
                       {$t('edit')}
@@ -386,25 +386,25 @@ const PdfReportsForm = React.memo<Props>(
                   )}
                 </Grid>
                 
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Button variant="outlined" color="secondary" onClick={handleUploadClick} disabled={isInternal}>
                     {$t('upload_new_version')}
                   </Button>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={12}>
                   {chosenFileName && <Uneditable value={chosenFileName} label={$t('chosen_file')} />}
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={12}>
                   {isNew && !values.body && (
-                    <Typography id="body" variant="caption" color="error" className="shakingError" paragraph>
+                    <Typography id="body" variant="caption" color="error" className="shakingError" sx={{ marginBottom: '16px' }} component="p">
                       {$t('report_body_is_required_press_upload_new_version_t')}
                     </Typography>
                   )}
                 </Grid>
               </Grid>
-              <Grid item xs={5}>
+              <Grid size={5}>
                 <div>
                   <FormField
                     label={$t('enabled')}

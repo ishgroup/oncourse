@@ -56,8 +56,8 @@ const SurveyEditView = (props: Props) => {
   }, [classId]);
 
   return values ? (
-    <Grid container columnSpacing={3} rowSpacing={2} className="saveButtonTableOffset p-3" alignContent="flex-start" alignItems="center">
-      <Grid item xs={12}>
+    <Grid container columnSpacing={3} rowSpacing={2} className="saveButtonTableOffset p-3" sx={{ alignContent: 'flex-start', alignItems: 'center' }}>
+      <Grid size={12}>
         <FullScreenStickyHeader
           disableInteraction
           twoColumn={twoColumn}
@@ -67,20 +67,20 @@ const SurveyEditView = (props: Props) => {
         />
       </Grid>
       <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
-        <Grid item xs={twoColumn ? 4 : 12} className="mb-2">
-          <Grid item>
+        <Grid size={twoColumn ? 4 : 12} className="mb-2">
+          <Grid>
             <Field name="netPromoterScore" label={$t('net_promoter_score')} max={10} component={Score} />
           </Grid>
         </Grid>
-        <Grid item xs={twoColumn ? 8 : 12}>
+        <Grid size={twoColumn ? 8 : 12}>
           <Grid container columnSpacing={3} rowSpacing={2} wrap={twoColumn ? "nowrap" : "wrap"}>
-            <Grid item xs={twoColumn ? 8 : 12}>
+            <Grid size={twoColumn ? 8 : 12}>
               <Field name="courseScore" label={$t('course')} component={Score} />
               <Link href="#" onClick={openClass} color="textSecondary">
                 {values.className}
               </Link>
             </Grid>
-            <Grid item xs={twoColumn ? 8 : 12}>
+            <Grid size={twoColumn ? 8 : 12}>
               <Field name="venueScore" label={$t('venue')} component={Score} />
               <Typography variant="body2" component="div">
                 <Link href="#" className="pr-1" onClick={openSite} color="textSecondary">
@@ -91,7 +91,7 @@ const SurveyEditView = (props: Props) => {
                 </Link>
               </Typography>
             </Grid>
-            <Grid item xs={twoColumn ? 8 : 12}>
+            <Grid size={twoColumn ? 8 : 12}>
               <Field name="tutorScore" label={$t('tutor')} component={Score} />
               {Object.keys(values.tutors).map(id => (
                 <Link key={id} href={`/contact/${id}`} target="_blank" color="textSecondary" className="pr-1">
@@ -102,10 +102,10 @@ const SurveyEditView = (props: Props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField type="multilineText" label={$t('comment')} name="comment" disabled />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="select"
           name="visibility"
@@ -118,7 +118,7 @@ const SurveyEditView = (props: Props) => {
           items={visibilityItems}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="multilineText"
           label={$t('testimonial')}
@@ -131,9 +131,7 @@ const SurveyEditView = (props: Props) => {
         fieldName="customFields"
         entityValues={values}
         form={form}
-        gridItemProps={{
-          xs: twoColumn ? 6 : 12,
-        }}
+        gridItemProps={{ size: { xs: twoColumn ? 6 : 12 } }}
       />
     </Grid>
   ) : null;

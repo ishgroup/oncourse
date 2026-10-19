@@ -71,7 +71,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
 
   return (
     <Grid container columnSpacing={3} className="align-content-between">
-      <Grid item xs={6}>
+      <Grid size={6}>
         <FormField
           type="remoteDataSelect"
           name={`fundingInvoices[${selectedItemIndex}].fundingProviderId`}
@@ -89,7 +89,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           )}
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <FormField
           type="text"
           name={`fundingInvoices[${selectedItemIndex}].vetPurchasingContractID`}
@@ -97,7 +97,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           validate={validateVetPurchasingContractIdentifier}
         />
       </Grid>
-      <Grid item xs={12} className="pb-3">
+      <Grid size={12} className="pb-3">
         <CheckoutFundingInvoiceSummaryExpandableItemRenderer
           classes={classes}
           header={getContactFullName(fundingInvoice.item.enrolment.contact as any)}
@@ -110,9 +110,9 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           form={form}
         />
       </Grid>
-      <Grid item xs={12} container>
+      <Grid size={12} container>
         {fundingInvoice && fundingInvoice.paymentPlans && (
-          <Grid item sm={4} className="pr-2">
+          <Grid size={{ sm: 4 }} className="pr-2">
             <CheckoutFundingInvoicePaymentPlans
               name={`fundingInvoices[${selectedItemIndex}].paymentPlans`}
               currency={currency}
@@ -123,7 +123,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           </Grid>
         )}
         {fundingInvoice && fundingInvoice.trainingPlans && fundingInvoice.trainingPlans.length > 0 && (
-          <Grid item sm={8}>
+          <Grid size={{ sm: 8 }}>
             <div className="centeredFlex">
               <Typography className="heading pt-1 pb-1">
                 {$t('training_plan2')}

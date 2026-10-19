@@ -276,13 +276,13 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
   return (
     <div className={twoColumn ? "" : "h-100"}>
       <Grid container columnSpacing={3} rowSpacing={2} className="p-3 ">
-        <Grid item container xs={12}>
+        <Grid container size={12}>
           <FullScreenStickyHeader
             opened={isNew || Object.keys(syncErrors).includes("name")}
             twoColumn={twoColumn}
             title={<span>{values && values.name}</span>}
             fields={(
-              <Grid item xs={twoColumn ? 6 : 12}>
+              <Grid size={twoColumn ? 6 : 12}>
                 <FormField
                   type="text"
                   name="name"
@@ -293,7 +293,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
             )}
           />
         </Grid>
-        <Grid item xs={twoColumn ? 4 : 12}>
+        <Grid size={twoColumn ? 4 : 12}>
           {Boolean(values.removed) && (
           <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>{$t('pending_deletion')}</div>
           )}
@@ -360,19 +360,21 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           </Collapse>
           <br />
         </Grid>
-        <Grid item container columnSpacing={3} rowSpacing={2} xs={twoColumn ? 4 : 12} alignContent="flex-start">
-          <Grid item xs={12}>
+        <Grid container columnSpacing={3} rowSpacing={2} size={twoColumn ? 4 : 12} sx={{ alignContent: 'flex-start' }}>
+          <Grid size={12}>
             <FormField
               type="tags"
               name="tags"
               tags={tags}
+              placeholder='Tags'
+              trackCarretPosition={twoColumn}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField type="multilineText" name="description" label={$t('description')} />
           </Grid>
           {Boolean(values.removed) && (
-          <Grid item xs={12} className="pb-2">
+          <Grid size={12} className="pb-2">
             <Typography variant="body2" className={clsx("d-flex align-items-baseline mb-2", classes.textInfo)}>
               <span>
                 {$t('this_document_will_be_permanently_deleted_after')}
@@ -387,7 +389,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           )}
         </Grid>
 
-        <Grid item xs={twoColumn ? 4 : 12} className="mb-3">
+        <Grid size={twoColumn ? 4 : 12} className="mb-3">
           <EntityChecklists
             className="mb-3"
             entity="Document"
@@ -413,7 +415,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           </Button>
         </Grid>
 
-        <Grid item xs={twoColumn ? 8 : 12} className="pt-2 pb-2 saveButtonTableOffset">
+        <Grid size={twoColumn ? 8 : 12} className="pt-2 pb-2 saveButtonTableOffset">
           <DocumentShare
             validUrl={validUrl}
             dispatch={dispatch}

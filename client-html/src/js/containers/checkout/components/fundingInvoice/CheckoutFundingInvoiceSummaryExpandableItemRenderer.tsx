@@ -106,13 +106,13 @@ const CheckoutFundingInvoiceSummaryRow = React.memo<{
   };
 
   return (
-    <Grid item xs={12} container alignItems="center" direction="row" className={clsx(classes.tableTabRow, classes.tableTab)}>
-      <Grid item xs={6}>
+    <Grid size={12} container sx={{ alignItems: 'center' }} direction="row" className={clsx(classes.tableTabRow, classes.tableTab)}>
+      <Grid size={6}>
         <div className="centeredFlex">
           <Typography variant="body1">{item.class.name}</Typography>
         </div>
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <FormField
           type="money"
           name={`fundingInvoices[${selectedItemIndex}].item.enrolment.items[${index}].totalFee`}

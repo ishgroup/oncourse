@@ -51,7 +51,7 @@ const styles = (theme: AppTheme, p, classes) =>
       zIndex: theme.zIndex.modal + 2,
     },
     drawerPaper: {
-      overflowX: "hidden"
+      overflow: "visible"
     },
     drawerWidth: {
       width: SWIPEABLE_SIDEBAR_WIDTH,
@@ -59,6 +59,7 @@ const styles = (theme: AppTheme, p, classes) =>
       flex: 1,
       zIndex: 2,
       position: "relative",
+      overflow: 'auto',
       background: theme.palette.background.paper,
     },
     appBar: {
@@ -419,9 +420,11 @@ const SwipeableSidebar: React.FC<Props> = props => {
           paper: classes.drawerPaper,
           root: classes.drawerRoot,
         }}
-        PaperProps={{
-          classes: {
-            root: variant === "temporary" && opened && selected !== null && classes.paperBorder
+        slotProps={{
+          paper: {
+            classes: {
+              root: variant === "temporary" && opened && selected !== null && classes.paperBorder
+            }
           }
         }}
       >

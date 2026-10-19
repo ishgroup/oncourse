@@ -190,7 +190,7 @@ const bindingsRenderer: any = ({ fields }) => fields.map((i, n) => {
   };
 
   return (
-    <Grid item xs={12} className="mb-2" key={item.label}>
+    <Grid size={12} className="mb-2" key={item.label}>
       <Field
         name={`${i}.value`}
         label={`${item.label}`}
@@ -515,7 +515,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
     <Dialog
       fullScreen
       open={opened}
-      TransitionComponent={Transition}
+      slots={{ transition: Transition }}
       disableEnforceFocus
       classes={{
         root: classes.zIndexModal,
@@ -541,8 +541,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
         >
           <div className="appBarContainer">
             <Grid container columnSpacing={3} spacing={3}>
-              <Grid item xs={12} md={6}>
-                <Grid item xs className="centeredFlex mb-2">
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size="grow" className="centeredFlex mb-2">
                   <RecipientsSelectionSwitcher
                     selectedRecords={selection.length}
                     allRecords={filteredCount}
@@ -590,7 +590,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                 {counterItems}
               </Grid>
 
-              <Grid item xs={12} md={6} className="relative">
+              <Grid size={{ xs: 12, md: 6 }} className="relative">
                 <Typography variant="body1" className={clsx(classes.noRecipients, { "d-none": values.recipientsCount })}>
                   {$t('no_recipients')}
                 </Typography>

@@ -163,7 +163,7 @@ const PdfBackgroundsForm = React.memo<Props>(
             title={(isNew && (!values.name || values.name.trim().length === 0)) ? "New" : values.name.trim()}
             opened={isNew || Object.keys(syncErrors).includes("name")}
             fields={(
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <FormField
                   type="text"
                   name="name"
@@ -191,16 +191,16 @@ const PdfBackgroundsForm = React.memo<Props>(
             )}
           >
             <Grid container columnSpacing={3} rowSpacing={2}>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <FilePreview data={values.preview} label={$t('preview')} />
               </Grid>
               {(isNew || chosenFileName) && (
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Uneditable value={chosenFileName} error={!chosenFileName && "File must be added"} label={$t('chosen_file')} className="mt-1" />
                 </Grid>
               )}
               
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Button
                   variant="outlined"
                   color="secondary"
@@ -210,7 +210,7 @@ const PdfBackgroundsForm = React.memo<Props>(
                 </Button>
               </Grid>
               {Boolean(values.preview) && (
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Button
                     loading={loading}
                     variant="outlined"

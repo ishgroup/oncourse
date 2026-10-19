@@ -16,7 +16,6 @@ import ish.common.types.PaymentSource;
 import ish.common.types.SystemEventType;
 import ish.math.Money;
 import ish.oncourse.common.SystemEvent;
-import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Enrolment;
 import ish.oncourse.server.integration.EventService;
 import org.apache.cayenne.ObjectContext;
@@ -31,11 +30,9 @@ public class EnrolmentLifecycleListener {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private ICayenneService cayenneService;
 	private EventService eventService;
 
-	public EnrolmentLifecycleListener(ICayenneService cayenneService, EventService eventService) {
-		this.cayenneService = cayenneService;
+	public EnrolmentLifecycleListener(EventService eventService) {
 		this.eventService = eventService;
 	}
 
@@ -54,14 +51,14 @@ public class EnrolmentLifecycleListener {
 	@PostPersist(value = Enrolment.class)
 	public void postPersist(Enrolment enrol) {
 		updateAttendancesAndOutcomes(enrol, true);
-		UpdateWaitingListSubscription.valueOf(enrol, cayenneService.getNewContext()).update();
+		UpdateWaitingListSubscription.valueOf(enrol, enrol.getObjectContext()).update();
 		postEnrolmentSuccessfulEvents(enrol);
 	}
 
 	@PostUpdate(value = Enrolment.class)
 	public void postUpdate(Enrolment enrol) {
 		updateAttendancesAndOutcomes(enrol, false);
-		UpdateWaitingListSubscription.valueOf(enrol, cayenneService.getNewContext()).update();
+		UpdateWaitingListSubscription.valueOf(enrol, enrol.getObjectContext()).update();
 	}
 
 	@PreRemove(value = Enrolment.class)
@@ -81,10 +78,9 @@ public class EnrolmentLifecycleListener {
 	}
 
 	private void updateAttendancesAndOutcomes(Enrolment enrol, boolean create) {
-		ObjectContext context = cayenneService.getNewContext();
+		ObjectContext context = enrol.getObjectContext();
 		new UpdateAttendancesAndOutcomes(context, enrol, create).update();
 		context.commitChanges();
-
 	}
 	public void postEnrolmentSuccessfulEvents(Enrolment enrol) {
 		if (PaymentSource.SOURCE_WEB.equals(enrol.getSource()) && EnrolmentStatus.SUCCESS.equals(enrol.getStatus())) {

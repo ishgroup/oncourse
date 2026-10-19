@@ -39,7 +39,7 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
 
     return (
       <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3 pt-3">
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FullScreenStickyHeader
             opened={isNew || Object.keys(syncErrors).includes("contactId")}
             disableInteraction={!isNew}
@@ -48,7 +48,7 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
               <HeaderContactTitle name={values?.contactFullName} id={values?.contactId} />
             )}
             fields={(
-              <Grid item xs={twoColumn ? 6 : 12}>
+              <Grid size={twoColumn ? 6 : 12}>
                 <FormField
                   type="remoteDataSelect"
                   entity="Contact"
@@ -69,7 +69,7 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
             )}
           />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField
             type="text"
             name="password"
@@ -77,13 +77,13 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
             required
           />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField type="text" name="invoiceEmail" label={$t('email_invoice_to')} />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField type="date" name="expiryDate" label={$t('expire_on')} />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FormField type="select" name="paymentType" label={$t("payment_pattern")} items={paymentPatternOptions} />
         </Grid>
       </Grid>

@@ -55,20 +55,20 @@ const EmptyGapDay: React.FunctionComponent<any> = React.memo(
 
         return (
           <Grid container columnSpacing={3} key={i} className={i !== 2 ? "mb-2" : undefined}>
-            <Grid item xs={1} className={classes.gapDayOffsetTop}>
+            <Grid size={1} className={classes.gapDayOffsetTop}>
               <p.periodIcon className={classes.stickyIcon} />
             </Grid>
 
-            <Grid item xs={11} className={classes.gapDayOffsetTop}>
+            <Grid size={11} className={classes.gapDayOffsetTop}>
               <Grid container columnSpacing={3} spacing={2}>
                 {p.hours.map(h => (
                   <Fragment key={h.title}>
-                    <Grid item xs={1}>
+                    <Grid size={1}>
                       <Typography variant="body2" className="text-disabled">
                         {h.title}
                       </Typography>
                     </Grid>
-                    <Grid item xs={11}>
+                    <Grid size={11}>
                       <Typography className="text-disabled">
                         {hasSessions && !updated ? "Loading..." : "available"}
                       </Typography>
@@ -105,15 +105,15 @@ const GapDay: React.FunctionComponent<any> = React.memo(
 
           return (
             <Grid container columnSpacing={3} key={i} className={classes.gapPeriodOffsetTop}>
-              <Grid item xs={1} className={classes.gapDayOffsetTop}>
+              <Grid size={1} className={classes.gapDayOffsetTop}>
                 <p.periodIcon className={classes.stickyIcon} />
               </Grid>
 
-              <Grid item xs={11}>
+              <Grid size={11}>
                 <Grid container columnSpacing={3} spacing={2}>
                   {p.hours.map(h => (
                     <Fragment key={h.title}>
-                      <Grid item xs={1}>
+                      <Grid size={1}>
                         <Typography
                           variant="body2"
                           className={clsx(classes.gapDayOffsetTop, {
@@ -123,7 +123,7 @@ const GapDay: React.FunctionComponent<any> = React.memo(
                           {h.title}
                         </Typography>
                       </Grid>
-                      <Grid item xs={11}>
+                      <Grid size={11}>
                         {h.sessions.length ? (
                           <CalendarSessionHour
                             key={h.title + h.sessions.length}
@@ -174,7 +174,7 @@ const GroupingDay = React.memo<GroupingDayProps>(
      <>
        {groupings.map((g, i) => (
          <Grid container columnSpacing={3} key={i}>
-           <Grid item xs={2} className={classes.gapDayOffsetTop}>
+           <Grid size={2} className={classes.gapDayOffsetTop}>
              {g.sessions.some(s => s.name) ? (
                <>
                  <Typography
@@ -206,7 +206,7 @@ const GroupingDay = React.memo<GroupingDayProps>(
               )}
            </Grid>
 
-           <Grid item xs={10} className={classes.groupedDayWrapper}>
+           <Grid size={10} className={classes.groupedDayWrapper}>
              {g.sessions.length ? (
                 g.sessions.map(s => (
                   <CalendarSession

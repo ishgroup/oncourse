@@ -29,6 +29,7 @@ import java.sql.Timestamp
 import java.sql.Types
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 @CompileStatic
 class AuditService {
@@ -45,6 +46,35 @@ class AuditService {
         this.systemUserService = systemUserService
         this.cayenneService = cayenneService
         executorService = Executors.newSingleThreadExecutor()
+    }
+
+    /**
+     * Корректно останавливает внутренний однопоточный executor.
+     * <p>
+     * {@code Executors.newSingleThreadExecutor()} создаёт НЕ-daemon поток, который сам по себе
+     * никогда не завершается и удерживает JVM живой. В CI это видно как
+     * "Terminate orphan process: pid (...) (java)" после падения сборки.
+     * <p>
+     * Метод идемпотентен: повторные вызовы безопасны, что важно и для тестов, и для случая,
+     * когда shutdown вызывается из нескольких точек завершения приложения.
+     * Уже отправленные задачи аудита получают шанс доработать (grace-период), после чего
+     * executor останавливается принудительно.
+     */
+    void shutdown() {
+        if (executorService == null || executorService.isShutdown()) {
+            return
+        }
+        executorService.shutdown()
+        try {
+            if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+                logger.warn('Audit executor did not finish pending tasks in time, forcing shutdown.')
+                executorService.shutdownNow()
+            }
+        } catch (InterruptedException e) {
+            logger.warn('Interrupted while waiting for audit executor to stop, forcing shutdown.', e)
+            executorService.shutdownNow()
+            Thread.currentThread().interrupt()
+        }
     }
 
 

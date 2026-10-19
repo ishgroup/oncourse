@@ -80,10 +80,10 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
         expanded={expanded}
         onChange={handleChange}
         className={classes.panel}
-        TransitionProps={{
+        slotProps={{ transition: {
           unmountOnExit: true,
           mountOnEnter: true
-        }}
+        } }}
       >
         <AccordionSummary
           classes={{
@@ -92,24 +92,24 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
           }}
           expandIcon={<ExpandMoreIcon />}
         >
-          <Grid container direction="row">
-            <Grid item xs={5}>
+          <Grid container direction="row" className="flex-fill">
+            <Grid size={5}>
               {headerComponent || <div className="secondaryHeading">{header}</div>}
             </Grid>
             {!expanded && (
               <>
-                <Grid item xs={2} className={classes.headerItem}>
+                <Grid size={2} className={classes.headerItem}>
                   <Typography variant="body2" className="money">
                     {maxLabel}
                   </Typography>
                 </Grid>
-                <Grid item xs={2} className={classes.headerItem}>
+                <Grid size={2} className={classes.headerItem}>
                   <Typography variant="body2" className="money">
                     {projectedLabel}
                   </Typography>
                 </Grid>
                 {/* <Grid item xs={1} /> */}
-                <Grid item xs={2} className={classes.headerItem}>
+                <Grid size={2} className={classes.headerItem}>
                   <Typography variant="body2" className="money">
                     {actualLabel}
                   </Typography>
@@ -137,19 +137,19 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
                   maxBasedValue={item.max}
                 />
             ))}
-            <Grid item xs={12} container direction="row" className={classes.tableTab}>
-              <Grid item xs={5} />
-              <Grid item xs={2} className={clsx("pt-1 summaryTopBorder", classes.rowItemCol2)}>
+            <Grid size={12} container direction="row" className={classes.tableTab}>
+              <Grid size={5} />
+              <Grid size={2} className={clsx("pt-1 summaryTopBorder", classes.rowItemCol2)}>
                 <Typography variant="body2" className="money text-end">
                   {maxLabel}
                 </Typography>
               </Grid>
-              <Grid item xs={2} className={clsx("pt-1 summaryTopBorder", classes.rowItemCol3)}>
+              <Grid size={2} className={clsx("pt-1 summaryTopBorder", classes.rowItemCol3)}>
                 <Typography variant="body2" className="money text-end">
                   {projectedLabel}
                 </Typography>
               </Grid>
-              <Grid item xs={2} className={clsx("pt-1 summaryTopBorder", classes.rowItemCol4)}>
+              <Grid size={2} className={clsx("pt-1 summaryTopBorder", classes.rowItemCol4)}>
                 <Typography variant="body2" className="disabled">
                   (
                   {percentOfProjectedValue}
@@ -157,7 +157,7 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
                 </Typography>
                 <Typography variant="body2">{actualLabel}</Typography>
               </Grid>
-              <Grid item xs={1} className="pt-1 summaryTopBorder" />
+              <Grid size={1} className="pt-1 summaryTopBorder" />
             </Grid>
           </Grid>
         </AccordionDetails>

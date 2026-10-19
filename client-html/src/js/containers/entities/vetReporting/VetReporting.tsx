@@ -12,11 +12,6 @@ import { isBefore } from 'date-fns';
 import React, { Dispatch, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { initialize } from 'redux-form';
-import company from '../../../../images/company.png';
-import person from '../../../../images/person.png';
-import tutorStudent from '../../../../images/student-tutor.png';
-import student from '../../../../images/student.png';
-import tutor from '../../../../images/tutor.png';
 import { checkPermissions } from '../../../common/actions';
 import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
 import { getFilters, setListCustomTableModel, setListEditRecord } from '../../../common/components/list-view/actions';
@@ -42,8 +37,7 @@ import {
   getContactsTaxTypes,
   getContactTags
 } from '../contacts/actions';
-import { ContactType } from '../contacts/Contacts';
-import { getContactFullName } from '../contacts/utils';
+import { contactColumnFormats, getContactFullName } from '../contacts/utils';
 import { getDefaultInvoiceTerms } from '../invoices/actions';
 import VetReportingEditView from './components/VetReportingEditView';
 
@@ -137,29 +131,6 @@ const secondaryColumnCondition = row => row.email && row.birthDate ? `${row.birt
 
 const manualLink = getManualLink("vet-reporting");
 
-const getContactTypeImage = (type: ContactType) => {
-  switch (type) {
-    case "STUDENT": {
-      return student;
-    }
-    case "TUTOR": {
-      return tutor;
-    }
-    case "COMPANY": {
-      return company;
-    }
-    case "TUTOR_STUDENT": {
-      return tutorStudent;
-    }
-    default: {
-      return person;
-    }
-  }
-};
-
-const customColumnFormats = {
-  contactType: v => (v ? <img src={getContactTypeImage(v)} alt={v} /> : null)
-};
 
 export const getDisabledSubmitCondition = (isVerifyingUSI, usiVerificationResult): boolean => (
   isVerifyingUSI || (usiVerificationResult && usiVerificationResult.verifyStatus === "Invalid format")
@@ -285,7 +256,7 @@ const VetReporting: React.FC<VetReportingProps> = props => {
         secondaryColumn: "email",
         setRowClasses,
         secondaryColumnCondition,
-        customColumnFormats
+        customColumnFormats: contactColumnFormats
       }}
       editViewProps={{
         manualLink,

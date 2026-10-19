@@ -15,15 +15,14 @@ import Tooltip from '@mui/material/Tooltip';
 import $t from '@t';
 import clsx from 'clsx';
 import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from 'date-fns';
-import { BooleanArgFunction, NoArgFunction, StyledCheckbox } from 'ish-ui';
 import { debounce } from 'es-toolkit/compat';
+import { BooleanArgFunction, NoArgFunction, StyledCheckbox } from 'ish-ui';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { change, DecoratedComponentClass, getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import FormField from '../../../../../common/components/form/formFields/FormField';
-import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
 import { TimetableMonth, TimetableSession } from '../../../../../model/timetable';
 import { State } from '../../../../../reducers/state';
 import { getAllMonthsWithSessions } from '../../../../timetable/utils';
@@ -260,14 +259,17 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
   return (
     <Dialog
       open={opened}
-      onClose={onClose}
+      onClose={(e, reason) => {
+        // v9 dropped `disableEscapeKeyDown`; swallow the escape close instead
+        if (reason === 'escapeKeyDown' && disableClose) return;
+        onClose();
+      }}
       classes={{
         paper: classes.root
       }}
       disableAutoFocus
       disableEnforceFocus
       disableRestoreFocus
-      disableEscapeKeyDown={disableClose}
       onKeyDown={e => e.stopPropagation()}
     >
       <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit)} role={DUPLICATE_COURSE_CLASS_FORM}>
@@ -277,7 +279,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
           }}
         >
           <Grid container columnSpacing={3}>
-            <Grid item xs={4}>
+            <Grid size={4}>
               <div className={clsx("centeredFlex")}>
                 <div className="heading mt-2 mb-2">
                   {$t('duplicate_class',[selection.length])}
@@ -440,29 +442,30 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     />
                   )}
                   label={(
-                    <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
-                      {$t('change_course_for_all_classes_to')}
-                      {" "}
+                    <Typography variant="body2" color="inherit" onClick={e => e.preventDefault()}>
+                      <div>
+                        {$t('change_course_for_all_classes_to')}:
+                      </div>
                       <FormField
+                        inline
                         type="remoteDataSelect"
                         entity="Course"
                         aqlFilter="currentlyOffered is true"
                         name="courseId"
                         selectValueMark="id"
                         selectLabelMark="name"
-                        inline
                         selectLabelCondition={v => v.name}
                         selectFilterCondition={courseFilterCondition}
-                        validate={changeCourse ? validateSingleMandatoryField : undefined}
+                        required={changeCourse}
                         itemRenderer={CourseItemRenderer}
-                                                rowHeight={55}
+                        rowHeight={55}
                       />
                     </Typography>
                   )}
                 />
               </FormGroup>
             </Grid>
-            <Grid item xs={8} className={clsx("relative overflow-y-auto mt-2", classes.timetableContainer)}>
+            <Grid size={8} className={clsx("relative overflow-y-auto mt-2", classes.timetableContainer)}>
               <div className={clsx("absolute w-100 h-100 pl-3 pr-3", fetching && "centeredFlex justify-content-center")}>
                 <DuplicateCourseClassTimetable months={months} fetching={fetching} />
               </div>

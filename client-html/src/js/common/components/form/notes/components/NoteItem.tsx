@@ -30,10 +30,10 @@ const NoteItem = (props: Props) => {
   } = props;
 
   return (
-    <Grid item xs={twoColumn ? 1 : 12} md={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+    <Grid size={{ xs: twoColumn ? 1 : 12, md: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
       <Paper className="p-1 h-100">
-        <Grid container className="h-100" alignContent="space-between">
-          <Grid item xs={12}>
+        <Grid container className="h-100" sx={{ alignContent: 'space-between' }}>
+          <Grid size={12}>
             <FormField
               type="text"
               name={messageName}
@@ -42,8 +42,8 @@ const NoteItem = (props: Props) => {
               multiline
             />
           </Grid>
-          <Grid container justifyContent="space-between">
-            <Grid item>
+          <Grid container sx={{ justifyContent: 'space-between' }}>
+            <Grid>
               {item.created && (
                 <Typography className={classes.dateInfo}>
                   {$t('Created')}
@@ -71,7 +71,7 @@ const NoteItem = (props: Props) => {
                 </Typography>
               )}
             </Grid>
-            <Grid item className="d-flex" alignItems="flex-end">
+            <Grid className="d-flex" sx={{ alignItems: 'flex-end' }}>
               <Tooltip title={$t('remove_note')}>
                 <IconButton
                   className="lightGrayIconButton"

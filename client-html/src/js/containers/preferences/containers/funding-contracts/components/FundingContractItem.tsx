@@ -37,15 +37,15 @@ const FundingContractItem = props => {
   } = props;
 
   return (
-    <Grid item xs={12}>
+    <Grid size={12}>
       {fields.map((item: FundingSource, index) => {
         const field = fields.get(index);
 
         return (
           <Paper id={`funding-contracts-item-${index}`} className="card" key={index}>
             <Grid container columnSpacing={3} rowSpacing={2} className="container">
-              <Grid item container columnSpacing={3} rowSpacing={2} xs={12}>
-                <Grid item xs={5}>
+              <Grid container columnSpacing={3} rowSpacing={2} size={12}>
+                <Grid size={5}>
                   <FormField
                     type="text"
                     name={`${item}.name`}
@@ -54,7 +54,7 @@ const FundingContractItem = props => {
                                         required
                   />
                 </Grid>
-                <Grid item xs={7} className="d-flex-start justify-content-end">
+                <Grid size={7} className="d-flex-start justify-content-end">
                   <Button
                     className={clsx("errorColor", classes.deleteButton)}
                     onClick={() => onDelete(field, index)}
@@ -63,7 +63,7 @@ const FundingContractItem = props => {
                   </Button>
                 </Grid>
               </Grid>
-              <Grid item xs={5}>
+              <Grid size={5}>
                 <FormField
                   type="select"
                   name={`${item}.flavour`}
@@ -73,7 +73,7 @@ const FundingContractItem = props => {
                                     required
                 />
               </Grid>
-              <Grid item xs={5}>
+              <Grid size={5}>
                 <FormControlLabel
                   control={<FormField type="checkbox" name={`${item}.active`} color="primary" />}
                   label={$t('active')}

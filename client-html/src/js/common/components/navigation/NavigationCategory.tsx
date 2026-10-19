@@ -111,11 +111,11 @@ const NavigationCategory = (
         </IconButton>
       </div>
       <Grid container className="mt-3 mb-3" columnSpacing={2} rowSpacing={2}>
-        <Grid item xs={12} xl={hasStructure ? 6 : 12}>
+        <Grid size={{ xs: 12, xl: hasStructure ? 6 : 12 }}>
           <Typography className={classes.description} variant="body2" dangerouslySetInnerHTML={{ __html: category?.description }} />
         </Grid>
         {hasStructure &&
-          <Grid item xs={12} xl={6}>
+          <Grid size={{ xs: 12, xl: 6 }}>
             <StructureGraph root={structure[selected]} />
           </Grid>
         }

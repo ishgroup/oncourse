@@ -112,6 +112,8 @@ class ContactMergeFunctions {
         toManyTutorProperties.add(Tutor.COURSE_CLASS_ROLES.name)
         toManyTutorProperties.add(Tutor.MARKED_ATTENDANCES.name)
         toManyTutorProperties.add(Tutor.MARKED_OUTCOMES.name)
+        toManyTutorProperties.add(Tutor.ASSESSMENT_CLASS_TUTORS.name)
+        toManyTutorProperties.add(Tutor.ATTACHMENT_RELATIONS.name)
     }
 
     static String formatLastEnrolledDate(Date lastEnrolmentDate) {
@@ -181,16 +183,16 @@ class ContactMergeFunctions {
 
         ContactFunctions.mergeContactToManyRelationshipsToA(context.localObject(a), context.localObject(b), toManyContactProperties)
 
-        if (a.isStudent && b.isStudent) {
+        if (a.student != null && b.student != null) {
             StudentFunctions.mergeEnrolments(a.student, b.student)
             StudentFunctions.mergeStudentToManyRelationshipsToA(context.localObject(a.student), context.localObject(b.student), toManyStudentProperties)
-        } else if (!a.isStudent && b.isStudent) {
+        } else if (a.student == null && b.student != null) {
             b.student.contact = a
         }
 
-        if (a.isTutor && b.isTutor) {
+        if (a.tutor != null && b.tutor != null) {
             TutorFunctions.mergeTutorToManyRelationshipsToA(context.localObject(a.tutor), context.localObject(b.tutor), toManyTutorProperties)
-        } else if (!a.getIsTutor() && b.getIsTutor()) {
+        } else if (a.tutor == null && b.tutor != null) {
             b.tutor.contact = a
         }
     }

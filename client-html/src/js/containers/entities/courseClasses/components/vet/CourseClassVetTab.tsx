@@ -41,7 +41,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
     <div className="pl-3 pr-3">
       <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
-          <Grid item xs={4}>
+          <Grid size={4}>
             <FormControlLabel
               className="switchWrapper pb-2"
               control={<FormField type="switch" name="suppressAvetmissExport" />}
@@ -56,9 +56,9 @@ const CourseClassVetTab = React.memo<Props>(props => {
             />
           </Grid>
 
-          <Grid item className="pt-2" xs={12} />
+          <Grid className="pt-2" size={12} />
 
-          <Grid item xs={twoColumn ? 5 : 12}>
+          <Grid size={twoColumn ? 5 : 12}>
             {contracts && (
               <FormField
                 type="select"
@@ -72,7 +72,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             )}
           </Grid>
 
-          <Grid item xs={twoColumn ? 4 : 4}>
+          <Grid size={twoColumn ? 4 : 4}>
             <FormField
               type="select"
               name="fundingSource"
@@ -81,7 +81,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 3 : 12}>
+          <Grid size={twoColumn ? 3 : 12}>
             <FormField
               type="text"
               name="vetFundingSourceStateID"
@@ -90,7 +90,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 5 : 12}>
+          <Grid size={twoColumn ? 5 : 12}>
             <FormField
               type="text"
               name="detBookingId"
@@ -99,7 +99,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="text"
               normalize={normalizeNumber}
@@ -110,9 +110,9 @@ const CourseClassVetTab = React.memo<Props>(props => {
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 3 : false} />
+          <Grid size={twoColumn ? 3 : false} />
 
-          <Grid item xs={twoColumn ? 5 : 12}>
+          <Grid size={twoColumn ? 5 : 12}>
             <FormField
               type="text"
               name="vetPurchasingContractID"
@@ -121,7 +121,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="text"
               name="vetPurchasingContractScheduleID"
@@ -130,11 +130,11 @@ const CourseClassVetTab = React.memo<Props>(props => {
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 3 : false} />
+          <Grid size={twoColumn ? 3 : false} />
 
-          <Grid item className="pt-3" xs={12} />
+          <Grid className="pt-3" size={12} />
 
-          <Grid item xs={twoColumn ? 5 : 12}>
+          <Grid size={twoColumn ? 5 : 12}>
             <FormField
               type="number"
               normalize={normalizeNumber}
@@ -145,7 +145,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="number"
               normalize={normalizeNumber}
@@ -156,7 +156,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 3 : 12}>
+          <Grid size={twoColumn ? 3 : 12}>
             <FormField
               type="number"
               normalize={normalizeNumber}
@@ -167,7 +167,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 5 : 12}>
+          <Grid size={twoColumn ? 5 : 12}>
             <FormField
               type="number"
               normalize={normalizeNumber}
@@ -178,7 +178,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="number"
               normalize={normalizeNumberToZero}
@@ -187,14 +187,14 @@ const CourseClassVetTab = React.memo<Props>(props => {
             />
           </Grid>
 
-          <Grid item xs={twoColumn ? 3 : false} />
+          <Grid size={twoColumn ? 3 : false} />
 
-          <Grid item className="pb-3" xs={12} />
+          <Grid className="pb-3" size={12} />
 
-          <Grid item className="pt-3" xs={12}>
+          <Grid className="pt-3" size={12}>
             <Collapse in={values.feeHelpClass}>
               <Grid container columnSpacing={3} className="pb-3">
-                <Grid item xs={twoColumn ? 3 : 12}>
+                <Grid size={twoColumn ? 3 : 12}>
                   <FormField
                     type="select"
                     name="attendanceType"
@@ -202,14 +202,14 @@ const CourseClassVetTab = React.memo<Props>(props => {
                     items={attendanceTypeValues}
                   />
                 </Grid>
-                <Grid item xs={twoColumn ? 3 : 12}>
+                <Grid size={twoColumn ? 3 : 12}>
                   <FormField type="date" name="censusDate" label={$t('census_date')} />
                 </Grid>
               </Grid>
             </Collapse>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={12}>
             <CourseClassAttendanceTab {...props} showTrainingPlans />
           </Grid>
         </Grid>

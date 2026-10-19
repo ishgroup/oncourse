@@ -144,7 +144,7 @@ export const InputSection = React.memo<{
       </div>
 
       {formError && (
-        <Typography className="shakingError" variant="subtitle2" color="error" paragraph>
+        <Typography className="shakingError" variant="subtitle2" color="error" sx={{ marginBottom: '16px' }} component="p">
           {formError}
         </Typography>
       )}
@@ -225,7 +225,7 @@ export const InputSectionWithToggle = React.memo<{
       </div>
 
       {formError && (
-        <Typography className="shakingError" variant="subtitle2" color="error" paragraph>
+        <Typography className="shakingError" variant="subtitle2" color="error" sx={{ marginBottom: '16px' }} component="p">
           {formError}
         </Typography>
       )}

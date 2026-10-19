@@ -38,8 +38,8 @@ describe("Virtual rendered CourseClassEditView", () => {
 
       expect(screen.getByRole(formRoleName)).toHaveFormValues({
         courseId: initialValues.courseName,
-        minStudentAge: initialValues.minStudentAge,
-        maxStudentAge: initialValues.maxStudentAge,
+        minStudentAge: initialValues.minStudentAge.toString(),
+        maxStudentAge: initialValues.maxStudentAge.toString(),
         isActive: initialValues.isActive,
         isShownOnWeb: initialValues.isShownOnWeb,
         message: initialValues.message,

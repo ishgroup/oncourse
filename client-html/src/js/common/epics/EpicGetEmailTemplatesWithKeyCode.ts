@@ -10,36 +10,14 @@ import { GET_EMAIL_TEMPLATES_WITH_KEYCODE, GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULF
 import FetchErrorHandler from "../api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "./EpicUtils";
 
-const sortEmailBodyDown = (a, b) => {
-  const aName = a.name;
-  const bName = b.name;
-
-  if (typeof aName === "string" && aName.toLowerCase().includes("body")) {
-    return 1;
-  }
-
-  if (typeof bName === "string" && bName.toLowerCase().includes("body")) {
-    return -1;
-  }
-
-  return 0;
-};
-
 const request: EpicUtils.Request = {
   type: GET_EMAIL_TEMPLATES_WITH_KEYCODE,
   getData: ({entities}) => Promise.all(entities.map(entity => EmailTemplateService.getEmailTemplatesWithKeyCode(entity))),
   processData: (records: EmailTemplate[]) => {
-    const sortedRecords = records.flat().map(r => {
-      if (Array.isArray(r.variables) && r.variables.length) {
-        r.variables.sort(sortEmailBodyDown);
-      }
-      return r;
-    });
-
     return [
       {
         type: GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED,
-        payload: sortedRecords
+        payload: records.flat()
       }
     ];
   },

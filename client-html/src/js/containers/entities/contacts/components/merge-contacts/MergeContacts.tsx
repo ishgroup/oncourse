@@ -204,7 +204,7 @@ const MergeContacts = React.memo<Props>(
           >
 
             <Grid container wrap="nowrap">
-              <Grid item xs={12} md={6} className={clsx("d-grid align-content-start", classes.contactsFields)}>
+              <Grid size={{ xs: 12, md: 6 }} className={clsx("d-grid align-content-start", classes.contactsFields)}>
                 <Typography variant="body2" className={clsx("d-grid align-items-center justify-content-start", classes.switcherGroup)}>
                   {$t('only_show_differences')}
                   <Switch checked={showDifference} onChange={() => setShowDifference(prevValue => !prevValue)} />
@@ -221,7 +221,7 @@ const MergeContacts = React.memo<Props>(
                   />
                 ))}
               </Grid>
-              <Grid item xs={12} md="auto" className={clsx("d-grid align-items-start align-content-start", classes.rightColumn)}>
+              <Grid size={{ xs: 12, md: 'auto' }} className={clsx("d-grid align-items-start align-content-start", classes.rightColumn)}>
                 <InfoCard
                   values={values}
                   initiallySameIndices={initiallySameIndices}

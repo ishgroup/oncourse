@@ -204,7 +204,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
           createdOn={v => new Date(v.created)}
           modifiedOn={v => new Date(v.modified)}
           fields={(
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormField
                 type="text"
                 name="name"
@@ -231,9 +231,9 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
           )}
         >
           <Grid container>
-            <Grid item xs={12} md={10}>
+            <Grid size={{ xs: 12, md: 10 }}>
               <Grid container columnSpacing={3} rowSpacing={2}>
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <FormField
                     type="select"
                     name="enrolmentFormName"
@@ -244,7 +244,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <FormField
                     type="select"
                     name="surveyForms"
@@ -256,7 +256,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                     />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <FormField
                     type="select"
                     name="applicationFormName"
@@ -267,7 +267,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <FormField
                     type="select"
                     name="payerFormName"
@@ -278,7 +278,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                     />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <FormField
                     type="select"
                     name="waitingListFormName"
@@ -289,7 +289,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <FormField
                     type="select"
                     name="parentFormName"
@@ -300,7 +300,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <FormField
                     type="select"
                     name="productFormName"
@@ -312,7 +312,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <FormField
                     type="select"
                     name="voucherFormName"
@@ -324,7 +324,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <FormField
                     type="select"
                     name="membershipFormName"

@@ -245,7 +245,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3">
-      <Grid item container xs={12}>
+      <Grid container size={12}>
         <FullScreenStickyHeader
           opened={isNew || Object.keys(syncErrors).some(k => ['code', 'name'].includes(k))}
           twoColumn={twoColumn}
@@ -270,7 +270,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             )}
           fields={(
             <Grid container columnSpacing={3} rowSpacing={2}>
-              <Grid item xs={twoColumn ? 2 : 12}>
+              <Grid size={twoColumn ? 2 : 12}>
                 <FormField
                   type="text"
                   label={$t('sku')}
@@ -278,7 +278,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
                   required
                  />
               </Grid>
-              <Grid item xs={twoColumn ? 4 : 12}>
+              <Grid size={twoColumn ? 4 : 12}>
                 <FormField
                   type="text"
                   label={$t('name')}
@@ -291,18 +291,20 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid size={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tagsGrouped.tags}
           className="mb-2"
+          placeholder='Tags'
+          trackCarretPosition={twoColumn}
         />
 
         {subjectsField}
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <EntityChecklists
           entity="VoucherProduct"
           form={form}
@@ -311,7 +313,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         />
       </Grid>
         
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="select"
           name="liabilityAccountId"
@@ -323,7 +325,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="select"
           name="underpaymentAccountId"
@@ -335,7 +337,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Typography color="inherit" component="div" noWrap>
           {$t('expires')}
           {" "}
@@ -352,7 +354,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         </Typography>
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <CustomSelector
           caption="Can be redeemed for"
           options={getRedemptionOptions()}
@@ -363,7 +365,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
       </Grid>
 
       {redemptionIndex === RedemptionType.Enrollment && (
-      <Grid item xs={12}>
+      <Grid size={12}>
         <div className={twoColumn ? "mb-2 mw-800" : "mb-2"}>
           <NestedList
             formId={values.id}
@@ -397,7 +399,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         )}
 
       {redemptionIndex !== RedemptionType.Purchase && (
-        <Grid item xs={twoColumn ? 6 : 12} style={redemptionIndex === RedemptionType.Value ? { marginTop: "10px" } : null}>
+        <Grid size={twoColumn ? 6 : 12} style={redemptionIndex === RedemptionType.Value ? { marginTop: "10px" } : null}>
           <FormField
             type="money"
             name="feeExTax"
@@ -407,7 +409,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         </Grid>
       )}
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="select"
           name="status"
@@ -417,7 +419,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="select"
           name="dataCollectionRuleId"
@@ -436,19 +438,17 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         fieldName="customFields"
         entityValues={values}
         form={form}
-        gridItemProps={{
-          xs: twoColumn ? 6 : 12
-        }}
+        gridItemProps={{ size: { xs: twoColumn ? 6 : 12 } }}
       />
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormEditorField
           name="description"
           label={$t('web_description')}
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <RelationsCommon
           values={values}
           dispatch={dispatch}
@@ -459,7 +459,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item xs={12} className="pb-3 mb-3">
+      <Grid size={12} className="pb-3 mb-3">
         <FieldArray
           name="documents"
           label={$t('documents')}

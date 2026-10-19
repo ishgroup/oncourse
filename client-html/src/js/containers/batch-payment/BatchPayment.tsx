@@ -31,7 +31,7 @@ import {
 import React, { memo, useCallback, useEffect, useRef, useState, } from 'react';
 import { connect } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { areEqual } from 'react-window';
+import areEqual from '../../common/utils/react-window/areEqual';
 import { Dispatch } from 'redux';
 import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from 'redux-form';
 import { IAction } from '../../common/actions/IshAction';
@@ -136,10 +136,10 @@ const ContactItem = memo<ContactItemProps>(({
       <Accordion
         expanded={expanded || item.processing}
         onChange={() => setExpanded(!expanded)}
-        TransitionProps={{
+        slotProps={{ transition: {
           unmountOnExit: true,
           mountOnEnter: true,
-        }}
+        } }}
         classes={{
           root: classes.panelRoot,
           expanded: classes.panelExpanded,
@@ -212,7 +212,7 @@ const ContactItem = memo<ContactItemProps>(({
         <AccordionDetails>
           <Grid container>
             {item.items.map((i, index) => (
-              <Grid key={i.id} item xs={12} className={clsx("d-flex", classes.tableTab)}>
+              <Grid key={i.id} size={12} className={clsx("d-flex", classes.tableTab)}>
                 <div className="centeredFlex flex-fill">
                   <FormField
                     type="checkbox"
@@ -242,13 +242,12 @@ const ContactItem = memo<ContactItemProps>(({
               </Grid>
             ))}
 
-            <Grid item xs={12} container direction="row" className="mt-1">
-              <Grid item xs={8} />
+            <Grid size={12} container direction="row" className="mt-1">
+              <Grid size={8} />
               <Grid
-                item
-                xs={4}
+                size={4}
                 container
-                justifyContent="flex-end"
+                sx={{ justifyContent: 'flex-end' }}
                 className="money pt-1 summaryTopBorder"
               >
                 <Typography variant="body2" className={classes.amountMargin}>{total}</Typography>
@@ -544,13 +543,11 @@ const BatchPayment: React.FC<Props> = ({
             </div>
 
             <Grid container className="pt-3 d-flex justify-content-end">
-              <Grid item xs={12} sm={8} />
+              <Grid size={{ xs: 12, sm: 8 }} />
               <Grid
-                item
-                xs={12}
-                sm={4}
+                size={{ xs: 12, sm: 4 }}
                 container
-                justifyContent="flex-end"
+                sx={{ justifyContent: 'flex-end' }}
                 className="money p-2 summaryTopBorder"
               >
                 <Typography variant="body2" className={classes.amountMargin}>

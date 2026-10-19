@@ -22,14 +22,14 @@ const renderTaxTypes = props => {
 } = props;
 
   return (
-    <Grid item xs={12}>
+    <Grid size={12}>
       {fields.map((item: Tax, index) => {
         const field = fields.get(index);
 
         return (
           <Card className="card" key={index}>
             <Grid container columnSpacing={3} rowSpacing={2}  className="relative">
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <FormField
                   type="text"
                   name={`${item}.code`}
@@ -40,7 +40,7 @@ const renderTaxTypes = props => {
                 />
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <FormField
                   type="number"
                   name={`${item}.rate`}
@@ -58,7 +58,7 @@ const renderTaxTypes = props => {
                 />
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <div className="d-flex">
                   <FormControlLabel
                     className={classes.checkbox}
@@ -88,7 +88,7 @@ const renderTaxTypes = props => {
                 </div>
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <FormField
                   type="select"
                   name={`${item}.payableAccountId`}
@@ -100,7 +100,7 @@ const renderTaxTypes = props => {
                 />
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <FormField
                   type="select"
                   name={`${item}.receivableAccountId`}
@@ -112,7 +112,7 @@ const renderTaxTypes = props => {
                 />
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <FormField
                   type="text"
                   name={`${item}.description`}

@@ -67,7 +67,6 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
       hasSelected,
       creatingNew,
       values,
-      updateDeleteCondition,
       dispatch,
       rootEntity,
       form,
@@ -78,7 +77,8 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
       toogleFullScreenEditView,
       asyncValidating,
       asyncValidate,
-      disabledSubmitCondition
+      disabledSubmitCondition,
+      threeColumn
     } = this.props;
 
     const noTabList = document.getElementById(TAB_LIST_SCROLL_TARGET_ID) === null;
@@ -113,11 +113,11 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
                 rootEntity={rootEntity}
                 isNew={creatingNew}
                 values={values}
-                updateDeleteCondition={updateDeleteCondition}
                 dirty={dirty}
                 dispatch={dispatch}
                 showConfirm={showConfirm}
                 toogleFullScreenEditView={toogleFullScreenEditView}
+                twoColumn={!threeColumn}
               />
             </div>
             <div className={classes.actionButtonsGroup}>

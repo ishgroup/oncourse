@@ -123,7 +123,6 @@
       "description": "If you need a question answered about your onCourse system, this is the best place to start. We have detailed documentation on all the different areas of onCourse. Visit our user manual, ask a community question on our forums, or get in touch with onCourse support.<ul><li>Community Support</li><li>Documentation & Manuals</li><li>onCourse Support</li><li>Audit Logging</i><ul>",
       "features": [
         "changeMyPassword",
-        "communitySupport",
         "documentation",
         "releaseNotes",
         "sendSupportRequest"
@@ -283,12 +282,6 @@
       "key": "classes",
       "link": "/class",
       "description": "All the classes that have been created in your onCourse system."
-    },
-    {
-      "title": "Community support",
-      "key": "communitySupport",
-      "link": "https://forum.ish.com.au",
-      "description": "Ask a question to the onCourse community via our onCourse forums."
     },
     {
       "title": "Companies",

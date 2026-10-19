@@ -29,7 +29,7 @@ const ContactsResume: React.FC<EditViewProps<Contact>> = ({
       header="RESUME"
     >
       <Grid container columnSpacing={3}>
-        <Grid item xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
+        <Grid size={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
           <FormEditorField name="tutor.resume" label={$t('resume')} />
         </Grid>
       </Grid>

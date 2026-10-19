@@ -22,10 +22,10 @@ import {
   FormControlLabel,
   FormGroup,
   Grid,
-  Hidden,
   Typography,
 } from '@mui/material';
 import Button from '@mui/material/Button'
+import Hidden from '../../../common/components/layout/Hidden';
 import $t from '@t';
 import clsx from 'clsx';
 import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from 'date-fns';
@@ -672,7 +672,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
           {values && (
             <Grid container columnSpacing={3} spacing={2}>
               {uploads && uploads.length > 0 && !skipAnimation && (
-                <Grid item xs={12} lg={8}>
+                <Grid size={{ xs: 12, lg: 8 }}>
                   <Box
                     pose={previousExportStatusSetted ? "moved" : "static"}
                     target={this.firstUploadNode}
@@ -689,7 +689,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
               )}
 
               <Hidden xsUp={showUploads}>
-                <Grid item xs={12} lg={8}>
+                <Grid size={{ xs: 12, lg: 8 }}>
                   <Card onClick={hasOutcomesOrExport ? this.reset : undefined}>
 
                     <CardContent
@@ -722,7 +722,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                           })}
                         >
                           {showEnrolmentsCount ? (
-                            <div>
+                            <div className="flex-fill">
                               {flavourField}
                               <Typography gutterBottom variant="caption">
                                 {" "}
@@ -900,7 +900,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                   </Card>
                 </Grid>
               </Hidden>
-              <Grid item lg={4} xs={12}>
+              <Grid size={{ xs: 12, lg: 4 }}>
                 {uploads && uploads.length > 0 && (
                   <AvetmissHistory
                     classes={classes}

@@ -33,8 +33,8 @@ const PayRateItem = props => {
   return fields.map((item, index) => (
     <Card key={index} className="card flex-fill mb-4">
       <Grid container rowSpacing={2}>
-        <Grid item xs={12} container columnSpacing={3} rowSpacing={2}>
-          <Grid item xs={4}>
+        <Grid size={12} container columnSpacing={3} rowSpacing={2}>
+          <Grid size={4}>
             <FormField
               type="date"
               name={`${item}.validFrom`}
@@ -43,7 +43,7 @@ const PayRateItem = props => {
               required
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid size={2}>
             <FormField
               type="money"
               name={`${item}.rate`}
@@ -51,7 +51,7 @@ const PayRateItem = props => {
               required
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid size={4}>
             <FormField
               type="select"
               name={`${item}.type`}
@@ -60,7 +60,7 @@ const PayRateItem = props => {
               validate={validateRepetition}
             />
           </Grid>
-          <Grid item xs={2} className="d-flex">
+          <Grid size={2} className="d-flex">
             <FormField
               type="number"
               name={`${item}.oncostRate`}
@@ -81,7 +81,7 @@ const PayRateItem = props => {
             </Tooltip>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField type="multilineText" name={`${item}.notes`} label={$t('description')} />
         </Grid>
       </Grid>

@@ -77,6 +77,7 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
       fallback: { 'process/browser': require.resolve('process/browser') }
     },
     module: {
+      parser: __common.exportsPresenceParser(),
       rules: [
         {
           test: /\.ts(x?)$/,

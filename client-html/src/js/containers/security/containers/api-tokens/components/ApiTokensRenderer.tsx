@@ -60,7 +60,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
   return (
     <Card className="mb-2 p-3">
       <Grid container columnSpacing={3} rowSpacing={2}>
-        <Grid item xs={6}>
+        <Grid size={6}>
           <FormField
             label={$t('act_as_user')}
             type="select"
@@ -88,7 +88,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
             </Typography>
           )}
         </Grid>
-        <Grid item xs={6} display="flex" justifyContent="space-between" alignItems="flex-start">
+        <Grid size={6} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <FormField type="text" name={`${item}.name`} label={$t('token_name')} disabled={!isNew} required />
           <Button
             size="small"
@@ -101,7 +101,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
           </Button>
         </Grid>
         {isNew ? (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <div className="centeredFlex mt-3">
               <Typography color="textSecondary" className="flex-fill">
                 <input readOnly className="codeArea" type="text" ref={linkInput} value={field.secret} />
@@ -116,7 +116,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
           </Grid>
       )
       : (
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField type="dateTime" name={`${item}.lastAccess`} label={$t('last_access')} disabled />
         </Grid>
       )}
@@ -134,7 +134,7 @@ const ApiTokensRenderer: React.FC<RendererProps & WrappedFieldArrayProps> = (
   }
 ) => (
   <Grid container columnSpacing={3}>
-    <Grid item xs={12}>
+    <Grid size={12}>
       {fields.map((item, index) => (
         <ApiTokenItem
           users={users}

@@ -9,7 +9,6 @@
 import ExitToApp from '@mui/icons-material/ExitToApp';
 import Link from '@mui/material/Link';
 import Popover from '@mui/material/Popover';
-import zIndex from '@mui/material/styles/zIndex';
 import $t from '@t';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -40,7 +39,7 @@ const getWindowHeight = () => window.innerHeight || document.documentElement.cli
 
 const styles = theme => ({
   dialog: {
-    zIndex: zIndex.tooltip,
+    zIndex: theme.zIndex.tooltip,
     padding: theme.spacing(1)
   },
   createLink: {

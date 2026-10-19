@@ -217,7 +217,7 @@ class BankingEditView extends React.PureComponent<any, any> {
     return (
       <div className={clsx("pl-3 pr-3 h-100 d-flex flex-column", twoColumn ? "pt-2" : "pt-3")}>
         <Grid container columnSpacing={3} rowSpacing={2}>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FullScreenStickyHeader
               disableInteraction={!isNew}
               twoColumn={twoColumn}
@@ -237,7 +237,7 @@ class BankingEditView extends React.PureComponent<any, any> {
               )}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="date"
               disabled={this.isDateLocked(lockedDate, editRecord)}
@@ -247,13 +247,13 @@ class BankingEditView extends React.PureComponent<any, any> {
               validate={[validateSingleMandatoryField, this.validateSettlementDate]}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <Uneditable
               label={$t('created_by')}
               value={values?.createdBy}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormControlLabel
               control={<Checkbox onChange={this.reconcileAllPayments} checked={this.isAllPaymentsReconciled()} />}
               label={$t('reconcile_this_banking_deposit')}

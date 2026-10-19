@@ -115,7 +115,7 @@ class EntityApiImpl implements EntityApi {
         query.orderBy(ID_FIELD, sortOrder != null ? sortOrder : SortOrder.ASCENDING)
 
         response.columns
-                .findAll { it -> it.visible }
+                .findAll { it -> it.visible || it.system }
                 .collect { it -> it.prefetches }
                 .flatten()
                 .forEach(

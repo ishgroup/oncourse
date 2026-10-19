@@ -256,14 +256,14 @@ class Statistics extends React.Component<Props, any> {
       <>
         {statisticData && !hideChart ? (
           <Grid container className={classes.root}>
-            <Grid item className="w-100 d-flex">
+            <Grid className="w-100 d-flex">
               <Typography className="heading flex-fill">{statisticData.moneyCount !== null ? 'Enrolments & Revenue' : 'Enrolments'}</Typography>
               <Typography variant="caption">{$t('past_4_weeks')}</Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Chart data={chartData} />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TotalStatisticInfo
                 totalStudents={statisticData.studentsCount}
                 totalEnrolments={statisticData.moneyCount}
@@ -271,7 +271,7 @@ class Statistics extends React.Component<Props, any> {
                 currency={currency}
               />
             </Grid>
-            {Boolean(statisticData.latestEnrolments?.length) && <Grid item xs={12} className="mt-2">
+            {Boolean(statisticData.latestEnrolments?.length) && <Grid size={12} className="mt-2">
               <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
                 {$t('last_enrolments')}
               </Typography>
@@ -293,7 +293,7 @@ class Statistics extends React.Component<Props, any> {
               </List>
             </Grid>}
             {Boolean(statisticData.latestWaitingLists?.length)
-              && <Grid item xs={12} className="mt-2">
+              && <Grid size={12} className="mt-2">
                 <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
                   {$t('largest_waiting_lists')}
                 </Typography>
@@ -313,14 +313,14 @@ class Statistics extends React.Component<Props, any> {
                   ))}
                 </List>
               </Grid>}
-            <Grid item xs={12} className="mt-2">
+            <Grid size={12} className="mt-2">
               <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
                 {statisticData.openedClasses}
                 {$t('classes_open_for_enrolment')}
               </Typography>
               <List dense disablePadding>
                 <Grid container className={classes.containerStatisticGroup}>
-                  <Grid item className={classes.statisticGroup} xs={6}>
+                  <Grid className={classes.statisticGroup} size={6}>
                     <ListItem dense disableGutters className={classes.smallTextGroup}>
                       <Typography className={classes.smallText}>
                         {statisticData.inDevelopmentClasses}
@@ -328,7 +328,7 @@ class Statistics extends React.Component<Props, any> {
                       </Typography>
                     </ListItem>
                   </Grid>
-                  <Grid item className={classes.statisticGroup} xs={6}>
+                  <Grid className={classes.statisticGroup} size={6}>
                     <ListItem dense disableGutters className={classes.smallTextGroup}>
                       <Typography className={classes.smallText}>
                         {statisticData.cancelledClasses}
@@ -338,7 +338,7 @@ class Statistics extends React.Component<Props, any> {
                   </Grid>
                 </Grid>
                 <Grid container className={classes.containerStatisticGroup}>
-                  <Grid item className={classes.statisticGroup} xs={6}>
+                  <Grid className={classes.statisticGroup} size={6}>
                     <ListItem dense disableGutters className={classes.smallTextGroup}>
                       <Typography className={classes.smallText}>
                         {statisticData.completedClasses}
@@ -346,7 +346,7 @@ class Statistics extends React.Component<Props, any> {
                       </Typography>
                     </ListItem>
                   </Grid>
-                  <Grid item className={classes.statisticGroup} xs={6}>
+                  <Grid className={classes.statisticGroup} size={6}>
                     <ListItem dense disableGutters className={classes.smallTextGroup}>
                       <Typography className={classes.smallText}>
                         {statisticData.commencedClasses}
@@ -360,7 +360,7 @@ class Statistics extends React.Component<Props, any> {
           </Grid>
       ) : null}
       {hasAuditPermissions && (
-        <Grid item xs={12} className="mt-2 p-3">
+        <Grid size={12} className="mt-2 p-3">
           <Typography className={clsx("heading", classes.headingMargin)}>
             {$t('automation_status')}
           </Typography>

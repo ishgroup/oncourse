@@ -31,7 +31,7 @@ import {
   stubFunction
 } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import NumberFormat from 'react-number-format';
+import { PatternFormat } from 'react-number-format';
 import { getUserPreferences, openSendMessage } from '../../../../../common/actions';
 import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import NotesService from '../../../../../common/components/form/notes/services/NotesService';
@@ -61,24 +61,31 @@ const useStyles = makeAppStyles()(theme => ({
   }
 }));
 
-const PhoneLabel = ({ phone, label }) => (
-  <div className="mb-1">
-    <PhoneIcon fontSize="inherit" className="vert-align-mid" />
-    {" "}
-    <Typography component="span" variant="body2">
-      <NumberFormat
-        value={phone}
-        displayType="text"
-        type="text"
-        format={getPhoneMask(phone)}
-      />
-    </Typography>
-    {" "}
-    <Typography component="span" variant="caption" color="textSecondary">
-      {label}
-    </Typography>
-  </div>
-);
+const PhoneLabel = ({ phone, label }) => {
+  // getPhoneMask returns null when no mask matches; PatternFormat requires a format
+  const mask = getPhoneMask(phone);
+
+  return (
+    <div className="mb-1">
+      <PhoneIcon fontSize="inherit" className="vert-align-mid" />
+      {" "}
+      <Typography component="span" variant="body2">
+        {mask ? (
+          <PatternFormat
+            value={phone}
+            displayType="text"
+            type="text"
+            format={mask}
+          />
+        ) : phone}
+      </Typography>
+      {" "}
+      <Typography component="span" variant="caption" color="textSecondary">
+        {label}
+      </Typography>
+    </div>
+  );
+};
 
 const MailLabel = ({ mail, label }) => (
   <div className="mb-1">
@@ -325,8 +332,10 @@ const Interaction = (interaction: ContactInteraction & { currencySymbol?: string
             )}
           </Box>
       ) : null}
-        primaryTypographyProps={{ fontSize: "15px" }}
-        secondaryTypographyProps={{ fontSize: "13px" }}
+        slotProps={{
+          primary: { sx: { fontSize: "15px" } },
+          secondary: { sx: { fontSize: "13px" } }
+        }}
       />
     </ListItem>
 );
@@ -502,7 +511,7 @@ const ContactInsight = (
             </Stack>
             <Divider className="mt-4 mb-4" />
             <Grid container columnSpacing={3} rowSpacing={2}>
-              <Grid item sm={12} md={4}>
+              <Grid size={{ sm: 12, md: 4 }}>
                 <div className={classes.box}>
                   <div className="centeredFlex mb-2">
                     <div className="heading flex-fill">{$t('overview')}</div>
@@ -587,7 +596,7 @@ const ContactInsight = (
                   <Chip label={$t('send_message')} className="fontWeight600 mt-1" onClick={onSendMessage} />
                 </div>
               </Grid>
-              <Grid item sm={12} md={8}>
+              <Grid size={{ sm: 12, md: 8 }}>
                 <div className={classes.box}>
                   <Typography className="heading mb-3" gutterBottom>{$t('activity')}</Typography>
                   <Box

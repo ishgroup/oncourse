@@ -92,7 +92,7 @@ const NestedEntity: React.FC<Props> = ({
 
       <Grid container columnSpacing={3}>
         {entityTypes.map((t, i) => (
-          <Grid key={i} item xs={twoColumn ? "auto" : 12} className="mb-2">
+          <Grid key={i} size={twoColumn ? "auto" : 12} className="mb-2">
             <Badge
               color="primary"
               classes={{

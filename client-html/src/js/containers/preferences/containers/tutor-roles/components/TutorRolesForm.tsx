@@ -74,7 +74,7 @@ const TutorRolesForm = React.memo<Props>(
           : value && value.name && value.name.trim()}
           opened={isNew || Object.keys(syncErrors).includes("name")}
           fields={(
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormField
                 type="text"
                 name="name"
@@ -98,9 +98,9 @@ const TutorRolesForm = React.memo<Props>(
           )}
         >
           <Grid container>
-            <Grid item xs={9}>
+            <Grid size={9}>
               <Grid container columnSpacing={3}>
-                <Grid item xs={9}>
+                <Grid size={9}>
                   <FormField
                     type="text"
                     name="description"
@@ -108,7 +108,7 @@ const TutorRolesForm = React.memo<Props>(
                     required
                   />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid size={3}>
                   <FormField type="switch" name="active" label={$t('enabled')} color="primary" />
                 </Grid>
               </Grid>

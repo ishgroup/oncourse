@@ -194,7 +194,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
             onAddMenu={this.onAddNew}
           >
             <Grid container className="mt-2">
-              <Grid item lg={10} xs={12}>
+              <Grid size={{ xs: 12, lg: 10 }}>
                 {data && data.types && (
                   <FieldArray
                     name="types"

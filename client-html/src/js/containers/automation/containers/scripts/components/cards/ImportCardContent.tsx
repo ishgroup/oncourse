@@ -13,7 +13,7 @@ const ImportsRenderer = props => {
   const { fields, hasUpdateAccess, isInternal } = props;
 
   return fields.map(f => (
-    <Grid item xs={12} key={f}>
+    <Grid size={12} key={f}>
       <FormField
         type="text"
         name={f}

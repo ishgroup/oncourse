@@ -64,14 +64,14 @@ const AccountsEditView = props => {
   }
 
   return (
-    <Grid container item columnSpacing={3} rowSpacing={2} xs={twoColumn ? 6 : 12} className="p-3">
-      <Grid item xs={12}>
+    <Grid container columnSpacing={3} rowSpacing={2} size={twoColumn ? 6 : 12} className="p-3">
+      <Grid size={12}>
         <FullScreenStickyHeader
           twoColumn={twoColumn}
           title={values && values.accountCode}
           opened={isNew || Object.keys(syncErrors).includes("accountCode")}
           fields={(
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormField
                 type="text"
                 name="accountCode"
@@ -82,7 +82,7 @@ const AccountsEditView = props => {
           )}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField
           type="select"
           disabled={isDisabled}
@@ -92,7 +92,7 @@ const AccountsEditView = props => {
           required
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField
           type="text"
           name="description"
@@ -101,7 +101,7 @@ const AccountsEditView = props => {
           multiline
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormControlLabel
           className="checkbox pr-3"
           control={
@@ -110,7 +110,7 @@ const AccountsEditView = props => {
           label={$t('enabled')}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         {isIncomeType ? (
           <FormField
             type="select"

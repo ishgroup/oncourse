@@ -29,7 +29,7 @@ env:
 jobs:
   build-and-push:
     name: Build and Push Docker Image
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
@@ -177,8 +177,12 @@ jobs:
           tags: |
             ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ inputs.app_version != '' && inputs.app_version || '99-SNAPSHOT' }}
             ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+          # cache-to dropped: measured on ARC, exporting the gha cache took 111s of
+          # a 3m3s job and the same build without it ran in 1m31s with a
+          # byte-identical image. With an artifact that changes every build the
+          # export buys almost nothing. cache-from stays so an existing cache is
+          # still read.
           cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Image digest
         run: |

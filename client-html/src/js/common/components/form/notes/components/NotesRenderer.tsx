@@ -33,7 +33,7 @@ const NotesRenderer = props => {
 
   return (
     <>
-      <Grid item xs={12} className="overflow-hidden">
+      <Grid size={12} className="overflow-hidden">
         <Grid
           container
           wrap="wrap"
@@ -54,7 +54,7 @@ const NotesRenderer = props => {
         </Collapse>
       </Grid>
 
-      <Grid item xs={12} container justifyContent="center">
+      <Grid size={12} container sx={{ justifyContent: 'center' }}>
         {fields.length > 6 && (
           <>
             <span className={classes.showMore}>

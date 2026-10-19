@@ -14,16 +14,16 @@ const renderConcessionTypes = props => {
   const { fields, classes, onDelete } = props;
 
   return (
-    <Grid item xs={12}>
+    <Grid size={12}>
       {fields.map((item: ConcessionType, index) => {
         const field = fields.get(index);
 
         return (
           <Card id={`concession-type-${index}`} className="card" key={index}>
             <Grid container columnSpacing={3} spacing={2} className="relative">
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Grid container columnSpacing={3}>
-                  <Grid item xs={6}>
+                  <Grid size={6}>
                     <FormField
                       type="text"
                       name={`${item}.name`}
@@ -33,7 +33,7 @@ const renderConcessionTypes = props => {
                     />
                   </Grid>
 
-                  <Grid item xs={6}>
+                  <Grid size={6}>
                     <div className="d-flex">
                       <FormControlLabel
                         className={classes.checkbox}
@@ -60,7 +60,7 @@ const renderConcessionTypes = props => {
                     </div>
                   </Grid>
 
-                  <Grid item xs={6}>
+                  <Grid size={6}>
                     <FormControlLabel
                       className={classes.checkbox}
                       control={(
@@ -74,7 +74,7 @@ const renderConcessionTypes = props => {
                     />
                   </Grid>
 
-                  <Grid item xs={6}>
+                  <Grid size={6}>
                     <FormControlLabel
                       className={classes.checkbox}
                       control={(

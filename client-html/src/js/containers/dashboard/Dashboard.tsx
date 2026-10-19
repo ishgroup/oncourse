@@ -75,7 +75,7 @@ class Dashboard extends React.PureComponent<any, any> {
           }
         )}
       >
-        <Grid item xs={12} className="relative">
+        <Grid size={12} className="relative">
           <DashboardHeader
             dispatch={dispatch}
             upgradePlanLink={upgradePlanLink}
@@ -85,7 +85,7 @@ class Dashboard extends React.PureComponent<any, any> {
           />
         </Grid>
 
-        <Grid item xs={12} className={classes.containerHeight}>
+        <Grid size={12} className={classes.containerHeight}>
           <ActionBody
             access={access}
             dispatch={dispatch}

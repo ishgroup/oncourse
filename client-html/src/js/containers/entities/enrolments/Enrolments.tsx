@@ -299,7 +299,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         </MenuItem>
       </Menu>
 
-      <Dialog open={Boolean(changedOutcomeFields.length)} disableEscapeKeyDown>
+      <Dialog open={Boolean(changedOutcomeFields.length)}>
         <DialogTitle classes={{
           root: "pb-0"
         }}
@@ -327,11 +327,11 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
           <Typography variant="caption" color="textSecondary">
             {$t('to_update_these_same_fields_in_any_associated_outc2')}
           </Typography>
-          <Typography variant="caption" color="textSecondary" gutterBottom paragraph>
+          <Typography variant="caption" color="textSecondary" gutterBottom sx={{ marginBottom: '16px' }} component="p">
             {$t('if_you_do_not_want_to_update_any_fields_leave_them')}
           </Typography>
 
-          <Typography variant="caption" color="textSecondary" paragraph>
+          <Typography variant="caption" color="textSecondary" sx={{ marginBottom: '16px' }} component="p">
             {$t('note_this_action_will_override_any_values_previous2')}
           </Typography>
         </DialogContent>

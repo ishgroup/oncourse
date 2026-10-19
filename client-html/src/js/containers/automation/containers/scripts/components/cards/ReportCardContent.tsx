@@ -66,7 +66,7 @@ const ReportCardContent: React.FC<Props> = props => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={1} className="pt-3 pb-3">
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField
           type="text"
           name={`${name}.fileName`}
@@ -75,7 +75,7 @@ const ReportCardContent: React.FC<Props> = props => {
           required
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField
           type="select"
           name={`${name}.keycode`}
@@ -90,7 +90,7 @@ const ReportCardContent: React.FC<Props> = props => {
         />
       </Grid>
       {field.reportEntity && renderVariables(field.reportEntity.variables, name)}
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField
           type="select"
           name={`${name}.background`}

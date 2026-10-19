@@ -25,8 +25,8 @@ import {
   SET_LIST_FULL_SCREEN_EDIT_VIEW,
   SET_LIST_LAYOUT,
   SET_LIST_MENU_TAGS,
+  SET_LIST_QUERY,
   SET_LIST_SAVING_FILTER,
-  SET_LIST_SEARCH,
   SET_LIST_SEARCH_ERROR,
   SET_LIST_SELECTION,
   SET_LIST_USER_AQL_SEARCH,
@@ -90,7 +90,7 @@ const Initial: ListState = {
   customTableModel: null
 };
 
-export const listReducer = (state: ListState = {...Initial}, action: IAction<any>): ListState => {
+export const listReducer = (state: ListState = { ...Initial }, action: IAction<any>): ListState => {
   switch (action.type) {
     case GET_RECORDS_REQUEST:
       return {
@@ -99,8 +99,8 @@ export const listReducer = (state: ListState = {...Initial}, action: IAction<any
       };
 
     case GET_RECORDS_FULFILLED: {
-      const {records, payload, searchQuery} = action.payload;
-      const {stopIndex}: GetRecordsArgs = payload;
+      const { records, payload, searchQuery } = action.payload;
+      const { stopIndex }: GetRecordsArgs = payload;
 
       let newRecords = state.records;
       newRecords = records;
@@ -117,9 +117,9 @@ export const listReducer = (state: ListState = {...Initial}, action: IAction<any
         ...state,
         records: {
           ...newRecords,
-          sort: newRecords.sort.map(s => ({...s})),
-          columns: newRecords.columns.map(c => ({...c})),
-          rows: newRecords.rows.map(r => ({...r})),
+          sort: newRecords.sort.map(s => ({ ...s })),
+          columns: newRecords.columns.map(c => ({ ...c })),
+          rows: newRecords.rows.map(r => ({ ...r })),
           tagsOrder: [...newRecords.tagsOrder],
           filteredCount: newRecords.entity === "Audit" ? PLAIN_LIST_MAX_PAGE_SIZE : newRecords.filteredCount,
           filterColumnWidth: newRecords.filterColumnWidth < LIST_SIDE_BAR_DEFAULT_WIDTH
@@ -132,7 +132,7 @@ export const listReducer = (state: ListState = {...Initial}, action: IAction<any
     }
 
     case GET_PLAIN_RECORDS_REQUEST_FULFILLED: {
-      const {plainRecords} = action.payload;
+      const { plainRecords } = action.payload;
 
       return {
         ...state,
@@ -142,11 +142,11 @@ export const listReducer = (state: ListState = {...Initial}, action: IAction<any
     }
 
     case SET_LIST_EDIT_RECORD: {
-      const {editRecord, name} = action.payload;
+      const { editRecord, name } = action.payload;
 
       if (editRecord && editRecord.id) {
         latestActivityStorageHandler(
-          {name, date: new Date().toISOString(), id: editRecord.id},
+          { name, date: new Date().toISOString(), id: editRecord.id },
           state.records.entity
         );
       }
@@ -173,25 +173,29 @@ export const listReducer = (state: ListState = {...Initial}, action: IAction<any
     }
 
     case GET_FILTERS_FULFILLED: {
-      const {filterGroups} = action.payload;
-
-      state.records.offset = 0;
+      const { filterGroups } = action.payload;
 
       return {
         ...state,
         filterGroupsLoaded: true,
-        filterGroups
+        filterGroups,
+        records: {
+          ...state.records,
+          offset: 0
+        }
       };
     }
 
     case SET_LIST_CORE_FILTERS: {
-      const {filterGroups} = action.payload;
-
-      state.records.offset = 0;
+      const { filterGroups } = action.payload;
 
       return {
         ...state,
-        filterGroups
+        filterGroups,
+        records: {
+          ...state.records,
+          offset: 0
+        }
       };
     }
 
@@ -230,7 +234,7 @@ export const listReducer = (state: ListState = {...Initial}, action: IAction<any
     }
 
     case SET_LIST_SEARCH_ERROR: {
-      const {searchError} = action.payload;
+      const { searchError } = action.payload;
 
       return {
         ...state,
@@ -238,15 +242,26 @@ export const listReducer = (state: ListState = {...Initial}, action: IAction<any
       };
     }
 
-    case SET_LIST_SEARCH: {
-      const {search} = action.payload;
-
-      state.records.offset = 0;
+    case SET_LIST_QUERY: {
+      const {
+        search, userAQLSearch, filterGroups, menuTags, checkedChecklists, uncheckedChecklists
+      } = action.payload;
 
       return {
         ...state,
         fetching: true,
-        search
+        ...(search !== undefined ? { search } : null),
+        ...(userAQLSearch !== undefined ? { userAQLSearch } : null),
+        ...(filterGroups !== undefined ? { filterGroups } : null),
+        ...(menuTags !== undefined ? { menuTags: getUpdated(menuTags, null, null, null) } : null),
+        ...(checkedChecklists !== undefined ? { checkedChecklists: getUpdated(checkedChecklists, null, null, null) } : null),
+        ...(uncheckedChecklists !== undefined
+          ? { uncheckedChecklists: getUpdated(uncheckedChecklists, null, null, null) }
+          : null),
+        records: {
+          ...state.records,
+          offset: 0
+        }
       };
     }
 
@@ -268,7 +283,7 @@ export const listReducer = (state: ListState = {...Initial}, action: IAction<any
     }
 
     case SET_LIST_USER_AQL_SEARCH: {
-      const {userAQLSearch} = action.payload;
+      const { userAQLSearch } = action.payload;
       return {
         ...state,
         userAQLSearch
@@ -276,7 +291,7 @@ export const listReducer = (state: ListState = {...Initial}, action: IAction<any
     }
 
     case SET_LIST_SELECTION: {
-      const {selection} = action.payload;
+      const { selection } = action.payload;
       return {
         ...state,
         selection
@@ -301,9 +316,7 @@ export const listReducer = (state: ListState = {...Initial}, action: IAction<any
     }
 
     case SET_LIST_MENU_TAGS: {
-      const {menuTags, checkedChecklists, uncheckedChecklists} = action.payload;
-
-      state.records.offset = 0;
+      const { menuTags, checkedChecklists, uncheckedChecklists } = action.payload;
 
       return {
         ...state,
@@ -311,6 +324,10 @@ export const listReducer = (state: ListState = {...Initial}, action: IAction<any
         menuTags: getUpdated(menuTags, null, null, null),
         checkedChecklists: getUpdated(checkedChecklists, null, null, null),
         uncheckedChecklists: getUpdated(uncheckedChecklists, null, null, null),
+        records: {
+          ...state.records,
+          offset: 0
+        }
       };
     }
 

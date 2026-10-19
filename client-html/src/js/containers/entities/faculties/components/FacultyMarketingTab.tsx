@@ -23,18 +23,18 @@ function FacultyMarketingTab(
     showConfirm
   }: EditViewProps<Faculty>) {
   return <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3 pb-3 mb-3">
-    <Grid item xs={12}>
+    <Grid size={12}>
       <div className="heading mt-2">{$t('marketing')}</div>
     </Grid>
 
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FormEditorField name="webDescription" label={$t('web_description')} />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FormEditorField name="shortWebDescription" label={$t('short_web_description')} />
     </Grid>
 
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FieldArray
         name="documents"
         label={$t('documents')}

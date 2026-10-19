@@ -162,7 +162,7 @@ const LeadGeneral = (props: Props) => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3">
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FullScreenStickyHeader
           opened={isNew || Object.keys(syncErrors).includes("contactId")}
           disableInteraction={!isNew}
@@ -171,7 +171,7 @@ const LeadGeneral = (props: Props) => {
             <HeaderContactTitle name={values?.contactName} id={values?.contactId} />
           )}
           fields={(
-            <Grid item xs={twoColumn ? 6 : 12}>
+            <Grid size={twoColumn ? 6 : 12}>
               <FormField
                 type="remoteDataSelect"
                 label={$t('Contact')}
@@ -193,17 +193,19 @@ const LeadGeneral = (props: Props) => {
           )}
         />
       </Grid>
-      <Grid item container rowSpacing={2} xs={twoColumn ? 6 : 12}>
-        <Grid item xs={12}>
+      <Grid container rowSpacing={2} size={twoColumn ? 6 : 12}>
+        <Grid size={12}>
           <FormField
             type="tags"
             name="tags"
             tags={tags}
+            placeholder='Tags'
+            trackCarretPosition={twoColumn}
           />
         </Grid>
         {!isNew
         && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField
               type="select"
               name="assignToId"
@@ -217,14 +219,14 @@ const LeadGeneral = (props: Props) => {
             />
           </Grid>
         )}
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField type="number" name="studentCount" label={$t('number_of_students')} />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField type="dateTime" name="nextActionOn" label={$t('next_action_on')} />
         </Grid>
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <EntityChecklists
           entity="Lead"
           form={form}
@@ -232,7 +234,7 @@ const LeadGeneral = (props: Props) => {
           checked={values.tags}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <div className="centeredFlex">
           <FormField
             type="money"
@@ -252,7 +254,7 @@ const LeadGeneral = (props: Props) => {
         </div>
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12}>
+      <Grid size={twoColumn ? 6 : 12}>
         <FormField
           type="select"
           name="status"
@@ -266,11 +268,9 @@ const LeadGeneral = (props: Props) => {
         fieldName="customFields"
         entityValues={values}
         form={form}
-        gridItemProps={{
-          xs: twoColumn ? 6 : 12,
-        }}
+        gridItemProps={{ size: { xs: twoColumn ? 6 : 12 } }}
       />
-      <Grid item xs={12}>
+      <Grid size={12}>
         <RelationsCommon
           values={values}
           dispatch={dispatch}

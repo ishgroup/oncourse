@@ -45,13 +45,11 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
       syncErrors
     } = this.props;
 
-    const gridItemProps: any = {
-      xs: twoColumn ? 6 : 12
-    };
+    const gridItemProps: any = { size: { xs: twoColumn ? 6 : 12 } };
 
     return (
       <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FullScreenStickyHeader
             opened={isNew || Object.keys(syncErrors).includes("contactId")}
             disableInteraction={!isNew}
@@ -60,7 +58,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
               <HeaderContactTitle name={values?.studentName} id={values?.contactId} />
             )}
             fields={(
-              <Grid item {...gridItemProps}>
+              <Grid {...gridItemProps}>
                 <FormField
                   type="remoteDataSelect"
                   entity="Contact"
@@ -81,14 +79,16 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             )}
           />
         </Grid>
-        <Grid item xs={twoColumn ? 8 : 12}>
+        <Grid size={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={tags}
+            placeholder='Tags'
+            trackCarretPosition={twoColumn}
           />
         </Grid>
-        <Grid item xs={twoColumn ? 4 : 12}>
+        <Grid size={twoColumn ? 4 : 12}>
           <EntityChecklists
             entity="WaitingList"
             form={form}
@@ -96,10 +96,10 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             checked={values.tags}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField type="number" name="studentCount" label={$t('number_of_students')} />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="remoteDataSelect"
             entity="Course"

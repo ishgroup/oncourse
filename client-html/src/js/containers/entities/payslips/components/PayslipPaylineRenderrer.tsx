@@ -95,7 +95,7 @@ class PayslipPaylineRenderrer extends React.PureComponent<any, any> {
     });
 
     return (
-      <Grid item xs={12}>
+      <Grid size={12}>
         {Object.keys(classGroups).map((g, i) => (
           <React.Fragment key={g + i}>
             <div className="heading mb-1 money">

@@ -231,7 +231,7 @@ class ActionBody extends React.PureComponent<Props, any> {
           sidebarWidth={statisticsColumnWidth}
           ignoreScreenWidth
         >
-          <Grid item xs>
+          <Grid size="grow">
             {showTutorial && (
               <TutorialPanel
                 tutorial={tutorials[tutorialKey]}
@@ -242,8 +242,7 @@ class ActionBody extends React.PureComponent<Props, any> {
           </Grid>
         </ResizableWrapper>
         <Grid
-          item
-          xs
+          size="grow"
           className={classes.rightSideBar}
         >
           <NewsRender showPlaceholder />

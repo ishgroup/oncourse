@@ -91,7 +91,7 @@ class TagsFormRenderer extends TagsFormBase {
           )}
         >
           <Grid container>
-            <Grid item sm={12} lg={11} xl={8}>
+            <Grid size={{ sm: 12, lg: 11, xl: 8 }}>
               <div className="centeredFlex">
                 {values && (
                   <Field
@@ -130,7 +130,7 @@ class TagsFormRenderer extends TagsFormBase {
               <div className={classes.legend}>
                 <Typography variant="caption" color="textSecondary">{$t('name')}</Typography>
                 <Typography variant="caption" color="textSecondary">{$t('url_path')}</Typography>
-                <Typography variant="caption" color="textSecondary" textAlign="center">{$t('website_visibility')}</Typography>
+                <Typography variant="caption" color="textSecondary" sx={{ textAlign: 'center' }}>{$t('website_visibility')}</Typography>
               </div>
 
               {values && (
@@ -241,9 +241,9 @@ class ChecklistsFormRenderer extends TagsFormBase {
           )}
         >
           <Grid container>
-            <Grid item sm={12} lg={11} xl={8}>
+            <Grid size={{ sm: 12, lg: 11, xl: 8 }}>
               <Grid container columnSpacing={3}>
-                <Grid item xs={12} md={8}>
+                <Grid size={{ xs: 12, md: 8 }}>
                   <div className="centeredFlex">
                     {values && (
                       <Field
@@ -273,7 +273,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
                   ))}
                 </Grid>
 
-                <Grid item xs={false} md={4} />
+                <Grid size={{ xs: false, md: 4 }} />
               </Grid>
 
               <Divider className="mt-2 mb-2" />

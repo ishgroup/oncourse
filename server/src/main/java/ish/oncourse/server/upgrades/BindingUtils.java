@@ -38,7 +38,8 @@ public class BindingUtils {
         List<AutomationBinding> updatedOptions = new ArrayList<>();
 
         if (options != null) {
-            for (var option : options) {
+            for (int i = 0; i < options.size(); i++) {
+                var option = options.get(i);
                 var name = option.get(NAME.getDisplayName()).toString();
                 var value = option.get(ResourceProperty.VALUE.getDisplayName()).toString();
                 var dataType = DataType.valueOf(option.get(ResourceProperty.DATA_TYPE.getDisplayName()).toString());
@@ -62,6 +63,7 @@ public class BindingUtils {
 
                 binding.setName(name);
                 binding.setDataType(dataType);
+                binding.setListOrder(i);
             }
         }
 
@@ -76,20 +78,22 @@ public class BindingUtils {
         if (variables == null) {
             return;
         }
-        variables.forEach( var -> {
+        for (int i = 0; i < variables.size(); i++) {
+            var var = variables.get(i);
             AutomationBinding binding = objectContext.newObject(clazz);
             binding.setAutomation(automation);
 
             binding.setName(getString(var, NAME));
             binding.setLable(getString(var, LABEL));
             binding.setDataType(get(var, DATA_TYPE, DataType.class));
+            binding.setListOrder(i);
 
             if (StringUtils.isEmpty(binding.getName()) || StringUtils.isEmpty(binding.getLable())  || binding.getDataType() == null) {
                 logger.debug("Variables not configured correctly");
                 throw new IllegalStateException("Variables not configured correctly");
             }
             objectContext.commitChanges();
-        });
+        }
     }
 
     private static void deleteNotActualBindings(ObjectContext context, List<AutomationBinding> updatedBindings, List<? extends AutomationBinding> allBindings) {

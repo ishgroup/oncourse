@@ -31,7 +31,7 @@ class BindingFunctions {
     }
 
     static void  populateAutomationBindings(AutomationDTOTrait automationDto, AutomationTrait automation) {
-        automation.automationBindings.sort { it.id }.each { binding ->
+        automation.automationBindings.sort { a, b -> a.listOrder != b.listOrder ? a.listOrder <=> b.listOrder : a.id <=> b.id }.each { binding ->
             BindingDTO dto = new BindingDTO()
             dto.value = binding.value
             dto.type = DataTypeDTO.values()[0].fromDbType(binding.dataType)
@@ -79,6 +79,7 @@ class BindingFunctions {
             }
             dbBinding.name = dtoBinding.name
             dbBinding.dataType = dtoBinding.type.dbType
+            dbBinding.listOrder = i
 
             if (isOpt) {
                 if (dbBinding.parseValue(dtoBinding.value) != null) {

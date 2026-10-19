@@ -115,7 +115,7 @@ const Categories: UserPermissionCategory[] = [
       {name: "Exporting to XML and CSV", checkbox: true},
       {name: "Creating certificate from class", checkbox: true},
       {name: "Contact merging", checkbox: true},
-      {name: "Enrolment cancellation and transferring", checkbox: true},
+      {name: "Enrolment cancellation", checkbox: true},
       {name: "Export AVETMISS", checkbox: true},
       {name: "Data import", checkbox: true},
       {name: "Override tutor pay rate", checkbox: true},

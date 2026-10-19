@@ -191,7 +191,7 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
       <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <Grid container columnSpacing={3}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <div className="centeredFlex">
                 <div className="heading mt-2 mb-2">{$t('transfer_enrolment')}</div>
               </div>

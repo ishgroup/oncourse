@@ -9,7 +9,7 @@
 import { FundingSource, SearchQuery, Sorting, Tag } from '@api/model';
 import { Help } from '@mui/icons-material';
 import { Grid, ListItemButton, Typography } from '@mui/material';
-import Button from '@mui/material/Button'
+import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
@@ -102,10 +102,6 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
   };
 
   useEffect(() => {
-    if (rootEntity) {
-      getEntityTags(rootEntity);
-    }
-
     const fields = getBulkEditFields(rootEntity);
     setBulkEditFields(fields);
 
@@ -113,6 +109,14 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
       setSelectedKeyCode(fields[0].keyCode);
     }
   }, [rootEntity]);
+
+  // the drawer is mounted with every list but opened rarely, so its tags are fetched when it is
+  // actually opened rather than on every list load
+  useEffect(() => {
+    if (showBulkEditDrawer && rootEntity) {
+      getEntityTags(rootEntity);
+    }
+  }, [showBulkEditDrawer, rootEntity]);
 
   useEffect(() => {
     if (getCustomBulkEditFields) {
@@ -307,20 +311,22 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
       open={showBulkEditDrawer}
       onClose={onClose}
       classes={{ paper: classes.exportContainer }}
-      PaperProps={{
-        style: {
-          left: window.innerWidth >= 1024 ? sidebarWidth : 0
+      slotProps={{
+        paper: {
+          style: {
+            left: window.innerWidth >= 1024 ? sidebarWidth : 0
+          }
         }
       }}
     >
       <Grid container className={classes.content}>
-        <Grid container className={classes.header} wrap="nowrap" alignItems="center">
-          <Grid item xs={2}>
+        <Grid size={12} container className={classes.header} wrap="nowrap" sx={{ alignItems: 'center' }}>
+          <Grid size={2}>
             <Typography variant="body2" className={classes.headerText}>
               {$t('bulk_edit')}
             </Typography>
           </Grid>
-          <Grid item xs className="centeredFlex">
+          <Grid size="grow" className="centeredFlex">
             <SelectionSwitcher
               selectedRecords={selection.length}
               allRecords={count}
@@ -336,8 +342,8 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
             </IconButton>
           </Grid>
         </Grid>
-        <Grid container className={classes.body} wrap="nowrap" spacing={3}>
-          <Grid item zeroMinWidth className={classes.menuColumn}>
+        <Grid size={12} container className={classes.body} wrap="nowrap" spacing={3}>
+          <Grid className={classes.menuColumn}>
             <List disablePadding className={classes.list}>
               {bulkEditFields
                 && bulkEditFields.map(field => {
@@ -364,15 +370,15 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
                 })}
             </List>
           </Grid>
-          <Grid item xs className={classes.menuColumn}>
+          <Grid size="grow" className={classes.menuColumn}>
             <form autoComplete="off" onSubmit={handleSubmit(onSave)} className={classes.form}>
               <Grid container className={classes.formContent}>
-                <Grid item xs={12} xl={6}>
+                <Grid size={{ xs: 12, xl: 6 }}>
                   {BulkEditFieldRendered}
                 </Grid>
               </Grid>
 
-              <Grid item xs={12} className={classes.closeShareButtons}>
+              <Grid size={12} className={classes.closeShareButtons}>
                 <Button className={classes.closeButton} onClick={onClose} variant="text">
                   {$t('cancel')}
                 </Button>

@@ -91,10 +91,10 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
 
   return (
     <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
-      <Grid item xs={3} className="d-inline-flex-center pl-1">
+      <Grid size={3} className="d-inline-flex-center pl-1">
         {elem.name}
       </Grid>
-      <Grid item xs={hasGrades ? 3 : 6} className={classes.center}>
+      <Grid size={hasGrades ? 3 : 6} className={classes.center}>
         {submitStatus === "Submitted"
           ? (
             <div className="pl-3">
@@ -119,7 +119,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
 
       {Boolean(gradeType) && (
       <>
-        <Grid item xs={3} className={classes.center}>
+        <Grid size={3} className={classes.center}>
           {markedStatus === "Submitted" ? (
             <div className="pt-0-5">
               <div className="pl-3">
@@ -158,7 +158,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
             </div>
           ) : markedContent}
         </Grid>
-        <Grid item xs={3} className={classes.center}>
+        <Grid size={3} className={classes.center}>
           <GradeContent
             handleGradeMenuOpen={handleGradeMenuOpen}
             onToggleGrade={onToggleGrade}

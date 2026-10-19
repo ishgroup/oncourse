@@ -8,10 +8,10 @@ import { flexRender } from '@tanstack/react-table';
 import { Row } from '@tanstack/table-core/src/types';
 import clsx from 'clsx';
 import { stubFunction } from 'ish-ui';
-import React, { memo } from 'react';
+import React, { useCallback } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { areEqual, FixedSizeList } from 'react-window';
-import InfiniteLoader from 'react-window-infinite-loader';
+import { List } from 'react-window';
+import { useInfiniteLoader } from 'react-window-infinite-loader';
 import { NESTED_LIST_PAGE_SIZE } from '../../../../../../constants/Config';
 import { NestedTableColumnsTypes } from '../../../../../../model/common/NestedTable';
 import NestedTableCheckboxCell from './NestedTableCheckboxCell';
@@ -64,16 +64,17 @@ const ListCell = React.memo<{
   }
 });
 
-const ListRow = memo<any>(({ data, index, style }) => {
-  const {
-    rows,
-    classes,
-    onRowSelect,
-    onRowDelete,
-    onRowDoubleClick,
-    onCheckboxChange
-  } = data;
-
+// see InfiniteLoaderList: react-window v2 memoises `rowComponent` itself
+const ListRow = ({
+  index,
+  style,
+  rows,
+  classes,
+  onRowSelect,
+  onRowDelete,
+  onRowDoubleClick,
+  onCheckboxChange
+}: any) => {
   const row = rows[index];
   const rowClasses = clsx(
     "d-flex",
@@ -115,7 +116,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
       ))}
     </div>
   );
-}, areEqual);
+};
 
 interface StaticListProps {
   rows: Row<any>[];
@@ -135,30 +136,35 @@ export default function NestedList(props: StaticListProps)  {
     onLoadMore = stubFunction
   } = props;
 
-  const isItemLoaded = index => Boolean(rows[index]);
+  // stable identity: useInfiniteLoader keys its already-requested set on it
+  const isRowLoaded = useCallback(index => Boolean(rows[index]), [rows]);
 
-  return <InfiniteLoader
-    minimumBatchSize={NESTED_LIST_PAGE_SIZE}
-    isItemLoaded={isItemLoaded}
-    itemCount={rows.length * 2}
-    loadMoreItems={onLoadMore}
-  >
-    {({ onItemsRendered = null, ref = null }) =>
-      <AutoSizer>
-        {({ height, width }) => (
-          <FixedSizeList
-            style={{ overflow: "hidden auto" }}
-            itemCount={rows.length}
-            itemData={props}
-            itemSize={27}
-            onItemsRendered={onItemsRendered}
-            height={isNaN(height) ? 0 : height}
-            width={totalColumnsWidth > width ? totalColumnsWidth : (isNaN(width) ? 0 : width)}
-            ref={ref}
-          >
-            {ListRow}
-          </FixedSizeList>
-        )}
-      </AutoSizer>}
-  </InfiniteLoader>;
+  const onRowsRendered = useInfiniteLoader({
+    minimumBatchSize: NESTED_LIST_PAGE_SIZE,
+    isRowLoaded,
+    rowCount: rows.length * 2,
+    loadMoreRows: onLoadMore
+  });
+
+  return (
+    <AutoSizer>
+      {({ height, width }) => (
+        <List
+          style={{
+            overflow: "hidden auto",
+            height: isNaN(height) ? 0 : height,
+            // see InfiniteLoaderList: AutoSizer's height:0 wrapper turns
+            // react-window v2's default `maxHeight: 100%` into zero
+            maxHeight: 'none',
+            width: totalColumnsWidth > width ? totalColumnsWidth : (isNaN(width) ? 0 : width)
+          }}
+          rowComponent={ListRow}
+          rowCount={rows.length}
+          rowProps={props as any}
+          rowHeight={27}
+          onRowsRendered={onRowsRendered}
+        />
+      )}
+    </AutoSizer>
+  );
 }

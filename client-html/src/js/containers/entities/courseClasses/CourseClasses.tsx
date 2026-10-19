@@ -686,7 +686,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         alwaysFullScreenCreateView
       />
 
-      <Dialog maxWidth="md" open={Boolean(changedFields.length)} disableEscapeKeyDown>
+      <Dialog maxWidth="md" open={Boolean(changedFields.length)}>
         <DialogTitle classes={{
           root: "pb-0"
         }}
@@ -697,10 +697,10 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           <Typography className="mt-1" variant="caption" color="textSecondary">
             {$t('to_update_these_same_fields_in_any_associated_outc')}
           </Typography>
-          <Typography variant="caption" color="textSecondary" gutterBottom paragraph>
+          <Typography variant="caption" color="textSecondary" gutterBottom sx={{ marginBottom: '16px' }} component="p">
             {$t('if_you_do_not_want_to_update_any_fields_leave_them')}
           </Typography>
-          <Typography variant="caption" color="textSecondary" paragraph>
+          <Typography variant="caption" color="textSecondary" sx={{ marginBottom: '16px' }} component="p">
             {$t('note_this_action_will_override_any_values_previous')}
           </Typography>
           <div className="d-flex">

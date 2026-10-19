@@ -94,7 +94,7 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
         )}
       >
         <Grid container>
-          <Grid item xs={12}>
+          <Grid size={12}>
             {summary.list.map((list, i) => (
               <CheckoutSummaryExpandableItemRenderer
                 key={i}
@@ -121,12 +121,10 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
             ))}
           </Grid>
 
-          <Grid item container xs={12} className="mt-3">
-            <Grid item xs={false} sm={8} />
+          <Grid container size={12} className="mt-3">
+            <Grid size={{ xs: false, sm: 8 }} />
             <Grid
-              item
-              xs={12}
-              sm={4}
+              size={{ xs: 12, sm: 4 }}
               className={clsx("money pt-2 summaryTopBorder", classes.itemTotal)}
             >
               <Typography variant="body2">
@@ -135,11 +133,11 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
             </Grid>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid size={6}>
             <FormField type="text" name="invoiceCustomerReference" label={$t('customer_reference')} />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid size={6}>
             <FormField type="multilineText" name="invoicePublicNotes" label={$t('public_notes')} multiline  />
           </Grid>
         </Grid>

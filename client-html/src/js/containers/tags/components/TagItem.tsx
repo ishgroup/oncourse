@@ -95,7 +95,7 @@ const TagItem = React.memo<FormTagProps>(({
               />
             )
             : (
-              <Typography variant="body2" fontWeight="500" noWrap>
+              <Typography variant="body2" sx={{ fontWeight: '500' }} noWrap>
                 {item.name}
               </Typography>
             )}
@@ -149,7 +149,7 @@ const TagItem = React.memo<FormTagProps>(({
       <Collapse in={isEditing} mountOnEnter unmountOnExit>
         <div className="pl-3 pr-3" onClick={stopEventPropagation}>
           <FormEditorField  name={getFieldName(item.parent, "shortWebDescription")} placeholder={$t('short_description')} />
-          <Typography variant="caption" fontSize="13px" >
+          <Typography variant="caption" sx={{ fontSize: '13px' }} >
             <FormEditorField
               name={getFieldName(item.parent, "content")}
               fieldClasses={{

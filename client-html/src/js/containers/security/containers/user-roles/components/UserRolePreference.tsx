@@ -64,8 +64,8 @@ const ContentBase = props => {
 
   return (
     <Grid container>
-      <Grid item xs={3}/>
-      <Grid item xs={9}>
+      <Grid size={3}/>
+      <Grid size={9}>
         <div className={clsx("d-flex", classes.stepperHeadersWrapper)}>
           {headers
           && headers.map((i, index) => (
@@ -77,15 +77,15 @@ const ContentBase = props => {
           ))}
         </div>
       </Grid>
-      <Grid item container xs={12}>
+      <Grid container size={12}>
         {permissions.map((item, index) => (
-          <Grid item key={index} xs={12} container>
-            <Grid item xs={3}>
+          <Grid key={index} size={12} container>
+            <Grid size={3}>
               <Typography variant="body2" className={clsx("centeredFlex", classes.stepperLabel)}>
                 {getLabel(item.name)}
               </Typography>
             </Grid>
-            <Grid item xs={9}>
+            <Grid size={9}>
               {item.checkbox ? (
                 <FormField
                   type="checkbox"

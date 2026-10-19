@@ -108,15 +108,15 @@ const DashboardHeader = (
         {!drawerOpened && (
           <HamburgerMenu variant={VARIANTS.persistent} />
         )}
-        <Grid container className="justify-content-end" alignContent="center">
-          <Grid item xs={6} container justifyContent="start" alignContent="center">
+        <Grid container sx={{ alignContent: 'center', justifyContent: 'end', flex: 1 }}>
+          <Grid size={6} container sx={{ justifyContent: 'start', alignContent: 'center' }}>
             <Typography variant="subtitle2" color="textSecondary" noWrap>
               {$t('welcome_back')}
               {" "}
               {systemUser?.firstName}
             </Typography>
           </Grid>
-          <Grid item xs={6} container justifyContent="end" alignContent="center">
+          <Grid size={6} container sx={{ justifyContent: 'end', alignContent: 'center' }}>
             {upgradePlanLink && (
             <Button
               target="_blank"

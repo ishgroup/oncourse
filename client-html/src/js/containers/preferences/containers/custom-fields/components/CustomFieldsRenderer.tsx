@@ -261,19 +261,19 @@ const ExpandableCustomFields = React.memo<{
       expandButtonId={`custom-field-${index}`}
       collapsedContent={(
         <Grid container columnSpacing={3} className="relative align-items-center">
-          <Grid item xs={4}>
+          <Grid size={4}>
             <Uneditable
               value={field.name}
               label={$t('name')}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid size={4}>
             <Uneditable
               value={mapEntityType(field.entityType)}
               label={$t('record_type')}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid size={4}>
             <Uneditable
               value={field.dataType}
               label={$t('data_type')}
@@ -292,7 +292,7 @@ const ExpandableCustomFields = React.memo<{
       )}
       detailsContent={(
         <Grid container columnSpacing={3} rowSpacing={3} className="relative">
-          <Grid item xs={4}>
+          <Grid size={4}>
             <FormField
               type="text"
               name={`${item}.name`}
@@ -302,7 +302,7 @@ const ExpandableCustomFields = React.memo<{
             />
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid size={4}>
             <FormField
               type="text"
               name={`${item}.fieldKey`}
@@ -313,7 +313,7 @@ const ExpandableCustomFields = React.memo<{
             />
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid size={4}>
             <FormField
               type="select"
               name={`${item}.dataType`}
@@ -327,7 +327,7 @@ const ExpandableCustomFields = React.memo<{
             />
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid size={4}>
             <FormField
               type="select"
               name={`${item}.entityType`}
@@ -342,7 +342,7 @@ const ExpandableCustomFields = React.memo<{
             />
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid size={4}>
             <FormControlLabel
               className={classes.checkbox}
               control={(
@@ -370,7 +370,7 @@ const ExpandableCustomFields = React.memo<{
             )}
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid size={4}>
             <Collapse in={isListOrMap} mountOnEnter unmountOnExit>
               <Field
                 name={`${item}.defaultValue`}

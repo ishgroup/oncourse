@@ -27,7 +27,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/module'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["2","1","true"])].id
+        * def id = get[0] response.rows[?(@.values[0] == '2')].id
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -58,7 +58,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/module'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["2","1","true"])].id
+        * def id = get[0] response.rows[?(@.values[0] == '2')].id
 
 #       <--->  Login as notadmin:
         * configure headers = { Authorization:  'UserWithRightsDelete'}
@@ -98,7 +98,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/module'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["2","1","true"])].id
+        * def id = get[0] response.rows[?(@.values[0] == '2')].id
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsEdit'}

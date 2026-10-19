@@ -32,7 +32,7 @@ const EnrolmentAttachmentsTab: React.FC<any> = props => {
         rerenderOnEveryChange
       />
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <OwnApiNotes {...props} />
       </Grid>
     </Grid>

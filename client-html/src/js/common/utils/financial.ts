@@ -19,7 +19,7 @@ export const getTotalByFeeExTax = (taxRate: number, feeExTax: number): number =>
 
 export const getFeeExTaxByFeeIncTax = (taxRate: number, feeIncTax: number): number => bankRounding(new Decimal(feeIncTax || 0).div(new Decimal(1).plus(taxRate || 0)));
 
-export const getTaxAmountByFeeExTax = (taxRate: number, feeExTax: number): number => bankRounding(new Decimal(feeExTax || 0).mul(new Decimal(taxRate || 1)));
+export const getTaxAmountByFeeExTax = (taxRate: number, feeExTax: number): number => taxRate === 0 ? 0 : bankRounding(new Decimal(feeExTax || 0).mul(new Decimal(taxRate || 1)));
 
 export const getCurrentTax = (taxes: Tax[], id: number): Tax => taxes.find(t => t.id === id);
 

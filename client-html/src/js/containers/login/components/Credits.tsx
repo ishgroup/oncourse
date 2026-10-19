@@ -22,7 +22,7 @@ const CreditsItem = ({ heading, creditPersons, className }) => (<div className="
 
 const Credits = ({ wrapperClass, itemClass }) => {
   return <Grid container columnSpacing={3} className={wrapperClass}>
-    <Grid item xs={12} sm={6}>
+    <Grid size={{ xs: 12, sm: 6 }}>
       <div>
         <CreditsItem heading="Product design" creditPersons={["Aristedes Maniatis", "Natalie Morton", "James Swinbanks"]} className={itemClass}  />
         <CreditsItem heading="System architecture" creditPersons={["Aristedes Maniatis"]} className={itemClass}  />
@@ -60,7 +60,7 @@ const Credits = ({ wrapperClass, itemClass }) => {
         ]} className={itemClass}  />
       </div>
     </Grid>
-    <Grid item xs={12} sm={6}>
+    <Grid size={{ xs: 12, sm: 6 }}>
       <CreditsItem heading="Quality assurance" creditPersons={[
         "George Filipovich",
         "Yury Harachka",

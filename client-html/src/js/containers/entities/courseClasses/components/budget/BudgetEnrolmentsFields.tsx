@@ -61,10 +61,10 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
 
   return (
     <Grid container direction="row" columnSpacing={3} className={classes.root}>
-      <Grid item xs={3} className="centeredFlex pl-2">
+      <Grid size={3} className="centeredFlex pl-2">
         <Typography variant="body1">{$t('enrolments4')}</Typography>
       </Grid>
-      <Grid item xs={2} className="text-end">
+      <Grid size={2} className="text-end">
         <FormField
           type="number"
           name="minimumPlaces"
@@ -78,7 +78,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
           rightAligned
         />
       </Grid>
-      <Grid item xs={2} className="text-end">
+      <Grid size={2} className="text-end">
         <FormField
           name="maximumPlaces"
           type="number"
@@ -91,7 +91,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
           rightAligned
         />
       </Grid>
-      <Grid item xs={2} className="text-end">
+      <Grid size={2} className="text-end">
         <FormField
           type="number"
           name="budgetedPlaces"
@@ -103,10 +103,10 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
           rightAligned
         />
       </Grid>
-      <Grid item xs={2} className="d-flex justify-content-end">
+      <Grid size={2} className="d-flex justify-content-end">
         <Uneditable value={enrolmentsCount || "0"} label={$t('actual')} rightAligned />
       </Grid>
-      <Grid item xs={1} />
+      <Grid size={1} />
     </Grid>
   );
 });

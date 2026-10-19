@@ -6,11 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
+import * as React from 'react';
 import CourseClassBulkChangeSession, {
-  initialValues, COURSE_CLASS_BULK_UPDATE_FORM
-} from "../../../js/containers/entities/courseClasses/components/timetable/CourseClassBulkChangeSession";
-import { defaultComponents } from "../../common/Default.Components";
+  COURSE_CLASS_BULK_UPDATE_FORM,
+  initialValues
+} from '../../../js/containers/entities/courseClasses/components/timetable/CourseClassBulkChangeSession';
+import { defaultComponents } from '../../common/Default.Components';
 
 describe("Virtual rendered CourseClassBulkChangeSession of Class edit view", () => {
   defaultComponents({
@@ -29,8 +30,7 @@ describe("Virtual rendered CourseClassBulkChangeSession of Class edit view", () 
         payableDuration: 2,
         duration: 3,
         siteTimezone: "Australia/West",
-        start: "2021-11-25T17:05:00.000Z",
-        moveForward: "2",
+        start: "2021-11-25T17:05:00.000Z"
       },
       rooms: [],
     }),
@@ -54,9 +54,9 @@ describe("Virtual rendered CourseClassBulkChangeSession of Class edit view", () 
         durationChecked: true,
         duration: "3min",
         moveForwardChecked: true,
-        moveForward: 2,
+        moveForward: "",
         moveBackwardChecked: false,
-        moveBackward: null,
+        moveBackward: "",
       });
     }
   });

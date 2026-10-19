@@ -73,12 +73,12 @@ const USIAlert: React.FunctionComponent<USIAlertProps> = props => {
   return (
     <>
       {validationStatus && (
-        <Typography variant="body2" color="error" className="text-pre-wrap" paragraph>
+        <Typography variant="body2" color="error" className="text-pre-wrap" sx={{ marginBottom: '16px' }} component="p">
           {validationStatus}
         </Typography>
       )}
       {validating && (
-        <Typography variant="body2" paragraph>
+        <Typography variant="body2" sx={{ marginBottom: '16px' }} component="p">
           {$t('validating')}
         </Typography>
       )}

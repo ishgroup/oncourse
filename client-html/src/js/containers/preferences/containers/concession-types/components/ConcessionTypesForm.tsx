@@ -174,7 +174,7 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
           onAddMenu={() => this.onAddNew()}
         >
           <Grid container className={classes.marginTop}>
-            <Grid item sm={12} lg={10}>
+            <Grid size={{ sm: 12, lg: 10 }}>
               <Grid container columnSpacing={3}>
                 {data && (
                   <FieldArray

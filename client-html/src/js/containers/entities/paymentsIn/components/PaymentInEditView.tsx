@@ -112,11 +112,11 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
     || ["Contra", "Internal", "Reverse", "Voucher"].find(item => item === values.paymentInType)
     || !["Success", "Reversed"].find(item => item === values.status) : true;
 
-  const gridItemProps = { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 };
+  const gridItemProps = { size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } };
 
   return values ? (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable
           value={values.payerName}
           label={$t('payment_from')}
@@ -125,7 +125,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
           }
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormField
           type="select"
           name="administrationCenterId"
@@ -137,14 +137,14 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
           disabled={!!initialValues.dateBanked}
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.paymentInType} label={$t('type')} />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.status} label={$t('status')} />
       </Grid>
       {values.ccSummary && values.ccSummary.length > 0 && (
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <div className="textField">
           <div>
             <Typography variant="caption" color="textSecondary">
@@ -158,25 +158,25 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
       </Grid>
         )}
       {values.chequeSummary && Object.keys(values.chequeSummary).length > 0 && (
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         {Object.keys(values.chequeSummary).map(item => (
           <Uneditable value={values.chequeSummary[item]} label={item} />
             ))}
       </Grid>
         )}
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.amount} money label={$t('amount')} />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.accountInName} label={$t('account')} />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.source} label={$t('source')} />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.ccTransaction} label={$t('cc_transaction')} />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <FormControlLabel
           className="pr-3"
           control={<Checkbox checked={values.emailConfirmation} />}
@@ -184,14 +184,14 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
           disabled
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable
           value={values.datePayed}
           label={$t('date_paid')}
           format={value => (value ? formatDate(new Date(value), III_DD_MMM_YYYY) : value)}
         />
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         {dateBankedDisabled ? (
           <Uneditable
             value={values.dateBanked}
@@ -207,10 +207,10 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
             />
           )}
       </Grid>
-      <Grid item {...gridItemProps}>
+      <Grid {...gridItemProps}>
         <Uneditable value={values.createdBy} label={$t('created_by')} />
       </Grid>
-      <Grid item xs={12} className="saveButtonTableOffset">
+      <Grid size={12} className="saveButtonTableOffset">
         <FieldArray
           name="invoices"
           goToLink={`/invoice?search=paymentInLines.paymentIn in (${values?.id})`}

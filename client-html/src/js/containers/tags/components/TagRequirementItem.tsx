@@ -67,7 +67,7 @@ const TagRequirementItem: React.FC<Props> = props => {
 
   return (
     <div className={clsx(classes.root, hoverClasses.container)}>
-      <Typography variant="h5"  fontSize="1.3rem">
+      <Typography variant="h5"  sx={{ fontSize: '1.3rem' }}>
         {header}
       </Typography>
 

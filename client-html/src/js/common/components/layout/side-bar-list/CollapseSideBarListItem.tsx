@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import MenuItem from "@mui/material/MenuItem";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import React from "react";
-import { NavLink } from "react-router-dom";
+import ListItemButton from '@mui/material/ListItemButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const CollapseSideBarListItem: React.FC<any> = (
   {
@@ -32,7 +32,7 @@ const CollapseSideBarListItem: React.FC<any> = (
       open={openedTooltip === index}
       placement="bottom"
     >
-      <MenuItem disabled={item.disabled} className={classes.listItemPadding} selected={activeLink === index.toString()}>
+      <ListItemButton disabled={item.disabled} className={classes.listItemPadding} selected={activeLink === index.toString()}>
         <Typography
           variant="body2"
           onMouseOver={() => handleOpenTooltip(index)}
@@ -45,7 +45,7 @@ const CollapseSideBarListItem: React.FC<any> = (
         </Typography>
         {ItemIconRenderer ? <ItemIconRenderer className={classes.itemIcon} item={item}/> : (item.hasIcon &&
           <ItemIcon className={classes.itemIcon} item={item}/>)}
-      </MenuItem>
+      </ListItemButton>
     </Tooltip>
   </NavLink>
 );

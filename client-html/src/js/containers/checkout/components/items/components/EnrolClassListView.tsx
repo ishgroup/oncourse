@@ -132,7 +132,7 @@ const EnrolClassListView = React.memo<{
   return (
     <div className="p-2">
       <List className={classes.list}>
-        <Grid item sm={12} className={clsx("text-center", classes.showPastRoot)}>
+        <Grid size={{ sm: 12 }} className={clsx("text-center", classes.showPastRoot)}>
           <Button
             color="primary"
             onClick={togglePastClasses}
@@ -160,7 +160,7 @@ const EnrolClassListView = React.memo<{
                     const isTraineeship = course.isTraineeship === "true";
 
                     return (
-                      <Grid item xs={12} key={s.id}>
+                      <Grid size={12} key={s.id}>
                         <Button
                           color="inherit"
                           onClick={onSelect && (() => onSelect(s))}
@@ -171,10 +171,10 @@ const EnrolClassListView = React.memo<{
                           disabled={isSelected || isTransfered}
                         >
                           <Grid container>
-                            <Grid item xs={1}>
+                            <Grid size={1}>
                               <Radio color="primary" checked={isSelected} />
                             </Grid>
-                            <Grid item xs={11} sm={7}>
+                            <Grid size={{ xs: 11, sm: 7 }}>
                               <CalendarSession
                                 {...s}
                                 startLabel={s.startDateTime ? null : s.isSelfPaced ? "Self \n paced" : "No start date"}
@@ -185,18 +185,18 @@ const EnrolClassListView = React.memo<{
                                 inView
                               />
                             </Grid>
-                            <Grid item container xs={12} sm={4}>
-                              <Grid item xs={6}>
+                            <Grid container size={{ xs: 12, sm: 4 }}>
+                              <Grid size={6}>
                                 <Typography component="div">
                                   {isTraineeship ? "1 place" : `${s.placesLeft} place${s.placesLeft > 1 ? "s" : ""}`}
                                 </Typography>
                               </Grid>
-                              <Grid item xs={4}>
+                              <Grid size={4}>
                                 <Typography component="div" className="text-end money">
                                   {formatCurrency(s.price, currencySymbol)}
                                 </Typography>
                               </Grid>
-                              <Grid item xs={2} />
+                              <Grid size={2} />
                             </Grid>
                           </Grid>
                         </Button>

@@ -78,8 +78,8 @@ const CollectionFormField = ({
 
   return (
     <Grid container columnSpacing={3}>
-      <Grid item container xs={4} rowSpacing={2}>
-        <Grid item xs={12}>
+      <Grid container size={4} rowSpacing={2}>
+        <Grid size={12}>
           <FormField
             type="text"
             name={`items[${item.id}].label`}
@@ -87,7 +87,7 @@ const CollectionFormField = ({
             required
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="multilineText"
             name={`items[${item.id}].helpText`}
@@ -98,8 +98,8 @@ const CollectionFormField = ({
         </Grid>
       </Grid>
 
-      <Grid item container xs={4} rowSpacing={2}>
-        <Grid item xs={12}>
+      <Grid container size={4} rowSpacing={2}>
+        <Grid size={12}>
           <FormField
             type="select"
             items={availableRelations}
@@ -109,13 +109,13 @@ const CollectionFormField = ({
             allowEmpty
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           {relatedValueField}
         </Grid>
       </Grid>
 
-      <Grid item container xs={4} rowSpacing={2}>
-        <Grid item xs={12}>
+      <Grid container size={4} rowSpacing={2}>
+        <Grid size={12}>
           <Field
             name={`items[${item.id}].mandatory`}
             label={$t('label')}
@@ -126,7 +126,7 @@ const CollectionFormField = ({
             component={ToogleCheckbox}
           />
         </Grid>
-        {formType === 'Enrolment' && <Grid item xs={12}>
+        {formType === 'Enrolment' && <Grid size={12}>
           <FormField
             type="select"
             items={validationTypes}

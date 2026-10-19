@@ -302,14 +302,17 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
   return (
     <Dialog
       open={opened}
-      onClose={onClose}
+      onClose={(e, reason) => {
+        // v9 dropped `disableEscapeKeyDown`; swallow the escape close instead
+        if (reason === 'escapeKeyDown' && disableClose) return;
+        onClose();
+      }}
       classes={{
         paper: classes.root
       }}
       disableAutoFocus
       disableEnforceFocus
       disableRestoreFocus
-      disableEscapeKeyDown={disableClose}
       onKeyDown={e => e.stopPropagation()}
     >
       <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit)} role={DUPLICATE_TRAINEESHIP_FORM}>
@@ -319,7 +322,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
           }}
         >
           <Grid container columnSpacing={3}>
-            <Grid item xs={4}>
+            <Grid size={4}>
               <div className="centeredFlex">
                 <div className="heading mt-2 mb-2">
                   {$t('duplicate_traineeship_class')}
@@ -467,7 +470,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
               </FormGroup>
             </Grid>
 
-            <Grid item xs={8} className="flex-column">
+            <Grid size={8} className="flex-column">
               <Tabs
                 value={selectedTab}
                 onChange={(e, v) => setSelectedTab(v)}

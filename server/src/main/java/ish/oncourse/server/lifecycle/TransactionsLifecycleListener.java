@@ -46,22 +46,24 @@ public class TransactionsLifecycleListener {
 
 	@PostPersist(value = PaymentIn.class)
 	public void postPersist(PaymentIn payment) {
-
 		if (PaymentStatus.SUCCESS.equals(payment.getStatus())) {
-			payment.getPaymentInLines().forEach(this::createInitialTransactions);
-			payment.getContext().commitChanges();
+			// C-NEW-2: pass entity context so AccountTransaction QueuedRecords share the same
+			// QueuedTransaction as PaymentIn/PaymentInLine, preventing FK violations on willow.
+			var ctx = payment.getObjectContext();
+			payment.getPaymentInLines().forEach(line -> createInitialTransactions(line, ctx));
+			ctx.commitChanges();
 		}
-
 	}
 
 	@PostPersist(value = PaymentOut.class)
 	public void postPersist(PaymentOut payment) {
-
 		if (PaymentStatus.SUCCESS.equals(payment.getStatus())) {
-			payment.getPaymentOutLines().forEach(this::createInitialTransactions);
-			payment.getContext().commitChanges();
+			// C-NEW-3: pass entity context so AccountTransaction QueuedRecords share the same
+			// QueuedTransaction as PaymentOut/PaymentOutLine, preventing FK violations on willow.
+			var ctx = payment.getObjectContext();
+			payment.getPaymentOutLines().forEach(line -> createInitialTransactions(line, ctx));
+			ctx.commitChanges();
 		}
-
 	}
 
 	@PreUpdate(value = PaymentIn.class)
@@ -71,7 +73,9 @@ public class TransactionsLifecycleListener {
 		var statusChange = getAtrAttributeChange(objectContext, paymentIn.getObjectId(),PaymentIn.STATUS.getName());
 
 		if (statusChange != null && PaymentStatus.SUCCESS.equals(statusChange.getNewValue())) {
-			paymentIn.getPaymentInLines().forEach(this::createInitialTransactions);
+			// ONC-N4: pass null instead of objectContext to avoid re-entrant commit during @PreUpdate;
+			// AccountTransactionService will commit inside the lock for isInitialTransaction=true.
+			paymentIn.getPaymentInLines().forEach(line -> createInitialTransactions(line, null));
 		} else if (getAtrAttributeChange(objectContext, paymentIn.getObjectId(),PaymentIn.BANKING.getName()) != null) {
 
 			var changeHelper = new BankingChangeHandler(paymentIn.getContext());
@@ -86,8 +90,9 @@ public class TransactionsLifecycleListener {
 			var oldSettlementDate = oldValue == null ? null : oldValue.getSettlementDate();
 			var newSettlementDate = newValue == null ? null : newValue.getSettlementDate();
 
+			// H-1: pass entity context for deposit transactions as well
 			paymentIn.getPaymentInLines()
-					.forEach(line -> accountTransactionService.createTransactions(DepositTransactionsBuilder.valueOf(line, oldSettlementDate, newSettlementDate)));
+					.forEach(line -> accountTransactionService.createTransactions(DepositTransactionsBuilder.valueOf(line, oldSettlementDate, newSettlementDate), objectContext));
 		}
 	}
 
@@ -98,7 +103,9 @@ public class TransactionsLifecycleListener {
 		var statusChange = getAtrAttributeChange(objectContext, paymentOut.getObjectId(),PaymentIn.STATUS.getName());
 
 		if (statusChange != null && PaymentStatus.SUCCESS.equals(statusChange.getNewValue())) {
-			paymentOut.getPaymentOutLines().forEach(this::createInitialTransactions);
+			// ONC-N4: pass null instead of objectContext to avoid re-entrant commit during @PreUpdate;
+			// AccountTransactionService will commit inside the lock for isInitialTransaction=true.
+			paymentOut.getPaymentOutLines().forEach(line -> createInitialTransactions(line, null));
 		} else if (getAtrAttributeChange(objectContext, paymentOut.getObjectId(),PaymentIn.BANKING.getName()) != null) {
 
 			var changeHalper = new BankingChangeHandler(paymentOut.getContext());
@@ -113,20 +120,19 @@ public class TransactionsLifecycleListener {
 			var oldSettlementDate = oldValue == null ? null : oldValue.getSettlementDate();
 			var newSettlementDate = newValue == null ? null : newValue.getSettlementDate();
 
+			// H-1: pass entity context for deposit transactions
 			paymentOut.getPaymentOutLines()
-					.forEach(line -> {
-						accountTransactionService.createTransactions(DepositTransactionsBuilder.valueOf(line, oldSettlementDate, newSettlementDate));
-					});
+					.forEach(line -> accountTransactionService.createTransactions(DepositTransactionsBuilder.valueOf(line, oldSettlementDate, newSettlementDate), objectContext));
 		}
 	}
 
-	private void createInitialTransactions(PaymentOutLine line) {
-		accountTransactionService.createTransactions(PaymentOutTransactionsBuilder.valueOf(line));
+	private void createInitialTransactions(PaymentOutLine line, ObjectContext ctx) {
+		accountTransactionService.createTransactions(PaymentOutTransactionsBuilder.valueOf(line), ctx);
 	}
 
-	private void createInitialTransactions(PaymentInLine line) {
+	private void createInitialTransactions(PaymentInLine line, ObjectContext ctx) {
 		var voucherExpense = AccountUtil.getDefaultVoucherExpenseAccount(line.getObjectContext(), Account.class);
-		accountTransactionService.createTransactions(PaymentInTransactionsBuilder.valueOf(line, voucherExpense));
+		accountTransactionService.createTransactions(PaymentInTransactionsBuilder.valueOf(line, voucherExpense), ctx);
 	}
 
 	private void validateBanking(Banking banking, Persistent o) {

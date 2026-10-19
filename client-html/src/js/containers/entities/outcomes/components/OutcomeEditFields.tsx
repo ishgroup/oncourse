@@ -249,7 +249,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
 
   return (
     (<Grid container columnSpacing={3} rowSpacing={2} className={className}>
-      {!noHeader && <Grid item xs={12}>
+      {!noHeader && <Grid size={12}>
         <FullScreenStickyHeader
           disableInteraction
           twoColumn={twoColumn}
@@ -258,8 +258,8 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           )}
         />
       </Grid>}
-      <Grid container rowSpacing={2} item xs={twoColumn ? 4 : 12}>
-        <Grid item xs={12}>
+      <Grid container rowSpacing={2} size={twoColumn ? 4 : 12}>
+        <Grid size={12}>
           <FormField
             type="remoteDataSelect"
             name={getFieldName("moduleCode")}
@@ -280,7 +280,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             allowEmpty
                       />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="remoteDataSelect"
             entity="Module"
@@ -302,7 +302,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             allowEmpty
                       />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="select"
             name={getFieldName("deliveryMode")}
@@ -310,7 +310,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             items={deliveryModeValues}
                       />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="number"
             name={getFieldName("reportableHours")}
@@ -319,7 +319,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             debounced={false}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="select"
             name={getFieldName("fundingSource")}
@@ -328,25 +328,25 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           />
         </Grid>
       </Grid>
-      <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid size={twoColumn ? 8 : 12}>
         <Card className={classes.card}>
           <Grid container columnSpacing={3} rowSpacing={2}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <div className="heading">{$t('outcome_progression')}</div>
             </Grid>
-            <Grid item xs={twoColumn ? 6 : 12} className="d-flex justify-content-center">
+            <Grid size={twoColumn ? 6 : 12} className="d-flex justify-content-center">
               <AttendanceChart data={values.progression} />
             </Grid>
-            <Grid item xs={twoColumn ? 6 : 12} className="d-flex justify-content-center">
+            <Grid size={twoColumn ? 6 : 12} className="d-flex justify-content-center">
               <AssessmentChart data={values.progression} />
             </Grid>
           </Grid>
         </Card>
       </Grid>
       {priorLearningEditView ? (
-        <Grid item xs={12}>
-          <Grid container columnSpacing={3} rowSpacing={2} item xs={12}>
-            <Grid item xs={twoColumn ? 4 : 12}>
+        <Grid size={12}>
+          <Grid container columnSpacing={3} rowSpacing={2} size={12}>
+            <Grid size={twoColumn ? 4 : 12}>
               <FormField
                 type="date"
                 name={getFieldName("startDate")}
@@ -355,7 +355,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                 placeholder={$t('leave_empty_to_calculate_date_from_class')}
               />
             </Grid>
-            <Grid item xs={twoColumn ? 4 : 12}>
+            <Grid size={twoColumn ? 4 : 12}>
               <FormField
                 type="date"
                 name={getFieldName("endDate")}
@@ -367,10 +367,10 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           </Grid>
         </Grid>
       ) : (
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Card className={classes.card}>
             <Grid container columnSpacing={3} rowSpacing={2} className="p-3 pb-0">
-              <Grid item xs={twoColumn ? 3 : 12}>
+              <Grid size={twoColumn ? 3 : 12}>
                 <div className={cx(classes.header, classes.width240, "secondaryHeading")}>{$t('training_plan2')}</div>
                 <Tooltip
                   placement="top-start"
@@ -396,7 +396,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                   </div>
                 </Tooltip>
               </Grid>
-              <Grid item xs={twoColumn ? 3 : 12}>
+              <Grid size={twoColumn ? 3 : 12}>
                 <div className={cx(classes.header, classes.width240, "secondaryHeading")}>{$t('actual')}</div>
                 <Tooltip placement="top-start" title={$t('first_session_related_to_this_outcome_where_studen')}>
                   <div className="pb-2">
@@ -427,9 +427,9 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                   </div>
                 </Tooltip>
               </Grid>
-              <Grid item xs={twoColumn ? 3 : 12}>
+              <Grid size={twoColumn ? 3 : 12}>
                 <div className={cx(classes.header, classes.width240, "secondaryHeading")}>{$t('override')}</div>
-                <Grid item className={cx(classes.width240, classes.dateWrapper)}>
+                <Grid className={cx(classes.width240, classes.dateWrapper)}>
                   <div className="pb-2">
                     {values.startDateOverridden ? (
                       <div className="centeredFlex">
@@ -458,7 +458,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                     )}
                   </div>
                 </Grid>
-                <Grid item className={cx(classes.width240, classes.dateWrapper)}>
+                <Grid className={cx(classes.width240, classes.dateWrapper)}>
                   <div className="pb-2">
                     {values.endDateOverridden ? (
                       <div className="centeredFlex">
@@ -492,9 +492,9 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           </Card>
         </Grid>
       )}
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Grid container columnSpacing={3} rowSpacing={2}>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="select"
               name={getFieldName("status")}
@@ -503,7 +503,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               disabled={values && values.printed}
                           />
           </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="number"
               name={getFieldName("hoursAttended")}
@@ -512,7 +512,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               debounced={false}
                           />
           </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="text"
               name={getFieldName("vetFundingSourceStateID")}
@@ -522,9 +522,9 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Grid container columnSpacing={3} rowSpacing={2}>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="text"
               name={getFieldName("vetPurchasingContractID")}
@@ -532,7 +532,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               validate={validateVetPurchasingContractIdentifier}
                           />
           </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="text"
               name={getFieldName("vetPurchasingContractScheduleID")}
@@ -541,7 +541,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                           />
           </Grid>
 
-          <Grid item xs={twoColumn ? 4 : 12}>
+          <Grid size={twoColumn ? 4 : 12}>
             <FormField
               type="text"
               name={getFieldName("specificProgramIdentifier")}
@@ -552,7 +552,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
 
           {fundingUploadAccess && values.id
             && (
-            <Grid item xs={12} className="saveButtonTableOffset mt-1">
+            <Grid size={12} className="saveButtonTableOffset mt-1">
               <div className="heading mb-1">{$t('funding_uploads')}</div>
               {fundingUploads.length
                 ? (

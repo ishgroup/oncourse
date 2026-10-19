@@ -61,7 +61,13 @@ class OutcomeTraitTest extends TestWithDatabase {
         submission.setMarkedOn(DateUtils.addDays(new Date(), -1))
         submission.setMarkedBy(student.contact)
 
-        enrolment.assessmentSubmissions.add(submission)
+        // submission.setEnrolment(enrolment) выше уже регистрирует обратную связь:
+        // _AssessmentSubmission.setEnrolment() вызывает setToOneTarget("enrolment", enrolment, true),
+        // где последний параметр setReverse=true. Явный add() дублировал запись в to-many списке,
+        // из-за чего deleteObjects(enrolment.getAssessmentSubmissions()) не очищал связь полностью
+        // и удаление enrolment падало с DeleteDenyException.
+        // Раньше это не проявлялось, потому что EnrolmentLifecycleListener работал на отдельном
+        // контексте; после фикса C-1 он коммитит на контексте самой сущности и связь резолвится из БД.
 
         newContext.commitChanges()
         student = SelectById.query(Student.class, student.getObjectId())

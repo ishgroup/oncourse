@@ -107,7 +107,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className={clsx("pl-3 pr-3", twoColumn ? "pt-2" : "pt-3")}>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FullScreenStickyHeader
           disableInteraction
           twoColumn={twoColumn}
@@ -116,15 +116,17 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           )}
         />
       </Grid>
-      <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid size={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
           tags={tags}
+          placeholder='Tags'
+          trackCarretPosition={twoColumn}
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <EntityChecklists
           entity="Enrolment"
           form={form}
@@ -133,7 +135,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid size={twoColumn ? 8 : 12}>
         <Uneditable
           value={values && values.courseClassName}
           label={$t('class')}
@@ -141,11 +143,11 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
+      <Grid size={twoColumn ? 4 : 12}>
         <FormField type="text" name="displayStatus" label={$t('status')} disabled />
       </Grid>
 
-      <Grid item xs={twoColumn ? 8 : 12}>
+      <Grid size={twoColumn ? 8 : 12}>
         <FormField
           type="select"
           name="source"
@@ -156,7 +158,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
       </Grid>
 
       {!hideAUSReporting && <>
-        <Grid item xs={12} className="pt-2 pb-3">
+        <Grid size={12} className="pt-2 pb-3">
           <Divider />
         </Grid>
           <EnrolmentDetails
@@ -164,12 +166,12 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
             twoColumn={twoColumn}
             contracts={contracts}
           />
-        <Grid item xs={12} className="pt-2 pb-3">
+        <Grid size={12} className="pt-2 pb-3">
           <Divider />
         </Grid>
       </> }
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <NestedEntity
           entityTypes={invoiceTypes}
           dirty={dirty}
@@ -178,7 +180,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           isNew={isNew}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <NestedEntity
           entityTypes={outcomeTypes}
           dirty={dirty}
@@ -189,7 +191,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         />
       </Grid>
 
-      <Grid item xs={12} className="pb-3">
+      <Grid size={12} className="pb-3">
         <Divider />
       </Grid>
       <CustomFields
@@ -197,13 +199,10 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         fieldName="customFields"
         entityValues={values}
         form={form}
-        gridItemProps={{
-          xs: twoColumn ? 6 : 12,
-          lg: twoColumn ? 4 : 12
-        }}
+        gridItemProps={{ size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } }}
       />
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         {Boolean(values?.assessments?.length) && <>
           <ExpandableContainer
             expanded={expanded}

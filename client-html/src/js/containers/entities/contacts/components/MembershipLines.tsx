@@ -26,14 +26,14 @@ export const MembershipContent: React.FunctionComponent<any> = ({ row, item, two
   const gridSpacing = twoColumn ? 4 : 6;
   return (
     <Grid container columnSpacing={3} rowSpacing={2}>
-      <Grid item xs={gridSpacing}>
+      <Grid size={gridSpacing}>
         <Uneditable
           value={row.productName}
           label={$t('membership_name')}
           url={productUrl(row)}
         />
       </Grid>
-      <Grid item xs={gridSpacing}>
+      <Grid size={gridSpacing}>
         <Uneditable
           value={row.purchasedByName}
           label={$t('purchased_by')}
@@ -42,23 +42,23 @@ export const MembershipContent: React.FunctionComponent<any> = ({ row, item, two
           }
         />
       </Grid>
-      <Grid item xs={gridSpacing}>
+      <Grid size={gridSpacing}>
         <FormField type="date" name={`${item}.purchasedOn`} label={$t('purchased_on')} disabled />
       </Grid>
-      <Grid item xs={gridSpacing}>
+      <Grid size={gridSpacing}>
         <FormField type="date" name={`${item}.validFrom`} label={$t('valid_from')} disabled />
       </Grid>
-      <Grid item xs={gridSpacing}>
+      <Grid size={gridSpacing}>
         <FormField type="date" name={`${item}.expiresOn`} label={$t('valid_to')} disabled />
       </Grid>
-      <Grid item xs={gridSpacing}>
+      <Grid size={gridSpacing}>
         <Uneditable
           value={row.purchasePrice}
           label={$t('purchase_price')}
           money
         />
       </Grid>
-      <Grid item xs={gridSpacing}>
+      <Grid size={gridSpacing}>
         <Uneditable
           value={row.status}
           label={$t('status')}

@@ -18,7 +18,7 @@ import Slide from '@mui/material/Slide';
 import { alpha } from '@mui/material/styles';
 import $t from '@t';
 import { FormTextField } from 'ish-ui';
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas as QRCode } from 'qrcode.react';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
@@ -394,9 +394,9 @@ export function LoginPageBase(
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <Grid container columnSpacing={3} alignItems="center">
-        <Grid item xs={1} md={6} />
-        <Grid item xs={12} md={6} className={classes.loginFormRight}>
+      <Grid container columnSpacing={0} sx={{ alignItems: 'center' }}>
+        <Grid size={{ xs: 1, md: 6 }} />
+        <Grid size={{ xs: 12, md: 6 }} className={classes.loginFormRight}>
           <Slide direction="right" in timeout={300}>
             <span className={classes.sideImageWrapper} />
           </Slide>
@@ -404,17 +404,16 @@ export function LoginPageBase(
             <div className={classes.loginFormWrapper}>
               <Grid
                 container
-                alignItems="center"
-                alignContent="space-between"
+                sx={{ alignItems: 'center', alignContent: 'space-between' }}
               >
-                <Grid item xs={12}>
-                  <Grid container columnSpacing={3} alignItems="center">
-                    <Grid item xs={12} sm={9}>
+                <Grid size={12}>
+                  <Grid container columnSpacing={3} sx={{ alignItems: 'center' }}>
+                    <Grid size={{ xs: 12, sm: 9 }}>
                       <div className={classes.logoWrapper}>
                         <Logo />
                       </div>
                     </Grid>
-                    <Grid item xs={12} sm={3} className={classes.versionText}>
+                    <Grid size={{ xs: 12, sm: 3 }} className={classes.versionText}>
                       <Typography
                         variant="body1"
                         component="span"
@@ -427,7 +426,7 @@ export function LoginPageBase(
                   </Grid>
                 </Grid>
                 <div className="flex-fill" />
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Collapse in={!openCredits} timeout="auto" unmountOnExit>
                     <div className={classes.loginModalWrapper}>
                       {isTOTP && (
@@ -588,11 +587,11 @@ export function LoginPageBase(
                       )}
 
                       {(isEnableTOTP || isOptionalTOTP) && (
-                        <Grid container columnSpacing={3} alignItems="flex-start" direction="row-reverse" spacing={3}>
-                          <Grid item xs={12} sm={4}>
+                        <Grid container columnSpacing={3} sx={{ alignItems: 'flex-start' }} direction="row-reverse" spacing={3}>
+                          <Grid size={{ xs: 12, sm: 4 }}>
                             {totpUrl && <QRCode className={classes.code} size={106} value={totpUrl} />}
                           </Grid>
-                          <Grid item xs={12} sm={8}>
+                          <Grid size={{ xs: 12, sm: 8 }}>
                             <div>
                               <div className={classes.textWrapper}>
                                 {$t('twofactor_authentication_is_an_extra_layer_of_secu')}
@@ -704,7 +703,7 @@ export function LoginPageBase(
                 </Grid>
                 <SSOProviders providers={ssoTypes}/>
                 <div className="flex-fill" />
-                <Grid container columnSpacing={3} alignItems="center">
+                <Grid container size={12} columnSpacing={3} sx={{ alignItems: 'center' }}>
                   <div className="flex-fill">
                     <div>
                       <IconButton

@@ -87,7 +87,7 @@ const ApiTokensBase:React.FC<Props> = (
         onAddMenu={onAdd}
       >
         <Grid container className="mt-2">
-          <Grid item xs={12} md={10}>
+          <Grid size={{ xs: 12, md: 10 }}>
             <Alert severity="info" className="mb-2">
               <AlertTitle>
                 {$t('api_tokens_can_be_used_by_third_party_tools')}
@@ -95,7 +95,7 @@ const ApiTokensBase:React.FC<Props> = (
               {$t('caution_these_tokens_will_allow_an_attacker_to_acc')}
             </Alert>
           </Grid>
-          <Grid item xs={12} md={10}>
+          <Grid size={{ xs: 12, md: 10 }}>
             <FieldArray
               name="tokens"
               users={users}

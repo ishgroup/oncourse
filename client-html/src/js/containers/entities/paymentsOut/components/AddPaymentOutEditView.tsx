@@ -293,13 +293,13 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
   return values ? (
     <div className="p-3 h-100 flex-column">
       <Grid container columnSpacing={3} rowSpacing={2}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Uneditable value={values.payeeName} label={$t('payment_to')} labelAdornment={
             <ContactLinkAdornment id={values.payeeId} />
           } />
         </Grid>
 
-        <Grid item xs={4}>
+        <Grid size={4}>
           <FormField
             type="select"
             name="paymentMethodId"
@@ -311,7 +311,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
           />
         </Grid>
 
-        <Grid item xs={4}>
+        <Grid size={4}>
           <FormField
             type="select"
             name="administrationCenterId"
@@ -328,10 +328,10 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
           />
         </Grid>
 
-        <Grid item xs={4} />
+        <Grid size={4} />
 
         {values.selectedPaymentMethod === "Credit card" && Boolean(refundablePaymentRecords && refundablePaymentRecords.length) && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField
               type="select"
               name="refundableId"
@@ -344,7 +344,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
         {values.selectedPaymentMethod === "Cheque" && <ChequeSummaryRenderer />}
 
-        <Grid item xs={4}>
+        <Grid size={4}>
           <FormField
             type="money"
             name="amount"
@@ -353,12 +353,12 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
             onBlur={setPayableInvoices}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid size={4}>
           <FormField type="text" name="account" label={$t('account')} disabled />
         </Grid>
-        <Grid item xs={4} />
+        <Grid size={4} />
 
-        <Grid item xs={4}>
+        <Grid size={4}>
           <FormField
             type="date"
             name="datePayed"
@@ -366,23 +366,23 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
             validate={validateLockedDate}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid size={4}>
           <Uneditable value={initialTotalOutstanding} money label={$t('total_outstanding')} />
         </Grid>
 
-        <Grid item xs={4} />
+        <Grid size={4} />
 
-        <Grid item xs={4}>
+        <Grid size={4}>
           <FormField type="date" name="dateBanked" label={$t('date_banked')} disabled />
         </Grid>
 
-        <Grid item xs={4}>
+        <Grid size={4}>
           <Uneditable value={initialTotalOwing} money label={$t('total_owing')} />
         </Grid>
 
-        <Grid item xs={4} />
+        <Grid size={4} />
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField type="multilineText" name="privateNotes" label={$t('private_notes')}  />
         </Grid>
       </Grid>

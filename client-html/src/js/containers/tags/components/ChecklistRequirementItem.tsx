@@ -93,7 +93,7 @@ const ChecklistRequirementItem = (props: Props) => {
 
   return (
     <div className={clsx(classes.root, hoverClasses.container)}>
-      <Typography variant="h5" className="flex-fill" fontSize="1.3rem">
+      <Typography variant="h5" className="flex-fill" sx={{ fontSize: '1.3rem' }}>
         {header}
       </Typography>
 

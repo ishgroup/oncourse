@@ -11,8 +11,8 @@ describe("Virtual rendered VoucherProductEditView", () => {
       expect(screen.getByRole(formRoleName)).toHaveFormValues({
         name: initialValues.name,
         code: initialValues.code,
-        expiryDays: initialValues.expiryDays,
-        maxCoursesRedemption: initialValues.maxCoursesRedemption,
+        expiryDays: initialValues.expiryDays.toString(),
+        maxCoursesRedemption: initialValues.maxCoursesRedemption.toString(),
         feeExTax: formatCurrency(initialValues.feeExTax, ""),
         status: initialValues.status,
         dataCollectionRuleId: initialValues.dataCollectionRuleId.toString(),

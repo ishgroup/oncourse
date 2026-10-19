@@ -16,7 +16,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.graph.GraphDiff;
 
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 
 public class ChangeFilter implements DataChannelSyncFilter {
@@ -32,14 +32,21 @@ public class ChangeFilter implements DataChannelSyncFilter {
 			GraphDiff changes,
 			int syncType,
 			DataChannelSyncFilterChain filterChain) {
+		Map<ObjectContext, GraphDiff> map = PRE_COMMIT_GRAPH_DIFF.get();
+		boolean isOuterCall = (map == null);
+		if (isOuterCall) {
+			map = new IdentityHashMap<>();
+			PRE_COMMIT_GRAPH_DIFF.set(map);
+		}
+		GraphDiff previous = map.get(originatingContext);
+		map.put(originatingContext, changes);
 		try {
-		    if (PRE_COMMIT_GRAPH_DIFF.get() == null) {
-                PRE_COMMIT_GRAPH_DIFF.set(new HashMap<>());
-            }
-            PRE_COMMIT_GRAPH_DIFF.get().put(originatingContext, changes);
 			return filterChain.onSync(originatingContext, changes, syncType);
 		} finally {
-			PRE_COMMIT_GRAPH_DIFF.get().put(originatingContext, null);
+			map.put(originatingContext, previous);
+			if (isOuterCall) {
+				PRE_COMMIT_GRAPH_DIFF.remove();
+			}
 		}
 	}
 

@@ -86,10 +86,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
     values && values.deliveryStatusEmail
   ]);
 
-  const gridItemProps: any = {
-    xs: twoColumn ? 6 : 12,
-    lg: twoColumn ? 4 : 12
-  };
+  const gridItemProps: any = { size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } };
 
   const handleUndeliverablePostalCheck = () => {
     dispatch(change(form, getName("deliveryStatusPost"), isUndeliverablePostal() ? 0 : 6));
@@ -159,7 +156,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
 
   return values ? (
     <Grid container className="pt-2 pl-3 pr-3">
-      <Grid item xs={12}>
+      <Grid size={12}>
         <ExpandableContainer
           index={tabIndex}
           expanded={expanded}
@@ -168,7 +165,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
           header="Contact"
         >
           <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <FormField
                 type="text"
                 name="street"
@@ -199,16 +196,16 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                 </MenuItem>
               </Menu>
             </Grid>
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <FormField type="text" name="suburb" label={$t('suburb')} />
             </Grid>
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <FormField type="text" name="state" label={$t('state')} />
             </Grid>
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <FormField type="text" name="postcode" label={$t('postcode')} />
             </Grid>
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               {countries && (
                 <FormField
                   type="select"
@@ -221,7 +218,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                 />
               )}
             </Grid>
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <FormField
                 type="phone"
                 name="mobilePhone"
@@ -252,7 +249,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                 </MenuItem>
               </Menu>
             </Grid>
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <FormField
                 type="text"
                 name="email"
@@ -283,24 +280,24 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                 </MenuItem>
               </Menu>
             </Grid>
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <FormField type="multilineText" name="message" label={$t('message_alert_for_operator')} />
             </Grid>
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <FormField type="phone" name="homePhone" label={$t('home_phone')} validate={validatePhoneNumber} />
             </Grid>
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <FormField type="phone" name="workPhone" label={$t('work_phone')} validate={validatePhoneNumber} />
             </Grid>
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <FormField type="phone" name="fax" label={$t('fax2')} />
             </Grid>
-            <Grid item {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <FormField type="text" name="abn" label={$t('business_number_abn')} validate={validateABN} />
             </Grid>
             {!isCompany ? (
               <>
-                <Grid item {...gridItemProps}>
+                <Grid {...gridItemProps}>
                   <FormField
                     type="date"
                     name="birthDate"
@@ -309,7 +306,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                     validate={validateBirthDate}
                   />
                 </Grid>
-                <Grid item {...gridItemProps}>
+                <Grid {...gridItemProps}>
                   <FormField
                     type="select"
                     name="gender"
@@ -319,7 +316,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                     allowEmpty
                   />
                 </Grid>
-                <Grid item {...gridItemProps}>
+                <Grid {...gridItemProps}>
                   <FormField type="text" name="honorific" label={$t('honorific')} />
                 </Grid>
               </>
@@ -347,7 +344,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
 
             {values.student && (
               <>
-                <Grid item {...gridItemProps} className="mb-2">
+                <Grid {...gridItemProps} className="mb-2">
                   <Alert severity="info">
                     {values.student.waitingLists && values.student.waitingLists.length !== 0 ? (
                       <Typography className="centeredFlex" variant="body1">
@@ -360,16 +357,16 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                         </IconButton>
                       </Typography>
                     ) : (
-                      <Typography display="inline" variant="body1" className="pt-2">
+                      <Typography sx={{ display: 'inline' }} variant="body1" className="pt-2">
                         {$t('student_is_not_on_any_waiting_list')}
                       </Typography>
                     )}
                   </Alert>
                 </Grid>
-                <Grid item {...gridItemProps}>
+                <Grid {...gridItemProps}>
                   <FormField type="multilineText" name="student.specialNeeds" label={$t('special_needs')} />
                 </Grid>
-                <Grid item {...gridItemProps}>
+                <Grid {...gridItemProps}>
                   <FormField
                     type="select"
                     name="student.citizenship"

@@ -68,6 +68,13 @@ class ScriptTriggeringListener implements DataChannelSyncFilter {
 			if (stack.isEmpty()) {
 				// if commit is coming from inside a groovy script,
 				// do not execute any entity scripts at all to avoid callback cycles
+				//
+				// NOTE (ONC-A2, investigated and dismissed): it was once suspected that dispatching
+				// here races the replication plugin's frame commit, letting a script's QueuedTransaction
+				// take a lower auto-increment id than the business transaction that triggered it.
+				// It does not. QueueableLifecycleListener is the INNERMOST sync filter, not the
+				// outermost — verified against a captured production stack trace — so its finally has
+				// already committed the frame by the time this one runs. Dispatching inline is correct.
 				if (!Boolean.TRUE.equals(originatingContext.getUserProperty(GroovyScriptService.SCRIPT_CONTEXT_PROPERTY))) {
 					eventMappings.each { mapping ->
 						triggerEntityEvent(mapping.getEvent(), mapping.getRecord())

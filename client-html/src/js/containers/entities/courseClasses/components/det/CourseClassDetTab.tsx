@@ -16,13 +16,13 @@ const CourseClassDetTab: React.FC<EditViewProps<CourseClassExtended>> = () => (
       <div className="heading mt-2 mb-2">{$t('det_export')}</div>
     </div>
     <Grid container columnSpacing={3} className="pl-3 pr-3">
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField type="text" name="initialDetExport" label={$t('initial_det_export')} />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField type="text" name="midwayDetExport" label={$t('midway_det_export')} />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <FormField type="text" name="finalDetExport" label={$t('final_det_export')} />
       </Grid>
     </Grid>

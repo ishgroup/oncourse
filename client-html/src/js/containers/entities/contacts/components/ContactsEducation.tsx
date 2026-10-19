@@ -246,8 +246,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
         <Grid container columnSpacing={3}>
           {enrolmentsPermissions && (
           <Grid
-            item
-            xs={12}
+            size={12}
           >
             <FieldArray
               name="student.education.enrolments"
@@ -268,8 +267,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
           {priorLearningsPermissions
             && (
             <Grid
-              item
-              xs={12}
+              size={12}
               className="mt-2"
             >
               <FieldArray
@@ -290,8 +288,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
           {outcomesPermissions
             && (
             <Grid
-              item
-              xs={12}
+              size={12}
               className="mt-2"
             >
               <FieldArray
@@ -312,8 +309,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
           {certificatesPermissions
             && (
             <Grid
-              item
-              xs={12}
+              size={12}
               className="mt-2"
             >
               <FieldArray

@@ -254,7 +254,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
       <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
           {countries && (
-            <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+            <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
               <FormField
                 type="select"
                 selectValueMark="id"
@@ -267,14 +267,14 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               />
             </Grid>
           )}
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField type="text" name="student.townOfBirth" label={$t('town_of_birth')} />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField type="select" name="student.indigenousStatus" label={$t('indigenous_status')} items={indigenousStatuses} />
           </Grid>
           {languages && (
-            <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+            <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
               <FormField
                 type="select"
                 selectValueMark="id"
@@ -287,7 +287,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               />
             </Grid>
           )}
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField
               type="select"
               name="student.englishProficiency"
@@ -295,7 +295,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               items={englishProficiencies}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField
               type="select"
               name="student.highestSchoolLevel"
@@ -303,7 +303,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               items={schoolLevels}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField
               type="number"
               name="student.yearSchoolCompleted"
@@ -313,7 +313,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               debounced={false}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField
               type="select"
               name="student.priorEducationCode"
@@ -321,7 +321,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               items={priorEducations}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField
               type="select"
               name="student.labourForceStatus"
@@ -329,7 +329,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               items={avetmissStudentLabourStatuses}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField
               type="select"
               name="student.isStillAtSchool"
@@ -337,7 +337,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               items={stillAtSchoolItems}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField
               type="select"
               name="student.disabilityType"
@@ -345,7 +345,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               items={disabilityTypes}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <div className="mt-1 centeredFlex">
               <FormControlLabel
                 className="checkbox pr-3"
@@ -356,7 +356,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               />
             </div>
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField
               type="select"
               name="student.clientIndustryEmployment"
@@ -364,7 +364,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               items={industriesOfEmployment}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField
               type="select"
               name="student.clientOccupationIdentifier"
@@ -372,22 +372,22 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               items={occupationIdentifiers}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField
               type="text"
               name="student.uniqueLearnerIdentifier"
               label={$t('government_student_number_vicqld')}
             />
           </Grid>
-          <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+          <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
             <FormField
               type="text"
               name="student.chessn"
               label={$t('commonwealth_higher_education_support_number_chess')}
             />
           </Grid>
-          <Grid item container xs={12}>
-            <Grid item xs={twoColumn ? 6 : 12} md={twoColumn ? 4 : 12}>
+          <Grid container size={12}>
+            <Grid size={{ xs: twoColumn ? 6 : 12, md: twoColumn ? 4 : 12 }}>
               <FormField
                 type="text"
                 name="student.usi"
@@ -466,16 +466,16 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                 </div>
               </Menu>
             </Grid>
-            <Grid item xs={twoColumn ? 6 : 12} md={twoColumn ? 8 : 12}>
+            <Grid size={{ xs: twoColumn ? 6 : 12, md: twoColumn ? 8 : 12 }}>
               <div className="mt-1">{getUSIStatusMsg()}</div>
             </Grid>
             {usiVerificationResult && usiVerificationResult.errorMessage && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <div className={`errorColor ${classes.verificationError}`}>{usiVerificationResult.errorMessage}</div>
             </Grid>
               )}
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <div className="mt-1 centeredFlex">
               <FormControlLabel
                 className="checkbox pr-3"
@@ -489,7 +489,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
           {values.student && values.student.isOverseasClient && (
             <>
               {countries && (
-                <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+                <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
                   <FormField
                     type="select"
                     selectValueMark="id"
@@ -501,23 +501,23 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                   />
                 </Grid>
               )}
-              <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+              <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
                 <FormField type="text" name="student.passportNumber" label={$t('passport_number')} />
               </Grid>
-              <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+              <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
                 <FormField type="text" name="student.visaType" label={$t('visa_type')} />
               </Grid>
-              <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+              <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
                 <FormField type="text" name="student.visaNumber" label={$t('visa_number')} />
               </Grid>
-              <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+              <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
                 <FormField
                   type="date"
                   name="student.visaExpiryDate"
                   label={$t('visa_expiry_date')}
                 />
               </Grid>
-              <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+              <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
                 <FormField
                   type="text"
                   name="student.medicalInsurance"
@@ -526,7 +526,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               </Grid>
             </>
           )}
-          <Grid item xs={12}>
+          <Grid size={12}>
             <div className="mt-1 mb-2 centeredFlex">
               <FormControlLabel
                 className="checkbox pr-3"
@@ -536,7 +536,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             </div>
           </Grid>
           {values.student && values.student.feeHelpEligible && (
-            <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+            <Grid size={{ xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 }}>
               <FormField
                 type="text"
                 name="tfn"

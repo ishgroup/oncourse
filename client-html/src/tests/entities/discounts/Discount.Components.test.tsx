@@ -23,7 +23,7 @@ describe("Virtual rendered DiscountEditView", () => {
         hideOnWeb: initialValues.hideOnWeb,
         description: initialValues.description,
         addByDefault: initialValues.addByDefault,
-        minEnrolments: initialValues.minEnrolments,
+        minEnrolments: initialValues.minEnrolments.toString(),
         minValue: formatCurrency(initialValues.minValue, ""),
       });
     }

@@ -109,7 +109,7 @@ const VoucherView: React.FC<Props> = props => {
       {isClassVoucher
         ? (
           <Grid container>
-            <Grid item sm={12} className="mb-2">
+            <Grid size={{ sm: 12 }} className="mb-2">
               <div className="heading">{$t('apply_to')}</div>
               <Typography variant="caption">
                 {$t('can_be_used_for_up_to_enrolments', [enrolmentsLeft.toString()])}
@@ -117,8 +117,8 @@ const VoucherView: React.FC<Props> = props => {
             </Grid>
 
             {currentEnrolments.map((en, i) => (
-              <Grid item container alignItems="baseline" sm={12} className={classes.history} key={i}>
-                <Grid item xs={2}>
+              <Grid container sx={{ alignItems: 'baseline' }} size={{ sm: 12 }} className={classes.history} key={i}>
+                <Grid size={2}>
                   <FormControlLabel
                     classes={{ root: "checkbox mt-2" }}
                     control={(
@@ -132,7 +132,7 @@ const VoucherView: React.FC<Props> = props => {
                     label={en.contact}
                   />
                 </Grid>
-                <Grid item xs={10}>
+                <Grid size={10}>
                   <StyledCourseItemRenderer item={en.item} />
                 </Grid>
               </Grid>
@@ -141,17 +141,17 @@ const VoucherView: React.FC<Props> = props => {
         )
         : (
           <Grid container columnSpacing={3}>
-            <Grid item sm={2}>
+            <Grid size={{ sm: 2 }}>
               <Uneditable value={selectedDiscount.appliedValue} label={$t('apply_now')} money />
             </Grid>
-            <Grid item sm={4}>
+            <Grid size={{ sm: 4 }}>
               <Uneditable value={selectedDiscount.availableValue} label={$t('value_remaining')} money />
             </Grid>
           </Grid>
       )}
 
       <Grid container columnSpacing={3} className="pt-2">
-        <Grid item sm={4}>
+        <Grid size={{ sm: 4 }}>
           <Uneditable
             value={format(new Date(selectedDiscount.expiryDate), III_DD_MMM_YYYY)}
             label={$t('expires_on2')}
@@ -161,33 +161,33 @@ const VoucherView: React.FC<Props> = props => {
 
       <Grid container className="pt-2">
         <div className="heading">{$t('history')}</div>
-        <Grid item xs={12} container columnSpacing={3} className="pt-2">
-          <Grid item sm={12} className={classes.history}>
+        <Grid size={12} container columnSpacing={3} className="pt-2">
+          <Grid size={{ sm: 12 }} className={classes.history}>
             <div className={clsx("centeredFlex", classes.historyItem)}>
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <Typography variant="body2">{$t('purchase')}</Typography>
               </Grid>
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <Typography variant="body2">{format(new Date(selectedDiscount.purchaseDate), III_DD_MMM_YYYY)}</Typography>
               </Grid>
               <span className={classes.customPadding} />
-              <Grid item xs={4}>
+              <Grid size={4}>
                 <Typography variant="body2" className="money">{formatCurrency(selectedDiscount.purchaseValue, currencySymbol)}</Typography>
               </Grid>
             </div>
           </Grid>
 
           {selectedDiscount.history.map((h, i) => (
-            <Grid item sm={12} className={classes.history} key={i}>
+            <Grid size={{ sm: 12 }} className={classes.history} key={i}>
               <div className={clsx("centeredFlex", classes.historyItem)}>
-                <Grid item xs={4}>
+                <Grid size={4}>
                   <Typography variant="body2">{$t('redeemed')}</Typography>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                   <Typography variant="body2">{format(new Date(h.createdOn), III_DD_MMM_YYYY)}</Typography>
                 </Grid>
                 <span className={classes.customPadding} />
-                <Grid item xs={4}>
+                <Grid size={4}>
                   <Typography variant="body2" className="money">{formatCurrency(h.amount, currencySymbol)}</Typography>
                 </Grid>
               </div>
@@ -218,7 +218,7 @@ const DiscountPromoView: React.FC<Props> = props => {
 
   return (
     <Grid container columnSpacing={3}>
-      <Grid item sm={12} className="mb-2">
+      <Grid size={{ sm: 12 }} className="mb-2">
         <div className="heading mb-2">{$t('promotion')}</div>
         <Typography variant="body1" className={clsx(selectedDiscount.discountType !== "Percent" && "money")}>
           {getDiscountLabel(selectedDiscount, currencySymbol)}
@@ -226,27 +226,27 @@ const DiscountPromoView: React.FC<Props> = props => {
       </Grid>
 
       {Boolean(appliesToClasses.length) && (
-        <Grid container columnSpacing={3} item sm={12}>
-          <Grid item xs={12}>
+        <Grid container columnSpacing={3} size={{ sm: 12 }}>
+          <Grid size={12}>
             <div className="heading mb-2 mt-2">{$t('applies_to')}</div>
           </Grid>
           {appliesToClasses.map(c => (
-            <Grid container columnSpacing={3} item sm={12} lg={7}>
-              <Grid item xs={4}>
+            <Grid container columnSpacing={3} size={{ sm: 12, lg: 7 }}>
+              <Grid size={4}>
                 {c.contact}
               </Grid>
-              <Grid item xs={6}>
+              <Grid size={6}>
                 {c.classs}
               </Grid>
-              <Grid item xs={2} className="money text-end">
+              <Grid size={2} className="money text-end">
                 {formatCurrency(c.discountExTax, currencySymbol)}
               </Grid>
             </Grid>
           ))}
 
-          <Grid container columnSpacing={3} item sm={12} lg={7} className="mt-2">
-            <Grid item xs={10} />
-            <Grid item xs={2} className="money text-end summaryTopBorder pt-1">
+          <Grid container columnSpacing={3} size={{ sm: 12, lg: 7 }} className="mt-2">
+            <Grid size={10} />
+            <Grid size={2} className="money text-end summaryTopBorder pt-1">
               {formatCurrency(appliesToClasses.reduce((p, c) => decimalPlus(p, c.discountExTax), 0), currencySymbol)}
             </Grid>
           </Grid>

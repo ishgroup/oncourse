@@ -98,7 +98,7 @@ const CatalogItem = (
         </ListItemButton>
 
       </ListItem>
-      <Divider light/>
+      <Divider sx={{ opacity: 0.6 }}/>
     </>
   );
 };

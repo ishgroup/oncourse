@@ -49,6 +49,7 @@ const FormField = React.forwardRef<any, FormFieldWrapperProps>((props, ref) => {
       name={name}
       component={FormFieldBase}
       validate={validateResolver}
+      placeholder={COMMON_PLACEHOLDER}
       {...rest}
     />
   );

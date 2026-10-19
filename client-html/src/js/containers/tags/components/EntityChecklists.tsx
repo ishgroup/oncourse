@@ -67,8 +67,10 @@ const ChecklistItem = ({
         anchorEl={menuAnchor}
         open={Boolean(menuAnchor)}
         onClose={onMenuClose}
-        MenuListProps={{
-        'aria-labelledby': 'basic-button',
+        slotProps={{
+          list: {
+            'aria-labelledby': 'basic-button',
+          }
         }}
       >
         <MenuItem onClick={onEditClick}>{$t('edit_checklist')}</MenuItem>
@@ -186,7 +188,7 @@ export const EntityChecklists = ({
             onCheck={onCheck}
             onCheckAll={v => onCheckAll(c, v)}
           />
-          {index < checklists.length - 1 && <Divider light className="mt-2 mb-2" />}
+          {index < checklists.length - 1 && <Divider sx={{ opacity: 0.6 }} className="mt-2 mb-2" />}
         </Fragment>
       ))}
 

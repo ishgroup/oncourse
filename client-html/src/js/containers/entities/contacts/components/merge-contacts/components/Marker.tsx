@@ -25,7 +25,7 @@ const Marker = React.memo(({ classes, className, letter }: Props) => (
     className={`d-inline-flex-center justify-content-center text-uppercase text-bold ${
       className ? `${classes.marker} ${className}` : classes.marker
     }`}
-    display="block"
+    sx={{ display: 'block' }}
   >
     {letter}
   </Typography>

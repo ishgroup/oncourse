@@ -465,7 +465,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_CANCEL_TRANSFER_ENROLMENTS(79, "Enrolment cancellation and transferring", ALL - VIEW),
+	SPECIAL_CANCEL_ENROLMENTS(79, "Enrolment cancellation", ALL - VIEW),
 
 	/**
 	 * Database value: 80

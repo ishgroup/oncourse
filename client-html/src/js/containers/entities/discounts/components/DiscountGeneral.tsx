@@ -297,13 +297,13 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
 
     return (
       <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FullScreenStickyHeader
               opened={isNew || Object.keys(syncErrors).includes("name")}
               twoColumn={twoColumn}
               title={<span>{values && values.name}</span>}
               fields={(
-                <Grid item xs={twoColumn ? 6 : 12}>
+                <Grid size={twoColumn ? 6 : 12}>
                   <FormField
                     type="text"
                     name="name"
@@ -314,7 +314,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               )}
             />
           </Grid>
-          <Grid item xs={gridXS}>
+          <Grid size={gridXS}>
             <FormField
               type="select"
               name="discountType"
@@ -323,7 +323,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               onChange={this.cleanValueFields}
             />
           </Grid>
-          <Grid item xs={gridXS}>
+          <Grid size={gridXS}>
             {this.state.discountType === DiscountType.Percent ? (
               <FormField
                 type="number"
@@ -343,14 +343,14 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               />
             )}
           </Grid>
-          <Grid item xs={gridXS}>
+          <Grid size={gridXS}>
             <FormField type="select" name="rounding" label={$t('rounding')} items={roundingModeTypes} />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Collapse in={this.state.discountType === DiscountType.Percent} mountOnEnter unmountOnExit>
               <Grid container columnSpacing={3} rowSpacing={2}>
-                <Grid item xs={gridXS}>
+                <Grid size={gridXS}>
                   <FormField
                     type="money"
                     name="discountMin"
@@ -358,7 +358,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                     validate={validateNonNegative}
                   />
                 </Grid>
-                <Grid item xs={gridXS}>
+                <Grid size={gridXS}>
                   <FormField
                     type="money"
                     name="discountMax"
@@ -370,10 +370,10 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             </Collapse>
           </Grid>
 
-          <Grid item xs={12} className="mt-2">
+          <Grid size={12} className="mt-2">
             <Subtitle label={$t('accounting')} />
           </Grid>
-          <Grid item xs={gridXS}>
+          <Grid size={gridXS}>
             <FormField
               type="select"
               name="cosAccount"
@@ -384,7 +384,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               allowEmpty
             />
           </Grid>
-          <Grid item xs={gridXS}>
+          <Grid size={gridXS}>
             <FormField
               type="number"
               name="predictedStudentsPercentage"
@@ -396,7 +396,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Divider className="mt-2 mb-2" />
             <div className="mb-2">
               <div className="centeredFlex">
@@ -416,7 +416,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             </div>
           </Grid>
 
-          <Grid item xs={gridXS} >
+          <Grid size={gridXS} >
             <CustomSelector
               caption="Valid from"
               options={this.validFromOptions}
@@ -425,7 +425,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             />
           </Grid>
 
-          <Grid item xs={gridXS} >
+          <Grid size={gridXS} >
             <CustomSelector
               caption="Valid to"
               options={this.validToOptions}
@@ -433,20 +433,20 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               initialIndex={validToIndex}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Divider  />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Subtitle label={$t('web')} />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormControlLabel
               className="checkbox pr-3"
               control={<FormField type="checkbox" name="hideOnWeb" color="secondary"  />}
               label={$t('hide_discounted_price_on_web')}
             />
           </Grid>
-          <Grid item xs={gridXS} >
+          <Grid size={gridXS} >
             <FormField
               type="select"
               name="availableFor"
@@ -454,7 +454,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               items={DiscountAvailabilityTypes || []}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField type="multilineText" name="description" label={$t('public_description')}  />
           </Grid>
         </Grid>

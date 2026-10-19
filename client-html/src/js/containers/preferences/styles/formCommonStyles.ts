@@ -50,7 +50,7 @@ export const cardsFormStyles = (theme: AppTheme) => ({
     backgroundColor: darken(theme.palette.background.paper, 0.05),
     borderRadius: theme.shape.borderRadius,
     marginLeft: 0,
-    paddingRight: theme.spacing(2)
+    padding: theme.spacing(2,2,0,2)
   },
   fromNameLabel: {
     "& > span": {

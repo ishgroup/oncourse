@@ -284,7 +284,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	 */
 	@API
 	Integer getClassAttendancePercent(){
-		courseClass.getAttendancePercentForStudent(student)
+		getAttendancePercent()
 	}
 
 	@Override

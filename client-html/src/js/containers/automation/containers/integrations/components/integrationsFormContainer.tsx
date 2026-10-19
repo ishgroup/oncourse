@@ -155,7 +155,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
         opened={isNew || Object.keys(syncErrors).includes("name")}
         disabledScrolling
         fields={(
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField
               type="text"
               name="name"
@@ -198,7 +198,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
 
     return (
       <Grid container className={classes.root}>
-        <Grid item xs={12} sm={6} lg={5}>
+        <Grid size={{ xs: 12, sm: 6, lg: 5 }}>
           <RouteChangeConfirm form={typeItem.formName} when={dirty} />
           {item && TypeForm && (
             <TypeForm
@@ -210,7 +210,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
             />
           )}
         </Grid>
-        <Grid item xs={12} sm={5} lg={4} className="flex-column pr-3 text-end">
+        <Grid size={{ xs: 12, sm: 5, lg: 4 }} className="flex-column pr-3 text-end">
           <div>
             <img
               alt="integrationLogo"

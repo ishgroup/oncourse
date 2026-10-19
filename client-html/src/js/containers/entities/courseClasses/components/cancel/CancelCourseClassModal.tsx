@@ -118,7 +118,7 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
         <form autoComplete="off" onSubmit={handleSubmit(this.onSubmit)}>
           <DialogContent>
             <Grid container columnSpacing={3}>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <div className="centeredFlex">
                   <div className="heading mt-2 mb-2">
                     {$t('you_are_about_to_cancel_class')} "

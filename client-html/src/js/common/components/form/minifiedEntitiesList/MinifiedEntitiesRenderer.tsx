@@ -116,7 +116,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
             expanded={Boolean(fieldsWithError[index]) || Boolean(expanded[index])}
             onChange={() => onChangeBase(index)}
             defaultExpanded={!field.id}
-            TransitionProps={{ unmountOnExit: true }}
+            slotProps={{ transition: { unmountOnExit: true } }}
           >
             <AccordionSummary
               classes={{

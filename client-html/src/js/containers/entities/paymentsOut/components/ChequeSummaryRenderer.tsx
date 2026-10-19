@@ -12,14 +12,14 @@ import * as React from 'react';
 import FormField from '../../../../common/components/form/formFields/FormField';
 
 const ChequeSummaryRenderer = () => (
-  <Grid item xs={12} container columnSpacing={3} rowSpacing={2}>
-    <Grid item xs={4}>
+  <Grid size={12} container columnSpacing={3} rowSpacing={2}>
+    <Grid size={4}>
       <FormField type="text" name="chequeSummary.chequeBank" label={$t('cheque_bank')}  />
     </Grid>
-    <Grid item xs={4}>
+    <Grid size={4}>
       <FormField type="text" name="chequeSummary.chequeBranch" label={$t('cheque_branch')}  />
     </Grid>
-    <Grid item xs={4}>
+    <Grid size={4}>
       <FormField type="text" name="chequeSummary.chequeDrawer" label={$t('cheque_drawer')}  />
     </Grid>
   </Grid>

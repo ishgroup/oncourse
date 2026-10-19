@@ -59,7 +59,7 @@ export const summaryListStyles = (theme: AppTheme, p, classes) => ({
     padding: 0
   },
   expansionSummaryContent: {
-    margin: "0px !important"
+    margin: "0px"
   },
   expandIcon: {
     padding: theme.spacing(0.5),

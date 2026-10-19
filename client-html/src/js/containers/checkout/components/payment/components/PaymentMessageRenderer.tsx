@@ -165,7 +165,7 @@ const SuccessPaymentMessage: React.FC<any> = props => {
       <div>
         <Grid container className="p-3 align-content-between">
           {payment.invoice && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             {summary.list.map((list, i) => (
               <CheckoutPaymentExpandableItemRenderer
                 key={i}
@@ -210,7 +210,7 @@ const SuccessPaymentMessage: React.FC<any> = props => {
           </Grid>
               )}
           {payment.paymentId && (
-          <Grid item xs={12} className={classes.paymentIdSection}>
+          <Grid size={12} className={classes.paymentIdSection}>
             <Paper elevation={0} className={clsx("pl-3 pr-3", classes.paymentIdPaper)}>
               <Typography variant="caption" className="heading mt-1 mb-1 mr-2">
                 {`Payment ID: ${payment.paymentId}`}

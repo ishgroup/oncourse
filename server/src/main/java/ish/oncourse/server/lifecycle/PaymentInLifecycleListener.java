@@ -78,20 +78,14 @@ public class PaymentInLifecycleListener {
      */
     @PostPersist(value = PaymentIn.class)
     public void postPersist(PaymentIn entity) {
-        try {
-            if (PaymentStatus.NEW.equals(entity.getStatus())) {
-                if (licenseService.isReplicationDisabled()) {
-                    entity.succeed();
-                }
+        if (PaymentStatus.NEW.equals(entity.getStatus())) {
+            if (licenseService.isReplicationDisabled()) {
+                entity.succeed();
             }
-            // touch each related invoice to update amount owing
-            entity.updateAmountsOwing(entity.getContext());
-            entity.getContext().commitChanges();
-        } catch (Throwable e) {
-            // surround with 'try catch' and add exception logging here
-            // because we have a case when paymentIn was commited in db without status (status == NULL, postPersist()  method tripped not properly) and no error logs - see #23799.
-            logger.error("Some unexpected was happened. PaymentIn with ID:{} has not been processed completely. Please verify status for payment manually", entity.getId(), e);
         }
+        // touch each related invoice to update amount owing
+        entity.updateAmountsOwing(entity.getContext());
+        entity.getContext().commitChanges();
     }
 
 	/**

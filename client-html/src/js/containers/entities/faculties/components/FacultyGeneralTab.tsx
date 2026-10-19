@@ -30,7 +30,7 @@ function FacultyGeneralTab(
   const tags = useAppSelector(state => state.tags.entityTags.Faculty);
   
   return <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FullScreenStickyHeader
         opened={isNew || Object.keys(syncErrors).some(k => ['code', 'name'].includes(k))}
         twoColumn={twoColumn}
@@ -55,7 +55,7 @@ function FacultyGeneralTab(
         )}
         fields={(
           <Grid container columnSpacing={3} rowSpacing={2}>
-            <Grid item xs={twoColumn ? 2 : 12}>
+            <Grid size={twoColumn ? 2 : 12}>
               <FormField
                 type="text"
                 label={$t('code')}
@@ -64,7 +64,7 @@ function FacultyGeneralTab(
                 required
               />
             </Grid>
-            <Grid item xs={twoColumn ? 4 : 12}>
+            <Grid size={twoColumn ? 4 : 12}>
               <FormField
                 type="text"
                 label={$t('name')}
@@ -78,15 +78,17 @@ function FacultyGeneralTab(
       />
     </Grid>
 
-    <Grid item xs={twoColumn ? 8 : 12}>
+    <Grid size={twoColumn ? 8 : 12}>
       <FormField
         type="tags"
         name="tags"
         tags={tags}
+        placeholder='Tags'
+        trackCarretPosition={twoColumn}
       />
     </Grid>
 
-    <Grid item xs={twoColumn ? 4 : 12}>
+    <Grid size={twoColumn ? 4 : 12}>
       <EntityChecklists
         className={twoColumn ? "mr-4" : null}
         entity="Faculty"
@@ -96,7 +98,7 @@ function FacultyGeneralTab(
       />
     </Grid>
 
-    <Grid item xs={12} className="centeredFlex">
+    <Grid size={12} className="centeredFlex">
       <FormControlLabel
         className="switchWrapper"
         control={<FormField type="switch" name="isShownOnWeb" />}
@@ -110,10 +112,7 @@ function FacultyGeneralTab(
       fieldName="customFields"
       entityValues={values}
       form={form}
-      gridItemProps={{
-        xs: twoColumn ? 6 : 12,
-        lg: twoColumn ? 4 : 12
-      }}
+      gridItemProps={{ size: { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 } }}
     />
   </Grid>;
 }

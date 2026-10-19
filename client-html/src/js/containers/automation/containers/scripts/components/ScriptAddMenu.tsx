@@ -65,9 +65,11 @@ class ScriptAddMenu extends React.Component<any, any> {
           open={Boolean(anchorEl)}
           onClose={this.handleAddFieldClose}
           className={classes.menuWrapper}
-          MenuListProps={{
-            classes: {
-              root: "p-1"
+          slotProps={{
+            list: {
+              classes: {
+                root: "p-1"
+              }
             }
           }}
         >

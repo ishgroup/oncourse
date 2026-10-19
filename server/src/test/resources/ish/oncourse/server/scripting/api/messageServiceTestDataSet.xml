@@ -20,9 +20,11 @@
   <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
   <AutomationBinding ID="1" CREATEDON="2020-12-24 20:38:50.0" MODIFIEDON="2020-12-24 20:38:50.0"
-                     ENTITYIDENTIFIER="EmailTemplate" ENTITYRECORDID="1" NAME="money" LABLE="Money" DATATYPE="6"/>
+                     ENTITYIDENTIFIER="EmailTemplate" ENTITYRECORDID="1" NAME="money" LABLE="Money" DATATYPE="6"
+                     LISTORDER="0"/>
   <AutomationBinding ID="2" CREATEDON="2020-12-24 20:40:30.0" MODIFIEDON="2020-12-24 20:40:30.0"
-                     ENTITYIDENTIFIER="EmailTemplate" ENTITYRECORDID="2" NAME="text" LABLE="Text" DATATYPE="0"/>
+                     ENTITYIDENTIFIER="EmailTemplate" ENTITYRECORDID="2" NAME="text" LABLE="Text" DATATYPE="0"
+                     LISTORDER="1"/>
 
   <Contact BIRTHDATE="2007-12-31" CREATEDON="2020-12-24 20:27:56.0" ID="1" ISCOMPANY="0" ISMALE="1"
            MODIFIEDON="2020-12-24 20:41:25.0" ISSTUDENT="1" ISTUTOR="0" DELIVERYSTATUSEMAIL="0" DELIVERYSTATUSSMS="0"

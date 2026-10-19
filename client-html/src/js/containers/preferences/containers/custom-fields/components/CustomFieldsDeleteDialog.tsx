@@ -82,7 +82,7 @@ const CustomFieldsDeleteDialog = React.memo<CustomFieldsDeleteDialogProps & Inje
               </Typography>
             )}
           </div>
-          <Grid item xs={12} className="mt-2">
+          <Grid size={12} className="mt-2">
             <FormField
               type="text"
               name="customFieldName"

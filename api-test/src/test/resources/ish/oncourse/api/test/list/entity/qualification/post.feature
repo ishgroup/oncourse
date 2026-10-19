@@ -35,7 +35,7 @@ Feature: Main feature for all POST requests with path 'list/entity/qualification
         Then status 200
         And match $.rows[*].values[*] contains ["CODE01"]
 
-        * def id = get[0] response.rows[?(@.values == ["CODE01","someTitle","someLevel",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'CODE01')].id
 
 #       Scenario have been finished. Now find and remove created object from DB:
         Given path ishPath + '/' + id
@@ -69,7 +69,7 @@ Feature: Main feature for all POST requests with path 'list/entity/qualification
         Then status 200
         And match $.rows[*].values[*] contains ["A3A5A7A9A12A"]
 
-        * def id = get[0] response.rows[?(@.values == ["A3A5A7A9A12A","A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A152A156A160A164A168A172A176A180A184A188A192A196A200A204A208A212A216A220A224A228A232A236A240A244A248A252A256","A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A152A156A160A164A168A172A176A180A184A188A192A196A200A204A208A212A216A220A224A228A232A236A240A244A248A252A256",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'A3A5A7A9A12A')].id
 
 #       Scenario have been finished. Now find and remove created object from DB:
         * call read('../../../removeEntityById.feature') {path: '#(ishPath)', entityId: '#(id)'}
@@ -106,7 +106,7 @@ Feature: Main feature for all POST requests with path 'list/entity/qualification
         Then status 200
         And match $.rows[*].values[*] contains ["CODE01"]
 
-        * def id = get[0] response.rows[?(@.values == ["CODE01","someTitle","someLevel",null,"false"])].id
+        * def id = get[0] response.rows[?(@.values[0] == 'CODE01')].id
 
 #       <---->  Scenario have been finished. Now delete created entity from db:
         * configure headers = { Authorization: 'admin'}

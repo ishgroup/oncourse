@@ -327,7 +327,7 @@ const RelationshipView: React.FC<Props> = props => {
     <Dialog
       fullScreen
       open={Boolean(open)}
-      TransitionComponent={Transition}
+      slots={{ transition: Transition }}
       classes={{
         paper: classes.fullEditViewBackground
       }}

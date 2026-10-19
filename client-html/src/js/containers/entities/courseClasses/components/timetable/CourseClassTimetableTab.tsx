@@ -775,7 +775,7 @@ const onBulkSessionUpdate = bulkValue => {
           >
           {["Distant Learning", "Hybrid"].includes(values.type) && (
             <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
-                <Grid item xs={twoColumn ? 3 : 12}>
+                <Grid size={twoColumn ? 3 : 12}>
                   <FormField
                     type="dateTime"
                     label={$t('class_start_date')}
@@ -785,7 +785,7 @@ const onBulkSessionUpdate = bulkValue => {
                     required={isHybrid}
                   />
                 </Grid>
-                <Grid item xs={twoColumn ? 3 : 12}>
+                <Grid size={twoColumn ? 3 : 12}>
                   <FormField
                     type="dateTime"
                     label={$t('class_end_date')}
@@ -795,7 +795,7 @@ const onBulkSessionUpdate = bulkValue => {
                     required={isHybrid}
                   />
                 </Grid>
-              {isHybrid ? <Grid item xs={twoColumn ? 3 : 12}>
+              {isHybrid ? <Grid size={twoColumn ? 3 : 12}>
                 <FormField
                   type="number"
                   label={$t('minimum_sessions_to_complete')}
@@ -806,7 +806,7 @@ const onBulkSessionUpdate = bulkValue => {
                   required
                 />
               </Grid> : <>
-                <Grid item xs={twoColumn ? 3 : 12}>
+                <Grid size={twoColumn ? 3 : 12}>
                   <FormField
                     type="number"
                     label={$t('maximum_days_to_complete')}
@@ -819,7 +819,7 @@ const onBulkSessionUpdate = bulkValue => {
                   />
                 </Grid>
               </>}
-              <Grid item xs={twoColumn ? 3 : 12}>
+              <Grid size={twoColumn ? 3 : 12}>
                 <FormField
                   type="number"
                   label={$t('expected_study_hours')}
@@ -832,7 +832,7 @@ const onBulkSessionUpdate = bulkValue => {
                   required
                 />
               </Grid>
-              <Grid item xs={twoColumn ? 6 : 12}>
+              <Grid size={twoColumn ? 6 : 12}>
                 <div className={clsx(classes.siteFields, values.virtualSiteId && classes.roomIdVisible, { twoColumn })}>
                   <FormField
                     type="select"

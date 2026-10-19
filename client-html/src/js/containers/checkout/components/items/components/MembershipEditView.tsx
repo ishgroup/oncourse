@@ -14,19 +14,19 @@ import Uneditable from '../../../../../common/components/form/formFields/Unedita
 
 const MembershipEditView = ({ values }: { values: CheckoutMembershipProduct }) => values ? (
   <Grid container columnSpacing={3} rowSpacing={2} className="ml-0">
-    <Grid item xs={4}>
+    <Grid size={4}>
       <Uneditable label={$t('sku')} value={values.code} />
     </Grid>
-    <Grid item xs={4}>
+    <Grid size={4}>
       <Uneditable label={$t('sale_price')} value={values.totalFee} money />
     </Grid>
-    <Grid item xs={4}>
+    <Grid size={4}>
       <Uneditable label={$t('expires_on2')} {...values.expiresOn
         ? { value: values.expiresOn, format: v => formatDate(new Date(v), III_DD_MMM_YYYY) }
         : { value: "Never (Lifetime)" }
       } />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FormEditorField label={$t('description')} name="description" disabled />
     </Grid>
   </Grid>

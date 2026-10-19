@@ -118,6 +118,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Level', attribute: Qualification.LEVEL.name, sortable: true, width: W100, visible: true),
                 new ColumnDTO(title: 'Hours', attribute: Qualification.NOMINAL_HOURS.name, sortable: true, width: W100, visible: true),
                 new ColumnDTO(title: 'Offered', attribute: Qualification.IS_OFFERED.name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
+                new ColumnDTO(title: 'Custom', attribute: Qualification.IS_CUSTOM.name, sortable: false, width: W100, visible: false, system: true, type: ColumnTypeDTO.BOOLEAN),
         ]
         it.sortings = [
                 new SortingDTO(attribute: Qualification.NATIONAL_CODE.name, ascending: true)
@@ -134,6 +135,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Is offered', attribute: Module.IS_OFFERED.name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Credit points', attribute: Module.CREDIT_POINTS.name, sortable: true, width: W100, visible: false),
                 new ColumnDTO(title: 'Expiry days', attribute: Module.EXPIRY_DAYS.name, sortable: true, width: W100, visible: false),
+                new ColumnDTO(title: 'Custom', attribute: Module.IS_CUSTOM.name, sortable: false, width: W100, visible: false, system: true, type: ColumnTypeDTO.BOOLEAN),
         ]
         it.sortings = [
                 new SortingDTO(attribute: Module.NATIONAL_CODE.name, ascending: true)

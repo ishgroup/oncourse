@@ -13,7 +13,7 @@ import { alpha } from '@mui/material/styles';
 import $t from '@t';
 import clsx from 'clsx';
 import { format as formatDate } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
+import { toZonedTime } from 'date-fns-tz';
 import { AppTheme, D_MMM_YYYY } from 'ish-ui';
 import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
@@ -127,8 +127,8 @@ const NewsItemRender = props => {
             </>
           )}
           secondary={(
-            <Box component="span" display="block">
-              <Box component="span" display="block" position="relative">
+            <Box component="span" sx={{ display: 'block' }}>
+              <Box component="span" sx={{ position: 'relative', display: 'block' }}>
                 <Typography
                   component="span"
                   variant="body2"
@@ -137,11 +137,11 @@ const NewsItemRender = props => {
                     "blog-post-content d-block overflow-hidden", classes.postContentExpanded
                   )}
                 >
-                  <Box component="span" display="block" dangerouslySetInnerHTML={{ __html: post.content }}/>
+                  <Box component="span" sx={{ display: 'block' }} dangerouslySetInnerHTML={{ __html: post.content }}/>
                 </Typography>
                 {" "}
               </Box>
-              <Box component="span" display="block" textAlign="left">
+              <Box component="span" sx={{ display: 'block', textAlign: 'left' }}>
                 <Typography
                   component="span"
                   variant="caption"
@@ -175,7 +175,7 @@ const NewsRender = props => {
   } = props;
 
   const lastLoginOn = localStorage.getItem("lastLoginOn");
-  const lastLoginOnWithTimeZone = utcToZonedTime(lastLoginOn || new Date(), Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const lastLoginOnWithTimeZone = toZonedTime(lastLoginOn || new Date(), Intl.DateTimeFormat().resolvedOptions().timeZone);
 
   const postsForRender = useMemo(() => {
     const readNews = preferences[READ_NEWS] && preferences[READ_NEWS].split(",");

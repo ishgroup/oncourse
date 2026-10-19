@@ -170,12 +170,12 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
 
     return (
       <Grid container columnSpacing={3} className="pl-3 pr-3 pb-2">
-        <Grid item xs={12} className="centeredFlex">
+        <Grid size={12} className="centeredFlex">
           <div className="heading">{$t('tutors')}</div>
           <AddButton onClick={onAddTutor} />
         </Grid>
 
-        <Grid item xs={twoColumn ? 6 : 12}>
+        <Grid size={twoColumn ? 6 : 12}>
           <FieldArray
             name="tutors"
             component={CourseClassTutorsRenderer}

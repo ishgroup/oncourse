@@ -89,7 +89,7 @@ const MessageCardContent = React.memo<Props>(props => {
   const templateMessage = field.hasOwnProperty("template");
 
   const FromField = (
-    <Grid item xs={12}>
+    <Grid size={12}>
       <FormField
         type="text"
         name={`${name}.from`}
@@ -103,7 +103,7 @@ const MessageCardContent = React.memo<Props>(props => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="mt-2 pb-2">
-      <Grid item xs={12} className="centeredFlex">
+      <Grid size={12} className="centeredFlex">
         <Typography variant="caption" color="textSecondary">
           {$t('use_template')}
         </Typography>
@@ -116,7 +116,7 @@ const MessageCardContent = React.memo<Props>(props => {
 
       {templateMessage ? (
         <>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField
               type="select"
               name={typeof templateOptionIndex === "number" && templateOptionIndex !== -1
@@ -136,7 +136,7 @@ const MessageCardContent = React.memo<Props>(props => {
       ) : (
         <>
           {FromField}
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField
               type="text"
               name={`${name}.to`}
@@ -144,7 +144,7 @@ const MessageCardContent = React.memo<Props>(props => {
               disabled={disabled}
                           />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField
               type="text"
               name={`${name}.cc`}
@@ -152,7 +152,7 @@ const MessageCardContent = React.memo<Props>(props => {
               label={$t('cc')}
                           />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField
               type="text"
               name={`${name}.bcc`}
@@ -160,7 +160,7 @@ const MessageCardContent = React.memo<Props>(props => {
               label={$t('bcc')}
                           />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField
               type="text"
               name={`${name}.subject`}
@@ -168,7 +168,7 @@ const MessageCardContent = React.memo<Props>(props => {
               disabled={disabled}
                           />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <FormField
               type="multilineText"
               name={`${name}.content`}
@@ -180,7 +180,7 @@ const MessageCardContent = React.memo<Props>(props => {
       )}
 
       {field.hasOwnProperty("key") && (
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="text"
             name={`${name}.key`}
@@ -191,7 +191,7 @@ const MessageCardContent = React.memo<Props>(props => {
       )}
 
       {field.hasOwnProperty("keyCollision") && (
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormField
             type="text"
             name={`${name}.keyCollision`}

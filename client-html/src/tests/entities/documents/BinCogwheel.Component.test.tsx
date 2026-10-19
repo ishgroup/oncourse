@@ -1,3 +1,4 @@
+import MenuList from "@mui/material/MenuList";
 import * as React from "react";
 import BinCogwheel from "../../../js/containers/entities/documents/components/BinCogwheel";
 import { defaultComponents } from "../../common/Default.Components";
@@ -5,7 +6,7 @@ import { defaultComponents } from "../../common/Default.Components";
 describe("Virtual rendered BinCogwheel of Document list view", () => {
   defaultComponents({
     entity: "BinCogwheel",
-    View: props => <div><BinCogwheel {...props} /></div>,
+    View: props => <MenuList><BinCogwheel {...props} /></MenuList>,
     record: mockedApi => mockedApi.db.getDocumentsForBinCogweel(),
     defaultProps: ({ initialValues }) => ({
       opened: true,

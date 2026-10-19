@@ -241,7 +241,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
   const hasGrades = Boolean(values.assessments?.some(a => gradingTypes.some(g => g.id === a.gradingTypeId)));
 
   return values.assessments && values.assessments.length ? (
-    <Grid item={true} xs={12} id={name} container>
+    <Grid size={12} id={name} container>
       <GradeModal
         gradeMenuAnchorEl={gradeMenuAnchorEl}
         handleGradeMenuClose={handleGradeMenuClose}
@@ -266,15 +266,15 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
           : values.submissions[modalProps[1]]?.markedOn || today}
       />
 
-      <Grid item xs={12} className="mb-2">
+      <Grid size={12} className="mb-2">
         <Typography variant="caption" color="error" className="mt-1 shakingError">
           {error}
         </Typography>
       </Grid>
 
-      <Grid container item xs={12} className={classes.tableHeader}>
-        <Grid item xs={3} />
-        <Grid item xs={hasGrades ? 3 : 6} className={classes.center}>
+      <Grid container size={12} className={classes.tableHeader}>
+        <Grid size={3} />
+        <Grid size={hasGrades ? 3 : 6} className={classes.center}>
           <span className="relative">
             {$t('submitted')}
             <IconButton
@@ -292,7 +292,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         {hasGrades
           && (
           <>
-            <Grid xs={3} className={classes.center}>
+            <Grid size={3} className={classes.center}>
               <span className="relative">
                 {$t('marked')}
                 <IconButton
@@ -306,14 +306,14 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
                 </IconButton>
               </span>
             </Grid>
-            <Grid xs={3} className={classes.center}>
+            <Grid size={3} className={classes.center}>
               {$t('grade')}
             </Grid>
           </>
       )}
 
       </Grid>
-      <Grid container item xs={12} className={classes.items}>
+      <Grid container size={12} className={classes.items}>
         {values.assessments.map((elem, index) => {
           const elemGradeType = gradingTypes?.find(g => g.id === elem.gradingTypeId);
           return (

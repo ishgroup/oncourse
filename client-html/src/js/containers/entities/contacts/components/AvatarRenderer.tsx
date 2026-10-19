@@ -119,7 +119,7 @@ const AvatarRenderer: React.FC<any> = props => {
   const size = avatarSize || 90;
 
   return (
-    <Grid item className="mr-3">
+    <Grid className="mr-3">
       {!disabled && (<input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />)}
       <div className={`centeredFlex justify-content-start ${!twoColumn && "mb-2"} ${classes.avatarWrapper}`}>
         {input.value && input.value.thumbnail ? (

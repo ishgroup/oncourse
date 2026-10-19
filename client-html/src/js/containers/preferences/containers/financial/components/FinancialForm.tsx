@@ -6,7 +6,7 @@
 import { AccountType } from '@api/model';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import Hidden from '@mui/material/Hidden';
+import Hidden from '../../../../../common/components/layout/Hidden';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import { isEmpty } from 'es-toolkit/compat'
@@ -77,7 +77,7 @@ class FinancialBaseForm extends React.Component<any, any> {
           modifiedOn={values => values.modified}
         >
           <Grid container columnSpacing={3} rowSpacing={2}>
-            <Grid item sm={8} xs={12}>
+            <Grid size={{ xs: 12, sm: 8 }}>
               <FormField
                 type="multilineText"
                 name={this.formModel.PaymentInfo.uniqueKey}
@@ -85,13 +85,13 @@ class FinancialBaseForm extends React.Component<any, any> {
                               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography variant="subtitle1" className="heading mb-2 mt-1">
                 {$t('default_accounts')}
               </Typography>
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="select"
                 name={this.formModel.AccountDebtors.uniqueKey}
@@ -100,7 +100,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="select"
                 name={this.formModel.AccountBank.uniqueKey}
@@ -110,10 +110,10 @@ class FinancialBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden smDown>
-              <Grid item md={4} />
+              <Grid size={{ md: 4 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="select"
                 name={this.formModel.AccountTax.uniqueKey}
@@ -122,7 +122,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="select"
                 name={this.formModel.AccountStudentEnrolments.uniqueKey}
@@ -132,10 +132,10 @@ class FinancialBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden smDown>
-              <Grid item md={4} />
+              <Grid size={{ md: 4 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="select"
                 name={this.formModel.AccountPrepaidFees.uniqueKey}
@@ -144,7 +144,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="select"
                 name={this.formModel.AccountPrepaidFeesPostAt.uniqueKey}
@@ -154,10 +154,10 @@ class FinancialBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden smDown>
-              <Grid item md={4} />
+              <Grid size={{ md: 4 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="select"
                 name={this.formModel.AccountVoucherLiability.uniqueKey}
@@ -166,7 +166,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="select"
                 name={this.formModel.AccountVoucherUnderpayment.uniqueKey}
@@ -176,10 +176,10 @@ class FinancialBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden smDown>
-              <Grid item sm={6} md={4} />
+              <Grid size={{ sm: 6, md: 4 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="select"
                 name="defaultInvoiceLineAccount"
@@ -190,20 +190,20 @@ class FinancialBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden smDown>
-              <Grid item md={4} />
+              <Grid size={{ md: 4 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={8} className="mb-2">
+            <Grid size={{ xs: 12, sm: 8 }} className="mb-2">
               <Divider />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography variant="subtitle1" className="heading mb-2 mt-1">
                 {$t('other')}
               </Typography>
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FormField
                 type="number"
                 name={this.formModel.AccountInvoiceTerms.uniqueKey}

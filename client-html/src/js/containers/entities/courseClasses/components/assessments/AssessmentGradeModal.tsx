@@ -69,7 +69,7 @@ const AssessmentGradeModal = (
       <DialogContent>
         <DialogTitle className="p-0 mb-2">{$t('set_all_students_grade_as')}</DialogTitle>
         <Grid container columnSpacing={3}>
-          <Grid item xs={6}>
+          <Grid size={6}>
             <EditInPlaceField
               type="number"
               meta={gradeErrors}

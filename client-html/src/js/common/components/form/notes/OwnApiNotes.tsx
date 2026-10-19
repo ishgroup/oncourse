@@ -108,8 +108,8 @@ const OwnApiNotes = React.memo<Props>(
 
     return (
       <Grid container columnSpacing={3} className={clsx("h-100 justify-content-center", className)}
-            alignContent="flex-start">
-        <Grid item xs={12}>
+            sx={{ alignContent: 'flex-start' }}>
+        <Grid size={12}>
           <div className="centeredFlex">
             <div className="heading">
               {values.notes && values.notes.length > 0 && values.notes.length}

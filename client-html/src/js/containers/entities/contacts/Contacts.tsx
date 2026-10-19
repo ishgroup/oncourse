@@ -13,11 +13,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { initialize } from 'redux-form';
-import company from '../../../../images/company.png';
-import person from '../../../../images/person.png';
-import tutorStudent from '../../../../images/student-tutor.png';
-import student from '../../../../images/student.png';
-import tutor from '../../../../images/tutor.png';
 import { checkPermissions } from '../../../common/actions';
 import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
@@ -34,7 +29,7 @@ import { getDefaultInvoiceTerms } from '../invoices/actions';
 import { getContactsConcessionTypes, getContactsRelationTypes, getContactsTaxTypes, getContactTags } from './actions';
 import ContactCogWheel from './components/ContactCogWheel';
 import ContactEditView from './components/ContactEditView';
-import { getContactFullName } from './utils';
+import { contactColumnFormats, getContactFullName } from './utils';
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
 
@@ -171,29 +166,7 @@ const secondaryColumnCondition = row => row.birthDate || "Birthday not specified
 
 const manualLink = getManualLink("creating-and-modifying-contacts");
 
-const getContactTypeImage = (type: ContactType) => {
-  switch (type) {
-    case "STUDENT": {
-      return student;
-    }
-    case "TUTOR": {
-      return tutor;
-    }
-    case "COMPANY": {
-      return company;
-    }
-    case "TUTOR_STUDENT": {
-      return tutorStudent;
-    }
-    default: {
-      return person;
-    }
-  }
-};
 
-const customColumnFormats = {
-  contactType: v => (v ? <img src={getContactTypeImage(v)} alt={v} /> : null)
-};
 
 export const getDisabledSubmitCondition = (isVerifyingUSI, usiVerificationResult): boolean => (
   isVerifyingUSI || (usiVerificationResult && usiVerificationResult.verifyStatus === "Invalid format")
@@ -341,7 +314,7 @@ const Contacts: React.FC<ContactsProps> = props => {
         secondaryColumn: "birthDate",
         setRowClasses,
         secondaryColumnCondition,
-        customColumnFormats
+        customColumnFormats: contactColumnFormats
       }}
       editViewProps={{
         manualLink,

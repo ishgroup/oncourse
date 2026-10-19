@@ -794,8 +794,8 @@ const BudgetNetRow: React.FC<CommonRowProps> = ({
 
   return (
     <div className="centeredFlex">
-      <Grid container>
-        <Grid item xs={5} className="centeredFlex pl-2">
+      <Grid container className="flex-fill">
+        <Grid size={5} className="centeredFlex pl-2">
           <div className="secondaryHeading">{header}</div>
           {headerAdornment && (
             <Typography variant="caption" color="textSecondary" className="pl-1">
@@ -803,17 +803,17 @@ const BudgetNetRow: React.FC<CommonRowProps> = ({
             </Typography>
           )}
         </Grid>
-        <Grid item xs={2} className={classes.headerItem}>
+        <Grid size={2} className={classes.headerItem}>
           <Typography variant="body2" className="money">
             {maxLabel}
           </Typography>
         </Grid>
-        <Grid item xs={2} className={classes.headerItem}>
+        <Grid size={2} className={classes.headerItem}>
           <Typography variant="body2" className="money">
             {projectedLabel}
           </Typography>
         </Grid>
-        <Grid item xs={2} className={classes.headerItem}>
+        <Grid size={2} className={classes.headerItem}>
           <Typography variant="body2" className="money">{actualLabel}</Typography>
         </Grid>
       </Grid>

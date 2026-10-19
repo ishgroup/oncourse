@@ -5,7 +5,7 @@
 
 import { Button, Divider, FormControlLabel, Grid } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
-import Hidden from '@mui/material/Hidden';
+import Hidden from '../../../../../common/components/layout/Hidden';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import { ConfirmBase } from 'ish-ui';
@@ -99,7 +99,7 @@ class LDAPBaseForm extends React.Component<any, any> {
           modifiedOn={v => v.modified}
         >
           <Grid container>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormControlLabel
                 className="mb-2"
                 classes={{
@@ -127,7 +127,7 @@ class LDAPBaseForm extends React.Component<any, any> {
           </Typography>
 
           <Grid container columnSpacing={3}>
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.LdapHost.uniqueKey}
@@ -137,10 +137,10 @@ class LDAPBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden xsDown>
-              <Grid item sm={1} />
+              <Grid size={{ sm: 1 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.LdapBindUserDN.uniqueKey}
@@ -150,10 +150,10 @@ class LDAPBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden xsDown>
-              <Grid item sm={3} />
+              <Grid size={{ sm: 3 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={4} className="mb-1">
+            <Grid size={{ xs: 12, sm: 4 }} className="mb-1">
               <FormField
                 type="text"
                 name={this.formModel.LdapServerPort.uniqueKey}
@@ -163,10 +163,10 @@ class LDAPBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden xsDown>
-              <Grid item sm={1} />
+              <Grid size={{ sm: 1 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <div>
                 <FormControlLabel
                   classes={{
@@ -187,10 +187,10 @@ class LDAPBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden xsDown>
-              <Grid item sm={3} />
+              <Grid size={{ sm: 3 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <FormField
                 type="password"
                 name={this.formModel.LdapBindUserPass.uniqueKey}
@@ -200,10 +200,10 @@ class LDAPBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden xsDown>
-              <Grid item sm={1} />
+              <Grid size={{ sm: 1 }} />
             </Hidden>
 
-            <Grid item sm={4}>
+            <Grid size={{ sm: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.LdapBaseDN.uniqueKey}
@@ -213,10 +213,10 @@ class LDAPBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden xsDown>
-              <Grid item sm={3} />
+              <Grid size={{ sm: 3 }} />
             </Hidden>
 
-            <Grid item xs={12} className="mb-2 mt-2">
+            <Grid size={12} className="mb-2 mt-2">
               <Button
                 className="m-0"
                 onClick={testLdapConnection}
@@ -228,7 +228,7 @@ class LDAPBaseForm extends React.Component<any, any> {
           </Grid>
 
           <Grid container columnSpacing={3} spacing={5}>
-            <Grid item xs={12} sm={8}>
+            <Grid size={{ xs: 12, sm: 8 }}>
               <Divider className="mb-1 mt-1" />
             </Grid>
           </Grid>
@@ -238,7 +238,7 @@ class LDAPBaseForm extends React.Component<any, any> {
           </Typography>
 
           <Grid container columnSpacing={3}>
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.LdapUsernameAttribute.uniqueKey}
@@ -248,10 +248,10 @@ class LDAPBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden xsDown>
-              <Grid item sm={1} />
+              <Grid size={{ sm: 1 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.LdapUserSearchFilter.uniqueKey}
@@ -261,10 +261,10 @@ class LDAPBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden xsDown>
-              <Grid item sm={3} />
+              <Grid size={{ sm: 3 }} />
             </Hidden>
 
-            <Grid item xs={12} className="mt-1">
+            <Grid size={12} className="mt-1">
               {!licence || !simpleAuthEnabled ? (
                 <Button
                   href="ldapUserAccess"
@@ -286,11 +286,11 @@ class LDAPBaseForm extends React.Component<any, any> {
               )}
             </Grid>
 
-            <Grid item xs={12} sm={8} className="mb-2 mt-2">
+            <Grid size={{ xs: 12, sm: 8 }} className="mb-2 mt-2">
               <Divider className="mt-1" />
             </Grid>
 
-            <Grid item xs={12} className="mb-2">
+            <Grid size={12} className="mb-2">
               <FormControlLabel
                 classes={{
                   root: "checkbox"
@@ -314,7 +314,7 @@ class LDAPBaseForm extends React.Component<any, any> {
           </Typography>
 
           <Grid container columnSpacing={3}>
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.LdapGroupMemberAttribute.uniqueKey}
@@ -324,10 +324,10 @@ class LDAPBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden xsDown>
-              <Grid item sm={1} />
+              <Grid size={{ sm: 1 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.LdapGroupAttribute.uniqueKey}
@@ -337,10 +337,10 @@ class LDAPBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden xsDown>
-              <Grid item sm={3} />
+              <Grid size={{ sm: 3 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <FormField
                 type="text"
                 name={this.formModel.LdapGroupSearchFilter.uniqueKey}
@@ -350,10 +350,10 @@ class LDAPBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden xsDown>
-              <Grid item sm={1} />
+              <Grid size={{ sm: 1 }} />
             </Hidden>
 
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <FormControlLabel
                 classes={{
                   root: "checkbox"
@@ -372,7 +372,7 @@ class LDAPBaseForm extends React.Component<any, any> {
             </Grid>
 
             <Hidden xsDown>
-              <Grid item sm={3} />
+              <Grid size={{ sm: 3 }} />
             </Hidden>
           </Grid>
         </AppBarContainer>

@@ -314,7 +314,7 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
         dirty={dirty}
         entity={entity}
       />
-      <Grid item xs={12}>
+      <Grid size={12}>
         <div className="centeredFlex">
           <div className="heading">
             {fields.length > 0 ? fields.length : ""}
@@ -334,12 +334,12 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
           </Typography>
         </div>
       </Grid>
-      <Grid item container xs={12} columnSpacing={3} spacing={3} wrap="wrap">
+      <Grid container size={12} columnSpacing={3} spacing={3} wrap="wrap">
         {fields.map((f, index) => {
           const item = fields.get(index);
 
           return (
-            <Grid item xs={xsGrid} md={mdGrid} lg={lgGrid} key={item.id} className={classes.documentGridItem}>
+            <Grid size={{ xs: xsGrid, md: mdGrid, lg: lgGrid }} key={item.id} className={classes.documentGridItem}>
               <DocumentItem
                 entity={entity}
                 index={index}
