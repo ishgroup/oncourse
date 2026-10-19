@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { getFirstErrorNodePath } from "./validation";
+import { getFirstErrorNodePath } from './validation';
 
 export const animateFormErrors = (target: Element | Document = document) => {
   const errorNodes = target.querySelectorAll(".shakingError");
@@ -20,7 +20,8 @@ export const animateFormErrors = (target: Element | Document = document) => {
 };
 
 export const onSubmitFail = (errors, dispatch, submitError, props, options?) => {
-  const firstErrorNode = document.querySelector(`[name="${getFirstErrorNodePath(errors)}"]`);
+  const nodePath = getFirstErrorNodePath(errors);
+  const firstErrorNode = document.querySelector(`[name="${nodePath}"],[id="${nodePath}"]`);
 
   if (firstErrorNode) {
     firstErrorNode.scrollIntoView(options || { behavior: 'smooth', block: 'center' });

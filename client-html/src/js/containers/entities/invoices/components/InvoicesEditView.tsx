@@ -190,18 +190,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     values.invoiceLines
   ]);
 
-  const onLeadChange = value => {
-    dispatch(change(form, "leadId", value.id));
-    dispatch(change(form, "contactId", value["customer.id"]));
-    dispatch(change(form, "contactName", value["customer.fullName"]));
-    onContactChange(Object.keys(value).reduce((p, c) => {
-      if (c.includes('customer.')) {
-        p[c.replace('customer.', '')] = value[c];
-      }
-      return p;
-    }, {}));
-  };
-
   const onContactChange = value => {
     setSelectedContact(value);
 
@@ -221,7 +209,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         change(
           form,
           "dateDue",
-          formatToDateOnly(addDays(new Date(), value["invoiceTerms"] ? Number(value["invoiceTerms"]) : defaultTerms))
+          formatToDateOnly(addDays(new Date(), value["invoiceTerms"] ? Number(value["invoiceTerms"]) : Number(defaultTerms)))
         )
       );
     }
@@ -233,6 +221,19 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       }
     }
   };
+
+  const onLeadChange = value => {
+    dispatch(change(form, "leadId", value.id));
+    dispatch(change(form, "contactId", value["customer.id"]));
+    dispatch(change(form, "contactName", value["customer.fullName"]));
+    onContactChange(Object.keys(value).reduce((p, c) => {
+      if (c.includes('customer.')) {
+        p[c.replace('customer.', '')] = value[c];
+      }
+      return p;
+    }, {}));
+  };
+
 
   const updateDateDue = () => {
     if (hasPaymentDues) {
