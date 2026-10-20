@@ -53,7 +53,7 @@ jobs:
           echo "ASSET_NAME=$ASSET_NAME"
           echo "Download URL: https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/$ASSET_NAME"
 
-          curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          curl -L -H "Authorization: token ${{ secrets.TEMP_SECRET }}" \
             -H "Accept: application/octet-stream" \
             "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/$ASSET_NAME" \
             --output "$ASSET_NAME"
@@ -62,7 +62,7 @@ jobs:
           mv $ASSET_NAME artifacts/
           echo "✓ Downloaded successfully: $ASSET_NAME"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TEMP_SECRET }}
 
       - name: Download snapshot artifact
         if: ${{ inputs.build_snapshot == true }}
