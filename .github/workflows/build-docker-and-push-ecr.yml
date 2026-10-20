@@ -141,7 +141,7 @@ jobs:
 
           ls -lh artifacts/unpack/plugins/
         env:
-          PAT: ${{ secrets.ONCOURSE_SECRET_PAT }}
+          PAT: ${{ secrets.TEMP_SECRET }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
