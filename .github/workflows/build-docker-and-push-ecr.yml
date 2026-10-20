@@ -62,7 +62,7 @@ jobs:
           mv $ASSET_NAME artifacts/
           echo "✓ Downloaded successfully: $ASSET_NAME"
         env:
-          GITHUB_TOKEN: ${{ secrets.TEMP_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.ONCOURSE_SECRET_PAT }}
 
       - name: Download snapshot artifact
         if: ${{ inputs.build_snapshot == true }}
@@ -141,7 +141,7 @@ jobs:
 
           ls -lh artifacts/unpack/plugins/
         env:
-          PAT: ${{ secrets.TEMP_SECRET }}
+          PAT: ${{ secrets.ONCOURSE_SECRET_PAT }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
