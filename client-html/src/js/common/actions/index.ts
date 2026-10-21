@@ -60,6 +60,10 @@ export const CLOSE_CONFIRM = "common/confirm/close";
 export const OPEN_SEND_MESSAGE = "common/sendMessage/open";
 export const CLOSE_SEND_MESSAGE = "common/sendMessage/close";
 
+export const START_SEND_MESSAGE = "common/sendMessage/start";
+export const SEND_MESSAGE_FAILED = "common/sendMessage/failed";
+export const SET_SEND_MESSAGE_PROCESS = "common/sendMessage/process/set";
+
 export const SHOW_MESSAGE = "common/message/show";
 export const CLEAR_MESSAGE = "common/message/clear";
 
@@ -136,6 +140,19 @@ export const openSendMessage = () => ({
 
 export const closeSendMessage = () => ({
   type: CLOSE_SEND_MESSAGE
+});
+
+export const startSendMessage = () => ({
+  type: START_SEND_MESSAGE
+});
+
+export const sendMessageFailed = () => ({
+  type: SEND_MESSAGE_FAILED
+});
+
+export const setSendMessageProcess = (processId: string) => ({
+  type: SET_SEND_MESSAGE_PROCESS,
+  payload: { processId }
 });
 
 export const setLoginState = (payload: LoginState) => ({

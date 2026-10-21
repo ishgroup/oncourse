@@ -15,6 +15,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import clsx from 'clsx';
+import { debounce } from 'es-toolkit/compat';
 import {
   AnyArgFunction,
   NoArgFunction,
@@ -24,7 +25,6 @@ import {
   Switch,
   YYYY_MM_DD_MINUSED
 } from 'ish-ui';
-import { debounce } from 'es-toolkit/compat';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
@@ -32,7 +32,12 @@ import { Dispatch } from 'redux';
 import { change, DecoratedFormProps, Field, FieldArray, getFormValues, initialize, reduxForm } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import previewSmsImage from '../../../../../images/preview-sms.png';
-import { closeSendMessage, getEmailTemplatesWithKeyCode, getUserPreferences } from '../../../../common/actions';
+import {
+  closeSendMessage,
+  getEmailTemplatesWithKeyCode,
+  getUserPreferences,
+  startSendMessage
+} from '../../../../common/actions';
 import { IAction } from '../../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import DataTypeRenderer from '../../../../common/components/form/DataTypeRenderer';
@@ -47,7 +52,7 @@ import { EMAIL_FROM_KEY } from '../../../../constants/Config';
 import { SEND_MESSAGE_FORM_NAME } from '../../../../constants/Forms';
 import { MessageData, MessageExtended } from '../../../../model/common/Message';
 import { State } from '../../../../reducers/state';
-import { sendMessage } from '../actions';
+import { interruptSendMessage, sendMessage } from '../actions';
 import MessageService from '../services/MessageService';
 import { getMessageRequestModel } from '../utils';
 import RecipientsSelectionSwitcher from './RecipientsSelectionSwitcher';
@@ -124,6 +129,8 @@ interface MessageEditViewProps {
   recipientsMessageData?: MessageData;
   emailFrom?: string;
   submitting?: boolean;
+  sending?: boolean;
+  processId?: string;
   opened?: boolean;
   listSearchQuery?: SearchQuery;
   values?: MessageExtended;
@@ -135,6 +142,8 @@ interface MessageEditViewProps {
   handleSubmit?: any;
   getMessageTemplates?: StringArgFunction;
   getEmailFrom?: NoArgFunction;
+  startSendMessage?: NoArgFunction;
+  interruptSendMessage?: StringArgFunction;
 }
 
 const initialValues: MessageExtended = {
@@ -252,12 +261,16 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
     selection,
     filteredCount,
     submitting,
+    sending,
+    processId,
     invalid,
     close,
     handleSubmit,
     getMessageTemplates,
     getEmailFrom,
-    clearOnClose
+    clearOnClose,
+    startSendMessage,
+    interruptSendMessage
   } = props;
 
   const htmlRef = useRef<HTMLDivElement>(undefined);
@@ -509,7 +522,18 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
   const filteredTemplatesByVaribleCount = useMemo<EmailTemplate[]>(() =>
     templates?.filter(template => template?.variables.filter(variable => variable.type === DataType.Object).length === 0) || [], [templates]);
 
-  const onSubmit = model => dispatch(sendMessage(model, selection));
+  const onSubmit = model => {
+    startSendMessage();
+    dispatch(sendMessage(model, selection));
+  };
+
+  const onCloseClick = () => {
+    // If the process id is not known yet, EpicSendMessage interrupts the process once the request returns
+    if (sending && processId) {
+      interruptSendMessage(processId);
+    }
+    close();
+  };
 
   return (
     <Dialog
@@ -529,8 +553,9 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
           disableInteraction
           noDrawer
           manualUrl={manualUrl}
-          onCloseClick={close}
+          onCloseClick={onCloseClick}
           submitButtonText="Send"
+          submitButtonLoading={sending}
           title={(
             <div>
               {$t('Send')}
@@ -638,6 +663,8 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues(SEND_MESSAGE_FORM_NAME)(state),
   emailFrom: state.userPreferences[EMAIL_FROM_KEY],
   submitting: state.fetch.pending,
+  sending: state.sendMessage.sending,
+  processId: state.sendMessage.processId,
   opened: state.sendMessage.open,
   templates: state.list.emailTemplatesWithKeyCode,
   recipientsMessageData: state.list.recepients
@@ -662,6 +689,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   },
   getMessageTemplates: (entitity: string) => dispatch(getEmailTemplatesWithKeyCode(getMessageTemplateEntities(entitity))),
   getEmailFrom: () => dispatch(getUserPreferences([EMAIL_FROM_KEY])),
+  startSendMessage: () => dispatch(startSendMessage()),
+  interruptSendMessage: (processId: string) => dispatch(interruptSendMessage(processId)),
 });
 
 export default reduxForm<any, any, any>({
