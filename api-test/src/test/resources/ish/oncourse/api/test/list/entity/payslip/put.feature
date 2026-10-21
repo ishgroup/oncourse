@@ -34,7 +34,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/payslip'
 
         Given path ishPathList
         And param entity = 'Payslip'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[7].id

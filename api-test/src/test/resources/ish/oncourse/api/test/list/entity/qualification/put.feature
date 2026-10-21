@@ -32,7 +32,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values[0] == 'CODE02')].id
@@ -106,7 +107,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values[0] == 'CODE02')].id
@@ -180,7 +182,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values[0] == 'CODE02')].id
@@ -325,7 +328,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values[0] == 'CODE02')].id
@@ -386,7 +390,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values[0] == 'CODE02')].id
@@ -455,7 +460,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values[0] == 'CODE82')].id
@@ -508,7 +514,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values[0] == 'CODE02')].id

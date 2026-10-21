@@ -31,7 +31,8 @@ Feature: Main feature for all POST requests with path 'list/entity/qualification
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["CODE01"]
 
@@ -65,7 +66,8 @@ Feature: Main feature for all POST requests with path 'list/entity/qualification
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["A3A5A7A9A12A"]
 
@@ -102,7 +104,8 @@ Feature: Main feature for all POST requests with path 'list/entity/qualification
 
         Given path ishPathList
         And param entity = 'Qualification'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["CODE01"]
 
