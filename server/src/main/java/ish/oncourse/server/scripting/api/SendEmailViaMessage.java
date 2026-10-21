@@ -36,7 +36,8 @@ public class SendEmailViaMessage {
         return valueOf(spec, context, templateService, preferenceController, (c) -> true);
     }
 
-    public static SendEmailViaMessage valueOf(EmailSpec spec, ObjectContext context, TemplateService templateService, PreferenceController preferenceController, Function<Contact, Boolean> collision){
+    public static SendEmailViaMessage valueOf(EmailSpec spec, ObjectContext context, TemplateService templateService,
+                                              PreferenceController preferenceController, Function<Contact, Boolean> collision){
         var creator = new SendEmailViaMessage();
         creator.spec = spec;
         creator.templateService = templateService;
