@@ -148,7 +148,7 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
 
     @Override
     protected BiConsumer<Report, Map<String, Object>> getFillPropertiesFunction() {
-        return DataPopulationUtils::fillReportWithCommonFields;
+        return DataPopulationUtils::fillReportWithUploadedConfigs;
     }
 
     @Override

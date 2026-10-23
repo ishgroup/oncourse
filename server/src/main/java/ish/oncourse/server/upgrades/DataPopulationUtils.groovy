@@ -108,11 +108,15 @@ class DataPopulationUtils {
     static fillReportWithCommonFields(Report report, Map<String, Object> props){
         report.entity = getString(props, ENTITY_CLASS) ?: report.entity
         report.sortOn = getString(props, SORT_ON) ?: report.sortOn
+        configureAutomationWithCommonFields(report, props)
+    }
+
+    static fillReportWithUploadedConfigs(Report report, Map<String, Object> props){
         Boolean enabled = getBoolean(props, IS_VISIBLE)
         if (enabled != null) {
             report.automationStatus = enabled ? AutomationStatus.ENABLED : AutomationStatus.INSTALLED_DISABLED
         }
-        configureAutomationWithCommonFields(report, props)
+        fillReportWithCommonFields(report, props)
     }
 
     static fillExportWithCommonFields(ExportTemplate dbExport, Map<String, Object> props){
@@ -142,7 +146,9 @@ class DataPopulationUtils {
         if (!report) {
             report = context.newObject(Report)
             report.keyCode = keyCode
-            report.automationStatus = AutomationStatus.ENABLED;
+        }
+        if (report.newRecord || AutomationStatus.HIDDEN == report.automationStatus) {
+            report.automationStatus = getBoolean(props, IS_VISIBLE) == false ? AutomationStatus.INSTALLED_DISABLED : AutomationStatus.ENABLED
         }
 
         fillReportWithCommonFields(report, props)
