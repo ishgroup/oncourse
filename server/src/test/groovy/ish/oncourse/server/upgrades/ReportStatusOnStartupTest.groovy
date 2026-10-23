@@ -74,7 +74,7 @@ class ReportStatusOnStartupTest extends TestWithDatabase {
     }
 
     @Test
-    void testUploadedConfigsKeepStatus() throws Exception {
+    void testUploadedConfigsUpdateStatus() throws Exception {
         Map<String, Object> props = getCatalogProps(INVOICE_REPORT, true)
         removeReport(INVOICE_REPORT)
 
@@ -82,9 +82,9 @@ class ReportStatusOnStartupTest extends TestWithDatabase {
         setStatus(INVOICE_REPORT, AutomationStatus.INSTALLED_DISABLED)
 
         ObjectContext context = getCayenneService().newContext
-        DataPopulationUtils.fillReportWithCommonFields(getReport(context, INVOICE_REPORT), props)
+        DataPopulationUtils.fillReportWithUploadedConfigs(getReport(context, INVOICE_REPORT), props)
         context.commitChanges()
-        Assertions.assertEquals(AutomationStatus.INSTALLED_DISABLED, getStatus(INVOICE_REPORT))
+        Assertions.assertEquals(AutomationStatus.ENABLED, getStatus(INVOICE_REPORT))
     }
 
 
