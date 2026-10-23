@@ -111,6 +111,14 @@ class DataPopulationUtils {
         configureAutomationWithCommonFields(report, props)
     }
 
+    static fillReportWithUploadedConfigs(Report report, Map<String, Object> props){
+        Boolean enabled = getBoolean(props, IS_VISIBLE)
+        if (enabled != null) {
+            report.automationStatus = enabled ? AutomationStatus.ENABLED : AutomationStatus.INSTALLED_DISABLED
+        }
+        fillReportWithCommonFields(report, props)
+    }
+
     static fillExportWithCommonFields(ExportTemplate dbExport, Map<String, Object> props){
         dbExport.entity = getString(props, ENTITY_CLASS) ?: dbExport.entity
         dbExport.outputType = get(props, OUTPUT_TYPE, OutputType) ?: dbExport.outputType
