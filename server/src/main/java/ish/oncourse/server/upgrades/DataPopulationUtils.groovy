@@ -105,13 +105,9 @@ class DataPopulationUtils {
         configureAutomationWithCommonFields(script, props)
     }
 
-    static fillReportWithCommonFields(Report report, Map<String, Object> props, boolean applyVisibility = true){
+    static fillReportWithCommonFields(Report report, Map<String, Object> props){
         report.entity = getString(props, ENTITY_CLASS) ?: report.entity
         report.sortOn = getString(props, SORT_ON) ?: report.sortOn
-        Boolean enabled = getBoolean(props, IS_VISIBLE)
-        if (applyVisibility && enabled != null) {
-            report.automationStatus = enabled ? AutomationStatus.ENABLED : AutomationStatus.INSTALLED_DISABLED
-        }
         configureAutomationWithCommonFields(report, props)
     }
 
@@ -139,14 +135,15 @@ class DataPopulationUtils {
         String keyCode = getString(props, KEY_CODE)
 
         Report report = ObjectSelect.query(Report).where(Report.KEY_CODE.eq(keyCode)).selectOne(context)
-        boolean isFirstImport = !report
-        if (isFirstImport) {
+        if (!report) {
             report = context.newObject(Report)
             report.keyCode = keyCode
-            report.automationStatus = AutomationStatus.ENABLED;
+        }
+        if (report.newRecord || AutomationStatus.HIDDEN == report.automationStatus) {
+            report.automationStatus = getBoolean(props, IS_VISIBLE) == false ? AutomationStatus.INSTALLED_DISABLED : AutomationStatus.ENABLED
         }
 
-        fillReportWithCommonFields(report, props, isFirstImport)
+        fillReportWithCommonFields(report, props)
         report.body = getBody(props, REPORT_PROPERTY, REPORT)
 
         logger.debug("Report body: {} ", report.body);
