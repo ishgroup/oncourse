@@ -16,6 +16,8 @@ import ish.common.types.PaymentSource;
 import ish.common.types.SystemEventType;
 import ish.math.Money;
 import ish.oncourse.common.SystemEvent;
+import ish.oncourse.server.ICayenneService;
+import ish.oncourse.server.ISHDataContext;
 import ish.oncourse.server.cayenne.Enrolment;
 import ish.oncourse.server.integration.EventService;
 import org.apache.cayenne.ObjectContext;
@@ -30,9 +32,11 @@ public class EnrolmentLifecycleListener {
 
 	private static final Logger logger = LogManager.getLogger();
 
+	private ICayenneService cayenneService;
 	private EventService eventService;
 
-	public EnrolmentLifecycleListener(EventService eventService) {
+	public EnrolmentLifecycleListener(ICayenneService cayenneService, EventService eventService) {
+		this.cayenneService = cayenneService;
 		this.eventService = eventService;
 	}
 
@@ -51,14 +55,14 @@ public class EnrolmentLifecycleListener {
 	@PostPersist(value = Enrolment.class)
 	public void postPersist(Enrolment enrol) {
 		updateAttendancesAndOutcomes(enrol, true);
-		UpdateWaitingListSubscription.valueOf(enrol, enrol.getObjectContext()).update();
+		UpdateWaitingListSubscription.valueOf(enrol, contextForRelatedChanges(enrol)).update();
 		postEnrolmentSuccessfulEvents(enrol);
 	}
 
 	@PostUpdate(value = Enrolment.class)
 	public void postUpdate(Enrolment enrol) {
 		updateAttendancesAndOutcomes(enrol, false);
-		UpdateWaitingListSubscription.valueOf(enrol, enrol.getObjectContext()).update();
+		UpdateWaitingListSubscription.valueOf(enrol, contextForRelatedChanges(enrol)).update();
 	}
 
 	@PreRemove(value = Enrolment.class)
@@ -78,9 +82,21 @@ public class EnrolmentLifecycleListener {
 	}
 
 	private void updateAttendancesAndOutcomes(Enrolment enrol, boolean create) {
-		ObjectContext context = enrol.getObjectContext();
+		ObjectContext context = contextForRelatedChanges(enrol);
 		new UpdateAttendancesAndOutcomes(context, enrol, create).update();
 		context.commitChanges();
+	}
+
+	/**
+	 * Enrolment received by inbound replication is committed in non-replicating context,
+	 * changes of related records (attendances, outcomes, waiting lists) must be queued to be replicated back to willow.
+	 */
+	private ObjectContext contextForRelatedChanges(Enrolment enrol) {
+		ObjectContext context = enrol.getObjectContext();
+		if (context instanceof ISHDataContext && !((ISHDataContext) context).getIsRecordQueueingEnabled()) {
+			return cayenneService.getNewContext();
+		}
+		return context;
 	}
 	public void postEnrolmentSuccessfulEvents(Enrolment enrol) {
 		if (PaymentSource.SOURCE_WEB.equals(enrol.getSource()) && EnrolmentStatus.SUCCESS.equals(enrol.getStatus())) {
