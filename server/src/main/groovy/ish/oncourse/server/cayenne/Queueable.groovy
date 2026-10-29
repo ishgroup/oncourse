@@ -30,7 +30,22 @@ trait Queueable {
 	boolean isAsyncReplicationAllowed() {
 		return true
 	}
-	
+
+    /**
+     * Performs custom validation logic that cannot be enforced using standard validation constraints,
+     * such as checks involving relationships between this object and other persisted objects.
+     *
+     * This method is invoked during the replication process before the atomic group is committed.
+     *
+     * If this method throws a {@link ReplicationException}, the replication process for the entire atomic group
+     * will be aborted.
+     *
+     * @param atomicContext the replication context providing access to related objects and transactional scope
+     * @throws ReplicationException if the object fails validation and the replication must be aborted
+     */
+	void validateObject(ObjectContext atomicContext) throws ReplicationException {
+	}
+
 	// The following are from Persistent but still handy
 	abstract ObjectId getObjectId()
 	abstract ObjectContext getObjectContext();
