@@ -9,8 +9,10 @@ import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.*
 import ish.math.Money
+import ish.oncourse.server.ISHDataContext
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
+import org.apache.cayenne.annotation.PostPersist
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -639,7 +641,50 @@ class EnrolmentTest extends TestWithDatabase {
 
     }
 
-    
+    /**
+     * Enrolments received by inbound replication are committed in non-replicating context,
+     * attendances and outcomes created for them must be committed in context which queues records for replication.
+     */
+    @Test
+    void testAttendancesAndOutcomesForReplicatedEnrolmentAreQueueable() throws Exception {
+        QueueingFlagsListener listener = new QueueingFlagsListener()
+        cayenneService.addListener(listener)
+
+        DataContext inboundContext = cayenneService.getNewNonReplicatingContext()
+
+        Student student = SelectById.query(Student.class, 5L).selectOne(inboundContext)
+        CourseClass cc = SelectById.query(CourseClass.class, 5L).selectOne(inboundContext)
+
+        Enrolment enrolment = inboundContext.newObject(Enrolment.class)
+        enrolment.setStudent(student)
+        enrolment.setCourseClass(cc)
+        enrolment.setSource(PaymentSource.SOURCE_WEB)
+        enrolment.setStatus(EnrolmentStatus.SUCCESS)
+
+        inboundContext.commitChanges()
+
+        assertEquals(2, listener.attendanceQueueingFlags.size(), "Check attendances created")
+        assertTrue(listener.attendanceQueueingFlags.every { it }, "Check attendances are committed in replicating context")
+        assertFalse(listener.outcomeQueueingFlags.isEmpty(), "Check outcomes created")
+        assertTrue(listener.outcomeQueueingFlags.every { it }, "Check outcomes are committed in replicating context")
+    }
+
+    static class QueueingFlagsListener {
+        List<Boolean> attendanceQueueingFlags = []
+        List<Boolean> outcomeQueueingFlags = []
+
+        @PostPersist(value = Attendance.class)
+        void postPersistAttendance(Attendance attendance) {
+            attendanceQueueingFlags.add(((ISHDataContext) attendance.getObjectContext()).getIsRecordQueueingEnabled())
+        }
+
+        @PostPersist(value = Outcome.class)
+        void postPersistOutcome(Outcome outcome) {
+            outcomeQueueingFlags.add(((ISHDataContext) outcome.getObjectContext()).getIsRecordQueueingEnabled())
+        }
+    }
+
+
     @Test
     void testStatusConstraints() {
         /**

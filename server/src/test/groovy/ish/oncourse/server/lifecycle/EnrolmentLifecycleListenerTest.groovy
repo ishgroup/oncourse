@@ -8,8 +8,11 @@ import groovy.transform.CompileStatic
 import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.*
+import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.PersistenceState
+import org.apache.cayenne.access.DataContext
+import org.apache.cayenne.annotation.PreRemove
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
@@ -71,7 +74,57 @@ class EnrolmentLifecycleListenerTest extends TestWithDatabase {
         Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(WaitingList.class)).size())
     }
 
-    
+    /**
+     * Enrolments received by inbound replication are committed in non-replicating context,
+     * waiting lists must be deleted in context which queues the deletion for replication.
+     */
+    @Test
+    void testUnsubscribeWaitingListForReplicatedEnrolment() {
+        WaitingListRemovalListener listener = new WaitingListRemovalListener()
+        cayenneService.addListener(listener)
+
+        DataContext inboundContext = cayenneService.getNewNonReplicatingContext()
+
+        Course course1 = SelectById.query(Course.class, 1).selectOne(inboundContext)
+        CourseClass courseClass1 = SelectById.query(CourseClass.class, 1).selectOne(inboundContext)
+        Student student = SelectById.query(Student.class, 1).selectOne(inboundContext)
+
+        Expression studentCourse1WaitListQualifier = WaitingList.COURSE.eq(course1).andExp(WaitingList.STUDENT.eq(student))
+        Assertions.assertFalse(inboundContext.select(SelectQuery.query(WaitingList.class, studentCourse1WaitListQualifier)).isEmpty())
+
+        Enrolment enrol = inboundContext.newObject(Enrolment.class)
+        enrol.setStudent(student)
+        enrol.setCourseClass(courseClass1)
+        enrol.setEligibilityExemptionIndicator(false)
+        enrol.setSource(PaymentSource.SOURCE_WEB)
+        enrol.setStudyReason(StudyReason.STUDY_REASON_NOT_STATED)
+        enrol.setVetFeeIndicator(false)
+        enrol.setVetIsFullTime(false)
+        enrol.setStatus(EnrolmentStatus.IN_TRANSACTION)
+
+        inboundContext.commitChanges()
+
+        Assertions.assertFalse(cayenneService.getNewContext().select(SelectQuery.query(WaitingList.class, studentCourse1WaitListQualifier)).isEmpty())
+
+        // web enrolment status is updated by next replication of the enrolment
+        enrol.setStatus(EnrolmentStatus.SUCCESS)
+
+        inboundContext.commitChanges()
+
+        Assertions.assertTrue(cayenneService.getNewContext().select(SelectQuery.query(WaitingList.class, studentCourse1WaitListQualifier)).isEmpty())
+        Assertions.assertEquals([true], listener.queueingFlags, "Check waiting list is deleted in replicating context")
+    }
+
+    static class WaitingListRemovalListener {
+        List<Boolean> queueingFlags = []
+
+        @PreRemove(value = WaitingList.class)
+        void preRemove(WaitingList waitingList) {
+            queueingFlags.add(((ISHDataContext) waitingList.getObjectContext()).getIsRecordQueueingEnabled())
+        }
+    }
+
+
     @Test
     void testCancelEnrolmentWithCertificates() {
         Student student1 = SelectById.query(Student.class, 1).selectOne(cayenneContext)

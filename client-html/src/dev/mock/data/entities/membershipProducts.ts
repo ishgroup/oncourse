@@ -20,6 +20,7 @@ export function mockMembershipProducts() {
       corporatePasses: [],
       membershipDiscounts: [],
       dataCollectionRuleId: 55667,
+      tags: [],
       createdOn: "2016-11-30T11:58:39.000Z",
       modifiedOn: "2018-03-23T13:53:18.000Z"
     };

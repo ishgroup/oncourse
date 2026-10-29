@@ -54,10 +54,13 @@ const Group = ({ rootTag, activeTags, onChange = null }) => {
   );
 };
 
+// tree item DOM ids are `${treeId}-${itemId}`, the tree id format depends on the MUI and React versions
+const itemIdOf = (li: Element) => li.getAttribute('id').slice(li.closest('[role=tree]').getAttribute('id').length + 1);
+
 const dump = () => Array.from(document.querySelectorAll('[data-group]')).map(g =>
   g.getAttribute('data-group') + ': ' + Array.from(g.querySelectorAll('[role=treeitem]')).map(li => {
     const cb: any = li.querySelector('input[type=checkbox]');
-    const name = li.getAttribute('id').replace(/^mui-tree-view-\d+-/, '');
+    const name = itemIdOf(li);
     return `${name}=${cb?.getAttribute('data-indeterminate') === 'true' ? 'INDET' : (cb?.checked ? 'CHECKED' : 'off')}`;
   }).join(' ')).join('  |  ');
 
@@ -174,7 +177,7 @@ it('two groups holding the same tags render as separate tree view items', async 
 
   // the same tag id is on screen twice; the item ids are not, so the click lands in one group
   const items = screen.getAllByRole('treeitem').filter(li => li.getAttribute('id').endsWith('/941'));
-  expect(items.map(li => li.getAttribute('id').replace(/^mui-tree-view-\d+-/, '')))
+  expect(items.map(itemIdOf))
     .toEqual(['Enrolled/941', 'Teaching/941']);
 
   await user.click(items[0].querySelector('input[type=checkbox]') as any);
