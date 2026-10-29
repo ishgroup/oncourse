@@ -55,6 +55,7 @@ export function mockVoucherProducts() {
       corporatePasses: [],
       soldVouchersCount: row.values[4],
       relatedSellables: [],
+      tags: [],
       createdOn: "2012-09-27T17:00:04.000Z",
       modifiedOn: "2015-03-31T10:23:37.000Z",
 

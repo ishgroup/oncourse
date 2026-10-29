@@ -522,6 +522,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         if (cayenneModel.paymentsIn != null && cayenneModel.paymentsIn.size() > 0) {
             validator.throwClientErrorException(Contact.PAYMENTS_IN.name, 'There are payments for this contact.')
         }
+        if (cayenneModel.leads != null && cayenneModel.leads.size() > 0) {
+            validator.throwClientErrorException(Contact.LEADS.name, 'There are leads for this contact.')
+        }
         if (cayenneModel.invoices != null && cayenneModel.invoices.size() > 0) {
             validator.throwClientErrorException(Contact.INVOICES.name, 'There are invoices for this contact.')
         }
