@@ -1,8 +1,8 @@
+import { DefaultEpic } from '../../common/Default.Epic';
 import { closeSendMessage, FETCH_FAIL, FETCH_SUCCESS, sendMessageFailed } from '../../../js/common/actions';
 import ProcessService from '../../../js/common/services/ProcessService';
 import { pollSendMessageProcess } from '../../../js/containers/entities/messages/actions';
 import { EpicPollSendMessageProcess } from '../../../js/containers/entities/messages/epics/EpicPollSendMessageProcess';
-import { DefaultEpic } from '../../common/Default.Epic';
 
 const processId = "send-process";
 
