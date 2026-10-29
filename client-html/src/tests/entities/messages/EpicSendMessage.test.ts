@@ -1,3 +1,4 @@
+import { DefaultEpic } from '../../common/Default.Epic';
 import { setSendMessageProcess } from '../../../js/common/actions';
 import {
   interruptSendMessage,
@@ -5,7 +6,6 @@ import {
   sendMessage
 } from '../../../js/containers/entities/messages/actions';
 import { EpicSendMessage } from '../../../js/containers/entities/messages/epics/EpicSendMessage';
-import { DefaultEpic } from '../../common/Default.Epic';
 
 describe("Send message epic tests", () => {
   it("EpicSendMessage should start polling the send process", () => DefaultEpic({

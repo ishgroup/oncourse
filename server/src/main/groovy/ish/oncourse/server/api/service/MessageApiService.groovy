@@ -32,6 +32,7 @@ import ish.oncourse.server.api.model.RecipientsModel
 import ish.oncourse.server.scripting.api.MetaclassCleaner
 import ish.util.AbstractEntitiesUtil
 import org.apache.cayenne.Persistent
+import org.apache.cayenne.ResultBatchIterator
 import org.apache.cayenne.validation.ValidationException
 
 import java.util.concurrent.Callable
@@ -489,22 +490,27 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
             @Override
             Object call() throws Exception {
                 MessageSendResult result = new MessageSendResult()
+                int messagesCreated = 0
+                boolean templateForContact = template.entity.equalsIgnoreCase("Contact")
+                ResultBatchIterator<? extends CayenneDataObject> iterator = templateForContact ?
+                        ObjectSelect.query(Contact).where(Contact.ID.in(recipientsToSend)).batchIterator(context, BATCH_SIZE) :
+                        ObjectSelect.query(clazz).where(property.in(entitiesIds)).batchIterator(context, BATCH_SIZE)
                 try {
-                    boolean templateForContact = false
-                    def iterator = ObjectSelect.query(clazz).where(property.in(entitiesIds)).batchIterator(context, BATCH_SIZE)
-                    if (template.entity.equalsIgnoreCase("Contact")) {
-                        templateForContact = true
-                        iterator = ObjectSelect.query(Contact).where(Contact.ID.in(recipientsToSend)).batchIterator(context, BATCH_SIZE)
-                    }
-                    boolean sendToAllInBatch = templateForContact
+                    for (List<? extends CayenneDataObject> batch : iterator) {
+                        // interrupted via ControlApi (the user closed the send dialog): stop before the next batch,
+                        // batches committed so far stay queued
+                        if (Thread.currentThread().isInterrupted()) {
+                            logger.warn("Sending messages was cancelled, {} messages had already been queued", messagesCreated)
+                            break
+                        }
 
-                    iterator.forEach() { batch ->
                         ObjectContext batchContext = cayenneService.newContext
+                        int batchMessages = 0
                         batch.each { CayenneDataObject entity ->
                             List<Contact> recipients = getRecipientsListFromEntity(entity)
 
                             recipients.each { recipient ->
-                                if (sendToAllInBatch || recipientsToSend.contains(recipient.id)) {
+                                if (templateForContact || recipientsToSend.contains(recipient.id)) {
                                     plainBindings.put(templateService.RECORD, entity)
                                     plainBindings.put(entityVarName, entity)
                                     htmlBindings.put(templateService.RECORD, entity)
@@ -519,25 +525,33 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
                                     fillMessage(message)
 
                                     buildMessage(message, batchContext.localObject(recipient), template.type)
+                                    batchMessages++
                                 }
                             }
                         }
                         batchContext.commitChanges()
+                        messagesCreated += batchMessages
                     }
 
-                    iterator.close()
                     result.recipientsSent = recipientsToSend.size()
                 } catch (ValidationException e) {
                     String message = e.validationResult.failures*.error.join('\n')
-                    logger.error("Sending messages failed validation on commit: {}", message)
-                    result.errorMessage = message
+                    logger.error("Sending messages failed validation on commit after {} messages were queued: {}", messagesCreated, message)
+                    result.errorMessage = withQueuedCount(message, messagesCreated)
                 } catch (Exception e) {
-                    logger.error("Unexpected error while sending messages", e)
-                    result.errorMessage = e.message ?: "Unexpected error while sending messages."
+                    logger.error("Unexpected error while sending messages after {} messages were queued", messagesCreated, e)
+                    result.errorMessage = withQueuedCount(e.message ?: "Unexpected error while sending messages.", messagesCreated)
+                } finally {
+                    iterator.close()
                 }
                 return result
             }
         })
+    }
+
+    // messages are committed per batch, so a failure part way through leaves the earlier batches queued for sending
+    private static String withQueuedCount(String error, int messagesCreated) {
+        return messagesCreated > 0 ? "${error}\n${messagesCreated} messages had already been queued for sending before the error occurred." : error
     }
 
 
