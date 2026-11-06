@@ -75,11 +75,21 @@ export function getTotalAndDeductionsByPrice(
     ? discount
     : discount && getDiscountAmountExTax(discount, taxRate, priceEachExTax)) || 0;
 
+  if (typeof discount !== 'number' && discount?.discountType === 'Fee override') {
+    // fee override amount is the rounded fee inc tax, convert it to ex tax discount the same way as server does
+    const feeOverrideExTax = base.sub(discountAmount).div(taxRateDec.add(1));
+    const result = getTotalAndDeductionsByPrice(priceEachExTax, taxRate, bankRounding(base.sub(feeOverrideExTax)));
+
+    // adjust tax by rounding difference so that price minus discount plus tax equals total
+    return {
+      ...result,
+      taxEach: bankRounding(new Decimal(result.total).sub(base.sub(result.discountEach)))
+    };
+  }
+
   const afterDiscount = base.sub(discountAmount);
   const tax = afterDiscount.mul(taxRateDec);
-  const total = typeof discount !== 'number' && discount?.discountType === 'Fee override' 
-    ? afterDiscount 
-    : afterDiscount.add(tax);
+  const total = afterDiscount.add(tax);
 
   return {
     total: bankRounding(total),

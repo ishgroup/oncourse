@@ -325,6 +325,11 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     setCurrentDiscount(apiDiscount);
     dispatch(change(form, `${item}.discountName`, typeof apiDiscount !== 'number' && apiDiscount?.name || null));
 
+    if (typeof apiDiscount !== 'number' && apiDiscount?.discountType === 'Fee override' && row.priceEachExTax > 0) {
+      recalculateByPrice(row.priceEachExTax, taxRate, apiDiscount, row.quantity);
+      return;
+    }
+
     if (
       (typeof apiDiscount !== 'number' && apiDiscount !== null && apiDiscount?.discountType === 'Fee override') ||
       (!discount && typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override' && lastEditedField.current !== 'priceEachExTax')
