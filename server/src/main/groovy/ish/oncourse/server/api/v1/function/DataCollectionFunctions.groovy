@@ -12,55 +12,19 @@
 package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileDynamic
-import ish.oncourse.server.api.service.SurveyApiService
-import ish.oncourse.server.api.v1.model.FieldValidationTypeDTO
-import ish.oncourse.server.cayenne.ArticleFieldConfiguration
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.MembershipFieldConfiguration
-import ish.oncourse.server.cayenne.VoucherFieldConfiguration
-import ish.oncourse.server.cayenne.WaitingList
-import ish.oncourse.server.cayenne.glue.CayenneDataObject
-
-import javax.ws.rs.ClientErrorException
-import javax.ws.rs.core.Response
-
-import static ish.common.types.DataType.LIST
-import static ish.common.types.DataType.MAP
-import static ish.common.types.DataType.TEXT
 import ish.common.types.DeliverySchedule
 import ish.common.types.FieldConfigurationType
-import ish.common.types.NodeType
-import static ish.oncourse.common.field.FieldProperty.*
-import static ish.oncourse.common.field.PropertyGetSetFields.CUSTOM_FIELD_PROPERTY_PATTERN
-import static ish.oncourse.common.field.PropertyGetSetFields.TAG_PATTERN
-import ish.oncourse.server.api.v1.model.DataCollectionFormDTO
-import ish.oncourse.server.api.v1.model.DataCollectionRuleDTO
-import ish.oncourse.server.api.v1.model.DataCollectionTypeDTO
-import ish.oncourse.server.api.v1.model.DeliveryScheduleTypeDTO
-import ish.oncourse.server.api.v1.model.FieldDTO
-import ish.oncourse.server.api.v1.model.FieldTypeDTO
-import ish.oncourse.server.api.v1.model.HeadingDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.ApplicationFieldConfiguration
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CustomFieldType
-import ish.oncourse.server.cayenne.EnrolmentFieldConfiguration
-import ish.oncourse.server.cayenne.Field
-import ish.oncourse.server.cayenne.FieldConfiguration
-import ish.oncourse.server.cayenne.FieldConfigurationLink
-import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.server.cayenne.FieldHeading
-import ish.oncourse.server.cayenne.ParentFieldConfiguration
-import ish.oncourse.server.cayenne.PayerFieldConfiguration
-import ish.oncourse.server.cayenne.Survey
-import ish.oncourse.server.cayenne.SurveyFieldConfiguration
-import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.cayenne.WaitingListFieldConfiguration
+import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
+import javax.ws.rs.ClientErrorException
+import javax.ws.rs.core.Response
 import java.time.ZoneOffset
+
+import static ish.oncourse.common.field.PropertyGetSetFields.CUSTOM_FIELD_PROPERTY_PATTERN
 
 @CompileDynamic
 class DataCollectionFunctions {
@@ -347,6 +311,8 @@ class DataCollectionFunctions {
 
             if (dbForm instanceof SurveyFieldConfiguration) {
                 (dbForm as SurveyFieldConfiguration).deliverySchedule = DeliverySchedule.valueOf(form.deliverySchedule.name())
+                (dbForm as SurveyFieldConfiguration).tutorDeliverySchedule = form.tutorDeliverySchedule ?
+                        DeliverySchedule.valueOf(form.tutorDeliverySchedule.name()) : DeliverySchedule.AT_COMPLETION
             }
             dbForm
         }
@@ -362,6 +328,7 @@ class DataCollectionFunctions {
             dbField.mandatory = field.mandatory
             dbField.relatedFieldValue = field.relatedFieldValue
             dbField.validationType = field.validationType?.getDbType()
+            dbField.isVisibleToTutor = dbForm instanceof SurveyFieldConfiguration && field.isVisibleToTutor
             dbField
         }
     }
@@ -382,6 +349,7 @@ class DataCollectionFunctions {
 
             if (dbForm instanceof SurveyFieldConfiguration) {
                 form.deliverySchedule = DeliveryScheduleTypeDTO.fromValue((dbForm as SurveyFieldConfiguration).deliverySchedule?.displayName)
+                form.tutorDeliverySchedule = DeliveryScheduleTypeDTO.fromValue((dbForm as SurveyFieldConfiguration).tutorDeliverySchedule?.displayName)
             }
             form
         }
@@ -405,6 +373,7 @@ class DataCollectionFunctions {
             field.relatedFieldValue = dbField.relatedFieldValue
             field.relatedFieldKey = dbField.relatedField?.property
             field.validationType = FieldValidationTypeDTO.values()[0].fromDbType(dbField.validationType)
+            field.isVisibleToTutor = dbField.isVisibleToTutor
             field
         }
     }

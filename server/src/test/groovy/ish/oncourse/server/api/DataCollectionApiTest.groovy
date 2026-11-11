@@ -1,15 +1,14 @@
 package ish.oncourse.server.api
 
 import groovy.transform.CompileStatic
-import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.DataType
 import ish.common.types.DeliverySchedule
 import ish.oncourse.server.api.v1.function.DataCollectionFunctions
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.impl.DataCollectionApiImpl
 import ish.oncourse.server.cayenne.*
-import org.apache.cayenne.ObjectContext
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -106,6 +105,7 @@ class DataCollectionApiTest extends TestWithDatabase {
             it.name = 'form_1'
             it.type = DataCollectionTypeDTO.SURVEY
             it.deliverySchedule = DeliveryScheduleTypeDTO.MIDWAY
+            it.tutorDeliverySchedule = DeliveryScheduleTypeDTO.AT_COMPLETION
             it.headings = [new HeadingDTO(name: 'Heading_1', description: 'Heading', fields: [createField('suburb'), createField('state')]),
                            new HeadingDTO(name: 'Heading_1', description: 'Heading', fields: [createField('suburb'), createField('postcode')])]
             it.fields = [createField('street'), createField('postcode')]
@@ -125,6 +125,7 @@ class DataCollectionApiTest extends TestWithDatabase {
             it.name = 'form_1'
             it.type = DataCollectionTypeDTO.SURVEY
             it.deliverySchedule = DeliveryScheduleTypeDTO.MIDWAY
+            it.tutorDeliverySchedule = DeliveryScheduleTypeDTO.AT_COMPLETION
             it.headings = [new HeadingDTO(name: 'Heading_1', description: 'Heading', fields: [createField('suburb'), createField('state')]),
                            new HeadingDTO(name: 'Heading_2', description: 'Heading', fields: [createField('suburb'), createField('postcode')])]
             it.fields = [createField('street'), createField('postcode')]
@@ -142,18 +143,72 @@ class DataCollectionApiTest extends TestWithDatabase {
             it.name = 'form_1'
             it.type = DataCollectionTypeDTO.SURVEY
             it.deliverySchedule = DeliveryScheduleTypeDTO.MIDWAY
+            it.tutorDeliverySchedule = DeliveryScheduleTypeDTO.AT_COMPLETION
             it.headings = [new HeadingDTO(name: 'Heading_1', description: 'Heading', fields: [createField('netPromoterScore'), createField('courseScore')]),
                            new HeadingDTO(name: 'Heading_2', description: 'Heading', fields: [createField('venueScore'), createField('tutorScore')])]
             it.fields = [createField('comment')]
             it
         }
 
+        form.headings[0].fields[1].isVisibleToTutor = true
+        form.fields[0].isVisibleToTutor = true
+
         integrationApi.createForm(form)
         FieldConfiguration fieldConfiguration = DataCollectionFunctions.getFormByName(cayenneContext, 'form_1')
         Assertions.assertEquals(5, fieldConfiguration.fields.size())
         Assertions.assertEquals(2, fieldConfiguration.fieldHeadings.size())
         Assertions.assertEquals('[netPromoterScore, courseScore, venueScore, tutorScore, comment]', fieldConfiguration.fields.sort().collect { it.name }.toString())
+        Assertions.assertEquals('[false, true, false, false, true]', fieldConfiguration.fields.sort().collect { it.isVisibleToTutor }.toString())
+        Assertions.assertEquals(DeliverySchedule.MIDWAY, (fieldConfiguration as SurveyFieldConfiguration).deliverySchedule)
+        Assertions.assertEquals(DeliverySchedule.AT_COMPLETION, (fieldConfiguration as SurveyFieldConfiguration).tutorDeliverySchedule)
 
+        DataCollectionFormDTO restForm = DataCollectionFunctions.toRestForm(fieldConfiguration)
+        Assertions.assertEquals(DeliveryScheduleTypeDTO.AT_COMPLETION, restForm.tutorDeliverySchedule)
+        Assertions.assertTrue(restForm.fields[0].isVisibleToTutor)
+        Assertions.assertTrue(restForm.headings[0].fields[1].isVisibleToTutor)
+        Assertions.assertFalse(restForm.headings[1].fields[0].isVisibleToTutor)
+    }
+
+    @Test
+    void testSurveyFormDefaultTutorDeliverySchedule() {
+        DataCollectionFormDTO form = new DataCollectionFormDTO().with {
+            it.name = 'form_tutor_schedule'
+            it.type = DataCollectionTypeDTO.SURVEY
+            it.deliverySchedule = DeliveryScheduleTypeDTO.ON_START
+            it.headings = []
+            it.fields = [createField('comment')]
+            it
+        }
+
+        DataCollectionApiImpl integrationApi = new DataCollectionApiImpl()
+        integrationApi.cayenneService = cayenneService
+        integrationApi.createForm(form)
+
+        SurveyFieldConfiguration fieldConfiguration = DataCollectionFunctions.getFormByName(cayenneContext, 'form_tutor_schedule') as SurveyFieldConfiguration
+        Assertions.assertEquals(DeliverySchedule.ON_START, fieldConfiguration.deliverySchedule)
+        Assertions.assertEquals(DeliverySchedule.AT_COMPLETION, fieldConfiguration.tutorDeliverySchedule)
+        Assertions.assertFalse(fieldConfiguration.fields[0].isVisibleToTutor)
+    }
+
+    @Test
+    void testTutorVisibilityIgnoredForNonSurveyForm() {
+        FieldDTO field = createField('street')
+        field.isVisibleToTutor = true
+
+        DataCollectionFormDTO form = new DataCollectionFormDTO().with {
+            it.name = 'form_enrolment_visibility'
+            it.type = DataCollectionTypeDTO.ENROLMENT
+            it.headings = []
+            it.fields = [field]
+            it
+        }
+
+        DataCollectionApiImpl integrationApi = new DataCollectionApiImpl()
+        integrationApi.cayenneService = cayenneService
+        integrationApi.createForm(form)
+
+        FieldConfiguration fieldConfiguration = DataCollectionFunctions.getFormByName(cayenneContext, 'form_enrolment_visibility')
+        Assertions.assertFalse(fieldConfiguration.fields[0].isVisibleToTutor)
     }
 
     private static FieldDTO createField(String prop) {
@@ -216,6 +271,7 @@ class DataCollectionApiTest extends TestWithDatabase {
         field.name = 'Course score'
         field.property = 'courseScore'
         field.mandatory = true
+        field.isVisibleToTutor = true
         field.description = 'Course score'
         field.order = 2
         field.fieldConfiguration = form
@@ -242,6 +298,7 @@ class DataCollectionApiTest extends TestWithDatabase {
         field.fieldConfiguration = form
                     
         form.deliverySchedule = deliverySchedule
+        form.tutorDeliverySchedule = DeliverySchedule.AT_COMPLETION
         form.addToFieldHeadings(heading)
         
         return form

@@ -21,6 +21,9 @@ properties:
       $ref: './Heading.yaml'
   deliverySchedule:
     $ref: '../enum/DeliveryScheduleType.yaml'
+  tutorDeliverySchedule:
+    $ref: '../enum/DeliveryScheduleType.yaml'
+    description: Survey forms only. When the form results become available to tutors of the class in the portal. Defaults to At completion
   created:
     type: string
     format: date-time

@@ -12,6 +12,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }, class FieldDTO {
         type: class FieldTypeDTO {
             uniqueKey: citizenship
@@ -23,6 +24,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -38,6 +40,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: state
@@ -49,6 +52,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }, class HeadingDTO {
         name: Enrol heading 2
@@ -64,6 +68,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: suburb
@@ -75,9 +80,11 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }]
     deliverySchedule: null
+    tutorDeliverySchedule: null
 }, class DataCollectionFormDTO {
     name: Article form
     type: Product
@@ -92,6 +99,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }, class FieldDTO {
         type: class FieldTypeDTO {
             uniqueKey: citizenship
@@ -103,6 +111,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -118,6 +127,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: state
@@ -129,6 +139,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }, class HeadingDTO {
         name: Enrol heading 2
@@ -144,6 +155,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: suburb
@@ -155,9 +167,11 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }]
     deliverySchedule: null
+    tutorDeliverySchedule: null
 }, class DataCollectionFormDTO {
     name: Enrol form
     type: Enrolment
@@ -172,6 +186,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }, class FieldDTO {
         type: class FieldTypeDTO {
             uniqueKey: citizenship
@@ -183,6 +198,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -198,6 +214,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: state
@@ -209,6 +226,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }, class HeadingDTO {
         name: Enrol heading 2
@@ -224,6 +242,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: suburb
@@ -235,9 +254,11 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }]
     deliverySchedule: null
+    tutorDeliverySchedule: null
 }, class DataCollectionFormDTO {
     name: Membership form
     type: Membership
@@ -252,6 +273,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }, class FieldDTO {
         type: class FieldTypeDTO {
             uniqueKey: citizenship
@@ -263,6 +285,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -278,6 +301,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: state
@@ -289,6 +313,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }, class HeadingDTO {
         name: Enrol heading 2
@@ -304,6 +329,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: suburb
@@ -315,9 +341,11 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }]
     deliverySchedule: null
+    tutorDeliverySchedule: null
 }, class DataCollectionFormDTO {
     name: Survey form MIDWAY
     type: Survey
@@ -332,6 +360,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -347,6 +376,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: true
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: netPromoterScore
@@ -358,9 +388,11 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }]
     deliverySchedule: Midway
+    tutorDeliverySchedule: At completion
 }, class DataCollectionFormDTO {
     name: Survey form ON_ENROL
     type: Survey
@@ -375,6 +407,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -390,6 +423,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: true
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: netPromoterScore
@@ -401,9 +435,11 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }]
     deliverySchedule: On enrol
+    tutorDeliverySchedule: At completion
 }, class DataCollectionFormDTO {
     name: Voucher form
     type: Voucher
@@ -418,6 +454,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }, class FieldDTO {
         type: class FieldTypeDTO {
             uniqueKey: citizenship
@@ -429,6 +466,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -444,6 +482,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: state
@@ -455,6 +494,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }, class HeadingDTO {
         name: Enrol heading 2
@@ -470,6 +510,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: suburb
@@ -481,9 +522,11 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }]
     deliverySchedule: null
+    tutorDeliverySchedule: null
 }, class DataCollectionFormDTO {
     name: WaitingList form
     type: WaitingList
@@ -498,6 +541,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }, class FieldDTO {
         type: class FieldTypeDTO {
             uniqueKey: citizenship
@@ -509,6 +553,7 @@
         relatedFieldKey: null
         relatedFieldValue: null
         validationType: null
+        isVisibleToTutor: false
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -524,6 +569,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: state
@@ -535,6 +581,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }, class HeadingDTO {
         name: Enrol heading 2
@@ -550,6 +597,7 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: suburb
@@ -561,7 +609,9 @@
             relatedFieldKey: null
             relatedFieldValue: null
             validationType: null
+            isVisibleToTutor: false
         }]
     }]
     deliverySchedule: null
+    tutorDeliverySchedule: null
 }]

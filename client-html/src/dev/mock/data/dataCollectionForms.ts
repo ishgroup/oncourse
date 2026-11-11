@@ -1,4 +1,4 @@
-import { DataCollectionForm } from "@api/model";
+import { DataCollectionForm } from '@api/model';
 
 export function mockDataCollectionForms(): DataCollectionForm[] {
   this.updateCollectionForm = (id, form) => {
@@ -20,6 +20,7 @@ export function mockDataCollectionForms(): DataCollectionForm[] {
       name: "Survey Form 1",
       type: "Survey",
       deliverySchedule: "At completion",
+      tutorDeliverySchedule: "At completion",
       headings: [
         {
           name: "Contact Details",
@@ -32,6 +33,7 @@ export function mockDataCollectionForms(): DataCollectionForm[] {
                 label: "Business phone number"
               },
               mandatory: true,
+              isVisibleToTutor: true,
               label: "Test Business phone number",
               helpText: "Test help text"
             },
@@ -70,6 +72,7 @@ export function mockDataCollectionForms(): DataCollectionForm[] {
       name: "Survey Form 2",
       type: "Survey",
       deliverySchedule: "At completion",
+      tutorDeliverySchedule: "At completion",
       headings: [
         {
           name: "Enrolment",

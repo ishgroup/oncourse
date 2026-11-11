@@ -56,6 +56,10 @@ const deliveryScheduleTypes = Object.keys(DeliveryScheduleType).map(mapSelectIte
 
 deliveryScheduleTypes.sort(sortDefaultSelectItems);
 
+const getNewFormDefaults = (type: string): Partial<DataCollectionForm> => (type === "Survey"
+  ? { tutorDeliverySchedule: "At completion" }
+  : {});
+
 const styles = theme => ({
   mainContainer: {
     margin: theme.spacing(-3),
@@ -71,7 +75,7 @@ const styles = theme => ({
     }
   },
   selectField: {
-    minWidth: "155px"
+    minWidth: "210px"
   },
   boxShadowHover: {
     "&:hover": {
@@ -192,7 +196,8 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
         items: [],
         form: {
           id: null,
-          type: this.props.match.params.type
+          type: this.props.match.params.type,
+          ...getNewFormDefaults(this.props.match.params.type)
         }
       };
       this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
@@ -310,7 +315,8 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
       const state: CollectionFormSchema = {
         form: {
           id: null,
-          type: locationParts[4]
+          type: locationParts[4],
+          ...getNewFormDefaults(locationParts[4])
         },
         items: []
       };
@@ -610,14 +616,24 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
                     <div className="flex-fill" />
 
                     {values && type === "Survey" && (
-                      <FormField
-                        type="select"
-                        name="form.deliverySchedule"
-                        label={$t('delivery_schedule')}
-                        items={deliveryScheduleTypes}
-                        className={clsx("pt-2", classes.selectField)}
-                        required
-                      />
+                      <>
+                        <FormField
+                          type="select"
+                          name="form.deliverySchedule"
+                          label={$t('student_portal_delivery_schedule')}
+                          items={deliveryScheduleTypes}
+                          className={clsx("pt-2", classes.selectField)}
+                          required
+                        />
+                        <FormField
+                          type="select"
+                          name="form.tutorDeliverySchedule"
+                          label={$t('tutor_portal_delivery_schedule')}
+                          items={deliveryScheduleTypes}
+                          className={clsx("pt-2 ml-3", classes.selectField)}
+                          required
+                        />
+                      </>
                     )}
                   </Grid>
 
