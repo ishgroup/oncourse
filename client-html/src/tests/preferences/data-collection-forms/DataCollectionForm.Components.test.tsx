@@ -1,7 +1,9 @@
-import * as React from "react";
-import { defaultComponents } from "../../common/Default.Components";
-import DataCollectionForm, { parseDataCollectionFormData, DATA_COLLECTION_FORM }
-  from "../../../js/containers/preferences/containers/data-collection-forms/components/DataCollectionForm";
+import * as React from 'react';
+import DataCollectionForm, {
+  DATA_COLLECTION_FORM,
+  parseDataCollectionFormData
+} from '../../../js/containers/preferences/containers/data-collection-forms/components/DataCollectionForm';
+import { defaultComponents } from '../../common/Default.Components';
 
 describe("Virtual rendered DataCollectionForm", () => {
   defaultComponents({
@@ -50,6 +52,11 @@ describe("Virtual rendered DataCollectionForm", () => {
 
       if (form.type === "Survey") {
         dataCollections['form.deliverySchedule'] = form.deliverySchedule;
+        dataCollections['form.tutorDeliverySchedule'] = form.tutorDeliverySchedule;
+
+        const fieldsCount = items.filter(i => i.baseType === "field").length;
+        expect(screen.getAllByText("Visible to tutors")).toHaveLength(fieldsCount);
+        expect(screen.getAllByText("Hidden from tutors")).toHaveLength(fieldsCount);
       }
 
       items.forEach((field, key) => {

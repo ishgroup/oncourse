@@ -726,6 +726,7 @@
 		<db-attribute name="fieldHeadingId" type="BIGINT"/>
 		<db-attribute name="fieldOrder" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="isVisibleToTutor" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="mandatory" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
@@ -742,6 +743,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
+		<db-attribute name="tutorDeliverySchedule" type="SMALLINT"/>
 		<db-attribute name="type" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
@@ -2485,6 +2487,7 @@
 		<obj-attribute name="defaultValue" type="java.lang.String" db-attribute-path="defaultValue"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="isVisibleToTutor" type="java.lang.Boolean" db-attribute-path="isVisibleToTutor"/>
 		<obj-attribute name="mandatory" type="java.lang.Boolean" db-attribute-path="mandatory"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
@@ -3196,6 +3199,7 @@
 	<obj-entity name="SurveyFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.server.cayenne.SurveyFieldConfiguration" clientClassName="ish.oncourse.cayenne.SurveyFieldConfiguration">
 		<qualifier><![CDATA[intType = 4]]></qualifier>
 		<obj-attribute name="deliverySchedule" type="ish.common.types.DeliverySchedule" db-attribute-path="deliverySchedule"/>
+		<obj-attribute name="tutorDeliverySchedule" type="ish.common.types.DeliverySchedule" db-attribute-path="tutorDeliverySchedule"/>
 	</obj-entity>
 	<obj-entity name="SystemUser" className="ish.oncourse.server.cayenne.SystemUser" clientClassName="ish.oncourse.cayenne.SystemUser" dbEntityName="SystemUser" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="canEditCMS" type="java.lang.Boolean" db-attribute-path="canEditCMS"/>

@@ -28,6 +28,14 @@ import javax.annotation.Nullable
 @API
 class Field extends _Field implements Queueable, Comparable<Field> {
 
+	@Override
+	void postAdd() {
+		super.postAdd()
+		if (getIsVisibleToTutor() == null) {
+			setIsVisibleToTutor(false)
+		}
+	}
+
 	/**
 	 * @return the date and time this record was created
 	 */
@@ -52,6 +60,14 @@ class Field extends _Field implements Queueable, Comparable<Field> {
 	@Nonnull @Override @API
 	Boolean getMandatory() {
 		return super.getMandatory()
+	}
+
+	/**
+	 * @return true if answers to this field of a student feedback form are shown to tutors of the class in the portal
+	 */
+	@Nonnull @Override @API
+	Boolean getIsVisibleToTutor() {
+		return super.getIsVisibleToTutor()
 	}
 
 	/**

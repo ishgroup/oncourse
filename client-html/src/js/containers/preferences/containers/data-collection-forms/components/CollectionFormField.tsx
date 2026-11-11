@@ -126,6 +126,17 @@ const CollectionFormField = ({
             component={ToogleCheckbox}
           />
         </Grid>
+        {formType === 'Survey' && <Grid size={12}>
+          <Field
+            name={`items[${item.id}].isVisibleToTutor`}
+            label={$t('visible_to_tutors')}
+            margin="none"
+            type="checkbox"
+            chackedLabel={$t('visible_to_tutors')}
+            uncheckedLabel={$t('hidden_from_tutors')}
+            component={ToogleCheckbox}
+          />
+        </Grid>}
         {formType === 'Enrolment' && <Grid size={12}>
           <FormField
             type="select"

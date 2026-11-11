@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 155-1
+      author: yury
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - columnExists:
+                tableName: Field
+                columnName: isVisibleToTutor
+      changes:
+        - addColumn:
+            tableName: Field
+            columns:
+              - column:
+                  name: isVisibleToTutor
+                  type: SMALLINT
+                  defaultValue: false
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 155-2
+      author: yury
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - columnExists:
+                tableName: FieldConfiguration
+                columnName: tutorDeliverySchedule
+      changes:
+        - addColumn:
+            tableName: FieldConfiguration
+            columns:
+              - column:
+                  name: tutorDeliverySchedule
+                  type: SMALLINT
+        # existing Survey forms (type 4) show results to tutors at completion (DeliverySchedule.AT_COMPLETION = 4)
+        - update:
+            tableName: FieldConfiguration
+            columns:
+              - column:
+                  name: tutorDeliverySchedule
+                  valueNumeric: 4
+            where: type = 4

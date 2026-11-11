@@ -16,3 +16,6 @@ properties:
     description: Related field value, that allows this type to be shown
   validationType:
     $ref: '../enum/FieldValidationType.yaml'
+  isVisibleToTutor:
+    type: boolean
+    description: Survey forms only. Answers to this field are shown to tutors of the class in the portal
