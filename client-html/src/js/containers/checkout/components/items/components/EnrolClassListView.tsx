@@ -2,8 +2,7 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import SwapVert from '@mui/icons-material/SwapVert';
-import { Button, Grid, List, ListItemButton, Radio, Typography } from '@mui/material';
+import { Button, Grid, List, ListItemButton, Radio, TableSortLabel, Typography } from '@mui/material';
 import clsx from 'clsx';
 import { isBefore } from 'date-fns';
 import { appendTimezone, AppTheme, formatCurrency } from 'ish-ui';
@@ -31,7 +30,10 @@ const styles = (theme: AppTheme, p, classes) => ({
     }
   },
   sortButton: {
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(1),
+    '&&& .MuiTableSortLabel-icon': {
+      color: theme.palette.primary.main
+    }
   },
   showPastShevron: {
     transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`,
@@ -164,9 +166,9 @@ const EnrolClassListView = React.memo<{
             <Button
               color="primary"
               onClick={toggleSortOrder}
-              startIcon={<SwapVert />}
               className={classes.sortButton}
             >
+              <TableSortLabel active direction={sortDescending ? 'asc' : 'desc'}/>
               {sortDescending ? "Newest first" : "Oldest first"}
             </Button>
           )}
