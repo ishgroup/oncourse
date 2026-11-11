@@ -13,7 +13,7 @@ import { checkoutCourseClassMap } from '../../utils';
 const request: EpicUtils.Request = {
   type: CHECKOUT_GET_COURSE_CLASS_LIST,
   getData: ({
-              search, offset
+              search, offset, ascending = true
             }) => EntityService.getPlainRecords(
     "CourseClass",
     CHECKOUT_COURSE_CLASS_COLUMNS,
@@ -21,7 +21,7 @@ const request: EpicUtils.Request = {
     CHECKOUT_ITEMS_PER_PAGE,
     offset,
     "startDateTime",
-    true
+    ascending
   ),
   processData: ({ rows }, s) => [checkoutGetCourseClassListFulfilled(rows.map(checkoutCourseClassMap))]
 };

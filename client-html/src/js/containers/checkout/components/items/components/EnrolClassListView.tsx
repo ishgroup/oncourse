@@ -2,7 +2,7 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import { Button, Grid, List, ListItemButton, Radio, Typography } from '@mui/material';
+import { Button, Grid, List, ListItemButton, Radio, TableSortLabel, Typography } from '@mui/material';
 import clsx from 'clsx';
 import { isBefore } from 'date-fns';
 import { appendTimezone, AppTheme, formatCurrency } from 'ish-ui';
@@ -29,14 +29,22 @@ const styles = (theme: AppTheme, p, classes) => ({
       transform: "rotate(180deg)"
     }
   },
+  sortButton: {
+    marginLeft: theme.spacing(1),
+    '&&& .MuiTableSortLabel-icon': {
+      color: theme.palette.primary.main
+    }
+  },
   showPastShevron: {
     transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`,
   },
   sessionButton: {
     textTransform: "initial",
-    "& > span": {
-      display: "block"
-    }
+    justifyContent: "flex-start"
+  },
+  sessionRow: {
+    width: "100%",
+    alignItems: "center"
   },
   disabledSessionButton: {
     color: `${theme.palette.text.disabled}`,
@@ -67,13 +75,15 @@ const EnrolClassListView = React.memo<{
   const resetClasses = () => dispatch(checkoutClearCourseClassList());
 
   const [showPastClasses, setShowPastClasses] = React.useState(false);
+  const [sortDescending, setSortDescending] = React.useState(false);
   const [months, setMonths] = React.useState([]);
   const [isMounted, setIsMounted] = React.useState(false);
 
-  const onLoadMoreClasses = (offset: number, id: number, showPastClasses: boolean) => !checkCourseClassLoaded &&
+  const onLoadMoreClasses = (offset: number, id: number, showPastClasses: boolean, descending: boolean) => !checkCourseClassLoaded &&
     dispatch(checkoutGetCourseClassList(
       getCourseClassSearch(id) + (showPastClasses ? ' and endDateTime <= today' : ' and (endDateTime >= today or type is DISTANT_LEARNING)'),
-      offset
+      offset,
+      !(showPastClasses && descending)
     ));
 
   const { ref, inView } = useInView();
@@ -84,7 +94,7 @@ const EnrolClassListView = React.memo<{
 
   React.useEffect(() => {
     if (inView && course && courseClasses.length) {
-      onLoadMoreClasses(courseClasses?.length, course?.courseId, showPastClasses);
+      onLoadMoreClasses(courseClasses?.length, course?.courseId, showPastClasses, sortDescending);
     }
   }, [inView, courseClasses.length]);
 
@@ -96,13 +106,19 @@ const EnrolClassListView = React.memo<{
 
   React.useEffect(() => {
     if (isMounted) {
-      onLoadMoreClasses(courseClasses?.length, course?.courseId, showPastClasses);
+      onLoadMoreClasses(courseClasses?.length, course?.courseId, showPastClasses, sortDescending);
     }
-  }, [showPastClasses]);
+  }, [showPastClasses, sortDescending]);
 
   const togglePastClasses = React.useCallback(() => {
     resetClasses();
+    setSortDescending(false);
     setShowPastClasses(prev => !prev);
+  }, []);
+
+  const toggleSortOrder = React.useCallback(() => {
+    resetClasses();
+    setSortDescending(prev => !prev);
   }, []);
 
   const visibleClasses = React.useMemo(() => {
@@ -129,6 +145,12 @@ const EnrolClassListView = React.memo<{
     }
   }, [visibleClasses]);
 
+  const orderedMonths = React.useMemo(() => (showPastClasses && sortDescending
+    ? [...months]
+      .sort((a, b) => b.month.getTime() - a.month.getTime())
+      .map(m => ({ ...m, days: [...m.days].reverse() }))
+    : months), [months, showPastClasses, sortDescending]);
+
   return (
     <div className="p-2">
       <List className={classes.list}>
@@ -140,14 +162,24 @@ const EnrolClassListView = React.memo<{
           >
             {showPastClasses ? "Hide" : "Show"} finished classes
           </Button>
+          {showPastClasses && (
+            <Button
+              color="primary"
+              onClick={toggleSortOrder}
+              className={classes.sortButton}
+            >
+              <TableSortLabel active direction={sortDescending ? 'asc' : 'desc'}/>
+              {sortDescending ? "Newest first" : "Oldest first"}
+            </Button>
+          )}
         </Grid>
         {checkCourseClassLoaded && courseClasses.length === 0 && <ListItemButton alignItems="center" className="justify-content-center p-0-5" disabled>
           <Typography component="div" variant="body1">
             There are no {showPastClasses ? 'finished' : 'current'} classes available for this course.
           </Typography>
         </ListItemButton>}
-        {months.map((m, i) => (
-          <CalendarMonthBase key={i} fullWidth {...m} showYear>
+        {orderedMonths.map(m => (
+          <CalendarMonthBase key={m.month.getTime()} fullWidth {...m} showYear>
             {m.days.map(d => {
               if (!d.sessions.length) {
                 return null;
@@ -170,7 +202,7 @@ const EnrolClassListView = React.memo<{
                           className={clsx("text-left w-100", classes.sessionButton)}
                           disabled={isSelected || isTransfered}
                         >
-                          <Grid container>
+                          <Grid container className={classes.sessionRow}>
                             <Grid size={1}>
                               <Radio color="primary" checked={isSelected} />
                             </Grid>
