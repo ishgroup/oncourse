@@ -43,9 +43,9 @@ export const clearCheckoutItemRecord = () => ({
   type: CLEAR_CHECKOUT_ITEM_RECORD
 });
 
-export const checkoutGetCourseClassList = (search: string, offset = 0) => ({
+export const checkoutGetCourseClassList = (search: string, offset = 0, ascending = true) => ({
   type: CHECKOUT_GET_COURSE_CLASS_LIST,
-  payload: { search, offset }
+  payload: { search, offset, ascending }
 });
 
 export const checkoutGetCourseClassListFulfilled = (courseClasses: CheckoutCourseClass[]) => ({
