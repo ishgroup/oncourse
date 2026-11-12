@@ -190,6 +190,18 @@ class Application extends _Application implements Queueable, NotableTrait, Expan
 		return tagList
 	}
 
+	/**
+	 * Get all checklists related to this application.
+	 * Note: this method will return only tasks, that were marked for this record, not all allowed
+	 * @return List of related checklists
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<? extends Tag> getChecklists() {
+		return super.getChecklists()
+	}
+
 	@Override
 	Class<? extends TagRelation> getTagRelationClass() {
 		return ApplicationTagRelation.class

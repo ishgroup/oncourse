@@ -316,6 +316,17 @@ class Site extends _Site implements Queueable, NotableTrait, AttachableTrait, Si
 		return super.getWaitingLists()
 	}
 
+	/**
+	 * Get all checklists related to this site.
+	 * Note: this method will return only tasks, that were marked for this record, not all allowed
+	 * @return List of related checklists
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<? extends Tag> getChecklists() {
+		return super.getChecklists()
+	}
 
 	/**
 	 * @return The list of tags assigned to site
