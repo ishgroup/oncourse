@@ -121,6 +121,16 @@ import org.apache.cayenne.PersistentObject
  *     keyCollision "drop"
  * }
  * ```
+ *
+ * You can specify email addresses that recipients will reply to instead of the from address for emails:
+ * ```
+ * message {
+ *     template keyCodeOfMessageTemplate
+ *     record records
+ *     from "admin@example.com"
+ *     replyTo "first@example.com" "second@example.com"
+ * }
+ * ```
  */
 @API
 @CompileDynamic
@@ -142,6 +152,8 @@ class MessageSpec {
 
     String fromName
     String content
+
+    List<String> replyToList = []
 
 
     /**
@@ -414,5 +426,17 @@ class MessageSpec {
     void methodMissing(String key, args) {
         def arg = args.find()
         bindings.put(key, arg)
+    }
+
+
+    /**
+     * Set replyTo emails for the message.
+     * Using this method means that recipients will reply to these email addresses instead of the from address.
+     *
+     * @param remail addresses of the reply recipients
+     */
+    @API
+    void replyTo(String... replyToEmails) {
+        this.replyToList = replyToEmails.toList()
     }
 }
