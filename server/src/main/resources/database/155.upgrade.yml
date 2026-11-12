@@ -37,7 +37,7 @@ databaseChangeLog:
                   type: SMALLINT
 
   # Separate changesets without preconditions, so they run even if a column was added before (e.g. by a dev build);
-  # running them again changes nothing. Willow applies the same defaults (changeset 117), the backfill isn't replicated.
+  # running them again changes nothing. Willow applies the same defaults (changeset 118), the backfill isn't replicated.
   - changeSet:
       id: 155-3
       author: yury
