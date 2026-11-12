@@ -15,7 +15,8 @@ Feature: Main feature for all GET requests with path 'list/entity/course'
 
         Given path ishPathList
         And param entity = 'Course'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["1","2","3","4"]
 
@@ -64,7 +65,8 @@ Feature: Main feature for all GET requests with path 'list/entity/course'
 
         Given path ishPathList
         And param entity = 'Course'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].id contains ["1","2","3","4"]
 
