@@ -1,9 +1,11 @@
 import * as React from 'react';
+// must be imported before DataCollectionForm: it loads the String prototype extensions (capitalize)
+// that CollectionFormField uses at module level
+import { defaultComponents } from '../../common/Default.Components';
 import DataCollectionForm, {
   DATA_COLLECTION_FORM,
   parseDataCollectionFormData
 } from '../../../js/containers/preferences/containers/data-collection-forms/components/DataCollectionForm';
-import { defaultComponents } from '../../common/Default.Components';
 
 describe("Virtual rendered DataCollectionForm", () => {
   defaultComponents({
