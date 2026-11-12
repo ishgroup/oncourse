@@ -15,9 +15,15 @@ import com.nulabinc.zxcvbn.Zxcvbn
 import groovy.transform.CompileStatic
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.UserDao
+import ish.oncourse.server.messaging.GetAddresses
+import ish.oncourse.server.messaging.GetContent
+import ish.oncourse.server.messaging.GetEmailHtmlBody
+import ish.oncourse.server.messaging.GetEmailPlainBody
+import ish.oncourse.server.messaging.GetEnvelopeFrom
+import ish.oncourse.server.messaging.GetFrom
+import ish.oncourse.server.messaging.GetSubject
+import ish.oncourse.server.messaging.MailDeliveryParam
 import ish.oncourse.server.messaging.MailDeliveryService
-import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
-import ish.oncourse.server.scripting.api.SmtpParameters
 
 import javax.mail.MessagingException
 
@@ -216,21 +222,29 @@ class UserFunctions {
         
         String serverAddress = hostName ?: "https://${ipAddress}:${port}"
                 
-        String messageStart = currentUser ? "${currentUser.fullName} has given you access" : "You were provided access"
         String invitationToken = generateUserInvitationToken()
         String subject = "Welcome to onCourse!"
-        String messageText =
-                """
-${messageStart} to the ish onCourse application for ${serverAddress} . Please click here to accept this invitation.
 
-${serverAddress}/invite/${invitationToken}
-
-This invitation will expire in 7 days.
-                """
-
-        SmtpParameters parameters = new SmtpParameters(preferenceController.emailFromAddress, preferenceController.emailFromName, newUser.email, subject, messageText)
-        mailDeliveryService.sendEmail(MailDeliveryParamBuilder.valueOf(parameters).build())
+        MailDeliveryParam param = MailDeliveryParam.valueOf(
+                GetFrom.valueOf(preferenceController.emailFromAddress, preferenceController.emailFromName),
+                GetEnvelopeFrom.valueOf(preferenceController.emailFromAddress),
+                GetAddresses.valueOf(newUser.email),
+                GetSubject.valueOf(subject),
+                GetContent.valueOf(GetEmailPlainBody.valueOf(''), GetEmailHtmlBody.valueOf(buildInvitationEmailHtml(serverAddress.toString(), invitationToken))))
+        mailDeliveryService.sendEmail(param)
 
         return invitationToken
+    }
+
+    static String buildInvitationEmailHtml(String serverAddress, String invitationToken) {
+        String invitationLink = "${serverAddress}/invite/${invitationToken}"
+        """\
+<p>You have been invited to access the ish onCourse application.</p>
+<p>To accept your invitation and set up your password, please click the link below:</p>
+<p><b>Accept your invitation and set your password:</b> <a href="${invitationLink}">${invitationLink}</a></p>
+<p>Once you've completed this step, you can access ish onCourse at: <a href="${serverAddress}">${serverAddress}</a></p>
+<p><b>Please note:</b> This invitation will expire in 7 days. Make sure you accept it and set your password before then.</p>
+<p>Welcome aboard!</p>
+""".toString()
     }
 }
