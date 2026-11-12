@@ -56,8 +56,18 @@ const deliveryScheduleTypes = Object.keys(DeliveryScheduleType).map(mapSelectIte
 
 deliveryScheduleTypes.sort(sortDefaultSelectItems);
 
+// results are shown to tutors at a point of the class, so on demand delivery is not available for them
+const tutorDeliveryScheduleTypes = Object.keys(DeliveryScheduleType)
+  .filter(key => key !== DeliveryScheduleType["On demand"])
+  .map(mapSelectItems);
+
+tutorDeliveryScheduleTypes.sort(sortDefaultSelectItems);
+
+// survey scores are visible to tutors by default, comment and custom fields are hidden (same as the server default)
+const VISIBLE_TO_TUTOR_BY_DEFAULT = ["netPromoterScore", "courseScore", "venueScore", "tutorScore"];
+
 const getNewFormDefaults = (type: string): Partial<DataCollectionForm> => (type === "Survey"
-  ? { tutorDeliverySchedule: "At completion" }
+  ? { tutorDeliverySchedule: DeliveryScheduleType["At completion"] }
   : {});
 
 const styles = theme => ({
@@ -333,7 +343,8 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
       parent: null,
       label: type.label,
       helpText: "",
-      mandatory: false
+      mandatory: false,
+      isVisibleToTutor: VISIBLE_TO_TUTOR_BY_DEFAULT.includes(type.uniqueKey)
     };
     
     const updated = [field, ...items];
@@ -629,7 +640,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
                           type="select"
                           name="form.tutorDeliverySchedule"
                           label={$t('tutor_portal_delivery_schedule')}
-                          items={deliveryScheduleTypes}
+                          items={tutorDeliveryScheduleTypes}
                           className={clsx("pt-2 ml-3", classes.selectField)}
                           required
                         />

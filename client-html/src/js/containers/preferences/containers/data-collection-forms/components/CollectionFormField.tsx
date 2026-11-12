@@ -129,7 +129,6 @@ const CollectionFormField = ({
         {formType === 'Survey' && <Grid size={12}>
           <Field
             name={`items[${item.id}].isVisibleToTutor`}
-            label={$t('visible_to_tutors')}
             margin="none"
             type="checkbox"
             chackedLabel={$t('visible_to_tutors')}
