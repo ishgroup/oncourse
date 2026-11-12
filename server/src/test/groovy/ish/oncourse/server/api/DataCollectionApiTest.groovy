@@ -150,7 +150,10 @@ class DataCollectionApiTest extends TestWithDatabase {
             it
         }
 
+        form.headings[0].fields[0].isVisibleToTutor = false
         form.headings[0].fields[1].isVisibleToTutor = true
+        form.headings[1].fields[0].isVisibleToTutor = false
+        form.headings[1].fields[1].isVisibleToTutor = false
         form.fields[0].isVisibleToTutor = true
 
         integrationApi.createForm(form)
@@ -209,6 +212,89 @@ class DataCollectionApiTest extends TestWithDatabase {
 
         FieldConfiguration fieldConfiguration = DataCollectionFunctions.getFormByName(cayenneContext, 'form_enrolment_visibility')
         Assertions.assertFalse(fieldConfiguration.fields[0].isVisibleToTutor)
+    }
+
+    @Test
+    void testDefaultTutorVisibility() {
+        DataCollectionFormDTO form = new DataCollectionFormDTO().with {
+            it.name = 'form_tutor_visibility_default'
+            it.type = DataCollectionTypeDTO.SURVEY
+            it.deliverySchedule = DeliveryScheduleTypeDTO.ON_START
+            it.headings = [new HeadingDTO(name: 'Scores', description: 'Scores',
+                    fields: [createField('netPromoterScore'), createField('courseScore'), createField('venueScore'), createField('tutorScore')])]
+            it.fields = [createField('comment')]
+            it
+        }
+
+        DataCollectionApiImpl integrationApi = new DataCollectionApiImpl()
+        integrationApi.cayenneService = cayenneService
+        integrationApi.createForm(form)
+
+        // scores are visible to tutors by default, comment and custom fields are hidden
+        FieldConfiguration fieldConfiguration = DataCollectionFunctions.getFormByName(cayenneContext, 'form_tutor_visibility_default')
+        Map<String, Boolean> visibility = fieldConfiguration.fields.collectEntries { Field f -> [(f.property): f.isVisibleToTutor] }
+        Assertions.assertEquals([netPromoterScore: true, courseScore: true, venueScore: true, tutorScore: true, comment: false], visibility)
+    }
+
+    @Test
+    void testUpdateKeepsTutorSettings() {
+        FieldDTO comment = createField('comment')
+        comment.isVisibleToTutor = true
+        FieldDTO courseScore = createField('courseScore')
+        courseScore.isVisibleToTutor = false
+
+        DataCollectionFormDTO form = new DataCollectionFormDTO().with {
+            it.name = 'form_tutor_settings_update'
+            it.type = DataCollectionTypeDTO.SURVEY
+            it.deliverySchedule = DeliveryScheduleTypeDTO.ON_START
+            it.tutorDeliverySchedule = DeliveryScheduleTypeDTO.MIDWAY
+            it.headings = []
+            it.fields = [comment, courseScore]
+            it
+        }
+
+        DataCollectionApiImpl integrationApi = new DataCollectionApiImpl()
+        integrationApi.cayenneService = cayenneService
+        integrationApi.createForm(form)
+        FieldConfiguration created = DataCollectionFunctions.getFormByName(cayenneContext, 'form_tutor_settings_update')
+
+        // a client which doesn't know the settings: no tutorDeliverySchedule, no isVisibleToTutor, plus a new field
+        DataCollectionFormDTO update = new DataCollectionFormDTO().with {
+            it.name = 'form_tutor_settings_update'
+            it.type = DataCollectionTypeDTO.SURVEY
+            it.deliverySchedule = DeliveryScheduleTypeDTO.ON_START
+            it.headings = []
+            it.fields = [createField('comment'), createField('courseScore'), createField('venueScore')]
+            it
+        }
+        integrationApi.updateForm(created.id.toString(), update)
+
+        SurveyFieldConfiguration updated = DataCollectionFunctions.getFormByName(cayenneService.newContext, 'form_tutor_settings_update') as SurveyFieldConfiguration
+        Assertions.assertEquals(DeliverySchedule.MIDWAY, updated.tutorDeliverySchedule)
+        Map<String, Boolean> visibility = updated.fields.collectEntries { Field f -> [(f.property): f.isVisibleToTutor] }
+        Assertions.assertEquals([comment: true, courseScore: false, venueScore: true], visibility)
+    }
+
+    @Test
+    void testOnDemandTutorDeliveryScheduleRejected() {
+        DataCollectionFormDTO form = new DataCollectionFormDTO().with {
+            it.name = 'form_tutor_on_demand'
+            it.type = DataCollectionTypeDTO.SURVEY
+            it.deliverySchedule = DeliveryScheduleTypeDTO.ON_DEMAND
+            it.tutorDeliverySchedule = DeliveryScheduleTypeDTO.ON_DEMAND
+            it.headings = []
+            it.fields = [createField('comment')]
+            it
+        }
+
+        DataCollectionApiImpl integrationApi = new DataCollectionApiImpl()
+        integrationApi.cayenneService = cayenneService
+        try {
+            integrationApi.createForm(form)
+            assert false
+        } catch (ClientErrorException e) {
+            Assertions.assertEquals("On demand delivery isn't available for tutors", (e.response.entity as ValidationErrorDTO).errorMessage)
+        }
     }
 
     private static FieldDTO createField(String prop) {

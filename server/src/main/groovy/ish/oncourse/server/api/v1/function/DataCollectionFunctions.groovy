@@ -12,19 +12,55 @@
 package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileDynamic
+import ish.oncourse.server.api.service.SurveyApiService
+import ish.oncourse.server.api.v1.model.FieldValidationTypeDTO
+import ish.oncourse.server.cayenne.ArticleFieldConfiguration
+import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.MembershipFieldConfiguration
+import ish.oncourse.server.cayenne.VoucherFieldConfiguration
+import ish.oncourse.server.cayenne.WaitingList
+import ish.oncourse.server.cayenne.glue.CayenneDataObject
+
+import javax.ws.rs.ClientErrorException
+import javax.ws.rs.core.Response
+
+import static ish.common.types.DataType.LIST
+import static ish.common.types.DataType.MAP
+import static ish.common.types.DataType.TEXT
 import ish.common.types.DeliverySchedule
 import ish.common.types.FieldConfigurationType
-import ish.oncourse.server.api.v1.model.*
-import ish.oncourse.server.cayenne.*
+import ish.common.types.NodeType
+import static ish.oncourse.common.field.FieldProperty.*
+import static ish.oncourse.common.field.PropertyGetSetFields.CUSTOM_FIELD_PROPERTY_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFields.TAG_PATTERN
+import ish.oncourse.server.api.v1.model.DataCollectionFormDTO
+import ish.oncourse.server.api.v1.model.DataCollectionRuleDTO
+import ish.oncourse.server.api.v1.model.DataCollectionTypeDTO
+import ish.oncourse.server.api.v1.model.DeliveryScheduleTypeDTO
+import ish.oncourse.server.api.v1.model.FieldDTO
+import ish.oncourse.server.api.v1.model.FieldTypeDTO
+import ish.oncourse.server.api.v1.model.HeadingDTO
+import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.cayenne.ApplicationFieldConfiguration
+import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.cayenne.CustomFieldType
+import ish.oncourse.server.cayenne.EnrolmentFieldConfiguration
+import ish.oncourse.server.cayenne.Field
+import ish.oncourse.server.cayenne.FieldConfiguration
+import ish.oncourse.server.cayenne.FieldConfigurationLink
+import ish.oncourse.server.cayenne.FieldConfigurationScheme
+import ish.oncourse.server.cayenne.FieldHeading
+import ish.oncourse.server.cayenne.ParentFieldConfiguration
+import ish.oncourse.server.cayenne.PayerFieldConfiguration
+import ish.oncourse.server.cayenne.Survey
+import ish.oncourse.server.cayenne.SurveyFieldConfiguration
+import ish.oncourse.server.cayenne.Tag
+import ish.oncourse.server.cayenne.WaitingListFieldConfiguration
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
-import javax.ws.rs.ClientErrorException
-import javax.ws.rs.core.Response
 import java.time.ZoneOffset
-
-import static ish.oncourse.common.field.PropertyGetSetFields.CUSTOM_FIELD_PROPERTY_PATTERN
 
 @CompileDynamic
 class DataCollectionFunctions {
@@ -147,6 +183,11 @@ class DataCollectionFunctions {
 
         if (form.type == DataCollectionTypeDTO.SURVEY && !form.deliverySchedule) {
             return new ValidationErrorDTO(null, 'deliverySchedule', "Delivery schedule required for Survey form")
+        }
+
+        // results are shown to tutors at a point of the class, on demand delivery has no such point
+        if (form.type == DataCollectionTypeDTO.SURVEY && form.tutorDeliverySchedule == DeliveryScheduleTypeDTO.ON_DEMAND) {
+            return new ValidationErrorDTO(null, 'tutorDeliverySchedule', "On demand delivery isn't available for tutors")
         }
 
         List<String> headerNames =  form.headings*.name.flatten() as List<String>
@@ -273,7 +314,12 @@ class DataCollectionFunctions {
         }
     }
 
-    static FieldConfiguration toDbForm(ObjectContext context, DataCollectionFormDTO form, FieldConfiguration persistRecord = null) {
+    /**
+     * @param visibleToTutor isVisibleToTutor of the fields of the form before the update, by field property:
+     * a field keeps its value if the request doesn't specify it
+     */
+    static FieldConfiguration toDbForm(ObjectContext context, DataCollectionFormDTO form, FieldConfiguration persistRecord = null,
+                                       Map<String, Boolean> visibleToTutor = [:]) {
         FieldConfiguration formToUpdate = persistRecord?:context.newObject(CONFIGURATION_MAP[form.type] as Class<? extends  FieldConfiguration>)
         Map<String, Field> addedFields = new HashMap<>()
         Map<Field, String> fieldsWithRelatedKeys = new HashMap<>()
@@ -286,7 +332,7 @@ class DataCollectionFunctions {
                     dbHeading.name = heading.name
                     dbHeading.description = heading.description
                     heading.fields.each { field ->
-                        def dbField = toDbField(context, dbForm, field, order++)
+                        def dbField = toDbField(context, dbForm, field, order++, visibleToTutor)
                         addedFields.put(dbField.property, dbField)
                         if(field.relatedFieldKey)
                             fieldsWithRelatedKeys.put(dbField, field.relatedFieldKey)
@@ -297,7 +343,7 @@ class DataCollectionFunctions {
             }
 
             form.fields.each { field ->
-                def dbField = toDbField(context, dbForm, field, order++)
+                def dbField = toDbField(context, dbForm, field, order++, visibleToTutor)
                 addedFields.put(dbField.property, dbField)
                 if(field.relatedFieldKey)
                     fieldsWithRelatedKeys.put(dbField, field.relatedFieldKey)
@@ -311,14 +357,16 @@ class DataCollectionFunctions {
 
             if (dbForm instanceof SurveyFieldConfiguration) {
                 (dbForm as SurveyFieldConfiguration).deliverySchedule = DeliverySchedule.valueOf(form.deliverySchedule.name())
-                (dbForm as SurveyFieldConfiguration).tutorDeliverySchedule = form.tutorDeliverySchedule ?
-                        DeliverySchedule.valueOf(form.tutorDeliverySchedule.name()) : DeliverySchedule.AT_COMPLETION
+                // keep the stored schedule if the request doesn't specify it
+                def survey = dbForm as SurveyFieldConfiguration
+                survey.tutorDeliverySchedule = form.tutorDeliverySchedule ?
+                        DeliverySchedule.valueOf(form.tutorDeliverySchedule.name()) : (survey.tutorDeliverySchedule ?: DeliverySchedule.AT_COMPLETION)
             }
             dbForm
         }
     }
 
-    static Field toDbField(ObjectContext context, FieldConfiguration dbForm, FieldDTO field, int order) {
+    static Field toDbField(ObjectContext context, FieldConfiguration dbForm, FieldDTO field, int order, Map<String, Boolean> visibleToTutor = [:]) {
         context.newObject(Field).with { dbField ->
             dbField.order = order
             dbField.property = field.type.uniqueKey
@@ -328,11 +376,25 @@ class DataCollectionFunctions {
             dbField.mandatory = field.mandatory
             dbField.relatedFieldValue = field.relatedFieldValue
             dbField.validationType = field.validationType?.getDbType()
-            dbField.isVisibleToTutor = dbForm instanceof SurveyFieldConfiguration && field.isVisibleToTutor
+            dbField.isVisibleToTutor = dbForm instanceof SurveyFieldConfiguration && isVisibleToTutor(field, visibleToTutor)
             dbField
         }
     }
 
+
+    /**
+     * The value from the request, otherwise the value before the update, otherwise the default for the field property.
+     */
+    private static boolean isVisibleToTutor(FieldDTO field, Map<String, Boolean> visibleToTutor) {
+        String property = field.type.uniqueKey
+        if (field.isVisibleToTutor != null) {
+            return field.isVisibleToTutor
+        }
+        if (visibleToTutor.containsKey(property)) {
+            return visibleToTutor[property]
+        }
+        return Field.isVisibleToTutorByDefault(property)
+    }
 
     static DataCollectionFormDTO toRestForm(FieldConfiguration dbForm) {
 
