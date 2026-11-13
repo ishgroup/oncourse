@@ -1,3 +1,4 @@
+import CoPresent from '@mui/icons-material/CoPresent';
 import Delete from '@mui/icons-material/Delete';
 import DragIndicator from '@mui/icons-material/DragIndicator';
 import Edit from '@mui/icons-material/Edit';
@@ -7,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import { alpha } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { makeAppStyles, stopEventPropagation, useHoverShowStyles } from 'ish-ui';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -53,7 +55,7 @@ const useStyles = makeAppStyles<void, 'actionIcon' | 'actionIconInactive'>()((th
     }
   },
   cardGrid: {
-    gridTemplateColumns: "auto 1fr 1fr auto auto auto",
+    gridTemplateColumns: "auto 1fr 1fr auto auto auto auto",
     display: "grid",
     alignItems: "center",
   },
@@ -151,6 +153,13 @@ const CollectionFormFieldsRenderer = (
           >
             <Edit className={clsx(classes.actionIcon, classes.actionIconActive)} />
           </IconButton>
+
+          {/* tutor visibility of survey answers, shown in the collapsed card so the whole form can be scanned at a glance */}
+          {isField && formType === 'Survey' && <Tooltip title={field.isVisibleToTutor ? $t('visible_to_tutors') : $t('hidden_from_tutors')}>
+            <IconButton className="dndActionIconButton">
+              <CoPresent className={clsx(classes.actionIcon, field.isVisibleToTutor ? classes.actionIconActive : classes.actionIconInactive)} />
+            </IconButton>
+          </Tooltip>}
 
           {isField && <Tooltip title={relationTip}><IconButton
             className="dndActionIconButton"
