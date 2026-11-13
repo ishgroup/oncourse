@@ -6,6 +6,7 @@ import DataCollectionForm, {
   DATA_COLLECTION_FORM,
   parseDataCollectionFormData
 } from '../../../js/containers/preferences/containers/data-collection-forms/components/DataCollectionForm';
+import type { CollectionFormField } from '../../../js/model/preferences/data-collection-forms/collectionFormSchema';
 
 describe("Virtual rendered DataCollectionForm", () => {
   defaultComponents({
@@ -52,13 +53,20 @@ describe("Virtual rendered DataCollectionForm", () => {
 
       const dataCollections = {};
 
+      const fields = items.filter(i => i.baseType === "field") as CollectionFormField[];
+
+      // switches are queried as inputs: tooltips of the card header icons are exposed as aria-label too
+      const mandatorySwitches = screen.getAllByLabelText("Mandatory", { selector: "input" }) as HTMLInputElement[];
+      expect(mandatorySwitches).toHaveLength(fields.length);
+      expect(mandatorySwitches.filter(s => s.checked)).toHaveLength(fields.filter(f => f.mandatory).length);
+
       if (form.type === "Survey") {
         dataCollections['form.deliverySchedule'] = form.deliverySchedule;
         dataCollections['form.tutorDeliverySchedule'] = form.tutorDeliverySchedule;
 
-        const fieldsCount = items.filter(i => i.baseType === "field").length;
-        expect(screen.getAllByText("Visible to tutors")).toHaveLength(fieldsCount);
-        expect(screen.getAllByText("Hidden from tutors")).toHaveLength(fieldsCount);
+        const tutorSwitches = screen.getAllByLabelText("Visible to tutors", { selector: "input" }) as HTMLInputElement[];
+        expect(tutorSwitches).toHaveLength(fields.length);
+        expect(tutorSwitches.filter(s => s.checked)).toHaveLength(fields.filter(f => f.isVisibleToTutor).length);
       }
 
       items.forEach((field, key) => {
