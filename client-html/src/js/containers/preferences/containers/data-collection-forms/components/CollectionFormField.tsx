@@ -5,13 +5,14 @@
 
 import { FieldValidationType } from '@api/model';
 import { TreeItem } from '@atlaskit/tree';
-import { FormControlLabel, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import $t from '@t';
 import { SelectItemDefault } from 'ish-ui';
 import * as React from 'react';
 import { useMemo } from 'react';
-import { change } from 'redux-form';
+import { change, Field } from 'redux-form';
 import FormField from '../../../../../common/components/form/formFields/FormField';
+import { ToogleCheckbox } from '../../../../../common/components/form/ToogleCheckbox';
 import { useAppDispatch, useAppSelector } from '../../../../../common/utils/hooks';
 import {
   CollectionFormField,
@@ -115,19 +116,24 @@ const CollectionFormField = ({
 
       <Grid container size={4} rowSpacing={2}>
         <Grid size={12}>
-          <FormControlLabel
-            className="switchWrapper w-100"
-            control={<FormField type="switch" name={`items[${item.id}].mandatory`} />}
-            label={$t('mandatory')}
-            labelPlacement="start"
+          <Field
+            name={`items[${item.id}].mandatory`}
+            label={$t('label')}
+            margin="none"
+            type="checkbox"
+            chackedLabel="Mandatory"
+            uncheckedLabel="Optional"
+            component={ToogleCheckbox}
           />
         </Grid>
         {formType === 'Survey' && <Grid size={12}>
-          <FormControlLabel
-            className="switchWrapper w-100"
-            control={<FormField type="switch" name={`items[${item.id}].isVisibleToTutor`} />}
-            label={$t('visible_to_tutors')}
-            labelPlacement="start"
+          <Field
+            name={`items[${item.id}].isVisibleToTutor`}
+            margin="none"
+            type="checkbox"
+            chackedLabel={$t('visible_to_tutors')}
+            uncheckedLabel={$t('hidden_from_tutors')}
+            component={ToogleCheckbox}
           />
         </Grid>}
         {formType === 'Enrolment' && <Grid size={12}>

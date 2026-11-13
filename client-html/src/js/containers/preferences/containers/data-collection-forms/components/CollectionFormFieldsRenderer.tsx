@@ -156,7 +156,7 @@ const CollectionFormFieldsRenderer = (
 
           {/* tutor visibility of survey answers, shown in the collapsed card so the whole form can be scanned at a glance */}
           {isField && formType === 'Survey' && <Tooltip title={field.isVisibleToTutor ? $t('visible_to_tutors') : $t('hidden_from_tutors')}>
-            <IconButton className="dndActionIconButton">
+            <IconButton disableRipple className="dndActionIconButton">
               <CoPresent className={clsx(classes.actionIcon, field.isVisibleToTutor ? classes.actionIconActive : classes.actionIconInactive)} />
             </IconButton>
           </Tooltip>}
