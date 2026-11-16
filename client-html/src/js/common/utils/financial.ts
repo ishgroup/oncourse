@@ -46,7 +46,7 @@ export function getPriceAndDeductionsByTotal(
   let taxEach = afterDiscount.mul(taxRateDec);
   const discountRounded = bankRounding(discountAmount);
 
-  const { total: totalRecomposed } = getTotalAndDeductionsByPrice(bankRounding(priceEachExTax), taxRate, discount);
+  const { total: totalRecomposed } = getTotalAndDeductionsByPrice(bankRounding(priceEachExTax), taxRate, discountRounded);
   const diff = totalDec.sub(totalRecomposed);
   if (!diff.isZero()) {
     taxEach = taxEach.add(diff);
@@ -87,13 +87,15 @@ export function getTotalAndDeductionsByPrice(
     };
   }
 
-  const afterDiscount = base.sub(discountAmount);
-  const tax = afterDiscount.mul(taxRateDec);
-  const total = afterDiscount.add(tax);
+  // round discount and total first and let tax take the rest,
+  // so that price minus discount plus tax always equals total
+  const discountEach = bankRounding(discountAmount);
+  const afterDiscount = base.sub(discountEach);
+  const total = bankRounding(afterDiscount.mul(taxRateDec.add(1)));
 
   return {
-    total: bankRounding(total),
-    discountEach: bankRounding(discountAmount),
-    taxEach: bankRounding(tax)
+    total,
+    discountEach,
+    taxEach: bankRounding(new Decimal(total).sub(afterDiscount))
   };
 }

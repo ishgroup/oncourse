@@ -47,7 +47,7 @@ import { State } from '../../../../reducers/state';
 import { accountLabelCondition } from '../../accounts/utils';
 import CourseItemRenderer from '../../courses/components/CourseItemRenderer';
 import { courseFilterCondition, openCourseLink } from '../../courses/utils';
-import { openDiscountsLink, plainDiscountToAPIModel } from '../../discounts/utils';
+import { getRoundingByType, openDiscountsLink, plainDiscountToAPIModel } from '../../discounts/utils';
 import {
   getInvoiceLineCourse,
   getInvoiceLineEnrolments,
@@ -320,21 +320,25 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     selectedAccountTaxId && dispatch(change(form, `${item}.taxId`, Number(selectedAccountTaxId)));
   };
 
-  const onDiscountIdChange = discount => {
-    const apiDiscount: Discount | number =  typeof discount !== 'number' && discount ? plainDiscountToAPIModel(discount) : null;
-    setCurrentDiscount(apiDiscount);
-    dispatch(change(form, `${item}.discountName`, typeof apiDiscount !== 'number' && apiDiscount?.name || null));
+  const applyDiscount = (apiDiscount: Discount) => {
+    const removedFeeOverride = !apiDiscount && typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override';
 
-    if (typeof apiDiscount !== 'number' && apiDiscount?.discountType === 'Fee override' && row.priceEachExTax > 0) {
+    setCurrentDiscount(apiDiscount);
+    dispatch(change(form, `${item}.discountName`, apiDiscount?.name || null));
+
+    if (removedFeeOverride) {
+      recalculateByPrice(row.priceEachExTax || 0, taxRate, null, row.quantity);
+      return;
+    }
+
+    if (apiDiscount?.discountType === 'Fee override' && row.priceEachExTax > 0) {
       recalculateByPrice(row.priceEachExTax, taxRate, apiDiscount, row.quantity);
       return;
     }
 
-    if (
-      (typeof apiDiscount !== 'number' && apiDiscount !== null && apiDiscount?.discountType === 'Fee override') ||
-      (!discount && typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override' && lastEditedField.current !== 'priceEachExTax')
-    ) {
-      const total = bankRounding(new Decimal((apiDiscount || (typeof currentDiscount !== 'number' && currentDiscount))?.discountValue).mul(new Decimal(taxRate).plus(1)).toNumber());
+    if (apiDiscount?.discountType === 'Fee override') {
+      // apply discount rounding the same way as getDiscountAmountByFee does for lines with price
+      const total = bankRounding(getRoundingByType(apiDiscount.rounding, new Decimal(apiDiscount.discountValue).mul(new Decimal(taxRate).plus(1))));
       recalculateByTotal(
         total,
         taxRate,
@@ -347,14 +351,16 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
 
     recalculate(row.total, row.priceEachExTax, row.quantity, taxRate, apiDiscount);
   };
-  
+
+  const onDiscountIdChange = discount => {
+    applyDiscount(typeof discount !== 'number' && discount ? plainDiscountToAPIModel(discount) : null);
+  };
+
   const onDiscountEachExTaxLock = () => {
-    setDiscountEachExTaxLocked(prev => {
-      if (!prev && currentDiscount && typeof currentDiscount !== 'number') {
-       onDiscountIdChange(currentDiscount);
-      }
-      return !prev;
-    });
+    if (!discountEachExTaxLocked && currentDiscount && typeof currentDiscount !== 'number') {
+      applyDiscount(currentDiscount);
+    }
+    setDiscountEachExTaxLocked(!discountEachExTaxLocked);
   };
 
   const disableFinanceFileds = type !== "Quote" && !isNew;

@@ -4,7 +4,9 @@
  */
 
 import { Discount } from '@api/model';
-import { getTotalAndDeductionsByPrice } from '../../../js/common/utils/financial';
+import { Decimal } from 'decimal.js-light';
+import { getPriceAndDeductionsByTotal, getTotalAndDeductionsByPrice } from '../../../js/common/utils/financial';
+import { getRoundingByType } from '../../../js/containers/entities/discounts/utils';
 
 const feeOverride: Discount = {
   name: 'Fee override',
@@ -44,5 +46,56 @@ describe('getTotalAndDeductionsByPrice', () => {
     expect(discountEach).toBe(10);
     expect(taxEach).toBe(9);
     expect(total).toBe(99);
+  });
+
+  it('keeps price and puts rounding into tax when Fee override is removed', () => {
+    const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice(995.45, 0.1, null);
+
+    expect(discountEach).toBe(0);
+    expect(taxEach).toBe(99.55);
+    expect(total).toBe(1095);
+  });
+});
+
+describe('getPriceAndDeductionsByTotal', () => {
+  it('does not move Fee override difference into tax when total is edited', () => {
+    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(600, 0.1, feeOverride);
+
+    expect(discountAmount).toBe(0);
+    expect(priceEachExTax).toBe(545.45);
+    expect(taxEach).toBe(54.55);
+  });
+
+  it('splits rounded Fee override total for line without price', () => {
+    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(500, 0.1, feeOverride);
+
+    expect(discountAmount).toBe(0);
+    expect(priceEachExTax).toBe(454.55);
+    expect(taxEach).toBe(45.45);
+  });
+
+  it('keeps zero tax for Fee override when tax rate is 0', () => {
+    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(500, 0, feeOverride);
+
+    expect(discountAmount).toBe(0);
+    expect(priceEachExTax).toBe(500);
+    expect(taxEach).toBe(0);
+  });
+
+  it('keeps Dollar discount calculation by total unchanged', () => {
+    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(99, 0.1, { discountType: 'Dollar', discountValue: 10, rounding: 'No Rounding' });
+
+    expect(discountAmount).toBe(10);
+    expect(priceEachExTax).toBe(100);
+    expect(taxEach).toBe(9);
+  });
+});
+
+describe('Fee override total for line without price', () => {
+  it('applies discount rounding so that total matches line with price', () => {
+    const total = getRoundingByType(feeOverride.rounding, new Decimal(feeOverride.discountValue).mul(1.1));
+
+    expect(total).toBe(500);
+    expect(total).toBe(getTotalAndDeductionsByPrice(995.45, 0.1, feeOverride).total);
   });
 });
