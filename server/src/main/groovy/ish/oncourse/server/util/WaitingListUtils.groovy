@@ -16,6 +16,12 @@ import org.apache.cayenne.query.ObjectSelect
 
 class WaitingListUtils {
     public static boolean waitingListExists(Course course, Student student, ObjectContext context, Long idToExclude = null) {
+        // A student or course that isn't saved yet (e.g. replicated from willow in the same transaction
+        // group as the waiting list) can't have a waiting list, and Cayenne can't query by a temporary id.
+        if (student?.isNewRecord() || course?.isNewRecord()) {
+            return false
+        }
+
         def waitingListsFilter = WaitingList.STUDENT.eq(student)
                 .andExp(WaitingList.COURSE.eq(course))
 
