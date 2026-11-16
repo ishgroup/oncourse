@@ -13,6 +13,7 @@ package ish.oncourse.server.cayenne
 
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.server.cayenne.glue._Field
 
 import javax.annotation.Nonnull
@@ -27,6 +28,29 @@ import javax.annotation.Nullable
 @QueueableEntity
 @API
 class Field extends _Field implements Queueable, Comparable<Field> {
+
+	/**
+	 * Survey score fields are visible to tutors of the class unless set otherwise; comment and custom fields are hidden.
+	 * The same default is used by upgrade 155 for existing forms and by willow for forms replicated without the setting.
+	 */
+	public static final Set<String> VISIBLE_TO_TUTOR_BY_DEFAULT = Collections.unmodifiableSet([
+			FieldProperty.NET_PROMOTER_SCORE.key,
+			FieldProperty.COURSE_SCORE.key,
+			FieldProperty.VENUE_SCORE.key,
+			FieldProperty.TUTOR_SCORE.key
+	] as Set<String>)
+
+	static boolean isVisibleToTutorByDefault(String property) {
+		return property != null && VISIBLE_TO_TUTOR_BY_DEFAULT.contains(property)
+	}
+
+	@Override
+	void postAdd() {
+		super.postAdd()
+		if (getIsVisibleToTutor() == null) {
+			setIsVisibleToTutor(false)
+		}
+	}
 
 	/**
 	 * @return the date and time this record was created
@@ -52,6 +76,14 @@ class Field extends _Field implements Queueable, Comparable<Field> {
 	@Nonnull @Override @API
 	Boolean getMandatory() {
 		return super.getMandatory()
+	}
+
+	/**
+	 * @return true if answers to this field of a student feedback form are shown to tutors of the class in the portal
+	 */
+	@Nonnull @Override @API
+	Boolean getIsVisibleToTutor() {
+		return super.getIsVisibleToTutor()
 	}
 
 	/**

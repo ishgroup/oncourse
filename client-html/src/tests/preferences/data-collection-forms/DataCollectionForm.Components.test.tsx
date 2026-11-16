@@ -1,7 +1,12 @@
-import * as React from "react";
-import { defaultComponents } from "../../common/Default.Components";
-import DataCollectionForm, { parseDataCollectionFormData, DATA_COLLECTION_FORM }
-  from "../../../js/containers/preferences/containers/data-collection-forms/components/DataCollectionForm";
+import * as React from 'react';
+// must be imported before DataCollectionForm: it loads the String prototype extensions (capitalize)
+// that CollectionFormField uses at module level
+import { defaultComponents } from '../../common/Default.Components';
+import DataCollectionForm, {
+  DATA_COLLECTION_FORM,
+  parseDataCollectionFormData
+} from '../../../js/containers/preferences/containers/data-collection-forms/components/DataCollectionForm';
+import type { CollectionFormField } from '../../../js/model/preferences/data-collection-forms/collectionFormSchema';
 
 describe("Virtual rendered DataCollectionForm", () => {
   defaultComponents({
@@ -48,8 +53,24 @@ describe("Virtual rendered DataCollectionForm", () => {
 
       const dataCollections = {};
 
+      const fields = items.filter(i => i.baseType === "field") as CollectionFormField[];
+
+      // ToogleCheckbox renders "unchecked | checked" buttons around a hidden, unlabelled checkbox,
+      // so the toggle is found by its checked-side button text and its state read from that checkbox
+      const toggleInputs = (checkedLabel: string) => screen.getAllByText(checkedLabel)
+        .map(label => label.closest(".MuiButtonGroup-root").querySelector<HTMLInputElement>("input[type=checkbox]"));
+
+      const mandatoryToggles = toggleInputs("Mandatory");
+      expect(mandatoryToggles).toHaveLength(fields.length);
+      expect(mandatoryToggles.filter(s => s.checked)).toHaveLength(fields.filter(f => f.mandatory).length);
+
       if (form.type === "Survey") {
         dataCollections['form.deliverySchedule'] = form.deliverySchedule;
+        dataCollections['form.tutorDeliverySchedule'] = form.tutorDeliverySchedule;
+
+        const tutorToggles = toggleInputs("Tutor visible");
+        expect(tutorToggles).toHaveLength(fields.length);
+        expect(tutorToggles.filter(s => s.checked)).toHaveLength(fields.filter(f => f.isVisibleToTutor).length);
       }
 
       items.forEach((field, key) => {

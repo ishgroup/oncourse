@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: 155-1
+      author: yury
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: Field
+                columnName: isVisibleToTutor
+      changes:
+        - addColumn:
+            tableName: Field
+            columns:
+              - column:
+                  name: isVisibleToTutor
+                  type: SMALLINT
+                  defaultValue: false
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 155-2
+      author: yury
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: FieldConfiguration
+                columnName: tutorDeliverySchedule
+      changes:
+        - addColumn:
+            tableName: FieldConfiguration
+            columns:
+              - column:
+                  name: tutorDeliverySchedule
+                  type: SMALLINT
+
+  # Separate changesets without preconditions, so they run even if a column was added before (e.g. by a dev build);
+  # running them again changes nothing. Willow applies the same defaults (changeset 118), the backfill isn't replicated.
+  - changeSet:
+      id: 155-3
+      author: yury
+      changes:
+        # results of existing Survey forms (type 4) are available to tutors at completion (DeliverySchedule.AT_COMPLETION = 4)
+        - update:
+            tableName: FieldConfiguration
+            columns:
+              - column:
+                  name: tutorDeliverySchedule
+                  valueNumeric: 4
+            where: type = 4 AND tutorDeliverySchedule IS NULL
+
+  - changeSet:
+      id: 155-4
+      author: yury
+      changes:
+        # scores of existing Survey forms are visible to tutors, comment and custom fields stay hidden (Field.VISIBLE_TO_TUTOR_BY_DEFAULT)
+        - sql: "UPDATE Field SET isVisibleToTutor = 1 WHERE property IN ('netPromoterScore', 'courseScore', 'venueScore', 'tutorScore') AND fieldConfigurationId IN (SELECT id FROM FieldConfiguration WHERE type = 4)"
