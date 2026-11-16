@@ -55,18 +55,22 @@ describe("Virtual rendered DataCollectionForm", () => {
 
       const fields = items.filter(i => i.baseType === "field") as CollectionFormField[];
 
-      // switches are queried as inputs: tooltips of the card header icons are exposed as aria-label too
-      const mandatorySwitches = screen.getAllByLabelText("Mandatory", { selector: "input" }) as HTMLInputElement[];
-      expect(mandatorySwitches).toHaveLength(fields.length);
-      expect(mandatorySwitches.filter(s => s.checked)).toHaveLength(fields.filter(f => f.mandatory).length);
+      // ToogleCheckbox renders "unchecked | checked" buttons around a hidden, unlabelled checkbox,
+      // so the toggle is found by its checked-side button text and its state read from that checkbox
+      const toggleInputs = (checkedLabel: string) => screen.getAllByText(checkedLabel)
+        .map(label => label.closest(".MuiButtonGroup-root").querySelector<HTMLInputElement>("input[type=checkbox]"));
+
+      const mandatoryToggles = toggleInputs("Mandatory");
+      expect(mandatoryToggles).toHaveLength(fields.length);
+      expect(mandatoryToggles.filter(s => s.checked)).toHaveLength(fields.filter(f => f.mandatory).length);
 
       if (form.type === "Survey") {
         dataCollections['form.deliverySchedule'] = form.deliverySchedule;
         dataCollections['form.tutorDeliverySchedule'] = form.tutorDeliverySchedule;
 
-        const tutorSwitches = screen.getAllByLabelText("Visible to tutors", { selector: "input" }) as HTMLInputElement[];
-        expect(tutorSwitches).toHaveLength(fields.length);
-        expect(tutorSwitches.filter(s => s.checked)).toHaveLength(fields.filter(f => f.isVisibleToTutor).length);
+        const tutorToggles = toggleInputs("Tutor visible");
+        expect(tutorToggles).toHaveLength(fields.length);
+        expect(tutorToggles.filter(s => s.checked)).toHaveLength(fields.filter(f => f.isVisibleToTutor).length);
       }
 
       items.forEach((field, key) => {
