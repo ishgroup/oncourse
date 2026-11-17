@@ -22,6 +22,7 @@ class GetEmailHtmlBody {
     private TemplateService templateService
     private String templateIdentifier
     private Map<String, Object> bindings
+    private String emailBody
 
     private Message message
 
@@ -31,6 +32,12 @@ class GetEmailHtmlBody {
 
     static GetEmailHtmlBody empty() {
         new GetEmailHtmlBody()
+    }
+
+    static GetEmailHtmlBody valueOf(String emailBody) {
+        GetEmailHtmlBody getEmailHtmlBody = new GetEmailHtmlBody()
+        getEmailHtmlBody.emailBody = emailBody
+        getEmailHtmlBody
     }
 
     static GetEmailHtmlBody valueOf(TemplateService templateService, String templateIdentifier, Map<String, Object> bindings) {
@@ -58,6 +65,6 @@ class GetEmailHtmlBody {
             return templateService.renderHtml(template, bindings)
         }
 
-        ''
+        emailBody ?: ''
     }
 }
