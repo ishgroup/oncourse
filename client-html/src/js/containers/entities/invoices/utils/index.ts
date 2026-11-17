@@ -144,7 +144,7 @@ export const getFeeOverrideLineAmounts = (
   taxEach: number,
   total: number
 } => {
-  // apply discount rounding the same way as getDiscountAmountByFee does for lines with price
+  // line without price takes the Fee override as its price, so total is the rounded Fee override inc tax, the same as getDiscountedFee gives for lines with price
   const totalEach = bankRounding(getRoundingByType(discount.rounding, new Decimal(discount.discountValue).mul(new Decimal(taxRate || 0).plus(1))));
   const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(totalEach, taxRate, discount);
 

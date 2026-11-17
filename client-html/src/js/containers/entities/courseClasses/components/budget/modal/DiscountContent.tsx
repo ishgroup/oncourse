@@ -31,6 +31,7 @@ import { bankRounding, getTaxAmountByFeeExTax } from '../../../../../../common/u
 import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
 import { getDiscountAmountExTax, getRoundingByType } from '../../../../discounts/utils';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
+import { getClassFeeExTax } from '../utils';
 
 interface Props extends BudgetCostModalContentProps {
   classFee: number;
@@ -64,7 +65,7 @@ const onBeforeLockSet = (
   perUnit: number,
   currentTax: Tax,
   discount: Discount,
-  classFee: number
+  classFeeExTax: number
 ) => {
   dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "courseClassDiscount.discountOverride", pr ? perUnit : null));
 
@@ -72,7 +73,7 @@ const onBeforeLockSet = (
     dispatch(change(
       COURSE_CLASS_COST_DIALOG_FORM,
       "perUnitAmountExTax",
-      bankRounding(getDiscountAmountExTax(discount, currentTax.rate, classFee))
+      bankRounding(getDiscountAmountExTax(discount, currentTax.rate, classFeeExTax))
     ));
   }
 };
@@ -91,7 +92,7 @@ const DiscountContent: React.FC<Props> = ({
         values.perUnitAmountExTax,
         currentTax,
         values.courseClassDiscount.discount,
-        classFee
+        getClassFeeExTax(classValues.budget || [])
       );
       return !pr;
     });

@@ -9,11 +9,9 @@
 import { Discount, Tax } from '@api/model';
 import { Decimal, Numeric } from 'decimal.js-light';
 import {
-  applyDiscountMinMax,
-  getDiscountAmountByFee,
   getDiscountAmountByFeeIncTaxAndDiscount,
   getDiscountAmountExTax,
-  getRoundingByType
+  getDiscountedFee
 } from '../../containers/entities/discounts/utils';
 
 export const bankRounding = (fee: Numeric) => new Decimal(fee).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN).toNumber();
@@ -58,35 +56,6 @@ export function getPriceAndDeductionsByTotal(
   };
 }
 
-
-function getTotalAndDeductionsByFeeOverride(
-  priceEachExTax: number,
-  taxRate: number,
-  discount: Discount
-): {
-  total: number;
-  discountEach: number;
-  taxEach: number;
-} {
-  const base = new Decimal(priceEachExTax);
-  const taxMul = new Decimal(taxRate || 0).add(1);
-
-  const feeIncTax = bankRounding(base.sub(getDiscountAmountByFee(discount, taxMul, priceEachExTax)));
-  const discountExTax = base.sub(new Decimal(feeIncTax).div(taxMul)).toNumber();
-  const limitedDiscountExTax = applyDiscountMinMax(discount, discountExTax);
-
-  const discountEach = bankRounding(limitedDiscountExTax);
-  const total = limitedDiscountExTax === discountExTax
-    ? feeIncTax
-    : bankRounding(getRoundingByType(discount.rounding, base.sub(discountEach).mul(taxMul)));
-
-  return {
-    total,
-    discountEach,
-    taxEach: bankRounding(new Decimal(total).sub(base.sub(discountEach)))
-  };
-}
-
 export function getTotalAndDeductionsByPrice(
   priceEachExTax: number,
   taxRate: number,
@@ -97,21 +66,22 @@ export function getTotalAndDeductionsByPrice(
   taxEach: number;
 }  {
   const base = new Decimal(priceEachExTax);
-  const taxRateDec = new Decimal(taxRate || 0);
+  const taxMul = new Decimal(taxRate || 0).add(1);
+  const discountEntity = typeof discount === 'number' ? null : discount;
 
-  if (typeof discount !== 'number' && discount?.discountType === 'Fee override') {
-    return getTotalAndDeductionsByFeeOverride(priceEachExTax, taxRate, discount);
-  }
-
-  const discountAmount = (typeof discount === 'number'
-    ? discount
-    : discount && getDiscountAmountExTax(discount, taxRate, priceEachExTax)) || 0;
+  const discountAmount = discountEntity
+    ? getDiscountAmountExTax(discountEntity, taxRate, priceEachExTax)
+    : (discount as number) || 0;
 
   // round discount and total first and let tax take the rest,
   // so that price minus discount plus tax always equals total
   const discountEach = bankRounding(discountAmount);
   const afterDiscount = base.sub(discountEach);
-  const total = bankRounding(afterDiscount.mul(taxRateDec.add(1)));
+
+  // discount rounding is applied to the total inc tax, the same way as on server (DiscountUtils.applyDiscounts)
+  const total = discountEntity?.rounding && discountEntity.rounding !== 'No Rounding'
+    ? bankRounding(getDiscountedFee(discountEntity, taxRate, priceEachExTax))
+    : bankRounding(afterDiscount.mul(taxMul));
 
   return {
     total,
