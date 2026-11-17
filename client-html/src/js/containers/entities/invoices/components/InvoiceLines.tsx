@@ -47,7 +47,7 @@ import { State } from '../../../../reducers/state';
 import { accountLabelCondition } from '../../accounts/utils';
 import CourseItemRenderer from '../../courses/components/CourseItemRenderer';
 import { courseFilterCondition, openCourseLink } from '../../courses/utils';
-import { getRoundingByType, openDiscountsLink, plainDiscountToAPIModel } from '../../discounts/utils';
+import { openDiscountsLink, plainDiscountToAPIModel } from '../../discounts/utils';
 import {
   getInvoiceLineCourse,
   getInvoiceLineEnrolments,
@@ -56,6 +56,7 @@ import {
 } from '../actions';
 import { INVOICE_LINE_DISCOUNT_AQL, INVOICE_LINE_DISCOUNT_COLUMNS } from '../constants';
 import { InvoicesState } from '../reducers/state';
+import { getFeeOverrideLineAmounts, getInvoiceLineDiscountRecalculation } from '../utils';
 
 interface HeaderProps {
   row: InvoiceLineWithTotal;
@@ -132,11 +133,13 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   const [useAllAccounts, setUseAllAccounts] = useState(false);
   const [courseClassEnrolments, setCourseClassEnrolments] = useState([]);
   const [currentDiscount, setCurrentDiscount] = useState<Discount | number>(null);
+  const [selectedDiscount, setSelectedDiscount] = useState<Discount>(null);
   const [loading, setLoading] = useState(false);
   const [discountEachExTaxLocked, setDiscountEachExTaxLocked] = useState(false);
 
   const accountRef = useRef<any>(undefined);
   const lastEditedField = useRef<'priceEachExTax' | 'total'>(undefined);
+  const feeOverridePriceEachExTax = useRef<number>(undefined);
 
   const prevCourseClassId = usePrevious(row.courseClassId);
   
@@ -149,6 +152,9 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   }, [selectedLineEnrolments]);
 
   useEffect(() => {
+    // ignore response of discount which is not on the line any more
+    let outdated = false;
+
     if (row.discountId && typeof currentDiscount !== 'number' && currentDiscount?.id !== row.discountId) {
       setLoading(true);
       EntityService.getPlainRecords(
@@ -159,16 +165,26 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
         0,
       )
       .then(({ rows }) => {
-        setCurrentDiscount(rows?.length ? plainDiscountToAPIModel(rows.map(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS))[0]) : null);
+        if (outdated) return;
+        const discount = rows?.length ? plainDiscountToAPIModel(rows.map(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS))[0]) : null;
+        setCurrentDiscount(discount);
+        setSelectedDiscount(discount);
         setLoading(false);
       })
       .catch(e => {
+        if (outdated) return;
         InstantFetchErrorHandler(dispatch, e);
         setLoading(false);
       });
-    } else {
+    } else if (!row.discountId) {
       setCurrentDiscount(null);
+      setSelectedDiscount(null);
     }
+
+    return () => {
+      outdated = true;
+      setLoading(false);
+    };
   }, [row.discountId]);
 
   useEffect(() => {
@@ -321,35 +337,38 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
 
   const applyDiscount = (apiDiscount: Discount) => {
-    const removedFeeOverride = !apiDiscount && typeof currentDiscount !== 'number' && currentDiscount?.discountType === 'Fee override';
+    const recalculation = getInvoiceLineDiscountRecalculation(
+      currentDiscount,
+      apiDiscount,
+      row.priceEachExTax,
+      lastEditedField.current,
+      feeOverridePriceEachExTax.current,
+      taxRate
+    );
 
     setCurrentDiscount(apiDiscount);
+    setSelectedDiscount(apiDiscount);
     dispatch(change(form, `${item}.discountName`, apiDiscount?.name || null));
 
-    if (removedFeeOverride) {
-      recalculateByPrice(row.priceEachExTax || 0, taxRate, null, row.quantity);
-      return;
-    }
+    switch (recalculation) {
+      case 'feeOverrideTotal': {
+        const {
+          priceEachExTax, discountEachExTax, taxEach, total
+        } = getFeeOverrideLineAmounts(apiDiscount, taxRate, row.quantity);
 
-    if (apiDiscount?.discountType === 'Fee override' && row.priceEachExTax > 0) {
-      recalculateByPrice(row.priceEachExTax, taxRate, apiDiscount, row.quantity);
-      return;
+        feeOverridePriceEachExTax.current = priceEachExTax;
+        dispatch(change(form, `${item}.taxEach`, taxEach));
+        dispatch(change(form, `${item}.discountEachExTax`, discountEachExTax));
+        dispatch(change(form, `${item}.priceEachExTax`, priceEachExTax));
+        dispatch(change(form, `${item}.total`, total));
+        break;
+      }
+      case 'byPrice':
+        recalculateByPrice(row.priceEachExTax || 0, taxRate, apiDiscount, row.quantity);
+        break;
+      default:
+        recalculate(row.total, row.priceEachExTax, row.quantity, taxRate, apiDiscount);
     }
-
-    if (apiDiscount?.discountType === 'Fee override') {
-      // apply discount rounding the same way as getDiscountAmountByFee does for lines with price
-      const total = bankRounding(getRoundingByType(apiDiscount.rounding, new Decimal(apiDiscount.discountValue).mul(new Decimal(taxRate).plus(1))));
-      recalculateByTotal(
-        total,
-        taxRate,
-        apiDiscount,
-        row.quantity
-      );
-      dispatch(change(form, `${item}.total`, decimalMul(total, row.quantity)));
-      return;
-    }
-
-    recalculate(row.total, row.priceEachExTax, row.quantity, taxRate, apiDiscount);
   };
 
   const onDiscountIdChange = discount => {
@@ -357,8 +376,8 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
 
   const onDiscountEachExTaxLock = () => {
-    if (!discountEachExTaxLocked && currentDiscount && typeof currentDiscount !== 'number') {
-      applyDiscount(currentDiscount);
+    if (!discountEachExTaxLocked && selectedDiscount) {
+      applyDiscount(selectedDiscount);
     }
     setDiscountEachExTaxLocked(!discountEachExTaxLocked);
   };
@@ -458,7 +477,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
               name={`${item}.discountId`}
               defaultValue={row.discountName}
               onInnerValueChange={onDiscountIdChange}
-              disabled={disableFinanceFileds}
+              disabled={disableFinanceFileds || loading}
               labelAdornment={
                 <LinkAdornment
                   link={row.discountId}
@@ -523,7 +542,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             name={`${item}.discountEachExTax`}
             label={$t('discount_each_extax')}
             onBlur={onDiscountEachExTaxBlur}
-            labelAdornment={<IconButton className="inputAdornmentButton" onClick={onDiscountEachExTaxLock}>
+            labelAdornment={<IconButton className="inputAdornmentButton" onClick={onDiscountEachExTaxLock} disabled={loading}>
               {discountEachExTaxLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
             </IconButton>}
             disabled={disableFinanceFileds || discountEachExTaxLocked}
