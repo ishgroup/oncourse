@@ -10,15 +10,17 @@ import { NestedListItem } from '../../../../common/components/form/nestedList/Ne
 
 export const plainDiscountToAPIModel = (plain: any):Discount => {
   const {
-    name, discountType, discountDollar, discountPercent, rounding
+    name, discountType, discountDollar, discountPercent, rounding, discountMin, discountMax
   } = plain;
-  
+
   return  {
     name,
     discountType,
     rounding,
     discountPercent,
-    discountValue: discountDollar && parseFloat(discountDollar)
+    discountValue: discountDollar && parseFloat(discountDollar),
+    discountMin: discountMin && parseFloat(discountMin),
+    discountMax: discountMax && parseFloat(discountMax)
   };
 };
 
@@ -50,8 +52,7 @@ export const getRoundingByType = (type: MoneyRounding, value: Decimal): number =
       return value.toDecimalPlaces(0, Decimal.ROUND_UP).toNumber();
     }
     case "Nearest dollar":
-      // server drops fraction of cents before rounding to dollar
-      return value.toDecimalPlaces(2, Decimal.ROUND_DOWN).toDecimalPlaces(0, Decimal.ROUND_HALF_UP).toNumber();
+      return value.toDecimalPlaces(0, Decimal.ROUND_HALF_UP).toNumber();
   }
 };
 
@@ -108,7 +109,8 @@ const getUnroundedDiscountExTax = (discount: Discount, priceExTax: Decimal): Dec
 
   amount = new Decimal(applyDiscountMinMax(discount, amount.toNumber()));
 
-  return priceExTax.lt(amount) ? priceExTax : amount;
+  // server never gets negative price here, but manual invoice credit line has it and keeps its discount
+  return priceExTax.gt(0) && priceExTax.lt(amount) ? priceExTax : amount;
 };
 
 /**
@@ -127,7 +129,7 @@ export const getDiscountedFee = (discount: Discount, taxRate: number, priceExTax
 
   const discountAmount = getUnroundedDiscountExTax(discount, price);
 
-  if (discountAmount.gte(price)) {
+  if (price.gt(0) && discountAmount.gte(price)) {
     return new Decimal(0);
   }
 

@@ -8,11 +8,7 @@
 
 import { Discount, Tax } from '@api/model';
 import { Decimal, Numeric } from 'decimal.js-light';
-import {
-  getDiscountAmountByFeeIncTaxAndDiscount,
-  getDiscountAmountExTax,
-  getDiscountedFee
-} from '../../containers/entities/discounts/utils';
+import { getDiscountAmountByFeeIncTaxAndDiscount, getDiscountAmountExTax } from '../../containers/entities/discounts/utils';
 
 export const bankRounding = (fee: Numeric) => new Decimal(fee).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN).toNumber();
 
@@ -23,6 +19,29 @@ export const getFeeExTaxByFeeIncTax = (taxRate: number, feeIncTax: number): numb
 export const getTaxAmountByFeeExTax = (taxRate: number, feeExTax: number): number => taxRate === 0 ? 0 : bankRounding(new Decimal(feeExTax || 0).mul(new Decimal(taxRate || 1)));
 
 export const getCurrentTax = (taxes: Tax[], id: number): Tax => taxes.find(t => t.id === id);
+
+/**
+ * Total and tax of invoice line the way server saves them (InvoiceApiService.updateInvoiceLines):
+ * tax is (price - discount) * rate and total is price - discount + tax rounded half even.
+ * With price and discount in cents a rounded total can't always be kept at some tax rates (e.g. $11.00 at 15%),
+ * so total is calculated from price and discount and not taken from discount rounding
+ */
+export const getInvoiceLineTotalAndTax = (
+  priceEachExTax: number,
+  discountEachExTax: number,
+  taxRate: number
+): {
+  total: number;
+  taxEach: number;
+} => {
+  const afterDiscount = new Decimal(priceEachExTax || 0).sub(discountEachExTax || 0);
+  const total = bankRounding(afterDiscount.mul(new Decimal(taxRate || 0).add(1)));
+
+  return {
+    total,
+    taxEach: bankRounding(new Decimal(total).sub(afterDiscount))
+  };
+};
 
 export function getPriceAndDeductionsByTotal(
   total: number,
@@ -65,27 +84,16 @@ export function getTotalAndDeductionsByPrice(
   discountEach: number;
   taxEach: number;
 }  {
-  const base = new Decimal(priceEachExTax);
-  const taxMul = new Decimal(taxRate || 0).add(1);
-  const discountEntity = typeof discount === 'number' ? null : discount;
-
-  const discountAmount = discountEntity
-    ? getDiscountAmountExTax(discountEntity, taxRate, priceEachExTax)
+  const discountAmount = discount && typeof discount !== 'number'
+    ? getDiscountAmountExTax(discount, taxRate, priceEachExTax)
     : (discount as number) || 0;
 
-  // round discount and total first and let tax take the rest,
-  // so that price minus discount plus tax always equals total
+  // discount rounding gets into total through discount amount, which is worked back from rounded total inc tax (see getDiscountAmountExTax),
+  // then total and tax are calculated from rounded price and discount the way server saves them
   const discountEach = bankRounding(discountAmount);
-  const afterDiscount = base.sub(discountEach);
-
-  // discount rounding is applied to the total inc tax, the same way as on server (DiscountUtils.applyDiscounts)
-  const total = discountEntity?.rounding && discountEntity.rounding !== 'No Rounding'
-    ? bankRounding(getDiscountedFee(discountEntity, taxRate, priceEachExTax))
-    : bankRounding(afterDiscount.mul(taxMul));
 
   return {
-    total,
     discountEach,
-    taxEach: bankRounding(new Decimal(total).sub(afterDiscount))
+    ...getInvoiceLineTotalAndTax(priceEachExTax, discountEach, taxRate)
   };
 }

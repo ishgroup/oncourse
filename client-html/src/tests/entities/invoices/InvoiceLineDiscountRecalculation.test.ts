@@ -5,8 +5,10 @@
 
 import { Discount } from '@api/model';
 import { Decimal } from 'decimal.js-light';
+import { getCustomColumnsMap } from '../../../js/common/utils/common';
 import { getPriceAndDeductionsByTotal, getTotalAndDeductionsByPrice } from '../../../js/common/utils/financial';
-import { getRoundingByType } from '../../../js/containers/entities/discounts/utils';
+import { getRoundingByType, plainDiscountToAPIModel } from '../../../js/containers/entities/discounts/utils';
+import { INVOICE_LINE_DISCOUNT_COLUMNS } from '../../../js/containers/entities/invoices/constants';
 import { getFeeOverrideLineAmounts, getInvoiceLineDiscountRecalculation } from '../../../js/containers/entities/invoices/utils';
 
 const feeOverride: Discount = {
@@ -109,6 +111,39 @@ describe('getInvoiceLineDiscountRecalculation', () => {
         expect(getInvoiceLineDiscountRecalculation(null, next, 0, lastEditedField)).toBe('byLastEditedField');
       });
     });
+  });
+
+  describe('on credit line (negative price)', () => {
+    it.each([undefined, 'priceEachExTax'] as const)('recalculates by price, last edited field %s', lastEditedField => {
+      [dollar, percent, feeOverride, null].forEach(next => {
+        expect(getInvoiceLineDiscountRecalculation(null, next, -100, lastEditedField)).toBe('byPrice');
+        expect(getInvoiceLineDiscountRecalculation(percent, next, -100, lastEditedField)).toBe('byPrice');
+      });
+    });
+
+    it('keeps negative price when Fee override is selected', () => {
+      expect(getInvoiceLineDiscountRecalculation(null, feeOverride, -100, undefined, undefined, 0.1)).toBe('byPrice');
+      expect(getTotalAndDeductionsByPrice(-100, 0.1, feeOverride)).toEqual({ total: 500, discountEach: -554.55, taxEach: 45.45 });
+    });
+  });
+});
+
+describe('Invoice line discount loaded as plain record', () => {
+  // values in the order of INVOICE_LINE_DISCOUNT_COLUMNS
+  const toDiscount = (values: string[]): Discount => plainDiscountToAPIModel(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS)({ id: '1', values }));
+
+  it('limits discount by discountMax, the same as checkout and server', () => {
+    const discount = toDiscount(['Half price', 'Percent', null, '0.5', 'No Rounding', null, '20.00']);
+
+    expect(discount.discountMax).toBe(20);
+    expect(getTotalAndDeductionsByPrice(100, 0.1, discount)).toEqual({ total: 88, discountEach: 20, taxEach: 8 });
+  });
+
+  it('limits discount by discountMin and ignores zero discountMax', () => {
+    const discount = toDiscount(['Five dollars', 'Dollar', '5.00', null, 'No Rounding', '10.00', '0.00']);
+
+    expect(discount).toMatchObject({ discountValue: 5, discountMin: 10, discountMax: 0 });
+    expect(getTotalAndDeductionsByPrice(100, 0.1, discount)).toEqual({ total: 99, discountEach: 10, taxEach: 9 });
   });
 });
 
@@ -239,6 +274,16 @@ describe('getFeeOverrideLineAmounts', () => {
       discountEachExTax: 0,
       taxEach: 45.45,
       total: 1000
+    });
+  });
+
+  it('gives total the server saves when rounded Fee override can not be kept at 15%', () => {
+    // Fee override $11.00 inc tax gives price 9.57, which is saved as 9.57 * 1.15 = 11.0055 -> $11.01
+    expect(getFeeOverrideLineAmounts({ ...feeOverride, discountValue: 9.57 }, 0.15, 2)).toEqual({
+      priceEachExTax: 9.57,
+      discountEachExTax: 0,
+      taxEach: 1.44,
+      total: 22.02
     });
   });
 
