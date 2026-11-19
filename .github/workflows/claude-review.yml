@@ -64,6 +64,7 @@ jobs:
           EOF
 
       - name: Claude review
+        id: claude
         uses: anthropics/claude-code-action@v1
         env:
           JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
@@ -129,3 +130,24 @@ jobs:
             --max-turns 40
             ${{ steps.jira.outputs.key != '' && format('--mcp-config {0}/mcp.json', runner.temp) || '' }}
             --allowedTools "mcp__jira__jira_get_issue,mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments:*),Bash(gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/comments:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git cat-file:*),Read,Grep,Glob"
+
+      # The action hides Claude's output on public repos, so on failure print only the error
+      # (API errors, max turns, etc.) from its execution file, never the full transcript
+      - name: Show Claude error
+        if: ${{ failure() && steps.claude.outputs.execution_file != '' }}
+        env:
+          EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
+        run: |
+          MSG=$(jq -r '
+            (map(select(.type == "assistant" and .error != null)) | last | .error // empty | "assistant error: \(.)"),
+            (map(select(.type == "result")) | last | select(. != null)
+              | "result: \(.subtype), is_error: \(.is_error)",
+                ((.errors // [])[] | tostring),
+                (.result // "" | .[0:1000]))
+          ' "$EXECUTION_FILE")
+          # stop workflow-command parsing so text from Claude can't inject commands
+          STOP=$(openssl rand -hex 16)
+          echo "::stop-commands::$STOP"
+          echo "$MSG"
+          echo "::$STOP::"
+          echo "::error title=Claude review failed::$(echo "$MSG" | tr '\n' ' ' | cut -c1-500 | sed 's/%/%25/g')"
