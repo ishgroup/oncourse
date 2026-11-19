@@ -83,16 +83,16 @@ export const getDiscountAmountByFeeIncTaxAndDiscount = (discount: Discount, feeI
   }
 };
 
-export const getDiscountAmountExTax = (discount: Discount, taxRate: number, fee: number = 0): Decimal => {
-  let amountNumber = getDiscountAmountByFee(discount,  new Decimal(1).plus(taxRate), fee).toNumber();
-  amountNumber = (typeof discount.discountMin  === 'number' && amountNumber < discount.discountMin)
+export const applyDiscountMinMax = (discount: Discount, amount: number): number => (
+  (typeof discount.discountMin  === 'number' && amount < discount.discountMin)
     ? discount.discountMin
-    : (typeof discount.discountMax  === 'number' && amountNumber > discount.discountMax)
+    : (typeof discount.discountMax  === 'number' && amount > discount.discountMax)
       ? discount.discountMax
-      : amountNumber;
+      : amount
+);
 
-  return new Decimal(amountNumber);
-};
+export const getDiscountAmountExTax = (discount: Discount, taxRate: number, fee: number = 0): Decimal =>
+  new Decimal(applyDiscountMinMax(discount, getDiscountAmountByFee(discount,  new Decimal(1).plus(taxRate), fee).toNumber()));
 
 const secondaryDiscountText = (discountType: DiscountType, discountValue: number, discountPercent: number) => {
   switch (discountType) {
