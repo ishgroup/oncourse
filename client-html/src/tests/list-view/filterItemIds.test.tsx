@@ -36,7 +36,8 @@ it('deletes a filter by its saved record id, not by its tree item id', () => {
     />
   );
 
-  fireEvent.click(getAllByRole('button', { name: 'Delete Filter' })[1]);
+  // the delete button is `visibility: hidden` until its row is hovered
+  fireEvent.click(getAllByRole('button', { name: 'Delete Filter', hidden: true })[1]);
 
   // the tree item id of Y is "1/1", which would be sent as DELETE /v1/filter/1/1
   expect(deleteFilter).toHaveBeenCalledWith(7, 'AbstractInvoice', false, undefined);
