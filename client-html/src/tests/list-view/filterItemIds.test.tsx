@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { cleanup, render } from '@testing-library/react';
+import { cleanup, fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import FilterGroupComp from '../../js/common/components/list-view/components/side-bar/components/FilterGroup';
 
@@ -20,4 +20,24 @@ it('reuses no item id across two live filter items', () => {
 
   // a filter is saved back into the group and takes the slot Y left
   expect(() => rerender(<Group {...props} filters={[filter('Z'), filter('Y')]} />)).not.toThrow();
+});
+
+it('deletes a filter by its saved record id, not by its tree item id', () => {
+  const deleteFilter = jest.fn();
+
+  const { getAllByRole } = render(
+    <Group
+      title="Custom Filters"
+      groupIndex={1}
+      rootEntity="AbstractInvoice"
+      onUpdate={jest.fn()}
+      deleteFilter={deleteFilter}
+      filters={[{ ...filter('X'), id: 42 }, { ...filter('Y'), id: 7 }]}
+    />
+  );
+
+  fireEvent.click(getAllByRole('button', { name: 'Delete Filter' })[1]);
+
+  // the tree item id of Y is "1/1", which would be sent as DELETE /v1/filter/1/1
+  expect(deleteFilter).toHaveBeenCalledWith(7, 'AbstractInvoice', false, undefined);
 });
