@@ -18,10 +18,18 @@ import java.util.Comparator;
 
 public class EnrolmentService {
 
+	/**
+	 * Orders invoice lines by invoice number, oldest invoice first.
+	 * An invoice gets its number on commit, so lines of a not yet committed invoice go last as the newest ones.
+	 */
+	public static final Comparator<InvoiceLine> BY_INVOICE_NUMBER = Comparator.comparing(
+			(InvoiceLine il) -> il.getInvoice().getInvoiceNumber(),
+			Comparator.nullsLast(Comparator.naturalOrder()));
+
 
 	public InvoiceLine getOriginalInvoiceLine(Enrolment self) {
 		return self.getInvoiceLines().stream()
-				.sorted(Comparator.comparing(il -> il.getInvoice().getInvoiceNumber()))
+				.sorted(BY_INVOICE_NUMBER)
 				.findFirst()
 				.orElse(null);
 	}
