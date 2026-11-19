@@ -3,10 +3,31 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import SideBar from '../../js/common/components/list-view/components/side-bar/SideBar';
-import { TestEntry } from '../TestEntry';
+
+// the connected side bar children are not under test, and loading them from here pulls in
+// constants/Config, which reaches back into the list view through an import cycle
+jest.mock('../../js/common/components/list-view/components/side-bar/components/ChecklistsFilters', () => ({
+  __esModule: true,
+  default: () => null
+}));
+jest.mock('../../js/common/components/list-view/components/side-bar/components/ListTagGroups', () => ({
+  __esModule: true,
+  default: () => null
+}));
+jest.mock('../../js/common/components/list-view/components/side-bar/components/StubFilterItem', () => ({
+  __esModule: true,
+  default: () => null
+}));
+jest.mock('../../js/common/components/layout/swipeable-sidebar/components/HamburgerMenu', () => ({
+  __esModule: true,
+  default: () => null
+}));
+
+const theme = createTheme();
 
 const filterGroups = [{
   title: 'Custom Filters',
@@ -17,7 +38,7 @@ const deleteFromSideBar = (filterEntity?: string) => {
   const deleteFilter = jest.fn();
 
   render(
-    <TestEntry>
+    <ThemeProvider theme={theme}>
       <SideBar
         onChangeFilters={jest.fn()}
         filterGroups={filterGroups}
@@ -27,10 +48,11 @@ const deleteFromSideBar = (filterEntity?: string) => {
         savingFilter={null}
         fetching={false}
       />
-    </TestEntry>
+    </ThemeProvider>
   );
 
-  fireEvent.click(screen.getByRole('button', { name: 'Delete Filter' }));
+  // the delete button is `visibility: hidden` until its row is hovered
+  fireEvent.click(screen.getByRole('button', { name: 'Delete Filter', hidden: true }));
 
   return deleteFilter;
 };
