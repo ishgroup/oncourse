@@ -25,7 +25,7 @@ it('reuses no item id across two live filter items', () => {
 it('deletes a filter by its saved record id, not by its tree item id', () => {
   const deleteFilter = jest.fn();
 
-  const { getAllByRole } = render(
+  const { getAllByLabelText } = render(
     <Group
       title="Custom Filters"
       groupIndex={1}
@@ -36,8 +36,9 @@ it('deletes a filter by its saved record id, not by its tree item id', () => {
     />
   );
 
-  // the delete button is `visibility: hidden` until its row is hovered
-  fireEvent.click(getAllByRole('button', { name: 'Delete Filter', hidden: true })[1]);
+  // the delete button is `visibility: hidden` until its row is hovered, which leaves it without an
+  // accessible name, so it is found by its aria-label rather than by role and name
+  fireEvent.click(getAllByLabelText('Delete Filter')[1]);
 
   // the tree item id of Y is "1/1", which would be sent as DELETE /v1/filter/1/1
   expect(deleteFilter).toHaveBeenCalledWith(7, 'AbstractInvoice', false, undefined);
