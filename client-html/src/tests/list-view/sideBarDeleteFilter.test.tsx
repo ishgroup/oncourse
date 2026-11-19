@@ -51,8 +51,9 @@ const deleteFromSideBar = (filterEntity?: string) => {
     </ThemeProvider>
   );
 
-  // the delete button is `visibility: hidden` until its row is hovered
-  fireEvent.click(screen.getByRole('button', { name: 'Delete Filter', hidden: true }));
+  // the delete button is `visibility: hidden` until its row is hovered, which leaves it without an
+  // accessible name, so it is found by its aria-label rather than by role and name
+  fireEvent.click(screen.getByLabelText('Delete Filter'));
 
   return deleteFilter;
 };
