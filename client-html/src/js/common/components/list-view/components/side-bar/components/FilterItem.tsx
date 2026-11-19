@@ -7,12 +7,15 @@ import * as React from 'react';
 import { memo, useMemo } from 'react';
 import { useFilterStyles } from './FilterComponentStyles';
 
-export type DeleteFilterHandler = (id: string, rootEntity: string, checked: boolean, isPrivate: boolean) => void;
+export type DeleteFilterHandler = (id: number, rootEntity: string, checked: boolean, isPrivate: boolean) => void;
 
 interface Props {
   label: string;
   checked: boolean;
-  id: string;
+  // position of the item inside the tree view, see `getIndex` in FilterGroup
+  itemId: string;
+  // saved filter record id, sent to the server on delete
+  id?: number;
   rootEntity: string;
   deletable: boolean;
   onDelete: DeleteFilterHandler;
@@ -22,7 +25,7 @@ interface Props {
 }
 
 const FilterItem = memo<Props>(({
-  label, checked, onDelete, id, isPrivate, deletable, rootEntity, expression, customLabel
+  label, checked, onDelete, itemId, id, isPrivate, deletable, rootEntity, expression, customLabel
 }) => {
   const renderedLabel = customLabel ? customLabel() : label;
 
@@ -38,7 +41,7 @@ const FilterItem = memo<Props>(({
 
   return (
     <TreeItem
-      itemId={id}
+      itemId={itemId}
       classes={treeItemClasses}
       label={(
         <TreeItemLabel
