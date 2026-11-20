@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.checkout
 
 import groovy.transform.CompileStatic
+import ish.common.checkout.RequiredRelatedCourses
 import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.server.CayenneService
@@ -37,6 +38,8 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
+import java.util.function.Function
+import java.util.function.Predicate
 
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
@@ -128,7 +131,8 @@ class CheckoutController {
             if (contact.isCompany && !node.enrolments.empty)  {
                 result << new CheckoutValidationErrorDTO(nodeId: contact.id, error: "Company can not be enrolled")
             } else {
-                node.enrolments.each { dto -> processEnrolment(dto, contact, confirmation) }
+                List<Course> checkoutCourses = node.enrolments.collect { dto -> courseClassApiService.getEntityAndValidateExistence(context, dto.classId).course }
+                node.enrolments.each { dto -> processEnrolment(dto, contact, confirmation, checkoutCourses) }
             }
             if (node.fundingInvoices) {
                 node.fundingInvoices.each { dto -> createFundingInvoice(dto) }
@@ -143,7 +147,7 @@ class CheckoutController {
 
     }
 
-    private void processEnrolment(CheckoutEnrolmentDTO dto, Contact contact, Boolean sendEmail) {
+    private void processEnrolment(CheckoutEnrolmentDTO dto, Contact contact, Boolean sendEmail, List<Course> checkoutCourses) {
 
         CourseClass courseClass = courseClassApiService.getEntityAndValidateExistence(context, dto.classId)
         Enrolment enrolment = createEnrolment(contact, courseClass, sendEmail, dto.studyReason?.dbType?:StudyReason.STUDY_REASON_NOT_STATED)
@@ -192,6 +196,8 @@ class CheckoutController {
             //TODO: make willow side validation
         }
 
+        validateRequiredRelatedCourses(contact, courseClass, checkoutCourses)
+
         List<EntityRelation> relations = EntityRelationDao.getRelatedToOrEqual(context, Course.simpleName, courseClass.course.id)
 
         relations.findAll { Module.simpleName == it.toEntityIdentifier }
@@ -208,6 +214,29 @@ class CheckoutController {
 
         currentEnrolments[dto.classId] = ++(currentEnrolments[dto.classId]?:0)
 
+    }
+
+    /**
+     * Same rules as willow checkout (see {@link RequiredRelatedCourses}): a course related to the enrolled course by a relation type
+     * which adds it to the shopping cart must be enrolled in the same checkout by the same student,
+     * unless the relation type considers history and the student already has an enrolment in it.
+     */
+    private void validateRequiredRelatedCourses(Contact contact, CourseClass courseClass, List<Course> checkoutCourses) {
+        Map<Course, Boolean> requiredCourses = [:]
+        EntityRelationDao.getRelatedTo(context, Course.simpleName, courseClass.course.id)
+                .findAll { Course.simpleName == it.toEntityIdentifier && courseClass.course.id != it.toEntityAngelId }
+                .findAll { RequiredRelatedCourses.isAddedToCart(it.relationType.shoppingCart) }
+                .each { RequiredRelatedCourses.mergeConsiderHistory(requiredCourses, SelectById.query(Course, it.toEntityAngelId).selectOne(context), it.relationType.considerHistory) }
+
+        List<String> missingCourses = RequiredRelatedCourses.getMissingCourseNames(requiredCourses,
+                { Course course -> contact.student?.isEnrolled(course) ?: false } as Predicate<Course>,
+                checkoutCourses,
+                { Course course -> "$course.code $course.name".toString() } as Function<Course, String>)
+
+        if (!missingCourses.empty) {
+            result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS,
+                    error: RequiredRelatedCourses.getErrorMessage(contact.fullName, "$courseClass.course.code $courseClass.course.name".toString(), missingCourses))
+        }
     }
 
     private void processMembership(CheckoutMembershipDTO dto, Contact contact, Boolean sendEmail) {
