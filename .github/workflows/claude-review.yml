@@ -28,40 +28,42 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Jira key from the branch name, e.g. CS-447_Reports_... -> CS-447 (empty if none)
+      # Jira key from the branch name, e.g. CS-447_Reports_... -> CS-447 (empty if none or not readable)
       - name: Extract Jira ticket
         id: jira
         env:
           BRANCH: ${{ github.head_ref }}
+          JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         run: |
           KEY=$(echo "$BRANCH" | grep -oE '^(CS|SST)-[0-9]+' || true)
+          if [ -n "$KEY" ]; then
+            # check credentials and ticket access up front; print only the HTTP status
+            CODE=$(curl -s -o /dev/null -w '%{http_code}' -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
+              "https://ish-group.atlassian.net/rest/api/3/issue/$KEY?fields=summary" || true)
+            echo "Jira $KEY: HTTP $CODE"
+            if [ "$CODE" != 200 ]; then
+              echo "::warning title=Jira ticket unavailable::$KEY returned HTTP $CODE, reviewing without ticket context"
+              KEY=""
+            fi
+          fi
           echo "key=$KEY" >> "$GITHUB_OUTPUT"
 
       - name: Set up uv
         if: ${{ steps.jira.outputs.key != '' }}
         uses: astral-sh/setup-uv@v6
 
-      # Read-only Jira MCP server; credentials are expanded from the env at runtime, not written to the file
-      - name: Write Jira MCP config
+      # Read-only Jira MCP server. It must be passed as inline JSON: the action merges --mcp-config
+      # with its own servers and silently drops file paths. ${JIRA_*} are expanded by Claude Code
+      # from the env, so credentials never appear in the args or logs
+      - name: Prepare Jira MCP server
+        id: jira_mcp
         if: ${{ steps.jira.outputs.key != '' }}
         run: |
-          cat > "$RUNNER_TEMP/mcp.json" <<'EOF'
-          {
-            "mcpServers": {
-              "jira": {
-                "command": "uvx",
-                "args": ["mcp-atlassian==0.24.6"],
-                "env": {
-                  "JIRA_URL": "https://ish-group.atlassian.net",
-                  "JIRA_USERNAME": "${JIRA_USERNAME}",
-                  "JIRA_API_TOKEN": "${JIRA_API_TOKEN}",
-                  "READ_ONLY_MODE": "true",
-                  "ENABLED_TOOLS": "jira_get_issue"
-                }
-              }
-            }
-          }
-          EOF
+          # pre-install so the server starts within Claude's MCP startup timeout
+          uvx mcp-atlassian==0.24.6 --help > /dev/null 2>&1 < /dev/null || true
+          CONFIG='{"mcpServers":{"jira":{"command":"uvx","args":["mcp-atlassian==0.24.6"],"env":{"JIRA_URL":"https://ish-group.atlassian.net","JIRA_USERNAME":"${JIRA_USERNAME}","JIRA_API_TOKEN":"${JIRA_API_TOKEN}","READ_ONLY_MODE":"true","ENABLED_TOOLS":"jira_get_issue"}}}}'
+          echo "arg=--mcp-config '$CONFIG'" >> "$GITHUB_OUTPUT"
 
       - name: Claude review
         id: claude
@@ -128,8 +130,18 @@ jobs:
           claude_args: |
             --model claude-opus-5-5
             --max-turns 40
-            ${{ steps.jira.outputs.key != '' && format('--mcp-config {0}/mcp.json', runner.temp) || '' }}
+            ${{ steps.jira_mcp.outputs.arg }}
             --allowedTools "mcp__jira__jira_get_issue,mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments:*),Bash(gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/comments:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git cat-file:*),Read,Grep,Glob"
+
+      # Show which MCP servers connected and which MCP tools Claude got (names and statuses only)
+      - name: Show MCP status
+        if: ${{ always() && steps.claude.outputs.execution_file != '' }}
+        env:
+          EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
+        run: |
+          jq -r '.[] | select(.type == "system" and .subtype == "init")
+            | (.mcp_servers[]? | "server \(.name): \(.status)"),
+              (.tools[]? | select(startswith("mcp__")) | "tool \(.)")' "$EXECUTION_FILE"
 
       # The action hides Claude's output on public repos, so on failure print only the error
       # (API errors, max turns, etc.) from its execution file, never the full transcript
