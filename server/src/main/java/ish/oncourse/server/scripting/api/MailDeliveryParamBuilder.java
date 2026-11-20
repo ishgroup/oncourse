@@ -39,11 +39,12 @@ public class MailDeliveryParamBuilder {
         var getAddressesTO = GetAddresses.valueOf(parameters.getToList());
         var getAddressesCC = GetAddresses.valueOf(parameters.getCcList());
         var getAddressesBCC = GetAddresses.valueOf(parameters.getBccList());
+        var getAddressesReplyTo = GetAddresses.valueOf(parameters.getReplyToList());
         var getSubject = GetSubject.valueOf(templateService, parameters.getTemplateIdentifier(), parameters.getBindings(), parameters.getSubject());
         var getEmailPlainBody = GetEmailPlainBody.valueOf(templateService, parameters.getTemplateIdentifier(), parameters.getBindings(), parameters.getContent());
         var getEmailHtmlBody = GetEmailHtmlBody.valueOf(templateService, parameters.getTemplateIdentifier(), parameters.getBindings());
         var getContent = GetContent.valueOf(getEmailPlainBody, getEmailHtmlBody, parameters.getAttachments());
 
-        return MailDeliveryParam.valueOf(getFrom, getEnvelopeFrom, getAddressesTO, getAddressesCC, getAddressesBCC, getSubject, getContent);
+        return MailDeliveryParam.valueOf(getFrom, getEnvelopeFrom, getAddressesTO, getAddressesCC, getAddressesBCC, getSubject, getContent, getAddressesReplyTo);
     }
 }
