@@ -131,7 +131,7 @@ class ContactFunctions {
     }
 
     static boolean isValidEmailAddress(String email) {
-        !StringUtils.isBlank(email) && !ValidationUtil.isValidEmailAddress(email)
+        !StringUtils.isBlank(email) && ValidationUtil.isValidEmailAddress(email)
     }
 
     static void updateProfilePicture(Contact contact, DocumentDTO pictureDocument) {
