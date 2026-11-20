@@ -68,7 +68,7 @@ interface DocumentProps {
   setListFullScreenEditView?: BooleanArgFunction;
 }
 
-const isRemoved = (value: string) => "isRemoved is " + value;
+const isRemoved = (value: boolean) => "isRemoved is " + value;
 
 const filterGroups: FilterGroup[] = [
   {
@@ -76,27 +76,32 @@ const filterGroups: FilterGroup[] = [
     filters: [
       {
         name: "Website",
-        expression: "webVisibility is PUBLIC and " + isRemoved("false"),
+        expression: `displayWebVisibility is PUBLIC and ${isRemoved(false)}`,
         active: true
       },
       {
         name: "Private",
-        expression: "webVisibility is PRIVATE and " + isRemoved("false"),
+        expression: `displayWebVisibility is PRIVATE and ${isRemoved(false)}`,
         active: true
       },
       {
         name: "Tutors and enrolled students",
-        expression: "webVisibility is STUDENTS and " + isRemoved("false"),
+        expression: `displayWebVisibility is TUTORS_AND_ENROLLED_STUDENTS and ${isRemoved(false)}`,
         active: true
       },
       {
-        name: "Tutors",
-        expression: "webVisibility is TUTORS and " + isRemoved("false"),
+        name: "Tutors only",
+        expression: `displayWebVisibility is TUTORS_ONLY and ${isRemoved(false)}`,
+        active: true
+      },
+      {
+        name: "Students only",
+        expression: `displayWebVisibility is STUDENTS_ONLY and ${isRemoved(false)}`,
         active: true
       },
       {
         name: "Linkable",
-        expression: "(webVisibility is PUBLIC or webVisibility is LINK) and " + isRemoved("false"),
+        expression: `(webVisibility is PUBLIC or webVisibility is LINK) and ${isRemoved(false)}`,
         active: true
       },
       {
@@ -108,7 +113,7 @@ const filterGroups: FilterGroup[] = [
             <Delete style={{ fontSize: "18px" }} color="disabled" />
           </span>
         ),
-        expression: isRemoved("true"),
+        expression: isRemoved(true),
         active: false
       }
     ]
