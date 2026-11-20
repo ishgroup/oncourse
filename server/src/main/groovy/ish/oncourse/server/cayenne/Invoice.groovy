@@ -64,9 +64,14 @@ class Invoice extends _Invoice implements InvoiceInterface, ExpandableTrait {
         }}
     }
 
+    /**
+     * The invoice number is allocated on commit rather than in postAdd(): invoices are often built
+     * in contexts that are never committed (e.g. checkout price recalculation, "duplicate and reverse"
+     * preview), and allocating on creation used to burn numbers and leave gaps in the sequence.
+     */
     @Override
-    void postAdd() {
-        super.postAdd()
+    void prePersist() {
+        super.prePersist()
         if (getInvoiceNumber() == null) {
             setInvoiceNumber(autoIncrementService.getNextInvoiceNumber())
         }
