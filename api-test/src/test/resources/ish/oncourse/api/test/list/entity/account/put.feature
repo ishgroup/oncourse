@@ -31,7 +31,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["code1000","true","asset","some descriptions_1000"])].id
@@ -86,7 +87,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["code1001","true","asset","some descriptions_1001"])].id
@@ -159,7 +161,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["code1002","true","asset","some descriptions_1002"])].id
@@ -227,7 +230,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["code1003","true","asset","some descriptions_1003"])].id
@@ -314,7 +318,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["code1004","true","asset","some descriptions_1004"])].id
@@ -365,7 +370,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["code1005","true","asset","some descriptions_1005"])].id
@@ -416,7 +422,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/account'
 
         Given path ishPathList
         And param entity = 'Account'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["code1006","true","asset","some descriptions_1006"])].id

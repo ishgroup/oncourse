@@ -18,9 +18,6 @@ public class ListApiTest {
     public void test() {
         Results results = Runner.builder().clientFactory(ish.oncourse.api.test.client.KarateClient::new).path(  "classpath:ish/oncourse/api/test/list/column",
                 "classpath:ish/oncourse/api/test/list/plain",
-                "classpath:ish/oncourse/api/test/list/get.feature",
-                "classpath:ish/oncourse/api/test/list/getListOfEntity.feature",
-                "classpath:ish/oncourse/api/test/list/getListOfEntityWithoutRights.feature",
                 "classpath:ish/oncourse/api/test/list/post.feature",
                 "classpath:ish/oncourse/api/test/list/postListOfEntity.feature",
                 "classpath:ish/oncourse/api/test/list/postListOfEntityWithoutRights.feature",
