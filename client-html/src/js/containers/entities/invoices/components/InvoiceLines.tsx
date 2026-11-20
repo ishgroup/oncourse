@@ -542,7 +542,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             name={`${item}.discountEachExTax`}
             label={$t('discount_each_extax')}
             onBlur={onDiscountEachExTaxBlur}
-            labelAdornment={<IconButton className="inputAdornmentButton" onClick={onDiscountEachExTaxLock} disabled={loading}>
+            labelAdornment={<IconButton className="inputAdornmentButton" onClick={onDiscountEachExTaxLock} disabled={disableFinanceFileds || loading}>
               {discountEachExTaxLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
             </IconButton>}
             disabled={disableFinanceFileds || discountEachExTaxLocked}

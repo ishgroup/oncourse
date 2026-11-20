@@ -159,6 +159,8 @@ export const getClassCostFee = (
   };
 };
 
+export const getClassFeeExTax = (costs: ClassCost[]): number => costs.find(c => c.invoiceToStudent)?.perUnitAmountExTax || 0;
+
 export const getClassFeeTotal = (costs: ClassCost[], taxes: Tax[]) => {
   const studentFee = costs.find(c => c.invoiceToStudent);
   return studentFee ? getTotalByFeeExTax(getCurrentTax(taxes, studentFee.taxId)?.rate, studentFee.perUnitAmountExTax) : 0;
