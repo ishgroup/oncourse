@@ -12,9 +12,12 @@
 package ish.common.checkout
 
 import groovy.transform.CompileStatic
+import ish.common.types.EnrolmentStatus
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
+import java.util.function.BooleanSupplier
+import java.util.function.Function
 import java.util.function.Predicate
 
 import static ish.common.types.EntityRelationCartAction.*
@@ -23,33 +26,71 @@ import static ish.common.types.EntityRelationCartAction.*
 class RequiredRelatedCoursesTest {
 
     private static final Predicate<String> ENROLLED_IN_CERT_III = { String c -> c == 'CERT_III' } as Predicate<String>
+    private static final BooleanSupplier ENROLLED = { true } as BooleanSupplier
+    private static final BooleanSupplier NOT_ENROLLED = { false } as BooleanSupplier
 
     @Test
-    void testIsAddedToCart() {
-        Assertions.assertTrue(RequiredRelatedCourses.isAddedToCart(ADD_NO_REMOVAL))
-        Assertions.assertTrue(RequiredRelatedCourses.isAddedToCart(ADD_ALLOW_REMOVAL))
-        Assertions.assertFalse(RequiredRelatedCourses.isAddedToCart(SUGGESTION))
-        Assertions.assertFalse(RequiredRelatedCourses.isAddedToCart(NO_ACTION))
-        Assertions.assertFalse(RequiredRelatedCourses.isAddedToCart(null))
+    void testPreviousEnrolmentStatuses() {
+        Assertions.assertEquals([EnrolmentStatus.SUCCESS], RequiredRelatedCourses.PREVIOUS_ENROLMENT_STATUSES)
     }
 
     @Test
-    void testRequiredCourseInCheckout() {
-        // Diploma + Cert III in the same checkout: allowed regardless of history
+    void testIsSatisfiedByHistory() {
+        Assertions.assertTrue(RequiredRelatedCourses.isSatisfiedByHistory(true, ENROLLED))
+        Assertions.assertFalse(RequiredRelatedCourses.isSatisfiedByHistory(true, NOT_ENROLLED))
+        Assertions.assertFalse(RequiredRelatedCourses.isSatisfiedByHistory(false, ENROLLED))
+        // history is not checked at all when relation type does not consider it
+        Assertions.assertFalse(RequiredRelatedCourses.isSatisfiedByHistory(null, { throw new AssertionError('must not be called') } as BooleanSupplier))
+    }
+
+    @Test
+    void testIsRequiredInCheckout() {
+        Assertions.assertTrue(RequiredRelatedCourses.isRequiredInCheckout(ADD_NO_REMOVAL, true, NOT_ENROLLED))
+        Assertions.assertTrue(RequiredRelatedCourses.isRequiredInCheckout(ADD_ALLOW_REMOVAL, true, NOT_ENROLLED))
+        Assertions.assertTrue(RequiredRelatedCourses.isRequiredInCheckout(ADD_NO_REMOVAL, false, ENROLLED))
+        Assertions.assertFalse(RequiredRelatedCourses.isRequiredInCheckout(ADD_NO_REMOVAL, true, ENROLLED))
+        Assertions.assertFalse(RequiredRelatedCourses.isRequiredInCheckout(SUGGESTION, false, NOT_ENROLLED))
+        Assertions.assertFalse(RequiredRelatedCourses.isRequiredInCheckout(NO_ACTION, false, NOT_ENROLLED))
+        Assertions.assertFalse(RequiredRelatedCourses.isRequiredInCheckout(null, false, NOT_ENROLLED))
+    }
+
+    @Test
+    void testIsMandatory() {
+        Assertions.assertTrue(RequiredRelatedCourses.isMandatory(ADD_NO_REMOVAL))
+        Assertions.assertFalse(RequiredRelatedCourses.isMandatory(ADD_ALLOW_REMOVAL))
+        Assertions.assertFalse(RequiredRelatedCourses.isMandatory(SUGGESTION))
+        Assertions.assertFalse(RequiredRelatedCourses.isMandatory(NO_ACTION))
+        Assertions.assertFalse(RequiredRelatedCourses.isMandatory(null))
+    }
+
+    @Test
+    void testAddMandatoryCourse() {
+        Map<String, Boolean> mandatory = [:]
+        RequiredRelatedCourses.addMandatoryCourse(mandatory, 'CERT_III', ADD_NO_REMOVAL, true)
+        RequiredRelatedCourses.addMandatoryCourse(mandatory, 'CERT_IV', ADD_NO_REMOVAL, null)
+        RequiredRelatedCourses.addMandatoryCourse(mandatory, 'OPTIONAL', ADD_ALLOW_REMOVAL, true)
+        RequiredRelatedCourses.addMandatoryCourse(mandatory, 'SUGGESTED', SUGGESTION, true)
+        RequiredRelatedCourses.addMandatoryCourse(mandatory, null, ADD_NO_REMOVAL, true)
+        Assertions.assertEquals(['CERT_III': true, 'CERT_IV': false], mandatory)
+
+        RequiredRelatedCourses.addMandatoryCourse(mandatory, 'CERT_III', ADD_NO_REMOVAL, false)
+        Assertions.assertEquals(['CERT_III': false, 'CERT_IV': false], mandatory)
+    }
+
+    @Test
+    void testMandatoryCourseInCheckout() {
         Assertions.assertEquals([], RequiredRelatedCourses.getMissingCourses(['CERT_III': true], { String c -> false } as Predicate<String>, ['CERT_III']))
         Assertions.assertEquals([], RequiredRelatedCourses.getMissingCourses(['CERT_III': false], { String c -> false } as Predicate<String>, ['CERT_III']))
     }
 
     @Test
-    void testRequiredCourseInHistory() {
-        // consider history: previous enrolment is enough
+    void testMandatoryCourseInHistory() {
         Assertions.assertEquals([], RequiredRelatedCourses.getMissingCourses(['CERT_III': true], ENROLLED_IN_CERT_III, []))
-        // history is not considered: course must be in the checkout even if student was enrolled before
         Assertions.assertEquals(['CERT_III'], RequiredRelatedCourses.getMissingCourses(['CERT_III': false], ENROLLED_IN_CERT_III, []))
     }
 
     @Test
-    void testRequiredCourseMissing() {
+    void testMandatoryCourseMissing() {
         Assertions.assertEquals(['CERT_IV'],
                 RequiredRelatedCourses.getMissingCourses(['CERT_III': true, 'CERT_IV': true], ENROLLED_IN_CERT_III, null))
         Assertions.assertEquals([], RequiredRelatedCourses.getMissingCourses([:], ENROLLED_IN_CERT_III, null))
@@ -57,22 +98,10 @@ class RequiredRelatedCoursesTest {
     }
 
     @Test
-    void testMergeConsiderHistory() {
-        Map<String, Boolean> required = [:]
-        RequiredRelatedCourses.mergeConsiderHistory(required, 'CERT_III', true)
-        RequiredRelatedCourses.mergeConsiderHistory(required, 'CERT_IV', null)
-        RequiredRelatedCourses.mergeConsiderHistory(required, null, true)
-        Assertions.assertEquals(['CERT_III': true, 'CERT_IV': false], required)
-
-        RequiredRelatedCourses.mergeConsiderHistory(required, 'CERT_III', false)
-        Assertions.assertEquals(['CERT_III': false, 'CERT_IV': false], required)
-    }
-
-    @Test
     void testGetMissingCourseNames() {
         Assertions.assertEquals(['Certificate IV'],
                 RequiredRelatedCourses.getMissingCourseNames(['CERT_III': true, 'CERT_IV': true], ENROLLED_IN_CERT_III, [],
-                        { String c -> c == 'CERT_IV' ? 'Certificate IV' : c } as java.util.function.Function<String, String>))
+                        { String c -> c == 'CERT_IV' ? 'Certificate IV' : c } as Function<String, String>))
     }
 
     @Test

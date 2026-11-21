@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import com.google.inject.Inject
+import ish.common.types.EnrolmentStatus
 import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -32,6 +33,15 @@ trait StudentTrait {
 
     boolean isEnrolled(Course course) {
         course.courseClasses.any { isEnrolled(it) }
+    }
+
+    /**
+     * @return true if the student has a saved enrolment in any class of the course with one of the statuses
+     */
+    boolean hasEnrolment(Course course, Collection<EnrolmentStatus> statuses) {
+        course.courseClasses.any { CourseClass courseClass ->
+            courseClass.enrolments.any { Enrolment e -> !e.newRecord && e.student.id == id && e.status in statuses }
+        }
     }
 
     long getActiveConcessionsCount(){

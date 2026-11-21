@@ -217,19 +217,20 @@ class CheckoutController {
     }
 
     /**
-     * Same rules as willow checkout (see {@link RequiredRelatedCourses}): a course related to the enrolled course by a relation type
-     * which adds it to the shopping cart must be enrolled in the same checkout by the same student,
+     * Same rules as willow checkout (see {@link RequiredRelatedCourses}): a mandatory related course (relation type adds it to
+     * the shopping cart and does not allow removal) must be enrolled in the same checkout by the same student,
      * unless the relation type considers history and the student already has an enrolment in it.
      */
     private void validateRequiredRelatedCourses(Contact contact, CourseClass courseClass, List<Course> checkoutCourses) {
-        Map<Course, Boolean> requiredCourses = [:]
+        Map<Course, Boolean> mandatoryCourses = [:]
         EntityRelationDao.getRelatedTo(context, Course.simpleName, courseClass.course.id)
                 .findAll { Course.simpleName == it.toEntityIdentifier && courseClass.course.id != it.toEntityAngelId }
-                .findAll { RequiredRelatedCourses.isAddedToCart(it.relationType.shoppingCart) }
-                .each { RequiredRelatedCourses.mergeConsiderHistory(requiredCourses, SelectById.query(Course, it.toEntityAngelId).selectOne(context), it.relationType.considerHistory) }
+                .findAll { RequiredRelatedCourses.isMandatory(it.relationType.shoppingCart) }
+                .each { RequiredRelatedCourses.addMandatoryCourse(mandatoryCourses, SelectById.query(Course, it.toEntityAngelId).selectOne(context),
+                        it.relationType.shoppingCart, it.relationType.considerHistory) }
 
-        List<String> missingCourses = RequiredRelatedCourses.getMissingCourseNames(requiredCourses,
-                { Course course -> contact.student?.isEnrolled(course) ?: false } as Predicate<Course>,
+        List<String> missingCourses = RequiredRelatedCourses.getMissingCourseNames(mandatoryCourses,
+                { Course course -> contact.student?.hasEnrolment(course, RequiredRelatedCourses.PREVIOUS_ENROLMENT_STATUSES) ?: false } as Predicate<Course>,
                 checkoutCourses,
                 { Course course -> "$course.code $course.name".toString() } as Function<Course, String>)
 

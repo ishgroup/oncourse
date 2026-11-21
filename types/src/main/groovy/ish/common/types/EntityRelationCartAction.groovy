@@ -23,6 +23,11 @@ enum EntityRelationCartAction implements DisplayableExtendedEnumeration<Integer>
 
     ADD_NO_REMOVAL(3, "Add but do not allow removal");
 
+    /**
+     * Cart actions which add the related item to the shopping cart automatically.
+     */
+    static final List<EntityRelationCartAction> ADDED_TO_CART = Collections.unmodifiableList([ADD_ALLOW_REMOVAL, ADD_NO_REMOVAL])
+
     private String displayName
     private int value
 
@@ -39,6 +44,20 @@ enum EntityRelationCartAction implements DisplayableExtendedEnumeration<Integer>
     @Override
     Integer getDatabaseValue() {
         return value
+    }
+
+    /**
+     * @return true if the related item is added to the shopping cart automatically
+     */
+    boolean isAddedToCart() {
+        ADDED_TO_CART.contains(this)
+    }
+
+    /**
+     * @return true if the related item added to the shopping cart can be removed from it
+     */
+    boolean isRemovable() {
+        this != ADD_NO_REMOVAL
     }
 
     @Override

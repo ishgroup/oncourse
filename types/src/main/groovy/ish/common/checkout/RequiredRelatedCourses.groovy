@@ -12,84 +12,95 @@
 package ish.common.checkout
 
 import groovy.transform.CompileStatic
+import ish.common.types.EnrolmentStatus
 import ish.common.types.EntityRelationCartAction
 
+import java.util.function.BooleanSupplier
 import java.util.function.Function
 import java.util.function.Predicate
 
-import static ish.common.types.EntityRelationCartAction.ADD_ALLOW_REMOVAL
-import static ish.common.types.EntityRelationCartAction.ADD_NO_REMOVAL
-
 /**
- * Shared (onCourse server + willow checkout) rules for course -> course entity relations
- * which require an enrolment in the related course.
+ * Shared (onCourse server + willow checkout) rules for course -> course entity relations.
  *
- * Willow checkout is the reference: a relation "course A -> course B" whose relation type adds B to the shopping cart
- * ({@link #CART_ADD_ACTIONS}) makes B required for A. B is added to the cart together with A unless the relation type
- * has 'consider history' set and the student already has an enrolment in B.
- * So an enrolment in A is allowed when B is in the same checkout for the same student, or (with 'consider history')
- * when the student already has an enrolment in B.
- *
+ * Willow checkout is the reference. For a relation "course A -> course B":
+ * <ul>
+ *     <li>B must be in the same checkout as A ({@link #isRequiredInCheckout}) when the relation type adds B to the shopping cart
+ *     ({@link EntityRelationCartAction#isAddedToCart}), unless the relation type considers history and the student already has
+ *     an enrolment in B with one of {@link #PREVIOUS_ENROLMENT_STATUSES}.
+ *     Willow adds such B to the shopping cart.</li>
+ *     <li>B is mandatory ({@link #isMandatory}) when it also can not be removed from the cart ({@link EntityRelationCartAction#ADD_NO_REMOVAL}).
+ *     An enrolment in A is rejected when a mandatory B is required but is not in the checkout ({@link #getMissingCourses}).</li>
+ * </ul>
  * Entity agnostic: callers pass their own Course model and the way to check the student's enrolment history.
  */
 @CompileStatic
 final class RequiredRelatedCourses {
 
     /**
-     * Cart actions which add the related item to the shopping cart automatically.
+     * Statuses of an existing enrolment in the related course which count as student's history (see 'consider history' of relation type).
      */
-    static final List<EntityRelationCartAction> CART_ADD_ACTIONS = Collections.unmodifiableList([ADD_ALLOW_REMOVAL, ADD_NO_REMOVAL])
+    static final List<EnrolmentStatus> PREVIOUS_ENROLMENT_STATUSES = Collections.unmodifiableList([EnrolmentStatus.SUCCESS])
 
     private RequiredRelatedCourses() {}
 
     /**
-     * @return true if relation type adds related item to the shopping cart, so the related course is required (see class description)
-     */
-    static boolean isAddedToCart(EntityRelationCartAction cartAction) {
-        cartAction != null && CART_ADD_ACTIONS.contains(cartAction)
-    }
-
-    /**
+     * @param considerHistory 'consider history' flag of the relation type
+     * @param enrolledBefore checks (lazily) whether the student has an enrolment in the related course with {@link #PREVIOUS_ENROLMENT_STATUSES}
      * @return true if the student's existing enrolment in the related course satisfies the relation
      */
-    static boolean isSatisfiedByHistory(Boolean considerHistory) {
-        Boolean.TRUE == considerHistory
+    static boolean isSatisfiedByHistory(Boolean considerHistory, BooleanSupplier enrolledBefore) {
+        Boolean.TRUE == considerHistory && enrolledBefore.getAsBoolean()
     }
 
     /**
-     * @param requiredCourses map: required course -> 'consider history' flag of the relation type
-     *        (if several relations point to the same course, history counts only when all of them consider it, see {@link #mergeConsiderHistory})
-     * @param isEnrolled checks whether the student already has an enrolment in the course
-     * @param coursesInCheckout courses the same student is enrolling in within the same checkout
-     * @return distinct required courses which are neither in the checkout nor (when history is considered) in the student's history
+     * @return true if the related course must be in the same checkout (willow adds it to the shopping cart)
      */
-    static <T> List<T> getMissingCourses(Map<T, Boolean> requiredCourses, Predicate<T> isEnrolled, Collection<T> coursesInCheckout) {
-        if (!requiredCourses) {
+    static boolean isRequiredInCheckout(EntityRelationCartAction cartAction, Boolean considerHistory, BooleanSupplier enrolledBefore) {
+        cartAction != null && cartAction.addedToCart && !isSatisfiedByHistory(considerHistory, enrolledBefore)
+    }
+
+    /**
+     * @return true if the related course added to the shopping cart can not be removed from it, so the enrolment is rejected without it
+     */
+    static boolean isMandatory(EntityRelationCartAction cartAction) {
+        cartAction != null && cartAction.addedToCart && !cartAction.removable
+    }
+
+    /**
+     * Collects mandatory related courses: course -> 'consider history' flag.
+     * If several relations point to the same course, history counts only when all of them consider it.
+     * Not mandatory relations ({@link #isMandatory}) are ignored.
+     */
+    static <T> void addMandatoryCourse(Map<T, Boolean> mandatoryCourses, T course, EntityRelationCartAction cartAction, Boolean considerHistory) {
+        if (course == null || !isMandatory(cartAction)) {
+            return
+        }
+        boolean history = Boolean.TRUE == considerHistory
+        mandatoryCourses.put(course, mandatoryCourses.containsKey(course) ? (mandatoryCourses.get(course) && history) : history)
+    }
+
+    /**
+     * @param mandatoryCourses see {@link #addMandatoryCourse}
+     * @param enrolledBefore checks whether the student has an enrolment in the course with {@link #PREVIOUS_ENROLMENT_STATUSES}
+     * @param coursesInCheckout courses the same student is enrolling in within the same checkout
+     * @return mandatory courses which are required in checkout ({@link #isRequiredInCheckout}) but are not there
+     */
+    static <T> List<T> getMissingCourses(Map<T, Boolean> mandatoryCourses, Predicate<T> enrolledBefore, Collection<T> coursesInCheckout) {
+        if (!mandatoryCourses) {
             return []
         }
-        requiredCourses.findAll { T course, Boolean considerHistory ->
+        mandatoryCourses.findAll { T course, Boolean considerHistory ->
             course != null &&
                     !(coursesInCheckout?.contains(course)) &&
-                    !(isSatisfiedByHistory(considerHistory) && isEnrolled.test(course))
+                    isRequiredInCheckout(EntityRelationCartAction.ADD_NO_REMOVAL, considerHistory, { enrolledBefore.test(course) } as BooleanSupplier)
         }.keySet().toList()
     }
 
     /**
      * @return names of missing courses, see {@link #getMissingCourses}
      */
-    static <T> List<String> getMissingCourseNames(Map<T, Boolean> requiredCourses, Predicate<T> isEnrolled, Collection<T> coursesInCheckout, Function<T, String> name) {
-        getMissingCourses(requiredCourses, isEnrolled, coursesInCheckout).collect { T course -> name.apply(course) }
-    }
-
-    /**
-     * Adds required course to the map; if the course is already there, history counts only when every relation considers it.
-     */
-    static <T> void mergeConsiderHistory(Map<T, Boolean> requiredCourses, T course, Boolean considerHistory) {
-        if (course == null) {
-            return
-        }
-        Boolean history = isSatisfiedByHistory(considerHistory)
-        requiredCourses.put(course, requiredCourses.containsKey(course) ? (requiredCourses.get(course) && history) : history)
+    static <T> List<String> getMissingCourseNames(Map<T, Boolean> mandatoryCourses, Predicate<T> enrolledBefore, Collection<T> coursesInCheckout, Function<T, String> name) {
+        getMissingCourses(mandatoryCourses, enrolledBefore, coursesInCheckout).collect { T course -> name.apply(course) }
     }
 
     static String getErrorMessage(String studentName, String courseName, Collection<String> missingCourseNames) {

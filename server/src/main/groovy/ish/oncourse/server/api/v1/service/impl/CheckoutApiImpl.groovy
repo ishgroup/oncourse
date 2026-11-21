@@ -15,6 +15,7 @@ import com.google.inject.Inject
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import io.bootique.jetty.servlet.DefaultServletEnvironment
+import ish.common.checkout.RequiredRelatedCourses
 import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.types.EntityRelationCartAction
 import ish.math.Money
@@ -41,6 +42,8 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.StringUtils
 import org.eclipse.jetty.server.Request
+
+import java.util.function.BooleanSupplier
 
 import static ish.oncourse.server.api.servlet.AngelSessionDataStore.USER_ATTRIBUTE
 
@@ -156,7 +159,8 @@ class CheckoutApiImpl implements CheckoutApi {
             EntityRelationType relationType = relation.relationType
             Course course = courseDao.getById(context, relation.toEntityAngelId)
 
-            if (contact && relationType.considerHistory  && contact.student.isEnrolled(course)) {
+            if (contact && RequiredRelatedCourses.isSatisfiedByHistory(relationType.considerHistory,
+                    { contact.student.hasEnrolment(course, RequiredRelatedCourses.PREVIOUS_ENROLMENT_STATUSES) } as BooleanSupplier)) {
                 //ignore that course since student already enrolled in
             } else {
                 result << createCourseCheckoutSaleRelation(id, entityName, course, relationType)
@@ -167,7 +171,8 @@ class CheckoutApiImpl implements CheckoutApi {
             EntityRelationType relationType = relation.relationType
             Course course = courseDao.getById(context, relation.fromEntityAngelId)
 
-            if (contact && relationType.considerHistory  && contact.student.isEnrolled(course)) {
+            if (contact && RequiredRelatedCourses.isSatisfiedByHistory(relationType.considerHistory,
+                    { contact.student.hasEnrolment(course, RequiredRelatedCourses.PREVIOUS_ENROLMENT_STATUSES) } as BooleanSupplier)) {
                 //ignore that course since student already enrolled in
             } else {
                 result << createCourseCheckoutSaleRelation(id, entityName, course, relationType)
