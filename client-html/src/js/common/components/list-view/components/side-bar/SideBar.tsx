@@ -71,8 +71,11 @@ const SideBar = (props: Props) => {
     onChangeFilters(clone, "filters");
   });
 
+  // custom filters are saved and loaded against `filterEntity` when the list has one (Invoice for
+  // AbstractInvoice), so the reload that follows a delete has to ask for that entity too - otherwise
+  // it comes back empty and the whole Custom Filters group disappears
   const onDeleteFilter = useEventCallback<DeleteFilterHandler>(
-    (id, entity, checked, isPrivate) => deleteFilter(id, entity, checked, isPrivate)
+    (id, entity, checked, isPrivate) => deleteFilter(id, filterEntity || entity, checked, isPrivate)
   );
 
   const onChangeTagGroups = useEventCallback((tags: FormMenuTag[], type: string) => onChangeFilters(tags, type));

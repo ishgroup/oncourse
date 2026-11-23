@@ -307,4 +307,41 @@ class InvoiceTest extends TestWithDatabase {
         Assertions.assertEquals(1, invoice2.getInvoiceNumber() - invoice.getInvoiceNumber())
 
     }
+
+    @Test
+    void testInvoiceNumberIsAllocatedOnCommitOnly() {
+        ICayenneService service = injector.getInstance(ICayenneService.class)
+
+        DataContext context = service.getNewContext()
+        Invoice invoice = createInvoice(context, "lastName6")
+        context.commitChanges()
+
+        Assertions.assertNotNull(invoice.getInvoiceNumber())
+
+        // invoice built but never committed, like the one created on each checkout summary recalculation
+        DataContext notCommittedContext = service.getNewContext()
+        Invoice notCommittedInvoice = createInvoice(notCommittedContext, "lastName7")
+
+        Assertions.assertNull(notCommittedInvoice.getInvoiceNumber())
+
+        DataContext context2 = service.getNewContext()
+        Invoice invoice2 = createInvoice(context2, "lastName8")
+        context2.commitChanges()
+
+        Assertions.assertEquals(1, invoice2.getInvoiceNumber() - invoice.getInvoiceNumber())
+    }
+
+    private static Invoice createInvoice(DataContext context, String lastName) {
+        Invoice invoice = context.newObject(Invoice.class)
+
+        Contact contact = context.newObject(Contact.class)
+        contact.setFirstName("firstName")
+        contact.setLastName(lastName)
+        invoice.setContact(contact)
+        invoice.setSource(PaymentSource.SOURCE_ONCOURSE)
+        invoice.setAmountOwing(Money.of("90"))
+
+        invoice.setDebtorsAccount(AccountUtil.getDefaultDebtorsAccount(context, Account.class))
+        return invoice
+    }
 }

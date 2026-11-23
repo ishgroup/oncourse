@@ -13,6 +13,7 @@ package ish.oncourse.server.entity.mixins
 
 import ish.common.types.EnrolmentStatus
 import ish.oncourse.API
+import ish.oncourse.entity.services.EnrolmentService
 import ish.oncourse.server.cayenne.Attendance
 import ish.oncourse.server.cayenne.Enrolment
 
@@ -31,7 +32,7 @@ class EnrolmentMixin {
 	 */
 	@API
 	static getOriginalInvoiceLine(Enrolment self) {
-		self.invoiceLines.sort { a,b -> a.invoice.invoiceNumber <=> b.invoice.invoiceNumber }.first()
+		self.invoiceLines.sort(true, EnrolmentService.BY_INVOICE_NUMBER).first()
 	}
 
 	/**
