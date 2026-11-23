@@ -76,12 +76,15 @@ jobs:
         run: |
           KEY=$(echo "$BRANCH" | grep -oE '^(CS|SST)-[0-9]+' || true)
           if [ -n "$KEY" ]; then
-            # check credentials and ticket access up front; print only the HTTP status
+            # check credentials and ticket access up front; print only the HTTP statuses
+            # (Jira answers 404 both for a missing ticket and for credentials that don't authenticate)
+            AUTH=$(curl -s -o /dev/null -w '%{http_code}' -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
+              "https://ish-group.atlassian.net/rest/api/3/myself" || true)
             CODE=$(curl -s -o /dev/null -w '%{http_code}' -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
               "https://ish-group.atlassian.net/rest/api/3/issue/$KEY?fields=summary" || true)
-            echo "Jira $KEY: HTTP $CODE"
+            echo "Jira auth: HTTP $AUTH, $KEY: HTTP $CODE"
             if [ "$CODE" != 200 ]; then
-              echo "::warning title=Jira ticket unavailable::$KEY returned HTTP $CODE, reviewing without ticket context"
+              echo "::warning title=Jira ticket unavailable::$KEY returned HTTP $CODE (auth check HTTP $AUTH), reviewing without ticket context"
               KEY=""
             fi
           fi
@@ -118,19 +121,20 @@ jobs:
             --allowedTools "Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git grep:*),Read,Grep,Glob"
             --disallowedTools "Bash(gh:*),Bash(curl:*)"
 
+      # Find issues produces no execution file when the action skips itself
+      # (e.g. on a PR that changes this workflow file), so the next steps are skipped too
       - name: Collect findings
-        if: ${{ steps.range.outputs.mode != 'skip' }}
+        if: ${{ steps.find.outputs.execution_file != '' }}
         id: findings
         env:
           EXECUTION_FILE: ${{ steps.find.outputs.execution_file }}
         run: |
+          TEXT=$(jq -r 'map(select(.type == "result")) | last | .result // "" | .[0:30000]' "$EXECUTION_FILE")
           MARK=$(openssl rand -hex 16)
-          { echo "text<<$MARK"
-            jq -r 'map(select(.type == "result")) | last | .result // "" | .[0:30000]' "$EXECUTION_FILE"
-            echo "$MARK"; } >> "$GITHUB_OUTPUT"
+          { echo "text<<$MARK"; echo "$TEXT"; echo "$MARK"; } >> "$GITHUB_OUTPUT"
 
       - name: Post review
-        if: ${{ steps.range.outputs.mode != 'skip' }}
+        if: ${{ steps.find.outputs.execution_file != '' }}
         id: claude
         uses: anthropics/claude-code-action@v1
         env:
