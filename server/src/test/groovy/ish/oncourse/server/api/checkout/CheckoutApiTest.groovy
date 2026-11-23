@@ -10,8 +10,7 @@ import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.api.dao.FundingSourceDao
-import ish.oncourse.server.api.dao.ModuleDao
+import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.service.*
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.SystemUser
@@ -20,6 +19,8 @@ import org.apache.cayenne.query.SelectById
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+
+import java.lang.reflect.Field
 
 /**
  * Course -> Course and Product -> Course relations which make the related course mandatory in quick enrol,
@@ -104,6 +105,10 @@ class CheckoutApiTest extends TestWithDatabase {
         return controller().createCheckout(model)
     }
 
+    /**
+     * The API services are not bound in the test runtime (ApiServiceModule is not loaded), and CheckoutController
+     * only needs their getEntityAndValidateExistence(): create them directly with the DAOs, which are bound.
+     */
     private CheckoutController controller() {
         SystemUser user = SelectById.query(SystemUser, 1L).selectOne(cayenneContext)
         SystemUserService systemUserService = Mockito.mock(SystemUserService)
@@ -111,14 +116,21 @@ class CheckoutApiTest extends TestWithDatabase {
 
         new CheckoutController(injector.getInstance(ICayenneService) as CayenneService,
                 systemUserService,
-                injector.getInstance(ContactApiService),
-                injector.getInstance(InvoiceApiService),
-                injector.getInstance(CourseClassApiService),
-                injector.getInstance(MembershipProductApiService),
-                injector.getInstance(VoucherProductApiService),
-                injector.getInstance(ArticleProductApiService),
+                withDao(new ContactApiService(), ContactDao),
+                withDao(new InvoiceApiService(), InvoiceDao),
+                withDao(new CourseClassApiService(), CourseClassDao),
+                withDao(new MembershipProductApiService(), MembershipProductDao),
+                withDao(new VoucherProductApiService(), VoucherProductDao),
+                withDao(new ArticleProductApiService(), ArticleProductDao),
                 injector.getInstance(FundingSourceDao),
                 injector.getInstance(ModuleDao))
+    }
+
+    private <S extends EntityApiService> S withDao(S service, Class<?> daoClass) {
+        Field field = EntityApiService.getDeclaredField('entityDao')
+        field.accessible = true
+        field.set(service, injector.getInstance(daoClass))
+        service
     }
 
     private static List<String> relationErrors(Checkout checkout) {
