@@ -7,12 +7,13 @@ import * as React from 'react';
 import { memo, useMemo } from 'react';
 import { useFilterStyles } from './FilterComponentStyles';
 
-export type DeleteFilterHandler = (id: string, rootEntity: string, checked: boolean, isPrivate: boolean) => void;
+export type DeleteFilterHandler = (id: number, rootEntity: string, checked: boolean, isPrivate: boolean) => void;
 
 interface Props {
   label: string;
   checked: boolean;
   id: string;
+  filterId: number;
   rootEntity: string;
   deletable: boolean;
   onDelete: DeleteFilterHandler;
@@ -22,7 +23,7 @@ interface Props {
 }
 
 const FilterItem = memo<Props>(({
-  label, checked, onDelete, id, isPrivate, deletable, rootEntity, expression, customLabel
+  label, checked, onDelete, id, filterId, isPrivate, deletable, rootEntity, expression, customLabel
 }) => {
   const renderedLabel = customLabel ? customLabel() : label;
 
@@ -55,7 +56,7 @@ const FilterItem = memo<Props>(({
           }
           {deletable && (
             <Tooltip title={$t('delete_filter')} placement="right">
-              <IconButton className={classes.deleteButton} onClick={() => onDelete(id, rootEntity, checked, isPrivate)}>
+              <IconButton className={classes.deleteButton} onClick={() => onDelete(filterId, rootEntity, checked, isPrivate)}>
                 <Delete fontSize="inherit" color="secondary" />
               </IconButton>
             </Tooltip>

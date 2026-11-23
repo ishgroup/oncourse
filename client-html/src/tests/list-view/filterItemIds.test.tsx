@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { cleanup, render } from '@testing-library/react';
+import { cleanup, fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import FilterGroupComp from '../../js/common/components/list-view/components/side-bar/components/FilterGroup';
 
@@ -20,4 +20,15 @@ it('reuses no item id across two live filter items', () => {
 
   // a filter is saved back into the group and takes the slot Y left
   expect(() => rerender(<Group {...props} filters={[filter('Z'), filter('Y')]} />)).not.toThrow();
+});
+
+it('deletes a custom filter by its own id, not by its tree item id', () => {
+  const deleteFilter = jest.fn();
+  const props = { title: 'Custom Filters', groupIndex: 1, rootEntity: 'CourseClass', onUpdate: jest.fn(), deleteFilter };
+
+  const { getAllByTestId } = render(<Group {...props} filters={[{ ...filter('X'), id: 7 }, { ...filter('Y'), id: 42, showForCurrentOnly: true }]} />);
+
+  fireEvent.click(getAllByTestId('DeleteIcon')[1]);
+
+  expect(deleteFilter).toHaveBeenCalledWith(42, 'CourseClass', false, true);
 });

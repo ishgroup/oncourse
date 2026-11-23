@@ -61,6 +61,7 @@ const FilterGroupComp = memo<Props>(({
             label={i.name}
             customLabel={i.customLabel}
             id={getIndex(groupIndex, index)}
+            filterId={i.id}
             checked={i.active}
             expression={i.expression}
             isPrivate={i.showForCurrentOnly}
