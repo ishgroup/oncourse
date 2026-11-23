@@ -38,7 +38,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
-import java.util.function.Function
 import java.util.function.Predicate
 
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
@@ -76,6 +75,10 @@ class CheckoutController {
     private Boolean multyPurchase
     private Map<Long, Integer> currentEnrolments = [:]
     private List<CheckoutEnrolmentDTO> processedEnrolments = []
+    /** mandatory related courses per sale item ("Course:1", "Product:2"): course id -> 'consider history', see {@link RequiredRelatedCourses} */
+    private Map<String, Map<Long, Boolean>> mandatoryCoursesCache = [:]
+    /** previous enrolment of the student in the course ("contactId:courseId"), see {@link RequiredRelatedCourses#PREVIOUS_ENROLMENT_STATUSES} */
+    private Map<String, Boolean> previousEnrolmentCache = [:]
 
     private Invoice invoice
     private PaymentIn paymentIn
@@ -131,8 +134,10 @@ class CheckoutController {
             if (contact.isCompany && !node.enrolments.empty)  {
                 result << new CheckoutValidationErrorDTO(nodeId: contact.id, error: "Company can not be enrolled")
             } else {
-                List<Course> checkoutCourses = node.enrolments.collect { dto -> courseClassApiService.getEntityAndValidateExistence(context, dto.classId).course }
-                node.enrolments.each { dto -> processEnrolment(dto, contact, confirmation, checkoutCourses) }
+                Map<Long, CourseClass> classes = node.enrolments.collectEntries { dto -> [(dto.classId): courseClassApiService.getEntityAndValidateExistence(context, dto.classId)] }
+                Set<Long> checkoutCourseIds = classes.values()*.course*.id as Set<Long>
+                node.enrolments.each { dto -> processEnrolment(dto, classes[dto.classId], contact, confirmation, checkoutCourseIds) }
+                validateProductRequiredRelatedCourses(node, contact, checkoutCourseIds)
             }
             if (node.fundingInvoices) {
                 node.fundingInvoices.each { dto -> createFundingInvoice(dto) }
@@ -147,9 +152,8 @@ class CheckoutController {
 
     }
 
-    private void processEnrolment(CheckoutEnrolmentDTO dto, Contact contact, Boolean sendEmail, List<Course> checkoutCourses) {
+    private void processEnrolment(CheckoutEnrolmentDTO dto, CourseClass courseClass, Contact contact, Boolean sendEmail, Set<Long> checkoutCourseIds) {
 
-        CourseClass courseClass = courseClassApiService.getEntityAndValidateExistence(context, dto.classId)
         Enrolment enrolment = createEnrolment(contact, courseClass, sendEmail, dto.studyReason?.dbType?:StudyReason.STUDY_REASON_NOT_STATED)
 
         if (dto.appliedDiscountId) {
@@ -196,7 +200,8 @@ class CheckoutController {
             //TODO: make willow side validation
         }
 
-        validateRequiredRelatedCourses(contact, courseClass, checkoutCourses)
+        validateRequiredRelatedCourses(contact, Course.simpleName, courseClass.course.id, checkoutCourseIds,
+                "$courseClass.course.code $courseClass.course.name".toString(), courseClass.id, SaleTypeDTO.CLASS)
 
         List<EntityRelation> relations = EntityRelationDao.getRelatedToOrEqual(context, Course.simpleName, courseClass.course.id)
 
@@ -217,27 +222,76 @@ class CheckoutController {
     }
 
     /**
+     * Product -> Course relations, as willow adds required courses for products in the shopping cart
+     * (EntityRelationService.getCoursesToAdd(Product, Contact)), only for a contact who is a student.
+     */
+    private void validateProductRequiredRelatedCourses(ContactNodeDTO node, Contact contact, Set<Long> checkoutCourseIds) {
+        if (contact.student == null) {
+            return
+        }
+        List<Long> productIds = (node.products*.productId) + (node.memberships*.productId) + (node.vouchers*.productId)
+        productIds.findAll { it != null }.unique().each { Long productId ->
+            if (!getMandatoryCourses(Product.simpleName, productId).isEmpty()) {
+                Product product = SelectById.query(Product, productId).selectOne(context)
+                SaleTypeDTO type = product instanceof MembershipProduct ? SaleTypeDTO.MEMBERSHIP : product instanceof VoucherProduct ? SaleTypeDTO.VOUCHER : SaleTypeDTO.PRODUCT
+                validateRequiredRelatedCourses(contact, Product.simpleName, productId, checkoutCourseIds, product.name, productId, type)
+            }
+        }
+    }
+
+    /**
      * Same rules as willow checkout (see {@link RequiredRelatedCourses}): a mandatory related course (relation type adds it to
      * the shopping cart and does not allow removal) must be enrolled in the same checkout by the same student,
-     * unless the relation type considers history and the student already has an enrolment in it.
+     * unless the relation type considers history and the student already has a successful enrolment in it.
      */
-    private void validateRequiredRelatedCourses(Contact contact, CourseClass courseClass, List<Course> checkoutCourses) {
-        Map<Course, Boolean> mandatoryCourses = [:]
-        EntityRelationDao.getRelatedTo(context, Course.simpleName, courseClass.course.id)
-                .findAll { Course.simpleName == it.toEntityIdentifier && courseClass.course.id != it.toEntityAngelId }
-                .findAll { RequiredRelatedCourses.isMandatory(it.relationType.shoppingCart) }
-                .each { RequiredRelatedCourses.addMandatoryCourse(mandatoryCourses, SelectById.query(Course, it.toEntityAngelId).selectOne(context),
-                        it.relationType.shoppingCart, it.relationType.considerHistory) }
-
-        List<String> missingCourses = RequiredRelatedCourses.getMissingCourseNames(mandatoryCourses,
-                { Course course -> contact.student?.hasEnrolment(course, RequiredRelatedCourses.PREVIOUS_ENROLMENT_STATUSES) ?: false } as Predicate<Course>,
-                checkoutCourses,
-                { Course course -> "$course.code $course.name".toString() } as Function<Course, String>)
-
-        if (!missingCourses.empty) {
-            result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: courseClass.id, itemType: SaleTypeDTO.CLASS,
-                    error: RequiredRelatedCourses.getErrorMessage(contact.fullName, "$courseClass.course.code $courseClass.course.name".toString(), missingCourses))
+    private void validateRequiredRelatedCourses(Contact contact, String entityName, Long entityId, Set<Long> checkoutCourseIds,
+                                                String itemName, Long itemId, SaleTypeDTO itemType) {
+        Map<Long, Boolean> mandatoryCourses = getMandatoryCourses(entityName, entityId)
+        if (mandatoryCourses.isEmpty()) {
+            return
         }
+
+        List<Long> missingCourseIds = RequiredRelatedCourses.getMissingCourses(mandatoryCourses,
+                { Long courseId -> hasPreviousEnrolment(contact, courseId) } as Predicate<Long>,
+                checkoutCourseIds)
+
+        if (!missingCourseIds.empty) {
+            List<String> missingCourses = missingCourseIds.collect { Long courseId ->
+                Course course = SelectById.query(Course, courseId).selectOne(context)
+                course ? "$course.code $course.name".toString() : "#$courseId".toString()
+            }
+            result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: itemId, itemType: itemType,
+                    error: RequiredRelatedCourses.getErrorMessage(contact.fullName, itemName, missingCourses))
+        }
+    }
+
+    /**
+     * @return mandatory related courses of the sale item (only relations from the item, as willow): course id -> 'consider history'
+     */
+    private Map<Long, Boolean> getMandatoryCourses(String entityName, Long entityId) {
+        String key = "$entityName:$entityId".toString()
+        Map<Long, Boolean> mandatoryCourses = mandatoryCoursesCache[key]
+        if (mandatoryCourses == null) {
+            mandatoryCourses = [:]
+            Map<Long, Boolean> collected = mandatoryCourses
+            EntityRelationDao.getRelatedTo(context, entityName, entityId)
+                    .findAll { Course.simpleName == it.toEntityIdentifier && !(Course.simpleName == entityName && entityId == it.toEntityAngelId) }
+                    .findAll { RequiredRelatedCourses.isMandatory(it.relationType.shoppingCart) }
+                    .each { RequiredRelatedCourses.addMandatoryCourse(collected, it.toEntityAngelId, it.relationType.shoppingCart, it.relationType.considerHistory) }
+            mandatoryCoursesCache[key] = mandatoryCourses
+        }
+        mandatoryCourses
+    }
+
+    private boolean hasPreviousEnrolment(Contact contact, Long courseId) {
+        String key = "$contact.id:$courseId".toString()
+        Boolean enrolled = previousEnrolmentCache[key]
+        if (enrolled == null) {
+            Course course = SelectById.query(Course, courseId).selectOne(context)
+            enrolled = contact.student != null && course != null && contact.student.hasEnrolment(course, RequiredRelatedCourses.PREVIOUS_ENROLMENT_STATUSES)
+            previousEnrolmentCache[key] = enrolled
+        }
+        enrolled
     }
 
     private void processMembership(CheckoutMembershipDTO dto, Contact contact, Boolean sendEmail) {
