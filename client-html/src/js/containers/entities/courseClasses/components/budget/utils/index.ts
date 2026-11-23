@@ -3,12 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ClassCost, CourseClassPaymentPlan, Tax } from '@api/model';
+import { ClassCost, CourseClassDiscount, CourseClassPaymentPlan, Tax } from '@api/model';
 import { differenceInMinutes, format, subMinutes } from 'date-fns';
 import { decimalDivide, decimalMul, decimalPlus } from 'ish-ui';
-import { getCurrentTax, getFeeExTaxByFeeIncTax, getTotalByFeeExTax } from '../../../../../../common/utils/hooks';
+import { bankRounding, getCurrentTax, getFeeExTaxByFeeIncTax, getTotalByFeeExTax } from '../../../../../../common/utils/hooks';
 import { ClassCostExtended } from '../../../../../../model/entities/CourseClass';
 import { TimetableSession } from '../../../../../../model/timetable';
+import { getDiscountedFee } from '../../../../discounts/utils';
 
 export const discountsSort = (a, b) => (a.description > b.description ? 1 : -1);
 
@@ -160,6 +161,13 @@ export const getClassCostFee = (
 };
 
 export const getClassFeeExTax = (costs: ClassCost[]): number => costs.find(c => c.invoiceToStudent)?.perUnitAmountExTax || 0;
+
+/**
+ * Class fee inc tax after class discount, the amount checkout charges for one enrolment (DiscountUtils.getDiscountedFee).
+ * It is calculated from the unrounded discount amount, so it can differ by a cent from class fee minus rounded discount and its tax
+ */
+export const getClassDiscountedFee = (classDiscount: CourseClassDiscount, taxRate: number, classFeeExTax: number): number =>
+  bankRounding(getDiscountedFee(classDiscount?.discount, taxRate, classFeeExTax, classDiscount?.discountOverride));
 
 export const getClassFeeTotal = (costs: ClassCost[], taxes: Tax[]) => {
   const studentFee = costs.find(c => c.invoiceToStudent);
