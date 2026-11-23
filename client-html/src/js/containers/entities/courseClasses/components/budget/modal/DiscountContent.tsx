@@ -27,11 +27,11 @@ import { change } from 'redux-form';
 import { IAction } from '../../../../../../common/actions/IshAction';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
-import { bankRounding, getTaxAmountByFeeExTax } from '../../../../../../common/utils/financial';
+import { bankRounding } from '../../../../../../common/utils/financial';
 import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
-import { getDiscountAmountExTax, getRoundingByType } from '../../../../discounts/utils';
+import { getDiscountAmountExTax } from '../../../../discounts/utils';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
-import { getClassFeeExTax } from '../utils';
+import { getClassDiscountedFee, getClassFeeExTax } from '../utils';
 
 interface Props extends BudgetCostModalContentProps {
   classFee: number;
@@ -177,12 +177,16 @@ const DiscountContent: React.FC<Props> = ({
     currencySymbol
   ]);
 
-  const taxOnDiscount = useMemo(() => getTaxAmountByFeeExTax( currentTax.rate, values.courseClassDiscount.discountOverride || values.perUnitAmountExTax || 0), [classFee, currentTax, values.courseClassDiscount.discountOverride]);
+  const discountTotalFee = useMemo(
+    () => getClassDiscountedFee(values.courseClassDiscount, currentTax.rate, getClassFeeExTax(classValues.budget || [])),
+    [classValues.budget, currentTax, values.courseClassDiscount]
+  );
 
-  const discountTotalFee = useMemo(() => {
-    const decimal = new Decimal(classFee).minus(values.perUnitAmountExTax || 0).minus(taxOnDiscount);
-    return getRoundingByType(values.courseClassDiscount.discount.rounding, decimal);
-  }, [classFee, taxOnDiscount, values.courseClassDiscount.discount.rounding]);
+  // tax on discount takes the rounding, so that class fee minus discount and tax on discount gives final class fee
+  const taxOnDiscount = useMemo(
+    () => bankRounding(new Decimal(classFee).minus(values.perUnitAmountExTax || 0).minus(discountTotalFee)),
+    [classFee, values.perUnitAmountExTax, discountTotalFee]
+  );
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2}>

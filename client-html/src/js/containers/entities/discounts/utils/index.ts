@@ -82,32 +82,32 @@ export const applyDiscountMinMax = (discount: Discount, amount: number): number 
       : amount
 );
 
+const getDiscountAmountByType = (discount: Discount, priceExTax: Decimal): Decimal => {
+  switch (discount.discountType) {
+    case "Percent":
+      return toMoney(priceExTax.mul(discount.discountPercent || 0));
+    case "Dollar":
+      return new Decimal(discount.discountValue || 0);
+    case "Fee override":
+      return priceExTax.minus(discount.discountValue || 0);
+    default:
+      return new Decimal(0);
+  }
+};
+
 /**
  * Discount amount ex tax before rounding, limited by discount min/max and by price.
+ * Class discount override replaces the amount and is not limited by min/max.
  * Mirrors private DiscountUtils.discountValue(classDiscount, price) on the server
  */
-const getUnroundedDiscountExTax = (discount: Discount, priceExTax: Decimal): Decimal => {
+const getUnroundedDiscountExTax = (discount: Discount, priceExTax: Decimal, discountOverride?: number): Decimal => {
   if (priceExTax.isZero()) {
     return priceExTax;
   }
 
-  let amount: Decimal;
-
-  switch (discount.discountType) {
-    case "Percent":
-      amount = toMoney(priceExTax.mul(discount.discountPercent || 0));
-      break;
-    case "Dollar":
-      amount = new Decimal(discount.discountValue || 0);
-      break;
-    case "Fee override":
-      amount = priceExTax.minus(discount.discountValue || 0);
-      break;
-    default:
-      amount = new Decimal(0);
-  }
-
-  amount = new Decimal(applyDiscountMinMax(discount, amount.toNumber()));
+  const amount = typeof discountOverride === 'number'
+    ? new Decimal(discountOverride)
+    : new Decimal(applyDiscountMinMax(discount, getDiscountAmountByType(discount, priceExTax).toNumber()));
 
   // server never gets negative price here, but manual invoice credit line has it and keeps its discount
   return priceExTax.gt(0) && priceExTax.lt(amount) ? priceExTax : amount;
@@ -116,9 +116,9 @@ const getUnroundedDiscountExTax = (discount: Discount, priceExTax: Decimal): Dec
 /**
  * Final discounted price inc tax, rounded by discount rounding.
  * Rounding is applied to the total inc tax, not to the ex tax amounts.
- * Mirrors DiscountUtils.getDiscountedFee on the server
+ * Mirrors DiscountUtils.getDiscountedFee on the server, discountOverride is the class discount override ex tax
  */
-export const getDiscountedFee = (discount: Discount, taxRate: number, priceExTax: number = 0): Decimal => {
+export const getDiscountedFee = (discount: Discount, taxRate: number, priceExTax: number = 0, discountOverride?: number): Decimal => {
   const price = new Decimal(priceExTax || 0);
   const taxMul = new Decimal(1).plus(taxRate || 0);
   const priceIncTax = price.mul(taxMul).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN);
@@ -127,7 +127,7 @@ export const getDiscountedFee = (discount: Discount, taxRate: number, priceExTax
     return priceIncTax;
   }
 
-  const discountAmount = getUnroundedDiscountExTax(discount, price);
+  const discountAmount = getUnroundedDiscountExTax(discount, price, discountOverride);
 
   if (price.gt(0) && discountAmount.gte(price)) {
     return new Decimal(0);
