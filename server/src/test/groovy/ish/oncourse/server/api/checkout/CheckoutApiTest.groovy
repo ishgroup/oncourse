@@ -5,6 +5,7 @@
 
 package ish.oncourse.server.api.checkout
 
+import com.google.inject.Injector
 import groovy.transform.CompileStatic
 import ish.DatabaseSetup
 import ish.TestWithDatabase
@@ -106,15 +107,17 @@ class CheckoutApiTest extends TestWithDatabase {
     }
 
     /**
-     * The API services are not bound in the test runtime (ApiServiceModule is not loaded), and CheckoutController
-     * only needs their getEntityAndValidateExistence(): create them directly with the DAOs, which are bound.
+     * The test runtime has explicit bindings only for some classes: API services are not bound (ApiServiceModule is not
+     * loaded) and FundingSourceDao is resolved just in time in production. CheckoutController only needs
+     * getEntityAndValidateExistence() from the services, so they are created directly with their DAO, and every
+     * dependency is taken from the Guice injector, which creates unbound classes just in time.
      */
     private CheckoutController controller() {
         SystemUser user = SelectById.query(SystemUser, 1L).selectOne(cayenneContext)
         SystemUserService systemUserService = Mockito.mock(SystemUserService)
         Mockito.when(systemUserService.currentUser).thenReturn(user)
 
-        new CheckoutController(injector.getInstance(ICayenneService) as CayenneService,
+        new CheckoutController(instance(ICayenneService) as CayenneService,
                 systemUserService,
                 withDao(new ContactApiService(), ContactDao),
                 withDao(new InvoiceApiService(), InvoiceDao),
@@ -122,14 +125,21 @@ class CheckoutApiTest extends TestWithDatabase {
                 withDao(new MembershipProductApiService(), MembershipProductDao),
                 withDao(new VoucherProductApiService(), VoucherProductDao),
                 withDao(new ArticleProductApiService(), ArticleProductDao),
-                injector.getInstance(FundingSourceDao),
-                injector.getInstance(ModuleDao))
+                instance(FundingSourceDao),
+                instance(ModuleDao))
+    }
+
+    /**
+     * BQRuntime.getInstance() accepts explicit bindings only; the Guice injector also creates unbound classes.
+     */
+    private <T> T instance(Class<T> type) {
+        injector.getInstance(Injector).getInstance(type)
     }
 
     private <S extends EntityApiService> S withDao(S service, Class<?> daoClass) {
         Field field = EntityApiService.getDeclaredField('entityDao')
         field.accessible = true
-        field.set(service, injector.getInstance(daoClass))
+        field.set(service, instance(daoClass))
         service
     }
 
