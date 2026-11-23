@@ -191,10 +191,12 @@ class DataCollectionApiImpl implements DataCollectionApi {
         } else {
             try {
                 cayenneService.serverRuntime.performInTransaction {
+                    // fields are recreated, keep their tutor visibility if the request doesn't specify it
+                    Map<String, Boolean> visibleToTutor = dbForm.fields.collectEntries { [(it.property): it.isVisibleToTutor] }
                     context.deleteObjects(dbForm.fields)
                     context.deleteObjects(dbForm.fieldHeadings)
                     context.commitChanges()
-                    toDbForm(context, form, dbForm)
+                    toDbForm(context, form, dbForm, visibleToTutor)
                     context.commitChanges()
                 }
             } catch (Exception e) {

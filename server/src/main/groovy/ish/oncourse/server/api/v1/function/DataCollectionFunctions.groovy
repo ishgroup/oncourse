@@ -185,6 +185,11 @@ class DataCollectionFunctions {
             return new ValidationErrorDTO(null, 'deliverySchedule', "Delivery schedule required for Survey form")
         }
 
+        // results are shown to tutors at a point of the class, on demand delivery has no such point
+        if (form.type == DataCollectionTypeDTO.SURVEY && form.tutorDeliverySchedule == DeliveryScheduleTypeDTO.ON_DEMAND) {
+            return new ValidationErrorDTO(null, 'tutorDeliverySchedule', "On demand delivery isn't available for tutors")
+        }
+
         List<String> headerNames =  form.headings*.name.flatten() as List<String>
         List<String> headerDuplicates = headerNames.findAll{headerNames.count(it) > 1}.unique()
 
@@ -309,7 +314,12 @@ class DataCollectionFunctions {
         }
     }
 
-    static FieldConfiguration toDbForm(ObjectContext context, DataCollectionFormDTO form, FieldConfiguration persistRecord = null) {
+    /**
+     * @param visibleToTutor isVisibleToTutor of the fields of the form before the update, by field property:
+     * a field keeps its value if the request doesn't specify it
+     */
+    static FieldConfiguration toDbForm(ObjectContext context, DataCollectionFormDTO form, FieldConfiguration persistRecord = null,
+                                       Map<String, Boolean> visibleToTutor = [:]) {
         FieldConfiguration formToUpdate = persistRecord?:context.newObject(CONFIGURATION_MAP[form.type] as Class<? extends  FieldConfiguration>)
         Map<String, Field> addedFields = new HashMap<>()
         Map<Field, String> fieldsWithRelatedKeys = new HashMap<>()
@@ -322,7 +332,7 @@ class DataCollectionFunctions {
                     dbHeading.name = heading.name
                     dbHeading.description = heading.description
                     heading.fields.each { field ->
-                        def dbField = toDbField(context, dbForm, field, order++)
+                        def dbField = toDbField(context, dbForm, field, order++, visibleToTutor)
                         addedFields.put(dbField.property, dbField)
                         if(field.relatedFieldKey)
                             fieldsWithRelatedKeys.put(dbField, field.relatedFieldKey)
@@ -333,7 +343,7 @@ class DataCollectionFunctions {
             }
 
             form.fields.each { field ->
-                def dbField = toDbField(context, dbForm, field, order++)
+                def dbField = toDbField(context, dbForm, field, order++, visibleToTutor)
                 addedFields.put(dbField.property, dbField)
                 if(field.relatedFieldKey)
                     fieldsWithRelatedKeys.put(dbField, field.relatedFieldKey)
@@ -347,12 +357,16 @@ class DataCollectionFunctions {
 
             if (dbForm instanceof SurveyFieldConfiguration) {
                 (dbForm as SurveyFieldConfiguration).deliverySchedule = DeliverySchedule.valueOf(form.deliverySchedule.name())
+                // keep the stored schedule if the request doesn't specify it
+                def survey = dbForm as SurveyFieldConfiguration
+                survey.tutorDeliverySchedule = form.tutorDeliverySchedule ?
+                        DeliverySchedule.valueOf(form.tutorDeliverySchedule.name()) : (survey.tutorDeliverySchedule ?: DeliverySchedule.AT_COMPLETION)
             }
             dbForm
         }
     }
 
-    static Field toDbField(ObjectContext context, FieldConfiguration dbForm, FieldDTO field, int order) {
+    static Field toDbField(ObjectContext context, FieldConfiguration dbForm, FieldDTO field, int order, Map<String, Boolean> visibleToTutor = [:]) {
         context.newObject(Field).with { dbField ->
             dbField.order = order
             dbField.property = field.type.uniqueKey
@@ -362,10 +376,25 @@ class DataCollectionFunctions {
             dbField.mandatory = field.mandatory
             dbField.relatedFieldValue = field.relatedFieldValue
             dbField.validationType = field.validationType?.getDbType()
+            dbField.isVisibleToTutor = dbForm instanceof SurveyFieldConfiguration && isVisibleToTutor(field, visibleToTutor)
             dbField
         }
     }
 
+
+    /**
+     * The value from the request, otherwise the value before the update, otherwise the default for the field property.
+     */
+    private static boolean isVisibleToTutor(FieldDTO field, Map<String, Boolean> visibleToTutor) {
+        String property = field.type.uniqueKey
+        if (field.isVisibleToTutor != null) {
+            return field.isVisibleToTutor
+        }
+        if (visibleToTutor.containsKey(property)) {
+            return visibleToTutor[property]
+        }
+        return Field.isVisibleToTutorByDefault(property)
+    }
 
     static DataCollectionFormDTO toRestForm(FieldConfiguration dbForm) {
 
@@ -382,6 +411,7 @@ class DataCollectionFunctions {
 
             if (dbForm instanceof SurveyFieldConfiguration) {
                 form.deliverySchedule = DeliveryScheduleTypeDTO.fromValue((dbForm as SurveyFieldConfiguration).deliverySchedule?.displayName)
+                form.tutorDeliverySchedule = DeliveryScheduleTypeDTO.fromValue((dbForm as SurveyFieldConfiguration).tutorDeliverySchedule?.displayName)
             }
             form
         }
@@ -405,6 +435,7 @@ class DataCollectionFunctions {
             field.relatedFieldValue = dbField.relatedFieldValue
             field.relatedFieldKey = dbField.relatedField?.property
             field.validationType = FieldValidationTypeDTO.values()[0].fromDbType(dbField.validationType)
+            field.isVisibleToTutor = dbField.isVisibleToTutor
             field
         }
     }

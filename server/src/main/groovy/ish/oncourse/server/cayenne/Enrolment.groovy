@@ -16,6 +16,7 @@ import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.entity.services.EnrolmentService
 import ish.oncourse.function.CalculateOutcomeReportableHours
 import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.cayenne.glue._Enrolment
@@ -806,15 +807,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@API
 	InvoiceLine getOriginalInvoiceLine() {
 		List<InvoiceLine> lines = new LinkedList<>(getInvoiceLines())
-
-		Comparator comparator = new Comparator<InvoiceLine>() {
-			@Override
-			int compare(InvoiceLine o1, InvoiceLine o2) {
-				return o1.getInvoice().getInvoiceNumber() <=> o2.getInvoice().getInvoiceNumber()
-			}
-		}
-
-		lines.sort(comparator)
+		lines.sort(EnrolmentService.BY_INVOICE_NUMBER)
 		return lines.get(0)
 	}
 
