@@ -121,9 +121,9 @@ describe('getInvoiceLineDiscountRecalculation', () => {
       });
     });
 
-    it('keeps negative price when Fee override is selected', () => {
+    it('keeps negative price and gives credit of Fee override amount when Fee override is selected', () => {
       expect(getInvoiceLineDiscountRecalculation(null, feeOverride, -100, undefined, undefined, 0.1)).toBe('byPrice');
-      expect(getTotalAndDeductionsByPrice(-100, 0.1, feeOverride)).toEqual({ total: 500, discountEach: -554.55, taxEach: 45.45 });
+      expect(getTotalAndDeductionsByPrice(-100, 0.1, feeOverride)).toEqual({ total: -500, discountEach: 354.55, taxEach: -45.45 });
     });
   });
 });
@@ -277,13 +277,13 @@ describe('getFeeOverrideLineAmounts', () => {
     });
   });
 
-  it('gives total the server saves when rounded Fee override can not be kept at 15%', () => {
-    // Fee override $11.00 inc tax gives price 9.57, which is saved as 9.57 * 1.15 = 11.0055 -> $11.01
+  it('keeps rounded Fee override as total at 15% and puts the rounding cent into tax', () => {
+    // Fee override $11.00 inc tax gives price 9.57 and 9.57 * 1.15 = 11.0055, tax takes the difference to $11.00
     expect(getFeeOverrideLineAmounts({ ...feeOverride, discountValue: 9.57 }, 0.15, 2)).toEqual({
       priceEachExTax: 9.57,
       discountEachExTax: 0,
-      taxEach: 1.44,
-      total: 22.02
+      taxEach: 1.43,
+      total: 22
     });
   });
 

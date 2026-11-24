@@ -263,7 +263,12 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     };
 
   const recalculateByTotal = (total: number, taxRate: number, discount: Discount | number, quantity = 1) => {
-    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(new Decimal(total).div(quantity).toNumber(), taxRate, discount);
+    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(
+      new Decimal(total).div(quantity).toNumber(),
+      taxRate,
+      discount,
+      row.priceEachExTax
+    );
 
     dispatch(change(form, `${item}.taxEach`, taxEach));
     dispatch(change(form, `${item}.discountEachExTax`, discountAmount));
@@ -300,6 +305,13 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
 
   const onDiscountEachExTaxBlur = (e, value) => {
     setCurrentDiscount(value || 0);
+
+    // total typed in by user is kept
+    if (lastEditedField.current === 'total' && typeof row.total === 'number') {
+      recalculateByTotal(row.total, taxRate, value || 0, row.quantity);
+      return;
+    }
+
     recalculateByPrice(row.priceEachExTax, taxRate, value || 0, row.quantity);
   };
 

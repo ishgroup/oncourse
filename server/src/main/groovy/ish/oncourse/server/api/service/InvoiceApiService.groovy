@@ -29,7 +29,6 @@ import ish.oncourse.server.services.IAutoIncrementService
 import ish.oncourse.server.services.TransactionLockedService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.InvoiceUtil
-import ish.util.MoneyUtil
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -42,7 +41,7 @@ import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCus
 import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestInvoiceLineModel
 import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestPaymentPlan
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
-import static ish.util.InvoiceUtil.calculateTaxEachForInvoiceLine
+import static ish.util.InvoiceUtil.calculateTaxEachForManualInvoiceLine
 import static ish.util.LocalDateUtils.dateToTimeValue
 import static org.apache.commons.lang3.StringUtils.*
 
@@ -418,12 +417,8 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             iLine.prepaidFeesRemaining = il.courseClassId || il.enrolmentId ? iLine.priceEachExTax.subtract(iLine.discountEachExTax).multiply(iLine.quantity) : Money.ZERO
             iLine.prepaidFeesAccount = accountDao.getById(cayenneModel.context, preferenceController.getDefaultAccountId(DefaultAccount.PREPAID_FEES.preferenceName))
 
-            Money totalEachExTax = Money.exactOf(il.priceEachExTax - (il.discountEachExTax?:BigDecimal.ZERO))
-            Money totalEachIncTax = totalEachExTax.add(Money.exactOf(il.taxEach))
-
-            Money taxAdjustment = MoneyUtil.calculateTaxAdjustment(totalEachIncTax, totalEachExTax,  iLine.tax.rate)
-
-            iLine.taxEach = calculateTaxEachForInvoiceLine(iLine.priceEachExTax, iLine.discountEachExTax, iLine.tax.rate, taxAdjustment)
+            // client keeps rounded line total and puts the rounding difference into tax, it is kept when within a cent
+            iLine.taxEach = calculateTaxEachForManualInvoiceLine(iLine.priceEachExTax, iLine.discountEachExTax, iLine.tax.rate, Money.exactOf(il.taxEach))
             iLine.abstractInvoice = cayenneModel
         }
     }

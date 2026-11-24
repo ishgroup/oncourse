@@ -496,4 +496,32 @@ public final class InvoiceUtil {
 		// calculate final total value ex tax
 		return priceEachEx.subtract(discountEachEx).multiply(taxRate);
 	}
+
+	/**
+	 * Tax each of a manual invoice or quote line. Price and discount are kept in cents, so the client rounds the line total
+	 * (discount rounding, or a total typed in by user) and puts the rounding difference into tax, the same way as checkout does
+	 * (see DiscountUtils.applyDiscounts). That tax is kept when price - discount + tax is within a cent of the total
+	 * calculated from price and discount and rounded to cents, otherwise the calculated tax is used.
+	 * Totals are compared rather than taxes, because half even rounding of the tax alone can differ from rounding of the total.
+	 *
+	 * @param priceEachEx - price each excluding tax
+	 * @param discountEachEx - discount each excluding tax
+	 * @param taxRate - applied tax rate
+	 * @param proposedTaxEach - tax each sent by client, can be null
+	 * @return taxEach value to set in invoice line
+	 */
+	public static Money calculateTaxEachForManualInvoiceLine(Money priceEachEx, Money discountEachEx, BigDecimal taxRate, Money proposedTaxEach) {
+		Money taxEach = calculateTaxEachForInvoiceLine(priceEachEx, discountEachEx, taxRate);
+
+		if (proposedTaxEach != null) {
+			Money totalEachEx = priceEachEx.subtract(discountEachEx);
+			Money calculatedTotal = Money.of(totalEachEx.add(taxEach).toBigDecimal());
+			Money proposedTotal = totalEachEx.add(proposedTaxEach);
+
+			if (!proposedTotal.subtract(calculatedTotal).abs().isGreaterThan(Money.of("0.01"))) {
+				return proposedTaxEach;
+			}
+		}
+		return taxEach;
+	}
 }
