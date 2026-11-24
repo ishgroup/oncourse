@@ -510,6 +510,22 @@ public final class InvoiceUtil {
 	 * @param proposedTaxEach - tax each sent by client, can be null
 	 * @return taxEach value to set in invoice line
 	 */
+	/**
+	 * Tax each in cents that, added to price and discount, gives the line total each as it is saved (rounded half even).
+	 * Stored tax keeps more decimal places, and rounding it on its own can differ by a cent at a half even tie:
+	 * 34.55 + 3.455 = 38.005 is saved as 38.00, but 3.455 rounds to 3.46.
+	 * Client shows and sends back this tax, so it is kept (see calculateTaxEachForManualInvoiceLine) and the total doesn't change.
+	 *
+	 * @param priceEachEx - price each excluding tax
+	 * @param discountEachEx - discount each excluding tax
+	 * @param taxEach - stored tax each
+	 * @return tax each in cents
+	 */
+	public static Money getTaxEachToTotal(Money priceEachEx, Money discountEachEx, Money taxEach) {
+		Money totalEachEx = priceEachEx.subtract(discountEachEx);
+		return Money.of(totalEachEx.add(taxEach).toBigDecimal()).subtract(totalEachEx);
+	}
+
 	public static Money calculateTaxEachForManualInvoiceLine(Money priceEachEx, Money discountEachEx, BigDecimal taxRate, Money proposedTaxEach) {
 		Money taxEach = calculateTaxEachForInvoiceLine(priceEachEx, discountEachEx, taxRate);
 

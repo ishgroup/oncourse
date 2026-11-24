@@ -97,6 +97,26 @@ class ReportedRoundingCasesTest {
     }
 
     @Test
+    void testTaxEachSentToClientAddsUpToSavedTotal() {
+        // CS-107: $38 fee inc GST is 34.55 ex tax, stored tax 3.455 and saved total 38.005 -> $38.00, rounding the tax alone gives 3.46
+        Money price = Money.of("34.55")
+        Money storedTax = InvoiceUtil.calculateTaxEachForInvoiceLine(price, Money.ZERO, GST)
+        Money taxSent = InvoiceUtil.getTaxEachToTotal(price, Money.ZERO, storedTax)
+
+        Assertions.assertEquals(new BigDecimal("3.46"), storedTax.toBigDecimal())
+        Assertions.assertEquals(new BigDecimal("3.45"), taxSent.toBigDecimal())
+
+        // the line is opened and saved again without changes: the tax sent back is kept and the total stays $38.00
+        Money taxSavedAgain = InvoiceUtil.calculateTaxEachForManualInvoiceLine(price, Money.ZERO, GST, taxSent)
+        Assertions.assertEquals(new BigDecimal("3.45"), taxSavedAgain.toBigDecimal())
+        Assertions.assertEquals(Money.of("38.00"), price.add(taxSavedAgain))
+
+        // tax already in cents is sent as it is
+        Assertions.assertEquals(new BigDecimal("31.10"), InvoiceUtil.getTaxEachToTotal(Money.of("345.45"), Money.of("34.55"), Money.of("31.10")).toBigDecimal())
+        Assertions.assertEquals(new BigDecimal("19.00"), InvoiceUtil.getTaxEachToTotal(Money.of("200.00"), Money.of("10.00"), Money.of("19.00")).toBigDecimal())
+    }
+
+    @Test
     void testManualInvoiceLineTaxIsCalculatedWhenClientTaxIsOff() {
         Money price = Money.of("200.00")
         Money discount = Money.of("10.00")
