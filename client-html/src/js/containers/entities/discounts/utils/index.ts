@@ -59,28 +59,42 @@ export const getRoundingByType = (type: MoneyRounding, value: Decimal): number =
 // server Money keeps intermediate amounts with 4 decimal places
 const toMoney = (value: Numeric): Decimal => new Decimal(value).toDecimalPlaces(4, Decimal.ROUND_HALF_EVEN);
 
+// min and max are applied only when they are greater than zero, the same as on server
+export const applyDiscountMinMax = (discount: Discount, amount: Decimal): Decimal => {
+  if (discount.discountMax > 0 && amount.gt(discount.discountMax)) {
+    return new Decimal(discount.discountMax);
+  }
+  if (discount.discountMin > 0 && amount.lt(discount.discountMin)) {
+    return new Decimal(discount.discountMin);
+  }
+  return amount;
+};
+
+/**
+ * Discount amount ex tax for the price worked back from a total typed in by user, limited by discount min/max.
+ * Discount rounding is not applied, so the typed total is kept
+ */
 export const getDiscountAmountByFeeIncTaxAndDiscount = (discount: Discount, feeIncDiscountExTax: Decimal): Decimal => {
+  const fee = new Decimal(feeIncDiscountExTax);
+
+  // credit line is discounted like the same positive line, with opposite sign
+  if (fee.isNegative()) {
+    return getDiscountAmountByFeeIncTaxAndDiscount(discount, fee.neg()).neg();
+  }
+
   switch (discount.discountType) {
-    case 'Percent':
+    case 'Percent': {
       const divider = new Decimal(1).sub(discount.discountPercent);
-      return divider.isZero() ? new Decimal(feeIncDiscountExTax) : new Decimal(feeIncDiscountExTax).div(divider).mul(discount.discountPercent);
+      return applyDiscountMinMax(discount, divider.isZero() ? fee : fee.div(divider).mul(discount.discountPercent));
+    }
     case 'Dollar':
-      return new Decimal(discount.discountValue);
+      return applyDiscountMinMax(discount, new Decimal(discount.discountValue));
     case 'Fee override':
       return new Decimal(0);
     default:
-      return feeIncDiscountExTax;
+      return fee;
   }
 };
-
-// min and max are applied only when they are greater than zero, the same as on server
-export const applyDiscountMinMax = (discount: Discount, amount: number): number => (
-  (discount.discountMax > 0 && amount > discount.discountMax)
-    ? discount.discountMax
-    : (discount.discountMin > 0 && amount < discount.discountMin)
-      ? discount.discountMin
-      : amount
-);
 
 const getDiscountAmountByType = (discount: Discount, priceExTax: Decimal): Decimal => {
   switch (discount.discountType) {
@@ -107,10 +121,9 @@ const getUnroundedDiscountExTax = (discount: Discount, priceExTax: Decimal, disc
 
   const amount = typeof discountOverride === 'number'
     ? new Decimal(discountOverride)
-    : new Decimal(applyDiscountMinMax(discount, getDiscountAmountByType(discount, priceExTax).toNumber()));
+    : applyDiscountMinMax(discount, getDiscountAmountByType(discount, priceExTax));
 
-  // server never gets negative price here, but manual invoice credit line has it and keeps its discount
-  return priceExTax.gt(0) && priceExTax.lt(amount) ? priceExTax : amount;
+  return priceExTax.lt(amount) ? priceExTax : amount;
 };
 
 /**
@@ -120,6 +133,13 @@ const getUnroundedDiscountExTax = (discount: Discount, priceExTax: Decimal, disc
  */
 export const getDiscountedFee = (discount: Discount, taxRate: number, priceExTax: number = 0, discountOverride?: number): Decimal => {
   const price = new Decimal(priceExTax || 0);
+
+  // server never gets negative price here, but manual invoice credit line has it,
+  // it is discounted like the same positive line, with opposite sign
+  if (price.isNegative()) {
+    return getDiscountedFee(discount, taxRate, price.neg().toNumber(), discountOverride).neg();
+  }
+
   const taxMul = new Decimal(1).plus(taxRate || 0);
   const priceIncTax = price.mul(taxMul).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN);
 
@@ -129,7 +149,7 @@ export const getDiscountedFee = (discount: Discount, taxRate: number, priceExTax
 
   const discountAmount = getUnroundedDiscountExTax(discount, price, discountOverride);
 
-  if (price.gt(0) && discountAmount.gte(price)) {
+  if (discountAmount.gte(price)) {
     return new Decimal(0);
   }
 

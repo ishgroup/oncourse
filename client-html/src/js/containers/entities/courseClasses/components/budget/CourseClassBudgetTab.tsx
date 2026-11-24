@@ -467,7 +467,7 @@ const CourseClassBudgetTab = React.memo<Props>(
               const currentTax = getCurrentTax(taxes, postData.taxId);
 
               classCostTypes.discount.items.forEach(d => {
-                if (d.value.courseClassDiscount.discountOverride === null) {
+                if (typeof d.value.courseClassDiscount.discountOverride !== 'number') {
                   // discount depends on fee when it is Percent, Fee override or rounded
                   const discountValue = bankRounding(getDiscountAmountExTax(
                     d.value.courseClassDiscount.discount,

@@ -8,12 +8,7 @@ import { min } from 'date-fns';
 import { Decimal } from 'decimal.js-light';
 import { decimalMinus, decimalMul, decimalPlus } from 'ish-ui';
 import EntityService from '../../../../common/services/EntityService';
-import {
-  bankRounding,
-  getInvoiceLineTotalAndTax,
-  getPriceAndDeductionsByTotal,
-  getTotalAndDeductionsByPrice
-} from '../../../../common/utils/financial';
+import { bankRounding, getPriceAndDeductionsByTotal, getTotalAndDeductionsByPrice } from '../../../../common/utils/financial';
 import { getRoundingByType } from '../../discounts/utils';
 import { InvoiceWithTotalLine } from '../../../../model/entities/Invoice';
 
@@ -149,16 +144,15 @@ export const getFeeOverrideLineAmounts = (
   taxEach: number,
   total: number
 } => {
-  // line without price takes the Fee override as its price, so price is worked back from the rounded Fee override inc tax, the same as getDiscountedFee gives for lines with price
-  const feeOverrideTotal = bankRounding(getRoundingByType(discount.rounding, new Decimal(discount.discountValue).mul(new Decimal(taxRate || 0).plus(1))));
-  const { priceEachExTax, discountAmount } = getPriceAndDeductionsByTotal(feeOverrideTotal, taxRate, discount);
-  const { total, taxEach } = getInvoiceLineTotalAndTax(priceEachExTax, discountAmount, taxRate);
+  // line without price takes the Fee override as its price, so total is the rounded Fee override inc tax, the same as getDiscountedFee gives for lines with price
+  const totalEach = bankRounding(getRoundingByType(discount.rounding, new Decimal(discount.discountValue).mul(new Decimal(taxRate || 0).plus(1))));
+  const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(totalEach, taxRate, discount);
 
   return {
     priceEachExTax,
     discountEachExTax: discountAmount,
     taxEach,
-    total: decimalMul(total, quantity)
+    total: decimalMul(totalEach, quantity)
   };
 };
 

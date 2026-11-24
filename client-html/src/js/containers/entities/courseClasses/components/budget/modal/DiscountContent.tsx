@@ -21,7 +21,7 @@ import {
   parseFieldPercent,
   preventNegativeOrLogEnter
 } from 'ish-ui';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Dispatch } from 'redux';
 import { change } from 'redux-form';
 import { IAction } from '../../../../../../common/actions/IshAction';
@@ -82,7 +82,7 @@ const DiscountContent: React.FC<Props> = ({
  values, classValues, classFee, currentTax, dispatch, currencySymbol
 }) => {
   const [forecastLocked, setForecastLocked] = useState(values.courseClassDiscount.forecast === null);
-  const [valueLocked, setValueLocked] = useState(values.courseClassDiscount.discountOverride === null);
+  const [valueLocked, setValueLocked] = useState(typeof values.courseClassDiscount.discountOverride !== 'number');
 
   const onValueLockHandler = () => {
     setValueLocked(pr => {
@@ -98,8 +98,12 @@ const DiscountContent: React.FC<Props> = ({
     });
   };
 
+  // debounced click is created once, so it calls the latest handler to use current values
+  const onValueLockHandlerRef = useRef(onValueLockHandler);
+  onValueLockHandlerRef.current = onValueLockHandler;
+
   const onValueLockClick = useMemo(
-    () => debounce(onValueLockHandler, 300),
+    () => debounce(() => onValueLockHandlerRef.current(), 300),
     []
   );
 

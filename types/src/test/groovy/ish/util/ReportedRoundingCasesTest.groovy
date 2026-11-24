@@ -75,20 +75,37 @@ class ReportedRoundingCasesTest {
     }
 
     /**
-     * Manual invoice line is saved with discount amount calculated on client and tax (price - discount) * rate
-     * (InvoiceApiService.updateInvoiceLines), its total must be the total client showed
+     * Manual invoice line is saved with price, discount and tax calculated on client (InvoiceApiService.updateInvoiceLines),
+     * client tax is kept when it is within a cent (InvoiceUtil.calculateTaxEachForManualInvoiceLine), so the total is the total client showed
      */
     @Test
-    void testManualInvoiceLineTotalWithDiscountFromClient() {
-        assertSavedLineTotal("CS-244 III: \$1222.73 x 3 with \$318.18 discount", "1222.73", "318.18", 3, GST, "2985.00")
-        assertSavedLineTotal("CS-244 5: \$1000 x 3 with \$500 discount", "1000.00", "500.00", 3, GST, "1650.00")
-        assertSavedLineTotal("CS-244 7: \$1222.73 with 50% discount", "1222.73", "611.37", 1, GST, "672.50")
-        assertSavedLineTotal("CS-493: \$268.18 with \$10 Dollar discount", "268.18", "10.00", 1, GST, "284.00")
-        assertSavedLineTotal("CS-455: \$408.18 with 9.5% discount to nearest 10 cents", "408.18", "38.82", 1, GST, "406.30")
-        assertSavedLineTotal("CS-107: \$544.55 with 3% discount", "544.55", "16.34", 1, GST, "581.03")
-        assertSavedLineTotal("CS-107, SST-136: \$10.00 with 3.5% discount", "10.00", "0.35", 1, GST, "10.62")
-        // at 15% a rounded total can't always be kept with price and discount in cents, client shows the same $11.01
-        assertSavedLineTotal("CS-634: \$11.11 with 15% discount to nearest dollar at 15% tax", "11.11", "1.54", 1, new BigDecimal("0.15"), "11.01")
+    void testManualInvoiceLineTotalWithAmountsFromClient() {
+        assertSavedLineTotal("CS-244 III: \$1222.73 x 3 with \$318.18 discount", "1222.73", "318.18", "90.45", 3, GST, "2985.00")
+        assertSavedLineTotal("CS-244 5: \$1000 x 3 with \$500 discount", "1000.00", "500.00", "50.00", 3, GST, "1650.00")
+        assertSavedLineTotal("CS-244 7: \$1222.73 with 50% discount", "1222.73", "611.37", "61.14", 1, GST, "672.50")
+        assertSavedLineTotal("CS-493: \$268.18 with \$10 Dollar discount", "268.18", "10.00", "25.82", 1, GST, "284.00")
+        assertSavedLineTotal("CS-455: \$408.18 with 9.5% discount to nearest 10 cents", "408.18", "38.82", "36.94", 1, GST, "406.30")
+        assertSavedLineTotal("CS-107: \$544.55 with 3% discount", "544.55", "16.34", "52.82", 1, GST, "581.03")
+        assertSavedLineTotal("CS-107, SST-136: \$10.00 with 3.5% discount", "10.00", "0.35", "0.97", 1, GST, "10.62")
+
+        // the rounding cent goes to tax, as checkout does: (11.11 - 1.54) * 1.15 = 11.0055, the discount rounds the total to $11.00
+        assertSavedLineTotal("CS-634: \$11.11 with 15% discount to nearest dollar at 15% tax", "11.11", "1.54", "1.43", 1, new BigDecimal("0.15"), "11.00")
+        // $380 class fee with $34.55 Dollar discount is $342.00, while (345.45 - 34.55) * 1.1 = 341.99
+        assertSavedLineTotal("CS-634: \$345.45 with \$34.55 discount and \$342.00 total", "345.45", "34.55", "31.10", 1, GST, "342.00")
+        // totals are compared, not taxes: 3.45 * 1.1 = 3.795 rounds to 3.80, but its tax 0.345 rounds to 0.34
+        assertSavedLineTotal("CS-634: \$3.45 with \$3.81 total typed in", "3.45", "0.00", "0.36", 1, GST, "3.81")
+    }
+
+    @Test
+    void testManualInvoiceLineTaxIsCalculatedWhenClientTaxIsOff() {
+        Money price = Money.of("200.00")
+        Money discount = Money.of("10.00")
+
+        // tax sent for price without discount is not kept (the same case as in api-test invoice post.feature)
+        Assertions.assertEquals(Money.of("19.00"), InvoiceUtil.calculateTaxEachForManualInvoiceLine(price, discount, GST, Money.of("20.00")))
+        Assertions.assertEquals(Money.of("19.00"), InvoiceUtil.calculateTaxEachForManualInvoiceLine(price, discount, GST, Money.of("19.02")))
+        Assertions.assertEquals(Money.of("19.01"), InvoiceUtil.calculateTaxEachForManualInvoiceLine(price, discount, GST, Money.of("19.01")))
+        Assertions.assertEquals(Money.of("19.00"), InvoiceUtil.calculateTaxEachForManualInvoiceLine(price, discount, GST, null))
     }
 
     private void assertCheckoutTotal(String message, String priceExTax, BigDecimal taxRate, DiscountCourseClassInterface classDiscount, String expectedTotal) {
@@ -102,10 +119,15 @@ class ReportedRoundingCasesTest {
         Assertions.assertEquals(expected, invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()), message)
     }
 
-    private static void assertSavedLineTotal(String message, String priceExTax, String discountExTax, int quantity, BigDecimal taxRate, String expectedTotal) {
-        // mock line has tax (price - discount) * rate, the total comes from the wrapper the same way as for AbstractInvoiceLine
-        MockInvoiceLine line = new MockInvoiceLine(Money.of(priceExTax), Money.of(discountExTax), new BigDecimal(quantity), taxRate)
+    private static void assertSavedLineTotal(String message, String priceExTax, String discountExTax, String clientTaxEach, int quantity,
+                                             BigDecimal taxRate, String expectedTotal) {
+        Money price = Money.of(priceExTax)
+        Money discount = Money.of(discountExTax)
+        MockInvoiceLine line = new MockInvoiceLine(price, discount, new BigDecimal(quantity), taxRate)
+        line.setTaxEach(InvoiceUtil.calculateTaxEachForManualInvoiceLine(price, discount, taxRate, Money.of(clientTaxEach)))
 
+        Assertions.assertEquals(Money.of(clientTaxEach), line.getTaxEach(), "${message}: client tax is kept".toString())
+        // the total comes from the wrapper the same way as for AbstractInvoiceLine
         Assertions.assertEquals(Money.of(expectedTotal), new InvoicePayableLineWrapper(line).getFinalPriceToPayIncTax(), message)
     }
 
