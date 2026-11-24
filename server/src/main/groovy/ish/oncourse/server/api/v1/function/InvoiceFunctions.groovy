@@ -41,7 +41,10 @@ class InvoiceFunctions {
             invoiceLine.discountName = cayenneModel.discounts[0]?.name
             invoiceLine.priceEachExTax = cayenneModel.priceEachExTax?.toBigDecimal()
             invoiceLine.discountEachExTax = cayenneModel.discountEachExTax?.toBigDecimal()
-            invoiceLine.taxEach = cayenneModel.taxEach?.toBigDecimal()
+            // tax in cents that adds up with price and discount to the saved total, see InvoiceUtil.getTaxEachToTotal
+            invoiceLine.taxEach = cayenneModel.taxEach == null || cayenneModel.priceEachExTax == null
+                    ? cayenneModel.taxEach?.toBigDecimal()
+                    : InvoiceUtil.getTaxEachToTotal(cayenneModel.priceEachExTax, cayenneModel.discountEachExTax ?: Money.ZERO, cayenneModel.taxEach).toBigDecimal()
             invoiceLine.taxId = cayenneModel.tax.id
             invoiceLine.taxName = cayenneModel.tax.description
             invoiceLine.description = cayenneModel.description

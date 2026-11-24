@@ -12,7 +12,8 @@ import {
   getTotalByFeeExTax
 } from '../../../js/common/utils/financial';
 import { getClassDiscountedFee } from '../../../js/containers/entities/courseClasses/components/budget/utils';
-import { getInvoiceLineDiscountRecalculation } from '../../../js/containers/entities/invoices/utils';
+import { getInvoiceLineDiscountRecalculation, setInvoiceLinesTotal } from '../../../js/containers/entities/invoices/utils';
+import { InvoiceLineWithTotal, InvoiceWithTotalLine } from '../../../js/model/entities/Invoice';
 
 // Rounding cases reported by QA in Jira, with the numbers from the tickets.
 // Test names start with the ticket key, so the original report can be found.
@@ -48,14 +49,33 @@ describe('manual invoice line', () => {
     expect(getPriceAndDeductionsByTotal(1014.2, gst, dollar(78))).toEqual({ priceEachExTax: 1000, discountAmount: 78, taxEach: 92.2 });
   });
 
-  it('CS-244 III: $1222.73 x 3 with $318.18 Dollar discount is $2985, also when the line is opened again, not $3440.46', () => {
+  it('CS-244 III: $1222.73 x 3 with $318.18 Dollar discount is $2985, also when the line is opened again, not $3440.46', async () => {
     const line = getTotalAndDeductionsByPrice(1222.73, gst, dollar(318.18));
 
     expect(line).toEqual({ discountEach: 318.18, taxEach: 90.45, total: 995 });
     expect(lineTotal(line.total, 3)).toBe(2985);
 
-    // saved line is opened with discount amount, not with discount (setInvoiceLinesTotal)
-    expect(lineTotal(getTotalAndDeductionsByPrice(1222.73, gst, line.discountEach).total, 3)).toBe(2985);
+    // saved line is opened with its saved amounts (setInvoiceLinesTotal)
+    const saved = await setInvoiceLinesTotal({
+      invoiceLines: [{ priceEachExTax: 1222.73, discountEachExTax: line.discountEach, taxEach: line.taxEach, quantity: 3 }]
+    } as InvoiceWithTotalLine);
+
+    expect((saved.invoiceLines[0] as InvoiceLineWithTotal).total).toBe(2985);
+  });
+
+  it('CS-107, CS-634: opened line keeps the saved total, also with the rounding cent kept in tax', async () => {
+    const saved = await setInvoiceLinesTotal({
+      invoiceLines: [
+        // $38 fee: stored tax 3.455 is sent as 3.45, so that it adds up to the saved $38.00 (InvoiceUtil.getTaxEachToTotal)
+        { priceEachExTax: 34.55, discountEachExTax: 0, taxEach: 3.45, quantity: 1 },
+        // 15% discount rounded to nearest dollar at 15% tax, saved as $11.00 with the cent in tax
+        { priceEachExTax: 11.11, discountEachExTax: 1.54, taxEach: 1.43, quantity: 1 },
+        // $380 fee with $34.55 discount, saved as $342.00
+        { priceEachExTax: 345.45, discountEachExTax: 34.55, taxEach: 31.1, quantity: 2 }
+      ]
+    } as InvoiceWithTotalLine);
+
+    expect(saved.invoiceLines.map(l => (l as InvoiceLineWithTotal).total)).toEqual([38, 11, 684]);
   });
 
   it.each<[string, Discount]>([

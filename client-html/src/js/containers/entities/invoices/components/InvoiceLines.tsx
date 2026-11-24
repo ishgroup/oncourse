@@ -139,6 +139,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
 
   const accountRef = useRef<any>(undefined);
   const lastEditedField = useRef<'priceEachExTax' | 'total'>(undefined);
+  const valueOnFocus = useRef<number>(undefined);
   const feeOverridePriceEachExTax = useRef<number>(undefined);
 
   const prevCourseClassId = usePrevious(row.courseClassId);
@@ -299,7 +300,13 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     }
   };
 
+  // price or total becomes the last edited field only when its value is changed, not when the field is just focused
+  const isChangedSinceFocus = (value: number) => Number(value || 0) !== Number(valueOnFocus.current || 0);
+
   const onPriceEachExTaxBlur = (e, value) => {
+    if (!isChangedSinceFocus(value)) return;
+
+    lastEditedField.current = 'priceEachExTax';
     recalculateByPrice(value, taxRate, currentDiscount, row.quantity);
   };
 
@@ -324,6 +331,9 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
 
   const onTotalBlur = (e, total) => {
+    if (!isChangedSinceFocus(total)) return;
+
+    lastEditedField.current = 'total';
     recalculate(total, row.priceEachExTax, row.quantity, taxRate, currentDiscount);
   };
 
@@ -543,7 +553,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             name={`${item}.priceEachExTax`}
             label={$t('price_each_extax')}
             onBlur={onPriceEachExTaxBlur}
-            onFocus={() => lastEditedField.current = 'priceEachExTax'}
+            onFocus={() => valueOnFocus.current = row.priceEachExTax}
             disabled={disableFinanceFileds}
           />
         </Grid>
@@ -595,7 +605,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
               name={`${item}.total`}
               disabled={disableFinanceFileds || hasFeeOverride}
               defaultValue={row.total}
-              onFocus={() => lastEditedField.current = 'total'}
+              onFocus={() => valueOnFocus.current = row.total}
               onBlur={onTotalBlur}
               inline
             />
