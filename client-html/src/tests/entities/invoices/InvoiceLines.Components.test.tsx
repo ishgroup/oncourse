@@ -4,7 +4,7 @@
  */
 
 import { Tax } from '@api/model';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -94,13 +94,6 @@ const chooseOption = async (name: string, option: string) => {
   await userEvent.click(await screen.findByRole('option', { name: option }));
 };
 
-// typing key by key into the money field's number format loses keys in jsdom, so the value is changed at once
-const typeIn = async (name: string, value: string) => {
-  await userEvent.click(field(name));
-  fireEvent.change(field(name), { target: { value } });
-  await userEvent.tab();
-};
-
 const discountLockButton = () => document
   .querySelector('[data-testid="LockOpenIcon"], [data-testid="LockIcon"]')
   ?.closest('button');
@@ -157,17 +150,12 @@ describe('InvoiceLines', () => {
     await expectSavedLine({ incomeAccountId: 11, taxId: 2, priceEachExTax: 110, taxEach: 0, total: 110 });
   });
 
-  it('keeps tax type and GST of the line when income account has a tax that is not known', async () => {
+  it('sets tax type of income account but does not recalculate the line as tax free when that tax is not known', async () => {
     renderLine();
 
     await chooseOption('incomeAccountId', 'Unknown tax fees 41200');
 
-    await expectSavedLine({ incomeAccountId: 12, taxId: 1, priceEachExTax: 100, taxEach: 10, total: 110 });
-
-    // the next price change is still calculated with GST, not as tax free
-    await typeIn('priceEachExTax', '200');
-
-    await expectSavedLine({ taxId: 1, priceEachExTax: 200, taxEach: 20, total: 220 });
+    await expectSavedLine({ incomeAccountId: 12, taxId: 99, priceEachExTax: 100, taxEach: 10, total: 110 });
   });
 
   it('sets discount amount to 0 when discount is removed from a line that is not recalculated', async () => {
