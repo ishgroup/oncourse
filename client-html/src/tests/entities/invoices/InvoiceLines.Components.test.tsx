@@ -4,7 +4,7 @@
  */
 
 import { Tax } from '@api/model';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -94,8 +94,24 @@ const chooseOption = async (name: string, option: string) => {
   await userEvent.click(await screen.findByRole('option', { name: option }));
 };
 
+// typing key by key into the money field's number format loses keys in jsdom, so the value is changed at once
+const typeIn = async (name: string, value: string) => {
+  await userEvent.click(field(name));
+  fireEvent.change(field(name), { target: { value } });
+  await userEvent.tab();
+};
+
+const discountLockButton = () => document
+  .querySelector('[data-testid="LockOpenIcon"], [data-testid="LockIcon"]')
+  ?.closest('button');
+
 describe('InvoiceLines', () => {
   let getPlainRecords: jest.SpyInstance;
+
+  // only the line's own discount lookup returns its discount, other lookups (remote selects) return nothing
+  const mockLineDiscount = (lookup: () => Promise<any>) => getPlainRecords.mockImplementation((entity: string, columns: string, search: string) => (
+    entity === 'Discount' && search?.startsWith('id is ') ? lookup() : Promise.resolve({ rows: [] })
+  ));
 
   beforeEach(() => {
     getPlainRecords = jest.spyOn(EntityService, 'getPlainRecords').mockResolvedValue({ rows: [] } as any);
@@ -105,19 +121,24 @@ describe('InvoiceLines', () => {
     getPlainRecords.mockRestore();
   });
 
-  it('disables amount fields while the line discount is loading, so it is not applied as a fixed amount', async () => {
+  it('disables amount fields and discount while the line discount is loading, so it is not applied as a fixed amount', async () => {
     let resolveDiscount: (value) => void;
-    getPlainRecords.mockImplementation(() => new Promise(resolve => {
+    mockLineDiscount(() => new Promise(resolve => {
       resolveDiscount = resolve;
     }));
 
     renderLine({ discountId: 7, discountName: 'Ten off', discountEachExTax: 10, taxEach: 9, total: 99 });
 
-    ['quantity', 'incomeAccountId', 'priceEachExTax', 'discountEachExTax', 'taxId', 'total'].forEach(name => expect(field(name)).toBeDisabled());
+    ['quantity', 'incomeAccountId', 'priceEachExTax', 'discountId', 'discountEachExTax', 'taxId', 'total']
+      .forEach(name => expect(field(name)).toBeDisabled());
+    expect(discountLockButton()).toBeTruthy();
+    expect(discountLockButton()).toBeDisabled();
 
     await act(async () => resolveDiscount(discountRows));
 
-    ['quantity', 'incomeAccountId', 'priceEachExTax', 'taxId', 'total'].forEach(name => expect(field(name)).not.toBeDisabled());
+    ['quantity', 'incomeAccountId', 'priceEachExTax', 'discountId', 'taxId', 'total']
+      .forEach(name => expect(field(name)).not.toBeDisabled());
+    expect(discountLockButton()).not.toBeDisabled();
   });
 
   it('keeps the total when tax type of an opened line is changed', async () => {
@@ -136,24 +157,32 @@ describe('InvoiceLines', () => {
     await expectSavedLine({ incomeAccountId: 11, taxId: 2, priceEachExTax: 110, taxEach: 0, total: 110 });
   });
 
-  it('does not recalculate the line as tax free when the tax of income account is not known', async () => {
+  it('keeps tax type and GST of the line when income account has a tax that is not known', async () => {
     renderLine();
 
     await chooseOption('incomeAccountId', 'Unknown tax fees 41200');
 
-    await expectSavedLine({ incomeAccountId: 12, taxId: 99, priceEachExTax: 100, taxEach: 10, total: 110 });
+    await expectSavedLine({ incomeAccountId: 12, taxId: 1, priceEachExTax: 100, taxEach: 10, total: 110 });
+
+    // the next price change is still calculated with GST, not as tax free
+    await typeIn('priceEachExTax', '200');
+
+    await expectSavedLine({ taxId: 1, priceEachExTax: 200, taxEach: 20, total: 220 });
   });
 
   it('sets discount amount to 0 when discount is removed from a line that is not recalculated', async () => {
-    getPlainRecords.mockResolvedValue(discountRows as any);
+    mockLineDiscount(() => Promise.resolve(discountRows));
 
     // line without price and not edited, so removing the discount doesn't recalculate it
     renderLine({ priceEachExTax: null, discountId: 7, discountName: 'Ten off', discountEachExTax: 10, taxEach: 9, total: 99 });
 
     await waitFor(() => expect(field('priceEachExTax')).not.toBeDisabled());
 
-    const discountSelect = field('discountId').closest('.MuiAutocomplete-root');
-    await userEvent.click(discountSelect.querySelector('[data-testid="CloseIcon"]'));
+    // clear button of the discount select
+    const clearButton = field('discountId').closest('.MuiAutocomplete-root')?.querySelector('[data-testid="CloseIcon"]');
+    expect(clearButton).toBeTruthy();
+
+    await userEvent.click(clearButton);
 
     await expectSavedLine({ discountId: null, discountEachExTax: 0, total: 99 });
   });
