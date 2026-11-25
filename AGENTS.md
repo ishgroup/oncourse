@@ -29,7 +29,7 @@ Inside `client-html/` (after codegen has run at least once):
 
 ```bash
 npm start                                 # dev server (webpack.dev.config.js)
-npx jest path/to/file.test.ts             # run a single test file (only when asked)
+npx jest path/to/file.test.ts             # run only the related test files (only when asked, see Tests)
 npx tsc --noEmit -p tsconfig.json         # type check
 npx eslint src/js/path/to/file.tsx        # lint
 ```
@@ -72,6 +72,8 @@ Patterns to follow:
 - Server tests are Groovy, in `server/src/test/groovy`, with fixtures in `server/src/test/resources`.
 - When you change behaviour, add or update a test next to the existing ones.
 - **Don't run client tests locally** (`jest` / `client-html:jest`) as part of a task. They run automatically in GitHub Actions (`client-test.yml`) on every PR before merging into `main`. Run them only if the user asks.
+- When you do run them, run only the test files related to the change (`npx jest path/to/a.test.ts path/to/b.test.ts`). Never run the whole suite, a whole folder or a broad set at once without a real need: component tests are heavy and many jest workers can exhaust the machine's memory.
+- If a larger set is really needed, limit workers and memory, and don't start another jest run while one is still running: `NODE_OPTIONS=--max-old-space-size=2048 npx jest --maxWorkers=2 <files>`.
 
 ## Source files
 
