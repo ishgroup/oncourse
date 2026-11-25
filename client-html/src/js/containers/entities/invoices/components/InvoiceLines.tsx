@@ -338,6 +338,11 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
 
   const onTaxIdChange = value => {
+    const tax = getCurrentTax(taxes, value);
+
+    // line is not recalculated as tax free when tax is not known
+    if (!tax) return;
+
     const byField = getInvoiceLineTaxChangeRecalculation(
       lineDiscount,
       discountEachExTaxLocked,
@@ -347,7 +352,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     );
 
     if (byField) {
-      recalculate(row.total, row.priceEachExTax, row.quantity, getCurrentTax(taxes, value)?.rate, lineDiscount, byField);
+      recalculate(row.total, row.priceEachExTax, row.quantity, tax.rate, lineDiscount, byField);
     }
   };
 
@@ -404,6 +409,11 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     setSelectedDiscount(apiDiscount);
     dispatch(change(form, `${item}.discountName`, apiDiscount?.name || null));
 
+    // removed discount leaves no amount behind, so it isn't used later as a typed in discount (see getInvoiceLineDiscount)
+    if (!apiDiscount) {
+      dispatch(change(form, `${item}.discountEachExTax`, 0));
+    }
+
     switch (recalculation) {
       case 'feeOverrideTotal': {
         const {
@@ -458,7 +468,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
           label={$t('quantity')}
           normalize={normalizeNumberToPositive}
           onBlur={onQuantityBlur}
-          disabled={disableFinanceFileds}
+          disabled={disableFinanceFileds || loading}
           required
         />
       </Grid>
@@ -472,7 +482,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
           type="select"
           name={`${item}.incomeAccountId`}
           label={$t('income_account')}
-          disabled={disableFinanceFileds}
+          disabled={disableFinanceFileds || loading}
           items={useAllAccounts ? accountTypes.all : incomeAccountOptions}
           defaultValue={row.incomeAccountName}
           selectValueMark="id"
@@ -586,7 +596,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             label={$t('price_each_extax')}
             onBlur={onPriceEachExTaxBlur}
             onFocus={() => valueOnFocus.current = row.priceEachExTax}
-            disabled={disableFinanceFileds}
+            disabled={disableFinanceFileds || loading}
           />
         </Grid>
 
@@ -599,7 +609,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             labelAdornment={<IconButton className="inputAdornmentButton" onClick={onDiscountEachExTaxLock} disabled={disableFinanceFileds || loading}>
               {discountEachExTaxLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
             </IconButton>}
-            disabled={disableFinanceFileds || discountEachExTaxLocked}
+            disabled={disableFinanceFileds || discountEachExTaxLocked || loading}
           />
         </Grid>
 
@@ -635,7 +645,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             <FormField
               type="money"
               name={`${item}.total`}
-              disabled={disableFinanceFileds || hasFeeOverride}
+              disabled={disableFinanceFileds || hasFeeOverride || loading}
               defaultValue={row.total}
               onFocus={() => valueOnFocus.current = row.total}
               onBlur={onTotalBlur}

@@ -166,8 +166,9 @@ export const getInvoiceLineTotalEach = (total: number, quantity: number): number
 
 /**
  * Field to recalculate invoice line from when its tax is changed. Total is kept unless price was edited last,
- * also on a line that was just opened. Locked Fee override is a fee ex tax, so a line with it keeps the price
- * and its total changes with the tax rate. Line without total keeps its price, line without both is not recalculated
+ * also on a line that was just opened. Fee override is a fee ex tax, so a line with it keeps the price and its total
+ * changes with the tax rate, unless its discount is unlocked and total was typed in.
+ * Line without total keeps its price, line without both is not recalculated
  */
 export const getInvoiceLineTaxChangeRecalculation = (
   discount: Discount | number,
@@ -176,7 +177,7 @@ export const getInvoiceLineTaxChangeRecalculation = (
   total: number,
   priceEachExTax: number
 ): 'priceEachExTax' | 'total' => {
-  if (lastEditedField === 'priceEachExTax' || (discountLocked && isFeeOverride(discount))) {
+  if (lastEditedField === 'priceEachExTax' || (isFeeOverride(discount) && (discountLocked || lastEditedField !== 'total'))) {
     return 'priceEachExTax';
   }
   if (typeof total === 'number') {

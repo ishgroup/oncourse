@@ -60,6 +60,10 @@ describe('getInvoiceLineTaxChangeRecalculation', () => {
     expect(getInvoiceLineTaxChangeRecalculation(feeOverride, false, 'total', 600, 454.55)).toBe('total');
   });
 
+  it('keeps price of line with Fee override that was only unlocked, so that its discount is not cleared', () => {
+    expect(getInvoiceLineTaxChangeRecalculation(feeOverride, false, undefined, 500, 454.55)).toBe('priceEachExTax');
+  });
+
   it('keeps price of line without total, and does not recalculate line without total and price', () => {
     expect(getInvoiceLineTaxChangeRecalculation(null, false, undefined, undefined, 100)).toBe('priceEachExTax');
     expect(getInvoiceLineTaxChangeRecalculation(null, false, undefined, undefined, undefined)).toBe(null);
