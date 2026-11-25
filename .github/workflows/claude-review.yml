@@ -125,7 +125,7 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: /code-review medium ${{ steps.range.outputs.range }}
           claude_args: |
-            --model claude-opus-5-5
+            --model claude-sonnet-5-5
             --max-turns 40
             --allowedTools "Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git grep:*),Read,Grep,Glob"
             --disallowedTools "Bash(gh:*),Bash(curl:*)"
@@ -201,7 +201,7 @@ jobs:
             FINDINGS:
             ${{ steps.findings.outputs.text }}
           claude_args: |
-            --model claude-opus-5-5
+            --model claude-haiku-5-5
             --max-turns 30
             ${{ steps.jira_mcp.outputs.arg }}
             --allowedTools "mcp__jira__jira_get_issue,mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/comments:*),Bash(git diff:*),Bash(git show:*),Read,Grep,Glob"
