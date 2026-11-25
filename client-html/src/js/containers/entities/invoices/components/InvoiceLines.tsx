@@ -56,7 +56,7 @@ import {
 } from '../actions';
 import { INVOICE_LINE_DISCOUNT_AQL, INVOICE_LINE_DISCOUNT_COLUMNS } from '../constants';
 import { InvoicesState } from '../reducers/state';
-import { getFeeOverrideLineAmounts, getInvoiceLineDiscountRecalculation } from '../utils';
+import { getFeeOverrideLineAmounts, getInvoiceLineDiscountRecalculation, getInvoiceLineTaxChangeRecalculation } from '../utils';
 
 interface HeaderProps {
   row: InvoiceLineWithTotal;
@@ -284,18 +284,25 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     dispatch(change(form, `${item}.total`, decimalMul(total, quantity)));
   };
 
-  const recalculate = (total: number, priceEachExTax: number, qantity: number, taxRate: number, discount: Discount | number)=> {
+  const recalculate = (
+    total: number,
+    priceEachExTax: number,
+    qantity: number,
+    taxRate: number,
+    discount: Discount | number,
+    byField: 'priceEachExTax' | 'total' = lastEditedField.current
+  ) => {
     if (total === 0 && priceEachExTax === 0) {
       dispatch(change(form, `${item}.taxEach`, 0));
       dispatch(change(form, `${item}.discountEachExTax`, 0));
       return;
     }
 
-    if (lastEditedField.current === 'total') {
+    if (byField === 'total') {
       recalculateByTotal(total, taxRate, discount, qantity);
     }
 
-    if (lastEditedField.current === 'priceEachExTax') {
+    if (byField === 'priceEachExTax') {
       recalculateByPrice(priceEachExTax, taxRate, discount, qantity);
     }
   };
@@ -323,7 +330,11 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
 
   const onTaxIdChange = value => {
-    recalculate(row.total, row.priceEachExTax, row.quantity, getCurrentTax(taxes, value)?.rate, currentDiscount);
+    const byField = getInvoiceLineTaxChangeRecalculation(currentDiscount, lastEditedField.current, row.total);
+
+    if (byField) {
+      recalculate(row.total, row.priceEachExTax, row.quantity, getCurrentTax(taxes, value)?.rate, currentDiscount, byField);
+    }
   };
 
   const onQuantityBlur = (e, value) => {

@@ -207,6 +207,11 @@ describe('getPriceAndDeductionsByTotal', () => {
       .toEqual({ priceEachExTax: 345.45, discountAmount: 34.54, taxEach: 31.09 });
   });
 
+  it('takes empty discount value as 0 when total is typed in', () => {
+    expect(getPriceAndDeductionsByTotal(99, 0.1, { discountType: 'Dollar', rounding: 'No Rounding' })).toEqual({ priceEachExTax: 90, discountAmount: 0, taxEach: 9 });
+    expect(getPriceAndDeductionsByTotal(99, 0.1, { discountType: 'Percent', rounding: 'No Rounding' })).toEqual({ priceEachExTax: 90, discountAmount: 0, taxEach: 9 });
+  });
+
   it('works price out of typed total when it is more than a cent away from the total of current price', () => {
     expect(getPriceAndDeductionsByTotal(400, 0.1, 34.55, 345.45)).toEqual({ priceEachExTax: 398.19, discountAmount: 34.55, taxEach: 36.36 });
     expect(getPriceAndDeductionsByTotal(342, 0.1, 34.55)).toEqual({ priceEachExTax: 345.46, discountAmount: 34.55, taxEach: 31.09 });

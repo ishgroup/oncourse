@@ -151,6 +151,22 @@ export const getFeeOverrideLineAmounts = (
   };
 };
 
+/**
+ * Field to recalculate invoice line from when its tax is changed. Total is kept unless price was edited last,
+ * also on a line that was just opened. Fee override is a fee ex tax, so a line with it keeps the price
+ * and its total changes with the tax rate. Line without total and price is not recalculated
+ */
+export const getInvoiceLineTaxChangeRecalculation = (
+  discount: Discount | number,
+  lastEditedField: 'priceEachExTax' | 'total',
+  total: number
+): 'priceEachExTax' | 'total' => {
+  if (lastEditedField === 'priceEachExTax' || isFeeOverride(discount)) {
+    return 'priceEachExTax';
+  }
+  return typeof total === 'number' ? 'total' : null;
+};
+
 export const getInvoiceLineDiscountRecalculation = (
   previousDiscount: Discount | number,
   nextDiscount: Discount | number,
