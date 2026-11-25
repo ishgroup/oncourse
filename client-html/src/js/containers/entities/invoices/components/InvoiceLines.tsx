@@ -56,7 +56,13 @@ import {
 } from '../actions';
 import { INVOICE_LINE_DISCOUNT_AQL, INVOICE_LINE_DISCOUNT_COLUMNS } from '../constants';
 import { InvoicesState } from '../reducers/state';
-import { getFeeOverrideLineAmounts, getInvoiceLineDiscountRecalculation, getInvoiceLineTaxChangeRecalculation } from '../utils';
+import {
+  getFeeOverrideLineAmounts,
+  getInvoiceLineDiscount,
+  getInvoiceLineDiscountRecalculation,
+  getInvoiceLineTaxChangeRecalculation,
+  getInvoiceLineTotalEach
+} from '../utils';
 
 interface HeaderProps {
   row: InvoiceLineWithTotal;
@@ -265,7 +271,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
 
   const recalculateByTotal = (total: number, taxRate: number, discount: Discount | number, quantity = 1) => {
     const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(
-      new Decimal(total).div(quantity).toNumber(),
+      getInvoiceLineTotalEach(total, quantity),
       taxRate,
       discount,
       row.priceEachExTax
@@ -276,7 +282,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     dispatch(change(form, `${item}.priceEachExTax`, priceEachExTax));
   };
 
-  const recalculateByPrice = (priceEachExTax: number, taxRate: number, discount: Discount | number, quantity= 1) => {
+  const recalculateByPrice = (priceEachExTax: number, taxRate: number, discount: Discount | number, quantity = 1) => {
     const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice( priceEachExTax, taxRate, discount);
 
     dispatch(change(form, `${item}.taxEach`, taxEach));
@@ -310,11 +316,13 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   // price or total becomes the last edited field only when its value is changed, not when the field is just focused
   const isChangedSinceFocus = (value: number) => Number(value || 0) !== Number(valueOnFocus.current || 0);
 
+  const lineDiscount = getInvoiceLineDiscount(currentDiscount, row.discountEachExTax);
+
   const onPriceEachExTaxBlur = (e, value) => {
     if (!isChangedSinceFocus(value)) return;
 
     lastEditedField.current = 'priceEachExTax';
-    recalculateByPrice(value, taxRate, currentDiscount, row.quantity);
+    recalculateByPrice(value, taxRate, lineDiscount, row.quantity);
   };
 
   const onDiscountEachExTaxBlur = (e, value) => {
@@ -330,22 +338,28 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
   };
 
   const onTaxIdChange = value => {
-    const byField = getInvoiceLineTaxChangeRecalculation(currentDiscount, lastEditedField.current, row.total);
+    const byField = getInvoiceLineTaxChangeRecalculation(
+      lineDiscount,
+      discountEachExTaxLocked,
+      lastEditedField.current,
+      row.total,
+      row.priceEachExTax
+    );
 
     if (byField) {
-      recalculate(row.total, row.priceEachExTax, row.quantity, getCurrentTax(taxes, value)?.rate, currentDiscount, byField);
+      recalculate(row.total, row.priceEachExTax, row.quantity, getCurrentTax(taxes, value)?.rate, lineDiscount, byField);
     }
   };
 
   const onQuantityBlur = (e, value) => {
-    recalculateByPrice(row.priceEachExTax || 0, taxRate, currentDiscount, value);
+    recalculateByPrice(row.priceEachExTax || 0, taxRate, lineDiscount, value);
   };
 
   const onTotalBlur = (e, total) => {
     if (!isChangedSinceFocus(total)) return;
 
     lastEditedField.current = 'total';
-    recalculate(total, row.priceEachExTax, row.quantity, taxRate, currentDiscount);
+    recalculate(total, row.priceEachExTax, row.quantity, taxRate, lineDiscount);
   };
 
   const onIncomeAccountChange = v => {
@@ -366,7 +380,14 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     const selectedAccount = accountTypes.income.find(item => item.id === v);
     const selectedAccountTaxId = selectedAccount && selectedAccount["tax.id"];
 
-    selectedAccountTaxId && dispatch(change(form, `${item}.taxId`, Number(selectedAccountTaxId)));
+    if (selectedAccountTaxId) {
+      dispatch(change(form, `${item}.taxId`, Number(selectedAccountTaxId)));
+
+      // the line is recalculated the same way as when tax type is changed in its field
+      if (Number(selectedAccountTaxId) !== row.taxId) {
+        onTaxIdChange(Number(selectedAccountTaxId));
+      }
+    }
   };
 
   const applyDiscount = (apiDiscount: Discount) => {
@@ -590,7 +611,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             selectValueMark="id"
             selectLabelMark="code"
             onChange={onTaxIdChange}
-            disabled={disableFinanceFileds}
+            disabled={disableFinanceFileds || loading}
             items={taxes || []}
             required={isNew}
           />
