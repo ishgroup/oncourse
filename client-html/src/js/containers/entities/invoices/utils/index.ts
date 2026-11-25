@@ -7,8 +7,7 @@ import { Discount, Invoice, InvoicePaymentPlan } from '@api/model';
 import { min } from 'date-fns';
 import { Decimal } from 'decimal.js-light';
 import { decimalMinus, decimalMul, decimalPlus } from 'ish-ui';
-import EntityService from '../../../../common/services/EntityService';
-import { bankRounding, getPriceAndDeductionsByTotal, getTotalAndDeductionsByPrice } from '../../../../common/utils/financial';
+import { bankRounding, getPriceAndDeductionsByTotal } from '../../../../common/utils/financial';
 import { getRoundingByType } from '../../discounts/utils';
 import { InvoiceWithTotalLine } from '../../../../model/entities/Invoice';
 
@@ -21,21 +20,17 @@ export const preformatInvoice = (value: InvoiceWithTotalLine): Invoice => {
   return value;
 };
 
+/**
+ * Line totals of saved invoice. Server sends tax each that adds up with price and discount to the saved total each
+ * (InvoiceUtil.getTaxEachToTotal), so the total is not calculated again from tax rate, which would lose a rounding cent kept in tax
+ */
 export const setInvoiceLinesTotal = async (value: InvoiceWithTotalLine): Promise<Invoice> => {
   if (value && value.invoiceLines) {
-    for (const line of value.invoiceLines) {
-      const taxRate = await EntityService.getPlainRecords(
-        'Tax',
-        'rate',
-        `id is ${line.taxId}`,
-        1,
-        0,
-      ).then(({ rows }) => parseFloat(rows.map(r => r.values[0])[0]));
-      
-      const { total } = getTotalAndDeductionsByPrice(line.priceEachExTax, taxRate, line.discountEachExTax);
-      
-      line.total = decimalMul(total, line.quantity);
-    }
+    value.invoiceLines.forEach(line => {
+      const totalEach = bankRounding(new Decimal(line.priceEachExTax || 0).sub(line.discountEachExTax || 0).add(line.taxEach || 0));
+
+      line.total = decimalMul(totalEach, line.quantity);
+    });
   }
   return value;
 };
@@ -144,7 +139,7 @@ export const getFeeOverrideLineAmounts = (
   taxEach: number,
   total: number
 } => {
-  // apply discount rounding the same way as getDiscountAmountByFee does for lines with price
+  // line without price takes the Fee override as its price, so total is the rounded Fee override inc tax, the same as getDiscountedFee gives for lines with price
   const totalEach = bankRounding(getRoundingByType(discount.rounding, new Decimal(discount.discountValue).mul(new Decimal(taxRate || 0).plus(1))));
   const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(totalEach, taxRate, discount);
 
@@ -156,6 +151,41 @@ export const getFeeOverrideLineAmounts = (
   };
 };
 
+/**
+ * Discount to recalculate invoice line with. A saved line opened again has no current discount until its linked discount loads,
+ * and none at all for a discount amount typed in by user or a discount no longer valid, so the discount amount of the line is used
+ */
+export const getInvoiceLineDiscount = (currentDiscount: Discount | number, discountEachExTax: number): Discount | number =>
+  (currentDiscount === null || currentDiscount === undefined ? discountEachExTax || null : currentDiscount);
+
+/**
+ * Total of one unit of invoice line, quantity that is not set or 0 is taken as 1
+ */
+export const getInvoiceLineTotalEach = (total: number, quantity: number): number =>
+  new Decimal(total || 0).div(quantity || 1).toNumber();
+
+/**
+ * Field to recalculate invoice line from when its tax is changed. Total is kept unless price was edited last,
+ * also on a line that was just opened. Fee override is a fee ex tax, so a line with it keeps the price and its total
+ * changes with the tax rate, unless its discount is unlocked and total was typed in.
+ * Line without total keeps its price, line without both is not recalculated
+ */
+export const getInvoiceLineTaxChangeRecalculation = (
+  discount: Discount | number,
+  discountLocked: boolean,
+  lastEditedField: 'priceEachExTax' | 'total',
+  total: number,
+  priceEachExTax: number
+): 'priceEachExTax' | 'total' => {
+  if (lastEditedField === 'priceEachExTax' || (isFeeOverride(discount) && (discountLocked || lastEditedField !== 'total'))) {
+    return 'priceEachExTax';
+  }
+  if (typeof total === 'number') {
+    return 'total';
+  }
+  return typeof priceEachExTax === 'number' ? 'priceEachExTax' : null;
+};
+
 export const getInvoiceLineDiscountRecalculation = (
   previousDiscount: Discount | number,
   nextDiscount: Discount | number,
@@ -164,7 +194,8 @@ export const getInvoiceLineDiscountRecalculation = (
   feeOverridePriceEachExTax?: number,
   taxRate?: number
 ): InvoiceLineDiscountRecalculation => {
-  const hasPrice = priceEachExTax > 0;
+  // credit line has negative price
+  const hasPrice = Boolean(priceEachExTax);
 
   if (isFeeOverride(nextDiscount)) {
     const isPriceSetByFeeOverride = priceEachExTax === feeOverridePriceEachExTax

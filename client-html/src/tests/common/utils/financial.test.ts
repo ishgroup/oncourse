@@ -5,8 +5,13 @@
 
 import { Discount } from '@api/model';
 import { Decimal } from 'decimal.js-light';
-import { getPriceAndDeductionsByTotal, getTotalAndDeductionsByPrice } from '../../../js/common/utils/financial';
-import { getDiscountAmountExTax, getRoundingByType } from '../../../js/containers/entities/discounts/utils';
+import {
+  bankRounding,
+  getInvoiceLineTotalAndTax,
+  getPriceAndDeductionsByTotal,
+  getTotalAndDeductionsByPrice
+} from '../../../js/common/utils/financial';
+import { getDiscountAmountExTax, getDiscountedFee, getRoundingByType } from '../../../js/containers/entities/discounts/utils';
 
 const feeOverride: Discount = {
   name: 'Fee override',
@@ -14,6 +19,36 @@ const feeOverride: Discount = {
   rounding: 'Nearest dollar',
   discountValue: 454.54
 };
+
+// server keeps tax sent by client for manual invoice line when price - discount + tax is within a cent of the total
+// calculated with tax (price - discount) * rate (InvoiceUtil.calculateTaxEachForManualInvoiceLine), so the line is saved with the total client shows
+const expectSavedByServer = (price: number, discountEach: number, taxEach: number, total: number, taxRate: number) => {
+  const afterDiscount = new Decimal(price).sub(discountEach);
+  const calculatedTotal = afterDiscount.mul(new Decimal(1).add(taxRate)).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN);
+
+  expect(afterDiscount.add(taxEach).toNumber()).toBe(total);
+  expect(new Decimal(total).sub(calculatedTotal).abs().toNumber()).toBeLessThanOrEqual(0.01);
+};
+
+describe('getInvoiceLineTotalAndTax', () => {
+  it('rounds total half even, so that $38 total is not saved as $38.01', () => {
+    // 34.55 * 1.1 = 38.005
+    expect(getInvoiceLineTotalAndTax(34.55, 0, 0.1)).toEqual({ total: 38, taxEach: 3.45 });
+    // 45.45 * 1.1 = 49.995
+    expect(getInvoiceLineTotalAndTax(45.45, 0, 0.1)).toEqual({ total: 50, taxEach: 4.55 });
+  });
+
+  it('calculates total from price in cents, at 15% no price in cents gives $11.00', () => {
+    // 9.56 * 1.15 = 10.994 and 9.57 * 1.15 = 11.0055
+    expect(getInvoiceLineTotalAndTax(9.56, 0, 0.15)).toEqual({ total: 10.99, taxEach: 1.43 });
+    expect(getInvoiceLineTotalAndTax(9.57, 0, 0.15)).toEqual({ total: 11.01, taxEach: 1.44 });
+  });
+
+  it('calculates tax from price minus discount', () => {
+    expect(getInvoiceLineTotalAndTax(1000, 545.45, 0.1)).toEqual({ total: 500, taxEach: 45.45 });
+    expect(getInvoiceLineTotalAndTax(-100, -10, 0.1)).toEqual({ total: -99, taxEach: -9 });
+  });
+});
 
 describe('getTotalAndDeductionsByPrice', () => {
   it('calculates ex tax discount and tax for Fee override so that price minus discount plus tax equals total', () => {
@@ -40,37 +75,43 @@ describe('getTotalAndDeductionsByPrice', () => {
     expect(total).toBe(455);
   });
 
-  it('keeps total equal to rounded Fee override at tax rates other than 10%', () => {
+  it('keeps total equal to rounded Fee override at 15% and puts the rounding cent into tax', () => {
     const discount: Discount = { discountType: 'Fee override', rounding: 'Nearest dollar', discountValue: 9.57 };
     const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice(2000, 0.15, discount);
 
+    // price minus discount 9.57 gives 11.0055, the Fee override rounds it to $11.00 and tax takes the difference
     expect(total).toBe(11);
     expect(discountEach).toBe(1990.43);
     expect(taxEach).toBe(1.43);
+    expectSavedByServer(2000, discountEach, taxEach, total, 0.15);
   });
 
   it.each([0, 0.05, 0.1, 0.125, 0.15, 0.2, 0.25])(
-    'keeps total equal to rounded Fee override and price minus discount plus tax equal to total for tax rate %s',
+    'keeps total equal to rounded Fee override, as server saves it, tax rate %s',
     taxRate => {
       const taxMul = new Decimal(1).add(taxRate);
 
-      for (let fee = 1; fee < 1000; fee++) {
+      for (let fee = 1; fee < 1000; fee += 3) {
         const discount: Discount = {
           discountType: 'Fee override',
           rounding: 'Nearest dollar',
           discountValue: new Decimal(fee).div(taxMul).toDecimalPlaces(2).toNumber()
         };
-        const expectedTotal = getRoundingByType(discount.rounding, new Decimal(discount.discountValue).mul(taxMul));
+        const roundedFee = getRoundingByType(discount.rounding, new Decimal(discount.discountValue).mul(taxMul));
 
-        [0, 1, 99.99, 2000].forEach(price => {
+        [1, 99.99, 2000].forEach(price => {
           const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice(price, taxRate, discount);
 
-          expect(total).toBe(expectedTotal);
-          expect(new Decimal(price).sub(discountEach).add(taxEach).toNumber()).toBe(total);
+          expectSavedByServer(price, discountEach, taxEach, total, taxRate);
+          expect(total).toBe(roundedFee);
         });
       }
     }
   );
+
+  it('does not apply Fee override to line with zero price, the same as server', () => {
+    expect(getTotalAndDeductionsByPrice(0, 0.1, feeOverride)).toEqual({ total: 0, discountEach: 0, taxEach: 0 });
+  });
 
   it('keeps Dollar discount calculation unchanged', () => {
     const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice(100, 0.1, { discountType: 'Dollar', discountValue: 10, rounding: 'No Rounding' });
@@ -140,19 +181,40 @@ describe('getPriceAndDeductionsByTotal', () => {
 
   describe.each(discountsByTotal)('with %s', (_, discount) => {
     it.each([0, 0.05, 0.1, 0.125, 0.15, 0.2, 0.25])(
-      'keeps price minus discount plus tax equal to total for tax rate %s',
+      'keeps the total typed in, as server saves it, tax rate %s',
       taxRate => {
-        const totals: number[] = [];
-        for (let cents = 1; cents <= 10000; cents++) totals.push(cents / 100);
-        for (let dollars = 101; dollars < 5000; dollars++) totals.push(dollars);
+        // known totals from rounding issues (CS-107, CS-244) and a sample of other totals
+        const totals: number[] = [0.01, 0.05, 0.5, 11, 38, 50, 72, 100.15, 342.05, 995, 2985];
+        for (let cents = 1; cents <= 10000; cents += 7) totals.push(cents / 100);
+        for (let dollars = 101; dollars < 5000; dollars += 13) totals.push(dollars);
 
         totals.forEach(total => {
           const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(total, taxRate, discount);
 
-          expect(new Decimal(priceEachExTax).sub(discountAmount).add(taxEach).toNumber()).toBe(total);
+          expectSavedByServer(priceEachExTax, discountAmount, taxEach, total, taxRate);
         });
       }
     );
+  });
+
+  it('keeps current price and puts the cent into tax when typed total is within a cent of its total', () => {
+    // $380 class fee with $34.55 discount: (345.45 - 34.55) * 1.1 = 341.99, typed $342.00 keeps price 345.45
+    expect(getPriceAndDeductionsByTotal(342, 0.1, 34.55, 345.45)).toEqual({ priceEachExTax: 345.45, discountAmount: 34.55, taxEach: 31.1 });
+    expectSavedByServer(345.45, 34.55, 31.1, 342, 0.1);
+
+    // discount is worked out from the current price
+    expect(getPriceAndDeductionsByTotal(342, 0.1, { discountType: 'Percent', discountPercent: 0.1, rounding: 'No Rounding' }, 345.45))
+      .toEqual({ priceEachExTax: 345.45, discountAmount: 34.54, taxEach: 31.09 });
+  });
+
+  it('takes empty discount value as 0 when total is typed in', () => {
+    expect(getPriceAndDeductionsByTotal(99, 0.1, { discountType: 'Dollar', rounding: 'No Rounding' })).toEqual({ priceEachExTax: 90, discountAmount: 0, taxEach: 9 });
+    expect(getPriceAndDeductionsByTotal(99, 0.1, { discountType: 'Percent', rounding: 'No Rounding' })).toEqual({ priceEachExTax: 90, discountAmount: 0, taxEach: 9 });
+  });
+
+  it('works price out of typed total when it is more than a cent away from the total of current price', () => {
+    expect(getPriceAndDeductionsByTotal(400, 0.1, 34.55, 345.45)).toEqual({ priceEachExTax: 398.19, discountAmount: 34.55, taxEach: 36.36 });
+    expect(getPriceAndDeductionsByTotal(342, 0.1, 34.55)).toEqual({ priceEachExTax: 345.46, discountAmount: 34.55, taxEach: 31.09 });
   });
 
   it('keeps Dollar discount calculation by total unchanged', () => {
@@ -161,6 +223,18 @@ describe('getPriceAndDeductionsByTotal', () => {
     expect(discountAmount).toBe(10);
     expect(priceEachExTax).toBe(100);
     expect(taxEach).toBe(9);
+  });
+
+  it('limits discount by discount min/max like by price, and keeps the total typed in', () => {
+    const withMax: Discount = { discountType: 'Percent', discountPercent: 0.1, rounding: 'No Rounding', discountMax: 5 };
+
+    expect(getPriceAndDeductionsByTotal(99, 0.1, withMax)).toEqual({ priceEachExTax: 95, discountAmount: 5, taxEach: 9 });
+    expect(getTotalAndDeductionsByPrice(95, 0.1, withMax)).toEqual({ total: 99, discountEach: 5, taxEach: 9 });
+
+    expect(getPriceAndDeductionsByTotal(99, 0.1, { discountType: 'Percent', discountPercent: 0.1, rounding: 'No Rounding', discountMin: 15 }))
+      .toEqual({ priceEachExTax: 105, discountAmount: 15, taxEach: 9 });
+    expect(getPriceAndDeductionsByTotal(99, 0.1, { discountType: 'Dollar', discountValue: 5, rounding: 'No Rounding', discountMin: 10 }))
+      .toEqual({ priceEachExTax: 100, discountAmount: 10, taxEach: 9 });
   });
 });
 
@@ -197,20 +271,28 @@ describe('Fee override with discount min/max', () => {
     expect(limited).toEqual({ total: 500, discountEach: 545.45, taxEach: 45.45 });
   });
 
-  it.each([0, 0.1, 0.15])('never exceeds min/max and keeps price minus discount plus tax equal to total for tax rate %s', taxRate => {
+  it.each([0, 0.1, 0.15])('keeps price minus discount plus tax equal to total for tax rate %s', taxRate => {
     const limits: Pick<Discount, 'discountMin' | 'discountMax'>[] = [{ discountMax: 100 }, { discountMin: 600 }, { discountMin: 50, discountMax: 300 }];
 
     limits.forEach(limit => [1, 11, 99, 500, 999].forEach(fee => [100, 1000, 2000].forEach(price => {
-      const discount: Discount = {
-        ...feeOverride,
-        ...limit,
-        discountValue: new Decimal(fee).div(1 + taxRate).toDecimalPlaces(2).toNumber()
-      };
-      const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice(price, taxRate, discount);
+      (['No Rounding', 'Nearest dollar'] as Discount['rounding'][]).forEach(rounding => {
+        const discount: Discount = {
+          ...feeOverride,
+          ...limit,
+          rounding,
+          discountValue: new Decimal(fee).div(1 + taxRate).toDecimalPlaces(2).toNumber()
+        };
+        const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice(price, taxRate, discount);
 
-      if (typeof limit.discountMax === 'number') expect(discountEach).toBeLessThanOrEqual(limit.discountMax);
-      if (typeof limit.discountMin === 'number') expect(discountEach).toBeGreaterThanOrEqual(limit.discountMin);
-      expect(new Decimal(price).sub(discountEach).add(taxEach).toNumber()).toBe(total);
+        // like on server, min/max limit discount before rounding, so only discount without rounding stays strictly within them
+        if (rounding === 'No Rounding') {
+          if (typeof limit.discountMax === 'number') expect(discountEach).toBeLessThanOrEqual(limit.discountMax);
+          // discount is never greater than price, even if discountMin is
+          if (typeof limit.discountMin === 'number') expect(discountEach).toBeGreaterThanOrEqual(Math.min(limit.discountMin, price));
+        }
+        expect(discountEach).toBeLessThanOrEqual(price);
+        expect(new Decimal(price).sub(discountEach).add(taxEach).toNumber()).toBe(total);
+      });
     })));
   });
 });
@@ -221,5 +303,165 @@ describe('getDiscountAmountExTax', () => {
     expect(getDiscountAmountExTax({ discountType: 'Dollar', discountValue: 5, rounding: 'No Rounding', discountMin: 10 }, 0.1, 100).toNumber()).toBe(10);
     expect(getDiscountAmountExTax({ discountType: 'Percent', discountPercent: 0.5, rounding: 'No Rounding', discountMax: 30 }, 0.1, 100).toNumber()).toBe(30);
     expect(getDiscountAmountExTax({ discountType: 'Percent', discountPercent: 0.2, rounding: 'No Rounding', discountMin: 10, discountMax: 30 }, 0.1, 100).toNumber()).toBe(20);
+  });
+
+  it('applies min/max before rounding, like server, so rounding can take discount past discountMax', () => {
+    // 50% capped at 10: 110.44 - 11 = 99.44 inc tax, rounded down to 99, so discount is 100.40 - 99 / 1.1 = 10.40
+    const discount: Discount = { discountType: 'Percent', discountPercent: 0.5, rounding: 'Nearest dollar', discountMax: 10 };
+
+    expect(getTotalAndDeductionsByPrice(100.4, 0.1, discount)).toEqual({ total: 99, discountEach: 10.4, taxEach: 9 });
+  });
+});
+
+// expected values are taken from server DiscountUtils (types/src/test/groovy/ish/util/DiscountUtilsTest.groovy)
+describe('discount rounding matches server', () => {
+  const percent = (discountPercent: number, rounding: Discount['rounding']): Discount => ({ discountType: 'Percent', discountPercent, rounding });
+  const dollar = (discountValue: number, rounding: Discount['rounding']): Discount => ({ discountType: 'Dollar', discountValue, rounding });
+
+  it.each<[string, Discount, number, number, number]>([
+    ['15% to nearest dollar', percent(0.15, 'Nearest dollar'), 120, 18.18, 112],
+    ['12.5% to nearest 50 cents', percent(0.125, 'Nearest 50 cents'), 125, 15.45, 120.5],
+    ['12.5% to nearest 10 cents', percent(0.125, 'Nearest 10 cents'), 125, 15.64, 120.3],
+    ['$20.50 to nearest 50 cents', dollar(20.5, 'Nearest 50 cents'), 144.55, 20.46, 136.5],
+    ['$20.50 to nearest dollar', dollar(20.5, 'Nearest dollar'), 144.55, 20.91, 136]
+  ])('%s', (_, discount, price, expectedDiscount, expectedTotal) => {
+    expect(getDiscountedFee(discount, 0.1, price).toNumber()).toBe(expectedTotal);
+    expect(new Decimal(getDiscountAmountExTax(discount, 0.1, price)).toDecimalPlaces(2).toNumber()).toBe(expectedDiscount);
+
+    const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice(price, 0.1, discount);
+
+    expect(total).toBe(expectedTotal);
+    expect(discountEach).toBe(expectedDiscount);
+    expect(new Decimal(price).sub(discountEach).add(taxEach).toNumber()).toBe(total);
+  });
+
+  it('rounds total inc tax, not discount ex tax, for Percent discount', () => {
+    expect(getTotalAndDeductionsByPrice(100, 0.1, percent(0.15, 'Nearest dollar'))).toEqual({ total: 94, discountEach: 14.55, taxEach: 8.55 });
+  });
+
+  it('rounds total inc tax, not discount ex tax, for Dollar discount', () => {
+    expect(getTotalAndDeductionsByPrice(100, 0.1, dollar(7.3, 'Nearest dollar'))).toEqual({ total: 102, discountEach: 7.27, taxEach: 9.27 });
+  });
+
+  it('does not discount more than price', () => {
+    expect(getTotalAndDeductionsByPrice(5, 0.1, dollar(10, 'Nearest dollar'))).toEqual({ total: 0, discountEach: 5, taxEach: 0 });
+  });
+
+  it('ignores zero discount min/max, the same as server', () => {
+    expect(getDiscountAmountExTax({ ...percent(0.15, 'No Rounding'), discountMin: 0, discountMax: 0 }, 0.1, 100).toNumber()).toBe(15);
+  });
+
+  const roundings: Discount['rounding'][] = ['No Rounding', 'Nearest 10 cents', 'Nearest 50 cents', 'Nearest dollar'];
+
+  describe.each(roundings)('with %s', rounding => {
+    it.each([0, 0.1, 0.15, 0.2])('gives the discounted fee of checkout as total, as server saves it, tax rate %s', taxRate => {
+      const discounts = [percent(0.15, rounding), percent(-0.1, rounding), dollar(7.3, rounding), { ...feeOverride, rounding, discountValue: 45.45 }];
+
+      // sample of prices plus prices of the 15% example (11.11) and of the $38 total (34.55)
+      const prices = [11.11, 34.55, 100, 120, 125, 144.55, 995.45];
+      for (let cents = 1; cents < 30000; cents += 37) prices.push(cents / 100);
+
+      prices.forEach(price => {
+        discounts.forEach(discount => {
+          const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice(price, taxRate, discount);
+
+          expectSavedByServer(price, discountEach, taxEach, total, taxRate);
+          expect(total).toBe(bankRounding(getDiscountedFee(discount, taxRate, price)));
+
+          if (rounding !== 'No Rounding') {
+            expect(getRoundingByType(rounding, new Decimal(total))).toBe(total);
+          }
+        });
+      });
+    });
+  });
+
+  it('keeps total rounded by 15% Percent discount at 15% tax, the cent goes to tax', () => {
+    // (11.11 - 1.54) * 1.15 = 11.0055, the discount rounds the total to $11.00
+    expect(getTotalAndDeductionsByPrice(11.11, 0.15, percent(0.15, 'Nearest dollar'))).toEqual({ total: 11, discountEach: 1.54, taxEach: 1.43 });
+  });
+
+  it('gives $342.00 for $380 class fee with $34.55 Dollar discount, like checkout', () => {
+    // (345.45 - 34.55) * 1.1 = 341.99, checkout charges 380.00 - 38.005 = 341.995 -> $342.00
+    expect(getTotalAndDeductionsByPrice(345.45, 0.1, dollar(34.55, 'No Rounding'))).toEqual({ total: 342, discountEach: 34.55, taxEach: 31.1 });
+  });
+});
+
+describe('credit line (negative price) is discounted like the same positive line, with opposite sign', () => {
+  const percent = (discountPercent: number, rounding: Discount['rounding'], limits: Pick<Discount, 'discountMin' | 'discountMax'> = {}): Discount =>
+    ({ discountType: 'Percent', discountPercent, rounding, ...limits });
+  const dollar = (discountValue: number, rounding: Discount['rounding']): Discount => ({ discountType: 'Dollar', discountValue, rounding });
+
+  // toBe tells -0 from 0, tax is 0 at 0% tax rate
+  const negated = (value: number) => (value === 0 ? 0 : -value);
+
+  it('keeps Percent discount instead of discounting the whole line', () => {
+    expect(getTotalAndDeductionsByPrice(-100, 0.1, percent(0.1, 'No Rounding'))).toEqual({ total: -99, discountEach: -10, taxEach: -9 });
+  });
+
+  it('makes credit smaller by Dollar discount', () => {
+    expect(getTotalAndDeductionsByPrice(-100, 0.1, dollar(10, 'No Rounding'))).toEqual({ total: -99, discountEach: -10, taxEach: -9 });
+  });
+
+  it('gives credit of Fee override amount, not charge', () => {
+    expect(getTotalAndDeductionsByPrice(-100, 0, { ...feeOverride, rounding: 'No Rounding', discountValue: 50 })).toEqual({ total: -50, discountEach: -50, taxEach: 0 });
+    expect(getTotalAndDeductionsByPrice(-100, 0.1, feeOverride)).toEqual({ total: -500, discountEach: 354.55, taxEach: -45.45 });
+  });
+
+  it('applies discountMin to discount of the positive line, so it does not make credit bigger', () => {
+    expect(getTotalAndDeductionsByPrice(-100, 0, percent(0.1, 'No Rounding', { discountMin: 5 }))).toEqual({ total: -90, discountEach: -10, taxEach: 0 });
+  });
+
+  it.each<Discount['rounding']>(['No Rounding', 'Nearest 10 cents', 'Nearest 50 cents', 'Nearest dollar'])(
+    'gives the same amounts as for positive price with opposite sign, rounding %s',
+    rounding => {
+      const discounts: Discount[] = [
+        percent(0.15, rounding),
+        percent(0.1, rounding, { discountMin: 15 }),
+        percent(0.5, rounding, { discountMax: 20 }),
+        dollar(7.3, rounding),
+        dollar(500, rounding),
+        { ...feeOverride, rounding, discountValue: 45.45 }
+      ];
+
+      [0, 0.1, 0.15].forEach(taxRate => [11.11, 100, 144.55, 995.45].forEach(price => discounts.forEach(discount => {
+        const credit = getTotalAndDeductionsByPrice(-price, taxRate, discount);
+        const debit = getTotalAndDeductionsByPrice(price, taxRate, discount);
+
+        expect(credit.total).toBe(negated(debit.total));
+        expect(credit.discountEach).toBe(negated(debit.discountEach));
+        expect(credit.taxEach).toBe(negated(debit.taxEach));
+      })));
+    }
+  );
+
+  it('gives the same amounts as for positive total with opposite sign when total is typed in', () => {
+    const discounts: Discount[] = [percent(0.15, 'No Rounding'), percent(0.1, 'No Rounding', { discountMin: 15 }), dollar(7.3, 'No Rounding')];
+
+    [0, 0.1, 0.15].forEach(taxRate => [11.11, 99, 144.55, 995.45].forEach(total => discounts.forEach(discount => {
+      const credit = getPriceAndDeductionsByTotal(-total, taxRate, discount);
+      const debit = getPriceAndDeductionsByTotal(total, taxRate, discount);
+
+      expect(credit.priceEachExTax).toBe(negated(debit.priceEachExTax));
+      expect(credit.discountAmount).toBe(negated(debit.discountAmount));
+      expect(credit.taxEach).toBe(negated(debit.taxEach));
+    })));
+
+    expect(getPriceAndDeductionsByTotal(-99, 0.1, dollar(10, 'No Rounding'))).toEqual({ priceEachExTax: -100, discountAmount: -10, taxEach: -9 });
+  });
+});
+
+describe('getRoundingByType', () => {
+  it.each<[Discount['rounding'], number, number]>([
+    ['Nearest 50 cents', 0.3, 0.5],
+    ['Nearest 50 cents', 0.2, 0],
+    ['Nearest 50 cents', 12.8, 13],
+    ['Nearest 50 cents', 12.24, 12],
+    ['Nearest 50 cents', 12.5, 12.5],
+    ['Nearest 10 cents', 12.25, 12.3],
+    ['Nearest dollar', 12.5, 13],
+    ['Nearest dollar', 12.4999, 12]
+  ])('%s rounds %s to %s', (rounding, value, expected) => {
+    expect(getRoundingByType(rounding, new Decimal(value))).toBe(expected);
   });
 });

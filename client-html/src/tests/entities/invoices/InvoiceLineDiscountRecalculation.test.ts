@@ -5,9 +5,17 @@
 
 import { Discount } from '@api/model';
 import { Decimal } from 'decimal.js-light';
+import { getCustomColumnsMap } from '../../../js/common/utils/common';
 import { getPriceAndDeductionsByTotal, getTotalAndDeductionsByPrice } from '../../../js/common/utils/financial';
-import { getRoundingByType } from '../../../js/containers/entities/discounts/utils';
-import { getFeeOverrideLineAmounts, getInvoiceLineDiscountRecalculation } from '../../../js/containers/entities/invoices/utils';
+import { getRoundingByType, plainDiscountToAPIModel } from '../../../js/containers/entities/discounts/utils';
+import { INVOICE_LINE_DISCOUNT_COLUMNS } from '../../../js/containers/entities/invoices/constants';
+import {
+  getFeeOverrideLineAmounts,
+  getInvoiceLineDiscount,
+  getInvoiceLineDiscountRecalculation,
+  getInvoiceLineTaxChangeRecalculation,
+  getInvoiceLineTotalEach
+} from '../../../js/containers/entities/invoices/utils';
 
 const feeOverride: Discount = {
   name: 'Fee override',
@@ -29,6 +37,71 @@ const percent: Discount = {
   rounding: 'No Rounding',
   discountPercent: 0.1
 };
+
+describe('getInvoiceLineTaxChangeRecalculation', () => {
+  it('keeps total when tax is changed on a line that was just opened or whose total was typed in', () => {
+    expect(getInvoiceLineTaxChangeRecalculation(null, false, undefined, 110, 100)).toBe('total');
+    expect(getInvoiceLineTaxChangeRecalculation(12.5, false, undefined, 110, 112.5)).toBe('total');
+    expect(getInvoiceLineTaxChangeRecalculation(percent, true, undefined, 99, 100)).toBe('total');
+    expect(getInvoiceLineTaxChangeRecalculation(dollar, true, 'total', 110, 110)).toBe('total');
+  });
+
+  it('keeps price when price was edited last', () => {
+    expect(getInvoiceLineTaxChangeRecalculation(null, false, 'priceEachExTax', 110, 100)).toBe('priceEachExTax');
+    expect(getInvoiceLineTaxChangeRecalculation(percent, true, 'priceEachExTax', 99, 100)).toBe('priceEachExTax');
+  });
+
+  it('keeps price of line with locked Fee override, as Fee override is a fee ex tax and its total changes with tax', () => {
+    expect(getInvoiceLineTaxChangeRecalculation(feeOverride, true, undefined, 500, 454.55)).toBe('priceEachExTax');
+    expect(getInvoiceLineTaxChangeRecalculation(feeOverride, true, 'total', 500, 454.55)).toBe('priceEachExTax');
+  });
+
+  it('keeps total typed in on line with unlocked Fee override', () => {
+    expect(getInvoiceLineTaxChangeRecalculation(feeOverride, false, 'total', 600, 454.55)).toBe('total');
+  });
+
+  it('keeps price of line with Fee override that was only unlocked, so that its discount is not cleared', () => {
+    expect(getInvoiceLineTaxChangeRecalculation(feeOverride, false, undefined, 500, 454.55)).toBe('priceEachExTax');
+  });
+
+  it('keeps price of line without total, and does not recalculate line without total and price', () => {
+    expect(getInvoiceLineTaxChangeRecalculation(null, false, undefined, undefined, 100)).toBe('priceEachExTax');
+    expect(getInvoiceLineTaxChangeRecalculation(null, false, undefined, undefined, undefined)).toBe(null);
+  });
+
+  it('keeps total of $110 line when tax type is changed to GST free', () => {
+    expect(getPriceAndDeductionsByTotal(110, 0, null, 100)).toEqual({ priceEachExTax: 110, discountAmount: 0, taxEach: 0 });
+  });
+
+  it('CS-244: keeps $545 total when tax type is changed to GST free and back to GST, not a cent short', () => {
+    expect(getPriceAndDeductionsByTotal(545, 0, null, 495.45)).toEqual({ priceEachExTax: 545, discountAmount: 0, taxEach: 0 });
+    expect(getPriceAndDeductionsByTotal(545, 0.1, null, 545)).toEqual({ priceEachExTax: 495.45, discountAmount: 0, taxEach: 49.55 });
+  });
+});
+
+describe('getInvoiceLineDiscount', () => {
+  it('uses discount amount of a line opened again, so that changing its tax does not drop the discount', () => {
+    // typed in discount, or discount no longer valid, has no current discount
+    expect(getInvoiceLineDiscount(null, 10)).toBe(10);
+    expect(getInvoiceLineDiscount(undefined, 10)).toBe(10);
+    expect(getTotalAndDeductionsByPrice(100, 0, getInvoiceLineDiscount(null, 10))).toEqual({ discountEach: 10, taxEach: 0, total: 90 });
+  });
+
+  it('uses current discount when it is known', () => {
+    expect(getInvoiceLineDiscount(percent, 10)).toBe(percent);
+    expect(getInvoiceLineDiscount(0, 10)).toBe(0);
+    expect(getInvoiceLineDiscount(null, 0)).toBe(null);
+  });
+});
+
+describe('getInvoiceLineTotalEach', () => {
+  it('divides line total by quantity, and takes quantity that is not set or 0 as 1', () => {
+    expect(getInvoiceLineTotalEach(300, 3)).toBe(100);
+    expect(getInvoiceLineTotalEach(110, null)).toBe(110);
+    expect(getInvoiceLineTotalEach(110, 0)).toBe(110);
+    expect(getInvoiceLineTotalEach(null, 2)).toBe(0);
+  });
+});
 
 describe('getInvoiceLineDiscountRecalculation', () => {
   const lastEditedFields: ('priceEachExTax' | 'total')[] = [undefined, 'priceEachExTax', 'total'];
@@ -109,6 +182,39 @@ describe('getInvoiceLineDiscountRecalculation', () => {
         expect(getInvoiceLineDiscountRecalculation(null, next, 0, lastEditedField)).toBe('byLastEditedField');
       });
     });
+  });
+
+  describe('on credit line (negative price)', () => {
+    it.each([undefined, 'priceEachExTax'] as const)('recalculates by price, last edited field %s', lastEditedField => {
+      [dollar, percent, feeOverride, null].forEach(next => {
+        expect(getInvoiceLineDiscountRecalculation(null, next, -100, lastEditedField)).toBe('byPrice');
+        expect(getInvoiceLineDiscountRecalculation(percent, next, -100, lastEditedField)).toBe('byPrice');
+      });
+    });
+
+    it('keeps negative price and gives credit of Fee override amount when Fee override is selected', () => {
+      expect(getInvoiceLineDiscountRecalculation(null, feeOverride, -100, undefined, undefined, 0.1)).toBe('byPrice');
+      expect(getTotalAndDeductionsByPrice(-100, 0.1, feeOverride)).toEqual({ total: -500, discountEach: 354.55, taxEach: -45.45 });
+    });
+  });
+});
+
+describe('Invoice line discount loaded as plain record', () => {
+  // values in the order of INVOICE_LINE_DISCOUNT_COLUMNS
+  const toDiscount = (values: string[]): Discount => plainDiscountToAPIModel(getCustomColumnsMap(INVOICE_LINE_DISCOUNT_COLUMNS)({ id: '1', values }));
+
+  it('limits discount by discountMax, the same as checkout and server', () => {
+    const discount = toDiscount(['Half price', 'Percent', null, '0.5', 'No Rounding', null, '20.00']);
+
+    expect(discount.discountMax).toBe(20);
+    expect(getTotalAndDeductionsByPrice(100, 0.1, discount)).toEqual({ total: 88, discountEach: 20, taxEach: 8 });
+  });
+
+  it('limits discount by discountMin and ignores zero discountMax', () => {
+    const discount = toDiscount(['Five dollars', 'Dollar', '5.00', null, 'No Rounding', '10.00', '0.00']);
+
+    expect(discount).toMatchObject({ discountValue: 5, discountMin: 10, discountMax: 0 });
+    expect(getTotalAndDeductionsByPrice(100, 0.1, discount)).toEqual({ total: 99, discountEach: 10, taxEach: 9 });
   });
 });
 
@@ -239,6 +345,16 @@ describe('getFeeOverrideLineAmounts', () => {
       discountEachExTax: 0,
       taxEach: 45.45,
       total: 1000
+    });
+  });
+
+  it('keeps rounded Fee override as total at 15% and puts the rounding cent into tax', () => {
+    // Fee override $11.00 inc tax gives price 9.57 and 9.57 * 1.15 = 11.0055, tax takes the difference to $11.00
+    expect(getFeeOverrideLineAmounts({ ...feeOverride, discountValue: 9.57 }, 0.15, 2)).toEqual({
+      priceEachExTax: 9.57,
+      discountEachExTax: 0,
+      taxEach: 1.43,
+      total: 22
     });
   });
 

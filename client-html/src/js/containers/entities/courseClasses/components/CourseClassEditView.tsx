@@ -12,7 +12,6 @@ import { IconButton, Typography } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import Decimal from 'decimal.js-light';
 import { debounce } from 'es-toolkit/compat';
 import {
   appendTimezone,
@@ -32,20 +31,19 @@ import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
 import EntityService from '../../../../common/services/EntityService';
 import { getCustomColumnsMap } from '../../../../common/utils/common';
-import { getCurrentTax, getTaxAmountByFeeExTax, useAppSelector } from '../../../../common/utils/hooks';
+import { getCurrentTax, useAppSelector } from '../../../../common/utils/hooks';
 import { getLabelWithCount } from '../../../../common/utils/strings';
 import history from '../../../../constants/History';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from '../../../../model/entities/CourseClass';
 import { State } from '../../../../reducers/state';
-import { getRoundingByType } from '../../discounts/utils';
 import { setCourseClassBudgetModalOpened, setCourseClassLatestSession } from '../actions';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../constants';
 import { getClassCostTypes } from '../utils';
 import CourseClassAssessmentsTab from './assessments/CourseClassAssessmentsTab';
 import CourseClassAttendanceTab from './attendance/CourseClassAttendanceTab';
 import CourseClassBudgetTab from './budget/CourseClassBudgetTab';
-import { discountsSort, excludeOnEnrolPaymentPlan } from './budget/utils';
+import { discountsSort, excludeOnEnrolPaymentPlan, getClassDiscountedFee } from './budget/utils';
 import CourseClassDetTab from './det/CourseClassDetTab';
 import CourseClassDocumentsTab from './documents/CourseClassDocumentsTab';
 import CourseClassEnrolmentsTab from './enrolments/CourseClassEnrolmentsTab';
@@ -201,12 +199,6 @@ const useBudgetAdornmentStyles = makeAppStyles()(theme => ({
   }
 }));
 
-const getDiscountedFee = (discount: ClassCostExtended, currentTax, classFee) => {
-  const taxOnDiscount = getTaxAmountByFeeExTax( currentTax.rate, discount.courseClassDiscount.discountOverride || discount.perUnitAmountExTax || 0);
-  const decimal = new Decimal(classFee).minus(discount.perUnitAmountExTax || 0).minus(taxOnDiscount);
-  return getRoundingByType(discount.courseClassDiscount.discount.rounding, decimal);
-};
-
 interface BudgetAdornmentProps {
   budget: ClassCostExtended[],
   budgetTabIndex: string,
@@ -250,7 +242,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
         </div>
         <div className="money">
           {formatCurrency(
-            getDiscountedFee(d, currentTax, studentFee.perUnitAmountIncTax),
+            getClassDiscountedFee(d.courseClassDiscount, currentTax?.rate, studentFee.perUnitAmountExTax),
             currencySymbol
           )}
         </div>

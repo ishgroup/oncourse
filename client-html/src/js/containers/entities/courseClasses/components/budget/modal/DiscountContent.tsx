@@ -21,16 +21,17 @@ import {
   parseFieldPercent,
   preventNegativeOrLogEnter
 } from 'ish-ui';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Dispatch } from 'redux';
 import { change } from 'redux-form';
 import { IAction } from '../../../../../../common/actions/IshAction';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
-import { bankRounding, getTaxAmountByFeeExTax } from '../../../../../../common/utils/financial';
+import { bankRounding } from '../../../../../../common/utils/financial';
 import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
-import { getDiscountAmountExTax, getRoundingByType } from '../../../../discounts/utils';
+import { getDiscountAmountExTax } from '../../../../discounts/utils';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
+import { getClassDiscountedFee, getClassFeeExTax } from '../utils';
 
 interface Props extends BudgetCostModalContentProps {
   classFee: number;
@@ -64,7 +65,7 @@ const onBeforeLockSet = (
   perUnit: number,
   currentTax: Tax,
   discount: Discount,
-  classFee: number
+  classFeeExTax: number
 ) => {
   dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "courseClassDiscount.discountOverride", pr ? perUnit : null));
 
@@ -72,7 +73,7 @@ const onBeforeLockSet = (
     dispatch(change(
       COURSE_CLASS_COST_DIALOG_FORM,
       "perUnitAmountExTax",
-      bankRounding(getDiscountAmountExTax(discount, currentTax.rate, classFee))
+      bankRounding(getDiscountAmountExTax(discount, currentTax.rate, classFeeExTax))
     ));
   }
 };
@@ -81,7 +82,7 @@ const DiscountContent: React.FC<Props> = ({
  values, classValues, classFee, currentTax, dispatch, currencySymbol
 }) => {
   const [forecastLocked, setForecastLocked] = useState(values.courseClassDiscount.forecast === null);
-  const [valueLocked, setValueLocked] = useState(values.courseClassDiscount.discountOverride === null);
+  const [valueLocked, setValueLocked] = useState(typeof values.courseClassDiscount.discountOverride !== 'number');
 
   const onValueLockHandler = () => {
     setValueLocked(pr => {
@@ -91,14 +92,18 @@ const DiscountContent: React.FC<Props> = ({
         values.perUnitAmountExTax,
         currentTax,
         values.courseClassDiscount.discount,
-        classFee
+        getClassFeeExTax(classValues.budget || [])
       );
       return !pr;
     });
   };
 
+  // debounced click is created once, so it calls the latest handler to use current values
+  const onValueLockHandlerRef = useRef(onValueLockHandler);
+  onValueLockHandlerRef.current = onValueLockHandler;
+
   const onValueLockClick = useMemo(
-    () => debounce(onValueLockHandler, 300),
+    () => debounce(() => onValueLockHandlerRef.current(), 300),
     []
   );
 
@@ -176,12 +181,16 @@ const DiscountContent: React.FC<Props> = ({
     currencySymbol
   ]);
 
-  const taxOnDiscount = useMemo(() => getTaxAmountByFeeExTax( currentTax.rate, values.courseClassDiscount.discountOverride || values.perUnitAmountExTax || 0), [classFee, currentTax, values.courseClassDiscount.discountOverride]);
+  const discountTotalFee = useMemo(
+    () => getClassDiscountedFee(values.courseClassDiscount, currentTax.rate, getClassFeeExTax(classValues.budget || [])),
+    [classValues.budget, currentTax, values.courseClassDiscount]
+  );
 
-  const discountTotalFee = useMemo(() => {
-    const decimal = new Decimal(classFee).minus(values.perUnitAmountExTax || 0).minus(taxOnDiscount);
-    return getRoundingByType(values.courseClassDiscount.discount.rounding, decimal);
-  }, [classFee, taxOnDiscount, values.courseClassDiscount.discount.rounding]);
+  // tax on discount takes the rounding, so that class fee minus discount and tax on discount gives final class fee
+  const taxOnDiscount = useMemo(
+    () => bankRounding(new Decimal(classFee).minus(values.perUnitAmountExTax || 0).minus(discountTotalFee)),
+    [classFee, values.perUnitAmountExTax, discountTotalFee]
+  );
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2}>

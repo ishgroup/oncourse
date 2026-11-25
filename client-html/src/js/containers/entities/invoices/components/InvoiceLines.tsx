@@ -56,7 +56,13 @@ import {
 } from '../actions';
 import { INVOICE_LINE_DISCOUNT_AQL, INVOICE_LINE_DISCOUNT_COLUMNS } from '../constants';
 import { InvoicesState } from '../reducers/state';
-import { getFeeOverrideLineAmounts, getInvoiceLineDiscountRecalculation } from '../utils';
+import {
+  getFeeOverrideLineAmounts,
+  getInvoiceLineDiscount,
+  getInvoiceLineDiscountRecalculation,
+  getInvoiceLineTaxChangeRecalculation,
+  getInvoiceLineTotalEach
+} from '../utils';
 
 interface HeaderProps {
   row: InvoiceLineWithTotal;
@@ -139,6 +145,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
 
   const accountRef = useRef<any>(undefined);
   const lastEditedField = useRef<'priceEachExTax' | 'total'>(undefined);
+  const valueOnFocus = useRef<number>(undefined);
   const feeOverridePriceEachExTax = useRef<number>(undefined);
 
   const prevCourseClassId = usePrevious(row.courseClassId);
@@ -263,14 +270,19 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     };
 
   const recalculateByTotal = (total: number, taxRate: number, discount: Discount | number, quantity = 1) => {
-    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(new Decimal(total).div(quantity).toNumber(), taxRate, discount);
+    const { priceEachExTax, discountAmount, taxEach } = getPriceAndDeductionsByTotal(
+      getInvoiceLineTotalEach(total, quantity),
+      taxRate,
+      discount,
+      row.priceEachExTax
+    );
 
     dispatch(change(form, `${item}.taxEach`, taxEach));
     dispatch(change(form, `${item}.discountEachExTax`, discountAmount));
     dispatch(change(form, `${item}.priceEachExTax`, priceEachExTax));
   };
 
-  const recalculateByPrice = (priceEachExTax: number, taxRate: number, discount: Discount | number, quantity= 1) => {
+  const recalculateByPrice = (priceEachExTax: number, taxRate: number, discount: Discount | number, quantity = 1) => {
     const { total, discountEach, taxEach } = getTotalAndDeductionsByPrice( priceEachExTax, taxRate, discount);
 
     dispatch(change(form, `${item}.taxEach`, taxEach));
@@ -278,41 +290,81 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     dispatch(change(form, `${item}.total`, decimalMul(total, quantity)));
   };
 
-  const recalculate = (total: number, priceEachExTax: number, qantity: number, taxRate: number, discount: Discount | number)=> {
+  const recalculate = (
+    total: number,
+    priceEachExTax: number,
+    qantity: number,
+    taxRate: number,
+    discount: Discount | number,
+    byField: 'priceEachExTax' | 'total' = lastEditedField.current
+  ) => {
     if (total === 0 && priceEachExTax === 0) {
       dispatch(change(form, `${item}.taxEach`, 0));
       dispatch(change(form, `${item}.discountEachExTax`, 0));
       return;
     }
 
-    if (lastEditedField.current === 'total') {
+    if (byField === 'total') {
       recalculateByTotal(total, taxRate, discount, qantity);
     }
 
-    if (lastEditedField.current === 'priceEachExTax') {
+    if (byField === 'priceEachExTax') {
       recalculateByPrice(priceEachExTax, taxRate, discount, qantity);
     }
   };
 
+  // price or total becomes the last edited field only when its value is changed, not when the field is just focused
+  const isChangedSinceFocus = (value: number) => Number(value || 0) !== Number(valueOnFocus.current || 0);
+
+  const lineDiscount = getInvoiceLineDiscount(currentDiscount, row.discountEachExTax);
+
   const onPriceEachExTaxBlur = (e, value) => {
-    recalculateByPrice(value, taxRate, currentDiscount, row.quantity);
+    if (!isChangedSinceFocus(value)) return;
+
+    lastEditedField.current = 'priceEachExTax';
+    recalculateByPrice(value, taxRate, lineDiscount, row.quantity);
   };
 
   const onDiscountEachExTaxBlur = (e, value) => {
     setCurrentDiscount(value || 0);
+
+    // total typed in by user is kept
+    if (lastEditedField.current === 'total' && typeof row.total === 'number') {
+      recalculateByTotal(row.total, taxRate, value || 0, row.quantity);
+      return;
+    }
+
     recalculateByPrice(row.priceEachExTax, taxRate, value || 0, row.quantity);
   };
 
   const onTaxIdChange = value => {
-    recalculate(row.total, row.priceEachExTax, row.quantity, getCurrentTax(taxes, value)?.rate, currentDiscount);
+    const tax = getCurrentTax(taxes, value);
+
+    // line is not recalculated as tax free when tax is not known
+    if (!tax) return;
+
+    const byField = getInvoiceLineTaxChangeRecalculation(
+      lineDiscount,
+      discountEachExTaxLocked,
+      lastEditedField.current,
+      row.total,
+      row.priceEachExTax
+    );
+
+    if (byField) {
+      recalculate(row.total, row.priceEachExTax, row.quantity, tax.rate, lineDiscount, byField);
+    }
   };
 
   const onQuantityBlur = (e, value) => {
-    recalculateByPrice(row.priceEachExTax || 0, taxRate, currentDiscount, value);
+    recalculateByPrice(row.priceEachExTax || 0, taxRate, lineDiscount, value);
   };
 
   const onTotalBlur = (e, total) => {
-    recalculate(total, row.priceEachExTax, row.quantity, taxRate, currentDiscount);
+    if (!isChangedSinceFocus(total)) return;
+
+    lastEditedField.current = 'total';
+    recalculate(total, row.priceEachExTax, row.quantity, taxRate, lineDiscount);
   };
 
   const onIncomeAccountChange = v => {
@@ -333,7 +385,15 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     const selectedAccount = accountTypes.income.find(item => item.id === v);
     const selectedAccountTaxId = selectedAccount && selectedAccount["tax.id"];
 
-    selectedAccountTaxId && dispatch(change(form, `${item}.taxId`, Number(selectedAccountTaxId)));
+    // tax that is not known is not set, otherwise the line would be recalculated later as tax free
+    if (selectedAccountTaxId && getCurrentTax(taxes, Number(selectedAccountTaxId))) {
+      dispatch(change(form, `${item}.taxId`, Number(selectedAccountTaxId)));
+
+      // the line is recalculated the same way as when tax type is changed in its field
+      if (Number(selectedAccountTaxId) !== row.taxId) {
+        onTaxIdChange(Number(selectedAccountTaxId));
+      }
+    }
   };
 
   const applyDiscount = (apiDiscount: Discount) => {
@@ -349,6 +409,11 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     setCurrentDiscount(apiDiscount);
     setSelectedDiscount(apiDiscount);
     dispatch(change(form, `${item}.discountName`, apiDiscount?.name || null));
+
+    // removed discount leaves no amount behind, so it isn't used later as a typed in discount (see getInvoiceLineDiscount)
+    if (!apiDiscount) {
+      dispatch(change(form, `${item}.discountEachExTax`, 0));
+    }
 
     switch (recalculation) {
       case 'feeOverrideTotal': {
@@ -404,7 +469,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
           label={$t('quantity')}
           normalize={normalizeNumberToPositive}
           onBlur={onQuantityBlur}
-          disabled={disableFinanceFileds}
+          disabled={disableFinanceFileds || loading}
           required
         />
       </Grid>
@@ -418,7 +483,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
           type="select"
           name={`${item}.incomeAccountId`}
           label={$t('income_account')}
-          disabled={disableFinanceFileds}
+          disabled={disableFinanceFileds || loading}
           items={useAllAccounts ? accountTypes.all : incomeAccountOptions}
           defaultValue={row.incomeAccountName}
           selectValueMark="id"
@@ -531,8 +596,8 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             name={`${item}.priceEachExTax`}
             label={$t('price_each_extax')}
             onBlur={onPriceEachExTaxBlur}
-            onFocus={() => lastEditedField.current = 'priceEachExTax'}
-            disabled={disableFinanceFileds}
+            onFocus={() => valueOnFocus.current = row.priceEachExTax}
+            disabled={disableFinanceFileds || loading}
           />
         </Grid>
 
@@ -542,10 +607,10 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             name={`${item}.discountEachExTax`}
             label={$t('discount_each_extax')}
             onBlur={onDiscountEachExTaxBlur}
-            labelAdornment={<IconButton className="inputAdornmentButton" onClick={onDiscountEachExTaxLock} disabled={loading}>
+            labelAdornment={<IconButton className="inputAdornmentButton" onClick={onDiscountEachExTaxLock} disabled={disableFinanceFileds || loading}>
               {discountEachExTaxLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
             </IconButton>}
-            disabled={disableFinanceFileds || discountEachExTaxLocked}
+            disabled={disableFinanceFileds || discountEachExTaxLocked || loading}
           />
         </Grid>
 
@@ -557,7 +622,7 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             selectValueMark="id"
             selectLabelMark="code"
             onChange={onTaxIdChange}
-            disabled={disableFinanceFileds}
+            disabled={disableFinanceFileds || loading}
             items={taxes || []}
             required={isNew}
           />
@@ -581,9 +646,9 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
             <FormField
               type="money"
               name={`${item}.total`}
-              disabled={disableFinanceFileds || hasFeeOverride}
+              disabled={disableFinanceFileds || hasFeeOverride || loading}
               defaultValue={row.total}
-              onFocus={() => lastEditedField.current = 'total'}
+              onFocus={() => valueOnFocus.current = row.total}
               onBlur={onTotalBlur}
               inline
             />

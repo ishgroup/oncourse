@@ -11,7 +11,6 @@ import { Grid, Popover, Typography } from '@mui/material';
 import { darken } from '@mui/material/styles';
 import $t from '@t';
 import { isAfter, isBefore, isEqual } from 'date-fns';
-import Decimal from 'decimal.js-light';
 import {
   AppTheme,
   BooleanArgFunction,
@@ -35,7 +34,7 @@ import { IAction } from '../../../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import NestedList from '../../../../../common/components/form/nestedList/NestedList';
 import ExpandableContainer from '../../../../../common/components/layout/expandable/ExpandableContainer';
-import { bankRounding, getCurrentTax, getTotalByFeeExTax } from '../../../../../common/utils/financial';
+import { bankRounding, getCurrentTax } from '../../../../../common/utils/financial';
 import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../../constants/Config';
 import history from '../../../../../constants/History';
 import { EditViewProps } from '../../../../../model/common/ListView';
@@ -47,7 +46,6 @@ import DiscountService from '../../../discounts/services/DiscountService';
 import {
   discountSort,
   getDiscountAmountExTax,
-  getRoundingByType,
   mapPlainDiscounts,
   transformDiscountForNestedList
 } from '../../../discounts/utils';
@@ -64,7 +62,13 @@ import BudgetInvoiceItemRenderer from './BudgetInvoiceItemRenderer';
 import BudgetItemRow from './BudgetItemRow';
 import BudgetCostModal from './modal/BudgetCostModal';
 import ClassCostService from './services/ClassCostService';
-import { dateForCompare, excludeOnEnrolPaymentPlan, getClassFeeTotal, includeOnEnrolPaymentPlan } from './utils';
+import {
+  dateForCompare,
+  excludeOnEnrolPaymentPlan,
+  getClassFeeExTax,
+  getClassFeeTotal,
+  includeOnEnrolPaymentPlan
+} from './utils';
 
 const styles = (theme: AppTheme, p, classes) =>
   ({
@@ -461,29 +465,15 @@ const CourseClassBudgetTab = React.memo<Props>(
               dispatch(change(form, "taxId", postData.taxId));
 
               const currentTax = getCurrentTax(taxes, postData.taxId);
-              const feeWithTax = getTotalByFeeExTax(currentTax?.rate, postData.perUnitAmountExTax);
 
               classCostTypes.discount.items.forEach(d => {
-                const isPersent = d.value.courseClassDiscount.discount.discountType === "Percent";
-                const isFeeOverride = d.value.courseClassDiscount.discount.discountType === "Fee override";
-
-                const taxMul = new Decimal(1).mul(currentTax.rate === 0 ? 1 : currentTax.rate);
-
-                if ((isPersent || isFeeOverride) && d.value.courseClassDiscount.discountOverride === null) {
-                  const discountValue = bankRounding(new Decimal(feeWithTax)
-                    .minus(
-                      isPersent
-                        ? getRoundingByType(
-                            d.value.courseClassDiscount.discount.rounding,
-                            new Decimal(feeWithTax).mul(new Decimal(1).minus(d.value.courseClassDiscount.discount.discountPercent)
-                            )
-                          )
-                        : getRoundingByType(
-                            d.value.courseClassDiscount.discount.rounding,
-                            new Decimal(d.value.courseClassDiscount.discount.discountValue).mul(taxMul)
-                          )
-                    )
-                    .div(taxMul));
+                if (typeof d.value.courseClassDiscount.discountOverride !== 'number') {
+                  // discount depends on fee when it is Percent, Fee override or rounded
+                  const discountValue = bankRounding(getDiscountAmountExTax(
+                    d.value.courseClassDiscount.discount,
+                    currentTax?.rate,
+                    postData.perUnitAmountExTax
+                  ));
 
                   dispatch(change(form, `budget[${d.value.index}].perUnitAmountExTax`, discountValue));
                 }
@@ -574,7 +564,7 @@ const CourseClassBudgetTab = React.memo<Props>(
               ...classCostInitial,
               courseClassid: values.id,
               description: discount.name,
-              perUnitAmountExTax: bankRounding(getDiscountAmountExTax(discount, currentTax.rate, classFee)),
+              perUnitAmountExTax: bankRounding(getDiscountAmountExTax(discount, currentTax.rate, getClassFeeExTax(values.budget || []))),
               taxId: values.taxId,
               flowType: "Discount",
               repetitionType: "Discount",
