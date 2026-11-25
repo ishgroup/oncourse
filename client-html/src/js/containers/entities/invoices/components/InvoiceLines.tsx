@@ -385,11 +385,11 @@ const InvoiceLineBase = React.memo<InvoiceLineBaseProps>(({
     const selectedAccount = accountTypes.income.find(item => item.id === v);
     const selectedAccountTaxId = selectedAccount && selectedAccount["tax.id"];
 
-    if (selectedAccountTaxId) {
+    // tax that is not known is not set, otherwise the line would be recalculated later as tax free
+    if (selectedAccountTaxId && getCurrentTax(taxes, Number(selectedAccountTaxId))) {
       dispatch(change(form, `${item}.taxId`, Number(selectedAccountTaxId)));
 
-      // the line is recalculated the same way as when tax type is changed in its field,
-      // a tax that is not known doesn't recalculate it (see onTaxIdChange)
+      // the line is recalculated the same way as when tax type is changed in its field
       if (Number(selectedAccountTaxId) !== row.taxId) {
         onTaxIdChange(Number(selectedAccountTaxId));
       }
