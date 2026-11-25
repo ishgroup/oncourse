@@ -1,0 +1,2 @@
+// Standalone build for the SST-272 Bedrock spike. Not part of the onCourse multi-project build.
+rootProject.name = 'sst-272-bedrock'

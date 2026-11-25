@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'ish.oncourse.spike'
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.anthropic:anthropic-java:3.14.0'
+    implementation 'com.anthropic:anthropic-java-bedrock:3.14.0'
+}
+
+application {
+    mainClass = 'spike.BedrockSpike'
+}
+
+run {
+    workingDir = projectDir
+    systemProperty 'spike.trace', System.getProperty('spike.trace', 'false')
+}
