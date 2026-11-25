@@ -84,11 +84,11 @@ export const getDiscountAmountByFeeIncTaxAndDiscount = (discount: Discount, feeI
 
   switch (discount.discountType) {
     case 'Percent': {
-      const divider = new Decimal(1).sub(discount.discountPercent);
-      return applyDiscountMinMax(discount, divider.isZero() ? fee : fee.div(divider).mul(discount.discountPercent));
+      const divider = new Decimal(1).sub(discount.discountPercent || 0);
+      return applyDiscountMinMax(discount, divider.isZero() ? fee : fee.div(divider).mul(discount.discountPercent || 0));
     }
     case 'Dollar':
-      return applyDiscountMinMax(discount, new Decimal(discount.discountValue));
+      return applyDiscountMinMax(discount, new Decimal(discount.discountValue || 0));
     case 'Fee override':
       return new Decimal(0);
     default:

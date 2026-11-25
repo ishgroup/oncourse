@@ -9,7 +9,11 @@ import { getCustomColumnsMap } from '../../../js/common/utils/common';
 import { getPriceAndDeductionsByTotal, getTotalAndDeductionsByPrice } from '../../../js/common/utils/financial';
 import { getRoundingByType, plainDiscountToAPIModel } from '../../../js/containers/entities/discounts/utils';
 import { INVOICE_LINE_DISCOUNT_COLUMNS } from '../../../js/containers/entities/invoices/constants';
-import { getFeeOverrideLineAmounts, getInvoiceLineDiscountRecalculation } from '../../../js/containers/entities/invoices/utils';
+import {
+  getFeeOverrideLineAmounts,
+  getInvoiceLineDiscountRecalculation,
+  getInvoiceLineTaxChangeRecalculation
+} from '../../../js/containers/entities/invoices/utils';
 
 const feeOverride: Discount = {
   name: 'Fee override',
@@ -31,6 +35,38 @@ const percent: Discount = {
   rounding: 'No Rounding',
   discountPercent: 0.1
 };
+
+describe('getInvoiceLineTaxChangeRecalculation', () => {
+  it('keeps total when tax is changed on a line that was just opened or whose total was typed in', () => {
+    expect(getInvoiceLineTaxChangeRecalculation(null, undefined, 110)).toBe('total');
+    expect(getInvoiceLineTaxChangeRecalculation(12.5, undefined, 110)).toBe('total');
+    expect(getInvoiceLineTaxChangeRecalculation(percent, undefined, 99)).toBe('total');
+    expect(getInvoiceLineTaxChangeRecalculation(dollar, 'total', 110)).toBe('total');
+  });
+
+  it('keeps price when price was edited last', () => {
+    expect(getInvoiceLineTaxChangeRecalculation(null, 'priceEachExTax', 110)).toBe('priceEachExTax');
+    expect(getInvoiceLineTaxChangeRecalculation(percent, 'priceEachExTax', 99)).toBe('priceEachExTax');
+  });
+
+  it('keeps price of line with Fee override, as Fee override is a fee ex tax and its total changes with tax', () => {
+    expect(getInvoiceLineTaxChangeRecalculation(feeOverride, undefined, 500)).toBe('priceEachExTax');
+    expect(getInvoiceLineTaxChangeRecalculation(feeOverride, 'total', 500)).toBe('priceEachExTax');
+  });
+
+  it('does not recalculate line without total', () => {
+    expect(getInvoiceLineTaxChangeRecalculation(null, undefined, undefined)).toBe(null);
+  });
+
+  it('keeps total of $110 line when tax type is changed to GST free', () => {
+    expect(getPriceAndDeductionsByTotal(110, 0, null, 100)).toEqual({ priceEachExTax: 110, discountAmount: 0, taxEach: 0 });
+  });
+
+  it('CS-244: keeps $545 total when tax type is changed to GST free and back to GST, not a cent short', () => {
+    expect(getPriceAndDeductionsByTotal(545, 0, null, 495.45)).toEqual({ priceEachExTax: 545, discountAmount: 0, taxEach: 0 });
+    expect(getPriceAndDeductionsByTotal(545, 0.1, null, 545)).toEqual({ priceEachExTax: 495.45, discountAmount: 0, taxEach: 49.55 });
+  });
+});
 
 describe('getInvoiceLineDiscountRecalculation', () => {
   const lastEditedFields: ('priceEachExTax' | 'total')[] = [undefined, 'priceEachExTax', 'total'];
