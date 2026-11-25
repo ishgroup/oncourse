@@ -152,19 +152,37 @@ export const getFeeOverrideLineAmounts = (
 };
 
 /**
+ * Discount to recalculate invoice line with. A saved line opened again has no current discount until its linked discount loads,
+ * and none at all for a discount amount typed in by user or a discount no longer valid, so the discount amount of the line is used
+ */
+export const getInvoiceLineDiscount = (currentDiscount: Discount | number, discountEachExTax: number): Discount | number =>
+  (currentDiscount === null || currentDiscount === undefined ? discountEachExTax || null : currentDiscount);
+
+/**
+ * Total of one unit of invoice line, quantity that is not set or 0 is taken as 1
+ */
+export const getInvoiceLineTotalEach = (total: number, quantity: number): number =>
+  new Decimal(total || 0).div(quantity || 1).toNumber();
+
+/**
  * Field to recalculate invoice line from when its tax is changed. Total is kept unless price was edited last,
- * also on a line that was just opened. Fee override is a fee ex tax, so a line with it keeps the price
- * and its total changes with the tax rate. Line without total and price is not recalculated
+ * also on a line that was just opened. Locked Fee override is a fee ex tax, so a line with it keeps the price
+ * and its total changes with the tax rate. Line without total keeps its price, line without both is not recalculated
  */
 export const getInvoiceLineTaxChangeRecalculation = (
   discount: Discount | number,
+  discountLocked: boolean,
   lastEditedField: 'priceEachExTax' | 'total',
-  total: number
+  total: number,
+  priceEachExTax: number
 ): 'priceEachExTax' | 'total' => {
-  if (lastEditedField === 'priceEachExTax' || isFeeOverride(discount)) {
+  if (lastEditedField === 'priceEachExTax' || (discountLocked && isFeeOverride(discount))) {
     return 'priceEachExTax';
   }
-  return typeof total === 'number' ? 'total' : null;
+  if (typeof total === 'number') {
+    return 'total';
+  }
+  return typeof priceEachExTax === 'number' ? 'priceEachExTax' : null;
 };
 
 export const getInvoiceLineDiscountRecalculation = (
