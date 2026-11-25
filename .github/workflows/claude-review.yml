@@ -75,23 +75,29 @@ jobs:
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         run: |
           KEY=$(echo "$BRANCH" | grep -oE '^(CS|SST)-[0-9]+' || true)
-          STATUS="no Jira key in branch name"
+          STATUS="no Jira key in branch name"; URL=""
           if [ -n "$KEY" ]; then
             # check credentials and ticket access up front; print only the HTTP statuses
-            # (Jira answers 404 both for a missing ticket and for credentials that don't authenticate)
-            AUTH=$(curl -s -o /dev/null -w '%{http_code}' -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
-              "https://ish-group.atlassian.net/rest/api/3/myself" || true)
-            CODE=$(curl -s -o /dev/null -w '%{http_code}' -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
-              "https://ish-group.atlassian.net/rest/api/3/issue/$KEY?fields=summary" || true)
-            echo "Jira auth: HTTP $AUTH, $KEY: HTTP $CODE"
-            if [ "$CODE" = 200 ]; then
+            # (Jira answers 404 both for a missing ticket and for credentials that don't authenticate).
+            # Classic API tokens work on the site URL; scoped and service-account tokens only
+            # through the api.atlassian.com gateway, so try both and use the one that works
+            for BASE_URL in https://ish-group.atlassian.net \
+                https://api.atlassian.com/ex/jira/821fc829-965f-4ed7-9ab9-19e6984f2bfa; do
+              AUTH=$(curl -s -o /dev/null -w '%{http_code}' -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
+                "$BASE_URL/rest/api/3/myself" || true)
+              CODE=$(curl -s -o /dev/null -w '%{http_code}' -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
+                "$BASE_URL/rest/api/3/issue/$KEY?fields=summary" || true)
+              echo "Jira via $BASE_URL: auth HTTP $AUTH, $KEY HTTP $CODE"
+              if [ "$CODE" = 200 ]; then URL=$BASE_URL; break; fi
+            done
+            if [ -n "$URL" ]; then
               STATUS=ok
             else
               STATUS="not available in this run (auth HTTP $AUTH, ticket HTTP $CODE)"
               echo "::warning title=Jira ticket unavailable::$KEY returned HTTP $CODE (auth check HTTP $AUTH), reviewing without ticket context"
             fi
           fi
-          { echo "key=$KEY"; echo "status=$STATUS"; } >> "$GITHUB_OUTPUT"
+          { echo "key=$KEY"; echo "status=$STATUS"; echo "url=$URL"; } >> "$GITHUB_OUTPUT"
 
       - name: Set up uv
         if: ${{ steps.jira.outputs.status == 'ok' }}
@@ -106,7 +112,7 @@ jobs:
         run: |
           # pre-install so the server starts within Claude's MCP startup timeout
           uvx mcp-atlassian==0.24.6 --help > /dev/null 2>&1 < /dev/null || true
-          CONFIG='{"mcpServers":{"jira":{"command":"uvx","args":["mcp-atlassian==0.24.6"],"env":{"JIRA_URL":"https://ish-group.atlassian.net","JIRA_USERNAME":"${JIRA_USERNAME}","JIRA_API_TOKEN":"${JIRA_API_TOKEN}","READ_ONLY_MODE":"true","ENABLED_TOOLS":"jira_get_issue"}}}}'
+          CONFIG='{"mcpServers":{"jira":{"command":"uvx","args":["mcp-atlassian==0.24.6"],"env":{"JIRA_URL":"${JIRA_URL}","JIRA_USERNAME":"${JIRA_USERNAME}","JIRA_API_TOKEN":"${JIRA_API_TOKEN}","READ_ONLY_MODE":"true","ENABLED_TOOLS":"jira_get_issue"}}}}'
           echo "arg=--mcp-config '$CONFIG'" >> "$GITHUB_OUTPUT"
 
       # Find issues with Claude Code's built-in /code-review (reviewer passes plus verification of
@@ -141,6 +147,7 @@ jobs:
         id: claude
         uses: anthropics/claude-code-action@v1
         env:
+          JIRA_URL: ${{ steps.jira.outputs.url }}
           JIRA_USERNAME: ${{ secrets.JIRA_USERNAME1 }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         with:
