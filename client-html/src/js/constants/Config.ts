@@ -116,9 +116,13 @@ export const SERVER_TIMEZONE: PreferenceEnum = "oncourse.server.timezone.default
 
 export const SPECIAL_TYPES_DISPLAY_KEY: PreferenceEnum = "ish.display.extendedSearchTypes";
 
+export const RECORD_NAVIGATION_LEFT_KEY: PreferenceEnum = "ish.display.recordNavigationLeft";
+
 export const ADMIN_EMAIL_KEY = 'email.admin';
 
 export const TAB_LIST_SCROLL_TARGET_ID = "TabsListScrollTarget";
+
+export const FULL_SCREEN_TITLE_CLASS = "fullScreenTitle";
 
 export const NESTED_TABLE_ROW_HEIGHT = 27;
 

@@ -46,6 +46,7 @@ import {
   FORM_NAMES_ALLOWED_FOR_REFRESH,
   LICENSE_SCRIPTING_KEY,
   READ_NEWS,
+  RECORD_NAVIGATION_LEFT_KEY,
   SPECIAL_TYPES_DISPLAY_KEY,
   SYSTEM_USER_ADMINISTRATION_CENTER
 } from '../constants/Config';
@@ -269,7 +270,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
     dispatch(getLocation());
     dispatch(getGoogleTagManagerParameters());
-    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY, SPECIAL_TYPES_DISPLAY_KEY]));
+    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY, SPECIAL_TYPES_DISPLAY_KEY, RECORD_NAVIGATION_LEFT_KEY]));
     dispatch(getDashboardBlogPosts());
   }
 });

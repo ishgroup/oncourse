@@ -1524,6 +1524,10 @@ public abstract class CommonPreferenceController {
 		setValue(EXTENDED_SEARCH_TYPES, false, String.valueOf(value));
 	}
 
+	public Boolean getRecordNavigationLeft() {
+		return Boolean.parseBoolean(getValue(RECORD_NAVIGATION_LEFT, false));
+	}
+
 	public String getChargebeeSubscriptionId() {
 		return getValue(CHARGEBEE_SUBSCRIPTION_ID, false);
 	}

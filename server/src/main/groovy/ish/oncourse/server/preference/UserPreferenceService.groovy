@@ -190,6 +190,8 @@ class UserPreferenceService {
                 return getReadNews()
             case PreferenceEnumDTO.ISH_DISPLAY_EXTENDEDSEARCHTYPES:
                 return preferenceController.getExtendedSearchTypesAllowed()
+            case PreferenceEnumDTO.ISH_DISPLAY_RECORDNAVIGATIONLEFT:
+                return preferenceController.getRecordNavigationLeft()
             default:
                 String name = key.toString()
                 Preference preference = getUserPref(name)

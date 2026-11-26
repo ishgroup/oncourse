@@ -3,7 +3,7 @@ import { ClickAwayListener, Collapse, Grid, Typography } from '@mui/material';
 import clsx from 'clsx';
 import { makeAppStyles } from 'ish-ui';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { APP_BAR_HEIGHT } from '../../../../../constants/Config';
+import { APP_BAR_HEIGHT, FULL_SCREEN_TITLE_CLASS } from '../../../../../constants/Config';
 
 const useStyles = makeAppStyles<void, 'fullScreenTitleItem' | 'disableInteraction' | 'titleIcon'>()((theme, p, classes) => ({
   root: {
@@ -163,6 +163,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
       >
         <div className={clsx(
           "centeredFlex  flex-fill",
+          FULL_SCREEN_TITLE_CLASS,
           twoColumn && !opened && (isStuck || customStuck) && classes.fullScreenTitleItem,
           !opened && isFixed && twoColumn && classes.isFixed,
         )}
