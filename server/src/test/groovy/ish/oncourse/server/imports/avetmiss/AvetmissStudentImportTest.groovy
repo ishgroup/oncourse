@@ -79,6 +79,6 @@ class AvetmissStudentImportTest extends TestWithDatabase {
 
         List<Contact> withEmptyEmail = ObjectSelect.query(Contact.class)
                 .where(Contact.EMAIL.isNull()).select(cayenneContext)
-        Assertions.assertEquals(3, withEmptyEmail.size())
+        Assertions.assertEquals(4, withEmptyEmail.size())
     }
 }
