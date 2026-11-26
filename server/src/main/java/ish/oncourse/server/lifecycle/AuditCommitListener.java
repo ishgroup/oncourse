@@ -8,15 +8,21 @@
 
 package ish.oncourse.server.lifecycle;
 
+import ish.oncourse.server.services.AuditContext;
 import ish.oncourse.server.services.AuditService;
+import ish.oncourse.server.services.AuditValues;
 import ish.oncourse.server.services.ISystemUserService;
 import ish.oncourse.types.AuditAction;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.commitlog.CommitLogListener;
 import org.apache.cayenne.commitlog.model.ChangeMap;
+import org.apache.cayenne.commitlog.model.ObjectChange;
 import org.apache.cayenne.commitlog.model.ObjectChangeType;
 
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class AuditCommitListener implements CommitLogListener {
     private final static String QUEUED_RECORD = "QueuedRecord";
@@ -36,6 +42,8 @@ public class AuditCommitListener implements CommitLogListener {
     public void onPostCommit(ObjectContext originatingContext, ChangeMap changes) {
         var currentUser = systemUserService.getCurrentUser();
         String createdBy = currentUser != null ? "Updated by " + currentUser.getEmail() + " : " : "";
+        var context = AuditContext.current();
+        boolean recordValues = context != null && context.isRecordValues();
         changes.getChanges()
                 .entrySet()
                 .stream()
@@ -44,16 +52,36 @@ public class AuditCommitListener implements CommitLogListener {
                         !AUDIT.equals(entry.getKey().getEntityName()))
                 .filter(entry -> ObjectChangeType.UPDATE.equals(entry.getValue().getType()))
                 .forEach(entityChange -> {
-                    Set<String> fieldNames = entityChange.getValue().getAttributeChanges().keySet();
-                    fieldNames.remove("modifiedOn");
-                    fieldNames.remove("lastAccess");
+                    ObjectChange change = entityChange.getValue();
+                    Set<String> fieldNames = new LinkedHashSet<>(change.getAttributeChanges().keySet());
+                    if (recordValues) {
+                        // undo needs relationship changes too
+                        fieldNames.addAll(change.getToOneRelationshipChanges().keySet());
+                    }
+                    fieldNames.removeIf(AuditValues::isIgnored);
 
                     if(!fieldNames.isEmpty()) {
                         Long id = (Long) entityChange.getKey().getIdSnapshot().get("id");
                         String entityName = entityChange.getKey().getEntityName();
-                        String message = createdBy + String.join(",", fieldNames);
+                        String message = "Updated fields: " + createdBy + String.join(",", fieldNames);
 
-                        auditService.submit(entityName, id, AuditAction.UPDATE, "Updated fields: " + message);
+                        if (recordValues) {
+                            Map<String, Object> before = new TreeMap<>();
+                            Map<String, Object> after = new TreeMap<>();
+                            change.getAttributeChanges().forEach((name, value) -> {
+                                before.put(name, value.getOldValue());
+                                after.put(name, value.getNewValue());
+                            });
+                            change.getToOneRelationshipChanges().forEach((name, value) -> {
+                                before.put(name, value.getOldValue());
+                                after.put(name, value.getNewValue());
+                            });
+                            before.keySet().retainAll(fieldNames);
+                            after.keySet().retainAll(fieldNames);
+                            auditService.submit(entityName, id, AuditAction.UPDATE, message, before, after);
+                        } else {
+                            auditService.submit(entityName, id, AuditAction.UPDATE, message);
+                        }
                     }
                 });
     }

@@ -1,0 +1,15 @@
+type: object
+properties:
+  name:
+    type: string
+    required: true
+    description: Field (property) name
+    example: maximumPlaces
+  before:
+    type: string
+    description: Value before the change; empty for created records or when the field was empty
+    example: '20'
+  after:
+    type: string
+    description: Value after the change; empty for deleted records or when the field was cleared
+    example: '24'

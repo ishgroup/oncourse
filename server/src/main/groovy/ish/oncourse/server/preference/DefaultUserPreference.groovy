@@ -87,7 +87,8 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Datetime', attribute: Audit.CREATED.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Entity identifier', attribute: Audit.ENTITY_IDENTIFIER.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Action', attribute: Audit.ACTION.name, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Entity id', attribute: Audit.ENTITY_ID.name, sortable: true, width: W100, visible: true)
+                new ColumnDTO(title: 'Entity id', attribute: Audit.ENTITY_ID.name, sortable: true, width: W100, visible: true),
+                new ColumnDTO(title: 'Source', attribute: Audit.SOURCE.name, sortable: true, width: W100, visible: true)
         ]
         it.sortings = [
                 new SortingDTO(attribute: Audit.CREATED.name, ascending: false)
