@@ -20,23 +20,20 @@ import ish.oncourse.server.api.dao.RoomDao
 import ish.oncourse.server.api.dao.UnavailableRuleDao
 import ish.oncourse.server.api.traits.SessionDTOTrait
 import ish.oncourse.server.api.v1.model.TutorAttendanceDTO
-import ish.oncourse.server.cayenne.CourseClassTutor
 import ish.oncourse.server.cayenne.TutorAttendance
 
 import static ish.oncourse.server.api.v1.model.ClashTypeDTO.*
+import static ish.oncourse.server.timetable.SessionClashRules.isClashed
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.server.cayenne.UnavailableRule
+import ish.oncourse.server.timetable.SessionClashRules
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.exp.Expression
-import org.apache.cayenne.query.ObjectSelect
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -59,6 +56,9 @@ class SessionValidator {
 
     @Inject
     UnavailableRuleDao unavailableRuleDao
+
+    // more clashes per check are not really useful and readable on the timetable
+    private static final int CLASH_LIMIT = 3
 
     private DateFormat format = new SimpleDateFormat("E d MMM H:mm")
 
@@ -153,7 +153,7 @@ class SessionValidator {
             Date rosterStart = LocalDateUtils.timeValueToDate(ta.start)
             Date rosterEnd = LocalDateUtils.timeValueToDate(ta.end)
             
-            List<TutorAttendance> rosterClashes = getTutorSessionClashes(rosterStart,rosterEnd, ta.contactId, classId)
+            List<TutorAttendance> rosterClashes = SessionClashRules.getTutorRosterClashes(cayenneService.newContext, rosterStart, rosterEnd, ta.contactId, classId, CLASH_LIMIT)
             if (!rosterClashes.empty) {
                 SessionWarningDTO warning = new SessionWarningDTO()
                 warning.sessionId = sessionDto.id
@@ -190,7 +190,7 @@ class SessionValidator {
 
         if (sessionDto.roomId != null) {
             Room room = roomDao.getById(context, sessionDto.roomId)
-            List<Session> roomClashes = getRoomSessionClashes(sessionStart, sessionEnd, sessionDto.roomId, classId)
+            List<Session> roomClashes = SessionClashRules.getRoomBookingClashes(cayenneService.newContext, sessionStart, sessionEnd, sessionDto.roomId, classId, CLASH_LIMIT)
             if (!roomClashes.empty) {
                 SessionWarningDTO warning = new SessionWarningDTO()
                 warning.sessionId = sessionDto.id
@@ -244,61 +244,6 @@ class SessionValidator {
         }
 
         return sessionWarning
-    }
-
-    private static boolean isClashed(LocalDateTime selfStart, LocalDateTime selfEnd, LocalDateTime start, LocalDateTime end) {
-        return (selfStart >= start && selfStart < end) ||
-                (selfEnd > start && selfEnd <= end) ||
-                (selfStart <= start && selfEnd >= end) ||
-                (selfStart >= start && selfEnd <= end)
-    }
-    
-
-    private List<TutorAttendance> getTutorSessionClashes(Date start, Date end, Long contactId, Long classId) {
-
-        //tutor qualifier
-        Expression filter = TutorAttendance.COURSE_CLASS_TUTOR.dot(CourseClassTutor.TUTOR).dot(Tutor.CONTACT).dot(Contact.ID).eq(contactId)
-        //only active classes
-        filter = filter.andExp(TutorAttendance.SESSION.dot(Session.COURSE_CLASS).dot(CourseClass.IS_CANCELLED).isFalse())
-        //if classId is null - that means class is not saved to db yet
-        //othervice filter out same class attendances, they will be chacked on other step
-        if (classId) {
-            filter = filter.andExp(TutorAttendance.SESSION.dot(Session.COURSE_CLASS).dot(CourseClass.ID).ne(classId))
-        }
-        //time clash quilifier 
-        filter = filter.andExp(
-                TutorAttendance.START_DATETIME.gt(start).andExp(TutorAttendance.START_DATETIME.lt(end))
-                        .orExp(TutorAttendance.END_DATETIME.gt(start).andExp(TutorAttendance.END_DATETIME.lt(end)))
-                        .orExp(TutorAttendance.START_DATETIME.lte(start).andExp(TutorAttendance.END_DATETIME.gte(end)))
-                        .orExp(TutorAttendance.START_DATETIME.gte(start).andExp(TutorAttendance.END_DATETIME.lte(end)))
-        )
-
-        return ObjectSelect.query(TutorAttendance)
-                .where(filter)
-                .prefetch(TutorAttendance.SESSION.dot(Session.COURSE_CLASS).dot(CourseClass.COURSE).joint())
-                .limit(3)
-                .select(cayenneService.newContext)
-    }
-    
-    private List<Session> getRoomSessionClashes(Date start, Date end, Long roomId, Long classId) {
-
-        Expression filter = Session.ROOM.dot(Room.ID).eq(roomId)
-        filter = filter.andExp(Session.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).isFalse())
-        if (classId != null) {
-            filter = filter.andExp(Session.COURSE_CLASS.dot(CourseClass.ID).ne(classId))
-        }
-        filter = filter.andExp(
-                Session.START_DATETIME.gt(start).andExp(Session.START_DATETIME.lt(end))
-                        .orExp(Session.END_DATETIME.gt(start).andExp(Session.END_DATETIME.lt(end)))
-                        .orExp(Session.START_DATETIME.lte(start).andExp(Session.END_DATETIME.gte(end)))
-                        .orExp(Session.START_DATETIME.gte(start).andExp(Session.END_DATETIME.lte(end)))
-        )
-        
-        return ObjectSelect.query(Session)
-                .where(filter)
-                .prefetch(Session.COURSE_CLASS.dot(CourseClass.COURSE).joint())
-                .limit(3)
-                .select(cayenneService.newContext)
     }
 
 }
