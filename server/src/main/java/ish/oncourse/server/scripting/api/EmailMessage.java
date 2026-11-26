@@ -10,9 +10,9 @@
  */
 package ish.oncourse.server.scripting.api;
 
-import ish.common.types.MessageStatus;
 import ish.common.types.MessageType;
 import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.messaging.MessageService;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -160,11 +160,7 @@ public class EmailMessage {
 				bindings.put(TO, localContact);
 				var message = createMessage(template, bindings);
 
-				message.setNumberOfAttempts(0);
-				message.setStatus(MessageStatus.QUEUED);
-				message.setType(MessageType.EMAIL);
-				message.setContact(localContact);
-				message.setDestinationAddress(entry.getValue());
+				MessageService.buildMessage(message, localContact, MessageType.EMAIL, entry.getValue());
 
 				messages.add(message);
 			}
