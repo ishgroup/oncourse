@@ -18,10 +18,16 @@ import ish.common.types.MessageType
 import ish.messaging.SendMessageRequest
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.scripting.api.EmailMessage
+import ish.oncourse.server.scripting.api.EmailSpec
+import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
 import ish.oncourse.server.scripting.api.MessageBuilder
 import ish.oncourse.server.scripting.api.NeedToSendEmail
+import ish.oncourse.server.scripting.api.SMTPMessage
+import ish.oncourse.server.scripting.api.SendEmailViaMessage
 import ish.oncourse.server.scripting.api.SendEmailViaSmtp
 import ish.oncourse.server.scripting.api.SmtpParameters
+import ish.oncourse.server.scripting.api.SmtpSpec
 import ish.oncourse.server.services.AuditService
 
 import java.util.function.Function
@@ -104,24 +110,29 @@ class MessageService {
 		}
 	}
 
-	def static buildMessage(Message message, Contact contact, MessageType type) {
-
+	static void buildMessage(Message message, Contact contact, MessageType type) {
+		String destinationAddress = null
 		switch (type) {
 			case MessageType.SMS:
 				if (!contact.mobilePhone) {
 					return
 				}
-				message.destinationAddress = contact.mobilePhone
+				destinationAddress = contact.mobilePhone
 				break
 			case MessageType.EMAIL:
 				if (!contact.email) {
 					return
 				}
-				message.destinationAddress = contact.email
+				destinationAddress = contact.email
 				break
 			case MessageType.POST:
 				throw new UnsupportedOperationException()
 		}
+		buildMessage(message, contact, type, destinationAddress)
+	}
+
+	static void buildMessage(Message message, Contact contact, MessageType type, String destinationAddress) {
+		message.destinationAddress = destinationAddress
 		message.numberOfAttempts = 0
 		message.status = MessageStatus.QUEUED
 		message.type = type
@@ -255,5 +266,42 @@ class MessageService {
 		if (counter > 0) {
 			context.commitChanges()
 		}
+	}
+
+	EmailMessage createEmailMessage(String templateName) {
+		EmailTemplate template = templateService.loadTemplate(templateName)
+
+		if (template == null) {
+			throw new IllegalArgumentException(String.format("No template with name '%s' found.", templateName))
+		}
+
+		ObjectContext context = cayenneService.newContext
+
+		EmailMessage message = new EmailMessage(context.localObject(template), templateService)
+		message.from(preferenceController.emailFromAddress)
+		return message
+	}
+
+	SMTPMessage createSmtpMessage() {
+		SMTPMessage message = new SMTPMessage()
+		message.setMailDeliveryService(mailDeliveryService)
+		message.from(preferenceController.emailFromAddress)
+		return message
+	}
+
+	void sendEmail(EmailSpec spec) throws MessagingException {
+		Function<Contact, Boolean> collision = spec.creatorKey == null ? { c -> true } :
+				{ contact -> NeedToSendEmail.valueOf(auditService, spec.keyCollision, spec.creatorKey, cayenneService.newContext, contact).get() }
+
+		if (spec.recipients.isEmpty()) {
+			SendEmailViaSmtp.valueOf(spec, cayenneService.newContext, templateService, mailDeliveryService, collision).send()
+		} else {
+			SendEmailViaMessage.valueOf(spec, cayenneService.newContext, templateService, preferenceController, collision).send()
+		}
+	}
+
+	void sendSmtp(SmtpSpec spec) throws MessagingException {
+		def param = MailDeliveryParamBuilder.valueOf(new SmtpParameters(spec), templateService).build()
+		mailDeliveryService.sendEmail(param)
 	}
 }
