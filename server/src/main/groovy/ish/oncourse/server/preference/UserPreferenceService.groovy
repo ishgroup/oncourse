@@ -190,6 +190,8 @@ class UserPreferenceService {
                 return getReadNews()
             case PreferenceEnumDTO.ISH_DISPLAY_EXTENDEDSEARCHTYPES:
                 return preferenceController.getExtendedSearchTypesAllowed()
+            case PreferenceEnumDTO.ONCOURSE_ASSISTANT_AVAILABLE:
+                return String.valueOf(preferenceController.isAssistantAvailableTo(Boolean.TRUE == userService.currentUser?.isAdmin))
             default:
                 String name = key.toString()
                 Preference preference = getUserPref(name)

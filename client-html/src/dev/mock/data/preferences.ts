@@ -192,5 +192,10 @@ export function mockPreferences() {
     [Model.SecurityTFAExpiryPeriod.uniqueKey]: 180,
     [Model.SecurityNumberIncorrectLoginAttempts.uniqueKey]: 5,
     [Model.SecurityTFAStatus.uniqueKey]: "disabled",
+
+    // onCourse Assistant
+    [Model.AssistantEnabled.uniqueKey]: "false",
+    [Model.AssistantAdminOnly.uniqueKey]: "true",
+    [Model.AssistantStudentDataAllowed.uniqueKey]: "false",
   };
 }

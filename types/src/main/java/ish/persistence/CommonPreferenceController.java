@@ -1126,6 +1126,12 @@ public abstract class CommonPreferenceController {
 			return getCustomLogoColour();
 		} else if (CUSTOM_LOGO_COLOUR_SMALL.equals(key)) {
 			return getCustomLogoColourSmall();
+		} else if (ASSISTANT_ENABLED.equals(key)) {
+			return getAssistantEnabled();
+		} else if (ASSISTANT_ADMIN_ONLY.equals(key)) {
+			return getAssistantAdminOnly();
+		} else if (ASSISTANT_STUDENT_DATA_ALLOWED.equals(key)) {
+			return getAssistantStudentDataAllowed();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -1299,6 +1305,12 @@ public abstract class CommonPreferenceController {
 			setExtendedTypesAllowed((Boolean) value);
 		} else if(DATE_MESSAGE_BEFORE_ARCHIVED.equals(key)){
 			setExtendedTypesAllowed((Boolean) value);
+		} else if (ASSISTANT_ENABLED.equals(key)) {
+			setAssistantEnabled((Boolean) value);
+		} else if (ASSISTANT_ADMIN_ONLY.equals(key)) {
+			setAssistantAdminOnly((Boolean) value);
+		} else if (ASSISTANT_STUDENT_DATA_ALLOWED.equals(key)) {
+			setAssistantStudentDataAllowed((Boolean) value);
 		}
 	}
 
@@ -1522,6 +1534,51 @@ public abstract class CommonPreferenceController {
 
 	public void setExtendedTypesAllowed(Boolean value){
 		setValue(EXTENDED_SEARCH_TYPES, false, String.valueOf(value));
+	}
+
+	private static final boolean DEF_ASSISTANT_ENABLED = false;
+	private static final boolean DEF_ASSISTANT_ADMIN_ONLY = true;
+	private static final boolean DEF_ASSISTANT_STUDENT_DATA_ALLOWED = false;
+
+	public boolean getAssistantEnabled() {
+		return getBooleanValue(ASSISTANT_ENABLED, DEF_ASSISTANT_ENABLED);
+	}
+
+	public void setAssistantEnabled(Boolean value) {
+		setValue(ASSISTANT_ENABLED, false, value == null ? null : Boolean.toString(value));
+	}
+
+	public boolean getAssistantAdminOnly() {
+		return getBooleanValue(ASSISTANT_ADMIN_ONLY, DEF_ASSISTANT_ADMIN_ONLY);
+	}
+
+	public void setAssistantAdminOnly(Boolean value) {
+		setValue(ASSISTANT_ADMIN_ONLY, false, value == null ? null : Boolean.toString(value));
+	}
+
+	public boolean getAssistantStudentDataAllowed() {
+		return getBooleanValue(ASSISTANT_STUDENT_DATA_ALLOWED, DEF_ASSISTANT_STUDENT_DATA_ALLOWED);
+	}
+
+	public void setAssistantStudentDataAllowed(Boolean value) {
+		setValue(ASSISTANT_STUDENT_DATA_ALLOWED, false, value == null ? null : Boolean.toString(value));
+	}
+
+	/**
+	 * The onCourse Assistant is available to a user when it is enabled and either open to all users
+	 * or the user has the Admin toggle on. The user's existing permissions still apply to what the assistant can do.
+	 *
+	 * @param userIsAdmin whether the user has the Admin toggle on
+	 * @return true if the assistant is available to the user
+	 */
+	public boolean isAssistantAvailableTo(boolean userIsAdmin) {
+		return getAssistantEnabled() && (!getAssistantAdminOnly() || userIsAdmin);
+	}
+
+	// a missing preference or a preference without a value reads as its default
+	private boolean getBooleanValue(String key, boolean defaultValue) {
+		String value = getValue(key, false);
+		return StringUtils.isBlank(value) ? defaultValue : Boolean.parseBoolean(value);
 	}
 
 	public String getChargebeeSubscriptionId() {

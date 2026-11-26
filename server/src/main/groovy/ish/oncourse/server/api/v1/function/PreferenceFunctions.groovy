@@ -91,6 +91,9 @@ class PreferenceFunctions {
             case PASSWORD_COMPLEXITY:
             case EXTENDED_SEARCH_TYPES:
             case AUS_REPORTING:
+            case ASSISTANT_ENABLED:
+            case ASSISTANT_ADMIN_ONLY:
+            case ASSISTANT_STUDENT_DATA_ALLOWED:
                 return Boolean.valueOf(value)
             case SERVICES_INFO_REPLICATION_VERSION:
             case LDAP_SERVERPORT:

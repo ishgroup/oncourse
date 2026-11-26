@@ -42,6 +42,7 @@ import SwipeableSidebar from '../common/components/layout/swipeable-sidebar/Swip
 import { LSGetItem, LSRemoveItem, LSSetItem } from '../common/utils/storage';
 import {
   APPLICATION_THEME_STORAGE_NAME,
+  ASSISTANT_AVAILABLE_KEY,
   DASHBOARD_THEME_KEY,
   FORM_NAMES_ALLOWED_FOR_REFRESH,
   LICENSE_SCRIPTING_KEY,
@@ -269,7 +270,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
     dispatch(getLocation());
     dispatch(getGoogleTagManagerParameters());
-    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY, SPECIAL_TYPES_DISPLAY_KEY]));
+    dispatch(getUserPreferences([
+      SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY, SPECIAL_TYPES_DISPLAY_KEY, ASSISTANT_AVAILABLE_KEY
+    ]));
     dispatch(getDashboardBlogPosts());
   }
 });
