@@ -71,7 +71,8 @@ const SettingRow = ({
       </div>
       <div className="centeredFlex">
         {badge}
-        <FormField type="switch" name={name} color="primary" stringValue />
+        {/* not debounced, so the form value, the descriptions and the save button follow the switch at once */}
+        <FormField type="switch" name={name} color="primary" stringValue debounced={false} />
       </div>
     </div>
   );
