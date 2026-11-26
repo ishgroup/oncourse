@@ -29,7 +29,8 @@ public class SendEmailViaSmtp {
 
     private SendEmailViaSmtp(){}
 
-    public static SendEmailViaSmtp valueOf(EmailSpec spec, ObjectContext context, TemplateService templateService, MailDeliveryService mailDeliveryService, Function<Contact, Boolean> collision){
+    public static SendEmailViaSmtp valueOf(EmailSpec spec, ObjectContext context, TemplateService templateService, MailDeliveryService mailDeliveryService,
+                                           Function<Contact, Boolean> collision){
         var creator = new SendEmailViaSmtp();
         creator.parameters = new SmtpParameters(spec);
         creator.templateService = templateService;
@@ -39,7 +40,8 @@ public class SendEmailViaSmtp {
         return creator;
     }
 
-    public static SendEmailViaSmtp valueOf(SmtpParameters smtpParameters, ObjectContext context, TemplateService templateService, MailDeliveryService mailDeliveryService, Function<Contact, Boolean> collision){
+    public static SendEmailViaSmtp valueOf(SmtpParameters smtpParameters, ObjectContext context, TemplateService templateService,
+                                           MailDeliveryService mailDeliveryService, Function<Contact, Boolean> collision){
         var creator = new SendEmailViaSmtp();
         creator.parameters = smtpParameters;
         creator.templateService = templateService;

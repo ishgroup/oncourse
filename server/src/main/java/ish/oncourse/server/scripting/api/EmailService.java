@@ -84,12 +84,17 @@ public class EmailService {
 		Function<Contact, Boolean> collision = spec.getCreatorKey() == null ? c -> true :
 				(contact) -> NeedToSendEmail.valueOf(auditService, spec.getKeyCollision(), spec.getCreatorKey(), cayenneService.getNewContext(), contact).get();
 
+		boolean batchIsOver = spec.getRecipients().size() > mailDeliveryService.getSmtpService().getEmail_batch();
+		if(batchIsOver)
+			throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch");
+
+
 		if (spec.getRecipients().isEmpty()) {
 			SendEmailViaSmtp.valueOf(spec, cayenneService.getNewContext(), templateService, mailDeliveryService, collision).send();
 		} else {
 			SendEmailViaMessage.valueOf(spec, cayenneService.getNewContext(), templateService, preferenceController, collision).send();
 		}
-    }
+	}
 
 	@Deprecated
 	public void smtp(@DelegatesTo(SmtpSpec.class) Closure cl) throws MessagingException {
