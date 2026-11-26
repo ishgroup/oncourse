@@ -78,7 +78,7 @@ class ExportService {
 		ExportResult result = new ExportResult()
 
 		String out = performExport(template, exportables)
-		result.setResult().(out.bytes)
+		result.setResult(out.bytes)
 
 		return result
 	}
