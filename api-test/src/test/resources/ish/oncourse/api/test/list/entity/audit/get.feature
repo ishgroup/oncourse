@@ -36,7 +36,11 @@ Feature: Main feature for all GET requests with path 'list/entity/audit'
         "systemUser":"onCourse Administrator",
         "entityId":"1",
         "entityIdentifier":"PaymentIn",
-        "created":"#ignore"
+        "created":"#ignore",
+        "source":null,
+        "requestText":null,
+        "changeSetRef":null,
+        "fieldChanges":[]
         }
         """
 
@@ -87,7 +91,11 @@ Feature: Main feature for all GET requests with path 'list/entity/audit'
         "systemUser":"onCourse Administrator",
         "entityId":"1004",
         "entityIdentifier":"Preference",
-        "created":"#ignore"
+        "created":"#ignore",
+        "source":null,
+        "requestText":null,
+        "changeSetRef":null,
+        "fieldChanges":[]
         }
         """
 

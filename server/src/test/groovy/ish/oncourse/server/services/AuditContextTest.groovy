@@ -14,6 +14,7 @@ package ish.oncourse.server.services
 import groovy.transform.CompileStatic
 import ish.TestWithDatabase
 import ish.common.types.AccountType
+import ish.common.types.PaymentType
 import ish.oncourse.aql.CompilationResult
 import ish.oncourse.aql.impl.AntlrAqlService
 import ish.oncourse.server.AuditListener
@@ -48,9 +49,10 @@ class AuditContextTest extends TestWithDatabase {
     @Test
     void testUpdateInAssistantContextHasEveryNewField() {
         Account account = createAccount('Deposits')
+        Account oldUndeposited = createAccount('Undeposited funds')
         Account otherAccount = createAccount('Other deposits')
-        PaymentMethod method = ObjectSelect.query(PaymentMethod).selectFirst(cayenneContext)
-        Account oldUndeposited = method.undepositedFundsAccount as Account
+        // own record: payment methods left by other test classes may have no undeposited funds account
+        PaymentMethod method = createPaymentMethod(oldUndeposited)
 
         AuditContext.open(AuditContext.assistant(REQUEST_TEXT, CHANGE_SET)).withCloseable {
             account.description = 'Renamed by assistant'
@@ -71,9 +73,6 @@ class AuditContextTest extends TestWithDatabase {
         assertEquals(CHANGE_SET, methodAudit.changeSetRef)
         assertEquals([undepositedFundsAccount: oldUndeposited.id] as Map<String, Object>, methodAudit.before)
         assertEquals([undepositedFundsAccount: otherAccount.id] as Map<String, Object>, methodAudit.after)
-
-        method.undepositedFundsAccount = oldUndeposited
-        cayenneContext.commitChanges()
     }
 
     @Test
@@ -214,6 +213,19 @@ class AuditContextTest extends TestWithDatabase {
         account.isEnabled = true
         cayenneContext.commitChanges()
         return account
+    }
+
+    private PaymentMethod createPaymentMethod(Account undepositedFundsAccount) {
+        PaymentMethod method = cayenneContext.newObject(PaymentMethod)
+        method.name = "SST276 method ${++accountSequence}".toString()
+        method.type = PaymentType.OTHER
+        method.account = undepositedFundsAccount
+        method.undepositedFundsAccount = undepositedFundsAccount
+        method.active = true
+        method.reconcilable = true
+        method.bankedAutomatically = false
+        cayenneContext.commitChanges()
+        return method
     }
 
     private Audit lastAudit(Account account, AuditAction action) {
