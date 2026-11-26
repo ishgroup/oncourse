@@ -1,0 +1,10 @@
+type: object
+properties:
+  conversationId:
+    type: string
+    required: true
+    description: Id of the conversation. Send it with the next message to continue the conversation.
+  text:
+    type: string
+    required: true
+    description: The assistant's reply.

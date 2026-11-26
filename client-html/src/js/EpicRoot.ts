@@ -11,6 +11,7 @@ import { EpicGoogleAnalytics } from "./common/components/google-tag-manager/epic
 import { EpicShare } from "./common/components/list-view/components/share/epics";
 import { EpicList } from "./common/components/list-view/epics";
 import { EpicCommon } from "./common/epics";
+import { EpicAssistant } from "./containers/assistant/epics";
 import { EpicAudits } from "./containers/audits/epics";
 import { EpicPdfBackgrounds } from "./containers/automation/containers/pdf-backgrounds/epics";
 import { EpicPdfReports } from "./containers/automation/containers/pdf-reports/epics";
@@ -96,7 +97,8 @@ const importSet = new Set([
   EpicMessage,
   EpicCheckout,
   EpicServerLogs,
-  EpicUpdateVetReport
+  EpicUpdateVetReport,
+  EpicAssistant
 ]);
 
 const importArray = [];

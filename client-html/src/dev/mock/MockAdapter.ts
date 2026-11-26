@@ -67,6 +67,7 @@ import { FundingContractsApiMock } from "./api/preference/FundingContractsApiMoc
 import { CheckoutApiMock } from "./api/checkout/CheckoutApiMock";
 import { GradingTypesApiMock } from "./api/preference/GradingTypesApiMock";
 import { SecurityApiMock } from "./api/security/SecurityApiMock";
+import { AssistantApiMock } from "./api/assistant/AssistantApiMock";
 import { IS_JEST } from "../../js/constants/EnvironmentConstants";
 
 export class MockAdapter {
@@ -159,6 +160,9 @@ export class MockAdapter {
 
     // Security
     SecurityApiMock.apply(this);
+
+    // onCourse Assistant
+    AssistantApiMock.apply(this);
 
     // Handle get login request
     this.api.onGet("/").reply(config => promiseResolve(config));

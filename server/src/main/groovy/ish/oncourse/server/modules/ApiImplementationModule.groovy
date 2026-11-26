@@ -20,6 +20,7 @@ import ish.oncourse.server.api.v1.service.ArticleProductApi
 import ish.oncourse.server.api.v1.service.AssessmentApi
 import ish.oncourse.server.api.v1.service.AssessmentClassApi
 import ish.oncourse.server.api.v1.service.AssessmentSubmissionApi
+import ish.oncourse.server.api.v1.service.AssistantApi
 import ish.oncourse.server.api.v1.service.AttendanceApi
 import ish.oncourse.server.api.v1.service.AuditApi
 import ish.oncourse.server.api.v1.service.AuthenticationApi
@@ -102,6 +103,7 @@ import ish.oncourse.server.api.v1.service.impl.ArticleProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.AssessmentApiImpl
 import ish.oncourse.server.api.v1.service.impl.AssessmentClassApiImpl
 import ish.oncourse.server.api.v1.service.impl.AssessmentSubmissionApiImpl
+import ish.oncourse.server.api.v1.service.impl.AssistantApiImpl
 import ish.oncourse.server.api.v1.service.impl.AttendanceApiImpl
 import ish.oncourse.server.api.v1.service.impl.AuditApiImpl
 import ish.oncourse.server.api.v1.service.impl.AuthenticationApiImpl
@@ -187,6 +189,7 @@ class ApiImplementationModule implements Module {
         binder.bind(ArticleProductApi).to(ArticleProductApiImpl)
         binder.bind(AssessmentApi).to(AssessmentApiImpl)
         binder.bind(AssessmentSubmissionApi).to(AssessmentSubmissionApiImpl)
+        binder.bind(AssistantApi).to(AssistantApiImpl)
         binder.bind(AuditApi).to(AuditApiImpl)
         binder.bind(AuthenticationApi).to(AuthenticationApiImpl)
         binder.bind(AvetmissExportApi).to(AvetmissExportApiImpl)
