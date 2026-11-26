@@ -53,7 +53,7 @@ public class AntlrAqlService implements AqlService {
 
     private AqlParser.QueryContext parseQuery(String aqlQuery, CompilationContext context) {
         // will create new one per each request, as no recycling is supported
-        var parser = createParser(aqlQuery);
+        var parser = createParser(aqlQuery, context);
         // setup own error reporting, default one is using stdout
         parser.removeErrorListeners();
         parser.addErrorListener(new AqlErrorListener(context));
@@ -70,9 +70,13 @@ public class AntlrAqlService implements AqlService {
         visitor.visit(query);
     }
 
-    private AqlParser createParser(String aqlQuery) {
+    private AqlParser createParser(String aqlQuery, CompilationContext context) {
         CharStream input = CharStreams.fromString(aqlQuery);
-        TokenStream tokens = new CommonTokenStream(new AqlLexer(input));
+        var lexer = new AqlLexer(input);
+        // the lexer skips characters it can't match, collect them instead of printing to stderr
+        lexer.removeErrorListeners();
+        lexer.addErrorListener(new AqlErrorListener(context));
+        TokenStream tokens = new CommonTokenStream(lexer);
         return new AqlParser(tokens);
     }
 

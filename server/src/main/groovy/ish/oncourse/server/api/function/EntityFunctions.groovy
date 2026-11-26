@@ -12,19 +12,24 @@
 package ish.oncourse.server.api.function
 
 import ish.oncourse.aql.AqlService
+import ish.oncourse.aql.CompilationError
 import ish.oncourse.aql.CompilationResult
 import ish.oncourse.aql.impl.ExpressionUtil
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.v1.function.TagRequirementFunctions
+import ish.oncourse.server.api.v1.model.SearchCountDTO
+import ish.oncourse.server.api.v1.model.SearchErrorDTO
 import ish.oncourse.server.api.v1.model.TagGroupDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.TagRelation
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionException
+import org.apache.cayenne.exp.Property
 import org.apache.cayenne.exp.parser.*
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
@@ -72,6 +77,55 @@ class EntityFunctions {
             }
         }
         return query
+    }
+
+    /**
+     * Validates the AQL search against the entity and counts the records it matches.
+     * Unlike {@link #addAqlExp}, an invalid search isn't a bad request: the result carries the compiler errors with their positions.
+     * It is also stricter: characters the lexer skips (an unclosed quote, a stray '$') make the search invalid.
+     */
+    static SearchCountDTO validateAndCount(String entity, String search, ObjectContext context, AqlService aql) {
+        Class<? extends CayenneDataObject> clzz = entityClassForName(entity)
+        ObjectSelect<CayenneDataObject> query = ObjectSelect.query(clzz) as ObjectSelect<CayenneDataObject>
+
+        try {
+            if (search?.trim()) {
+                CompilationResult aqlCompile = aql.compile(search, clzz, context)
+                if (aqlCompile.lexerErrors || aqlCompile.errors) {
+                    List<CompilationError> errors = aqlCompile.lexerErrors + aqlCompile.errors
+                    return new SearchCountDTO(valid: false, errors: errors.collect { toSearchError(it) })
+                }
+                query = query & aqlCompile.cayenneExpression.get()
+            }
+            return new SearchCountDTO(valid: true, count: countRecords(query, context))
+        } catch (ExpressionException e) {
+            logger.catching(e)
+            return new SearchCountDTO(valid: false, errors: [new SearchErrorDTO(message: e.unlabeledMessage ?: e.message)])
+        }
+    }
+
+    /**
+     * Counts distinct records of the query. Can't use query.selectCount(context), because selectCount with Joins can't use Distinct correct.
+     * If tables with Joins have same column names (id, createdOn, modifiedOn, ...) 'Select *' and 'Select count(*)' using Distinct will have duplicates
+     */
+    static Long countRecords(ObjectSelect query, ObjectContext context) {
+        return query.column(Property.create("id", Long).countDistinct()).suppressDistinct().selectOne(context) as Long
+    }
+
+    private static Class<? extends CayenneDataObject> entityClassForName(String entity) {
+        try {
+            return EntityUtil.entityClassForName(entity.capitalize())
+        } catch (RuntimeException e) {
+            logger.catching(e)
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, 'entity', "Unknown entity: '${entity}'.")).build())
+        }
+    }
+
+    // the compiler reports -1 when it doesn't know the position of an error
+    private static SearchErrorDTO toSearchError(CompilationError error) {
+        new SearchErrorDTO(message: error.message,
+                line: error.line >= 0 ? error.line : null,
+                position: error.charPositionInLine >= 0 ? error.charPositionInLine : null)
     }
 
     static Expression createTagGroupExpression(String alias, List<String> realPaths, List<Long> tagIds, String entity, boolean forbidden) {

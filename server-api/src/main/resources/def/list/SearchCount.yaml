@@ -1,0 +1,16 @@
+type: object
+properties:
+  valid:
+    type: boolean
+    description: true if the AQL compiler accepted the search query
+    example: true
+  count:
+    type: integer
+    format: int64
+    description: number of records that match the search query. Set only when the query is valid
+    example: 42
+  errors:
+    description: AQL compiler errors. Empty when the query is valid
+    type: array
+    items:
+      $ref: './SearchError.yaml'

@@ -52,6 +52,11 @@ public class CompilationContext {
     private List<CompilationError> errors;
 
     /**
+     * lexer errors, they don't stop the compilation, see {@link CompilationResult#getLexerErrors()}
+     */
+    private final List<CompilationError> lexerErrors = new ArrayList<>();
+
+    /**
      * Counter of custom fields used in current query
      */
     private int customFieldsCounter;
@@ -118,6 +123,10 @@ public class CompilationContext {
         errors.add(new CompilationError(line, charPositionInLine, message));
     }
 
+    public void reportLexerError(int line, int charPositionInLine, String message) {
+        lexerErrors.add(new CompilationError(line, charPositionInLine, message));
+    }
+
     void popLevelAndAdd(SimpleNode node) {
         var children = popLevel();
         List<SimpleNode> resolvedChildren = new ArrayList<>(children.size());
@@ -177,8 +186,8 @@ public class CompilationContext {
     CompilationResult buildResult() {
         var expression = getCompiledExpression();
         return hasErrors()
-                ? new CompilationResult(Collections.unmodifiableList(errors))
-                : new CompilationResult(expression);
+                ? new CompilationResult(Collections.unmodifiableList(errors), Collections.unmodifiableList(lexerErrors))
+                : new CompilationResult(expression, Collections.unmodifiableList(lexerErrors));
     }
 
     public ObjectContext getContext() {
