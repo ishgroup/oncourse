@@ -15,7 +15,8 @@ Feature: Main feature for all GET requests with path 'list/entity/room'
 
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["room1","room2"]
 
@@ -31,7 +32,8 @@ Feature: Main feature for all GET requests with path 'list/entity/room'
 
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["room1","room2"]
 
