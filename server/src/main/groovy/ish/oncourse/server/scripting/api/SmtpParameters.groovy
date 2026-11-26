@@ -31,6 +31,7 @@ class SmtpParameters {
     List<DocumentParam> attachments
     String templateIdentifier
     Map<String, Object> bindings
+    List<String> replyToList = []
 
      SmtpParameters(EmailSpec spec) {
         fromAddress = spec.fromAddress
@@ -46,6 +47,7 @@ class SmtpParameters {
         attachments = spec.attachments
         templateIdentifier = spec.templateName
         bindings = spec.bindings
+        replyToList = spec.replyToList
     }
 
     SmtpParameters(MessageSpec spec) {
@@ -60,6 +62,7 @@ class SmtpParameters {
         spec.bccList.each { bccList.add(it) }
         attachments = spec.attachments
         templateIdentifier = spec.templateIdentifier
+        replyToList = spec.replyToList
         bindings = spec.bindings
     }
 
