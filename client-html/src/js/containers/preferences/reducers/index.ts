@@ -263,9 +263,9 @@ export const preferencesReducer = (state: PreferencesState = {}, action: IAction
 
     case GET_TUTOR_ROLES_FULFILLED: {
       const { tutorRoles, columns } = action.payload;
-      const updated = { ...state, tutorRoles };
 
-      return columns ? setTutorRolesLoad(updated, columns, { roles: tutorRoles, error: false }) : updated;
+      // Roles loaded with custom columns have a different shape, so they do not replace the default ones Preferences shows
+      return columns ? setTutorRolesLoad(state, columns, { roles: tutorRoles, error: false }) : { ...state, tutorRoles };
     }
 
     case GET_TUTOR_ROLES_FAILED: {

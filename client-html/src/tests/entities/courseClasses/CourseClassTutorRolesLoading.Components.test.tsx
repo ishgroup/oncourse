@@ -74,12 +74,19 @@ describe("CourseClassEditView tutor roles loading", () => {
     dispatch.mockRestore();
   });
 
-  it("shows loading while tutor roles with pay rates are loading", () => {
-    renderClass({});
+  it("shows loading and does not request tutor roles with pay rates again while they are loading", () => {
+    renderClass(classTutorRoles({ error: false }));
 
     expect(screen.queryByTestId("expand-button-2")).toBeNull();
     expect(screen.getByRole("progressbar")).toBeTruthy();
     expect(dispatch).not.toHaveBeenCalledWith(loadClassTutorRoles);
+  });
+
+  it("requests tutor roles with pay rates once when nothing has requested them", () => {
+    renderClass({});
+
+    expect(screen.getByRole("progressbar")).toBeTruthy();
+    expect(dispatch.mock.calls.filter(([action]) => action.type === loadClassTutorRoles.type)).toEqual([[loadClassTutorRoles]]);
   });
 
   it("does not use tutor roles loaded without pay rates, for example by Preferences", () => {
@@ -87,7 +94,7 @@ describe("CourseClassEditView tutor roles loading", () => {
 
     expect(screen.queryByTestId("expand-button-2")).toBeNull();
     expect(screen.getByRole("progressbar")).toBeTruthy();
-    expect(dispatch).not.toHaveBeenCalledWith(loadClassTutorRoles);
+    expect(dispatch).toHaveBeenCalledWith(loadClassTutorRoles);
   });
 
   it("is rendered once tutor roles with pay rates are loaded", () => {

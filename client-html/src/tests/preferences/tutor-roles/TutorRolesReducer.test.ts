@@ -12,13 +12,16 @@ const payRateRoles: any[] = [{ id: 1, name: "Tutor", "currentPayrate.rate": "50"
 
 const plainRoles: any[] = [{ id: 1, name: "Tutor" }];
 
-const loadedState = { tutorRoles: payRateRoles, tutorRolesByColumns: { [columns]: { roles: payRateRoles } } };
+const loadedState = { tutorRoles: plainRoles, tutorRolesByColumns: { [columns]: { roles: payRateRoles } } };
 
 describe("Preferences reducer tutor roles tests", () => {
-  it("stores tutor roles loaded with custom columns under their columns", () => {
-    const state = preferencesReducer({}, { type: GET_TUTOR_ROLES_FULFILLED, payload: { tutorRoles: payRateRoles, columns } });
+  it("stores tutor roles loaded with custom columns under their columns only", () => {
+    const state = preferencesReducer(
+      { tutorRoles: plainRoles },
+      { type: GET_TUTOR_ROLES_FULFILLED, payload: { tutorRoles: payRateRoles, columns } }
+    );
 
-    expect(state.tutorRoles).toBe(payRateRoles);
+    expect(state.tutorRoles).toBe(plainRoles);
     expect(state.tutorRolesByColumns[columns]).toEqual({ roles: payRateRoles, error: false });
   });
 
