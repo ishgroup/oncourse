@@ -11,27 +11,39 @@ package ish.oncourse.server.preference
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import groovy.transform.CompileStatic
+import ish.math.context.MoneyContext
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.function.PreferenceFunctions
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
+import ish.oncourse.server.api.v1.model.SystemPreferenceDTO
 import ish.oncourse.server.api.v1.model.UserPreferenceDTO
+import ish.oncourse.server.api.v1.service.impl.PreferenceApiImpl
 import ish.oncourse.server.api.v1.service.impl.UserPreferenceApiImpl
+import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.integration.PluginsPrefsService
 import ish.oncourse.server.license.LicenseService
+import ish.oncourse.server.localization.logo.LogoService
 import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.services.ISystemUserService
+import ish.oncourse.server.services.TransactionLockedService
+import org.apache.cayenne.CayenneRuntimeException
+import org.apache.cayenne.configuration.server.ServerRuntime
+import org.apache.cayenne.tx.TransactionalOperation
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
+import org.mockito.invocation.InvocationOnMock
+import org.mockito.stubbing.Answer
 
 import javax.ws.rs.ClientErrorException
 
 import static ish.persistence.Preferences.ASSISTANT_ADMIN_ONLY
 import static ish.persistence.Preferences.ASSISTANT_ENABLED
 import static ish.persistence.Preferences.ASSISTANT_STUDENT_DATA_ALLOWED
+import static org.mockito.ArgumentMatchers.any
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.verifyZeroInteractions
 import static org.mockito.Mockito.when
@@ -60,6 +72,16 @@ class AssistantPreferencesTest {
         @Override
         protected void setValue(String key, boolean isUserPref, String value) {
             values[key] = value
+        }
+
+        @Override
+        Preference getPreference(String key, boolean isUserPref) {
+            return null
+        }
+
+        @Override
+        void rollbackChanges() {
+            // values are stored straight away, nothing to roll back
         }
     }
 
@@ -90,15 +112,53 @@ class AssistantPreferencesTest {
 
     @Test
     void preferenceApiSavesSettingsAsBooleans() {
-        [ASSISTANT_ENABLED, ASSISTANT_ADMIN_ONLY, ASSISTANT_STUDENT_DATA_ALLOWED].each { String key ->
-            // POST /preference converts the value and saves it this way
-            controller.setValueForKey(key, PreferenceFunctions.toValue(key, 'true'))
-            Assertions.assertEquals('true', controller.values[key])
-            Assertions.assertEquals('true', PreferenceFunctions.toString(key, controller))
+        PreferenceApiImpl api = preferenceApi()
 
-            controller.setValueForKey(key, PreferenceFunctions.toValue(key, 'false'))
-            Assertions.assertEquals('false', controller.values[key])
-            Assertions.assertEquals('false', PreferenceFunctions.toString(key, controller))
+        [ASSISTANT_ENABLED, ASSISTANT_ADMIN_ONLY, ASSISTANT_STUDENT_DATA_ALLOWED].each { String key ->
+            ['true': 'true', 'FALSE': 'false', ' false ': 'false', ' TRUE ': 'true'].each { String valueString, String stored ->
+                api.update([new SystemPreferenceDTO(uniqueKey: key, valueString: valueString)])
+                Assertions.assertEquals(stored, controller.values[key])
+                Assertions.assertEquals([stored], api.get(key)*.valueString)
+            }
+        }
+    }
+
+    @Test
+    void preferenceApiRejectsOtherValues() {
+        PreferenceApiImpl api = preferenceApi()
+
+        [ASSISTANT_ENABLED, ASSISTANT_ADMIN_ONLY, ASSISTANT_STUDENT_DATA_ALLOWED].each { String key ->
+            ['yes', '1', 'on'].each { String valueString ->
+                ClientErrorException e = Assertions.assertThrows(ClientErrorException, {
+                    api.update([new SystemPreferenceDTO(uniqueKey: key, valueString: valueString)])
+                } as Executable)
+                Assertions.assertEquals(400, e.response.status)
+                Assertions.assertFalse(controller.values.containsKey(key))
+            }
+        }
+
+        // a saved value stays as it was
+        api.update([new SystemPreferenceDTO(uniqueKey: ASSISTANT_ENABLED, valueString: 'true')])
+        Assertions.assertThrows(ClientErrorException, {
+            api.update([new SystemPreferenceDTO(uniqueKey: ASSISTANT_ENABLED, valueString: 'yes')])
+        } as Executable)
+        Assertions.assertEquals('true', controller.values[ASSISTANT_ENABLED])
+        Assertions.assertEquals(['true'], api.get(ASSISTANT_ENABLED)*.valueString)
+    }
+
+    @Test
+    void preferenceApiStoresNoValueForBlankSettings() {
+        PreferenceApiImpl api = preferenceApi()
+
+        ['', '  ', null].each { String valueString ->
+            api.update([new SystemPreferenceDTO(uniqueKey: ASSISTANT_ADMIN_ONLY, valueString: 'false')])
+            Assertions.assertFalse(controller.assistantAdminOnly)
+
+            // a blank value removes the saved one, so the assistant stays restricted to admins by default
+            api.update([new SystemPreferenceDTO(uniqueKey: ASSISTANT_ADMIN_ONLY, valueString: valueString)])
+            Assertions.assertNull(controller.values[ASSISTANT_ADMIN_ONLY])
+            Assertions.assertTrue(controller.assistantAdminOnly)
+            Assertions.assertEquals(['true'], api.get(ASSISTANT_ADMIN_ONLY)*.valueString)
         }
     }
 
@@ -201,6 +261,34 @@ class AssistantPreferencesTest {
         SystemUser user = new SystemUser()
         user.setIsAdmin(isAdmin)
         return user
+    }
+
+    private PreferenceApiImpl preferenceApi() {
+        // POST /preference saves the settings in a transaction, which wraps exceptions the way Cayenne does
+        ServerRuntime serverRuntime = mock(ServerRuntime)
+        when(serverRuntime.performInTransaction(any(TransactionalOperation))).thenAnswer({ InvocationOnMock invocation ->
+            try {
+                return ((TransactionalOperation) invocation.getArgument(0)).perform()
+            } catch (CayenneRuntimeException e) {
+                throw e
+            } catch (Exception e) {
+                throw new CayenneRuntimeException(e)
+            }
+        } as Answer)
+        ICayenneService cayenneService = mock(ICayenneService)
+        when(cayenneService.getServerRuntime()).thenReturn(serverRuntime)
+
+        return Guice.createInjector(new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(PreferenceController).toInstance(controller)
+                bind(ICayenneService).toInstance(cayenneService)
+                bind(ISystemUserService).toInstance(mock(ISystemUserService))
+                bind(TransactionLockedService).toInstance(mock(TransactionLockedService))
+                bind(MoneyContext).toInstance(mock(MoneyContext))
+                bind(LogoService).toInstance(mock(LogoService))
+            }
+        }).getInstance(PreferenceApiImpl)
     }
 
     private UserPreferenceApiImpl userPreferenceApi(SystemUser currentUser, ICayenneService cayenneService = mock(ICayenneService)) {
