@@ -40,19 +40,21 @@ beforeEach(() => {
   savedPreferences = Object.fromEntries(assistantKeys.map(key => [key, mockedAPI.db.preference[key]]));
 });
 
+// the store is shared between tests, so put the mocked server settings into it as well
+const dispatchSettings = () => TestStore.dispatch({
+  type: GET_PREFERENCES_FULFILLED,
+  payload: { category: Categories.assistant, preferences: mockedAPI.db.getPreferences(assistantKeys) }
+});
+
 afterEach(() => {
   Object.assign(mockedAPI.db.preference, savedPreferences);
+  dispatchSettings();
 });
 
 // a setting that was never saved comes without a value
 const removeSettings = () => {
   assistantKeys.forEach(key => delete mockedAPI.db.preference[key]);
-
-  // the store is shared between tests, so it would still hold the settings loaded by a previous test
-  TestStore.dispatch({
-    type: GET_PREFERENCES_FULFILLED,
-    payload: { category: Categories.assistant, preferences: mockedAPI.db.getPreferences(assistantKeys) }
-  });
+  dispatchSettings();
 };
 
 describe('Assistant preferences form', () => {

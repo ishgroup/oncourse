@@ -45,6 +45,7 @@ import ish.security.LdapProperties
 import ish.security.TestLdapAuthConnection
 import ish.util.TimeFormatter
 import ish.util.TimeZoneUtil
+import org.apache.cayenne.CayenneRuntimeException
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
@@ -107,17 +108,25 @@ class PreferenceApiImpl implements PreferenceApi {
 
     @Override
     void update(List<SystemPreferenceDTO> preferences) {
-        cayenneService.serverRuntime.performInTransaction {
-            preferences.each {
-                try {
-                    controller.getValueForKey(it.uniqueKey)
-                    controller.setValueForKey(it.uniqueKey, toValue(it.uniqueKey, it.valueString))
-                } catch (IllegalArgumentException e) {
-                    controller.rollbackChanges()
-                    logger.catching(e)
-                    throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(it.uniqueKey, 'valueString', e.message)).build())
+        try {
+            cayenneService.serverRuntime.performInTransaction {
+                preferences.each {
+                    try {
+                        controller.getValueForKey(it.uniqueKey)
+                        controller.setValueForKey(it.uniqueKey, toValue(it.uniqueKey, it.valueString))
+                    } catch (IllegalArgumentException e) {
+                        controller.rollbackChanges()
+                        logger.catching(e)
+                        throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(it.uniqueKey, 'valueString', e.message)).build())
+                    }
                 }
             }
+        } catch (CayenneRuntimeException e) {
+            // the transaction is rolled back and the validation error comes wrapped, return it as is
+            if (e.cause instanceof ClientErrorException) {
+                throw e.cause
+            }
+            throw e
         }
     }
 
