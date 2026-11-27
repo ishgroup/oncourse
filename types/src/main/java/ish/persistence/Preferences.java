@@ -518,6 +518,26 @@ public interface Preferences {
 	String NUMBER_OF_LOGIN_ATTEMPTS = "security.number.login.attempts";
 
 
+	// **************************************
+	// onCourse Assistant
+	// **************************************
+
+	/**
+	 * Show the onCourse Assistant (the Ask onCourse AI button) to permitted users. False by default.
+	 */
+	String ASSISTANT_ENABLED = "oncourse.assistant.enabled";
+
+	/**
+	 * Make the onCourse Assistant available only to users with the Admin toggle on (pilot restriction). True by default.
+	 */
+	String ASSISTANT_ADMIN_ONLY = "oncourse.assistant.adminOnly";
+
+	/**
+	 * Allow the onCourse Assistant to send student data to the AI model. False by default.
+	 */
+	String ASSISTANT_STUDENT_DATA_ALLOWED = "oncourse.assistant.studentDataAllowed";
+
+
 	String TUTORIAL_SKIP_SYSTEMUSER = "tutorial.skip.systemuser";
 
 	String BACKGROUND_QUALITY_SCALE = "background.quality.scale";

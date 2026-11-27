@@ -4,10 +4,12 @@
  */
 
 import { Epic } from "redux-observable";
-import { FETCH_SUCCESS } from "../../../common/actions";
+import { FETCH_SUCCESS, getUserPreferences } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
+import { ASSISTANT_AVAILABLE_KEY } from "../../../constants/Config";
+import { Categories } from "../../../model/preferences";
 import { SAVE_PREFERENCES_FULFILLED, SAVE_PREFERENCES_REQUEST } from "../actions";
 import PreferencesService from "../services/PreferencesService";
 
@@ -24,7 +26,9 @@ const request: EpicUtils.Request = {
       {
         type: FETCH_SUCCESS,
         payload: { message: "Form was successfully saved" }
-      }
+      },
+      // the current user's access to the assistant depends on its settings
+      ...payload.category === Categories.assistant ? [getUserPreferences([ASSISTANT_AVAILABLE_KEY])] : []
     ];
   },
   processError: response => {

@@ -4,6 +4,9 @@ export { Categories } from "./Categories";
 // College Info Preferences
 export * from "./College";
 
+// onCourse Assistant preferences
+export * from "./Assistant";
+
 // License preferences
 export * from "./Licences";
 

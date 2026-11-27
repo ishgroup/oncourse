@@ -32,6 +32,7 @@ export interface PreferencesState {
   gradingTypes?: GradingType[];
   enums?: any;
   college?: any;
+  assistant?: any;
   licences?: any;
   messaging?: any;
   classDefaults?: any;

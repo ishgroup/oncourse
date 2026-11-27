@@ -64,6 +64,10 @@ class UserPreferenceApiImpl implements UserPreferenceApi {
 
     @Override
     void set(UserPreferenceDTO preference) {
+        if (preference.key == PreferenceEnumDTO.ONCOURSE_ASSISTANT_AVAILABLE) {
+            // calculated from the onCourse Assistant preferences, which only admins can change
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, null, "key: ${preference.key} is read-only".toString())).build())
+        }
         usePrefService.set(preference.key, preference.value)
     }
 }

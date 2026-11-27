@@ -112,6 +112,11 @@ class PreferenceFunctions {
                 return TypesUtil.getEnumForDatabaseValue(value, TwoFactorAuthorizationStatus)
             case ACCOUNT_COUNTRY:
                 return Country.fromDatabaseValue(value)
+            case ASSISTANT_ENABLED:
+            case ASSISTANT_ADMIN_ONLY:
+            case ASSISTANT_STUDENT_DATA_ALLOWED:
+                // the preference controller parses these: it rejects anything but true/false and stores no value for a blank one
+                return value
             default:
                 return value
         }

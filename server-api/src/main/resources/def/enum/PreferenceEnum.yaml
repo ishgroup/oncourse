@@ -28,6 +28,7 @@ enum:
 - license.scripting
 - listview.main.content.width
 - news.read
+- oncourse.assistant.available
 - oncourse.server.timezone.default
 - payment.gateway.stripe.client.key
 - payment.gateway.stripe.test.client.key

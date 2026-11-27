@@ -19,6 +19,7 @@ import { IAction } from '../../../common/actions/IshAction';
 import { ACCOUNT_DEFAULT_INVOICELINE_ID } from '../../../constants/Config';
 import { Fetch } from '../../../model/common/Fetch';
 import { Categories } from '../../../model/preferences';
+import * as assistant from '../../../model/preferences/Assistant';
 import * as avetmiss from '../../../model/preferences/Avetmiss';
 import * as classDefaults from '../../../model/preferences/ClassDefaults';
 import * as college from '../../../model/preferences/College';
@@ -79,7 +80,8 @@ const FieldsModel = {
   maintenance,
   avetmiss,
   financial,
-  security
+  security,
+  assistant
 };
 
 class FormContainer extends React.Component<Props & RouteComponentProps, any> {
