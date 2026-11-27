@@ -78,6 +78,25 @@ const SettingRow = ({
   );
 };
 
+// The server reads a missing setting as its default. The form starts from the same values,
+// so the switches, the descriptions and the saved values agree.
+const withDefaultValues = (formData, formModel: FormModelSchema) => {
+  const defaults = {
+    [formModel.AssistantEnabled.uniqueKey]: "false",
+    [formModel.AssistantAdminOnly.uniqueKey]: "true",
+    [formModel.AssistantStudentDataAllowed.uniqueKey]: "false"
+  };
+
+  const values = { ...formData };
+
+  Object.keys(defaults).forEach(key => {
+    const value = formData[key];
+    values[key] = value === undefined || value === null || value === "" ? defaults[key] : String(value);
+  });
+
+  return values;
+};
+
 const AssistantFormBase = props => {
   const {
     handleSubmit, onSave, dirty, data, invalid, form, formRoleName, formData, initialized, dispatch, values, formatModel
@@ -90,7 +109,7 @@ const AssistantFormBase = props => {
   useEffect(() => {
     // Initializing form with values
     if (!isEmpty(formData) && !initialized) {
-      dispatch(initialize(ASSISTANT_FORM_NAME, formData));
+      dispatch(initialize(ASSISTANT_FORM_NAME, withDefaultValues(formData, formModel)));
     }
   }, [formData, initialized]);
 

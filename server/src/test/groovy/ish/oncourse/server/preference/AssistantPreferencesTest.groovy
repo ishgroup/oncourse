@@ -103,6 +103,47 @@ class AssistantPreferencesTest {
     }
 
     @Test
+    void settingsAcceptBooleansAndStrings() {
+        [ASSISTANT_ENABLED, ASSISTANT_ADMIN_ONLY, ASSISTANT_STUDENT_DATA_ALLOWED].each { String key ->
+            controller.setValueForKey(key, Boolean.TRUE)
+            Assertions.assertEquals('true', controller.values[key])
+
+            controller.setValueForKey(key, 'false')
+            Assertions.assertEquals('false', controller.values[key])
+
+            controller.setValueForKey(key, ' TRUE ')
+            Assertions.assertEquals('true', controller.values[key])
+        }
+    }
+
+    @Test
+    void settingsWithoutValueReadAsDefaults() {
+        controller.setAssistantEnabled(true)
+        controller.setAssistantAdminOnly(false)
+        controller.setAssistantStudentDataAllowed(true)
+
+        controller.setValueForKey(ASSISTANT_ENABLED, null)
+        controller.setValueForKey(ASSISTANT_ADMIN_ONLY, null)
+        controller.setValueForKey(ASSISTANT_STUDENT_DATA_ALLOWED, '')
+
+        Assertions.assertFalse(controller.assistantEnabled)
+        Assertions.assertTrue(controller.assistantAdminOnly)
+        Assertions.assertFalse(controller.assistantStudentDataAllowed)
+    }
+
+    @Test
+    void settingsRejectOtherValues() {
+        [ASSISTANT_ENABLED, ASSISTANT_ADMIN_ONLY, ASSISTANT_STUDENT_DATA_ALLOWED].each { String key ->
+            [(Object) 'yes', (Object) 1].each { Object value ->
+                Assertions.assertThrows(IllegalArgumentException, {
+                    controller.setValueForKey(key, value)
+                } as Executable)
+            }
+            Assertions.assertFalse(controller.values.containsKey(key))
+        }
+    }
+
+    @Test
     void disabledAssistantIsNotAvailable() {
         controller.setAssistantAdminOnly(false)
 

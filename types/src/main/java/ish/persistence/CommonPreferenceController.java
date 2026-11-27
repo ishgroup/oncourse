@@ -1306,11 +1306,11 @@ public abstract class CommonPreferenceController {
 		} else if(DATE_MESSAGE_BEFORE_ARCHIVED.equals(key)){
 			setExtendedTypesAllowed((Boolean) value);
 		} else if (ASSISTANT_ENABLED.equals(key)) {
-			setAssistantEnabled((Boolean) value);
+			setAssistantEnabled(toAssistantBoolean(key, value));
 		} else if (ASSISTANT_ADMIN_ONLY.equals(key)) {
-			setAssistantAdminOnly((Boolean) value);
+			setAssistantAdminOnly(toAssistantBoolean(key, value));
 		} else if (ASSISTANT_STUDENT_DATA_ALLOWED.equals(key)) {
-			setAssistantStudentDataAllowed((Boolean) value);
+			setAssistantStudentDataAllowed(toAssistantBoolean(key, value));
 		}
 	}
 
@@ -1573,6 +1573,27 @@ public abstract class CommonPreferenceController {
 	 */
 	public boolean isAssistantAvailableTo(boolean userIsAdmin) {
 		return getAssistantEnabled() && (!getAssistantAdminOnly() || userIsAdmin);
+	}
+
+	/**
+	 * Reads a value for one of the assistant switches: a Boolean or "true"/"false".
+	 * Null or a blank string stores no value, which reads as the setting's default.
+	 */
+	private static Boolean toAssistantBoolean(String key, Object value) {
+		if (value == null || value instanceof Boolean) {
+			return (Boolean) value;
+		}
+		if (value instanceof String) {
+			String string = ((String) value).trim();
+			if (string.isEmpty()) {
+				return null;
+			} else if ("true".equalsIgnoreCase(string)) {
+				return Boolean.TRUE;
+			} else if ("false".equalsIgnoreCase(string)) {
+				return Boolean.FALSE;
+			}
+		}
+		throw new IllegalArgumentException(String.format("%s must be true or false, but was %s", key, value));
 	}
 
 	// a missing preference or a preference without a value reads as its default

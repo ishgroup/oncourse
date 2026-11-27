@@ -6,8 +6,12 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import * as React from 'react';
 import Assistant from '../../../js/containers/preferences/containers/assistant/Assistant';
+import { GET_PREFERENCES_FULFILLED } from '../../../js/containers/preferences/actions';
 import { preferencesFormRole } from '../../../js/containers/preferences/containers/FormContainer';
-import { AssistantAdminOnly, AssistantEnabled, AssistantStudentDataAllowed } from '../../../js/model/preferences';
+import TestStore from '../../../js/constants/Store';
+import {
+  AssistantAdminOnly, AssistantEnabled, AssistantStudentDataAllowed, Categories
+} from '../../../js/model/preferences';
 import { dashedCase } from '../../common/utils';
 import { mockedAPI, TestEntry } from '../../TestEntry';
 
@@ -26,6 +30,29 @@ const renderAssistant = async () => {
 
   // the mocked server has the defaults: disabled, admins only, no student data
   await waitFor(() => expect(screen.getByRole(preferencesFormRole)).toHaveFormValues(formValues(false, true, false)));
+};
+
+const assistantKeys = [AssistantEnabled.uniqueKey, AssistantAdminOnly.uniqueKey, AssistantStudentDataAllowed.uniqueKey];
+
+let savedPreferences: { [key: string]: string };
+
+beforeEach(() => {
+  savedPreferences = Object.fromEntries(assistantKeys.map(key => [key, mockedAPI.db.preference[key]]));
+});
+
+afterEach(() => {
+  Object.assign(mockedAPI.db.preference, savedPreferences);
+});
+
+// a setting that was never saved comes without a value
+const removeSettings = () => {
+  assistantKeys.forEach(key => delete mockedAPI.db.preference[key]);
+
+  // the store is shared between tests, so it would still hold the settings loaded by a previous test
+  TestStore.dispatch({
+    type: GET_PREFERENCES_FULFILLED,
+    payload: { category: Categories.assistant, preferences: mockedAPI.db.getPreferences(assistantKeys) }
+  });
 };
 
 describe('Assistant preferences form', () => {
@@ -63,5 +90,30 @@ describe('Assistant preferences form', () => {
     await waitFor(() => expect(mockedAPI.db.preference[AssistantEnabled.uniqueKey]).toBe('true'));
     expect(mockedAPI.db.preference[AssistantStudentDataAllowed.uniqueKey]).toBe('true');
     expect(mockedAPI.db.preference[AssistantAdminOnly.uniqueKey]).toBe('true');
+  });
+
+  it('shows the defaults for settings without a value', async () => {
+    removeSettings();
+
+    await renderAssistant();
+
+    expect(screen.getByLabelText('Enable onCourse Assistant')).not.toBeChecked();
+    expect(screen.getByLabelText('Available to')).toBeChecked();
+    expect(screen.getByText('Users with the Admin toggle on')).toBeInTheDocument();
+    expect(screen.getByLabelText('Allow student data to be sent to the AI model')).not.toBeChecked();
+    expect(screen.getByTestId('appbar-submit-button')).toBeDisabled();
+  });
+
+  it('keeps the assistant for admins only when saving settings without a value', async () => {
+    removeSettings();
+
+    await renderAssistant();
+
+    fireEvent.click(screen.getByLabelText('Enable onCourse Assistant'));
+    fireEvent.click(screen.getByTestId('appbar-submit-button'));
+
+    await waitFor(() => expect(mockedAPI.db.preference[AssistantEnabled.uniqueKey]).toBe('true'));
+    expect(mockedAPI.db.preference[AssistantAdminOnly.uniqueKey]).toBe('true');
+    expect(mockedAPI.db.preference[AssistantStudentDataAllowed.uniqueKey]).toBe('false');
   });
 });
