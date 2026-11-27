@@ -3,11 +3,11 @@ Thank you for purchasing ${voucher.voucherProduct.name} from ${Preferences.get("
 Value at purchase: ${voucher.valueOnPurchase}
 Expiration date: ${voucher.expiryDate.format("EEEE d MMMM yyyy")}
 
-<% if (voucher.voucherProduct.maxCoursesRedemption == voucher.redeemedCourseCount || voucher.redemptionValue == 0) { %>
+<% if (voucher.voucherProduct.maxCoursesRedemption == voucher.redeemedCourseCount || voucher.redemptionValue?.toBigDecimal() == 0) { %>
 This voucher is either expired or has been fully redeemed and can no longer be used.
 <% } %>
 
-<% if (voucher.redemptionValue > 0 || voucher.redeemedCourseCount < voucher.voucherProduct.maxCoursesRedemption) { %>
+<% if (voucher.redemptionValue?.toBigDecimal() > 0 || voucher.redeemedCourseCount < voucher.voucherProduct.maxCoursesRedemption) { %>
 <% if (!voucher.voucherProduct.maxCoursesRedemption) { %>
 Current redeemable value: ${voucher.redemptionValue}
 <% } else { %>

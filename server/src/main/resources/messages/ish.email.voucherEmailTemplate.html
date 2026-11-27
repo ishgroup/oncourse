@@ -29,11 +29,11 @@ ${render(headerKeycode)}
                 <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-break: break-word;border: 0;text-align: left;">Value at purchase: ${voucher.valueOnPurchase}</br>
                     Expiration date: ${voucher.expiryDate.format("EEEE d MMMM yyyy")}</br>
                 </p>
-                <% if (voucher.voucherProduct.maxCoursesRedemption == voucher.redeemedCourseCount || voucher.redemptionValue == 0) { %>
+                <% if (voucher.voucherProduct.maxCoursesRedemption == voucher.redeemedCourseCount || voucher.redemptionValue?.toBigDecimal() == 0) { %>
                 <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-break: break-word;border: 0;text-align: left;">This voucher is either expired or has been fully redeemed and can no longer be used.
                 </p>
                 <% } %>
-                <% if (voucher.redemptionValue > 0 || voucher.redeemedCourseCount < voucher.voucherProduct.maxCoursesRedemption) { %>
+                <% if (voucher.redemptionValue?.toBigDecimal() > 0 || voucher.redeemedCourseCount < voucher.voucherProduct.maxCoursesRedemption) { %>
                 <% if (!voucher.voucherProduct.maxCoursesRedemption) { %>
                 <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-break: break-word;border: 0;text-align: left;">Current redeemable value: ${voucher.redemptionValue}</br>
                 </p>
