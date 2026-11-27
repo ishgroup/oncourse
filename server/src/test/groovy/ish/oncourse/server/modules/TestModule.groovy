@@ -29,6 +29,7 @@ import ish.oncourse.server.quality.QualityService
 import ish.oncourse.server.querying.QueryService
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.services.*
+import ish.oncourse.server.timetable.TimetableClashService
 import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -84,6 +85,7 @@ class TestModule implements Module {
         binder.bind(ImportService.class).in(Scopes.SINGLETON)
         binder.bind(ContactMergeService.class).in(Scopes.SINGLETON)
         binder.bind(SessionValidator.class).in(Scopes.SINGLETON)
+        binder.bind(TimetableClashService.class).in(Scopes.SINGLETON)
 
         binder.bind(CayenneListenersService.class).asEagerSingleton();
 
