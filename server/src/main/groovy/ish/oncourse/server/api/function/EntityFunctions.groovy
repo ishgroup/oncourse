@@ -21,6 +21,7 @@ import ish.oncourse.server.api.v1.model.SearchCountDTO
 import ish.oncourse.server.api.v1.model.SearchErrorDTO
 import ish.oncourse.server.api.v1.model.TagGroupDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.TagRelation
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
@@ -80,20 +81,41 @@ class EntityFunctions {
     }
 
     /**
+     * Entities too large to count without a search: Audit has 10-16 million records, and a count over the whole table takes 10-16 sec.
+     * /list doesn't return their filteredCount without a filter, search or tags, and /list/count requires a search for them.
+     */
+    static final List<Class> ENTITIES_COUNTED_ONLY_WITH_SEARCH = List.<Class> of(Audit)
+
+    static boolean isCountedOnlyWithSearch(Class clzz) {
+        ENTITIES_COUNTED_ONLY_WITH_SEARCH.contains(clzz)
+    }
+
+    /**
      * Validates the AQL search against the entity and counts the records it matches.
      * Unlike {@link #addAqlExp}, an invalid search isn't a bad request: the result carries the compiler errors with their positions.
      * It is also stricter: characters the lexer skips (an unclosed quote, a stray '$') make the search invalid.
      */
     static SearchCountDTO validateAndCount(String entity, String search, ObjectContext context, AqlService aql) {
-        Class<? extends CayenneDataObject> clzz = entityClassForName(entity)
+        Class<? extends CayenneDataObject> clzz = entityClassForName(entity, context)
+        if (!search?.trim() && isCountedOnlyWithSearch(clzz)) {
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, 'search', "Search is required for ${clzz.simpleName}.")).build())
+        }
         ObjectSelect<CayenneDataObject> query = ObjectSelect.query(clzz) as ObjectSelect<CayenneDataObject>
 
         try {
             if (search?.trim()) {
                 CompilationResult aqlCompile = aql.compile(search, clzz, context)
+                // Intentionally stricter than /list, which runs the search without the characters the lexer skipped:
+                // the caller (e.g. the AI assistant) checks a search it wrote, and a dropped character can change what the search means.
                 if (aqlCompile.lexerErrors || aqlCompile.errors) {
-                    List<CompilationError> errors = aqlCompile.lexerErrors + aqlCompile.errors
-                    return new SearchCountDTO(valid: false, errors: errors.collect { toSearchError(it) })
+                    List<CompilationError> errors = new ArrayList<>()
+                    if (aqlCompile.lexerErrors) {
+                        errors.addAll(aqlCompile.lexerErrors)
+                    }
+                    if (aqlCompile.errors) {
+                        errors.addAll(aqlCompile.errors)
+                    }
+                    return new SearchCountDTO(valid: false, errors: toSearchErrors(errors))
                 }
                 query = query & aqlCompile.cayenneExpression.get()
             }
@@ -112,13 +134,28 @@ class EntityFunctions {
         return query.column(Property.create("id", Long).countDistinct()).suppressDistinct().selectOne(context) as Long
     }
 
-    private static Class<? extends CayenneDataObject> entityClassForName(String entity) {
+    // EntityUtil also resolves classes that aren't mapped Cayenne entities (e.g. PaymentInterface), they can't be queried
+    private static Class<? extends CayenneDataObject> entityClassForName(String entity, ObjectContext context) {
+        Class<? extends CayenneDataObject> clzz = null
         try {
-            return EntityUtil.entityClassForName(entity.capitalize())
+            clzz = EntityUtil.entityClassForName(entity.capitalize())
         } catch (RuntimeException e) {
             logger.catching(e)
+        }
+        if (clzz == null || context.entityResolver.getObjEntity(clzz) == null) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, 'entity', "Unknown entity: '${entity}'.")).build())
         }
+        return clzz
+    }
+
+    // lexer and parser errors are collected apart: report them in the order they occur in the search, errors without a position last
+    private static List<SearchErrorDTO> toSearchErrors(List<CompilationError> errors) {
+        Comparator<Integer> nullsLast = Comparator.nullsLast(Comparator.<Integer> naturalOrder())
+        List<SearchErrorDTO> result = errors.collect { toSearchError(it) }
+        Collections.sort(result, { SearchErrorDTO a, SearchErrorDTO b ->
+            nullsLast.compare(a.line, b.line) ?: nullsLast.compare(a.position, b.position)
+        } as Comparator<SearchErrorDTO>)
+        return result
     }
 
     // the compiler reports -1 when it doesn't know the position of an error

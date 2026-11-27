@@ -15,6 +15,9 @@ import groovy.transform.CompileStatic
 import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.oncourse.aql.AqlService
+import ish.oncourse.aql.CompilationError
+import ish.oncourse.aql.CompilationResult
+import ish.oncourse.server.api.function.EntityFunctions
 import ish.oncourse.server.api.v1.model.DataResponseDTO
 import ish.oncourse.server.api.v1.model.SearchCountDTO
 import ish.oncourse.server.api.v1.model.SearchErrorDTO
@@ -22,6 +25,7 @@ import ish.oncourse.server.api.v1.model.SearchQueryDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.impl.EntityApiImpl
 import ish.oncourse.server.preference.UserPreferenceService
+import org.apache.cayenne.ObjectContext
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -152,6 +156,74 @@ class EntityApiCountTest extends TestWithDatabase {
         }
         Assertions.assertEquals(400, e.response.status)
         Assertions.assertEquals("Unknown entity: 'NoSuchEntity'.", (e.response.entity as ValidationErrorDTO).errorMessage)
+    }
+
+    @Test
+    void testClassThatIsNotMappedEntityIsBadRequest() {
+        ['id > 0', null].each { String search ->
+            ClientErrorException e = Assertions.assertThrows(ClientErrorException) {
+                api.count("PaymentInterface", search)
+            }
+            Assertions.assertEquals(400, e.response.status)
+            Assertions.assertEquals("Unknown entity: 'PaymentInterface'.", (e.response.entity as ValidationErrorDTO).errorMessage)
+        }
+    }
+
+    @Test
+    void testAuditRequiresSearch() {
+        [null, '', '  '].each { String search ->
+            ClientErrorException e = Assertions.assertThrows(ClientErrorException) {
+                api.count("audit", search)
+            }
+            Assertions.assertEquals(400, e.response.status)
+            ValidationErrorDTO error = e.response.entity as ValidationErrorDTO
+            Assertions.assertEquals("Search is required for Audit.", error.errorMessage)
+            Assertions.assertEquals("search", error.propertyName)
+        }
+
+        SearchCountDTO result = api.count("Audit", "id > 0")
+        Assertions.assertTrue(result.valid)
+        Assertions.assertNotNull(result.count)
+    }
+
+    @Test
+    void testErrorsAreInSearchOrder() {
+        // the parser error at the second '>' comes before the lexer error at '$'
+        SearchCountDTO result = api.count("Room", "seatedCapacity > > 20 \$")
+
+        Assertions.assertFalse(result.valid)
+        Assertions.assertTrue(result.errors.size() >= 2)
+        Assertions.assertEquals("token recognition error at: '\$'", result.errors.last().message)
+        Assertions.assertEquals(result.errors.sort(false) { it.position }, result.errors)
+    }
+
+    @Test
+    void testErrorsAreSortedByLineAndPositionWithUnknownLast() {
+        CompilationError lexerError = new CompilationError(2, 4, "lexer")
+        List<CompilationError> parserErrors = [new CompilationError(-1, -1, "no position"), new CompilationError(1, 9, "parser 1:9"),
+                                               new CompilationError(1, 3, "parser 1:3"), new CompilationError(2, 0, "parser 2:0")]
+        AqlService aql = { String query, Class<?> root, ObjectContext context -> new CompilationResult(parserErrors, [lexerError]) } as AqlService
+
+        SearchCountDTO result = EntityFunctions.validateAndCount("Room", "x", cayenneService.newReadonlyContext, aql)
+
+        Assertions.assertFalse(result.valid)
+        Assertions.assertEquals(["parser 1:3", "parser 1:9", "parser 2:0", "lexer", "no position"], result.errors*.message)
+        Assertions.assertEquals([1, 1, 2, 2, null], result.errors*.line)
+    }
+
+    @Test
+    void testNullErrorListsAreIgnored() {
+        CompilationError lexerError = new CompilationError(1, 2, "lexer")
+        AqlService aql = { String query, Class<?> root, ObjectContext context -> new CompilationResult((List<CompilationError>) null, [lexerError]) } as AqlService
+        SearchCountDTO result = EntityFunctions.validateAndCount("Room", "x", cayenneService.newReadonlyContext, aql)
+        Assertions.assertFalse(result.valid)
+        Assertions.assertEquals(["lexer"], result.errors*.message)
+
+        CompilationError parserError = new CompilationError(1, 2, "parser")
+        aql = { String query, Class<?> root, ObjectContext context -> new CompilationResult([parserError], null) } as AqlService
+        result = EntityFunctions.validateAndCount("Room", "x", cayenneService.newReadonlyContext, aql)
+        Assertions.assertFalse(result.valid)
+        Assertions.assertEquals(["parser"], result.errors*.message)
     }
 
     @Test
