@@ -67,14 +67,20 @@ class AssistantSettingsListener implements OnCourseEventListener {
     }
 
     /**
-     * @return the admins among the users, or none if they can't be read, so that a failed lookup drops
-     * everyone's conversations instead of keeping those of users who lost access, and never fails the settings save
+     * Reads the admins among the users. If they can't be read, no one is treated as an admin, deliberately:
+     * without the toggles the users who lost access can't be told from those who kept it, and dropping the admins'
+     * conversations too only loses their chat history, while keeping the others' would leave a conversation with
+     * someone the assistant is no longer available to. A failed lookup never fails the settings save. Errors such as
+     * running out of memory aren't caught.
+     *
+     * @return ids of the users who have the Admin toggle on now, none if they can't be read
      */
     private Set<Long> currentAdminsAmong(Set<Long> users) {
         try {
             return adminsAmong(users)
         } catch (Exception e) {
-            logger.warn('onCourse Assistant could not read the Admin toggles, dropping all conversations', e)
+            logger.warn('onCourse Assistant could not read the Admin toggles after it was opened to admins only, ' +
+                    'so it dropped the conversations of all users, admins included, as a fail-safe', e)
             return Collections.<Long>emptySet()
         }
     }

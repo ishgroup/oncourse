@@ -33,6 +33,7 @@ class AssistantSettingsListenerTest {
     // users with the Admin toggle on now
     private Set<Long> admins = [1L] as Set<Long>
     private boolean lookupFails
+    private int lookups
 
     @BeforeEach
     void setUp() {
@@ -42,6 +43,7 @@ class AssistantSettingsListenerTest {
         new AssistantSettingsListener(events, store, null) {
             @Override
             protected Set<Long> adminsAmong(Set<Long> userIds) {
+                lookups++
                 if (lookupFails) {
                     throw new IllegalStateException('database is down')
                 }
@@ -57,9 +59,13 @@ class AssistantSettingsListenerTest {
 
     @Test
     void turningOffDropsAllConversations() {
+        lookupFails = true
+
         events.postEvent(SystemEvent.valueOf(SystemEventType.ASSISTANT_SETTINGS_CHANGED, new AssistantAvailability(false, false)))
 
-        Assertions.assertEquals(0, store.size())
+        Assertions.assertNull(store.find(admin.id, 1L))
+        Assertions.assertNull(store.find(ann.id, 2L))
+        Assertions.assertEquals(0, lookups)
     }
 
     @Test
@@ -74,9 +80,13 @@ class AssistantSettingsListenerTest {
     void adminOnlyDropsAllConversationsWhenTheAdminTogglesCantBeRead() {
         lookupFails = true
 
+        // the settings save isn't failed by the lookup
         events.postEvent(SystemEvent.valueOf(SystemEventType.ASSISTANT_SETTINGS_CHANGED, new AssistantAvailability(true, true)))
 
-        Assertions.assertEquals(0, store.size())
+        // the admin's conversation goes too: a fail-safe
+        Assertions.assertNull(store.find(admin.id, 1L))
+        Assertions.assertNull(store.find(ann.id, 2L))
+        Assertions.assertEquals(1, lookups)
     }
 
     @Test
