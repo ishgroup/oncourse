@@ -1110,6 +1110,8 @@ public abstract class CommonPreferenceController {
 			return getTutorialSkipSystemUser();
 		} else if (EXTENDED_SEARCH_TYPES.equals(key)) {
 			return getExtendedSearchTypesAllowed();
+		} else if (RECORD_NAVIGATION_LEFT.equals(key)) {
+			return getRecordNavigationLeft();
 		} else if (DATE_MESSAGE_EXPECTED_BEFORE_ARCHIVED.equals(key)) {
 			return getDateMessageExpectedBeforeArchived();
 		} else if (DAYS_MESSAGE_EXPIRES.equals(key)) {
@@ -1297,6 +1299,8 @@ public abstract class CommonPreferenceController {
 			setDefaultInvoiceLineAccount((Long) value);
 		} else if(EXTENDED_SEARCH_TYPES.equals(key)){
 			setExtendedTypesAllowed((Boolean) value);
+		} else if (RECORD_NAVIGATION_LEFT.equals(key)) {
+			setRecordNavigationLeft((Boolean) value);
 		} else if(DATE_MESSAGE_BEFORE_ARCHIVED.equals(key)){
 			setExtendedTypesAllowed((Boolean) value);
 		}
@@ -1526,6 +1530,10 @@ public abstract class CommonPreferenceController {
 
 	public Boolean getRecordNavigationLeft() {
 		return Boolean.parseBoolean(getValue(RECORD_NAVIGATION_LEFT, false));
+	}
+
+	public void setRecordNavigationLeft(Boolean value) {
+		setValue(RECORD_NAVIGATION_LEFT, false, String.valueOf(value));
 	}
 
 	public String getChargebeeSubscriptionId() {

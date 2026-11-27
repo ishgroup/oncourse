@@ -163,7 +163,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
       >
         <div className={clsx(
           "centeredFlex  flex-fill",
-          FULL_SCREEN_TITLE_CLASS,
+          twoColumn && !opened && (isFixed || isStuck || customStuck) && FULL_SCREEN_TITLE_CLASS,
           twoColumn && !opened && (isStuck || customStuck) && classes.fullScreenTitleItem,
           !opened && isFixed && twoColumn && classes.isFixed,
         )}

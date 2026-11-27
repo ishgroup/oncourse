@@ -91,6 +91,7 @@ class PreferenceFunctions {
             case PASSWORD_COMPLEXITY:
             case EXTENDED_SEARCH_TYPES:
             case AUS_REPORTING:
+            case RECORD_NAVIGATION_LEFT:
                 return Boolean.valueOf(value)
             case SERVICES_INFO_REPLICATION_VERSION:
             case LDAP_SERVERPORT:

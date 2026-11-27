@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
@@ -105,6 +106,22 @@ class CollegeBaseForm extends React.Component<any, any> {
               <Typography variant="body1">
                 {secKey || <span className={classes.placeholderContent}>{COMMON_PLACEHOLDER}</span>}
               </Typography>
+            </Grid>
+            <Grid size={12}>
+              <FormControlLabel
+                classes={{
+                  root: "checkbox"
+                }}
+                control={(
+                  <FormField
+                    type="checkbox"
+                    name={this.formModel.CollegeRecordNavigationLeft.uniqueKey}
+                    color="primary"
+                    stringValue
+                  />
+                )}
+                label={$t('show_record_section_navigation_on_the_left')}
+              />
             </Grid>
           </Grid>
         </AppBarContainer>

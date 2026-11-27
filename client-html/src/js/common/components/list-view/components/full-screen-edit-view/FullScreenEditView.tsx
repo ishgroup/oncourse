@@ -30,8 +30,8 @@ import { State } from '../../../../../reducers/state';
 import { getSingleEntityDisplayName } from '../../../../utils/getEntityDisplayName';
 import { LSGetItem } from '../../../../utils/storage';
 import FormSubmitButton from '../../../form/FormSubmitButton';
-import { RecordNavigationLeftContext } from '../../../navigation/TabsList';
 import { pushGTMEvent } from '../../../google-tag-manager/actions';
+import { RecordNavigationLeftContext } from '../../../navigation/TabsList';
 import LoadingIndicator from '../../../progress/LoadingIndicator';
 import FullScreenStickyHeader from './FullScreenStickyHeader';
 
