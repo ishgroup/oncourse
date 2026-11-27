@@ -177,10 +177,10 @@ export const getClassCostTypes = (
           types.discount.percentage = decimalPlus(types.discount.percentage, item.value.actualUsePercent || 0);
           break;
         case "Wages":
-          const tutor = tutors.find(
+          const tutor = tutors?.find(
             t => (value.courseClassTutorId ? t.id === value.courseClassTutorId : t.temporaryId === value.temporaryTutorId)
           );
-          const role = tutor && tutorRoles.find(r => r.id === tutor.roleId);
+          const role = tutor && tutorRoles?.find(r => r.id === tutor.roleId);
           const defaultOnCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
           const onCostToUse = typeof value.onCostRate === "number" ? value.onCostRate : defaultOnCostRate;
 
