@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
 import java.time.temporal.TemporalAccessor;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -36,6 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 /**
  * Before/after values of an audit entry, stored in {@code Audit.beforeValues} and {@code Audit.afterValues}.
@@ -48,8 +50,7 @@ import java.util.TreeMap;
  *     <li>enums as their constant name ({@code "ACTIVE"});</li>
  *     <li>to-one relationships as the id of the related record ({@code "room": 12}); for created and deleted
  *     records only the relationships that were loaded;</li>
- *     <li>binary values as {@code "<binary>"}, passwords, secrets, tokens and integration or preference values
- *     as {@code "***"}.</li>
+ *     <li>binary values as {@code "<binary>"}, credentials as {@code "***"}: see {@link #isSecret}.</li>
  * </ul>
  * An update records the changed properties only, a created record its values in "after",
  * a deleted record its values in "before". {@code id}, {@code modifiedOn} and {@code lastAccess} are never recorded.
@@ -63,10 +64,22 @@ public final class AuditValues {
     public static final String BINARY = "<binary>";
 
     private static final Set<String> IGNORED = Set.of("id", "modifiedOn", "lastAccess");
-    private static final List<String> SECRET_NAME_PARTS = List.of("password", "secret", "token");
+    // anywhere in the property name, ignoring case
+    private static final List<String> SECRET_NAME_PARTS = List.of(
+            "password", "passwd", "passphrase", "secret", "token", "credential", "sessionid");
+    // a key that unlocks something; not keyCode, uniqueKey, creatorKey or primaryKey, which are ordinary identifiers
+    private static final Pattern SECRET_KEY = Pattern.compile(
+            "(api|access|private|secret|signing|encryption|security|licen[cs]e|auth|client|master|shared)_?key",
+            Pattern.CASE_INSENSITIVE);
+    // whole words of a camelCase property name, ignoring case: too short to be matched anywhere in the name
+    private static final Set<String> SECRET_NAME_WORDS = Set.of("pin", "otp", "salt");
+    private static final Pattern WORD_BOUNDARY = Pattern.compile("(?<=[a-z0-9])(?=[A-Z])|_");
+    // values that may hold anything, credentials of integrations among them, and stored payment card tokens
     private static final Map<String, Set<String>> SECRET_PROPERTIES = Map.of(
             "IntegrationProperty", Set.of("value"),
-            "Preference", Set.of("value", "valueString"));
+            "Preference", Set.of("value", "valueString"),
+            "Settings", Set.of("value"),
+            "PaymentIn", Set.of("billingId"));
 
     private static final ObjectMapper MAPPER = new ObjectMapper()
             .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
@@ -140,9 +153,16 @@ public final class AuditValues {
         }
     }
 
-    private static boolean isSecret(String entityName, String property) {
+    /**
+     * @return true for the properties whose values are recorded as {@code "***"}: credentials by their name
+     * (password, passphrase, secret, token, credential, session id, API/access/private/... key, PIN, OTP, salt)
+     * and the values of integration properties, preferences, settings and payment card tokens
+     */
+    static boolean isSecret(String entityName, String property) {
         String name = property.toLowerCase(Locale.ROOT);
         return SECRET_NAME_PARTS.stream().anyMatch(name::contains)
+                || SECRET_KEY.matcher(property).find()
+                || Arrays.stream(WORD_BOUNDARY.split(property)).anyMatch(word -> SECRET_NAME_WORDS.contains(word.toLowerCase(Locale.ROOT)))
                 || SECRET_PROPERTIES.getOrDefault(entityName, Set.of()).contains(property);
     }
 
