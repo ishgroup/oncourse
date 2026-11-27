@@ -531,6 +531,7 @@ public interface Preferences {
 
 	String EXTENDED_SEARCH_TYPES = "ish.display.extendedSearchTypes";
 	String AUS_REPORTING = "ish.display.AUSReporting";
+	String RECORD_NAVIGATION_LEFT = "ish.display.recordNavigationLeft";
 
 
 	// **************************************

@@ -4,10 +4,11 @@
  */
 
 import { Epic } from "redux-observable";
-import { FETCH_SUCCESS } from "../../../common/actions";
+import { FETCH_SUCCESS, getUserPreferences } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
+import { RECORD_NAVIGATION_LEFT_KEY } from "../../../constants/Config";
 import { SAVE_PREFERENCES_FULFILLED, SAVE_PREFERENCES_REQUEST } from "../actions";
 import PreferencesService from "../services/PreferencesService";
 
@@ -24,7 +25,8 @@ const request: EpicUtils.Request = {
       {
         type: FETCH_SUCCESS,
         payload: { message: "Form was successfully saved" }
-      }
+      },
+      ...(RECORD_NAVIGATION_LEFT_KEY in payload.fields ? [getUserPreferences([RECORD_NAVIGATION_LEFT_KEY])] : [])
     ];
   },
   processError: response => {

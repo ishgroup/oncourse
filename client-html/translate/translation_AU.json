@@ -1072,6 +1072,7 @@
   "show": "Show  {{expr}}",
   "show_all": "Show all",
   "show_on_web": "Show on web",
+  "show_record_section_navigation_on_the_left": "Show record section navigation on the left",
   "show_rto_related_screens_and_menus": "Show RTO related screens and menus",
   "show_this_site_on_the_website": "Show this site on the website",
   "show_to_students": "Show to students",

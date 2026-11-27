@@ -19,13 +19,19 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getFormSyncErrors, getFormValues, reduxForm } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
-import { APPLICATION_THEME_STORAGE_NAME, TAB_LIST_SCROLL_TARGET_ID } from '../../../../../constants/Config';
+import {
+  APPLICATION_THEME_STORAGE_NAME,
+  FULL_SCREEN_TITLE_CLASS,
+  RECORD_NAVIGATION_LEFT_KEY,
+  TAB_LIST_SCROLL_TARGET_ID
+} from '../../../../../constants/Config';
 import { EditViewContainerProps } from '../../../../../model/common/ListView';
 import { State } from '../../../../../reducers/state';
 import { getSingleEntityDisplayName } from '../../../../utils/getEntityDisplayName';
 import { LSGetItem } from '../../../../utils/storage';
 import FormSubmitButton from '../../../form/FormSubmitButton';
 import { pushGTMEvent } from '../../../google-tag-manager/actions';
+import { RecordNavigationLeftContext } from '../../../navigation/TabsList';
 import LoadingIndicator from '../../../progress/LoadingIndicator';
 import FullScreenStickyHeader from './FullScreenStickyHeader';
 
@@ -68,14 +74,22 @@ const styles = (theme, p, classes) => ({
   submitButtonAlternate: {
   },
   closeButtonAlternate: {},
-  titleWrapper: {}
+  titleWrapper: {},
+  navigationLeft: {
+    [`&:has(#${TAB_LIST_SCROLL_TARGET_ID}) .${classes.titleWrapper}`]: {
+      paddingLeft: "calc(100vw / 6)"
+    },
+    [`&:has(#${TAB_LIST_SCROLL_TARGET_ID}) .${FULL_SCREEN_TITLE_CLASS}`]: {
+      width: "calc(100vw - 300px - 100vw / 6)"
+    }
+  }
 });
 
 const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
   <Slide direction="up" ref={ref} {...props as any} />
 ));
 
-class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps, any> {
+class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps & { navigationOnLeft?: boolean }, any> {
   state = {
     hasScrolling: false
   };
@@ -167,6 +181,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       asyncValidate,
       disabledSubmitCondition,
       hideTitle,
+      navigationOnLeft,
     } = this.props;
 
     const noTabList = document.getElementById(TAB_LIST_SCROLL_TARGET_ID) === null;
@@ -190,7 +205,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
         disableEnforceFocus
       >
         <LoadingIndicator position="fixed" />
-        <form onSubmit={handleSubmit} autoComplete="off" noValidate>
+        <form onSubmit={handleSubmit} autoComplete="off" noValidate className={navigationOnLeft ? classes.navigationLeft : undefined}>
           <AppBar
             elevation={0}
             className={clsx(
@@ -230,26 +245,28 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
             className={clsx(classes.root, noTabList && "overflow-y-auto", !hideTitle && noTabList && "pt-1")}
             onScroll={noTabList ? this.onScroll : undefined}
           >
-            <EditViewContent
-              twoColumn
-              onScroll={this.onScroll}
-              asyncValidating={asyncValidating}
-              asyncValidate={asyncValidate}
-              syncErrors={syncErrors}
-              submitSucceeded={submitSucceeded}
-              invalid={invalid}
-              onCloseClick={this.onCloseClick}
-              manualLink={manualLink}
-              rootEntity={rootEntity}
-              isNested={isNested}
-              form={form}
-              isNew={creatingNew}
-              values={values}
-              dispatch={dispatch}
-              dirty={dirty}
-              showConfirm={showConfirm}
-              toogleFullScreenEditView={toogleFullScreenEditView}
-            />
+            <RecordNavigationLeftContext.Provider value={navigationOnLeft}>
+              <EditViewContent
+                twoColumn
+                onScroll={this.onScroll}
+                asyncValidating={asyncValidating}
+                asyncValidate={asyncValidate}
+                syncErrors={syncErrors}
+                submitSucceeded={submitSucceeded}
+                invalid={invalid}
+                onCloseClick={this.onCloseClick}
+                manualLink={manualLink}
+                rootEntity={rootEntity}
+                isNested={isNested}
+                form={form}
+                isNew={creatingNew}
+                values={values}
+                dispatch={dispatch}
+                dirty={dirty}
+                showConfirm={showConfirm}
+                toogleFullScreenEditView={toogleFullScreenEditView}
+              />
+            </RecordNavigationLeftContext.Provider>
           </div>
         </form>
       </Dialog>
@@ -260,7 +277,8 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 const mapStateToProps = (state: State, props) => ({
   values: getFormValues(props.form)(state),
   syncErrors: getFormSyncErrors(props.form)(state),
-  pending: state.fetch.pending
+  pending: state.fetch.pending,
+  navigationOnLeft: state.userPreferences[RECORD_NAVIGATION_LEFT_KEY] === 'true'
 });
 
 export default reduxForm<any, EditViewContainerProps>({

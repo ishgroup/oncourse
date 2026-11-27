@@ -24,6 +24,7 @@ enum:
 - html.global.theme
 - ish.display.extendedSearchTypes
 - ish.display.AUSReporting
+- ish.display.recordNavigationLeft
 - license.access_control
 - license.scripting
 - listview.main.content.width

@@ -64,6 +64,9 @@ class UserPreferenceApiImpl implements UserPreferenceApi {
 
     @Override
     void set(UserPreferenceDTO preference) {
+        if (preference.key == PreferenceEnumDTO.ISH_DISPLAY_RECORDNAVIGATIONLEFT) {
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, null, "key: $preference.key is a college preference")).build())
+        }
         usePrefService.set(preference.key, preference.value)
     }
 }

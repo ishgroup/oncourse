@@ -9,7 +9,7 @@
 import Grid, { GridSize } from '@mui/material/Grid';
 import clsx from 'clsx';
 import { AnyArgFunction, makeAppStyles } from 'ish-ui';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { APP_BAR_HEIGHT, TAB_LIST_SCROLL_TARGET_ID } from '../../../constants/Config';
 import { EditViewProps } from '../../../model/common/ListView';
@@ -24,6 +24,14 @@ const useStyles = makeAppStyles()(theme => ({
     flexDirection: "column",
     backgroundColor: theme.tabList.listContainer.backgroundColor,
     padding: theme.spacing(4)
+  },
+  listContainerFullHeight: {
+    position: "fixed",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    width: "calc(100vw / 6)",
+    zIndex: theme.zIndex.appBar + 1
   },
   listContainerInner: {
     marginBottom: theme.spacing(8),
@@ -50,6 +58,8 @@ interface Props {
   newsOffset?: string;
 }
 
+export const RecordNavigationLeftContext = createContext<boolean>(false);
+
 const TABLIST_LOCAL_STORAGE_KEY = "localstorage_key_tab_list";
 
 const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (twoColumn ? [{ xs: 10 }, { xs: 2 }] : [{ xs: 12 }, { xs: "auto" }]);
@@ -65,6 +75,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
   }
 ) => {
   const { classes } = useStyles();
+  const navigationOnLeft = useContext(RecordNavigationLeftContext);
   const scrolledPX = useRef<number>(0);
   const scrollNodes = useRef<HTMLElement[]>([]);
   const scrollContainer = useRef<HTMLDivElement>(null);
@@ -188,7 +199,11 @@ const TabsList = React.memo<Props & RouteComponentProps>((
   const layoutArray = getLayoutArray(itemProps.twoColumn);
 
   return (
-    <Grid container className={clsx("overflow-hidden", itemProps.twoColumn ? "h-100" : "fullHeightWithoutAppBar")}>
+    <Grid
+      container
+      direction={itemProps.twoColumn && navigationOnLeft ? "row-reverse" : "row"}
+      className={clsx("overflow-hidden", itemProps.twoColumn ? "h-100" : "fullHeightWithoutAppBar")}
+    >
       <Grid
         size={layoutArray[0].xs}
         className="overflow-y-auto overflow-x-hidden h-100"
@@ -212,7 +227,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
       </Grid>
       {itemProps.twoColumn && (
         <Grid size={layoutArray[1].xs} className="d-flex h-100">
-          <div className={classes.listContainer}>
+          <div className={clsx(classes.listContainer, navigationOnLeft && classes.listContainerFullHeight)}>
             <div className={classes.listContainerInner}>
               {items.map((i, index) => (
                 <SideBarHeader

@@ -24,6 +24,12 @@ export const CollegeWebsite: PreferenceSchema = {
   editable: true
 };
 
+export const CollegeRecordNavigationLeft: PreferenceSchema = {
+  uniqueKey: "ish.display.recordNavigationLeft",
+  mandatory: false,
+  editable: true
+};
+
 export const CollegeSucureKey: PreferenceSchema = {
   uniqueKey: "services.securitykey",
   mandatory: false,
