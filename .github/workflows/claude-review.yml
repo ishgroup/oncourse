@@ -10,7 +10,9 @@ concurrency:
 jobs:
 
   review:
-    # skip drafts, dependabot and fork PRs (no secrets available there)
+    name: Claude review
+    # skip drafts, dependabot and fork PRs (no secrets available there); a skipped job
+    # counts as passed when this is a required check
     if: >-
       github.event.pull_request.draft == false &&
       github.actor != 'dependabot[bot]' &&
@@ -183,10 +185,12 @@ jobs:
                `gh api repos/<REPO>/pulls/<PR NUMBER>/comments --paginate` and drop any finding
                already raised by claude[bot].
             3. Post each remaining Important finding as an inline comment on its file and line with
-               mcp__github_inline_comment__create_inline_comment: what breaks, the failure scenario
-               in one or two sentences, and the suggested fix. If its line is not in the output of
-               REVIEW DIFF COMMAND, list it in the summary instead. Don't add findings of your own,
-               apart from ticket mismatches from step 1.
+               mcp__github_inline_comment__create_inline_comment. Start the comment with
+               "**Important:**", then say what breaks, the failure scenario in one or two sentences,
+               and the suggested fix. Post nothing else inline: every unresolved inline comment
+               blocks merging. If its line is not in the output of REVIEW DIFF COMMAND, list it in
+               the summary instead. Don't add findings of your own; ticket mismatches from step 1
+               go in the summary only.
             4. Post or update ONE summary comment with
                `gh pr comment <PR NUMBER> --edit-last --create-if-none --body "..."`.
                It must start with "## Claude review" and contain: a Jira line (the key and whether
@@ -236,3 +240,34 @@ jobs:
           echo "$MSG"
           echo "::$STOP::"
           echo "::error title=Claude review failed::$(echo "$MSG" | tr '\n' ' ' | cut -c1-500 | sed 's/%/%25/g')"
+
+      # Fail while any of Claude's inline comments (Important findings only) is unresolved, so this
+      # job can be a required check. It counts the whole PR, not just this run's range: resolve a
+      # conversation once the issue is fixed or not real, then push or re-run this check
+      - name: Check unresolved Important issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          OPEN=$(gh api graphql --paginate -F owner="$OWNER" -F repo="$REPO" -F pr="$PR" -f query='
+            query($owner: String!, $repo: String!, $pr: Int!, $endCursor: String) {
+              repository(owner: $owner, name: $repo) {
+                pullRequest(number: $pr) {
+                  reviewThreads(first: 100, after: $endCursor) {
+                    pageInfo { hasNextPage endCursor }
+                    nodes { isResolved comments(first: 1) { nodes { author { login __typename } url } } }
+                  }
+                }
+              }
+            }' \
+            --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved | not)
+              | .comments.nodes[0] | select(.author.login == "claude" and .author.__typename == "Bot") | .url')
+          COUNT=$(printf '%s' "$OPEN" | grep -c . || true)
+          echo "Unresolved Claude review comments: $COUNT"
+          if [ "$COUNT" -gt 0 ]; then
+            echo "$OPEN"
+            echo "::error title=Claude review::$COUNT unresolved Important issue(s). Fix them or resolve the conversations, then push or re-run this check."
+            exit 1
+          fi
