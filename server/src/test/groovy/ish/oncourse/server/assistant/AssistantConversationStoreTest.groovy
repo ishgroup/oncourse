@@ -115,35 +115,73 @@ class AssistantConversationStoreTest {
     }
 
     @Test
-    void numberOfConversationsIsCapped() {
-        AssistantConversationStore.Conversation oldest = saved(1L)
-        (1..AssistantConversationStore.MAX_CONVERSATIONS).each {
+    void historyIsBoundedByCharactersKeepingTheLatestExchange() {
+        AssistantConversationStore.Conversation conversation = store.start(1L)
+        String half = 'x' * (AssistantConversationStore.MAX_CHARACTERS.intdiv(5) as int)
+
+        (1..3).each { int i -> conversation.addExchange(ModelMessage.user("q$i$half".toString()), ModelMessage.assistant(half)) }
+
+        List<ModelMessage> messages = conversation.messages
+        Assertions.assertEquals(4, messages.size())
+        Assertions.assertEquals(ModelMessage.user("q2$half".toString()), messages.first())
+        int characters = messages.sum(0) { ModelMessage it -> it.text.length() } as int
+        Assertions.assertTrue(characters <= AssistantConversationStore.MAX_CHARACTERS)
+
+        String huge = 'y' * AssistantConversationStore.MAX_CHARACTERS
+        conversation.addExchange(ModelMessage.user('long'), ModelMessage.assistant(huge))
+        Assertions.assertEquals([ModelMessage.user('long'), ModelMessage.assistant(huge)], conversation.messages)
+    }
+
+    @Test
+    void newConversationDropsTheUsersOwnOldestOverTheirLimit() {
+        AssistantConversationStore.Conversation other = saved(2L)
+        List<AssistantConversationStore.Conversation> own = (1..AssistantConversationStore.MAX_CONVERSATIONS_PER_USER).collect {
             store.now++
             saved(1L)
         }
+        // used recently, so the next oldest goes
+        store.now++
+        store.find(own[0].id, 1L)
+
+        store.now++
+        AssistantConversationStore.Conversation newest = saved(1L)
+
+        Assertions.assertEquals(AssistantConversationStore.MAX_CONVERSATIONS_PER_USER, store.size(1L))
+        Assertions.assertNull(store.find(own[1].id, 1L))
+        ([own[0], newest] + own.drop(2)).each { Assertions.assertSame(it, store.find(it.id, 1L)) }
+        Assertions.assertSame(other, store.find(other.id, 2L))
+    }
+
+    @Test
+    void numberOfConversationsIsCapped() {
+        AssistantConversationStore.Conversation oldest = saved(0L)
+        (1..AssistantConversationStore.MAX_CONVERSATIONS).each { int i ->
+            store.now++
+            saved(i.toLong())
+        }
 
         Assertions.assertEquals(AssistantConversationStore.MAX_CONVERSATIONS, store.size())
-        Assertions.assertNull(store.find(oldest.id, 1L))
+        Assertions.assertNull(store.find(oldest.id, 0L))
     }
 
     @Test
     void startedButUnsavedConversationsEvictNothing() {
-        List<AssistantConversationStore.Conversation> kept = (1..AssistantConversationStore.MAX_CONVERSATIONS).collect {
+        List<AssistantConversationStore.Conversation> kept = (1..AssistantConversationStore.MAX_CONVERSATIONS).collect { int i ->
             store.now++
-            saved(1L)
+            saved(i.toLong())
         }
 
         // first messages that failed
-        (1..10).each { store.start(2L) }
+        (1..10).each { store.start(1L) }
 
         Assertions.assertEquals(AssistantConversationStore.MAX_CONVERSATIONS, store.size())
-        kept.each { Assertions.assertSame(it, store.find(it.id, 1L)) }
+        kept.each { Assertions.assertSame(it, store.find(it.id, it.userId)) }
     }
 
     @Test
-    void concurrentSavesNeverExceedTheCap() {
+    void concurrentSavesNeverExceedTheCaps() {
         AssistantConversationStore realClock = new AssistantConversationStore()
-        (1..AssistantConversationStore.MAX_CONVERSATIONS - 1).each { realClock.save(realClock.start(1L)) }
+        (1..AssistantConversationStore.MAX_CONVERSATIONS - 1).each { int i -> realClock.save(realClock.start(1000L + i)) }
 
         ExecutorService executor = Executors.newFixedThreadPool(8)
         try {
@@ -161,6 +199,32 @@ class AssistantConversationStoreTest {
         }
 
         Assertions.assertEquals(AssistantConversationStore.MAX_CONVERSATIONS, realClock.size())
+        (0..4).each { int user -> Assertions.assertTrue(realClock.size(user.toLong()) <= AssistantConversationStore.MAX_CONVERSATIONS_PER_USER) }
+    }
+
+    @Test
+    void userIdsListsUsersWithKeptConversations() {
+        saved(1L)
+        saved(2L)
+        saved(2L)
+        store.start(3L)
+
+        Assertions.assertEquals([1L, 2L] as Set<Long>, store.userIds())
+
+        store.clearForUser(2L)
+        Assertions.assertEquals([1L] as Set<Long>, store.userIds())
+    }
+
+    @Test
+    void onlyOneMessageOfAConversationIsSentAtATime() {
+        AssistantConversationStore.Conversation conversation = saved(1L)
+
+        Assertions.assertTrue(conversation.startSending())
+        Assertions.assertFalse(conversation.startSending())
+        Assertions.assertTrue(saved(1L).startSending())
+
+        conversation.finishSending()
+        Assertions.assertTrue(conversation.startSending())
     }
 
     private AssistantConversationStore.Conversation saved(Long userId) {

@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Server configuration of the onCourse Assistant's AI model, the {@code assistant:} section of onCourse.yml.
+ * Server configuration of the onCourse Assistant's AI model and limits, the {@code assistant:} section of onCourse.yml.
  * Without the section the assistant has no model and can't answer.
  */
 @BQConfig("onCourse Assistant AI model")
@@ -48,6 +48,7 @@ public class AssistantConfig {
     private long readTimeoutSeconds = 60;
     private long requestTimeoutSeconds = 120;
     private int maxRetries = 1;
+    private int maxMessagesPerMinute = 10;
     private List<String> fakeReplies = new ArrayList<>();
 
     /**
@@ -168,6 +169,15 @@ public class AssistantConfig {
     @BQConfigProperty("Retries of a failed model call, 1 by default")
     public void setMaxRetries(int maxRetries) {
         this.maxRetries = maxRetries;
+    }
+
+    public int getMaxMessagesPerMinute() {
+        return maxMessagesPerMinute;
+    }
+
+    @BQConfigProperty("Messages a user can send to the assistant in a minute, 10 by default, 0 for no limit")
+    public void setMaxMessagesPerMinute(int maxMessagesPerMinute) {
+        this.maxMessagesPerMinute = maxMessagesPerMinute;
     }
 
     public List<String> getFakeReplies() {

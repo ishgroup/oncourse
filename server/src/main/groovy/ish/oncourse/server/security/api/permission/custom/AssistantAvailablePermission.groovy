@@ -14,6 +14,7 @@ package ish.oncourse.server.security.api.permission.custom
 import groovy.transform.CompileStatic
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.assistant.AssistantConversationService
+import ish.oncourse.server.assistant.AssistantConversationStore
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.security.api.permission.PermissionCheckingResult
 import ish.oncourse.server.security.api.permission.ResourcePermission
@@ -22,6 +23,8 @@ import ish.oncourse.server.services.ISystemUserService
 /**
  * Lets the request through only when the onCourse Assistant is available to the current user:
  * the assistant is enabled and either open to all users or the user has the Admin toggle on.
+ * A refused user's conversations are dropped, so they don't come back when the assistant is available to them again,
+ * for example after their Admin toggle was turned off and on.
  */
 @CompileStatic
 class AssistantAvailablePermission extends ResourcePermission {
@@ -37,6 +40,9 @@ class AssistantAvailablePermission extends ResourcePermission {
         PreferenceController preferenceController = injector.getInstance(PreferenceController)
         if (user != null && preferenceController.isAssistantAvailableTo(Boolean.TRUE == user.isAdmin)) {
             return PermissionCheckingResult.successful()
+        }
+        if (user != null) {
+            injector.getInstance(AssistantConversationStore).clearForUser(user.id)
         }
         return new PermissionCheckingResult(false, AssistantConversationService.NOT_AVAILABLE_MSG)
     }

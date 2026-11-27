@@ -26,3 +26,4 @@ smtp:
 #  modelId: au.anthropic.claude-sonnet-5-5
 #  # AWS credentials: the default chain (EC2 instance profile) unless accessKeyId/secretAccessKey or profile is set
 #  #profile: oncourse-dev
+#  maxMessagesPerMinute: 10  # messages a user can send to the assistant in a minute, 0 for no limit
