@@ -10,24 +10,32 @@ const tutorRoles: any[] = [{ id: 1, name: "Tutor" }];
 
 describe("Preferences reducer tutor roles tests", () => {
   it("keeps tutor roles and marks the error when tutor roles fail to load", () => {
-    const state = preferencesReducer({ tutorRoles }, { type: GET_TUTOR_ROLES_FAILED });
+    const state = preferencesReducer({ tutorRoles, tutorRolesLoading: true }, { type: GET_TUTOR_ROLES_FAILED });
 
     expect(state.tutorRoles).toBe(tutorRoles);
     expect(state.tutorRolesError).toBe(true);
+    expect(state.tutorRolesLoading).toBe(false);
   });
 
   it("does not set tutor roles when they fail to load before any were loaded", () => {
     expect(preferencesReducer({}, { type: GET_TUTOR_ROLES_FAILED }).tutorRoles).toBeUndefined();
   });
 
-  it("clears the error when tutor roles are requested again", () => {
-    expect(preferencesReducer({ tutorRolesError: true }, getTutorRoles()).tutorRolesError).toBe(false);
+  it("marks tutor roles as loading and clears the error when they are requested again", () => {
+    const state = preferencesReducer({ tutorRolesError: true }, getTutorRoles());
+
+    expect(state.tutorRolesError).toBe(false);
+    expect(state.tutorRolesLoading).toBe(true);
   });
 
   it("stores the columns tutor roles were loaded with", () => {
-    const state = preferencesReducer({}, { type: GET_TUTOR_ROLES_FULFILLED, payload: { tutorRoles, columns: "name,currentPayrate.rate" } });
+    const state = preferencesReducer(
+      { tutorRolesLoading: true },
+      { type: GET_TUTOR_ROLES_FULFILLED, payload: { tutorRoles, columns: "name,currentPayrate.rate" } }
+    );
 
     expect(state.tutorRoles).toBe(tutorRoles);
     expect(state.tutorRolesColumns).toBe("name,currentPayrate.rate");
+    expect(state.tutorRolesLoading).toBe(false);
   });
 });

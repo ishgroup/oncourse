@@ -31,6 +31,7 @@ export interface PreferencesState {
   tutorRoles?: DefinedTutorRole[];
   // Custom columns tutor roles were loaded with, undefined for the default columns
   tutorRolesColumns?: string;
+  tutorRolesLoading?: boolean;
   tutorRolesError?: boolean;
   gradingTypes?: GradingType[];
   enums?: any;

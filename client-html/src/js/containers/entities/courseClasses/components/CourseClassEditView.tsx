@@ -8,7 +8,7 @@
 
 import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from '@api/model';
 import Edit from '@mui/icons-material/Edit';
-import { Button, IconButton, Typography } from '@mui/material';
+import { Button, CircularProgress, IconButton, Typography } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -31,7 +31,7 @@ import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
 import EntityService from '../../../../common/services/EntityService';
 import { getCustomColumnsMap } from '../../../../common/utils/common';
-import { getCurrentTax, useAppSelector } from '../../../../common/utils/hooks';
+import { getCurrentTax, useAppDispatch, useAppSelector } from '../../../../common/utils/hooks';
 import { getLabelWithCount } from '../../../../common/utils/strings';
 import history from '../../../../constants/History';
 import { EditViewProps } from '../../../../model/common/ListView';
@@ -589,17 +589,15 @@ const mapStateToProps = (state: State) => ({
   taxes: state.taxes.items,
   tutorRoles: state.preferences.tutorRoles,
   tutorRolesColumns: state.preferences.tutorRolesColumns,
+  tutorRolesLoading: state.preferences.tutorRolesLoading,
   tutorRolesError: state.preferences.tutorRolesError,
   currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
-const TutorRolesLoadError = ({ dispatch }) => (
+const TutorRolesLoadError = ({ onRetry }) => (
   <div className="p-3">
     <Typography color="error" className="mb-2">{$t('tutor_roles_could_not_be_loaded')}</Typography>
-    <Button
-      variant="outlined"
-      onClick={() => dispatch(getTutorRoles(null, null, COURSE_CLASS_TUTOR_ROLES_COLUMNS))}
-    >
+    <Button variant="outlined" onClick={onRetry}>
       {$t('try_again')}
     </Button>
   </div>
@@ -607,17 +605,43 @@ const TutorRolesLoadError = ({ dispatch }) => (
 
 // Class budget and tutor pay need tutor roles with pay rates, which load in parallel with the class, so the view waits for both
 const CourseClassEditViewLoader = (props: any) => {
-  if (!props.values) {
+  const {
+    values, tutorRoles, tutorRolesColumns, tutorRolesLoading, tutorRolesError
+  } = props;
+
+  const dispatch = useAppDispatch();
+
+  const hasValues = Boolean(values);
+  const tutorRolesReady = Boolean(tutorRoles) && tutorRolesColumns === COURSE_CLASS_TUTOR_ROLES_COLUMNS;
+
+  const loadTutorRoles = useCallback(() => {
+    dispatch(getTutorRoles(null, null, COURSE_CLASS_TUTOR_ROLES_COLUMNS));
+  }, []);
+
+  // Tutor roles can be reloaded elsewhere without pay rates (for example in Preferences), then the class loads them again
+  useEffect(() => {
+    if (hasValues && !tutorRolesReady && !tutorRolesLoading && !tutorRolesError) {
+      loadTutorRoles();
+    }
+  }, [hasValues, tutorRolesReady, tutorRolesLoading, tutorRolesError]);
+
+  if (!hasValues) {
     return null;
   }
 
-  if (props.tutorRolesError) {
-    return <TutorRolesLoadError dispatch={props.dispatch} />;
+  if (tutorRolesReady) {
+    return <CourseClassEditView {...props} />;
   }
 
-  return props.tutorRoles && props.tutorRolesColumns === COURSE_CLASS_TUTOR_ROLES_COLUMNS
-    ? <CourseClassEditView {...props} />
-    : null;
+  if (tutorRolesError && !tutorRolesLoading) {
+    return <TutorRolesLoadError onRetry={loadTutorRoles} />;
+  }
+
+  return (
+    <div className="p-3">
+      <CircularProgress size={40} thickness={5} />
+    </div>
+  );
 };
 
 export default connect(mapStateToProps)(CourseClassEditViewLoader);

@@ -250,6 +250,7 @@ export const preferencesReducer = (state: PreferencesState = {}, action: IAction
     case GET_TUTOR_ROLES_REQUEST: {
       return {
         ...state,
+        tutorRolesLoading: true,
         tutorRolesError: false
       };
     }
@@ -260,13 +261,15 @@ export const preferencesReducer = (state: PreferencesState = {}, action: IAction
       return {
         ...state,
         tutorRoles,
-        tutorRolesColumns: columns
+        tutorRolesColumns: columns,
+        tutorRolesLoading: false
       };
     }
 
     case GET_TUTOR_ROLES_FAILED: {
       return {
         ...state,
+        tutorRolesLoading: false,
         tutorRolesError: true
       };
     }

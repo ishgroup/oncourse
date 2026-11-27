@@ -3,12 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import * as React from 'react';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../js/common/components/list-view/constants';
 import ListEditView from '../../../js/common/components/list-view/components/edit-view/EditView';
 import CourseClassEditView from '../../../js/containers/entities/courseClasses/components/CourseClassEditView';
 import { COURSE_CLASS_TUTOR_ROLES_COLUMNS } from '../../../js/containers/entities/courseClasses/constants';
+import { GET_TUTOR_ROLES_REQUEST, getTutorRoles } from '../../../js/containers/preferences/actions';
+import TestStore from '../../../js/constants/Store';
 import { mockedAPI, TestEntry } from '../../TestEntry';
 
 const tutorRoles = mockedAPI.db.getPlainTutorRoles().rows.map(r => ({ id: r.id, name: r.values[0] }));
@@ -48,33 +50,66 @@ const renderClass = (preferences: object) => {
   );
 };
 
+const loadClassTutorRoles = getTutorRoles(null, null, COURSE_CLASS_TUTOR_ROLES_COLUMNS);
+
 describe("CourseClassEditView tutor roles loading", () => {
+  let dispatch: jest.SpyInstance;
+
   beforeAll(() => {
     window.performance.getEntriesByName = jest.fn(() => []);
   });
 
-  it("is not rendered while tutor roles are not loaded yet", () => {
-    renderClass({});
+  beforeEach(() => {
+    const storeDispatch = TestStore.dispatch;
 
-    expect(screen.queryByTestId("expand-button-2")).toBeNull();
+    // Tutor roles request is only recorded, other actions (form initialization) are dispatched as usual
+    dispatch = jest.spyOn(TestStore, "dispatch").mockImplementation(
+      (action: any) => (action.type === GET_TUTOR_ROLES_REQUEST ? action : storeDispatch(action))
+    );
   });
 
-  it("is not rendered while only tutor roles without pay rates are loaded", () => {
+  afterEach(() => {
+    dispatch.mockRestore();
+  });
+
+  it("shows loading and does not request tutor roles again while they are loading", () => {
+    renderClass({ tutorRolesLoading: true });
+
+    expect(screen.queryByTestId("expand-button-2")).toBeNull();
+    expect(screen.getByRole("progressbar")).toBeTruthy();
+    expect(dispatch).not.toHaveBeenCalledWith(loadClassTutorRoles);
+  });
+
+  it("loads tutor roles with pay rates when only tutor roles without pay rates are loaded", () => {
     renderClass({ tutorRoles });
 
     expect(screen.queryByTestId("expand-button-2")).toBeNull();
+    expect(screen.getByRole("progressbar")).toBeTruthy();
+    expect(dispatch).toHaveBeenCalledWith(loadClassTutorRoles);
   });
 
   it("is rendered once tutor roles with pay rates are loaded", () => {
     renderClass({ tutorRoles, tutorRolesColumns: COURSE_CLASS_TUTOR_ROLES_COLUMNS });
 
     expect(screen.getByTestId("expand-button-2")).toBeTruthy();
+    expect(dispatch).not.toHaveBeenCalledWith(loadClassTutorRoles);
   });
 
-  it("shows an error with a retry instead of the class when tutor roles fail to load", () => {
+  it("is rendered when a reload fails but tutor roles with pay rates are already loaded", () => {
+    renderClass({ tutorRoles, tutorRolesColumns: COURSE_CLASS_TUTOR_ROLES_COLUMNS, tutorRolesError: true });
+
+    expect(screen.getByTestId("expand-button-2")).toBeTruthy();
+    expect(screen.queryByText("Try again")).toBeNull();
+  });
+
+  it("shows an error with a retry when tutor roles fail to load", () => {
     renderClass({ tutorRolesError: true });
 
     expect(screen.queryByTestId("expand-button-2")).toBeNull();
-    expect(screen.getByText("Try again")).toBeTruthy();
+    expect(dispatch).not.toHaveBeenCalledWith(loadClassTutorRoles);
+
+    fireEvent.click(screen.getByText("Try again"));
+
+    expect(dispatch).toHaveBeenCalledWith(loadClassTutorRoles);
   });
 });
