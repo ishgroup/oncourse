@@ -37,6 +37,8 @@ class AuditFunctions {
         restAudit.setSource(dbAudit.source?.databaseValue)
         restAudit.setRequestText(dbAudit.requestText)
         restAudit.setChangeSetRef(dbAudit.changeSetRef)
+        // the list view does not read the before/after values
+        restAudit.setFieldChanges([])
         return restAudit
     }
 

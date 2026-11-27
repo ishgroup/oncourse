@@ -14,14 +14,12 @@ package ish.oncourse.server.services
 import groovy.transform.CompileStatic
 import ish.oncourse.types.AuditSource
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.function.Executable
 
 import java.nio.charset.StandardCharsets
 
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertSame
-import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.junit.jupiter.api.Assertions.assertTrue
 
 /**
@@ -46,14 +44,15 @@ class AuditContextLimitsTest {
     }
 
     @Test
-    void testTooLongChangeSetRefIsRejected() {
+    void testTooLongChangeSetRefIsDropped() {
         String ref = 'r' * (AuditContext.CHANGE_SET_REF_MAX_LENGTH + 1)
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException,
-                { AuditContext.assistant('request', ref) } as Executable)
-        assertTrue(e.message.contains(String.valueOf(AuditContext.CHANGE_SET_REF_MAX_LENGTH)))
-        assertThrows(IllegalArgumentException,
-                { new AuditContext(AuditSource.USER, null, ref, false) } as Executable)
+        // auditing must not fail the audited operation, and a truncated ref could match another change set
+        AuditContext context = AuditContext.assistant('request', ref)
+        assertNull(context.changeSetRef)
+        assertEquals('request', context.requestText)
+        assertEquals(AuditSource.ASSISTANT, context.source)
+        assertNull(new AuditContext(AuditSource.USER, null, ref, false).changeSetRef)
     }
 
     @Test

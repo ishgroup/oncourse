@@ -177,6 +177,41 @@ class AuditContextTest extends TestWithDatabase {
     }
 
     @Test
+    void testTooLongChangeSetRefIsDroppedAndChangeIsCommitted() {
+        Account account = createAccount('Long change set')
+        String changeSetRef = 'c' * (AuditContext.CHANGE_SET_REF_MAX_LENGTH + 1)
+
+        AuditContext.open(AuditContext.assistant(REQUEST_TEXT, changeSetRef)).withCloseable {
+            account.description = 'Renamed with a long change set'
+            cayenneContext.commitChanges()
+        }
+
+        Account committed = ObjectSelect.query(Account).where(Account.ID.eq(account.id)).selectOne(cayenneService.newContext)
+        assertEquals('Renamed with a long change set', committed.description)
+        Audit audit = lastAudit(account, AuditAction.UPDATE)
+        assertEquals(AuditSource.ASSISTANT, audit.source)
+        assertEquals(REQUEST_TEXT, audit.requestText)
+        assertNull(audit.changeSetRef)
+        assertNotNull(audit.afterValues)
+    }
+
+    @Test
+    void testMultibyteRequestTextOfColumnSizeIsStored() {
+        Account account = createAccount('Multibyte request')
+        // 2 bytes per character in UTF-8: twice the column size
+        String requestText = 'я' * AuditContext.REQUEST_TEXT_MAX_BYTES
+
+        AuditContext.open(AuditContext.assistant(requestText, CHANGE_SET)).withCloseable {
+            account.description = 'Renamed after a multibyte request'
+            cayenneContext.commitChanges()
+        }
+
+        Audit audit = lastAudit(account, AuditAction.UPDATE)
+        assertEquals(AuditContext.REQUEST_TEXT_MAX_BYTES >> 1, audit.requestText.length())
+        assertTrue(requestText.startsWith(audit.requestText))
+    }
+
+    @Test
     void testContextsNest() {
         AuditContext user = AuditContext.of(AuditSource.USER)
         AuditContext assistant = AuditContext.assistant(REQUEST_TEXT, CHANGE_SET)

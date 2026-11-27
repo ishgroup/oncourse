@@ -12,6 +12,8 @@
 package ish.oncourse.server.services;
 
 import ish.oncourse.types.AuditSource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Where the changes made on the current thread come from, for the audit log.
@@ -32,11 +34,15 @@ import ish.oncourse.types.AuditSource;
  * {@code ApiFilter} opens a source-only context (user or API token)
  * for every authorised API request.
  * <p>
- * The values have to fit the {@code Audit} columns, otherwise the audit entry is lost: a change set
- * reference longer than {@link #CHANGE_SET_REF_MAX_LENGTH} is rejected, a request text longer than
- * {@link #REQUEST_TEXT_MAX_BYTES} UTF-8 bytes is truncated.
+ * The values have to fit the {@code Audit} columns, otherwise the audit entry is lost. Auditing must never
+ * break the operation it audits, so the constructor never throws: a change set reference longer than
+ * {@link #CHANGE_SET_REF_MAX_LENGTH} is dropped with a warning, a request text longer than
+ * {@link #REQUEST_TEXT_MAX_BYTES} UTF-8 bytes is truncated. Every {@link AuditSource} value fits its column,
+ * which {@code AuditContextLimitsTest} checks.
  */
 public final class AuditContext {
+
+    private static final Logger logger = LogManager.getLogger();
 
     /**
      * Length of the {@code Audit.source} column, VARCHAR(32)
@@ -49,7 +55,7 @@ public final class AuditContext {
     public static final int CHANGE_SET_REF_MAX_LENGTH = 64;
 
     /**
-     * Size of the {@code Audit.requestText} column, TEXT: 65535 bytes
+     * Size of the {@code Audit.requestText} column, TEXT: 65535 bytes whatever the charset
      */
     public static final int REQUEST_TEXT_MAX_BYTES = 65_535;
 
@@ -64,22 +70,14 @@ public final class AuditContext {
      * @param source where the changes come from
      * @param requestText text of the request that causes the changes, e.g. the message sent to the assistant;
      *                    truncated to {@link #REQUEST_TEXT_MAX_BYTES} UTF-8 bytes
-     * @param changeSetRef reference to the change set the changes belong to, at most {@link #CHANGE_SET_REF_MAX_LENGTH} characters
+     * @param changeSetRef reference to the change set the changes belong to, at most {@link #CHANGE_SET_REF_MAX_LENGTH}
+     *                     characters; a longer one is dropped
      * @param recordValues whether the audit listeners record before/after values
-     * @throws IllegalArgumentException when the change set reference is too long
      */
     public AuditContext(AuditSource source, String requestText, String changeSetRef, boolean recordValues) {
-        if (source != null && source.getDatabaseValue().length() > SOURCE_MAX_LENGTH) {
-            // a new AuditSource constant has to fit the column
-            throw new IllegalArgumentException("Audit source " + source.name() + " is longer than " + SOURCE_MAX_LENGTH + " characters");
-        }
-        if (changeSetRef != null && changeSetRef.length() > CHANGE_SET_REF_MAX_LENGTH) {
-            throw new IllegalArgumentException("Change set reference is longer than " + CHANGE_SET_REF_MAX_LENGTH
-                    + " characters: " + changeSetRef.length());
-        }
         this.source = source;
         this.requestText = truncateUtf8(requestText, REQUEST_TEXT_MAX_BYTES);
-        this.changeSetRef = changeSetRef;
+        this.changeSetRef = fitChangeSetRef(changeSetRef);
         this.recordValues = recordValues;
     }
 
@@ -127,6 +125,22 @@ public final class AuditContext {
 
     public boolean isRecordValues() {
         return recordValues;
+    }
+
+    /**
+     * Undo looks up the entries of a change set by this reference. A truncated reference could equal the
+     * truncated reference of another change set with the same prefix, and undo would then revert changes
+     * of both, so a reference that does not fit is dropped rather than truncated: the entries are still
+     * stored, only without a change set to undo them by.
+     */
+    private static String fitChangeSetRef(String changeSetRef) {
+        if (changeSetRef == null || changeSetRef.length() <= CHANGE_SET_REF_MAX_LENGTH) {
+            return changeSetRef;
+        }
+        // log the length only, never the reference
+        logger.warn("Change set reference of {} characters is longer than {}, audit entries are stored without it",
+                changeSetRef.length(), CHANGE_SET_REF_MAX_LENGTH);
+        return null;
     }
 
     /**
