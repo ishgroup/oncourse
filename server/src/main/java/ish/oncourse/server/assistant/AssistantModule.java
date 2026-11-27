@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.assistant;
 
+import com.google.inject.Binder;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import io.bootique.ConfigModule;
@@ -21,11 +22,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Provides the onCourse Assistant's AI model from the {@code assistant:} section of onCourse.yml.
+ * Provides the onCourse Assistant's AI model from the {@code assistant:} section of onCourse.yml
+ * and clears conversations on logout.
  */
 public class AssistantModule extends ConfigModule {
 
     private static final Logger logger = LogManager.getLogger();
+
+    @Override
+    public void configure(Binder binder) {
+        // listens for logouts from the start, so conversations never outlive the session
+        binder.bind(AssistantLogoutListener.class).asEagerSingleton();
+    }
 
     @Singleton
     @Provides

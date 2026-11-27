@@ -8,8 +8,10 @@ import { DefaultEpic } from '../common/Default.Epic';
 import { mockedAPI } from '../TestEntry';
 import { waitFor } from '@testing-library/react';
 import { StateObservable } from 'redux-observable';
-import { lastValueFrom, Subject } from 'rxjs';
+import { lastValueFrom, of, Subject } from 'rxjs';
 import { toArray } from 'rxjs/operators';
+import { GET_USER_PREFERENCES } from '../../js/common/actions';
+import { ASSISTANT_AVAILABLE_KEY } from '../../js/constants/Config';
 import TestStore from '../../js/constants/Store';
 import { GET_IS_LOGGED_FULFILLED } from '../../js/containers/preferences/actions';
 import { AssistantApiMock, MOCK_CONVERSATION_ID } from '../../dev/mock/api/assistant/AssistantApiMock';
@@ -19,7 +21,7 @@ import {
   sendAssistantMessage
 } from '../../js/containers/assistant/actions';
 import { EpicSendAssistantMessage } from '../../js/containers/assistant/epics/EpicSendAssistantMessage';
-import { AssistantInitialState } from '../../js/containers/assistant/reducers';
+import { AssistantInitialState, assistantReducer } from '../../js/containers/assistant/reducers';
 
 const MESSAGE_URL = "/v1/assistant/message";
 
@@ -61,7 +63,7 @@ describe("Send a message to the onCourse Assistant epic", () => {
     expect(JSON.parse(mockedAPI.api.history.post.at(-1).data)).toEqual({ conversationId: "c1", text: "hi" });
   });
 
-  it("shows the server's message when the assistant is not available", () => {
+  it("shows the server's message and reloads the availability when the assistant is not available", () => {
     mockedAPI.api.onPost(MESSAGE_URL).reply(403, { errorMessage: "The onCourse Assistant is not available to you" });
 
     return DefaultEpic({
@@ -72,9 +74,27 @@ describe("Send a message to the onCourse Assistant epic", () => {
         {
           type: SEND_ASSISTANT_MESSAGE_REJECTED,
           payload: { message: "The onCourse Assistant is not available to you" }
+        },
+        {
+          type: GET_USER_PREFERENCES,
+          payload: [ASSISTANT_AVAILABLE_KEY]
         }
       ]
     });
+  });
+
+  it("stops thinking and logs out when the session is gone", async () => {
+    mockedAPI.api.onPost(MESSAGE_URL).reply(401, {});
+
+    const pendingState = { ...AssistantInitialState, messages: [], pending: true };
+    const state$ = new StateObservable<any>(new Subject(), { ...TestStore.getState(), assistant: pendingState });
+    const output = await lastValueFrom(EpicSendAssistantMessage(of(sendAssistantMessage("hi")), state$, {}).pipe(toArray()));
+
+    // the thinking progress stops even if the logout doesn't follow
+    expect(output[0].type).toBe(SEND_ASSISTANT_MESSAGE_REJECTED);
+    expect(assistantReducer(pendingState, output[0]).pending).toBe(false);
+    expect(output).toContainEqual({ type: GET_IS_LOGGED_FULFILLED, payload: false });
+    expect(output.reduce(assistantReducer, pendingState)).toEqual(AssistantInitialState);
   });
 
   it("drops the reply when the user is logged out meanwhile", async () => {

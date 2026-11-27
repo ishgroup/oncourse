@@ -15,12 +15,12 @@ import com.google.inject.Singleton
 import groovy.transform.CompileStatic
 import ish.oncourse.server.assistant.model.ModelMessage
 
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
 /**
  * Keeps onCourse Assistant conversations in memory on this server. A conversation belongs to the user who started it.
- * Conversations idle for too long are dropped, and each keeps only its latest messages.
+ * A new conversation is kept only after its first successful exchange. Conversations idle for too long are dropped,
+ * and each keeps only its latest messages.
  */
 @Singleton
 @CompileStatic
@@ -34,12 +34,14 @@ class AssistantConversationStore {
 
         final String id
         final Long userId
+        private final long generation
         private final List<ModelMessage> messages = []
         volatile long lastUsed
 
-        Conversation(String id, Long userId, long now) {
+        Conversation(String id, Long userId, long generation, long now) {
             this.id = id
             this.userId = userId
+            this.generation = generation
             this.lastUsed = now
         }
 
@@ -64,39 +66,72 @@ class AssistantConversationStore {
         }
     }
 
-    private final Map<String, Conversation> conversations = new ConcurrentHashMap<>()
+    // guarded by this, so that the cap check and the insertion are atomic
+    private final Map<String, Conversation> conversations = new HashMap<>()
+    // guarded by this: how many times each user's conversations were cleared
+    private final Map<Long, Long> generations = new HashMap<>()
 
     /**
-     * Returns the user's conversation with this id, or starts a new one when there is no id, the conversation
-     * is gone or it belongs to someone else.
+     * Returns the user's conversation with this id, or null when there is no id, the conversation is gone
+     * or it belongs to someone else.
      */
-    Conversation getOrCreate(String id, Long userId) {
+    synchronized Conversation find(String id, Long userId) {
         long now = currentTimeMillis()
         evictIdle(now)
 
         Conversation conversation = id ? conversations.get(id) : null
         if (conversation == null || conversation.userId != userId) {
-            conversation = new Conversation(UUID.randomUUID().toString(), userId, now)
-            evictOldestOverLimit()
-            conversations.put(conversation.id, conversation)
+            return null
         }
         conversation.lastUsed = now
         return conversation
     }
 
     /**
-     * Drops all conversations of the user.
+     * Starts a new conversation of the user. It isn't kept until it is saved, so a conversation whose first
+     * message failed never takes the place of other conversations.
      */
-    void clearForUser(Long userId) {
-        conversations.values().removeIf { Conversation it -> it.userId == userId }
+    synchronized Conversation start(Long userId) {
+        return new Conversation(UUID.randomUUID().toString(), userId, generation(userId), currentTimeMillis())
     }
 
-    int size() {
+    /**
+     * Keeps the conversation after a successful exchange, dropping the least recently used conversations
+     * over the limit. A conversation started before the user's conversations were cleared isn't kept,
+     * so a reply that arrives after logout doesn't bring it back.
+     */
+    synchronized void save(Conversation conversation) {
+        if (conversation.generation != generation(conversation.userId)) {
+            return
+        }
+        long now = currentTimeMillis()
+        evictIdle(now)
+        conversation.lastUsed = now
+        if (!conversations.containsKey(conversation.id)) {
+            evictOldestOverLimit()
+            conversations.put(conversation.id, conversation)
+        }
+    }
+
+    /**
+     * Drops all conversations of the user, including the ones still waiting for their first reply.
+     */
+    synchronized void clearForUser(Long userId) {
+        conversations.values().removeIf { Conversation it -> it.userId == userId }
+        generations.put(userId, generation(userId) + 1)
+    }
+
+    synchronized int size() {
         return conversations.size()
     }
 
     protected long currentTimeMillis() {
         return System.currentTimeMillis()
+    }
+
+    private long generation(Long userId) {
+        Long generation = generations.get(userId)
+        return generation == null ? 0L : generation
     }
 
     private void evictIdle(long now) {

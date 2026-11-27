@@ -43,6 +43,7 @@ class AssistantConversationServiceTest extends TestWithDatabase {
     private PreferenceController preferences
     private ISystemUserService users
     private ScriptedModelProvider fake
+    private AssistantConversationStore store
     private AssistantConversationService service
 
     @BeforeEach
@@ -55,7 +56,8 @@ class AssistantConversationServiceTest extends TestWithDatabase {
         loginAs(ADMIN_ID)
 
         fake = new ScriptedModelProvider(['Hello from fake'])
-        service = new AssistantConversationService(preferences, users, fake, new AssistantConversationStore())
+        store = new AssistantConversationStore()
+        service = new AssistantConversationService(preferences, users, fake, store)
     }
 
     @Test
@@ -133,6 +135,62 @@ class AssistantConversationServiceTest extends TestWithDatabase {
         service.send(first.conversationId, 'Try again')
         Assertions.assertEquals([ModelMessage.user('Create a course'), ModelMessage.assistant('Hello from fake'),
                                  ModelMessage.user('Try again')], fake.requests[2].messages)
+    }
+
+    @Test
+    void unexpectedProviderFailureIs503() {
+        AssistantConversationService.Reply first = service.send(null, 'Create a course')
+        fake.failNext(new IllegalStateException('provider bug quoting Lost message'))
+
+        assertError(503, AssistantConversationService.UNAVAILABLE_MSG) { service.send(first.conversationId, 'Lost message') }
+
+        AssistantConversationService.Reply retry = service.send(first.conversationId, 'Try again')
+        Assertions.assertEquals(first.conversationId, retry.conversationId)
+        Assertions.assertEquals([ModelMessage.user('Create a course'), ModelMessage.assistant('Hello from fake'),
+                                 ModelMessage.user('Try again')], fake.requests[2].messages)
+    }
+
+    @Test
+    void failureIsDescribedWithoutTheUsersText() {
+        RuntimeException failure = new RuntimeException('wrapped',
+                new AssistantModelException('Bedrock call failed: ValidationException',
+                        new IllegalArgumentException('messages.0: Lost message')))
+
+        String description = AssistantConversationService.describeFailure(failure)
+
+        Assertions.assertFalse(description.contains('Lost message'))
+        Assertions.assertFalse(description.contains('wrapped'))
+        Assertions.assertTrue(description.startsWith('java.lang.RuntimeException caused by ' +
+                'ish.oncourse.server.assistant.model.AssistantModelException: Bedrock call failed: ValidationException ' +
+                'caused by java.lang.IllegalArgumentException at '), description)
+    }
+
+    @Test
+    void failedFirstMessageKeepsNoConversation() {
+        fake.failNext(new AssistantModelException('boom'))
+
+        assertError(503, AssistantConversationService.UNAVAILABLE_MSG) { service.send(null, 'Lost message') }
+        Assertions.assertEquals(0, store.size())
+
+        AssistantConversationService.Reply retry = service.send(null, 'Try again')
+        Assertions.assertEquals(1, store.size())
+        Assertions.assertEquals([ModelMessage.user('Try again')], fake.requests[1].messages)
+        Assertions.assertEquals(retry.conversationId, service.send(retry.conversationId, 'And again').conversationId)
+    }
+
+    @Test
+    void refusalDropsTheUsersConversations() {
+        AssistantConversationService.Reply first = service.send(null, 'Create a course')
+        Assertions.assertEquals(1, store.size())
+
+        preferences.setAssistantEnabled(false)
+        assertError(403, AssistantConversationService.NOT_AVAILABLE_MSG) { service.send(first.conversationId, 'Hello') }
+        Assertions.assertEquals(0, store.size())
+
+        preferences.setAssistantEnabled(true)
+        AssistantConversationService.Reply afterEnabled = service.send(first.conversationId, 'Hello')
+        Assertions.assertNotEquals(first.conversationId, afterEnabled.conversationId)
+        Assertions.assertEquals([ModelMessage.user('Hello')], fake.requests[1].messages)
     }
 
     private void loginAs(Long id) {

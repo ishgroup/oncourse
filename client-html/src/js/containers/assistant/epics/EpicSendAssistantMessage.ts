@@ -7,19 +7,29 @@ import $t from '@t';
 import { Epic, ofType, StateObservable } from "redux-observable";
 import { from, Observable, of } from "rxjs";
 import { catchError, exhaustMap, filter, map, takeUntil } from "rxjs/operators";
+import { getUserPreferences } from "../../../common/actions";
 import { IAction } from "../../../common/actions/IshAction";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { ASSISTANT_AVAILABLE_KEY } from "../../../constants/Config";
 import { State } from "../../../reducers/state";
 import { GET_IS_LOGGED_FULFILLED } from "../../preferences/actions";
 import { SEND_ASSISTANT_MESSAGE, sendAssistantMessageFulfilled, sendAssistantMessageRejected } from "../actions";
 import AssistantService from "../services/AssistantService";
 
 export const assistantErrorActions = (response: any): IAction<any>[] => {
-  if (response?.status === 401) {
-    // redirects to the login page, which also clears the conversation
-    return FetchErrorHandler(response);
+  // stops the thinking progress even if nothing else follows
+  const rejected = sendAssistantMessageRejected(response?.data?.errorMessage || $t("assistant_unavailable_try_again"));
+
+  switch (response?.status) {
+    case 401:
+      // redirects to the login page, which also clears the conversation
+      return [rejected, ...FetchErrorHandler(response)];
+    case 403:
+      // the assistant was turned off for the user: reloads the availability, which hides the button
+      return [rejected, getUserPreferences([ASSISTANT_AVAILABLE_KEY])];
+    default:
+      return [rejected];
   }
-  return [sendAssistantMessageRejected(response?.data?.errorMessage || $t("assistant_unavailable_try_again"))];
 };
 
 // Not EpicUtils.Create: a reply can take half a minute, and the global fetch progress would block the page meanwhile.

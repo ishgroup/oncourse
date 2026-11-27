@@ -19,9 +19,10 @@ let host: HTMLDivElement = null;
 const slots: HTMLElement[] = [];
 
 const placeHost = () => {
-  const target = slots[slots.length - 1] || document.body;
+  // a slot already taken off the page with its edit view, before its cleanup has run, can't show the host
+  const target = slots.filter(slot => slot.isConnected).pop() || document.body;
 
-  if (host.parentElement !== target) {
+  if (!host.isConnected || host.parentElement !== target) {
     // moving an element blurs what is focused in it, typing in the panel continues
     const focused = host.contains(document.activeElement) ? document.activeElement as HTMLElement : null;
     target.appendChild(host);

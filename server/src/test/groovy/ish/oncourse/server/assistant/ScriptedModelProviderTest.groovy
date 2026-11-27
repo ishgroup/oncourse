@@ -60,6 +60,18 @@ class ScriptedModelProviderTest {
         Assertions.assertEquals(2, fake.requests.size())
     }
 
+    @Test
+    void failNextWithUnexpectedExceptionFailsOnce() {
+        ScriptedModelProvider fake = new ScriptedModelProvider(['ok'])
+        IllegalStateException failure = new IllegalStateException('bug')
+        fake.failNext(failure)
+
+        IllegalStateException thrown = Assertions.assertThrows(IllegalStateException, { fake.reply(request('a')) } as Executable)
+
+        Assertions.assertSame(failure, thrown)
+        Assertions.assertEquals('ok', fake.reply(request('b')).text)
+    }
+
     private static ModelRequest request(String text) {
         return new ModelRequest('system', [ModelMessage.user(text)])
     }

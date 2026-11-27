@@ -28,7 +28,7 @@ public class ScriptedModelProvider implements AssistantModelProvider {
 
     private final List<String> replies;
     private final AtomicInteger next = new AtomicInteger();
-    private final AtomicReference<AssistantModelException> failure = new AtomicReference<>();
+    private final AtomicReference<Exception> failure = new AtomicReference<>();
 
     /**
      * Every request the model was asked, in order.
@@ -46,12 +46,22 @@ public class ScriptedModelProvider implements AssistantModelProvider {
         failure.set(e);
     }
 
+    /**
+     * Makes the next call throw the unexpected exception instead of replying, like a provider with a bug.
+     */
+    public void failNext(RuntimeException e) {
+        failure.set(e);
+    }
+
     @Override
     public ModelReply reply(ModelRequest request) throws AssistantModelException {
         requests.add(request);
-        AssistantModelException e = failure.getAndSet(null);
+        Exception e = failure.getAndSet(null);
+        if (e instanceof AssistantModelException) {
+            throw (AssistantModelException) e;
+        }
         if (e != null) {
-            throw e;
+            throw (RuntimeException) e;
         }
         if (replies.isEmpty()) {
             return new ModelReply(ECHO_PREFIX + request.getLastUserText());

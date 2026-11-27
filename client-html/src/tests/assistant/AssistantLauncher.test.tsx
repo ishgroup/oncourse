@@ -7,6 +7,7 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import * as React from 'react';
 import { AssistantApiMock } from '../../dev/mock/api/assistant/AssistantApiMock';
 import FullScreenEditView from '../../js/common/components/list-view/components/full-screen-edit-view/FullScreenEditView';
+import { GET_USER_PREFERENCES_FULFILLED } from '../../js/common/actions';
 import { ASSISTANT_AVAILABLE_KEY } from '../../js/constants/Config';
 import TestStore from '../../js/constants/Store';
 import AssistantLauncher from '../../js/containers/assistant/components/AssistantLauncher';
@@ -134,6 +135,24 @@ describe("Ask onCourse AI", () => {
     await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("The onCourse Assistant is not available to you"));
   });
 
+  it("hides when the assistant was turned off for the user meanwhile", async () => {
+    // the availability comes from the store, as loaded at login, and the mocked server now says it is off
+    TestStore.dispatch({
+      type: GET_USER_PREFERENCES_FULFILLED,
+      payload: { preferences: { [ASSISTANT_AVAILABLE_KEY]: "true" } }
+    });
+    mockedAPI.api.onPost(MESSAGE_URL).reply(403, { errorMessage: "The onCourse Assistant is not available to you" });
+    renderLauncher({ systemUser: { firstName: "Ann" } });
+    fireEvent.click(screen.getByRole("button", { name: "Ask onCourse AI" }));
+
+    fireEvent.change(input(), { target: { value: "hi" } });
+    fireEvent.keyDown(input(), { key: "Enter" });
+
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: /onCourse Assistant/ })).not.toBeInTheDocument());
+    expect(screen.queryByRole("button", { name: "Ask onCourse AI" })).not.toBeInTheDocument();
+    expect(TestStore.getState().userPreferences[ASSISTANT_AVAILABLE_KEY]).toBe("false");
+  });
+
   it("closes on Escape and returns focus to the button", async () => {
     openPanel();
 
@@ -155,18 +174,20 @@ describe("Ask onCourse AI", () => {
   describe("on a record's full screen edit view", () => {
     const RecordContent = () => <input aria-label="Course name" />;
 
-    const page = (editViewOpen: boolean) => (
+    const page = (editViewOpen: boolean, editViewMounted = true) => (
       <TestEntry state={availableState}>
-        <FullScreenEditView
-          form="AssistantLauncherTestForm"
-          rootEntity="Course"
-          EditViewContent={RecordContent}
-          fullScreenEditView={editViewOpen}
-          toogleFullScreenEditView={jest.fn()}
-          showConfirm={jest.fn()}
-          creatingNew
-          hideTitle
-        />
+        {editViewMounted && (
+          <FullScreenEditView
+            form="AssistantLauncherTestForm"
+            rootEntity="Course"
+            EditViewContent={RecordContent}
+            fullScreenEditView={editViewOpen}
+            toogleFullScreenEditView={jest.fn()}
+            showConfirm={jest.fn()}
+            creatingNew
+            hideTitle
+          />
+        )}
         <AssistantLauncher />
       </TestEntry>
     );
@@ -217,6 +238,43 @@ describe("Ask onCourse AI", () => {
       expect(document.getElementById(ASSISTANT_HOST_ID).parentElement).toBe(document.body);
       expect(panel.closest("[aria-hidden='true']")).toBeNull();
       expect(input()).toHaveValue("draft");
+    });
+
+    it("keeps the panel on the page when the edit view is unmounted while it is open", async () => {
+      const { rerender } = render(page(true));
+
+      fireEvent.click(screen.getByRole("button", { name: "Ask onCourse AI" }));
+      fireEvent.change(input(), { target: { value: "draft" } });
+
+      rerender(page(true, false));
+
+      const host = document.getElementById(ASSISTANT_HOST_ID);
+      expect(host.isConnected).toBe(true);
+      expect(host.parentElement).toBe(document.body);
+      const panel = await screen.findByRole("dialog", { name: /onCourse Assistant/ });
+      expect(panel.closest("[aria-hidden='true']")).toBeNull();
+      expect(input()).toHaveValue("draft");
+    });
+
+    it("moves the panel to the page when the edit view is taken off it before its cleanup", () => {
+      const { rerender } = render(page(true));
+      fireEvent.click(screen.getByRole("button", { name: "Ask onCourse AI" }));
+
+      // the edit view's dialog leaves the page first, as it can while unmounting
+      const host = document.getElementById(ASSISTANT_HOST_ID);
+      const editViewRoot = [...document.body.children].find(child => child.contains(host));
+      editViewRoot.remove();
+      expect(host.isConnected).toBe(false);
+
+      // the next render of the launcher places the host again
+      rerender(page(true));
+
+      expect(host.isConnected).toBe(true);
+      expect(host.parentElement).toBe(document.body);
+      expect(screen.getByRole("dialog", { name: /onCourse Assistant/ })).toBeInTheDocument();
+
+      // back for React to unmount it
+      document.body.appendChild(editViewRoot);
     });
   });
 });
