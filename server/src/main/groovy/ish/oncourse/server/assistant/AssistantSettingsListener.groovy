@@ -21,6 +21,8 @@ import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.integration.OnCourseEventListener
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 /**
  * Drops the onCourse Assistant conversations of the users the assistant is no longer available to: everyone's
@@ -31,6 +33,8 @@ import org.apache.cayenne.query.ObjectSelect
 @Singleton
 @CompileStatic
 class AssistantSettingsListener implements OnCourseEventListener {
+
+    private static final Logger logger = LogManager.logger
 
     private final AssistantConversationStore conversationStore
     private final ICayenneService cayenneService
@@ -57,9 +61,22 @@ class AssistantSettingsListener implements OnCourseEventListener {
             return
         }
         // the Admin toggle may have changed since the conversations started, so it is read now
-        Set<Long> admins = availability.isAvailableTo(true) ? adminsAmong(users) : Collections.<Long>emptySet()
+        Set<Long> admins = availability.isAvailableTo(true) ? currentAdminsAmong(users) : Collections.<Long>emptySet()
         users.findAll { Long it -> !availability.isAvailableTo(admins.contains(it)) }
                 .each { Long it -> conversationStore.clearForUser(it) }
+    }
+
+    /**
+     * @return the admins among the users, or none if they can't be read, so that a failed lookup drops
+     * everyone's conversations instead of keeping those of users who lost access, and never fails the settings save
+     */
+    private Set<Long> currentAdminsAmong(Set<Long> users) {
+        try {
+            return adminsAmong(users)
+        } catch (Exception e) {
+            logger.warn('onCourse Assistant could not read the Admin toggles, dropping all conversations', e)
+            return Collections.<Long>emptySet()
+        }
     }
 
     /**

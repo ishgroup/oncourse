@@ -32,6 +32,7 @@ class AssistantSettingsListenerTest {
     private AssistantConversationStore.Conversation ann
     // users with the Admin toggle on now
     private Set<Long> admins = [1L] as Set<Long>
+    private boolean lookupFails
 
     @BeforeEach
     void setUp() {
@@ -41,6 +42,9 @@ class AssistantSettingsListenerTest {
         new AssistantSettingsListener(events, store, null) {
             @Override
             protected Set<Long> adminsAmong(Set<Long> userIds) {
+                if (lookupFails) {
+                    throw new IllegalStateException('database is down')
+                }
                 return userIds.findAll { Long it -> admins.contains(it) } as Set<Long>
             }
         }
@@ -64,6 +68,15 @@ class AssistantSettingsListenerTest {
 
         Assertions.assertSame(admin, store.find(admin.id, 1L))
         Assertions.assertNull(store.find(ann.id, 2L))
+    }
+
+    @Test
+    void adminOnlyDropsAllConversationsWhenTheAdminTogglesCantBeRead() {
+        lookupFails = true
+
+        events.postEvent(SystemEvent.valueOf(SystemEventType.ASSISTANT_SETTINGS_CHANGED, new AssistantAvailability(true, true)))
+
+        Assertions.assertEquals(0, store.size())
     }
 
     @Test
