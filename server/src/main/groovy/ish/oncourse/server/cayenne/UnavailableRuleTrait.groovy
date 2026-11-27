@@ -15,6 +15,10 @@ import groovy.time.BaseDuration
 import groovy.time.TimeCategory
 import groovy.time.TimeDuration
 import ish.common.types.SessionRepetitionType
+
+import java.time.zone.ZoneOffsetTransition
+import java.util.concurrent.TimeUnit
+
 import static ish.common.types.SessionRepetitionType.*
 
 
@@ -87,6 +91,16 @@ trait UnavailableRuleTrait {
             BaseDuration intervalDuration = TimeCategory.minus(holidayEnd, holidayStart)
             Date currentRepeateIntervalStart = holidayStart
             Date currentRepeateIntervalEnd = holidayEnd
+            if (step != null) {
+                // repeats which end a day before the session can't overlap it, so skip them instead of checking each
+                Date sessionFrom = sessionStart < sessionEnd ? sessionStart : sessionEnd
+                long intervalLength = Math.abs(holidayEnd.time - holidayStart.time)
+                Date skipBefore = new Date(sessionFrom.time - intervalLength - TimeUnit.DAYS.toMillis(1))
+                currentRepeateIntervalStart = lastRepeatBefore(holidayStart, skipBefore, getRecurrenceFrequency(), ruleZone)
+                if (!currentRepeateIntervalStart.is(holidayStart)) {
+                    currentRepeateIntervalEnd = shift(currentRepeateIntervalStart, ruleZone, intervalDuration)
+                }
+            }
             boolean clash = false
             while (currentRepeateIntervalStart <= until && !clash) {
                 clash = isOverlap(sessionStart, sessionEnd, currentRepeateIntervalStart, currentRepeateIntervalEnd)
@@ -99,6 +113,84 @@ trait UnavailableRuleTrait {
 
             return clash
         }
+    }
+
+    /**
+     * Each repeat is the previous one shifted by a step, so it keeps what DST or a short month did to an earlier
+     * repeat (a monthly rule on the 31st moves to the 28th after February). n steps at once give the same date
+     * while the zone offset doesn't change and no month can cut the day short, so those repeats are skipped in
+     * one shift, and the steps across an offset change or a month end are taken one by one.
+     *
+     * @return the last repeat, as found step by step from {@code first}, that starts before {@code before};
+     * {@code first} itself when the next repeat doesn't
+     */
+    private Date lastRepeatBefore(Date first, Date before, SessionRepetitionType frequency, TimeZone timeZone) {
+        BaseDuration step = repeatInterval(frequency, 1)
+        Date current = first
+        while (true) {
+            Date next = shift(current, timeZone, step)
+            if (!next.before(before)) {
+                return current
+            }
+            if (!mayCutDayOfMonth(current, timeZone, frequency)) {
+                Date limit = before
+                // hours are a fixed number of milliseconds, so DST doesn't change them
+                if (frequency != HOUR_CHOICE) {
+                    ZoneOffsetTransition transition = timeZone.toZoneId().rules.nextTransition(current.toInstant())
+                    if (transition != null && transition.instant.toEpochMilli() < limit.time) {
+                        limit = Date.from(transition.instant)
+                    }
+                }
+                int count = repeatsBefore(current, limit, frequency, timeZone)
+                if (count > 1) {
+                    current = shift(current, timeZone, repeatInterval(frequency, count))
+                    continue
+                }
+            }
+            current = next
+        }
+    }
+
+    /**
+     * @return whether a monthly or yearly step from the date can land on a shorter month and move to its last day
+     */
+    private boolean mayCutDayOfMonth(Date date, TimeZone timeZone, SessionRepetitionType frequency) {
+        if (frequency != MONTH_CHOICE && frequency != YEAR_CHOICE) {
+            return false
+        }
+        Calendar calendar = Calendar.getInstance(timeZone)
+        calendar.setTime(date)
+        return calendar.get(Calendar.DAY_OF_MONTH) > 28 &&
+                (frequency == MONTH_CHOICE || calendar.get(Calendar.MONTH) == Calendar.FEBRUARY)
+    }
+
+    /**
+     * @return the largest number of repeats from {@code from} that still start before {@code limit}
+     */
+    private int repeatsBefore(Date from, Date limit, SessionRepetitionType frequency, TimeZone timeZone) {
+        long count
+        switch (frequency) {
+            case MONTH_CHOICE:
+            case YEAR_CHOICE:
+                Calendar start = Calendar.getInstance(timeZone)
+                start.setTime(from)
+                Calendar end = Calendar.getInstance(timeZone)
+                end.setTime(limit)
+                long months = (end.get(Calendar.YEAR) - start.get(Calendar.YEAR)) * 12L + end.get(Calendar.MONTH) - start.get(Calendar.MONTH)
+                count = frequency == MONTH_CHOICE ? months : months.intdiv(12L) as long
+                break
+            default:
+                count = (limit.time - from.time).intdiv(repeatInterval(frequency, 1).toMilliseconds()) as long
+        }
+        // the estimate can be a repeat or two off, as days change length with DST and months differ
+        int result = Math.max(0L, Math.min(count, Integer.MAX_VALUE - 1L)) as int
+        while (result > 0 && !shift(from, timeZone, repeatInterval(frequency, result)).before(limit)) {
+            result--
+        }
+        while (shift(from, timeZone, repeatInterval(frequency, result + 1)).before(limit)) {
+            result++
+        }
+        return result
     }
 
     /**

@@ -16,18 +16,25 @@ import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.UnavailableRuleDao
 import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.cayenne.ContactUnavailableRuleRelation
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.CourseClassTutor
+import ish.oncourse.server.cayenne.CourseUnavailableRuleRelation
 import ish.oncourse.server.cayenne.Room
+import ish.oncourse.server.cayenne.RoomUnavailableRuleRelation
 import ish.oncourse.server.cayenne.Session
 import ish.oncourse.server.cayenne.Site
+import ish.oncourse.server.cayenne.SiteUnavailableRuleRelation
 import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.server.cayenne.TutorAttendance
 import ish.oncourse.server.cayenne.UnavailableRule
+import ish.oncourse.server.cayenne.UnavailableRuleRelation
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.Persistent
 import org.apache.cayenne.exp.Expression
+import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 
 import java.time.LocalDate
@@ -65,15 +72,17 @@ class TimetableClashService {
         }
 
         ObjectContext context = cayenneService.newContext
-        List<UnavailableRule> holidays = unavailableRuleDao.getHolidays(context)
+        List<Session> sessions = getSessions(context, from, to, siteId)
+        Timetable timetable = new Timetable(context, sessions, unavailableRuleDao.getHolidays(context))
 
         Map<List<Object>, TimetableClash> clashes = new LinkedHashMap<>()
-        getSessions(context, from, to, siteId).each { session ->
-            checkSession(context, session, holidays).each { clash ->
+        sessions.each { session ->
+            checkSession(session, timetable).each { clash ->
                 clashes.putIfAbsent(key(clash), clash)
             }
         }
-        return clashes.values().sort(false, { TimetableClash a, TimetableClash b -> compare(a, b) } as Comparator<TimetableClash>)
+        return withoutSameClassTutorClashes(clashes.values())
+                .sort(false, { TimetableClash a, TimetableClash b -> compare(a, b) } as Comparator<TimetableClash>)
     }
 
     private static List<Session> getSessions(ObjectContext context, LocalDate from, LocalDate to, Long siteId) {
@@ -89,9 +98,17 @@ class TimetableClashService {
         return ObjectSelect.query(Session)
                 .where(filter)
                 .orderBy(Session.START_DATETIME.asc(), Session.ID.asc())
-                .prefetch(Session.ROOM.dot(Room.SITE).joint())
-                .prefetch(Session.COURSE_CLASS.dot(CourseClass.COURSE).joint())
+                // every step is prefetched, as relationships which are not are fetched one by one
+                .prefetch(Session.ROOM.disjoint())
+                .prefetch(Session.ROOM.dot(Room.SITE).disjoint())
+                .prefetch(Session.COURSE_CLASS.disjoint())
+                .prefetch(Session.COURSE_CLASS.dot(CourseClass.COURSE).disjoint())
                 .prefetch(Session.COURSE_CLASS.dot(CourseClass.SESSIONS).disjoint())
+                .prefetch(Session.COURSE_CLASS.dot(CourseClass.SESSIONS).dot(Session.ROOM).disjoint())
+                .prefetch(Session.COURSE_CLASS.dot(CourseClass.SESSIONS).dot(Session.ROOM).dot(Room.SITE).disjoint())
+                .prefetch(Session.SESSION_TUTORS.disjoint())
+                .prefetch(Session.SESSION_TUTORS.dot(TutorAttendance.COURSE_CLASS_TUTOR).disjoint())
+                .prefetch(Session.SESSION_TUTORS.dot(TutorAttendance.COURSE_CLASS_TUTOR).dot(CourseClassTutor.TUTOR).disjoint())
                 .prefetch(Session.SESSION_TUTORS.dot(TutorAttendance.COURSE_CLASS_TUTOR).dot(CourseClassTutor.TUTOR).dot(Tutor.CONTACT).disjoint())
                 .select(context)
                 .findAll { startsWithin(it, from, to) }
@@ -106,7 +123,7 @@ class TimetableClashService {
         return LocalDateUtils.dateToTimeValue(session.startDatetime, session.timeZone.toZoneId()).toLocalDate()
     }
 
-    private static List<TimetableClash> checkSession(ObjectContext context, Session session, List<UnavailableRule> holidays) {
+    private static List<TimetableClash> checkSession(Session session, Timetable timetable) {
         List<TimetableClash> result = []
         TimeZone timeZone = session.timeZone
         Date start = session.startDatetime
@@ -115,35 +132,36 @@ class TimetableClashService {
 
         courseClass.sessions
                 .findAll { it != session && SessionClashRules.isClashed(start, end, it.startDatetime, it.endDatetime) }
-                .each { result << sessionsClash(SESSION, session, it, courseClass.id, courseClass.uniqueCode) }
+                .each { result << timetable.sessionsClash(SESSION, session, it, courseClass.id, courseClass.uniqueCode) }
 
         session.sessionTutors.each { roster ->
             Contact tutor = roster.courseClassTutor.tutor.contact
             Date rosterStart = roster.startDatetime ?: start
             Date rosterEnd = roster.endDatetime ?: end
             // rosters of the same class count too, as the timetable checks them among the class sessions
-            SessionClashRules.getTutorRosterClashes(context, rosterStart, rosterEnd, tutor.id, null, null)
-                    .findAll { it.session != session }
-                    .each { result << sessionsClash(TUTOR, session, it.session, tutor.id, tutor.fullName) }
-            clashingRules(tutor.unavailableRuleRelations*.rule, rosterStart, rosterEnd, timeZone)
+            timetable.getRosters(tutor)
+                    .findAll { it.session != session && SessionClashRules.overlaps(it.startDatetime, it.endDatetime, rosterStart, rosterEnd) }
+                    .each { result << timetable.sessionsClash(TUTOR, session, it.session, tutor.id, tutor.fullName) }
+            clashingRules(timetable.getRules(tutor), rosterStart, rosterEnd, timeZone)
                     .each { result << ruleClash(TUTOR_UNAVAILABLE, session, tutor.id, tutor.fullName, it) }
         }
 
         Room room = session.room
         if (room != null) {
-            SessionClashRules.getRoomBookingClashes(context, start, end, room.id, courseClass.id, null)
-                    .each { result << sessionsClash(ROOM, session, it, room.id, room.name) }
-            clashingRules(room.unavailableRuleRelations*.rule, start, end, timeZone)
+            timetable.getBookings(room)
+                    .findAll { it.courseClass.id != courseClass.id && SessionClashRules.overlaps(it.startDatetime, it.endDatetime, start, end) }
+                    .each { result << timetable.sessionsClash(ROOM, session, it, room.id, room.name) }
+            clashingRules(timetable.getRules(room), start, end, timeZone)
                     .each { result << ruleClash(ROOM_UNAVAILABLE, session, room.id, room.name, it) }
-            clashingRules(room.site.unavailableRuleRelations*.rule, start, end, timeZone)
+            clashingRules(timetable.getRules(room.site), start, end, timeZone)
                     .each { result << ruleClash(SITE_UNAVAILABLE, session, room.site.id, room.site.name, it) }
         }
 
         Course course = courseClass.course
-        clashingRules(course.unavailableRuleRelations*.rule, start, end, timeZone)
+        clashingRules(timetable.getRules(course), start, end, timeZone)
                 .each { result << ruleClash(COURSE_UNAVAILABLE, session, course.id, course.name, it) }
 
-        clashingRules(holidays, start, end, timeZone)
+        clashingRules(timetable.holidays, start, end, timeZone)
                 .each { result << ruleClash(HOLIDAY, session, it.id, it.explanation, it) }
 
         return result
@@ -151,17 +169,6 @@ class TimetableClashService {
 
     private static List<UnavailableRule> clashingRules(List<UnavailableRule> rules, Date start, Date end, TimeZone timeZone) {
         return rules.findAll { it.isClashed(start, end, timeZone) }
-    }
-
-    private static TimetableClash sessionsClash(TimetableClashType type, Session session, Session otherSession, Long referenceId, String referenceName) {
-        return new TimetableClash(
-                type: type,
-                date: startDate(session),
-                session: TimetableClashSession.of(session),
-                otherSession: TimetableClashSession.of(otherSession),
-                referenceId: referenceId,
-                referenceName: referenceName
-        )
     }
 
     private static TimetableClash ruleClash(TimetableClashType type, Session session, Long referenceId, String referenceName, UnavailableRule rule) {
@@ -174,6 +181,16 @@ class TimetableClashService {
                 ruleId: rule.id,
                 ruleDescription: rule.explanation
         )
+    }
+
+    /**
+     * Two overlapping sessions of a class are a SESSION clash, so the same tutor rostered on both isn't listed again.
+     */
+    private static List<TimetableClash> withoutSameClassTutorClashes(Collection<TimetableClash> clashes) {
+        Set<List<Long>> sessionClashes = clashes.findAll { it.type == SESSION }.collect { sessionIds(it) }.toSet()
+        return clashes.findAll {
+            !(it.type == TUTOR && it.session.classId == it.otherSession.classId && sessionIds(it) in sessionClashes)
+        }.toList()
     }
 
     /**
@@ -213,7 +230,106 @@ class TimetableClashService {
      * Two sessions clash with each other, so the same clash is found when either of them is checked.
      */
     private static List<Object> key(TimetableClash clash) {
-        List<Long> sessionIds = [clash.session.sessionId, clash.otherSession?.sessionId].findAll { it != null }.sort()
-        return [clash.type, clash.referenceId, clash.ruleId, sessionIds] as List<Object>
+        return [clash.type, clash.referenceId, clash.ruleId, sessionIds(clash)] as List<Object>
+    }
+
+    private static List<Long> sessionIds(TimetableClash clash) {
+        return [clash.session.sessionId, clash.otherSession?.sessionId].findAll { it != null }.sort()
+    }
+
+    /**
+     * The checked sessions and what they can clash with, loaded at once for all of them rather than per session:
+     * tutor rosters and room bookings over the whole period, and the unavailability rules.
+     */
+    private static class Timetable {
+
+        final List<UnavailableRule> holidays
+
+        private final Set<Session> checked
+        private final Map<Long, List<TutorAttendance>> rostersByTutor
+        private final Map<Long, List<Session>> bookingsByRoom
+        private final Map<Persistent, List<UnavailableRule>> rules = new HashMap<>()
+
+        Timetable(ObjectContext context, List<Session> sessions, List<UnavailableRule> holidays) {
+            this.holidays = holidays
+            this.checked = new HashSet<>(sessions)
+
+            Set<Contact> tutors = new LinkedHashSet<>()
+            List<Date> rosterDates = []
+            sessions.each { session ->
+                session.sessionTutors.each { roster ->
+                    tutors << roster.courseClassTutor.tutor.contact
+                    rosterDates << (roster.startDatetime ?: session.startDatetime) << (roster.endDatetime ?: session.endDatetime)
+                }
+            }
+            List<Session> sessionsInRooms = sessions.findAll { it.room != null }
+            Set<Room> rooms = new LinkedHashSet<>(sessionsInRooms*.room)
+            List<Date> roomDates = sessionsInRooms.collectMany { [it.startDatetime, it.endDatetime] }
+
+            rostersByTutor = tutors.empty ? new HashMap<Long, List<TutorAttendance>>() :
+                    SessionClashRules.getTutorRosters(context, tutors*.id, rosterDates.min(), rosterDates.max())
+                            .groupBy { it.courseClassTutor.tutor.contact.id }
+            bookingsByRoom = rooms.empty ? new HashMap<Long, List<Session>>() :
+                    SessionClashRules.getRoomBookings(context, rooms*.id, roomDates.min(), roomDates.max())
+                            .groupBy { it.room.id }
+
+            loadRules(context, ContactUnavailableRuleRelation, ContactUnavailableRuleRelation.CONTACT, tutors)
+            loadRules(context, RoomUnavailableRuleRelation, RoomUnavailableRuleRelation.ROOM, rooms)
+            loadRules(context, SiteUnavailableRuleRelation, SiteUnavailableRuleRelation.SITE, new LinkedHashSet<Site>(rooms*.site))
+            loadRules(context, CourseUnavailableRuleRelation, CourseUnavailableRuleRelation.COURSE, new LinkedHashSet<Course>(sessions*.courseClass*.course))
+        }
+
+        /**
+         * Rosters of the tutor that may clash with the checked sessions.
+         */
+        List<TutorAttendance> getRosters(Contact tutor) {
+            return rostersByTutor[tutor.id] ?: []
+        }
+
+        /**
+         * Sessions in the room that may clash with the checked sessions.
+         */
+        List<Session> getBookings(Room room) {
+            return bookingsByRoom[room.id] ?: []
+        }
+
+        List<UnavailableRule> getRules(Persistent entity) {
+            return rules[entity] ?: []
+        }
+
+        /**
+         * When both sessions are checked, the clash is listed for the one that starts first (then the one with the lower id),
+         * so it is the same whichever of them finds it.
+         */
+        TimetableClash sessionsClash(TimetableClashType type, Session session, Session otherSession, Long referenceId, String referenceName) {
+            boolean otherFirst = otherSession in checked &&
+                    (otherSession.startDatetime < session.startDatetime ||
+                            (otherSession.startDatetime == session.startDatetime && otherSession.id < session.id))
+            Session first = otherFirst ? otherSession : session
+            Session second = otherFirst ? session : otherSession
+            return new TimetableClash(
+                    type: type,
+                    date: startDate(first),
+                    session: TimetableClashSession.of(first),
+                    otherSession: TimetableClashSession.of(second),
+                    referenceId: referenceId,
+                    referenceName: referenceName
+            )
+        }
+
+        private void loadRules(ObjectContext context, Class<? extends UnavailableRuleRelation> type, Property relationOwner, Collection<? extends Persistent> owners) {
+            if (owners.empty) {
+                return
+            }
+            ObjectSelect.query(type)
+                    .where(relationOwner.in(owners))
+                    // a joint prefetch fails on these subclass entities
+                    .prefetch(relationOwner.disjoint())
+                    .prefetch(UnavailableRuleRelation.RULE.disjoint())
+                    .select(context)
+                    .each { UnavailableRuleRelation relation ->
+                        rules.computeIfAbsent(relationOwner.getFrom(relation) as Persistent, { new ArrayList<UnavailableRule>() }).add(relation.rule)
+                    }
+        }
     }
 }

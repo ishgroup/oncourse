@@ -27,7 +27,8 @@ enum TimetableClashType {
     ROOM,
 
     /**
-     * The tutor is rostered on another session at the same time.
+     * The tutor is rostered on another session at the same time. Two sessions of the same class which are
+     * a SESSION clash are not listed again as a TUTOR clash.
      */
     TUTOR,
 

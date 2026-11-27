@@ -153,7 +153,10 @@ class SessionValidator {
             Date rosterStart = LocalDateUtils.timeValueToDate(ta.start)
             Date rosterEnd = LocalDateUtils.timeValueToDate(ta.end)
             
-            List<TutorAttendance> rosterClashes = SessionClashRules.getTutorRosterClashes(cayenneService.newContext, rosterStart, rosterEnd, ta.contactId, classId, CLASH_LIMIT)
+            //if classId is null (or 0) - that means class is not saved to db yet
+            //otherwise filter out same class attendances, they are checked on the other step
+            Long exceptClassId = classId ? classId : null
+            List<TutorAttendance> rosterClashes = SessionClashRules.getTutorRosterClashes(cayenneService.newContext, rosterStart, rosterEnd, ta.contactId, exceptClassId, CLASH_LIMIT)
             if (!rosterClashes.empty) {
                 SessionWarningDTO warning = new SessionWarningDTO()
                 warning.sessionId = sessionDto.id

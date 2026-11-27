@@ -31,7 +31,8 @@ class TimetableClash {
     LocalDate date
 
     /**
-     * The session that clashes. For a clash between two sessions it is the one that is listed first.
+     * The session that clashes. For a clash between two checked sessions it is the one that starts first
+     * (then the one with the lower id).
      */
     TimetableClashSession session
 
