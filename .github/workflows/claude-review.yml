@@ -89,6 +89,7 @@ jobs:
                     nodes {
                       id isResolved path line originalLine
                       comments(first: 1) { nodes { author { login __typename } body originalCommit { oid } } }
+                      replies: comments(last: 50) { nodes { author { login __typename } body } }
                     }
                   }
                 }
@@ -96,6 +97,7 @@ jobs:
             }' \
             --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved | not)
               | select(.comments.nodes[0].author.login == "claude" and .comments.nodes[0].author.__typename == "Bot")
+              | select(any(.replies.nodes[]; (.author.login == "github-actions" and .author.__typename == "Bot" and (.body | startswith("✅ Fixed (verified by Claude review") or startswith("Resolved automatically at")))) | not)
               | {id, path, line: (.line // .originalLine), commit: .comments.nodes[0].originalCommit.oid,
                  comment: .comments.nodes[0].body}' \
             | jq -c . > "$RUNNER_TEMP/all-threads.jsonl"
@@ -325,9 +327,10 @@ jobs:
             --allowedTools "Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git grep:*),Read,Grep,Glob"
             --disallowedTools "Bash(gh:*),Bash(curl:*)"
 
-      # Resolve only threads from the re-check list that Claude found fixed. Reply with the reason
-      # first, so there is a trail and anyone can unresolve the conversation
-      - name: Resolve fixed threads
+      # Mark threads from the re-check list that Claude found fixed with a reply giving the reason.
+      # The workflow token can't resolve review threads ("Resource not accessible by integration"),
+      # so the gate below treats a thread whose latest comment is this reply as done
+      - name: Mark fixed threads
         if: ${{ steps.verify.outputs.execution_file != '' }}
         env:
           GH_TOKEN: ${{ github.token }}
@@ -340,21 +343,21 @@ jobs:
             if ! jq -s -e --arg id "$ID" 'any(.[]; .id == $id)' "$RUNNER_TEMP/threads.jsonl" > /dev/null; then
               echo "Skipping $ID: not in the re-check list"; continue
             fi
-            BODY="Resolved automatically at ${HEAD:0:9}: ${REASON:0:200}"
+            BODY="✅ Fixed (verified by Claude review at ${HEAD:0:9}): ${REASON:0:200}
+
+          This no longer blocks merging. Resolve the conversation to close it, or reply here if you disagree."
             if gh api graphql -f id="$ID" -f body="$BODY" -f query='mutation($id: ID!, $body: String!) {
-                  addPullRequestReviewThreadReply(input: {pullRequestReviewThreadId: $id, body: $body}) { clientMutationId } }' > /dev/null \
-              && gh api graphql -f id="$ID" -f query='mutation($id: ID!) {
-                  resolveReviewThread(input: {threadId: $id}) { thread { isResolved } } }' > /dev/null; then
-              echo "Resolved $ID"
+                  addPullRequestReviewThreadReply(input: {pullRequestReviewThreadId: $id, body: $body}) { clientMutationId } }' > /dev/null; then
+              echo "Marked $ID as fixed"
             else
-              echo "::warning title=Claude review::Could not resolve thread $ID"
+              echo "::warning title=Claude review::Could not reply on thread $ID"
             fi
           done < "$RUNNER_TEMP/resolve.txt"
 
       # Fail while any of Claude's inline comments (Important findings only) is unresolved, so this
-      # job can be a required check. It counts the whole PR, not just this run's range. Threads
-      # Claude verified as fixed are resolved above; resolve others by hand once fixed or not real,
-      # then push or re-run this check
+      # job can be a required check. It counts the whole PR, not just this run's range. A thread whose
+      # latest comment is the bot's "fixed" reply (above) doesn't count; a reply after it makes it count
+      # again. Resolve others by hand once fixed or not real, then push or re-run this check
       - name: Check unresolved Important issues
         env:
           GH_TOKEN: ${{ github.token }}
@@ -368,12 +371,17 @@ jobs:
                 pullRequest(number: $pr) {
                   reviewThreads(first: 100, after: $endCursor) {
                     pageInfo { hasNextPage endCursor }
-                    nodes { isResolved comments(first: 1) { nodes { author { login __typename } url } } }
+                    nodes {
+                      isResolved
+                      comments(first: 1) { nodes { author { login __typename } url } }
+                      latest: comments(last: 1) { nodes { author { login __typename } body } }
+                    }
                   }
                 }
               }
             }' \
             --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved | not)
+              | select(.latest.nodes[0] | (.author.login == "github-actions" and .author.__typename == "Bot" and (.body | startswith("✅ Fixed (verified by Claude review") or startswith("Resolved automatically at"))) | not)
               | .comments.nodes[0] | select(.author.login == "claude" and .author.__typename == "Bot") | .url')
           COUNT=$(printf '%s' "$OPEN" | grep -c . || true)
           echo "Unresolved Claude review comments: $COUNT"
