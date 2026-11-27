@@ -43,7 +43,9 @@ import {
   GET_PREFERENCES_FULFILLED,
   GET_TAX_TYPES_FULFILLED,
   GET_TIMEZONES_FULFILLED,
+  GET_TUTOR_ROLES_FAILED,
   GET_TUTOR_ROLES_FULFILLED,
+  GET_TUTOR_ROLES_REQUEST,
   GET_USI_SORTWARE_ID_FULFILLED,
   SAVE_HOLIDAYS_FULFILLED,
   SAVE_PREFERENCES_FULFILLED,
@@ -61,7 +63,15 @@ import {
   GET_FUNDING_CONTACTS_FULFILLED,
   SAVE_FUNDING_CONTACTS_FULFILLED
 } from '../containers/funding-contracts/actions';
-import { PreferencesState } from './state';
+import { PreferencesState, TutorRolesLoad } from './state';
+
+const setTutorRolesLoad = (state: PreferencesState, columns: string, load: TutorRolesLoad): PreferencesState => ({
+  ...state,
+  tutorRolesByColumns: {
+    ...state.tutorRolesByColumns,
+    [columns]: { ...state.tutorRolesByColumns?.[columns], ...load }
+  }
+});
 
 export const preferencesReducer = (state: PreferencesState = {}, action: IAction<any>): PreferencesState => {
   switch (action.type) {
@@ -245,13 +255,23 @@ export const preferencesReducer = (state: PreferencesState = {}, action: IAction
       };
     }
 
-    case GET_TUTOR_ROLES_FULFILLED: {
-      const { tutorRoles } = action.payload;
+    case GET_TUTOR_ROLES_REQUEST: {
+      const columns = action.payload?.columns;
 
-      return {
-        ...state,
-        tutorRoles
-      };
+      return columns ? setTutorRolesLoad(state, columns, { error: false }) : state;
+    }
+
+    case GET_TUTOR_ROLES_FULFILLED: {
+      const { tutorRoles, columns } = action.payload;
+
+      // Roles loaded with custom columns have a different shape, so they do not replace the default ones Preferences shows
+      return columns ? setTutorRolesLoad(state, columns, { roles: tutorRoles, error: false }) : { ...state, tutorRoles };
+    }
+
+    case GET_TUTOR_ROLES_FAILED: {
+      const columns = action.payload?.columns;
+
+      return columns ? setTutorRolesLoad(state, columns, { error: true }) : state;
     }
 
     case GET_GRADING_TYPES_FULFILLED: {

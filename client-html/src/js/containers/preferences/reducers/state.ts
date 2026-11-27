@@ -16,6 +16,11 @@ import {
   Tax
 } from '@api/model';
 
+export interface TutorRolesLoad {
+  roles?: DefinedTutorRole[];
+  error?: boolean;
+}
+
 export interface PreferencesState {
   contact?: any;
   customFields?: CustomFieldType[];
@@ -29,6 +34,8 @@ export interface PreferencesState {
   dataCollectionRules?: DataCollectionRule[];
   paymentTypes?: PaymentMethod[];
   tutorRoles?: DefinedTutorRole[];
+  // Tutor roles loaded with custom columns, by columns, so loads with other columns do not replace or interrupt them
+  tutorRolesByColumns?: { [columns: string]: TutorRolesLoad };
   gradingTypes?: GradingType[];
   enums?: any;
   college?: any;

@@ -1,5 +1,6 @@
 import { mockedEditView } from "../../common/MockedEditView.Components";
 import CourseClassEditView from "../../../js/containers/entities/courseClasses/components/CourseClassEditView";
+import { COURSE_CLASS_TUTOR_ROLES_COLUMNS } from "../../../js/containers/entities/courseClasses/constants";
 
 describe("Virtual rendered CourseClassEditView", () => {
   mockedEditView({
@@ -18,7 +19,14 @@ describe("Virtual rendered CourseClassEditView", () => {
     state: ({ mockedApi }) => ({
       taxes: { items: mockedApi.db.getPlainTaxesFormatted() },
       export: { contracts: mockedApi.db.getAvetmissExportPlainListFormatted() },
-      location: mockedApi.db.location
+      location: mockedApi.db.location,
+      preferences: {
+        tutorRolesByColumns: {
+          [COURSE_CLASS_TUTOR_ROLES_COLUMNS]: {
+            roles: mockedApi.db.getPlainTutorRoles().rows.map(r => ({ id: r.id, name: r.values[0] }))
+          }
+        }
+      }
     }),
     render: ({
       screen, initialValues, formRoleName, fireEvent

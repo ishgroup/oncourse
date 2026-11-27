@@ -8,4 +8,7 @@ import { mapSelectItems } from "ish-ui";
 
 export const COURSE_CLASS_COST_DIALOG_FORM = "CourseClassCostDialogForm";
 
+// Tutor role columns the class budget and tutor pay need
+export const COURSE_CLASS_TUTOR_ROLES_COLUMNS = "name,description,active,currentPayrate.oncostRate,currentPayrate.rate,currentPayrate.type";
+
 export const fundingSourceValues = Object.keys(ClassFundingSource).map(mapSelectItems);

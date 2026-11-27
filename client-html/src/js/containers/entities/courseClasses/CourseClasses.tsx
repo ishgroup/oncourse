@@ -69,6 +69,7 @@ import { postCourseClassSessions } from './components/timetable/actions';
 import CourseClassTimetableService from './components/timetable/services/CourseClassTimetableService';
 import { postCourseClassTutor, putCourseClassTutor } from './components/tutors/actions';
 import { validateTutorCreate, validateTutorUpdate } from './components/tutors/utils';
+import { COURSE_CLASS_TUTOR_ROLES_COLUMNS } from './constants';
 
 const manualLink = getManualLink("classes");
 
@@ -774,7 +775,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
       getTutorRoles(
         null,
         null,
-        "name,description,active,currentPayrate.oncostRate,currentPayrate.rate,currentPayrate.type"
+        COURSE_CLASS_TUTOR_ROLES_COLUMNS
       )
     );
     dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=CourseClass", method: "PUT" }));

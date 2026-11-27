@@ -30,7 +30,7 @@ import { EntityChecklists } from '../../../../tags/components/EntityChecklists';
 import CourseItemRenderer from '../../../courses/components/CourseItemRenderer';
 import { courseFilterCondition, openCourseLink } from '../../../courses/utils';
 import CustomFields from '../../../customFieldTypes/components/CustomFieldsTypes';
-import { getClassCostTypes } from '../../utils';
+import { getClassCostTypes, getCourseClassTutorRolesLoad } from '../../utils';
 import CourseClassEnrolmentsChart from './CourseClassEnrolmentsChart';
 
 interface Props extends Partial<EditViewProps<CourseClassExtended>> {
@@ -384,7 +384,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["CourseClass"],
   specialTags: state.tags.entitySpecialTags["CourseClass"],
-  tutorRoles: state.preferences.tutorRoles
+  tutorRoles: getCourseClassTutorRolesLoad(state)?.roles
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CourseClassGeneralTab);

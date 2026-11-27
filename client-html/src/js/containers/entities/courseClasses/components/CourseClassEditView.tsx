@@ -8,7 +8,7 @@
 
 import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from '@api/model';
 import Edit from '@mui/icons-material/Edit';
-import { IconButton, Typography } from '@mui/material';
+import { Button, CircularProgress, IconButton, Typography } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -31,15 +31,16 @@ import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
 import EntityService from '../../../../common/services/EntityService';
 import { getCustomColumnsMap } from '../../../../common/utils/common';
-import { getCurrentTax, useAppSelector } from '../../../../common/utils/hooks';
+import { getCurrentTax, useAppDispatch, useAppSelector } from '../../../../common/utils/hooks';
 import { getLabelWithCount } from '../../../../common/utils/strings';
 import history from '../../../../constants/History';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from '../../../../model/entities/CourseClass';
 import { State } from '../../../../reducers/state';
+import { getTutorRoles } from '../../../preferences/actions';
 import { setCourseClassBudgetModalOpened, setCourseClassLatestSession } from '../actions';
-import { COURSE_CLASS_COST_DIALOG_FORM } from '../constants';
-import { getClassCostTypes } from '../utils';
+import { COURSE_CLASS_COST_DIALOG_FORM, COURSE_CLASS_TUTOR_ROLES_COLUMNS } from '../constants';
+import { getClassCostTypes, getCourseClassTutorRolesLoad } from '../utils';
 import CourseClassAssessmentsTab from './assessments/CourseClassAssessmentsTab';
 import CourseClassAttendanceTab from './attendance/CourseClassAttendanceTab';
 import CourseClassBudgetTab from './budget/CourseClassBudgetTab';
@@ -586,8 +587,60 @@ const CourseClassEditView: React.FC<Props> = ({
 
 const mapStateToProps = (state: State) => ({
   taxes: state.taxes.items,
-  tutorRoles: state.preferences.tutorRoles,
+  tutorRoles: getCourseClassTutorRolesLoad(state)?.roles,
+  tutorRolesError: getCourseClassTutorRolesLoad(state)?.error,
+  tutorRolesRequested: Boolean(getCourseClassTutorRolesLoad(state)),
   currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
-export default connect(mapStateToProps)((props: any) => (props.values ? <CourseClassEditView {...props} /> : null));
+const TutorRolesLoadError = ({ onRetry }) => (
+  <div className="p-3">
+    <Typography color="error" className="mb-2">{$t('tutor_roles_could_not_be_loaded')}</Typography>
+    <Button variant="outlined" onClick={onRetry}>
+      {$t('try_again')}
+    </Button>
+  </div>
+);
+
+// Class budget and tutor pay need tutor roles with pay rates (requested when the classes list opens),
+// which load in parallel with the class, so the view waits for both
+const CourseClassEditViewLoader = (props: any) => {
+  const {
+    values, tutorRoles, tutorRolesError, tutorRolesRequested
+  } = props;
+
+  const dispatch = useAppDispatch();
+
+  const hasValues = Boolean(values);
+
+  const loadTutorRoles = useCallback(() => {
+    dispatch(getTutorRoles(null, null, COURSE_CLASS_TUTOR_ROLES_COLUMNS));
+  }, []);
+
+  // Requests the roles only if nothing has requested them yet, a request marks them as requested, so this runs once
+  useEffect(() => {
+    if (hasValues && !tutorRolesRequested) {
+      loadTutorRoles();
+    }
+  }, [hasValues, tutorRolesRequested]);
+
+  if (!hasValues) {
+    return null;
+  }
+
+  if (tutorRoles) {
+    return <CourseClassEditView {...props} />;
+  }
+
+  if (tutorRolesError) {
+    return <TutorRolesLoadError onRetry={loadTutorRoles} />;
+  }
+
+  return (
+    <div className="p-3">
+      <CircularProgress size={40} thickness={5} />
+    </div>
+  );
+};
+
+export default connect(mapStateToProps)(CourseClassEditViewLoader);

@@ -1211,6 +1211,7 @@
   "tutor_portal_delivery_schedule": "Tutor portal delivery schedule",
   "tutor_role": "Tutor Role",
   "tutor_role_is_required": "Tutor role is required",
+  "tutor_roles_could_not_be_loaded": "Tutor roles could not be loaded, so the class can not be shown.",
   "tutor_roster_overrides": "Tutor roster overrides",
   "tutor_time_attendance": "TUTOR TIME & ATTENDANCE",
   "tutor_timetable": "Tutor timetable",
