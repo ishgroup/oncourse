@@ -22,6 +22,7 @@ import ish.oncourse.server.api.v1.service.impl.PreferenceApiImpl
 import ish.oncourse.server.api.v1.service.impl.UserPreferenceApiImpl
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.SystemUser
+import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.integration.PluginsPrefsService
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.localization.logo.LogoService
@@ -61,7 +62,11 @@ class AssistantPreferencesTest {
         final Map<String, String> values = [:]
 
         InMemoryPreferenceController() {
-            super(mock(ICayenneService), mock(ISystemUserService), mock(LicenseService), mock(PluginsPrefsService), mock(ISchedulerService))
+            this(new EventService())
+        }
+
+        InMemoryPreferenceController(EventService events) {
+            super(mock(ICayenneService), mock(ISystemUserService), mock(LicenseService), mock(PluginsPrefsService), mock(ISchedulerService), events)
         }
 
         @Override

@@ -1546,6 +1546,7 @@ public abstract class CommonPreferenceController {
 
 	public void setAssistantEnabled(Boolean value) {
 		setValue(ASSISTANT_ENABLED, false, value == null ? null : Boolean.toString(value));
+		assistantAvailabilityChanged();
 	}
 
 	public boolean getAssistantAdminOnly() {
@@ -1554,6 +1555,14 @@ public abstract class CommonPreferenceController {
 
 	public void setAssistantAdminOnly(Boolean value) {
 		setValue(ASSISTANT_ADMIN_ONLY, false, value == null ? null : Boolean.toString(value));
+		assistantAvailabilityChanged();
+	}
+
+	/**
+	 * Called after the onCourse Assistant was turned on or off or opened to all users or to admins only,
+	 * whether or not the value is different.
+	 */
+	protected void assistantAvailabilityChanged() {
 	}
 
 	public boolean getAssistantStudentDataAllowed() {

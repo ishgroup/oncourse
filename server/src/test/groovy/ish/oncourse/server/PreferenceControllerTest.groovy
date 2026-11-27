@@ -2,6 +2,7 @@ package ish.oncourse.server
 
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Preference
+import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.integration.PluginsPrefsService
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.services.ISchedulerService
@@ -51,6 +52,6 @@ class PreferenceControllerTest {
         PluginsPrefsService pluginsService = Mockito.mock(PluginsPrefsService.class)
         ISchedulerService schedulerService = Mockito.mock(ISchedulerService.class)
 
-        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService,  schedulerService)
+        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService,  schedulerService, new EventService())
     }
 }

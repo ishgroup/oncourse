@@ -17,13 +17,12 @@ import com.google.inject.Singleton;
 import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;
 import ish.oncourse.server.assistant.model.AssistantModelProvider;
-import ish.oncourse.server.assistant.model.UnconfiguredModelProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Provides the onCourse Assistant's AI model from the {@code assistant:} section of onCourse.yml
- * and clears conversations on logout.
+ * Provides the onCourse Assistant's AI model and limits from the {@code assistant:} section of onCourse.yml
+ * and clears conversations on logout and when the assistant is turned off for their users.
  */
 public class AssistantModule extends ConfigModule {
 
@@ -33,19 +32,30 @@ public class AssistantModule extends ConfigModule {
     public void configure(Binder binder) {
         // listens for logouts from the start, so conversations never outlive the session
         binder.bind(AssistantLogoutListener.class).asEagerSingleton();
+        binder.bind(AssistantSettingsListener.class).asEagerSingleton();
     }
 
     @Singleton
     @Provides
-    public AssistantModelProvider createModelProvider(ConfigurationFactory configFactory) {
-        AssistantConfig config;
+    public AssistantConfig createConfig(ConfigurationFactory configFactory) {
         try {
-            config = configFactory.config(AssistantConfig.class, getConfigPrefix());
+            return configFactory.config(AssistantConfig.class, getConfigPrefix());
         } catch (RuntimeException e) {
             // a broken assistant section must not stop the server
             logger.error("Cannot read the onCourse Assistant configuration, the assistant has no model", e);
-            return new UnconfiguredModelProvider();
+            return new AssistantConfig();
         }
+    }
+
+    @Singleton
+    @Provides
+    public AssistantModelProvider createModelProvider(AssistantConfig config) {
         return config.createProvider();
+    }
+
+    @Singleton
+    @Provides
+    public AssistantRateLimiter createRateLimiter(AssistantConfig config) {
+        return new AssistantRateLimiter(config.getMaxMessagesPerMinute());
     }
 }

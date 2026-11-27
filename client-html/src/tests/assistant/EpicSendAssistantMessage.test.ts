@@ -140,4 +140,52 @@ describe("Send a message to the onCourse Assistant epic", () => {
       ]
     });
   });
+
+  it("asks to wait when too many messages were sent", () => {
+    mockedAPI.api.onPost(MESSAGE_URL).reply(429);
+
+    return DefaultEpic({
+      action: sendAssistantMessage("hi"),
+      epic: EpicSendAssistantMessage,
+      store: () => ({ assistant: { ...AssistantInitialState } }),
+      processData: () => [
+        {
+          type: SEND_ASSISTANT_MESSAGE_REJECTED,
+          payload: { message: "You've sent the onCourse Assistant a lot of messages in the last minute. Please wait a moment and try again." }
+        }
+      ]
+    });
+  });
+
+  it("shows the server's message when too many messages were sent", () => {
+    mockedAPI.api.onPost(MESSAGE_URL).reply(429, { errorMessage: "Slow down" });
+
+    return DefaultEpic({
+      action: sendAssistantMessage("hi"),
+      epic: EpicSendAssistantMessage,
+      store: () => ({ assistant: { ...AssistantInitialState } }),
+      processData: () => [
+        {
+          type: SEND_ASSISTANT_MESSAGE_REJECTED,
+          payload: { message: "Slow down" }
+        }
+      ]
+    });
+  });
+
+  it("asks to wait for the reply when the conversation is still being answered", () => {
+    mockedAPI.api.onPost(MESSAGE_URL).reply(409);
+
+    return DefaultEpic({
+      action: sendAssistantMessage("hi"),
+      epic: EpicSendAssistantMessage,
+      store: () => ({ assistant: { ...AssistantInitialState, conversationId: "c1" } }),
+      processData: () => [
+        {
+          type: SEND_ASSISTANT_MESSAGE_REJECTED,
+          payload: { message: "The onCourse Assistant is still answering your previous message in this conversation. Please wait for its reply." }
+        }
+      ]
+    });
+  });
 });

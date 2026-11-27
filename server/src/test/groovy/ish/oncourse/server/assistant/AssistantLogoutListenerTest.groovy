@@ -35,9 +35,9 @@ class AssistantLogoutListenerTest {
         store = new AssistantConversationStore()
         new AssistantLogoutListener(events, store)
 
-        annConversation = store.start(1L)
+        annConversation = store.start(1L, false)
         store.save(annConversation)
-        bobConversation = store.start(2L)
+        bobConversation = store.start(2L, false)
         store.save(bobConversation)
     }
 

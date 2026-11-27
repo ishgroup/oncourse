@@ -16,9 +16,20 @@ import { GET_IS_LOGGED_FULFILLED } from "../../preferences/actions";
 import { SEND_ASSISTANT_MESSAGE, sendAssistantMessageFulfilled, sendAssistantMessageRejected } from "../actions";
 import AssistantService from "../services/AssistantService";
 
+const fallbackErrorMessage = (status: number): string => {
+  switch (status) {
+    case 409:
+      return $t("assistant_busy_wait_for_reply");
+    case 429:
+      return $t("assistant_too_many_messages");
+    default:
+      return $t("assistant_unavailable_try_again");
+  }
+};
+
 export const assistantErrorActions = (response: any): IAction<any>[] => {
   // stops the thinking progress even if nothing else follows
-  const rejected = sendAssistantMessageRejected(response?.data?.errorMessage || $t("assistant_unavailable_try_again"));
+  const rejected = sendAssistantMessageRejected(response?.data?.errorMessage || fallbackErrorMessage(response?.status));
 
   switch (response?.status) {
     case 401:

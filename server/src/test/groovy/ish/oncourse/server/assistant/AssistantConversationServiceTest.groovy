@@ -14,10 +14,13 @@ import ish.TestWithDatabase
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.assistant.model.AssistantModelException
+import ish.oncourse.server.assistant.model.AssistantModelProvider
 import ish.oncourse.server.assistant.model.ModelMessage
+import ish.oncourse.server.assistant.model.ModelReply
 import ish.oncourse.server.assistant.model.ModelRequest
 import ish.oncourse.server.assistant.model.ScriptedModelProvider
 import ish.oncourse.server.cayenne.SystemUser
+import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.services.ISystemUserService
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -25,6 +28,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.function.Executable
 
 import javax.ws.rs.WebApplicationException
+import java.util.concurrent.Callable
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
+import java.util.concurrent.TimeUnit
 
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
@@ -57,7 +66,13 @@ class AssistantConversationServiceTest extends TestWithDatabase {
 
         fake = new ScriptedModelProvider(['Hello from fake'])
         store = new AssistantConversationStore()
-        service = new AssistantConversationService(preferences, users, fake, store)
+        // the preference controller posts the settings changes to the server's event service
+        new AssistantSettingsListener(injector.getInstance(EventService), store)
+        service = service(fake, new AssistantRateLimiter(100))
+    }
+
+    private AssistantConversationService service(AssistantModelProvider provider, AssistantRateLimiter limiter) {
+        return new AssistantConversationService(preferences, users, provider, store, limiter)
     }
 
     @Test
@@ -179,18 +194,115 @@ class AssistantConversationServiceTest extends TestWithDatabase {
     }
 
     @Test
-    void refusalDropsTheUsersConversations() {
+    void turningTheAssistantOffDropsAllConversations() {
+        preferences.setAssistantAdminOnly(false)
         AssistantConversationService.Reply first = service.send(null, 'Create a course')
-        Assertions.assertEquals(1, store.size())
+        loginAs(ANN_ID)
+        service.send(null, 'Hello')
+        Assertions.assertEquals(2, store.size())
 
         preferences.setAssistantEnabled(false)
-        assertError(403, AssistantConversationService.NOT_AVAILABLE_MSG) { service.send(first.conversationId, 'Hello') }
         Assertions.assertEquals(0, store.size())
 
         preferences.setAssistantEnabled(true)
+        loginAs(ADMIN_ID)
         AssistantConversationService.Reply afterEnabled = service.send(first.conversationId, 'Hello')
         Assertions.assertNotEquals(first.conversationId, afterEnabled.conversationId)
-        Assertions.assertEquals([ModelMessage.user('Hello')], fake.requests[1].messages)
+        Assertions.assertEquals([ModelMessage.user('Hello')], fake.requests[2].messages)
+    }
+
+    @Test
+    void adminOnlyDropsConversationsOfOtherUsers() {
+        preferences.setAssistantAdminOnly(false)
+        AssistantConversationService.Reply admin = service.send(null, 'Create a course')
+        loginAs(ANN_ID)
+        AssistantConversationService.Reply ann = service.send(null, 'Hello')
+
+        preferences.setAssistantAdminOnly(true)
+        Assertions.assertEquals(1, store.size())
+        Assertions.assertNotNull(store.find(admin.conversationId, ADMIN_ID))
+
+        preferences.setAssistantAdminOnly(false)
+        Assertions.assertNotEquals(ann.conversationId, service.send(ann.conversationId, 'Hello again').conversationId)
+    }
+
+    @Test
+    void replyAfterTheAssistantWasTurnedOffIsNotKept() {
+        AssistantModelProvider turnsOff = { ModelRequest request ->
+            preferences.setAssistantEnabled(false)
+            return new ModelReply('Late reply')
+        } as AssistantModelProvider
+
+        Assertions.assertEquals('Late reply', service(turnsOff, new AssistantRateLimiter(100)).send(null, 'Create a course').text)
+        Assertions.assertEquals(0, store.size())
+    }
+
+    @Test
+    void tooManyMessagesIs429() {
+        service = service(fake, new AssistantRateLimiter(2))
+        AssistantConversationService.Reply first = service.send(null, 'One')
+        service.send(first.conversationId, 'Two')
+
+        assertError(429, AssistantConversationService.TOO_MANY_MESSAGES_MSG) { service.send(first.conversationId, 'Three') }
+        assertError(429, AssistantConversationService.TOO_MANY_MESSAGES_MSG) { service.send(null, 'Four') }
+        Assertions.assertEquals(2, fake.requests.size())
+
+        // other users have their own limit
+        preferences.setAssistantAdminOnly(false)
+        loginAs(ANN_ID)
+        Assertions.assertEquals('Hello from fake', service.send(null, 'Hello').text)
+    }
+
+    @Test
+    void secondMessageToAConversationWaitingForAReplyIs409() {
+        AssistantConversationService.Reply first = service.send(null, 'Create a course')
+        CountDownLatch answering = new CountDownLatch(1)
+        CountDownLatch answer = new CountDownLatch(1)
+        AssistantModelProvider slow = { ModelRequest request ->
+            answering.countDown()
+            answer.await(10, TimeUnit.SECONDS)
+            return new ModelReply('Slow reply')
+        } as AssistantModelProvider
+        AssistantConversationService slowService = service(slow, new AssistantRateLimiter(100))
+
+        ExecutorService executor = Executors.newSingleThreadExecutor()
+        try {
+            Future<AssistantConversationService.Reply> waiting = executor.submit({
+                slowService.send(first.conversationId, 'Called Pottery')
+            } as Callable<AssistantConversationService.Reply>)
+            Assertions.assertTrue(answering.await(10, TimeUnit.SECONDS))
+
+            assertError(409, AssistantConversationService.BUSY_MSG) { slowService.send(first.conversationId, 'In a hurry') }
+            // other conversations aren't waiting
+            Assertions.assertEquals('Hello from fake', service.send(null, 'Another course').text)
+
+            answer.countDown()
+            Assertions.assertEquals('Slow reply', waiting.get(10, TimeUnit.SECONDS).text)
+        } finally {
+            executor.shutdownNow()
+        }
+
+        // the conversation can be continued once the reply arrived, with both exchanges in order
+        service.send(first.conversationId, 'Next')
+        Assertions.assertEquals([ModelMessage.user('Create a course'), ModelMessage.assistant('Hello from fake'),
+                                 ModelMessage.user('Called Pottery'), ModelMessage.assistant('Slow reply'),
+                                 ModelMessage.user('Next')], fake.requests.last().messages)
+    }
+
+    @Test
+    void conversationIsFreeAgainAfterAFailureOrRefusal() {
+        AssistantConversationService.Reply first = service.send(null, 'Create a course')
+
+        fake.failNext(new AssistantModelException('timed out'))
+        assertError(503, AssistantConversationService.UNAVAILABLE_MSG) { service.send(first.conversationId, 'Lost message') }
+        fake.failNext(new IllegalStateException('provider bug'))
+        assertError(503, AssistantConversationService.UNAVAILABLE_MSG) { service.send(first.conversationId, 'Lost message') }
+
+        AssistantConversationService limited = service(fake, new AssistantRateLimiter(1))
+        limited.send(first.conversationId, 'Counted')
+        assertError(429, AssistantConversationService.TOO_MANY_MESSAGES_MSG) { limited.send(first.conversationId, 'Too soon') }
+
+        Assertions.assertEquals(first.conversationId, service.send(first.conversationId, 'Try again').conversationId)
     }
 
     private void loginAs(Long id) {

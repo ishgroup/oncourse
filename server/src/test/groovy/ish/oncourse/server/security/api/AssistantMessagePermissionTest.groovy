@@ -12,6 +12,7 @@ import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import groovy.transform.CompileStatic
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.assistant.AssistantConversationStore
 import ish.oncourse.server.preference.AssistantPreferencesTest
 import ish.oncourse.server.services.ISystemUserService
 import org.junit.jupiter.api.Assertions
@@ -43,6 +44,8 @@ class AssistantMessagePermissionTest {
 
     private AssistantPreferencesTest.InMemoryPreferenceController preferences = new AssistantPreferencesTest.InMemoryPreferenceController()
 
+    private AssistantConversationStore conversations = new AssistantConversationStore()
+
     private IPermissionService permissionService
 
     @BeforeAll
@@ -53,11 +56,13 @@ class AssistantMessagePermissionTest {
 
         ISystemUserService users = userService
         PreferenceController controller = preferences
+        AssistantConversationStore store = conversations
         permissionService = factory.createPermissionService(Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
                 bind(ISystemUserService).toInstance(users)
                 bind(PreferenceController).toInstance(controller)
+                bind(AssistantConversationStore).toInstance(store)
             }
         }))
     }
@@ -105,6 +110,26 @@ class AssistantMessagePermissionTest {
             Assertions.assertFalse(permissionService.hasAccess(MESSAGE_PATH, HttpMethod.POST).isSuccessful())
             Assertions.assertFalse(authorize())
         }
+    }
+
+    @Test
+    void refusalDropsTheUsersConversations() {
+        preferences.setAssistantEnabled(true)
+        userService.currentUser.setIsAdmin(true)
+        userService.currentUser.setId(7L)
+        AssistantConversationStore.Conversation own = conversations.start(7L, true)
+        conversations.save(own)
+        AssistantConversationStore.Conversation other = conversations.start(8L, false)
+        conversations.save(other)
+
+        Assertions.assertTrue(permissionService.hasAccess(MESSAGE_PATH, HttpMethod.POST).isSuccessful())
+        Assertions.assertSame(own, conversations.find(own.id, 7L))
+
+        // the Admin toggle was turned off
+        userService.currentUser.setIsAdmin(false)
+        Assertions.assertFalse(permissionService.hasAccess(MESSAGE_PATH, HttpMethod.POST).isSuccessful())
+        Assertions.assertNull(conversations.find(own.id, 7L))
+        Assertions.assertSame(other, conversations.find(other.id, 8L))
     }
 
     private boolean authorize() {

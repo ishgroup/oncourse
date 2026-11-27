@@ -27,6 +27,14 @@ post:
       description: The onCourse Assistant is not available to the user.
       schema:
         $ref: './def/entity/ValidationError.yaml'
+    '409':
+      description: The assistant is still answering the previous message of this conversation.
+      schema:
+        $ref: './def/entity/ValidationError.yaml'
+    '429':
+      description: The user sent too many messages in the last minute.
+      schema:
+        $ref: './def/entity/ValidationError.yaml'
     '503':
       description: The AI model is not configured, failed or timed out.
       schema:

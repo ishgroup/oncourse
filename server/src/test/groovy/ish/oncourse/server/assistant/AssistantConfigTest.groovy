@@ -42,6 +42,7 @@ class AssistantConfigTest {
         Assertions.assertEquals(60L, config.readTimeoutSeconds)
         Assertions.assertEquals(120L, config.requestTimeoutSeconds)
         Assertions.assertEquals(1, config.maxRetries)
+        Assertions.assertEquals(10, config.maxMessagesPerMinute)
     }
 
     @Test
@@ -137,6 +138,14 @@ class AssistantConfigTest {
         Assertions.assertEquals('Hello from yml', provider.reply(request()).text)
     }
 
+    @Test
+    void rateLimitIsRead() {
+        AssistantRateLimiter limiter = fromYaml('assistant:\n  provider: fake\n  maxMessagesPerMinute: 1\n', AssistantRateLimiter)
+
+        Assertions.assertTrue(limiter.tryAcquire(1L))
+        Assertions.assertFalse(limiter.tryAcquire(1L))
+    }
+
     private static AssistantModelProvider provider(String name) {
         return new AssistantConfig(provider: name).createProvider()
     }
@@ -146,12 +155,16 @@ class AssistantConfigTest {
     }
 
     private static AssistantModelProvider providerFromYaml(String yaml) {
+        return fromYaml(yaml, AssistantModelProvider)
+    }
+
+    private static <T> T fromYaml(String yaml, Class<T> type) {
         Path file = Files.createTempFile('onCourse', '.yml')
         try {
             Files.write(file, yaml.bytes)
             BQRuntime runtime = Bootique.app('--config=' + file.toAbsolutePath()).module(AssistantModule).createRuntime()
             try {
-                return runtime.getInstance(AssistantModelProvider)
+                return runtime.getInstance(type)
             } finally {
                 runtime.shutdown()
             }

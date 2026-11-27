@@ -16,17 +16,23 @@ import groovy.transform.CompileStatic
 import ish.oncourse.server.assistant.model.ModelMessage
 
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.function.Predicate
 
 /**
  * Keeps onCourse Assistant conversations in memory on this server. A conversation belongs to the user who started it.
  * A new conversation is kept only after its first successful exchange. Conversations idle for too long are dropped,
- * and each keeps only its latest messages.
+ * each user keeps only their latest conversations, and each conversation keeps only its latest messages.
  */
 @Singleton
 @CompileStatic
 class AssistantConversationStore {
 
     static final int MAX_MESSAGES = 40
+    // all messages of a conversation together; the latest exchange is kept even if it is longer
+    static final int MAX_CHARACTERS = 60_000
+    static final int MAX_CONVERSATIONS_PER_USER = 5
+    // a backstop for all users together
     static final int MAX_CONVERSATIONS = 1000
     static final long MAX_IDLE_MILLIS = TimeUnit.HOURS.toMillis(12)
 
@@ -34,13 +40,17 @@ class AssistantConversationStore {
 
         final String id
         final Long userId
+        // whether the user had the Admin toggle on when the conversation started
+        final boolean userIsAdmin
         private final long generation
         private final List<ModelMessage> messages = []
+        private final AtomicBoolean sending = new AtomicBoolean()
         volatile long lastUsed
 
-        Conversation(String id, Long userId, long generation, long now) {
+        Conversation(String id, Long userId, boolean userIsAdmin, long generation, long now) {
             this.id = id
             this.userId = userId
+            this.userIsAdmin = userIsAdmin
             this.generation = generation
             this.lastUsed = now
         }
@@ -53,16 +63,37 @@ class AssistantConversationStore {
         }
 
         /**
-         * Adds a user message and the assistant's reply, dropping the oldest exchanges over the limit,
+         * Adds a user message and the assistant's reply, dropping the oldest exchanges over the limits,
          * so the conversation still starts with a user message.
          */
         synchronized void addExchange(ModelMessage user, ModelMessage assistant) {
             messages.add(user)
             messages.add(assistant)
-            while (messages.size() > MAX_MESSAGES) {
+            while (messages.size() > MAX_MESSAGES || (messages.size() > 2 && characters() > MAX_CHARACTERS)) {
                 messages.remove(0)
                 messages.remove(0)
             }
+        }
+
+        /**
+         * Marks a message of the conversation as waiting for the model's reply.
+         *
+         * @return false if another message of the conversation is waiting already
+         */
+        boolean startSending() {
+            return sending.compareAndSet(false, true)
+        }
+
+        void finishSending() {
+            sending.set(false)
+        }
+
+        private int characters() {
+            int characters = 0
+            for (ModelMessage message : messages) {
+                characters += message.text.length()
+            }
+            return characters
         }
     }
 
@@ -91,13 +122,14 @@ class AssistantConversationStore {
      * Starts a new conversation of the user. It isn't kept until it is saved, so a conversation whose first
      * message failed never takes the place of other conversations.
      */
-    synchronized Conversation start(Long userId) {
-        return new Conversation(UUID.randomUUID().toString(), userId, generation(userId), currentTimeMillis())
+    synchronized Conversation start(Long userId, boolean userIsAdmin) {
+        return new Conversation(UUID.randomUUID().toString(), userId, userIsAdmin, generation(userId), currentTimeMillis())
     }
 
     /**
      * Keeps the conversation after a successful exchange, dropping the least recently used conversations
-     * over the limit. A conversation started before the user's conversations were cleared isn't kept,
+     * over the limits: the user's own first, so a user never drops other users' conversations unless the server
+     * holds too many. A conversation started before the user's conversations were cleared isn't kept,
      * so a reply that arrives after logout doesn't bring it back.
      */
     synchronized void save(Conversation conversation) {
@@ -108,7 +140,8 @@ class AssistantConversationStore {
         evictIdle(now)
         conversation.lastUsed = now
         if (!conversations.containsKey(conversation.id)) {
-            evictOldestOverLimit()
+            evictOldestOverLimit(MAX_CONVERSATIONS_PER_USER) { Conversation it -> it.userId == conversation.userId }
+            evictOldestOverLimit(MAX_CONVERSATIONS) { Conversation it -> true }
             conversations.put(conversation.id, conversation)
         }
     }
@@ -121,8 +154,23 @@ class AssistantConversationStore {
         generations.put(userId, generation(userId) + 1)
     }
 
+    /**
+     * Drops all conversations of the users who have a matching conversation, for example when the assistant
+     * is turned off for them. The conversation service doesn't keep a conversation whose reply arrives after
+     * the assistant was turned off for its user.
+     */
+    synchronized void clearWhere(Predicate<Conversation> matching) {
+        Set<Long> users = conversations.values().findAll { Conversation it -> matching.test(it) }
+                .collect { Conversation it -> it.userId } as Set<Long>
+        users.each { Long it -> clearForUser(it) }
+    }
+
     synchronized int size() {
         return conversations.size()
+    }
+
+    synchronized int size(Long userId) {
+        return conversations.values().count { Conversation it -> it.userId == userId } as int
     }
 
     protected long currentTimeMillis() {
@@ -138,13 +186,13 @@ class AssistantConversationStore {
         conversations.values().removeIf { Conversation it -> now - it.lastUsed > MAX_IDLE_MILLIS }
     }
 
-    private void evictOldestOverLimit() {
-        while (conversations.size() >= MAX_CONVERSATIONS) {
-            Conversation oldest = conversations.values().min { Conversation it -> it.lastUsed }
-            if (oldest == null) {
-                return
-            }
-            conversations.remove(oldest.id)
+    /**
+     * Drops the least recently used of the matching conversations until there is room for one more.
+     */
+    private void evictOldestOverLimit(int limit, Closure<Boolean> matching) {
+        List<Conversation> candidates = conversations.values().findAll(matching).sort { Conversation it -> it.lastUsed }
+        for (int i = 0; i <= candidates.size() - limit; i++) {
+            conversations.remove(candidates[i].id)
         }
     }
 }
