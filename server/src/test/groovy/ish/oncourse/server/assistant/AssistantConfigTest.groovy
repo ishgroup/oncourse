@@ -12,9 +12,12 @@ import com.anthropic.models.messages.MessageCreateParams
 import com.anthropic.models.messages.MessageParam
 import com.anthropic.models.messages.OutputConfig
 import com.anthropic.models.messages.TextBlockParam
+import com.google.inject.Binder
+import com.google.inject.Module
 import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
 import io.bootique.Bootique
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.assistant.model.AssistantModelException
 import ish.oncourse.server.assistant.model.AssistantModelProvider
 import ish.oncourse.server.assistant.model.BedrockModelProvider
@@ -28,6 +31,8 @@ import org.junit.jupiter.api.function.Executable
 
 import java.nio.file.Files
 import java.nio.file.Path
+
+import static org.mockito.Mockito.mock
 
 @CompileStatic
 class AssistantConfigTest {
@@ -162,7 +167,11 @@ class AssistantConfigTest {
         Path file = Files.createTempFile('onCourse', '.yml')
         try {
             Files.write(file, yaml.bytes)
-            BQRuntime runtime = Bootique.app('--config=' + file.toAbsolutePath()).module(AssistantModule).createRuntime()
+            BQRuntime runtime = Bootique.app('--config=' + file.toAbsolutePath())
+                    .module(AssistantModule)
+                    // the settings listener reads the Admin toggles from the database
+                    .module({ Binder binder -> binder.bind(ICayenneService).toInstance(mock(ICayenneService)) } as Module)
+                    .createRuntime()
             try {
                 return runtime.getInstance(type)
             } finally {

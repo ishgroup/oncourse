@@ -11,6 +11,7 @@ package ish.oncourse.server.assistant
 import groovy.transform.CompileStatic
 import ish.DatabaseSetup
 import ish.TestWithDatabase
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.assistant.model.AssistantModelException
@@ -67,7 +68,7 @@ class AssistantConversationServiceTest extends TestWithDatabase {
         fake = new ScriptedModelProvider(['Hello from fake'])
         store = new AssistantConversationStore()
         // the preference controller posts the settings changes to the server's event service
-        new AssistantSettingsListener(injector.getInstance(EventService), store)
+        new AssistantSettingsListener(injector.getInstance(EventService), store, injector.getInstance(ICayenneService))
         service = service(fake, new AssistantRateLimiter(100))
     }
 
@@ -224,6 +225,20 @@ class AssistantConversationServiceTest extends TestWithDatabase {
 
         preferences.setAssistantAdminOnly(false)
         Assertions.assertNotEquals(ann.conversationId, service.send(ann.conversationId, 'Hello again').conversationId)
+    }
+
+    @Test
+    void adminOnlyReadsTheAdminToggleWhenItChanges() {
+        preferences.setAssistantAdminOnly(false)
+        loginAs(ANN_ID)
+        AssistantConversationService.Reply ann = service.send(null, 'Hello')
+        SystemUser annUser = getRecordWithId(cayenneContext, SystemUser, ANN_ID)
+        annUser.setIsAdmin(true)
+        cayenneContext.commitChanges()
+
+        preferences.setAssistantAdminOnly(true)
+
+        Assertions.assertNotNull(store.find(ann.conversationId, ANN_ID))
     }
 
     @Test

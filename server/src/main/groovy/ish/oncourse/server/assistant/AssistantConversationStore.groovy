@@ -17,7 +17,6 @@ import ish.oncourse.server.assistant.model.ModelMessage
 
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.function.Predicate
 
 /**
  * Keeps onCourse Assistant conversations in memory on this server. A conversation belongs to the user who started it.
@@ -40,17 +39,14 @@ class AssistantConversationStore {
 
         final String id
         final Long userId
-        // whether the user had the Admin toggle on when the conversation started
-        final boolean userIsAdmin
         private final long generation
         private final List<ModelMessage> messages = []
         private final AtomicBoolean sending = new AtomicBoolean()
         volatile long lastUsed
 
-        Conversation(String id, Long userId, boolean userIsAdmin, long generation, long now) {
+        Conversation(String id, Long userId, long generation, long now) {
             this.id = id
             this.userId = userId
-            this.userIsAdmin = userIsAdmin
             this.generation = generation
             this.lastUsed = now
         }
@@ -122,8 +118,8 @@ class AssistantConversationStore {
      * Starts a new conversation of the user. It isn't kept until it is saved, so a conversation whose first
      * message failed never takes the place of other conversations.
      */
-    synchronized Conversation start(Long userId, boolean userIsAdmin) {
-        return new Conversation(UUID.randomUUID().toString(), userId, userIsAdmin, generation(userId), currentTimeMillis())
+    synchronized Conversation start(Long userId) {
+        return new Conversation(UUID.randomUUID().toString(), userId, generation(userId), currentTimeMillis())
     }
 
     /**
@@ -155,14 +151,10 @@ class AssistantConversationStore {
     }
 
     /**
-     * Drops all conversations of the users who have a matching conversation, for example when the assistant
-     * is turned off for them. The conversation service doesn't keep a conversation whose reply arrives after
-     * the assistant was turned off for its user.
+     * @return ids of the users who have kept conversations
      */
-    synchronized void clearWhere(Predicate<Conversation> matching) {
-        Set<Long> users = conversations.values().findAll { Conversation it -> matching.test(it) }
-                .collect { Conversation it -> it.userId } as Set<Long>
-        users.each { Long it -> clearForUser(it) }
+    synchronized Set<Long> userIds() {
+        return conversations.values().collect { Conversation it -> it.userId } as Set<Long>
     }
 
     synchronized int size() {

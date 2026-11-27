@@ -30,16 +30,24 @@ class AssistantSettingsListenerTest {
     private AssistantConversationStore store
     private AssistantConversationStore.Conversation admin
     private AssistantConversationStore.Conversation ann
+    // users with the Admin toggle on now
+    private Set<Long> admins = [1L] as Set<Long>
 
     @BeforeEach
     void setUp() {
         events = new EventService()
         store = new AssistantConversationStore()
-        new AssistantSettingsListener(events, store)
+        // no database: the turned-off and open-to-all cases must not look up admins at all
+        new AssistantSettingsListener(events, store, null) {
+            @Override
+            protected Set<Long> adminsAmong(Set<Long> userIds) {
+                return userIds.findAll { Long it -> admins.contains(it) } as Set<Long>
+            }
+        }
 
-        admin = store.start(1L, true)
+        admin = store.start(1L)
         store.save(admin)
-        ann = store.start(2L, false)
+        ann = store.start(2L)
         store.save(ann)
     }
 
@@ -56,6 +64,17 @@ class AssistantSettingsListenerTest {
 
         Assertions.assertSame(admin, store.find(admin.id, 1L))
         Assertions.assertNull(store.find(ann.id, 2L))
+    }
+
+    @Test
+    void adminOnlyUsesTheAdminToggleAtTheTimeOfTheChange() {
+        // the toggles changed after the conversations started
+        admins = [2L] as Set<Long>
+
+        events.postEvent(SystemEvent.valueOf(SystemEventType.ASSISTANT_SETTINGS_CHANGED, new AssistantAvailability(true, true)))
+
+        Assertions.assertNull(store.find(admin.id, 1L))
+        Assertions.assertSame(ann, store.find(ann.id, 2L))
     }
 
     @Test

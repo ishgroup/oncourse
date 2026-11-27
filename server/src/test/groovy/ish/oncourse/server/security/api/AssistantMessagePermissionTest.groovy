@@ -117,9 +117,9 @@ class AssistantMessagePermissionTest {
         preferences.setAssistantEnabled(true)
         userService.currentUser.setIsAdmin(true)
         userService.currentUser.setId(7L)
-        AssistantConversationStore.Conversation own = conversations.start(7L, true)
+        AssistantConversationStore.Conversation own = conversations.start(7L)
         conversations.save(own)
-        AssistantConversationStore.Conversation other = conversations.start(8L, false)
+        AssistantConversationStore.Conversation other = conversations.start(8L)
         conversations.save(other)
 
         Assertions.assertTrue(permissionService.hasAccess(MESSAGE_PATH, HttpMethod.POST).isSuccessful())

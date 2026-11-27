@@ -53,7 +53,7 @@ class AssistantConversationStoreTest {
 
     @Test
     void startedConversationIsKeptOnlyWhenSaved() {
-        AssistantConversationStore.Conversation conversation = store.start(1L, false)
+        AssistantConversationStore.Conversation conversation = store.start(1L)
 
         Assertions.assertEquals(0, store.size())
         Assertions.assertNull(store.find(conversation.id, 1L))
@@ -67,7 +67,7 @@ class AssistantConversationStoreTest {
 
     @Test
     void historyKeepsLatestExchangesStartingWithUser() {
-        AssistantConversationStore.Conversation conversation = store.start(1L, false)
+        AssistantConversationStore.Conversation conversation = store.start(1L)
 
         (1..30).each { int i -> conversation.addExchange(ModelMessage.user("q$i".toString()), ModelMessage.assistant("a$i".toString())) }
 
@@ -101,7 +101,7 @@ class AssistantConversationStoreTest {
     @Test
     void conversationInProgressIsNotKeptAfterClear() {
         AssistantConversationStore.Conversation existing = saved(1L)
-        AssistantConversationStore.Conversation started = store.start(1L, false)
+        AssistantConversationStore.Conversation started = store.start(1L)
 
         store.clearForUser(1L)
         // replies to both arrive after the user logged out
@@ -116,7 +116,7 @@ class AssistantConversationStoreTest {
 
     @Test
     void historyIsBoundedByCharactersKeepingTheLatestExchange() {
-        AssistantConversationStore.Conversation conversation = store.start(1L, false)
+        AssistantConversationStore.Conversation conversation = store.start(1L)
         String half = 'x' * (AssistantConversationStore.MAX_CHARACTERS.intdiv(5) as int)
 
         (1..3).each { int i -> conversation.addExchange(ModelMessage.user("q$i$half".toString()), ModelMessage.assistant(half)) }
@@ -172,7 +172,7 @@ class AssistantConversationStoreTest {
         }
 
         // first messages that failed
-        (1..10).each { store.start(1L, false) }
+        (1..10).each { store.start(1L) }
 
         Assertions.assertEquals(AssistantConversationStore.MAX_CONVERSATIONS, store.size())
         kept.each { Assertions.assertSame(it, store.find(it.id, it.userId)) }
@@ -181,7 +181,7 @@ class AssistantConversationStoreTest {
     @Test
     void concurrentSavesNeverExceedTheCaps() {
         AssistantConversationStore realClock = new AssistantConversationStore()
-        (1..AssistantConversationStore.MAX_CONVERSATIONS - 1).each { int i -> realClock.save(realClock.start(1000L + i, false)) }
+        (1..AssistantConversationStore.MAX_CONVERSATIONS - 1).each { int i -> realClock.save(realClock.start(1000L + i)) }
 
         ExecutorService executor = Executors.newFixedThreadPool(8)
         try {
@@ -189,7 +189,7 @@ class AssistantConversationStoreTest {
             List<Future<?>> saves = (1..200).collect { int i ->
                 executor.submit({
                     go.await()
-                    realClock.save(realClock.start((i % 5).toLong(), false))
+                    realClock.save(realClock.start((i % 5).toLong()))
                 } as Runnable) as Future<?>
             }
             go.countDown()
@@ -203,18 +203,16 @@ class AssistantConversationStoreTest {
     }
 
     @Test
-    void clearWhereDropsAllConversationsOfMatchingUsers() {
-        AssistantConversationStore.Conversation admin = store.start(1L, true)
-        store.save(admin)
+    void userIdsListsUsersWithKeptConversations() {
+        saved(1L)
         saved(2L)
         saved(2L)
-        AssistantConversationStore.Conversation inProgress = store.start(2L, false)
+        store.start(3L)
 
-        store.clearWhere { AssistantConversationStore.Conversation it -> !it.userIsAdmin }
-        store.save(inProgress)
+        Assertions.assertEquals([1L, 2L] as Set<Long>, store.userIds())
 
-        Assertions.assertEquals(1, store.size())
-        Assertions.assertSame(admin, store.find(admin.id, 1L))
+        store.clearForUser(2L)
+        Assertions.assertEquals([1L] as Set<Long>, store.userIds())
     }
 
     @Test
@@ -230,7 +228,7 @@ class AssistantConversationStoreTest {
     }
 
     private AssistantConversationStore.Conversation saved(Long userId) {
-        AssistantConversationStore.Conversation conversation = store.start(userId, false)
+        AssistantConversationStore.Conversation conversation = store.start(userId)
         store.save(conversation)
         return conversation
     }
