@@ -89,6 +89,8 @@ paths:
     $ref: './path/list/api.yaml'
   /list/column:
     $ref: './path/list/column/api.yaml'
+  /list/count:
+    $ref: './path/list/count/api.yaml'
   /list/entity/account:
     $ref: './path/list/entity/account/api.yaml'
   /list/entity/account/depositAccounts:

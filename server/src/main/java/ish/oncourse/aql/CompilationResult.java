@@ -34,15 +34,26 @@ public class CompilationResult {
 
     private final Expression expression;
     private final List<CompilationError> errors;
+    private final List<CompilationError> lexerErrors;
 
     public CompilationResult(Expression expression) {
-        this.expression = expression;
-        this.errors = Collections.emptyList();
+        this(expression, Collections.emptyList());
     }
 
     public CompilationResult(List<CompilationError> errors) {
+        this(errors, Collections.emptyList());
+    }
+
+    public CompilationResult(Expression expression, List<CompilationError> lexerErrors) {
+        this.expression = expression;
+        this.errors = Collections.emptyList();
+        this.lexerErrors = lexerErrors;
+    }
+
+    public CompilationResult(List<CompilationError> errors, List<CompilationError> lexerErrors) {
         this.expression = null;
         this.errors = errors;
+        this.lexerErrors = lexerErrors;
     }
 
     /**
@@ -52,6 +63,17 @@ public class CompilationResult {
      */
     public List<CompilationError> getErrors() {
         return errors;
+    }
+
+    /**
+     * Characters the lexer couldn't turn into a token, e.g. an unclosed quote or a stray '$'.
+     * The lexer skips them, so the query may still compile and {@link #getErrors()} may be empty.
+     * They are kept apart from {@link #getErrors()} so the callers that only check it still accept such queries.
+     *
+     * @return list of lexer error messages, empty if the whole query was tokenized
+     */
+    public List<CompilationError> getLexerErrors() {
+        return lexerErrors;
     }
 
     /**
