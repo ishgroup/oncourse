@@ -11,7 +11,16 @@ export const ASSISTANT_PANEL_TITLE_ID = "assistant-panel-title";
 
 export const ASSISTANT_BUTTON_ID = "assistant-button";
 
+// the button is a square with the icon until it shows its label
+export const ASSISTANT_BUTTON_SIZE = 44;
+
 export const ASSISTANT_HOST_ID = "assistant-host";
+
+// where the user moved the button and the panel to
+export const ASSISTANT_POSITION_STORAGE_KEY = "assistantPosition";
+
+// the space kept between the button or the panel and the edges of the window
+export const ASSISTANT_EDGE_MARGIN = 8;
 
 // the server refuses longer messages
 export const ASSISTANT_MAX_TEXT = 4000;

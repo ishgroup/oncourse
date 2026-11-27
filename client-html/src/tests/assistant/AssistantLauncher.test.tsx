@@ -3,15 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import {
+  act, fireEvent, render, screen, waitFor, within
+} from '@testing-library/react';
 import * as React from 'react';
 import { AssistantApiMock } from '../../dev/mock/api/assistant/AssistantApiMock';
 import FullScreenEditView from '../../js/common/components/list-view/components/full-screen-edit-view/FullScreenEditView';
 import { GET_USER_PREFERENCES_FULFILLED } from '../../js/common/actions';
 import { ASSISTANT_AVAILABLE_KEY } from '../../js/constants/Config';
 import TestStore from '../../js/constants/Store';
+import { setAssistantOpen } from '../../js/containers/assistant/actions';
 import AssistantLauncher from '../../js/containers/assistant/components/AssistantLauncher';
-import { ASSISTANT_HOST_ID } from '../../js/containers/assistant/constants';
+import {
+  ASSISTANT_BUTTON_SIZE,
+  ASSISTANT_HOST_ID,
+  ASSISTANT_PANEL_ID,
+  ASSISTANT_POSITION_STORAGE_KEY
+} from '../../js/containers/assistant/constants';
+import { DEFAULT_ASSISTANT_POSITION } from '../../js/containers/assistant/utils/position';
 import { GET_IS_LOGGED_FULFILLED } from '../../js/containers/preferences/actions';
 import { mockedAPI, TestEntry } from '../TestEntry';
 
@@ -275,6 +284,137 @@ describe("Ask onCourse AI", () => {
 
       // back for React to unmount it
       document.body.appendChild(editViewRoot);
+    });
+  });
+
+  describe("dragged over the window", () => {
+    // jsdom has no pointer events, a mouse event with a pointer id stands in for them
+    class TestPointerEvent extends MouseEvent {
+      pointerId: number;
+
+      isPrimary: boolean;
+
+      constructor(type: string, init: any = {}) {
+        super(type, init);
+        this.pointerId = init.pointerId ?? 1;
+        this.isPrimary = init.isPrimary ?? true;
+      }
+    }
+
+    const storedPositions = () => JSON.parse(localStorage.getItem(ASSISTANT_POSITION_STORAGE_KEY));
+
+    beforeAll(() => {
+      (window as any).PointerEvent = TestPointerEvent;
+    });
+
+    afterAll(() => {
+      delete (window as any).PointerEvent;
+    });
+
+    afterEach(() => {
+      localStorage.removeItem(ASSISTANT_POSITION_STORAGE_KEY);
+    });
+
+    it("moves the button, keeps its position and doesn't open the panel at the end of the drag", () => {
+      renderLauncher();
+      const button = screen.getByRole("button", { name: "Ask onCourse AI" });
+
+      fireEvent.pointerDown(button, { clientX: 900, clientY: 600 });
+      fireEvent.pointerMove(button, { clientX: 800, clientY: 500 });
+      fireEvent.pointerUp(button, { clientX: 800, clientY: 500 });
+      fireEvent.click(button);
+
+      const moved = {
+        right: DEFAULT_ASSISTANT_POSITION.right + 100,
+        bottom: DEFAULT_ASSISTANT_POSITION.bottom + 100
+      };
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+      expect(storedPositions()).toEqual({ button: moved });
+      expect(button).toHaveStyle({ right: `${moved.right}px`, bottom: `${moved.bottom}px` });
+
+      // a click without a drag still opens the panel
+      fireEvent.click(button);
+      expect(screen.getByRole("dialog", { name: /onCourse Assistant/ })).toBeInTheDocument();
+    });
+
+    it("puts the button where the user left it, growing towards the middle of the window", () => {
+      // jsdom's window is 1024 pixels wide, so this is in its left half
+      localStorage.setItem(ASSISTANT_POSITION_STORAGE_KEY, JSON.stringify({ button: { right: 900, bottom: 300 } }));
+
+      renderLauncher();
+
+      const button = screen.getByRole("button", { name: "Ask onCourse AI" });
+      expect(button).toHaveStyle({ left: `${1024 - 900 - ASSISTANT_BUTTON_SIZE}px`, bottom: "300px" });
+      expect(button).toHaveAttribute("data-grows", "right");
+    });
+
+    it("moves the panel by its header, but not by its Close button", () => {
+      const panel = openPanel();
+      const title = within(panel).getByRole("heading", { name: /onCourse Assistant/ });
+
+      fireEvent.pointerDown(title, { clientX: 500, clientY: 300 });
+      fireEvent.pointerMove(title, { clientX: 450, clientY: 280 });
+      fireEvent.pointerUp(title, { clientX: 450, clientY: 280 });
+
+      const close = within(panel).getByRole("button", { name: "Close" });
+      fireEvent.pointerDown(close, { clientX: 450, clientY: 280 });
+      fireEvent.pointerMove(close, { clientX: 300, clientY: 100 });
+      fireEvent.pointerUp(close, { clientX: 300, clientY: 100 });
+
+      const moved = {
+        right: DEFAULT_ASSISTANT_POSITION.right + 50,
+        bottom: DEFAULT_ASSISTANT_POSITION.bottom + 20
+      };
+      expect(storedPositions()).toEqual({ panel: moved });
+      expect(panel).toHaveStyle({ right: `${moved.right}px`, bottom: `${moved.bottom}px` });
+    });
+  });
+
+  describe("where the browser animates", () => {
+    const animations: { element: Element; animation: { onfinish: () => void; cancel: jest.Mock } }[] = [];
+
+    beforeEach(() => {
+      animations.length = 0;
+      (Element.prototype as any).animate = function animate() {
+        const animation = { onfinish: null, cancel: jest.fn() };
+        animations.push({ element: this, animation });
+        return animation;
+      };
+    });
+
+    afterEach(() => {
+      delete (Element.prototype as any).animate;
+    });
+
+    const panelAnimations = () => animations.filter(({ element }) => element.id === ASSISTANT_PANEL_ID);
+
+    it("grows the panel out of the button and collapses it back before showing the button", async () => {
+      const panel = openPanel();
+      expect(panelAnimations()).toHaveLength(1);
+
+      fireEvent.click(within(panel).getByRole("button", { name: "Close" }));
+
+      // still there while it collapses
+      expect(screen.getByRole("dialog", { name: /onCourse Assistant/ })).toBe(panel);
+      expect(screen.queryByRole("button", { name: "Ask onCourse AI" })).not.toBeInTheDocument();
+
+      act(() => panelAnimations()[1].animation.onfinish());
+
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+      await waitFor(() => expect(screen.getByRole("button", { name: "Ask onCourse AI" })).toHaveFocus());
+    });
+
+    it("stays open when it is opened again while it collapses", () => {
+      openPanel();
+      fireEvent.keyDown(input(), { key: "Escape" });
+      const collapse = panelAnimations()[1].animation;
+
+      act(() => {
+        TestStore.dispatch(setAssistantOpen(true));
+      });
+
+      expect(collapse.cancel).toHaveBeenCalled();
+      expect(screen.getByRole("dialog", { name: /onCourse Assistant/ })).toBeInTheDocument();
     });
   });
 });
