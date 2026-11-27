@@ -35,6 +35,8 @@ tags:
 paths:
   /access:
     $ref: './path/access/api.yml'
+  /assistant/message:
+    $ref: './path/assistant/message/api.yaml'
   /checkout/createSession:
     $ref: './path/checkout/createSession/api.yaml'
   /checkout/updateModel:
@@ -89,6 +91,8 @@ paths:
     $ref: './path/list/api.yaml'
   /list/column:
     $ref: './path/list/column/api.yaml'
+  /list/count:
+    $ref: './path/list/count/api.yaml'
   /list/entity/account:
     $ref: './path/list/entity/account/api.yaml'
   /list/entity/account/depositAccounts:

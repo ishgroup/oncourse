@@ -1,0 +1,14 @@
+type: object
+properties:
+  message:
+    type: string
+    description: error message reported by the AQL compiler
+    example: "Can't resolve component 'foo' of path 'foo'"
+  line:
+    type: integer
+    description: line of the search query where the error starts, counting from 1. Not set when the compiler doesn't report a position
+    example: 1
+  position:
+    type: integer
+    description: character position within the line where the error starts, counting from 0. Not set when the compiler doesn't report a position
+    example: 4

@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import ish.common.types.DataType
 import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.aql.AqlService
+import ish.oncourse.aql.CompilationError
 import ish.oncourse.aql.CompilationResult
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
@@ -761,6 +762,35 @@ class AntlrAqlServiceTest {
         assertInvalid(result)
     }
 
+    @Test
+    void testStrayCharacterIsLexerErrorOnly() {
+        CompilationResult result = service.compile("contact.path = 1 \$"
+                , null, getMockContext())
+
+        // the lexer skips '$', the query still compiles as before
+        Assertions.assertTrue(result.getErrors().isEmpty())
+        Assertions.assertEquals(exp("contact.path = 1"), result.getCayenneExpression().get())
+        Assertions.assertEquals(1, result.getLexerErrors().size())
+        CompilationError error = result.getLexerErrors().get(0)
+        Assertions.assertEquals("token recognition error at: '\$'", error.getMessage())
+        Assertions.assertEquals(1, error.getLine())
+        Assertions.assertEquals(17, error.getCharPositionInLine())
+    }
+
+    @Test
+    void testUnclosedQuoteIsLexerError() {
+        CompilationResult result = service.compile("contact.address.area.name ~ \"abc"
+                , null, getMockContext())
+
+        // the parser error is reported as before
+        assertInvalid(result)
+        Assertions.assertEquals(1, result.getLexerErrors().size())
+        CompilationError error = result.getLexerErrors().get(0)
+        Assertions.assertEquals("token recognition error at: '\"abc'", error.getMessage())
+        Assertions.assertEquals(1, error.getLine())
+        Assertions.assertEquals(28, error.getCharPositionInLine())
+    }
+
     private static void assertValid(String cayenneExpExpected, CompilationResult result) {
         assertValid(exp(cayenneExpExpected), result)
     }
@@ -773,6 +803,7 @@ class AntlrAqlServiceTest {
     private static void assertValid(CompilationResult result) {
         Assertions.assertTrue(result.getCayenneExpression().isPresent())
         Assertions.assertTrue(result.getErrors().isEmpty())
+        Assertions.assertTrue(result.getLexerErrors().isEmpty())
 
         Expression exp = result.getCayenneExpression().get()
         // Validate expression:

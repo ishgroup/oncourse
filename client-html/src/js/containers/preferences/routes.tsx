@@ -1,4 +1,5 @@
 import { Route } from "../../routes";
+import Assistant from "./containers/assistant/Assistant";
 import Avetmiss from "./containers/avetmiss/Avetmiss";
 import ClassTypes from "./containers/class-types/ClassTypes";
 import Class from "./containers/class/ClassDefaults";
@@ -119,6 +120,12 @@ const preferencesRoutes: Route[] = [
     path: "/preferences/messaging",
     url: "/preferences/messaging",
     main: Messaging
+  },
+  {
+    title: "onCourse Assistant",
+    path: "/preferences/assistant",
+    url: "/preferences/assistant",
+    main: Assistant
   },
   {
     title: "Payment types",

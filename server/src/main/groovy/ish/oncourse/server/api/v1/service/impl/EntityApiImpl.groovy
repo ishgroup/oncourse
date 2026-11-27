@@ -19,7 +19,6 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.BulkChangeApiService
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.EntityApi
-import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Survey
 import ish.oncourse.server.cayenne.WaitingList
@@ -30,7 +29,6 @@ import ish.util.EntityUtil
 import org.apache.cayenne.Cayenne
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
-import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.Ordering
 import org.apache.cayenne.query.PrefetchTreeNode
@@ -43,7 +41,10 @@ import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
 import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
+import static ish.oncourse.server.api.function.EntityFunctions.countRecords
+import static ish.oncourse.server.api.function.EntityFunctions.isCountedOnlyWithSearch
 import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
+import static ish.oncourse.server.api.function.EntityFunctions.validateAndCount
 
 @CompileDynamic
 class EntityApiImpl implements EntityApi {
@@ -89,12 +90,12 @@ class EntityApiImpl implements EntityApi {
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(entity)
         ObjectSelect objectSelect = ObjectSelect.query(clzz)
 
-        boolean isAuditEntity = Audit.class.name.equals(clzz.name)
+        boolean countedOnlyWithSearch = isCountedOnlyWithSearch(clzz)
 
         ObjectSelect<CayenneDataObject> query = parseSearchQuery(objectSelect, context, aql, entity, request.search, request.filter, request.tagGroups, request.uncheckedChecklists)
-        //!isAuditEntity - filteredCount is set for all entities without filter, search, tagGroups except Audit. For Audit filteredCount is set only with filter, search, tagGroups. It was made because Audit table has 10-16 million records, and request to get Count lasts about 10-16 sec. That is why filteredCount is calculated for Audit only with filter, search, tagsGroups.
-        if (!isAuditEntity || request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
-            response.filteredCount = query.column(Property.create("id", Long).countDistinct()).suppressDistinct().selectOne(context) // Can't use query.selectCount(context), because selectCount with Joins can't use Distinct correct. If tables with Joins have same column names (id, createdOn, modifiedOn, ...) 'Select *' and 'Select count(*)' using Distinct will have duplicates
+        //!countedOnlyWithSearch - filteredCount is set for all entities without filter, search, tagGroups except Audit. For Audit filteredCount is set only with filter, search, tagGroups. It was made because Audit table has 10-16 million records, and request to get Count lasts about 10-16 sec. That is why filteredCount is calculated for Audit only with filter, search, tagsGroups.
+        if (!countedOnlyWithSearch || request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
+            response.filteredCount = countRecords(query, context)
         }
 
         SortOrder sortOrder = null
@@ -128,6 +129,11 @@ class EntityApiImpl implements EntityApi {
         response.pageSize = new BigDecimal(Math.min(response.pageSize.intValue(), records.size()))
         populateResponce(records, response, response.columns, null)
         return response
+    }
+
+    @Override
+    SearchCountDTO count(String entity, String search) {
+        return validateAndCount(entity, search, cayenneService.newReadonlyContext, aql)
     }
 
     @Override

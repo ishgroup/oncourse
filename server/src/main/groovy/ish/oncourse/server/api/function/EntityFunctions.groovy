@@ -12,19 +12,25 @@
 package ish.oncourse.server.api.function
 
 import ish.oncourse.aql.AqlService
+import ish.oncourse.aql.CompilationError
 import ish.oncourse.aql.CompilationResult
 import ish.oncourse.aql.impl.ExpressionUtil
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.v1.function.TagRequirementFunctions
+import ish.oncourse.server.api.v1.model.SearchCountDTO
+import ish.oncourse.server.api.v1.model.SearchErrorDTO
 import ish.oncourse.server.api.v1.model.TagGroupDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.TagRelation
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionException
+import org.apache.cayenne.exp.Property
 import org.apache.cayenne.exp.parser.*
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
@@ -72,6 +78,91 @@ class EntityFunctions {
             }
         }
         return query
+    }
+
+    /**
+     * Entities too large to count without a search: Audit has 10-16 million records, and a count over the whole table takes 10-16 sec.
+     * /list doesn't return their filteredCount without a filter, search or tags, and /list/count requires a search for them.
+     */
+    static final List<Class> ENTITIES_COUNTED_ONLY_WITH_SEARCH = List.<Class> of(Audit)
+
+    static boolean isCountedOnlyWithSearch(Class clzz) {
+        ENTITIES_COUNTED_ONLY_WITH_SEARCH.contains(clzz)
+    }
+
+    /**
+     * Validates the AQL search against the entity and counts the records it matches.
+     * Unlike {@link #addAqlExp}, an invalid search isn't a bad request: the result carries the compiler errors with their positions.
+     * It is also stricter: characters the lexer skips (an unclosed quote, a stray '$') make the search invalid.
+     */
+    static SearchCountDTO validateAndCount(String entity, String search, ObjectContext context, AqlService aql) {
+        Class<? extends CayenneDataObject> clzz = entityClassForName(entity, context)
+        if (!search?.trim() && isCountedOnlyWithSearch(clzz)) {
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, 'search', "Search is required for ${clzz.simpleName}.")).build())
+        }
+        ObjectSelect<CayenneDataObject> query = ObjectSelect.query(clzz) as ObjectSelect<CayenneDataObject>
+
+        try {
+            if (search?.trim()) {
+                CompilationResult aqlCompile = aql.compile(search, clzz, context)
+                // Intentionally stricter than /list, which runs the search without the characters the lexer skipped:
+                // the caller (e.g. the AI assistant) checks a search it wrote, and a dropped character can change what the search means.
+                if (aqlCompile.lexerErrors || aqlCompile.errors) {
+                    List<CompilationError> errors = new ArrayList<>()
+                    if (aqlCompile.lexerErrors) {
+                        errors.addAll(aqlCompile.lexerErrors)
+                    }
+                    if (aqlCompile.errors) {
+                        errors.addAll(aqlCompile.errors)
+                    }
+                    return new SearchCountDTO(valid: false, errors: toSearchErrors(errors))
+                }
+                query = query & aqlCompile.cayenneExpression.get()
+            }
+            return new SearchCountDTO(valid: true, count: countRecords(query, context))
+        } catch (ExpressionException e) {
+            logger.catching(e)
+            return new SearchCountDTO(valid: false, errors: [new SearchErrorDTO(message: e.unlabeledMessage ?: e.message)])
+        }
+    }
+
+    /**
+     * Counts distinct records of the query. Can't use query.selectCount(context), because selectCount with Joins can't use Distinct correct.
+     * If tables with Joins have same column names (id, createdOn, modifiedOn, ...) 'Select *' and 'Select count(*)' using Distinct will have duplicates
+     */
+    static Long countRecords(ObjectSelect query, ObjectContext context) {
+        return query.column(Property.create("id", Long).countDistinct()).suppressDistinct().selectOne(context) as Long
+    }
+
+    // EntityUtil also resolves classes that aren't mapped Cayenne entities (e.g. PaymentInterface), they can't be queried
+    private static Class<? extends CayenneDataObject> entityClassForName(String entity, ObjectContext context) {
+        Class<? extends CayenneDataObject> clzz = null
+        try {
+            clzz = EntityUtil.entityClassForName(entity.capitalize())
+        } catch (RuntimeException e) {
+            logger.catching(e)
+        }
+        if (clzz == null || context.entityResolver.getObjEntity(clzz) == null) {
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, 'entity', "Unknown entity: '${entity}'.")).build())
+        }
+        return clzz
+    }
+
+    // lexer and parser errors are collected apart: report them in the order they occur in the search, errors without a position last
+    private static List<SearchErrorDTO> toSearchErrors(List<CompilationError> errors) {
+        Comparator<Integer> nullsLast = Comparator.nullsLast(Comparator.<Integer> naturalOrder())
+        List<SearchErrorDTO> result = errors.collect { toSearchError(it) }
+        Collections.sort(result, { SearchErrorDTO a, SearchErrorDTO b ->
+            nullsLast.compare(a.line, b.line) ?: nullsLast.compare(a.position, b.position)
+        } as Comparator<SearchErrorDTO>)
+        return result
+    }
+
+    // the compiler reports -1 when it doesn't know the position of an error
+    private static SearchErrorDTO toSearchError(CompilationError error) {
+        new SearchErrorDTO(message: error.message,
+                line: error.line >= 0 ? error.line : null,
+                position: error.charPositionInLine >= 0 ? error.charPositionInLine : null)
     }
 
     static Expression createTagGroupExpression(String alias, List<String> realPaths, List<Long> tagIds, String entity, boolean forbidden) {

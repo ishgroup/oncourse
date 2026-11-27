@@ -1,0 +1,9 @@
+type: object
+properties:
+  conversationId:
+    type: string
+    description: Id of the conversation to continue, from the previous reply. Omit it to start a new conversation.
+  text:
+    type: string
+    required: true
+    description: The user's message, at most 4000 characters.

@@ -14,7 +14,16 @@ describe("Virtual rendered AuditsEditView", () => {
         entityIdentifier: initialValues.entityIdentifier,
         entityId: initialValues.entityId,
         action: initialValues.action,
+        source: initialValues.source,
+        requestText: initialValues.requestText,
+        changeSetRef: initialValues.changeSetRef,
         message: initialValues.message,
+      });
+
+      initialValues.fieldChanges.forEach(change => {
+        const row = screen.getByText(change.name).closest("tr");
+        expect(row).toHaveTextContent(change.before);
+        expect(row).toHaveTextContent(change.after);
       });
     }
   });

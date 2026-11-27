@@ -1,0 +1,48 @@
+post:
+  operationId: sendMessage
+  summary: Send a message to the onCourse Assistant and get its reply
+  description: >
+    Sends the user's message to the onCourse Assistant and returns the assistant's reply. Omit conversationId to start
+    a new conversation; send the conversationId from the previous reply to continue it. An unknown conversationId, or
+    one that belongs to another user, starts a new conversation. Available only to users the assistant is available to
+    (the assistant is enabled and either open to all users or the user has the Admin toggle on).
+  tags:
+    - Assistant
+  parameters:
+    - name: request
+      in: body
+      schema:
+        $ref: './def/entity/assistant/AssistantMessageRequest.yaml'
+      required: true
+  responses:
+    '200':
+      description: The assistant's reply.
+      schema:
+        $ref: './def/entity/assistant/AssistantReply.yaml'
+    '400':
+      description: The message is blank or longer than 4000 characters.
+      schema:
+        $ref: './def/entity/ValidationError.yaml'
+    '403':
+      description: The onCourse Assistant is not available to the user.
+      schema:
+        $ref: './def/entity/ValidationError.yaml'
+    '409':
+      description: The assistant is still answering the previous message of this conversation.
+      schema:
+        $ref: './def/entity/ValidationError.yaml'
+    '429':
+      description: The user sent too many messages in the last minute.
+      schema:
+        $ref: './def/entity/ValidationError.yaml'
+    '503':
+      description: The AI model is not configured, failed or timed out.
+      schema:
+        $ref: './def/entity/ValidationError.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED
+    errorMessage: The onCourse Assistant is not available to you
+    custom:
+      - ish.oncourse.server.security.api.permission.custom.AssistantAvailablePermission

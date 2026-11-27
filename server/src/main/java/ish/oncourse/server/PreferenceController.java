@@ -12,9 +12,13 @@ package ish.oncourse.server;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import ish.common.types.SystemEventType;
 import ish.math.Country;
+import ish.oncourse.common.SystemEvent;
+import ish.oncourse.server.assistant.AssistantAvailability;
 import ish.oncourse.server.cayenne.Preference;
 import ish.oncourse.server.display.DisplayService;
+import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.integration.PluginsPrefsService;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.services.ISchedulerService;
@@ -49,6 +53,7 @@ public class PreferenceController extends CommonPreferenceController {
 	private final LicenseService licenseService;
 	private final PluginsPrefsService pluginsPrefsService;
 	private final ISchedulerService schedulerService;
+	private final EventService eventService;
 
 	private ObjectContext objectContext;
 
@@ -61,12 +66,13 @@ public class PreferenceController extends CommonPreferenceController {
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,
 								LicenseService licenseService, PluginsPrefsService pluginsPrefsService,
-								ISchedulerService schedulerService) {
+								ISchedulerService schedulerService, EventService eventService) {
 		this.cayenneService = cayenneService;
 		this.systemUserService = systemUserService;
 		this.licenseService = licenseService;
 		this.pluginsPrefsService = pluginsPrefsService;
 		this.schedulerService = schedulerService;
+		this.eventService = eventService;
 		sharedController = this;
 	}
 
@@ -159,6 +165,15 @@ public class PreferenceController extends CommonPreferenceController {
 
 			super.setValueForKey(key, value);
         }
+	}
+
+	/**
+	 * Lets the onCourse Assistant drop the conversations of users it is no longer available to.
+	 */
+	@Override
+	protected void assistantAvailabilityChanged() {
+		eventService.postEvent(SystemEvent.valueOf(SystemEventType.ASSISTANT_SETTINGS_CHANGED,
+				new AssistantAvailability(getAssistantEnabled(), getAssistantAdminOnly())));
 	}
 
 	/**

@@ -1,0 +1,32 @@
+get:
+  operationId: count
+  description: |
+    Validates an AQL search query against the entity and counts the records it matches.
+    A valid query returns the count. An invalid query is not an error: the response lists the AQL compiler errors with their positions.
+  tags:
+  - Entity
+  parameters:
+  - name: entity
+    in: query
+    required: true
+    type: string
+    description: The onCourse entity name that the search query applies to
+    example: Invoice
+  - name: search
+    in: query
+    required: false
+    type: string
+    description: AQL search query to validate. Without it all records of the entity are counted
+    example: |
+      search="amountOwing > 0 and invoiceDate after 2024-01-01"
+  responses:
+    '200':
+      description: Success response. Check valid to know whether count or errors are set.
+      schema:
+        $ref: './def/list/SearchCount.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: LAZY/entity
+    errorMessage: Sorry, you have no permissions to view this entity. Please contact your administrator

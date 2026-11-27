@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.oncourse.server.cayenne.glue._Audit
+import ish.oncourse.server.services.AuditValues
 
 class Audit extends _Audit {
 
@@ -20,6 +21,22 @@ class Audit extends _Audit {
 	@Override
 	boolean isAuditAllowed() {
 		return false
+	}
+
+	/**
+	 * @return values before the change, {property: value}; empty when they were not recorded
+	 * @see AuditValues
+	 */
+	Map<String, Object> getBefore() {
+		return AuditValues.parse(beforeValues)
+	}
+
+	/**
+	 * @return values after the change, {property: value}; empty when they were not recorded
+	 * @see AuditValues
+	 */
+	Map<String, Object> getAfter() {
+		return AuditValues.parse(afterValues)
 	}
 }
 

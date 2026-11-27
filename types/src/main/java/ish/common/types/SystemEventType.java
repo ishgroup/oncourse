@@ -29,7 +29,8 @@ public enum SystemEventType implements DisplayableExtendedEnumeration<Integer> {
 	CHECKLIST_TASK_CHECKED(10,"Checklist task checked"),
 	CHECKLIST_COMPLETED(11,"Checklist completed"),
 	TAG_ADDED(12,"Tag added"),
-	TAG_REMOVED(13,"Tag removed");
+	TAG_REMOVED(13,"Tag removed"),
+	ASSISTANT_SETTINGS_CHANGED(14, "onCourse Assistant settings changed");
 
 	private int value;
 	private String displayName;

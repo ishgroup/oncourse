@@ -146,6 +146,13 @@ dependencies {
 
 	implementation 'com.opencsv:opencsv:5.9'
 
+	// onCourse Assistant: Claude on Amazon Bedrock
+	implementation 'com.anthropic:anthropic-java:3.14.0'
+	implementation 'com.anthropic:anthropic-java-bedrock:3.14.0'
+	// anthropic-java refuses Jackson 2.18.1 and versions before 2.13.4 at runtime, and the version ranges
+	// of square's dependencies let Jackson float, so pin it
+	implementation platform('com.fasterxml.jackson:jackson-bom:2.19.4')
+
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
 	testImplementation 'commons-dbcp:commons-dbcp:1.4'

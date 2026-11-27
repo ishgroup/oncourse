@@ -11,7 +11,13 @@ export function mockAudits() {
       entityIdentifier: row.values[2],
       action: row.values[3],
       entityId: row.values[4],
+      source: row.values[5],
       message: "test message",
+      requestText: "Increase places in tomorrow's classes to 24",
+      changeSetRef: "test-change-set",
+      fieldChanges: [
+        { name: "maximumPlaces", before: "20", after: "24" }
+      ]
     };
   };
 
@@ -40,7 +46,7 @@ export function mockAudits() {
     { name: "entityId", type: "string" },
   ]).map(l => ({
     id: l.id,
-    values: [l.systemUser, l.created, l.entityIdentifier, l.action, l.entityId]
+    values: [l.systemUser, l.created, l.entityIdentifier, l.action, l.entityId, "ASSISTANT"]
   }));
 
   return getEntityResponse({
@@ -72,6 +78,12 @@ export function mockAudits() {
       {
         title: "Entity id",
         attribute: "entityId",
+        sortable: true,
+        width: 100,
+      },
+      {
+        title: "Source",
+        attribute: "source",
         sortable: true,
         width: 100,
       },

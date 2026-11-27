@@ -12,6 +12,7 @@
 package ish.oncourse.aql.impl;
 
 import org.antlr.v4.runtime.BaseErrorListener;
+import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 
@@ -19,6 +20,7 @@ import java.util.Objects;
 
 /**
  * Internal error listener that will accumulate all parsing errors.
+ * Lexer errors are accumulated apart, see {@link ish.oncourse.aql.CompilationResult#getLexerErrors()}.
  */
 class AqlErrorListener extends BaseErrorListener {
 
@@ -32,6 +34,10 @@ class AqlErrorListener extends BaseErrorListener {
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol,
                             int line, int charPositionInLine,
                             String msg, RecognitionException e) {
-        context.reportError(line, charPositionInLine, msg);
+        if (recognizer instanceof Lexer) {
+            context.reportLexerError(line, charPositionInLine, msg);
+        } else {
+            context.reportError(line, charPositionInLine, msg);
+        }
     }
 }

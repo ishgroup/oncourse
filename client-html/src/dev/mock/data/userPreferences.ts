@@ -1,5 +1,5 @@
 import { PreferenceEnum, UserPreference } from "@api/model";
-import { ACCOUNT_INVOICE_TERMS } from "../../../js/constants/Config";
+import { ACCOUNT_INVOICE_TERMS, ASSISTANT_AVAILABLE_KEY } from "../../../js/constants/Config";
 
 type mockedUserPreferencesDB = { [key in PreferenceEnum]?: string | number };
 
@@ -30,6 +30,7 @@ export function mockUserPreferences(): mockedUserPreferencesDB {
     "license.access_control": "",
     "account.default.studentEnrolments.id": "11025",
     "account.default.voucherLiability.id": "4682",
-    [ACCOUNT_INVOICE_TERMS]: 7
+    [ACCOUNT_INVOICE_TERMS]: 7,
+    [ASSISTANT_AVAILABLE_KEY]: "false"
   };
 }

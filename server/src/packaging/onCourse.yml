@@ -18,3 +18,12 @@ smtp:
   mode: starttls
   username: your_email@gmail.com
   password: your_email_password
+
+# onCourse Assistant AI model. Without this section the assistant can't answer.
+#assistant:
+#  provider: bedrock          # bedrock | fake | none
+#  region: ap-southeast-2
+#  modelId: au.anthropic.claude-sonnet-5-5
+#  # AWS credentials: the default chain (EC2 instance profile) unless accessKeyId/secretAccessKey or profile is set
+#  #profile: oncourse-dev
+#  maxMessagesPerMinute: 10  # messages a user can send to the assistant in a minute, 0 for no limit

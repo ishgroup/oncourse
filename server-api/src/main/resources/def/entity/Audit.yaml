@@ -24,3 +24,19 @@ properties:
   created:
     type: string
     format: date-time
+  source:
+    type: string
+    description: Where the change came from (USER, API_TOKEN, ASSISTANT, AUTOMATION); empty when unknown
+    example: ASSISTANT
+  requestText:
+    type: string
+    description: Text of the request that caused the change, e.g. the message sent to the assistant
+    example: Move tomorrow's evening classes at Sydney to room 2
+  changeSetRef:
+    type: string
+    description: Reference to the change set this entry belongs to
+  fieldChanges:
+    type: array
+    description: Recorded before and after values, one item per field
+    items:
+      $ref: './AuditFieldChange.yaml'

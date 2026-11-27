@@ -15,8 +15,10 @@ import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ApiToken
 import ish.oncourse.server.security.api.IPermissionService
+import ish.oncourse.server.services.AuditContext
 import ish.oncourse.server.services.AuditService
 import ish.oncourse.types.AuditAction
+import ish.oncourse.types.AuditSource
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -95,7 +97,22 @@ class ApiFilter implements Filter {
             return
         }
 
-        chain.doFilter(request, response)
+        AuditSource auditSource = auditSource(request)
+        if (auditSource) {
+            // changes made by this request are audited as made by the user or by the API token
+            AuditContext.open(AuditContext.of(auditSource)).withCloseable {
+                chain.doFilter(request, response)
+            }
+        } else {
+            chain.doFilter(request, response)
+        }
+    }
+
+    private static AuditSource auditSource(HttpServletRequest request) {
+        if (request.getAttribute(AUTHORIZATION)) {
+            return AuditSource.API_TOKEN
+        }
+        return request.getSession(false)?.getAttribute(USER_ATTRIBUTE) ? AuditSource.USER : null
     }
 
     @Override
@@ -125,7 +142,9 @@ class ApiFilter implements Filter {
                 token.lastAccess = new Date()
                 token.context.commitChanges()
                 request.setAttribute(AUTHORIZATION, token)
-                auditService.submit(token, AuditAction.API_TOKEN, "Api key: $token.name used for $request.requestURL")
+                AuditContext.open(AuditContext.of(AuditSource.API_TOKEN)).withCloseable {
+                    auditService.submit(token, AuditAction.API_TOKEN, "Api key: $token.name used for $request.requestURL")
+                }
 
                 return false
             }

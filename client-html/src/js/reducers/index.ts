@@ -24,6 +24,7 @@ import { setNextLocationReducer } from '../common/reducers/nextLocation';
 import { processReducer } from '../common/reducers/processReducer';
 import { sendMessageReducer } from '../common/reducers/sendMessageReducer';
 import { userPreferencesReducer } from '../common/reducers/userPreferencesReducer';
+import { assistantReducer } from '../containers/assistant/reducers';
 import { automationReducer } from '../containers/automation/reducers';
 import { AvetmissExportReducer } from '../containers/avetmiss-export/reducers';
 import { checkoutReducer } from '../containers/checkout/reducers';
@@ -62,6 +63,7 @@ import { State } from './state';
 export const combinedReducers: Reducer<State,IAction> = combineReducers({
   access: accessReducer,
   actionsQueue: actionsQueueReducer,
+  assistant: assistantReducer,
   automation: automationReducer,
   banking: bankingReducer,
   certificates: certificatesReducer,

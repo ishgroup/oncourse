@@ -116,6 +116,9 @@ export const SERVER_TIMEZONE: PreferenceEnum = "oncourse.server.timezone.default
 
 export const SPECIAL_TYPES_DISPLAY_KEY: PreferenceEnum = "ish.display.extendedSearchTypes";
 
+// "true" when the onCourse Assistant is enabled and available to the current user
+export const ASSISTANT_AVAILABLE_KEY: PreferenceEnum = "oncourse.assistant.available";
+
 export const ADMIN_EMAIL_KEY = 'email.admin';
 
 export const TAB_LIST_SCROLL_TARGET_ID = "TabsListScrollTarget";

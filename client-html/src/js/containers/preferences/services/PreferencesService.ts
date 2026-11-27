@@ -37,6 +37,7 @@ import {
 import { DefaultHttpService } from '../../../common/services/HttpService';
 import { SearchService } from '../../../common/services/SearchService';
 import { AccountStudentEnrolments, Categories } from '../../../model/preferences';
+import * as ModelAssistant from '../../../model/preferences/Assistant';
 import * as ModelAvetmiss from '../../../model/preferences/Avetmiss';
 import * as ModelClass from '../../../model/preferences/ClassDefaults';
 import * as ModelCollege from '../../../model/preferences/College';
@@ -321,6 +322,10 @@ class PreferencesService {
 
       case Categories.security: {
         return Object.keys(ModelSecurity).map(item => ModelSecurity[item].uniqueKey);
+      }
+
+      case Categories.assistant: {
+        return Object.keys(ModelAssistant).map(item => ModelAssistant[item].uniqueKey);
       }
 
       default:
