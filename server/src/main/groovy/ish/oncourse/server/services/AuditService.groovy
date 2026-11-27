@@ -39,7 +39,8 @@ class AuditService {
     ISystemUserService systemUserService
     ICayenneService cayenneService
     ExecutorService executorService
-    private static String INSERT_AUDIT_PATTERN = 'INSERT INTO Audit (created, systemUserId, entityId, entityName, action, message) VALUES (?, ?, ?, ?, ?, ?)'
+    private static String INSERT_AUDIT_PATTERN = 'INSERT INTO Audit (created, systemUserId, entityId, entityName, action, message, ' +
+            'source, requestText, changeSetRef, beforeValues, afterValues) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
 
     @Inject
     AuditService(ICayenneService cayenneService, ISystemUserService systemUserService) {
@@ -95,12 +96,40 @@ class AuditService {
             message = defaultMessage(action, object)
         }
 
-        submit(entityName, entityId, action, message)
+        Map<String, Object> before = null
+        Map<String, Object> after = null
+        if (AuditContext.current()?.recordValues) {
+            if (action == AuditAction.CREATE) {
+                after = AuditValues.snapshot(object, cayenneService.sharedContext.entityResolver)
+            } else if (action == AuditAction.DELETE) {
+                before = AuditValues.snapshot(object, cayenneService.sharedContext.entityResolver)
+            }
+        }
+
+        submit(entityName, entityId, action, message, before, after)
     }
 
-    def submit(String entityName, Long entityId, AuditAction action, String message){
+    def submit(String entityName, Long entityId, AuditAction action, String message) {
+        submit(entityName, entityId, action, message, null, null)
+    }
+
+    /**
+     * Inserts an audit entry asynchronously. Source, request text and change set come from the {@link AuditContext}
+     * open on the calling thread.
+     *
+     * @param before values before the change, {property: value}, see {@link AuditValues} for how they are stored
+     * @param after values after the change
+     */
+    def submit(String entityName, Long entityId, AuditAction action, String message, Map<String, ?> before, Map<String, ?> after) {
         def userId = systemUserService.currentUser?.id
         def created = new Timestamp(new Date().time)
+        // the context and the values belong to the calling thread, read them before going async
+        AuditContext context = AuditContext.current()
+        String source = context?.source?.databaseValue
+        String requestText = context?.requestText
+        String changeSetRef = context?.changeSetRef
+        String beforeValues = AuditValues.toJson(entityName, before)
+        String afterValues = AuditValues.toJson(entityName, after)
 
         executorService.submit({
             TransactionManager manager = cayenneService.serverRuntime.getInjector().getInstance(TransactionManager.class)
@@ -120,6 +149,11 @@ class AuditService {
                     setString(stmt, 4, entityName)
                     setString(stmt, 5, action.databaseValue)
                     setString(stmt, 6, message)
+                    setString(stmt, 7, source)
+                    setString(stmt, 8, requestText)
+                    setString(stmt, 9, changeSetRef)
+                    setString(stmt, 10, beforeValues)
+                    setString(stmt, 11, afterValues)
 
                     stmt.executeUpdate()
                     connection.commit()

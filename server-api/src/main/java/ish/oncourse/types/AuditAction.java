@@ -72,7 +72,13 @@ public enum AuditAction implements DisplayableExtendedEnumeration<String> {
      * Messages archiving failed
      */
     @API
-    MESSAGES_ARCHIVING_FAILED("MESSAGES_ARCHIVING_FAILED", "Messages archiving failed");
+    MESSAGES_ARCHIVING_FAILED("MESSAGES_ARCHIVING_FAILED", "Messages archiving failed"),
+
+    /**
+     * Changes undone, e.g. an assistant change set rolled back
+     */
+    @API
+    UNDO("UNDO", "Changes undone");
     
     
     private String displayValue;

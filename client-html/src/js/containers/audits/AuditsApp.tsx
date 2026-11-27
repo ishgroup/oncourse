@@ -30,6 +30,31 @@ const filterGroups: FilterGroup[] = [
         active: false
       }
     ]
+  },
+  {
+    title: "SOURCE",
+    filters: [
+      {
+        name: "User",
+        expression: "source == USER",
+        active: false
+      },
+      {
+        name: "API token",
+        expression: "source == API_TOKEN",
+        active: false
+      },
+      {
+        name: "Assistant",
+        expression: "source == ASSISTANT",
+        active: false
+      },
+      {
+        name: "Automation",
+        expression: "source == AUTOMATION",
+        active: false
+      }
+    ]
   }
 ];
 

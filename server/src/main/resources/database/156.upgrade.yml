@@ -1,0 +1,38 @@
+databaseChangeLog:
+  # SST-276: where an audited change came from (source), the request that caused it, its change set
+  # and the before/after values as compact JSON {"property": value}. All columns are nullable, existing rows keep them empty.
+  - changeSet:
+      id: 156-1
+      author: yury
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - columnExists:
+                tableName: Audit
+                columnName: source
+      changes:
+        - addColumn:
+            tableName: Audit
+            columns:
+              - column:
+                  name: source
+                  type: VARCHAR(32)
+              - column:
+                  name: requestText
+                  type: TEXT
+              - column:
+                  name: changeSetRef
+                  type: VARCHAR(64)
+              - column:
+                  name: beforeValues
+                  type: LONGTEXT
+              - column:
+                  name: afterValues
+                  type: LONGTEXT
+        # undo looks up all entries of a change set
+        - createIndex:
+            columns:
+              - column:
+                  name: changeSetRef
+            indexName: Audit_changeSetRef
+            tableName: Audit
