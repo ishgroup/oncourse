@@ -134,7 +134,8 @@ public final class AuditValues {
         try {
             return MAPPER.readValue(json, new TypeReference<LinkedHashMap<String, Object>>() {});
         } catch (JsonProcessingException e) {
-            logger.warn("Can not read audit values {}", json, e);
+            // the values may hold personal data and be large: log the error only, not the JSON
+            logger.warn("Can not read audit values ({} characters): {}", json.length(), e.getOriginalMessage());
             return Collections.emptyMap();
         }
     }

@@ -15,7 +15,7 @@ import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
 import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
 import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
-import static ish.oncourse.server.api.v1.function.AuditFunctions.toRestAudit
+import static ish.oncourse.server.api.v1.function.AuditFunctions.toRestAuditWithFieldChanges
 import ish.oncourse.server.api.v1.model.AuditDTO
 import ish.oncourse.server.api.v1.service.AuditApi
 import ish.oncourse.server.cayenne.Audit
@@ -29,7 +29,7 @@ class AuditApiImpl implements AuditApi {
     AuditDTO get(Long id) {
         checkForBadRequest(validateIdParam(id))
 
-        return toRestAudit(SelectById.query(Audit, id)
+        return toRestAuditWithFieldChanges(SelectById.query(Audit, id)
                 .selectOne(cayenneService.newContext))
     }
 }

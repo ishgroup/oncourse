@@ -159,6 +159,24 @@ class AuditContextTest extends TestWithDatabase {
     }
 
     @Test
+    void testValuesOfColumnSizeAreStored() {
+        Account account = createAccount('Long request')
+        String changeSetRef = 'c' * AuditContext.CHANGE_SET_REF_MAX_LENGTH
+        // longer than the TEXT column: truncated by the context instead of failing the insert
+        String requestText = 'Rename the account. ' * 4000
+
+        AuditContext.open(AuditContext.assistant(requestText, changeSetRef)).withCloseable {
+            account.description = 'Renamed after a long request'
+            cayenneContext.commitChanges()
+        }
+
+        Audit audit = lastAudit(account, AuditAction.UPDATE)
+        assertEquals(changeSetRef, audit.changeSetRef)
+        assertEquals(AuditContext.REQUEST_TEXT_MAX_BYTES, audit.requestText.length())
+        assertTrue(requestText.startsWith(audit.requestText))
+    }
+
+    @Test
     void testContextsNest() {
         AuditContext user = AuditContext.of(AuditSource.USER)
         AuditContext assistant = AuditContext.assistant(REQUEST_TEXT, CHANGE_SET)

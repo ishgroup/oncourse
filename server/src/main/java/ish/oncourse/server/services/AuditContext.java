@@ -31,8 +31,27 @@ import ish.oncourse.types.AuditSource;
  * to the thread, so work handed over to another thread has to open its own.
  * {@code ApiFilter} opens a source-only context (user or API token)
  * for every authorised API request.
+ * <p>
+ * The values have to fit the {@code Audit} columns, otherwise the audit entry is lost: a change set
+ * reference longer than {@link #CHANGE_SET_REF_MAX_LENGTH} is rejected, a request text longer than
+ * {@link #REQUEST_TEXT_MAX_BYTES} UTF-8 bytes is truncated.
  */
 public final class AuditContext {
+
+    /**
+     * Length of the {@code Audit.source} column, VARCHAR(32)
+     */
+    public static final int SOURCE_MAX_LENGTH = 32;
+
+    /**
+     * Length of the {@code Audit.changeSetRef} column, VARCHAR(64)
+     */
+    public static final int CHANGE_SET_REF_MAX_LENGTH = 64;
+
+    /**
+     * Size of the {@code Audit.requestText} column, TEXT: 65535 bytes
+     */
+    public static final int REQUEST_TEXT_MAX_BYTES = 65_535;
 
     private static final ThreadLocal<AuditContext> CURRENT = new ThreadLocal<>();
 
@@ -43,13 +62,23 @@ public final class AuditContext {
 
     /**
      * @param source where the changes come from
-     * @param requestText text of the request that causes the changes, e.g. the message sent to the assistant
-     * @param changeSetRef reference to the change set the changes belong to
+     * @param requestText text of the request that causes the changes, e.g. the message sent to the assistant;
+     *                    truncated to {@link #REQUEST_TEXT_MAX_BYTES} UTF-8 bytes
+     * @param changeSetRef reference to the change set the changes belong to, at most {@link #CHANGE_SET_REF_MAX_LENGTH} characters
      * @param recordValues whether the audit listeners record before/after values
+     * @throws IllegalArgumentException when the change set reference is too long
      */
     public AuditContext(AuditSource source, String requestText, String changeSetRef, boolean recordValues) {
+        if (source != null && source.getDatabaseValue().length() > SOURCE_MAX_LENGTH) {
+            // a new AuditSource constant has to fit the column
+            throw new IllegalArgumentException("Audit source " + source.name() + " is longer than " + SOURCE_MAX_LENGTH + " characters");
+        }
+        if (changeSetRef != null && changeSetRef.length() > CHANGE_SET_REF_MAX_LENGTH) {
+            throw new IllegalArgumentException("Change set reference is longer than " + CHANGE_SET_REF_MAX_LENGTH
+                    + " characters: " + changeSetRef.length());
+        }
         this.source = source;
-        this.requestText = requestText;
+        this.requestText = truncateUtf8(requestText, REQUEST_TEXT_MAX_BYTES);
         this.changeSetRef = changeSetRef;
         this.recordValues = recordValues;
     }
@@ -98,6 +127,28 @@ public final class AuditContext {
 
     public boolean isRecordValues() {
         return recordValues;
+    }
+
+    /**
+     * @return the text cut to at most maxBytes bytes in UTF-8, without splitting a character
+     */
+    static String truncateUtf8(String text, int maxBytes) {
+        // a character takes at most 4 bytes in UTF-8 (a surrogate pair is 2 chars)
+        if (text == null || text.length() <= maxBytes / 4) {
+            return text;
+        }
+        int bytes = 0;
+        int index = 0;
+        while (index < text.length()) {
+            int codePoint = text.codePointAt(index);
+            int size = codePoint < 0x80 ? 1 : codePoint < 0x800 ? 2 : codePoint < 0x10000 ? 3 : 4;
+            if (bytes + size > maxBytes) {
+                return text.substring(0, index);
+            }
+            bytes += size;
+            index += Character.charCount(codePoint);
+        }
+        return text;
     }
 
     /**

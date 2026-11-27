@@ -20,6 +20,9 @@ import java.time.ZoneOffset
 
 class AuditFunctions {
 
+    /**
+     * @return the entry without its field changes, see {@link #toRestAuditWithFieldChanges}
+     */
     static AuditDTO toRestAudit(Audit dbAudit) {
         AuditDTO restAudit = new AuditDTO()
         restAudit.setId(dbAudit.id)
@@ -34,6 +37,14 @@ class AuditFunctions {
         restAudit.setSource(dbAudit.source?.databaseValue)
         restAudit.setRequestText(dbAudit.requestText)
         restAudit.setChangeSetRef(dbAudit.changeSetRef)
+        return restAudit
+    }
+
+    /**
+     * @return the entry with its field changes read from the before/after values; only the single entry view shows them
+     */
+    static AuditDTO toRestAuditWithFieldChanges(Audit dbAudit) {
+        AuditDTO restAudit = toRestAudit(dbAudit)
         restAudit.setFieldChanges(toRestFieldChanges(dbAudit.before, dbAudit.after))
         return restAudit
     }
