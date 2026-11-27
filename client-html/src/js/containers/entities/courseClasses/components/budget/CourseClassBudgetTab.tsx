@@ -390,7 +390,7 @@ const CourseClassBudgetTab = React.memo<Props>(
           });
         }
 
-        const role = tutorRoles?.find(r => r.id === tutor.roleId);
+        const role = tutorRoles.find(r => r.id === tutor.roleId);
         const onCostRate = payRate ? payRate.oncostRate : 0;
         const perUnitAmountExTax = payRate ? payRate.rate : 0;
         const initial: ClassCost = getTutorPayInitial(tutor, values.id, values.taxId, role, perUnitAmountExTax);
@@ -407,7 +407,7 @@ const CourseClassBudgetTab = React.memo<Props>(
       if (data.flowType === "Wages") {
         const tutor = values.tutors.find(t =>
           (data.courseClassTutorId ? t.id === data.courseClassTutorId : t.temporaryId === data.temporaryTutorId));
-        const role = tutor ? tutorRoles?.find(r => r.id === tutor.roleId) : null;
+        const role = tutor ? tutorRoles.find(r => r.id === tutor.roleId) : null;
         onCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
       }
       setCourseClassBudgetModalOpened(true, isNaN(onCostRate) ? 0 : onCostRate);

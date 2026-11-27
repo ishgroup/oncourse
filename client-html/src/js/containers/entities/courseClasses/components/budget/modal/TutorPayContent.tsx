@@ -66,7 +66,7 @@ const TutorPayContent: React.FC<Props> = ({
     [values.courseClassTutorId, values.temporaryTutorId, classValues.tutors]
   );
 
-  const role = useMemo(() => tutor && tutorRoles?.find(r => r.id === tutor.roleId), [tutor, tutorRoles]);
+  const role = useMemo(() => tutor && tutorRoles.find(r => r.id === tutor.roleId), [tutor, tutorRoles]);
 
   const rate = useMemo(() => ((role && role["currentPayrate.rate"]) ? parseFloat(role["currentPayrate.rate"]) : 0), [role]);
   const repetitionType = useMemo(() => ((role && role["currentPayrate.type"]) ? role["currentPayrate.type"] : ""), [role]);

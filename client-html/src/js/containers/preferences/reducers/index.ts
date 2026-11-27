@@ -43,6 +43,7 @@ import {
   GET_PREFERENCES_FULFILLED,
   GET_TAX_TYPES_FULFILLED,
   GET_TIMEZONES_FULFILLED,
+  GET_TUTOR_ROLES_FAILED,
   GET_TUTOR_ROLES_FULFILLED,
   GET_USI_SORTWARE_ID_FULFILLED,
   SAVE_HOLIDAYS_FULFILLED,
@@ -251,6 +252,14 @@ export const preferencesReducer = (state: PreferencesState = {}, action: IAction
       return {
         ...state,
         tutorRoles
+      };
+    }
+
+    // Keep loaded roles, but mark them as loaded so the class page does not wait for them forever
+    case GET_TUTOR_ROLES_FAILED: {
+      return {
+        ...state,
+        tutorRoles: state.tutorRoles || []
       };
     }
 

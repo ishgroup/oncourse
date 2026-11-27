@@ -153,6 +153,7 @@ export const GET_ACCOUNT_TRANSACTION_LOCKED_DATE_FULFILLED = FULFILLED(GET_ACCOU
 
 export const GET_TUTOR_ROLES_REQUEST = _toRequestType("get/tutor/roles");
 export const GET_TUTOR_ROLES_FULFILLED = FULFILLED(GET_TUTOR_ROLES_REQUEST);
+export const GET_TUTOR_ROLES_FAILED = "get/tutor/roles/failed";
 
 export const GET_TUTOR_ROLE_REQUEST = _toRequestType("get/tutor/role");
 export const GET_TUTOR_ROLE_FULFILLED = FULFILLED(GET_TUTOR_ROLE_REQUEST);

@@ -473,7 +473,7 @@ const CourseClassEditView: React.FC<Props> = ({
 
   const addTutorWage = useCallback(
     (tutor: CourseClassTutor, wage?: ClassCostExtended) => {
-      const role = tutorRoles?.find(r => r.id === tutor.roleId);
+      const role = tutorRoles.find(r => r.id === tutor.roleId);
       const onCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
       const perUnitAmountExTax = (role && role["currentPayrate.rate"]) ? parseFloat(role["currentPayrate.rate"]) : 0;
       const initWage: ClassCost = wage || getTutorPayInitial(tutor, values.id, values.taxId, role, perUnitAmountExTax);
@@ -590,4 +590,5 @@ const mapStateToProps = (state: State) => ({
   currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
-export default connect(mapStateToProps)((props: any) => (props.values ? <CourseClassEditView {...props} /> : null));
+// Class budget and tutor pay need tutor roles, which load in parallel with the class, so the view waits for both
+export default connect(mapStateToProps)((props: any) => (props.values && props.tutorRoles ? <CourseClassEditView {...props} /> : null));

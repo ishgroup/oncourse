@@ -9,7 +9,7 @@ import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import EntityService from "../../../../../common/services/EntityService";
 import { getCustomColumnsMap } from "../../../../../common/utils/common";
 import history from "../../../../../constants/History";
-import { GET_TUTOR_ROLES_FULFILLED, GET_TUTOR_ROLES_REQUEST } from "../../../actions";
+import { GET_TUTOR_ROLES_FAILED, GET_TUTOR_ROLES_FULFILLED, GET_TUTOR_ROLES_REQUEST } from "../../../actions";
 
 const request: EpicUtils.Request<any,  { selectFirst: boolean; keyCodeToSelect: string; columns: string }> = {
   type: GET_TUTOR_ROLES_REQUEST,
@@ -52,7 +52,10 @@ const request: EpicUtils.Request<any,  { selectFirst: boolean; keyCodeToSelect: 
       }
     ];
   },
-  processError: response => FetchErrorHandler(response, "Failed to get tutor role list")
+  processError: response => [
+    ...FetchErrorHandler(response, "Failed to get tutor role list"),
+    { type: GET_TUTOR_ROLES_FAILED }
+  ]
 };
 
 export const EpicGetTutorRoles: Epic<any, any> = EpicUtils.Create(request);
