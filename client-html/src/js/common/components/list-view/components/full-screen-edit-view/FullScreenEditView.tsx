@@ -20,6 +20,7 @@ import { withRouter } from 'react-router-dom';
 import { getFormSyncErrors, getFormValues, reduxForm } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import { APPLICATION_THEME_STORAGE_NAME, TAB_LIST_SCROLL_TARGET_ID } from '../../../../../constants/Config';
+import { AssistantHostSlot } from '../../../../../containers/assistant/components/AssistantHost';
 import { EditViewContainerProps } from '../../../../../model/common/ListView';
 import { State } from '../../../../../reducers/state';
 import { getSingleEntityDisplayName } from '../../../../utils/getEntityDisplayName';
@@ -252,6 +253,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
             />
           </div>
         </form>
+        {fullScreenEditView && <AssistantHostSlot />}
       </Dialog>
     );
   }

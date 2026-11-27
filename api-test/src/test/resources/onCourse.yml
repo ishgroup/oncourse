@@ -24,3 +24,8 @@ archives:
   bucket: ${document.bucket}
   region: ${document.region}
   endpoint: ${document.endpoint}
+
+assistant:
+  provider: fake
+  fakeReplies:
+    - Hi! I can help with courses and classes.

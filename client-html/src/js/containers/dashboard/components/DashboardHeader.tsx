@@ -7,7 +7,7 @@ import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 import $t from '@t';
 import { makeAppStyles, ShowConfirmCaller } from 'ish-ui';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Dispatch } from 'redux';
 import { IAction } from '../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
@@ -20,7 +20,6 @@ import {
   APPLICATION_THEME_STORAGE_NAME,
   DASHBOARD_ACTIVITY_STORAGE_NAME
 } from '../../../constants/Config';
-import { getSystemUserData } from '../../login/actions';
 import { ThemeContext } from '../../ThemeContext';
 import DashboardService from '../services/DashboardService';
 
@@ -96,12 +95,9 @@ const DashboardHeader = (
     openConfirm({ onConfirm: logout, confirmMessage: "Do you want to logout?", confirmButtonText: "Yes" });
   };
 
+  // fetched for every page on login, in Main
   const systemUser = useAppSelector(state => state.systemUser);
 
-  useEffect(() => {
-    dispatch(getSystemUserData());
-  }, []);
-    
   return (
     <header className={classes.appBar}>
       <div className={classes.toolBar}>

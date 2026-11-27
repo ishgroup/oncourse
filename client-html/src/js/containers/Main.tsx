@@ -54,7 +54,9 @@ import { EnvironmentConstants } from '../constants/EnvironmentConstants';
 import { AppMessage } from '../model/common/Message';
 import { State } from '../reducers/state';
 import { loginRoute, routes } from '../routes';
+import AssistantLauncher from './assistant/components/AssistantLauncher';
 import { getDashboardBlogPosts } from './dashboard/actions';
+import { getSystemUserData } from './login/actions';
 import { getLocation, isLoggedIn } from './preferences/actions';
 import { ThemeContext } from './ThemeContext';
 
@@ -245,6 +247,7 @@ function MainBase(
                 </Switch>
                 <ConfirmProvider />
                 {isLogged && <SwipeableSidebar />}
+                {isLogged && <AssistantLauncher />}
               </GlobalStylesProvider>
               <MessageProvider />
             </ThemeProvider>
@@ -274,6 +277,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
       SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY, SPECIAL_TYPES_DISPLAY_KEY, ASSISTANT_AVAILABLE_KEY
     ]));
     dispatch(getDashboardBlogPosts());
+    // the dashboard and the assistant on any page greet the user by first name
+    dispatch(getSystemUserData());
   }
 });
 

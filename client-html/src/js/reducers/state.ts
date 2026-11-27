@@ -10,6 +10,7 @@ import { GoogleApiResponse } from '../common/components/google-maps/reducers';
 import { AccessState } from '../common/reducers/accessReducer';
 import { ProcessState } from '../common/reducers/processReducer';
 import { UserPreferencesState } from '../common/reducers/userPreferencesReducer';
+import { AssistantState } from '../containers/assistant/model';
 import { AutomationState } from '../containers/automation/reducers';
 import { AvetmissExportState } from '../containers/avetmiss-export/reducers/state';
 import { DashboardState } from '../containers/dashboard/reducers/state';
@@ -99,4 +100,5 @@ export interface State {
   nextLocation?: string;
   systemUser?: User;
   sendMessage?: SendMessageState;
+  assistant?: AssistantState;
 }

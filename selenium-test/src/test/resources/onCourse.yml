@@ -5,3 +5,8 @@ http:
 
 db:
   uri: '${dbUrl}'
+
+assistant:
+  provider: fake
+  fakeReplies:
+    - Hi! I can help with courses and classes.
