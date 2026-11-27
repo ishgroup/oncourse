@@ -52,6 +52,8 @@ const renderClass = (preferences: object) => {
 
 const loadClassTutorRoles = getTutorRoles(null, null, COURSE_CLASS_TUTOR_ROLES_COLUMNS);
 
+const classTutorRoles = (load: object) => ({ tutorRolesByColumns: { [COURSE_CLASS_TUTOR_ROLES_COLUMNS]: load } });
+
 describe("CourseClassEditView tutor roles loading", () => {
   let dispatch: jest.SpyInstance;
 
@@ -72,38 +74,38 @@ describe("CourseClassEditView tutor roles loading", () => {
     dispatch.mockRestore();
   });
 
-  it("shows loading and does not request tutor roles again while they are loading", () => {
-    renderClass({ tutorRolesLoading: true });
+  it("shows loading while tutor roles with pay rates are loading", () => {
+    renderClass({});
 
     expect(screen.queryByTestId("expand-button-2")).toBeNull();
     expect(screen.getByRole("progressbar")).toBeTruthy();
     expect(dispatch).not.toHaveBeenCalledWith(loadClassTutorRoles);
   });
 
-  it("loads tutor roles with pay rates when only tutor roles without pay rates are loaded", () => {
+  it("does not use tutor roles loaded without pay rates, for example by Preferences", () => {
     renderClass({ tutorRoles });
 
     expect(screen.queryByTestId("expand-button-2")).toBeNull();
     expect(screen.getByRole("progressbar")).toBeTruthy();
-    expect(dispatch).toHaveBeenCalledWith(loadClassTutorRoles);
+    expect(dispatch).not.toHaveBeenCalledWith(loadClassTutorRoles);
   });
 
   it("is rendered once tutor roles with pay rates are loaded", () => {
-    renderClass({ tutorRoles, tutorRolesColumns: COURSE_CLASS_TUTOR_ROLES_COLUMNS });
+    renderClass(classTutorRoles({ roles: tutorRoles }));
 
     expect(screen.getByTestId("expand-button-2")).toBeTruthy();
     expect(dispatch).not.toHaveBeenCalledWith(loadClassTutorRoles);
   });
 
   it("is rendered when a reload fails but tutor roles with pay rates are already loaded", () => {
-    renderClass({ tutorRoles, tutorRolesColumns: COURSE_CLASS_TUTOR_ROLES_COLUMNS, tutorRolesError: true });
+    renderClass(classTutorRoles({ roles: tutorRoles, error: true }));
 
     expect(screen.getByTestId("expand-button-2")).toBeTruthy();
     expect(screen.queryByText("Try again")).toBeNull();
   });
 
-  it("shows an error with a retry when tutor roles fail to load", () => {
-    renderClass({ tutorRolesError: true });
+  it("shows an error with a retry when tutor roles with pay rates fail to load", () => {
+    renderClass(classTutorRoles({ error: true }));
 
     expect(screen.queryByTestId("expand-button-2")).toBeNull();
     expect(dispatch).not.toHaveBeenCalledWith(loadClassTutorRoles);

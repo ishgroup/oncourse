@@ -53,6 +53,7 @@ import { setCourseClassBudgetModalOpened } from '../../actions';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../constants';
 import { classCostInitial } from '../../CourseClasses';
 import { CourseClassState } from '../../reducers';
+import { getCourseClassTutorRolesLoad } from '../../utils';
 import { getTutorPayInitial } from '../tutors/utils';
 import { deleteCourseClassCost, postCourseClassCost, putCourseClassCost } from './actions';
 import AddBudgetMenu from './AddBudgetMenu';
@@ -813,7 +814,7 @@ const BudgetNetRow: React.FC<CommonRowProps> = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  tutorRoles: state.preferences.tutorRoles,
+  tutorRoles: getCourseClassTutorRolesLoad(state)?.roles,
   enrolments: state.courseClass.enrolments,
   discounts: state.plainSearchRecords["Discount"].items,
   pending: state.plainSearchRecords["Discount"].loading,

@@ -63,7 +63,15 @@ import {
   GET_FUNDING_CONTACTS_FULFILLED,
   SAVE_FUNDING_CONTACTS_FULFILLED
 } from '../containers/funding-contracts/actions';
-import { PreferencesState } from './state';
+import { PreferencesState, TutorRolesLoad } from './state';
+
+const setTutorRolesLoad = (state: PreferencesState, columns: string, load: TutorRolesLoad): PreferencesState => ({
+  ...state,
+  tutorRolesByColumns: {
+    ...state.tutorRolesByColumns,
+    [columns]: { ...state.tutorRolesByColumns?.[columns], ...load }
+  }
+});
 
 export const preferencesReducer = (state: PreferencesState = {}, action: IAction<any>): PreferencesState => {
   switch (action.type) {
@@ -248,30 +256,22 @@ export const preferencesReducer = (state: PreferencesState = {}, action: IAction
     }
 
     case GET_TUTOR_ROLES_REQUEST: {
-      return {
-        ...state,
-        tutorRolesLoading: true,
-        tutorRolesError: false
-      };
+      const columns = action.payload?.columns;
+
+      return columns ? setTutorRolesLoad(state, columns, { error: false }) : state;
     }
 
     case GET_TUTOR_ROLES_FULFILLED: {
       const { tutorRoles, columns } = action.payload;
+      const updated = { ...state, tutorRoles };
 
-      return {
-        ...state,
-        tutorRoles,
-        tutorRolesColumns: columns,
-        tutorRolesLoading: false
-      };
+      return columns ? setTutorRolesLoad(updated, columns, { roles: tutorRoles, error: false }) : updated;
     }
 
     case GET_TUTOR_ROLES_FAILED: {
-      return {
-        ...state,
-        tutorRolesLoading: false,
-        tutorRolesError: true
-      };
+      const columns = action.payload?.columns;
+
+      return columns ? setTutorRolesLoad(state, columns, { error: true }) : state;
     }
 
     case GET_GRADING_TYPES_FULFILLED: {

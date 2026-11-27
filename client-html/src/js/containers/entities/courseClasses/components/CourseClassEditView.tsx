@@ -40,7 +40,7 @@ import { State } from '../../../../reducers/state';
 import { getTutorRoles } from '../../../preferences/actions';
 import { setCourseClassBudgetModalOpened, setCourseClassLatestSession } from '../actions';
 import { COURSE_CLASS_COST_DIALOG_FORM, COURSE_CLASS_TUTOR_ROLES_COLUMNS } from '../constants';
-import { getClassCostTypes } from '../utils';
+import { getClassCostTypes, getCourseClassTutorRolesLoad } from '../utils';
 import CourseClassAssessmentsTab from './assessments/CourseClassAssessmentsTab';
 import CourseClassAttendanceTab from './attendance/CourseClassAttendanceTab';
 import CourseClassBudgetTab from './budget/CourseClassBudgetTab';
@@ -587,10 +587,8 @@ const CourseClassEditView: React.FC<Props> = ({
 
 const mapStateToProps = (state: State) => ({
   taxes: state.taxes.items,
-  tutorRoles: state.preferences.tutorRoles,
-  tutorRolesColumns: state.preferences.tutorRolesColumns,
-  tutorRolesLoading: state.preferences.tutorRolesLoading,
-  tutorRolesError: state.preferences.tutorRolesError,
+  tutorRoles: getCourseClassTutorRolesLoad(state)?.roles,
+  tutorRolesError: getCourseClassTutorRolesLoad(state)?.error,
   currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
@@ -603,37 +601,26 @@ const TutorRolesLoadError = ({ onRetry }) => (
   </div>
 );
 
-// Class budget and tutor pay need tutor roles with pay rates, which load in parallel with the class, so the view waits for both
+// Class budget and tutor pay need tutor roles with pay rates (requested when the classes list opens),
+// which load in parallel with the class, so the view waits for both
 const CourseClassEditViewLoader = (props: any) => {
-  const {
-    values, tutorRoles, tutorRolesColumns, tutorRolesLoading, tutorRolesError
-  } = props;
+  const { values, tutorRoles, tutorRolesError } = props;
 
   const dispatch = useAppDispatch();
-
-  const hasValues = Boolean(values);
-  const tutorRolesReady = Boolean(tutorRoles) && tutorRolesColumns === COURSE_CLASS_TUTOR_ROLES_COLUMNS;
 
   const loadTutorRoles = useCallback(() => {
     dispatch(getTutorRoles(null, null, COURSE_CLASS_TUTOR_ROLES_COLUMNS));
   }, []);
 
-  // Tutor roles can be reloaded elsewhere without pay rates (for example in Preferences), then the class loads them again
-  useEffect(() => {
-    if (hasValues && !tutorRolesReady && !tutorRolesLoading && !tutorRolesError) {
-      loadTutorRoles();
-    }
-  }, [hasValues, tutorRolesReady, tutorRolesLoading, tutorRolesError]);
-
-  if (!hasValues) {
+  if (!values) {
     return null;
   }
 
-  if (tutorRolesReady) {
+  if (tutorRoles) {
     return <CourseClassEditView {...props} />;
   }
 
-  if (tutorRolesError && !tutorRolesLoading) {
+  if (tutorRolesError) {
     return <TutorRolesLoadError onRetry={loadTutorRoles} />;
   }
 

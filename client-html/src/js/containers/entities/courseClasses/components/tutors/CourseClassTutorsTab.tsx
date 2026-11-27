@@ -22,6 +22,7 @@ import {
 } from '../../../../../model/entities/CourseClass';
 import { State } from '../../../../../reducers/state';
 import { getContactFullName } from '../../../contacts/utils';
+import { getCourseClassTutorRolesLoad } from '../../utils';
 import { deleteCourseClassTutor, postCourseClassTutor, setCourseClassTutorNamesWarnings } from './actions';
 import CourseClassTutorsRenderer from './CourseClassTutorsRenderer';
 import CourseClassTutorService from './services/CourseClassTutorService';
@@ -204,7 +205,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const mapStateToProps = (state: State) => ({
   tutorNamesWarnings: state.courseClass.tutorNamesWarnings,
   latestSession: state.courseClass.latestSession,
-  tutorRoles: state.preferences.tutorRoles,
+  tutorRoles: getCourseClassTutorRolesLoad(state)?.roles,
   queuedActions: state.actionsQueue.queuedActions
 });
 

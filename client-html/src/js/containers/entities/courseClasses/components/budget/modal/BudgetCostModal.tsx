@@ -16,6 +16,7 @@ import { valiadateSelectItemAvailable } from '../../../../../../common/utils/val
 import { ClassCostExtended, CourseClassExtended } from '../../../../../../model/entities/CourseClass';
 import { State } from '../../../../../../reducers/state';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
+import { getCourseClassTutorRolesLoad } from '../../../utils';
 import DiscountContent from './DiscountContent';
 import IncomeAndExpenceContent from './IncomeAndExpenceContent';
 import StudentFeeContent from './StudentFeeContent';
@@ -190,7 +191,7 @@ const BudgetCostModal = React.memo<CourseClassCostModalProps & InjectedFormProps
 const mapStateToProps = (state: State) => ({
   values: getFormValues(COURSE_CLASS_COST_DIALOG_FORM)(state),
   accounts: state.plainSearchRecords.Account.items,
-  tutorRoles: state.preferences.tutorRoles,
+  tutorRoles: getCourseClassTutorRolesLoad(state)?.roles,
   opened: state.courseClass.budgetModalOpened,
   defaultOnCostRate: state.courseClass.defaultOnCostRate
 });

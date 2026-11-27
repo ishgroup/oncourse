@@ -52,9 +52,9 @@ const request: EpicUtils.Request<any,  { selectFirst: boolean; keyCodeToSelect: 
       }
     ];
   },
-  processError: response => [
+  processError: (response, p) => [
     ...FetchErrorHandler(response, "Failed to get tutor role list"),
-    { type: GET_TUTOR_ROLES_FAILED }
+    { type: GET_TUTOR_ROLES_FAILED, payload: { columns: p?.columns } }
   ]
 };
 

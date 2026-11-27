@@ -36,6 +36,7 @@ import CourseClassCostService from '../components/budget/services/ClassCostServi
 import { getClassCostFee } from '../components/budget/utils';
 import CourseClassTimetableService from '../components/timetable/services/CourseClassTimetableService';
 import CourseClassTutorService from '../components/tutors/services/CourseClassTutorService';
+import { COURSE_CLASS_TUTOR_ROLES_COLUMNS } from '../constants';
 
 export const openCourseClassLink = (classId: number) => openInternalLink(`/class/${classId}`);
 
@@ -512,3 +513,6 @@ export const getSessionsWithRepeated = (
 
   return updated;
 };
+
+// Tutor roles with pay rates, loaded by the class page separately from other tutor role loads
+export const getCourseClassTutorRolesLoad = (state: State) => state.preferences.tutorRolesByColumns?.[COURSE_CLASS_TUTOR_ROLES_COLUMNS];

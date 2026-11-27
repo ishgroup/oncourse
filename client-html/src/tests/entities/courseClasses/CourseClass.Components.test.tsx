@@ -21,8 +21,11 @@ describe("Virtual rendered CourseClassEditView", () => {
       export: { contracts: mockedApi.db.getAvetmissExportPlainListFormatted() },
       location: mockedApi.db.location,
       preferences: {
-        tutorRoles: mockedApi.db.getPlainTutorRoles().rows.map(r => ({ id: r.id, name: r.values[0] })),
-        tutorRolesColumns: COURSE_CLASS_TUTOR_ROLES_COLUMNS
+        tutorRolesByColumns: {
+          [COURSE_CLASS_TUTOR_ROLES_COLUMNS]: {
+            roles: mockedApi.db.getPlainTutorRoles().rows.map(r => ({ id: r.id, name: r.values[0] }))
+          }
+        }
       }
     }),
     render: ({
