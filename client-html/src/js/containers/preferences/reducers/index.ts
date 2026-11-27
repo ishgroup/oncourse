@@ -45,6 +45,7 @@ import {
   GET_TIMEZONES_FULFILLED,
   GET_TUTOR_ROLES_FAILED,
   GET_TUTOR_ROLES_FULFILLED,
+  GET_TUTOR_ROLES_REQUEST,
   GET_USI_SORTWARE_ID_FULFILLED,
   SAVE_HOLIDAYS_FULFILLED,
   SAVE_PREFERENCES_FULFILLED,
@@ -246,20 +247,27 @@ export const preferencesReducer = (state: PreferencesState = {}, action: IAction
       };
     }
 
-    case GET_TUTOR_ROLES_FULFILLED: {
-      const { tutorRoles } = action.payload;
-
+    case GET_TUTOR_ROLES_REQUEST: {
       return {
         ...state,
-        tutorRoles
+        tutorRolesError: false
       };
     }
 
-    // Keep loaded roles, but mark them as loaded so the class page does not wait for them forever
+    case GET_TUTOR_ROLES_FULFILLED: {
+      const { tutorRoles, columns } = action.payload;
+
+      return {
+        ...state,
+        tutorRoles,
+        tutorRolesColumns: columns
+      };
+    }
+
     case GET_TUTOR_ROLES_FAILED: {
       return {
         ...state,
-        tutorRoles: state.tutorRoles || []
+        tutorRolesError: true
       };
     }
 

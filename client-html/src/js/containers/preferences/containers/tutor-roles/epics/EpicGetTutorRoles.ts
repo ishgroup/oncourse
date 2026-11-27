@@ -48,7 +48,7 @@ const request: EpicUtils.Request<any,  { selectFirst: boolean; keyCodeToSelect: 
     return [
       {
         type: GET_TUTOR_ROLES_FULFILLED,
-        payload: { tutorRoles }
+        payload: { tutorRoles, columns: p?.columns }
       }
     ];
   },

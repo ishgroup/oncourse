@@ -8,7 +8,7 @@
 
 import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from '@api/model';
 import Edit from '@mui/icons-material/Edit';
-import { IconButton, Typography } from '@mui/material';
+import { Button, IconButton, Typography } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -37,8 +37,9 @@ import history from '../../../../constants/History';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from '../../../../model/entities/CourseClass';
 import { State } from '../../../../reducers/state';
+import { getTutorRoles } from '../../../preferences/actions';
 import { setCourseClassBudgetModalOpened, setCourseClassLatestSession } from '../actions';
-import { COURSE_CLASS_COST_DIALOG_FORM } from '../constants';
+import { COURSE_CLASS_COST_DIALOG_FORM, COURSE_CLASS_TUTOR_ROLES_COLUMNS } from '../constants';
 import { getClassCostTypes } from '../utils';
 import CourseClassAssessmentsTab from './assessments/CourseClassAssessmentsTab';
 import CourseClassAttendanceTab from './attendance/CourseClassAttendanceTab';
@@ -587,8 +588,36 @@ const CourseClassEditView: React.FC<Props> = ({
 const mapStateToProps = (state: State) => ({
   taxes: state.taxes.items,
   tutorRoles: state.preferences.tutorRoles,
+  tutorRolesColumns: state.preferences.tutorRolesColumns,
+  tutorRolesError: state.preferences.tutorRolesError,
   currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
-// Class budget and tutor pay need tutor roles, which load in parallel with the class, so the view waits for both
-export default connect(mapStateToProps)((props: any) => (props.values && props.tutorRoles ? <CourseClassEditView {...props} /> : null));
+const TutorRolesLoadError = ({ dispatch }) => (
+  <div className="p-3">
+    <Typography color="error" className="mb-2">{$t('tutor_roles_could_not_be_loaded')}</Typography>
+    <Button
+      variant="outlined"
+      onClick={() => dispatch(getTutorRoles(null, null, COURSE_CLASS_TUTOR_ROLES_COLUMNS))}
+    >
+      {$t('try_again')}
+    </Button>
+  </div>
+);
+
+// Class budget and tutor pay need tutor roles with pay rates, which load in parallel with the class, so the view waits for both
+const CourseClassEditViewLoader = (props: any) => {
+  if (!props.values) {
+    return null;
+  }
+
+  if (props.tutorRolesError) {
+    return <TutorRolesLoadError dispatch={props.dispatch} />;
+  }
+
+  return props.tutorRoles && props.tutorRolesColumns === COURSE_CLASS_TUTOR_ROLES_COLUMNS
+    ? <CourseClassEditView {...props} />
+    : null;
+};
+
+export default connect(mapStateToProps)(CourseClassEditViewLoader);

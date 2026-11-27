@@ -29,6 +29,9 @@ export interface PreferencesState {
   dataCollectionRules?: DataCollectionRule[];
   paymentTypes?: PaymentMethod[];
   tutorRoles?: DefinedTutorRole[];
+  // Custom columns tutor roles were loaded with, undefined for the default columns
+  tutorRolesColumns?: string;
+  tutorRolesError?: boolean;
   gradingTypes?: GradingType[];
   enums?: any;
   college?: any;
